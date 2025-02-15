@@ -2,13 +2,13 @@ import { View, Text, StatusBar, Settings } from 'react-native'
 import React, { useContext, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import InfoModule from '@/components/(tabs)/infoModule'
-import CustomButton from '@/components/(tabs)/customButton'
+import CustomButton from '@/components/(general)/customButton'
 import { useWindowDimensions } from 'react-native';
 import SwichTab from '@/components/(tabs)/swichTab'
 import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
-import General from '@/components/(tabs)/(profile)/general'
-import ProfileSettings from '@/components/(tabs)/(profile)/profileSettings'
-import PersonalInfo from '@/components/(tabs)/(profile)/personalInfo'
+import General from '@/components/(profile)/general'
+import ProfileSettings from '@/components/(profile)/profileSettings'
+import PersonalInfo from '@/components/(profile)/personalInfo'
 
 const profil = () => {
   const {user} = useGlobalContext();

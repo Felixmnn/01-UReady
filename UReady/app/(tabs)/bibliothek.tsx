@@ -4,7 +4,7 @@ import Tabbar from '@/components/(tabs)/tabbar'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import Svg, { Circle } from "react-native-svg";
-import VektorCircle from '@/components/(tabs)/vektorCircle';
+import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 import { useWindowDimensions } from 'react-native';
 import Karteikarte from '@/components/(tabs)/karteiKarte';
 

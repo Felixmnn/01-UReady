@@ -3,7 +3,7 @@ import React from 'react'
 import { TextInput } from 'react-native'
 
 const CustomTextInput = ({text,setText,isFocused, setFocused,firstFocus,setFirstFocus}) => {
- 
+ {/*Erster Text Input empfehlung ist Input1*/}
   return (
     <View>
       <TextInput

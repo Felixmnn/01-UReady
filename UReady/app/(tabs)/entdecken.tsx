@@ -3,7 +3,7 @@ import React from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useState, useEffect } from 'react'
 import Svg, { Circle } from "react-native-svg";
-import VektorCircle from '@/components/(tabs)/vektorCircle';
+import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
 import SwichTab from '@/components/(tabs)/swichTab';

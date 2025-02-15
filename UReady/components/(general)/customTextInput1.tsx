@@ -2,6 +2,7 @@ import { View, Text, TextInput } from 'react-native'
 import React, { useState } from 'react'
 
 const CustomTextInput1 = ({value, inputStyles, placeholderSize, placeholderBold, additional}) => {
+    {/*Wie Textinput0 aber mit weniger übergebenen Atributen*/}
     const [focused, setFocused] = useState(false)
     const [text,setText] = useState (value)
   return (

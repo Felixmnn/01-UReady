@@ -1,6 +1,6 @@
 import { View, Text, Modal, Animated, TouchableOpacity } from 'react-native'
 import React from 'react'
-import CustomButton from '../(tabs)/customButton'
+import CustomButton from '../(general)/customButton'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useState, useRef, useEffect } from 'react';
 import SlideShowPremium from './slideShowPremium';

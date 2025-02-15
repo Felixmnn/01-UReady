@@ -36,12 +36,12 @@ const Tabbar = ({content,page, hide}) => {
                       
                 </View >
             </View >
-            <View className={`flex-1 rounded-[10px]  ${hide ? null : "bg-[#0c111d] border border-gray-700 border-w-[1px]"}`}>
+            <View className={`flex-1 rounded-[10px]  ${hide ? null : "bg-gradient-to-b from-[#001450] to-[#0c111e] border border-gray-700 border-w-[1px]"}`}>
                 {content()}
             </View>
         </View>
             :
-            <SafeAreaView className='flex-1 bg-gradient-to-b from-blue-700 to-[#0c111d] itmes-center justify-between'>
+            <SafeAreaView className='flex-1 bg-gradient-to-b from-[#001450] to-[#0c111e] itmes-center justify-between'>
              {content()}
             </SafeAreaView>
         }

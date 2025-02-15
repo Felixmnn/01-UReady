@@ -1,13 +1,13 @@
 import { View, Text, Touchable, TouchableOpacity, Modal } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
-import InfoModule from '../infoModule';
-import OptionSelector from '../optionSelector';
+import InfoModule from '../(tabs)/infoModule';
+import OptionSelector from '../(tabs)/optionSelector';
 import { useWindowDimensions } from 'react-native';
-import SettingsOption from '../settingsOption';
+import SettingsOption from '../(tabs)/settingsOption';
 import { useState } from 'react';
-import CustomTextInput from '../customTextInput';
-import CustomButton from '../customButton';
+import CustomTextInput from '../(general)/customTextInput';
+import CustomButton from '../(general)/customButton';
 import { signOut } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';

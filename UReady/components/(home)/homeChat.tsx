@@ -1,12 +1,15 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
-import CustomTextInput1 from '../(tabs)/customTextInput1';
+import CustomTextInput1 from '../(general)/customTextInput1';
+import React, { useState, useCallback, useEffect } from 'react';
+import { GiftedChat } from 'react-native-gifted-chat';
+import CustomTextInputChat from '../(general)/customTextInputChat';
 
 
 const HomeChat = ({setSelectedPage}) => {
+    {/*Home Page mit chat Interface*/}
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
     const TouchableIcon = ({iconName, handlePress}) => {
@@ -16,6 +19,27 @@ const HomeChat = ({setSelectedPage}) => {
             </TouchableOpacity>
         )
     }
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        setMessages([
+        {
+            _id: 1,
+            text: 'Hallo! Wie kann ich dir helfen?',
+            createdAt: new Date(),
+            user: {
+            _id: 2,
+            name: 'Support-Bot',
+            avatar: 'https://placekitten.com/100/100',
+            },
+        },
+        ]);
+    }, []);
+
+  const onSend = useCallback((newMessages = []) => {
+    setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessages));
+  }, []);
+
   return (
     <View className='flex-1 items-center '>
         {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70 border-t-[1px] border-gray-700'></View> : null }
@@ -40,14 +64,23 @@ const HomeChat = ({setSelectedPage}) => {
 
                 </View>
             </View>
-            <View className='flex-1'>
-
-            </View>
+                <View className='flex-1'>
+                    <GiftedChat
+                        messages={messages}
+                        onSend={(messages) => onSend(messages)}
+                        user={{
+                        _id: 1, // ID des aktuellen Nutzers
+                        }}
+                        placeholder="Schreibe eine Nachricht..."
+                    />
+                </View>
             <View className='flex-row p-3 items-center'>
                 <TouchableOpacity className='rounded-full h-[40px] w-[40px] bg-gray-900 items-center justify-center border-gray-700 border-[1px]' onPress={()=> setIsVisibleDataUpload(true)} >
                     <Icon name="paperclip" size={15} color="gray"/>
                 </TouchableOpacity>
-                <CustomTextInput1 inputStyles={"rounded-full m-2 h-[40px]"} value={"Frag mich was du wills..."} placeholderSize={15} placeholderBold={"400"}/>
+                <View className=' pl-2 flex-1'>
+                <CustomTextInputChat placeholder={"Frag mich was cooles..."} handlePress={()=> onSend(messages) }/>
+                </View>
             </View>
         </View>
     </View>

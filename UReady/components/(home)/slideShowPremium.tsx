@@ -52,7 +52,7 @@ const SlideShowPremium = () => {
         onSnapToItem={handleSnapToItem}
         activeSlideAlignment="center"
         inactiveSlideScale={1}
-        autoplay={false} // Deaktiviert die automatische Funktion des Carousels
+        autoplay={false} 
         autoplayInterval={3000}
         loop
         ref={carouselRef}

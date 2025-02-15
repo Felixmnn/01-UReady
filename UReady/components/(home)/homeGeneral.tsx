@@ -3,14 +3,16 @@ import React, { useState } from 'react'
 import { signOut } from '@/lib/appwrite'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Icon from "react-native-vector-icons/FontAwesome5";
-import CustomButton from '@/components/(tabs)/customButton';
+import CustomButton from '@/components/(general)/customButton';
 import { useWindowDimensions } from 'react-native';
-import CustomTextInput1 from '@/components/(tabs)/customTextInput1';
+import CustomTextInput1 from '@/components/(general)/customTextInput1';
 import ModalStreak from '@/components/(home)/modalStreak';
 import ModalPremium from '@/components/(home)/modalPremium';
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
+import CustomTextInputChat from '../(general)/customTextInputChat';
 
 const HomeGeneral = ({setSelectedPage}) => {
+  {/*Homepage allgemein*/}
     const t = new Date().getDay();
     
       const [selected, setSelected] = useState(t)
@@ -95,7 +97,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         )
       }
   return (
-    <View className='flex-1 justify-between'>
+    <View className='flex-1 justify-between '>
         <ModalStreak isVisible={isVisible} setIsVisible={setIsVisible} tage={12} days={days}/>
         <ModalPremium isVisible={isVisiblePremium} setIsVisible={setIsVisiblePremium}/>
         <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
@@ -188,8 +190,10 @@ const HomeGeneral = ({setSelectedPage}) => {
           <TouchableOpacity className='rounded-full h-[40px] w-[40px] bg-gray-900 items-center justify-center border-gray-700 border-[1px]' onPress={()=> setIsVisibleDataUpload(true)} >
             <Icon name="paperclip" size={15} color="gray"/>
           </TouchableOpacity>
-          <CustomTextInput1 inputStyles={"rounded-full m-2 h-[40px]"} value={"Frag mich was du wills..."} placeholderSize={15} placeholderBold={"400"}/>
-        </View>
+          <View className='flex-1 ml-2'>
+          <CustomTextInputChat placeholder={"Frag mich was cooles..."}/>
+          </View>
+          </View>
         </View>
       </View>
   )

@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 
 const ModalDataUpload = ({isVisible, setIsVisible}) => {
+    {/*Modal welches die Dateiupload Optionen anzeigt*/}
     const DataType = ({ title, subTitle, iconName, handlePress}) => {
         return (
             <TouchableOpacity className='flex-row items-center' onPress={handlePress}>

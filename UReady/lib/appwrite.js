@@ -1,0 +1,94 @@
+import { Client,Account,ID, Avatars, Databases,Query } from 'react-native-appwrite';
+import { Linking } from "react-native";
+
+import { Platform } from 'react-native';
+import { router } from "expo-router";
+import { useGlobalContext } from '@/context/GlobalProvider';
+
+export const config = {
+    endpoint: 'https://cloud.appwrite.io/v1',
+    platform: "com.uready",
+    projectId: "67a9b50700084eaa4e04",
+};
+
+const client = new Client();
+
+client
+    .setEndpoint(config.endpoint) // Your Appwrite Endpoint
+    .setProject(config.projectId) // Your project ID
+    .setPlatform(config.platform) // Your application ID or bundle ID.
+;
+
+const account = new Account(client);
+const avatars = new Avatars(client);
+const databases = new Databases (client);
+
+export { client, databases };
+
+export const createUser = async (email, password, username) => {
+    
+    try {
+        const newAccount = await account.create(
+          ID.unique(),
+          email,
+          password,
+          username
+        )
+        if (!newAccount) throw Error;
+            const avatarUrl = avatars.getInitials(username)
+            await signIn(email,password)
+            const newUser = await databases.createDocument(
+                config.databaseId,
+                config.userCollectionId,
+                ID.unique(),
+                {
+                    accountId: newAccount.$id,
+                    email,
+                    username,
+                    avatar:  avatarUrl
+                }
+            )
+            return newUser;
+    } catch (error) {
+        console.log(error)
+        }
+}
+
+export const signIn = async(email, password) => {
+    
+    try {
+        const session = await account.createEmailPasswordSession(email,password)
+            return session;
+    }  catch (error) {
+        console.log(error)
+    }
+}
+
+export const signOut = async ()=> {
+    try {
+        console.log("Logging out")
+        await account.deleteSession('current');
+        
+    }
+    catch {
+        console.log(error)
+    }
+}
+export const checkSession = async () => {
+    try {
+        const session = await account.get(); 
+        console.log(session)
+        return session;
+    } catch (error) {
+        console.log("Keine aktive Sitzung:", error);
+        return null; 
+    }
+};
+
+export const loginWithGoogle = () => {
+    const redirectUrl = "http://localhost:8081/"; // Stelle sicher, dass diese URL in Google OAuth registriert ist
+    const authUrl = account.createOAuth2Session("google", redirectUrl, redirectUrl);
+    Linking.openURL(authUrl);
+};
+
+

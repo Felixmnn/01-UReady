@@ -10,6 +10,11 @@ import CustomButton from '../(general)/customButton';
 import { v4 as uuidv4 } from 'uuid';
 
 const HomeChat = ({setSelectedPage}) => {
+    const [response, setResponse] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false)
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    console.log("Api",apiUrl)
     {/*Home Page mit chat Interface*/}
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
@@ -44,10 +49,62 @@ const HomeChat = ({setSelectedPage}) => {
 
   }, []);
 
-  function messageReply(message) {
+  async function messageReply(message) {
+
     onSend(message)
-    onSend({text:"Eine Gute Frage",user:{"_id":2},createdAt:"2025-02-17T02:55:31.657Z",_id:uuidv4()})
+    setButtonDisabled(true)
+    setIsTyping(true)
+    if (apiUrl){
+        await handleRequest()
+        onSend({text:response,user:{"_id":2},createdAt:new Date(),_id:uuidv4()}) 
+    } else {
+        onSend({text:"Für eine Antwort fehlt der Api key",user:{"_id":2},createdAt:new Date(),_id:uuidv4()})
+    }
+    setButtonDisabled(false)
+    setIsTyping(false)
   }
+  const handleRequest = async () => {
+    const apiKey = apiUrl; // Dein OpenAI API-Schlüssel
+    const url = 'https://api.openai.com/v1/chat/completions';  // ChatGPT Endpunkt
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    };
+
+    // Die Body-Daten für die Anfrage
+    const body = JSON.stringify({
+      model: 'gpt-4o-mini', 
+      messages: [{ role: 'user', content: text}],
+    });
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: body,
+      });
+
+      if (!res.ok) {
+        throw new Error(`Fehler: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      // Überprüfe, ob die Antwort `choices` enthält und greife auf den Text zu
+      console.log("Response:",data)
+      if (data && data.choices && data.choices.length > 0) {
+        setResponse(data.choices[0].message.content.trim());  // Antworte mit dem Text
+      } else {
+        setResponse('Keine Antwort von OpenAI erhalten.');
+      }
+    } catch (error) {
+      console.error('Error fetching OpenAI API:', error);
+      setResponse('Es gab einen Fehler bei der Anfrage!');
+    }
+  };
+ 
+
+  
 
   return (
     <View className='flex-1 items-center '>
@@ -82,6 +139,7 @@ const HomeChat = ({setSelectedPage}) => {
                         }}
                         placeholder="Schreibe eine Nachricht..."
                         renderInputToolbar={() => null}
+                        isTyping={isTyping}
                     />
                 </View>
                 
@@ -90,7 +148,7 @@ const HomeChat = ({setSelectedPage}) => {
                     <Icon name="paperclip" size={15} color="gray"/>
                 </TouchableOpacity>
                 <View className=' pl-2 flex-1'>
-                <CustomTextInputChat placeholder={"Frag mich was cooles..."}  text={text} setText={setText} handlePress={()=> {messageReply({text:text ,user:{"_id":1},createdAt:"2025-02-17T02:55:31.657Z",_id:uuidv4()}), setText("")} }/>
+                <CustomTextInputChat buttonDisabled={buttonDisabled} placeholder={"Frag mich was cooles..."}  text={text} setText={setText} handlePress={()=> {messageReply({text:text ,user:{"_id":1},createdAt:"2025-02-17T02:55:31.657Z",_id:uuidv4()}), setText("")} }/>
                 </View>
             </View>
         </View>

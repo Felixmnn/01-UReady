@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-const CustomTextInputChat = ({placeholder, handlePress, text, setText}) => {
+const CustomTextInputChat = ({placeholder, handlePress, text, setText, buttonDisabled}) => {
   {/*Wie die anderen nur eben mit commit Button*/}
     const [focused, setFocused] = useState(false)
   return (
@@ -25,7 +25,7 @@ const CustomTextInputChat = ({placeholder, handlePress, text, setText}) => {
         value={text}
         placeholder={placeholder}
       />
-      <TouchableOpacity className='flex-row pt-1 px-1 items-center rounded-full justify-center bg-gradient-to-b from-[#001450] to-pink-500' onPress={handlePress}>
+      <TouchableOpacity className='flex-row pt-1 px-1 items-center rounded-full justify-center bg-gradient-to-b from-[#001450] to-pink-500' onPress={handlePress} disabled={text.length < 1 && !buttonDisabled}>
         <Icon name="paper-plane" size={15} color="white"/>
         <Text className='text-white ml-1 mb-1'>8/10</Text>
       </TouchableOpacity>

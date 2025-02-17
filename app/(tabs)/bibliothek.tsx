@@ -6,7 +6,7 @@ import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import Svg, { Circle } from "react-native-svg";
 import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 import { useWindowDimensions } from 'react-native';
-import Karteikarte from '@/components/(tabs)/karteiKarte';
+import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 
 const Bibliothek = () => {
   const [last7Hidden, setLast7Hidden ] = useState(true)
@@ -40,9 +40,10 @@ const Bibliothek = () => {
             </View>
           </TouchableOpacity>
           <View className={`w-full ${isVertical ? "flex-row": "flex-1 w-full"}`}>
+          <Karteikarte farbe={"#06aed4"} titel={"Algorythmen"} studiengang={"Informatik"} fragenAnzahl={21} notizAnzahl={1} creator={"YOU"} availability={false} icon={"clock"}/>
             <Karteikarte farbe={"#06aed4"} titel={"Algorythmen"} studiengang={"Informatik"} fragenAnzahl={21} notizAnzahl={1} creator={"YOU"} availability={false} icon={"clock"}/>
-            <Karteikarte farbe={"#06aed4"} titel={"Algorythmen"} studiengang={"Informatik"} fragenAnzahl={21} notizAnzahl={1} creator={"YOU"} availability={false} icon={"clock"}/>
-          </View>
+          
+            </View>
         </View>
       </View>
     )}} page={"Bibliothek"}/>

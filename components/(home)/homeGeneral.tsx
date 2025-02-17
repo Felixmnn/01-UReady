@@ -12,6 +12,8 @@ import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import CustomTextInputChat from '../(general)/customTextInputChat';
 
 const HomeGeneral = ({setSelectedPage}) => {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  console.log("Api URl",apiUrl)
   {/*Homepage allgemein*/}
     const t = new Date().getDay();
     

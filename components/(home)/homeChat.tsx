@@ -6,7 +6,8 @@ import CustomTextInput1 from '../(general)/customTextInput1';
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import CustomTextInputChat from '../(general)/customTextInputChat';
-
+import CustomButton from '../(general)/customButton';
+import { v4 as uuidv4 } from 'uuid';
 
 const HomeChat = ({setSelectedPage}) => {
     {/*Home Page mit chat Interface*/}
@@ -19,6 +20,8 @@ const HomeChat = ({setSelectedPage}) => {
             </TouchableOpacity>
         )
     }
+    const [text,setText] = useState ("")
+    
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
@@ -38,7 +41,13 @@ const HomeChat = ({setSelectedPage}) => {
 
   const onSend = useCallback((newMessages = []) => {
     setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessages));
+
   }, []);
+
+  function messageReply(message) {
+    onSend(message)
+    onSend({text:"Eine Gute Frage",user:{"_id":2},createdAt:"2025-02-17T02:55:31.657Z",_id:uuidv4()})
+  }
 
   return (
     <View className='flex-1 items-center '>
@@ -67,19 +76,21 @@ const HomeChat = ({setSelectedPage}) => {
                 <View className='flex-1'>
                     <GiftedChat
                         messages={messages}
-                        onSend={(messages) => onSend(messages)}
+                        onSend={(messages) => {onSend(messages);console.log(JSON.stringify(messages))}}
                         user={{
                         _id: 1, // ID des aktuellen Nutzers
                         }}
                         placeholder="Schreibe eine Nachricht..."
+                        renderInputToolbar={() => null}
                     />
                 </View>
+                
             <View className='flex-row p-3 items-center'>
                 <TouchableOpacity className='rounded-full h-[40px] w-[40px] bg-gray-900 items-center justify-center border-gray-700 border-[1px]' onPress={()=> setIsVisibleDataUpload(true)} >
                     <Icon name="paperclip" size={15} color="gray"/>
                 </TouchableOpacity>
                 <View className=' pl-2 flex-1'>
-                <CustomTextInputChat placeholder={"Frag mich was cooles..."} handlePress={()=> onSend(messages) }/>
+                <CustomTextInputChat placeholder={"Frag mich was cooles..."}  text={text} setText={setText} handlePress={()=> {messageReply({text:text ,user:{"_id":1},createdAt:"2025-02-17T02:55:31.657Z",_id:uuidv4()}), setText("")} }/>
                 </View>
             </View>
         </View>

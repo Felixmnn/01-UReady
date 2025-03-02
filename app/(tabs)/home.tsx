@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import HomeGeneral from '@/components/(home)/homeGeneral';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import HomeChat from '@/components/(home)/homeChat';
 
 const home = () => {

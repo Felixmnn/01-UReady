@@ -33,7 +33,7 @@ const HomeChat = ({setSelectedPage}) => {
         setMessages([
         {
             _id: 1,
-            text: 'Hallo! Wie kann ich dir helfen?',
+            text: 'Hallo! Wobei kann ich dir heute helfen?',
             createdAt: new Date(),
             user: {
             _id: 2,
@@ -55,8 +55,8 @@ const HomeChat = ({setSelectedPage}) => {
     setButtonDisabled(true)
     setIsTyping(true)
     if (apiUrl){
-        await handleRequest()
-        onSend({text:response,user:{"_id":2},createdAt:new Date(),_id:uuidv4()}) 
+        const res = await handleRequest()
+        onSend({text:res,user:{"_id":2},createdAt:new Date(),_id:uuidv4()}) 
     } else {
         onSend({text:"Für eine Antwort fehlt der Api key",user:{"_id":2},createdAt:new Date(),_id:uuidv4()})
     }
@@ -94,12 +94,44 @@ const HomeChat = ({setSelectedPage}) => {
       console.log("Response:",data)
       if (data && data.choices && data.choices.length > 0) {
         setResponse(data.choices[0].message.content.trim());  // Antworte mit dem Text
+        return(data.choices[0].message.content.trim())
       } else {
         setResponse('Keine Antwort von OpenAI erhalten.');
+        return('Keine Antwort von OpenAI erhalten.')
       }
     } catch (error) {
       console.error('Error fetching OpenAI API:', error);
       setResponse('Es gab einen Fehler bei der Anfrage!');
+    }
+  };
+
+  const renderMessage = (props) => {
+    const { currentMessage } = props;
+
+    // User message styling using NativeWind
+    if (currentMessage.user._id === 1) {
+      return (
+        <View className="flex-row justify-end mb-2 mr-4">
+          <View className="bg-blue-500 p-3 rounded-xl max-w-[70%]">
+            <Text className="text-white text-base">{currentMessage.text}</Text>
+            <Text className="text-gray-300 text-xs text-right mt-1">
+                {currentMessage.createdAt.toLocaleTimeString()}            
+          </Text>
+          </View>
+        </View>
+      );
+    } else {
+      // Bot message styling using NativeWind
+      return (
+        <View className="flex-row mb-2 ml-4 ">
+          <View className="bg-[0a1327] p-3 rounded-xl max-w-[70%] border-gray-700 border-[1px]">
+            <Text className="text-white text-base font-semibold">{currentMessage.text}</Text>
+            <Text className="text-gray-500 text-xs mt-1">
+            {currentMessage.createdAt.toLocaleTimeString()}            
+            </Text>
+          </View>
+        </View>
+      );
     }
   };
  
@@ -121,7 +153,7 @@ const HomeChat = ({setSelectedPage}) => {
                             <Text className='font-bold text-white mr-1'>Assistent</Text>
                             <Text className='bg-gray-700 items-center justify-center h-[14px] px-[1px] rounded-full text-gray-300 text-[10px]'>BETA</Text>
                         </View>
-                        <Text className='text-[10px] text-gray-500'>Aktiv</Text>
+                        <Text className='text-[10px] text-gray-500'>{isTyping ?  "Aktiv" : "BEREIT"}</Text>
                     </View>
                 </View>
                 <View className='flex-row'>
@@ -140,6 +172,7 @@ const HomeChat = ({setSelectedPage}) => {
                         placeholder="Schreibe eine Nachricht..."
                         renderInputToolbar={() => null}
                         isTyping={isTyping}
+                        renderMessage={renderMessage}
                     />
                 </View>
                 
@@ -148,7 +181,7 @@ const HomeChat = ({setSelectedPage}) => {
                     <Icon name="paperclip" size={15} color="gray"/>
                 </TouchableOpacity>
                 <View className=' pl-2 flex-1'>
-                <CustomTextInputChat buttonDisabled={buttonDisabled} placeholder={"Frag mich was cooles..."}  text={text} setText={setText} handlePress={()=> {messageReply({text:text ,user:{"_id":1},createdAt:"2025-02-17T02:55:31.657Z",_id:uuidv4()}), setText("")} }/>
+                <CustomTextInputChat buttonDisabled={buttonDisabled} placeholder={"Frag mich was cooles..."}  text={text} setText={setText} handlePress={()=> {messageReply({text:text ,user:{"_id":1},createdAt:new Date(),_id:uuidv4()}), setText("")} }/>
                 </View>
             </View>
         </View>

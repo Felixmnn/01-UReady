@@ -25,7 +25,7 @@ const CustomTextInputChat = ({placeholder, handlePress, text, setText, buttonDis
         value={text}
         placeholder={placeholder}
       />
-      <TouchableOpacity className='flex-row pt-1 px-1 items-center rounded-full justify-center bg-gradient-to-b from-[#001450] to-pink-500' onPress={handlePress} disabled={text.length < 1 && !buttonDisabled}>
+      <TouchableOpacity className='flex-row pt-1 px-1 items-center rounded-full justify-center bg-gradient-to-b from-[#001450] to-pink-500' onPress={handlePress} disabled={ text && text.length < 1 && !buttonDisabled}>
         <Icon name="paper-plane" size={15} color="white"/>
         <Text className='text-white ml-1 mb-1'>8/10</Text>
       </TouchableOpacity>

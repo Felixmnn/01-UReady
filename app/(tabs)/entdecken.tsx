@@ -11,12 +11,13 @@ import OptionSelector from '@/components/(tabs)/optionSelector';
 
 const entdecken = () => {
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
-  const isVertical = width > 700;
-  const toTight = width > 800;
-  const longVertical = width > 900;
   const [ tab, setTab ] = useState(0)
   const tabWidth = width / 2; // Da es zwei Tabs gibt
 
+  const isVertical = width > 700;
+  const toTight = width > 800;
+  const longVertical = width > 900;
+ 
 
   return (
       <Tabbar content={()=> { return(

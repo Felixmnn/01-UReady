@@ -3,9 +3,9 @@ import React from 'react'
 import VektorCircle from './vektorCircle'
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator, availability, icon}) => {
+const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator, availability, icon,handlePress}) => {
     return(
-    <View className='flex-1 my-2 mr-2 max-w-[456px]'>
+    <TouchableOpacity className='flex-1 my-2 mr-2 max-w-[456px]' onPress={handlePress}>
       <View className={` rounded-t-[10px] border-t-[1px] border-gray-700 max-w-[450px]`} style={{height:5, backgroundColor:farbe}}/>
       <View className=' p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] max-w-[450px]' style={{borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
         <View className='flex-row justify-between items-start'>
@@ -34,7 +34,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
     )
   }
 

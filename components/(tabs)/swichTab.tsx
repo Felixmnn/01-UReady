@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
-const SwichTab = ({tabWidth,setTab, tab1, tab2}) => {
+const SwichTab = ({tabWidth,setTab, tab1, tab2, bg}) => {
 const [activeTab, setActiveTab] = useState(0);
 const translateX = useSharedValue(0);
 
@@ -16,7 +16,7 @@ const animatedIndicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
 }));
   return (
-    <View className="bg-[#0c111d] pt-4">
+    <View className=" pt-4">
             <View className="flex-row justify-start relative">
               <TouchableOpacity
                 className="ml-2 w-[60px] items-center pb-2"

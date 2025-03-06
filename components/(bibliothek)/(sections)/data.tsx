@@ -73,6 +73,10 @@ return (
         <FlatList
             data={filteredData}
             keyExtractor={(item) => item.id}
+            style={{
+                scrollbarWidth: 'thin', // Dünne Scrollbar
+                scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+              }}
             renderItem={({item}) => {
                 return (
                     <TouchableOpacity 

@@ -60,7 +60,7 @@ const Bibliothek = () => {
       );
     };
     
-    const SkeletonList = () => (
+     const SkeletonList = () => (
       <FlatList
         data={[1, 2, 3, 4, 5]}
         renderItem={() => <SkeletonItem />}
@@ -86,7 +86,7 @@ const Bibliothek = () => {
         }
         </View>
         
-    )}} page={"Bibliothek"} hide={selected == "SingleModule" ? true : false}/>
+    )}} page={"Bibliothek"} hide={selected == "SingleModule" || selected == "CreateQuestion"  ? true : false}/>
   )
 }
 

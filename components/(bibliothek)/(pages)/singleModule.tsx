@@ -12,13 +12,13 @@ import { loadQuestions } from '@/lib/appwriteDaten';
 
 const SingleModule = ({setSelected2, module, selectedModule}) => {
     const [selected, setSelected] = useState(0)
-    const { width } = useWindowDimensions(); // Bildschirmbreite holen
+    
     const [ tab, setTab ] = useState(0)
+    const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const tabWidth = width / 2; // Da es zwei Tabs gibt
     const isVertical = width > 700;
     const [loading, setLoading] = useState(true)
     const [questions, setQuestions] = useState([])
-    console.log("Selected Module",selectedModule)
     useEffect(() => { 
         async function fetchQuestions() {
             const questions = await loadQuestions()

@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity,FlatList,Animated, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
@@ -7,8 +7,10 @@ import Svg, { Circle } from "react-native-svg";
 import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 import { useWindowDimensions } from 'react-native';
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
-import AllModules from '@/components/(bibliothek)/allModules';
-import SingleModule from '@/components/(bibliothek)/singleModule';
+import AllModules from '@/components/(bibliothek)/(pages)/allModules';
+import SingleModule from '@/components/(bibliothek)/(pages)/singleModule';
+import {loadModules, loadQuestions} from "../../lib/appwriteDaten"
+import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 
 const Bibliothek = () => {
   const [last7Hidden, setLast7Hidden ] = useState(true)
@@ -17,14 +19,73 @@ const Bibliothek = () => {
     const toTight = width > 800;
     const longVertical = width > 900;
     const [selected, setSelected] = useState("AllModules")
+    const [modules,setModules] = useState(null)
+    const [loading,setLoading] = useState(true)
+    const [selectedModule, setSelectedModule] = useState(null)
+    useEffect(() => {
+      async function fetchModules() {
+        await loadQuestions()
+        const modulesLoaded = await loadModules()
+        if (modulesLoaded) {
+          setModules(modulesLoaded)
+        }
+        setLoading(false)
+      }
+      fetchModules()
+    }
+    ,[])
+
+    const SkeletonItem = () => {
+      const opacity = new Animated.Value(0.3);
     
+      useEffect(() => {
+        Animated.loop(
+          Animated.sequence([
+            Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: 0.3, duration: 800, useNativeDriver: true }),
+          ])
+        ).start();
+      }, []);
+    
+      return (
+        <Animated.View
+          style={{
+            backgroundColor: "#e0e0e0",
+            height: 80,
+            marginVertical: 8,
+            borderRadius: 10,
+            opacity,
+          }}
+        />
+      );
+    };
+    
+    const SkeletonList = () => (
+      <FlatList
+        data={[1, 2, 3, 4, 5]}
+        renderItem={() => <SkeletonItem />}
+        keyExtractor={(item) => item.toString()}
+      />
+    );
+    
+
 
   return (
       <Tabbar content={()=> { return(
+        
         <View className='flex-1'>
-        {selected == "AllModules" ? <AllModules setSelected={setSelected}/> : null}
-        {selected == "SingleModule" ? <SingleModule setSelected2={setSelected}/> : null}
+          {loading ? (
+          <SkeletonList />
+        ) : (
+        <View className='flex-1'>
+        {selected == "AllModules" ? <AllModules setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
+        {selected == "SingleModule" ? <SingleModule setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
+        {selected == "CreateQuestion" ? <CreateQuestion setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
         </View>
+        )
+        }
+        </View>
+        
     )}} page={"Bibliothek"} hide={selected == "SingleModule" ? true : false}/>
   )
 }

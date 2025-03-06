@@ -3,7 +3,7 @@ import React from 'react'
 import VektorCircle from './vektorCircle'
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator, availability, icon,handlePress}) => {
+const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator, availability, icon,handlePress, percentage}) => {
     return(
     <TouchableOpacity className='flex-1 my-2 mr-2 max-w-[456px]' onPress={handlePress}>
       <View className={` rounded-t-[10px] border-t-[1px] border-gray-700 max-w-[450px]`} style={{height:5, backgroundColor:farbe}}/>
@@ -13,7 +13,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
             <Text className='my-1 font-semibold text-[15px] text-gray-100'>{titel}</Text>
             <Text className='my-1 text-[12px] text-gray-400'>{studiengang}</Text>
           </View>
-          <VektorCircle color={"#00AEEF"} percentage={45} icon={"clock"} strokeColor={"#6d788c"}/>
+          <VektorCircle color={"#00AEEF"} percentage={percentage} icon={"clock"} strokeColor={"#6d788c"}/>
         </View>
         <View className='flex-row'>
           <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{fragenAnzahl} Fragen • {notizAnzahl} Notizen</Text>

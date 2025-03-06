@@ -6,6 +6,10 @@ import Svg, { Circle } from "react-native-svg";
 const SessionProgress = ({
   size = 70, // Standardgröße
   progress = 50, // Fortschritt in %
+  progressr,
+  progressy,
+  progressg,
+  progressb,
   color = "#2958ec", // Standardfarbe
   backgroundColor = "rgba(255,255,255,0.2)", // Hintergrundfarbe für den leeren Bereich
   strokeWidth = 6, // Dicke des Fortschrittsbalkens
@@ -19,8 +23,12 @@ const SessionProgress = ({
 }) => {
   const radius = (size - strokeWidth) / 2; // Berechnung des Radius
   const circumference = 2 * Math.PI * radius; // Umfang des Kreises
-  const progressOffset = circumference - (progress / 100) * circumference; // Fortschrittsberechnung
-
+  const progressOffsetRed = circumference - (progressr / 100) * circumference; // Fortschrittsberechnung
+  const progressOffsetYellow = circumference - (progressy / 100) * circumference; // Fortschrittsberechnung
+  const progressOffsetGreen = circumference - (progressg / 100) * circumference; // Fortschrittsberechnung
+  const progressOffsetBlue = circumference - (progressb / 100) * circumference; // Fortschrittsberechnung
+  console.log(progressr,progressy,progressg,progressb)
+  console.log(progressOffsetRed,progressOffsetYellow,progressOffsetGreen,progressOffsetBlue)
   return (
     <View className="items-center">
         {!first ? <View className="border-gray-500 pt-4 border-l-[5px]"></View> : null}
@@ -36,17 +44,58 @@ const SessionProgress = ({
           fill="transparent"
         />
         {/* Fortschritts-Kreis */}
+       
+        
+         <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={"red"}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={progressOffsetRed}
+          strokeLinecap="butt"
+          rotation="-90"
+          origin={`${size / 2}, ${size / 2}`}
+        />
+       <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={"yellow"}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={progressOffsetYellow}
+          strokeLinecap="butt"
+          rotation={`${-90 + progressr * 3.6  }`}
+          origin={`${size / 2}, ${size / 2}`}
+        />
         <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={color}
+          stroke={"green"}
           strokeWidth={strokeWidth}
           fill="transparent"
           strokeDasharray={circumference}
-          strokeDashoffset={progressOffset}
-          strokeLinecap="round"
-          rotation="-90"
+          strokeDashoffset={progressOffsetGreen}
+          strokeLinecap="butt"
+          rotation={`${-90 + progressr * 3.6 + progressy * 3.6  }`}
+          origin={`${size / 2}, ${size / 2}`}
+        />
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={"blue"}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={progressOffsetBlue}
+          strokeLinecap="butt"
+          rotation={`${-90 + progressr * 3.6 + progressy * 3.6 + progressg * 3.6 }`}
           origin={`${size / 2}, ${size / 2}`}
         />
       </Svg>

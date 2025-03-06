@@ -3,15 +3,19 @@ import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useState } from 'react';
 import { useWindowDimensions } from 'react-native';
+import {router } from 'expo-router';
+import ModalNewQuestion from '../(modals)/newQuestion';
 const Header = ({example,setSelected}) => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const [ tab, setTab ] = useState(0)
     const tabWidth = width / 2; // Da es zwei Tabs gibt
     const isVertical = width > 700;
+    const [isVisible, setIsVisible] = useState(false)
   return (
     <View>
+        <ModalNewQuestion isVisible={isVisible} setIsVisible={setIsVisible} setSelected={()=> setSelected("CreateQuestion")}/> 
       <View className='flex-row w-full justify-between p-4 items-center'>
-                    <TouchableOpacity onPress={()=> setSelected("AllModules")}>
+                    <TouchableOpacity onPress={setSelected} >
                         <Icon name="arrow-left" size={20} color="white"/>
                     </TouchableOpacity>
                     <View className='flex-row items-center mx-2'>
@@ -27,7 +31,7 @@ const Header = ({example,setSelected}) => {
                 <View className='w-full  flex-row px-4 justify-between items-center'>
                     <Text className='text-gray-200 font-bold text-2xl'>{example.title}</Text>
                     <View className='flex-row items-center'>
-                        <TouchableOpacity className='flex-row items-center rounded-full p-2 bg-gray-800 border-gray-600 border-[1px] mr-2'>
+                        <TouchableOpacity onPress={()=> setIsVisible(true)} className='flex-row items-center rounded-full p-2 bg-gray-800 border-gray-600 border-[1px] mr-2'>
                             <Icon name="plus" size={15} color="white"/>
                             <Text className='text-gray-300 text-[12px] ml-1'>Material hinzufügen</Text>
                         </TouchableOpacity>

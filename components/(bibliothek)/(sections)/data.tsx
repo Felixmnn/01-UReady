@@ -3,9 +3,14 @@ import React from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
-const Data = ({data,selected}) => {
+import  { router } from "expo-router"
 
-const filteredData = quizQuestion.filter((item) => item.pid == data.modules[selected].id)
+const Data = ({selected,data,questions}) => {
+
+
+const filteredData = (selected > data.length) ? questions : questions.filter((item) => item.sessionID == data[selected])
+    
+
 const CounterText = ({title,count}) => {
     return (
         <View className='flex-row justify-start items-center '>
@@ -32,24 +37,58 @@ const AddData = ({title, subTitle, button}) => {
         </View>
     )
 }
+const Status = ({status}) => {
+    let color = "blue"
+    let bgColor = "bg-blue-500"
+    let smiley = "grin"
+    if (status == "BAD") {
+        color = "red"
+        bgColor = "bg-red-700"
+        smiley = "frown"
+    } else if (status == "OK") {
+        color = "yellow"
+        bgColor = "bg-yellow-500"
+        smiley = "meh"
+    } else if (status == "GOOD") {
+        color = "green"
+        bgColor = "bg-green-500"
+        smiley = "smile"
+    }else {
+        color = "blue"
+        bgColor = "bg-blue-500"
+        smiley = "grin"
+    }
+    return (
+        <View className={`items-center justify-center rounded-full h-[20px] w-[20px] pt-[1px] ${bgColor}`}>
+            <Icon name={smiley} size={15} color={color}/>
+        </View>
+    )
+}
+
     
 return (
     <View>
         <CounterText title='Fragen' count={filteredData.length}/>
+        {filteredData ? 
         <FlatList
             data={filteredData}
             keyExtractor={(item) => item.id}
-            showsHorizontalScrollIndicator={false}
             renderItem={({item}) => {
                 return (
-                    <TouchableOpacity className='p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800'>
+                    <TouchableOpacity 
+                        onPress={()=> router.push({
+                            pathname:"quiz",
+                            params: {questions: JSON.stringify(filteredData)}
+                        })} 
+                        className='p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800'>
                         <View className='w-full justify-between flex-row items-center '>
+                            {item.status !== null ? <Status status={item.status}/> : null}
                             <View className='bg-gray-900 rounded-[5px] items-center justify-cneter'>
                                 <Text className="m-1 text-white text-[10px] px-1">+ Tags hinzufügen</Text>
                             </View>
                             <Icon name="microchip" size={15} color="white"/>
                         </View>
-                        <Text className='text-white'>{item.frage}</Text>
+                        <Text className='text-white'>{item.question}</Text>
                         <View className='border-b-[1px] border-gray-600 my-4 w-full'/>
                         <View className='w-full items-end pr-2'> 
                             <Icon name="ellipsis-h" size={15} color="white"/>
@@ -58,7 +97,7 @@ return (
                 )
             }}
             horizontal={true}
-        />
+        /> : null}
         <CounterText title='Dateien' count={0}/>
         <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"} />
         <CounterText title='Notizen' count={0}/>

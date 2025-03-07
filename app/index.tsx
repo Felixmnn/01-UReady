@@ -1,12 +1,13 @@
-import { Text, View,TouchableOpacity, SafeAreaView, ActivityIndicator } from "react-native";
+import { Text, View,TouchableOpacity, SafeAreaView, ActivityIndicator,Image } from "react-native";
 import { router,Redirect } from "expo-router";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { createUser, signIn,loginWithGoogle } from "@/lib/appwrite";
-
-
+import { useWindowDimensions } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { useEffect, useState } from "react";
 export default function Index() {
-  const { isLoading, isLoggedIn } = useGlobalContext();
 
+  const { isLoggedIn, isLoading } = useGlobalContext();
   if (isLoading) {
     return (
       <SafeAreaView className="flex-1 bg-black">
@@ -21,9 +22,9 @@ export default function Index() {
     console.log("isLoggedIn", isLoggedIn);
     return <Redirect href="/home" />;
   }
-  return (
-    <SafeAreaView className="flex-1 bg-black items-center justify-center">
-      <TouchableOpacity className="bg-blue-500 p-4 rounded-md " onPress={() => {router.push("/home"); signIn("test@test.test", "12345678")}}>
+  {
+    /*
+    <TouchableOpacity className="bg-blue-500 p-4 rounded-md " onPress={() => {router.push("/home"); signIn("test@test.test", "12345678")}}>
         <Text>Sign In</Text>
       </TouchableOpacity>
       <TouchableOpacity className="bg-blue-500 p-4 m-2 rounded-md" onPress={() => {router.push("/home"); createUser("test@test.test", "12345678", "test")}}>
@@ -31,6 +32,15 @@ export default function Index() {
       </TouchableOpacity>
       <TouchableOpacity className="bg-blue-500 p-4 rounded-md" onPress={() => {loginWithGoogle()}}>
         <Text>Google Sign-In</Text>
+      </TouchableOpacity>
+    */
+  }
+  
+
+  return (
+    <SafeAreaView className="flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center">
+      <TouchableOpacity onPress={()=> router.push("/sign-in")} className="bg-blue-500 p-4 rounded-md m-2">
+        <Text>Lock in</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

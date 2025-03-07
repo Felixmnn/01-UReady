@@ -12,12 +12,11 @@ import PersonalInfo from '@/components/(profile)/personalInfo'
 
 const profil = () => {
   const {user} = useGlobalContext();
-  console.log(user)
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const isVertical = width > 700;
   const tabWidth = width / 2; // Da es zwei Tabs gibt
   const [page,setPage] = useState("profil-personal-details")
-
+ 
   return (
       <Tabbar content={()=> { return(
         user ? 

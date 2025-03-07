@@ -1,12 +1,31 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { Stack, Tabs } from 'expo-router'
 
-const _layout = () => {
+const authLayout = () => {
   return (
-    <View>
-      <Text>_layout</Text>
+    <View className='flex-1'>
+        <>
+            <Stack>
+                <Stack.Screen name="sign-in"  
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
+                <Stack.Screen name="personalize"  
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
+                <Stack.Screen name="sign-up"  
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
+            </Stack>
+        </>
     </View>
   )
 }
 
-export default _layout
+export default authLayout

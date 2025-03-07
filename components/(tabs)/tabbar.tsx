@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { Children } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -24,7 +24,7 @@ const Tabbar = ({content,page, hide}) => {
         <View className='bg-gradient-to-b from-blue-800 to-[#0c111d] flex-1 py-3 pr-3 flex-row '>
             <View className='bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[100px] items-center justify-between'>
                 <View className='items-center my-1'>
-                <View className='w-[50px] h-[50px] rounded-full bg-red-500'></View>
+                <Image source={require('../../assets/bot.gif')} style={{width:50, height:50}}/>
                 {tabbarIcon('home', 25, 'white', 'Home',"/home")}
                 {tabbarIcon('book', 25, 'white', 'Bibliothek',"/bibliothek")}
                 {tabbarIcon('search', 25, 'white', 'Entdecken',"/entdecken")}

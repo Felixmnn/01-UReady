@@ -5,15 +5,19 @@ import { useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import {router } from 'expo-router';
 import ModalNewQuestion from '../(modals)/newQuestion';
-const Header = ({example,setSelected}) => {
+import AiQuestion from '../(modals)/aiQuestion';
+const Header = ({example,setSelected,sessions}) => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
+    const isVertical = width > 700;
+
     const [ tab, setTab ] = useState(0)
     const tabWidth = width / 2; // Da es zwei Tabs gibt
-    const isVertical = width > 700;
     const [isVisible, setIsVisible] = useState(false)
+    const [isVisibleAI, setIsVisibleAI] = useState(false)
   return (
     <View>
-        <ModalNewQuestion isVisible={isVisible} setIsVisible={setIsVisible} setSelected={()=> setSelected("CreateQuestion")}/> 
+        <ModalNewQuestion isVisible={isVisible} setIsVisible={setIsVisible} setSelected={()=> setSelected("CreateQuestion")} selectAi={()=> {setIsVisible(false);setIsVisibleAI(true)} }/> 
+        <AiQuestion isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} sessions={sessions} />
       <View className='flex-row w-full justify-between p-4 items-center'>
                     <TouchableOpacity onPress={setSelected} >
                         <Icon name="arrow-left" size={20} color="white"/>

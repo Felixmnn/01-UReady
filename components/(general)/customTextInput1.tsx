@@ -1,29 +1,63 @@
-import { View, Text, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import { useState } from 'react';
+import { TextInput, View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5'; 
 
-const CustomTextInput1 = ({value, inputStyles, placeholderSize, placeholderBold, additional}) => {
-    {/*Wie Textinput0 aber mit weniger übergebenen Atributen*/}
-    const [focused, setFocused] = useState(false)
-    const [text,setText] = useState (value)
-  return (
-        <TextInput 
-            className={`p-3 rounded-[10px] w-full ${focused ? "border-blue-500 border-w-[1px]" : "border-gray-500 "} ${inputStyles}`}
-            style={{
-                color: "gray",
-                fontWeight: placeholderBold ? placeholderBold : 'bold',
-                fontSize: placeholderSize ? placeholderSize : 15,
-                outline: 'none',
-                borderColor: focused ? "blue" :  "gray",
-                borderWidth: 1,
-                
-            }}
-            onChangeText={(newText) => setText(newText)}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            value={text}
-            placeholder={value}
-        />
-  )
-}
+const CustomTextInput1 = ({ value, inputStyles, placeholderSize,multiline, numberOfLines, placeholderBold, additional, password,  onChange }) => {
+    const [focused, setFocused] = useState(false);
+    const [showPassword, setShowPassword] = useState(false); // Zustand für Passwortsichtbarkeit
+    const [text, setText] = useState(value); 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }; 
+    const handleBlur = () => {
+        setFocused(false);
+        onChange(text); // Übergib den aktuellen Wert des Textfeldes an onChange
+    };
+    return (
+        <View className="relative w-full">
+            <TextInput
+                className={`p-3 rounded-[10px] w-full ${focused ? "border-blue-500 border-w-[1px]" : "border-gray-500 "} ${inputStyles}`}
+                style={{
+                    color: "gray",
+                    fontWeight: placeholderBold ? placeholderBold : 'bold',
+                    fontSize: placeholderSize ? placeholderSize : 15,
+                    outline: 'none',
+                    borderColor: focused ? "blue" : "gray",
+                    borderWidth: 1,
+                    scrollbarWidth: 'thin', // Dünne Scrollbar
+                    scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+                 
+                }}
+                multiline={multiline}
+                numberOfLines={numberOfLines ? numberOfLines : 1}
+                onChangeText={(value)=>setText(value)}
+                onFocus={() => setFocused(true)}
+                onBlur={handleBlur}
+               
+                value={text}
+                placeholder={value}
+                secureTextEntry={password && !showPassword}  // Wenn password true und showPassword false ist, wird der Text maskiert
+            />
+            
+            {password && (  // Zeige das Augen-Icon nur wenn password true ist
+                <TouchableOpacity
+                    onPress={togglePasswordVisibility}
+                    style={{
+                        position: 'absolute',
+                        right: 10,
+                        top: '50%',
+                        transform: [{ translateY: -12 }],
+                    }}
+                >
+                    <Icon 
+                        name={showPassword ? "eye-slash" : "eye"} 
+                        size={20} 
+                        color="gray"
+                    />
+                </TouchableOpacity>
+            )}
+        </View>
+    );
+};
 
-export default CustomTextInput1
+export default CustomTextInput1;

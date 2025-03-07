@@ -15,7 +15,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     const [questions, setQuestions] = useState([])
     const [selectedQuestion, setSelectedQuestion] = useState(0)
     const [ungespeichert, setUngespeichert] = useState(true)
-
+    
         useEffect(() => { 
             async function fetchQuestions() {
                 const questions = await loadQuestions()
@@ -279,7 +279,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
                         selectedQuestion == 0 ?
                         <View>
                             <Text>
-                                
+
                             </Text>
                         </View>
                         :

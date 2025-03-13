@@ -6,6 +6,7 @@ import ToggleSwitch from '@/components/(general)/toggleSwich';
 import FinalTextInput from '@/components/(general)/finalTextInput';
 import { withDecay } from 'react-native-reanimated';
 import ModalAddTags from './modalAddTags';
+import ModalSelectSession from './modalSelectSession';
 
 const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQuestion, setSelectedQuestion, questionActive, setQuestionActive, setAnswerActive, answerActive }) => {
     
@@ -31,7 +32,6 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
         function handleChange (change){
             setNewText(change)
         }
-       
 
         
 
@@ -162,6 +162,8 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                     </View>
                 )
             }
+            const [showSessionSelect, setShowSessionSelect] = useState(false)
+
             return (
                 <View className='items-center justify-center w-full'>
                     {
@@ -174,20 +176,34 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                             )
                         })
                     }  
-                    <View className='p-1 w-full  justify-start'>
+                    <View className='p-1 w-full  justify-between items-center flex-row'>
                         <TouchableOpacity onPress={() => addAnswer()} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                             <Icon name="plus" size={10} color="white"/>
                             <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
                                 Antwort hinzufügen
                             </Text>
                         </TouchableOpacity>
-                        
+                        <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
+                            
+                            <Text className='text-gray-400 text-[12px] font-semibold'>{questions[selectedQuestion-1].sessionID}</Text>
+                            
+                        </TouchableOpacity>
                     </View>  
+
                 </View>
             )
         }
+        const [modalVisible, setModalVisible] = useState(false)
+        async function changeSession(session){
+            setQuestions(prevQuestions =>
+                prevQuestions.map((question, i) =>
+                    i === selectedQuestion - 1 ? { ...question, sessionID: session } : question
+                )
+            );
+        }
   return (
     <View className='w-full flex-1 justify-center items-center'>
+        <ModalSelectSession changeSession={changeSession} modalVisible= {modalVisible} setModalVisible={setModalVisible} selectedQuestion={questions[selectedQuestion-1]} selectedModule={selectedModule}/>
         <EditQuestion/>
             <View className='border-t-[1px] border-gray-500 w-full my-2'/>
         <EditAnswers/>

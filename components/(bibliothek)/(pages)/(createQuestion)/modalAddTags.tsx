@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TextInput } from 'react-native-gesture-handler';
 import { updateDocument, updateModule } from '@/lib/appwriteEdit';
+import ModalEditTag from './modalEditTag';
+import uuid from 'react-native-uuid';
+
 const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selectedTags, selectedQuestion}) => {
     const [dropdownVisible, setDropdownVisible] = useState(false)
     
@@ -12,7 +15,7 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
 
     async function addTag() {
         setLoading(true)
-        const t = JSON.stringify({name: newTag, color: null});
+        const t = JSON.stringify({name: newTag, color: null, id: uuid.v4()});
         selectedQuestion.tags.push(t);
         selectedModule.tags.push(t);
         await updateDocument(selectedQuestion);
@@ -35,6 +38,24 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
         await updateDocument(selectedQuestion);
         setLoading(false);
     }
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedTag, setSelectedTag] = useState(null);
+    const [selectedTagIndex, setSelectedTagIndex] = useState(null);
+
+    async function updateTags(newTag) {
+        setLoading(true)
+
+        const moduleIndex = selectedModule.tags.findIndex(item => (item).includes(newTag.id));
+        const questionIndex = selectedQuestion.tags.findIndex(item => (item).includes(newTag.id));
+        const mIndex = module.findIndex(item => (item).includes(newTag.id));
+        module[mIndex] = JSON.stringify(newTag);
+        selectedModule.tags[moduleIndex] = JSON.stringify(newTag);
+        selectedQuestion.tags[questionIndex] = JSON.stringify(newTag);
+        await updateDocument(selectedQuestion);
+        await updateModule(selectedModule);
+        setLoading(false);
+    }
+
 
  return (
     <View>
@@ -46,7 +67,8 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
         visible={isVisible}
     >
         <View className="absolute top-0 left-0 w-full h-full justify-center items-center ">
-            <View className='rounded-xl bg-gray-800 border-[1px] border-gray-700 p-2' style={{minWidth:400}}>
+            <ModalEditTag  modalVisible={modalVisible} setModalVisible={setModalVisible} tag={selectedTag} selectedTagIndex={selectedTagIndex} updateTags={updateTags}/>
+            <View className='rounded-xl bg-gray-900 border-[1px] border-gray-700 p-2' style={{minWidth:400}}>
                 <Text className='text-white font-bold text-[12px]'>
                     {"Tags(optional)"}
                 </Text>
@@ -61,7 +83,32 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
                             return (
                                 <TouchableOpacity
                                     key={index} 
-                                        className={`flex-row items-center justify-center  px-2 py-1 m-1 border-[1px] border-gray-500 rounded-[5px] ${pTag.color !== null ? pTag.color : 'bg-gray-800'}`}
+                                        onPress={()=> {setSelectedTag(pTag); setSelectedTagIndex(index); setModalVisible(true)}} 
+                                        className={`flex-row items-center justify-center  px-2 py-1 m-1 border-[1px] rounded-[5px]`}
+                                        style={{
+                                            backgroundColor:
+                                            pTag.color === "red" ? "#DC2626" :
+                                            pTag.color === "blue" ? "#2563EB" :
+                                            pTag.color === "green" ? "#059669" :
+                                            pTag.color === "yellow" ? "#CA8A04" :
+                                            pTag.color === "orange" ? "#C2410C" :
+                                            pTag.color === "purple" ? "#7C3AED" :
+                                            pTag.color === "pink" ? "#DB2777" :
+                                            pTag.color === "emerald" ? "#059669" :
+                                            pTag.color === "cyan" ? "#0891B2" :
+                                            "#1F2937",
+                                            borderColor:
+                                            pTag.color === "red" ? "#F87171" :      
+                                            pTag.color === "blue" ? "#93C5FD" :     
+                                            pTag.color === "green" ? "#6EE7B7" :    
+                                            pTag.color === "yellow" ? "#FDE047" :   
+                                            pTag.color === "orange" ? "#FDBA74" :   
+                                            pTag.color === "purple" ? "#C4B5FD" :   
+                                            pTag.color === "pink" ? "#F9A8D4" :     
+                                            pTag.color === "emerald" ? "#6EE7B7" :  
+                                            pTag.color === "cyan" ? "#67E8F9" :     
+                                            "#4B5563"  
+                                          }}
                                         >                                
                                         <Text className="text-white text-[12px]" >{pTag.name}</Text>
                                         <TouchableOpacity onPress={()=> removeTag(tag)} className='items-center justify-center ml-2 pt-[1px]'>
@@ -99,9 +146,34 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
                         {module && module.map((tag, index) => {
                             const pTag = JSON.parse(tag);
                             return (
-                                <TouchableOpacity onPress={()=> connectTag(pTag)} className='flex-row items-center justify-between' key={index}>
-                                    <TouchableOpacity 
-                                        className={`flex-row items-center justify-center  px-2 py-1 m-1 border-[1px] border-gray-500 rounded-[5px] ${pTag.color !== null ? pTag.color : 'bg-gray-800'}`}
+                                <TouchableOpacity onPress={()=> connectTag(pTag)} className='flex-row items-center justify-between' key={pTag}>
+                                    <TouchableOpacity
+                                        onPress={()=> {setSelectedTag(pTag);setSelectedTagIndex(index); setModalVisible(true)}} 
+                                        className={`flex-row items-center justify-center  px-2 py-1 m-1 border-[1px] rounded-[5px] }`}
+                                        style={{
+                                            backgroundColor:
+                                            pTag.color === "red" ? "#DC2626" :
+                                            pTag.color === "blue" ? "#2563EB" :
+                                            pTag.color === "green" ? "#059669" :
+                                            pTag.color === "yellow" ? "#CA8A04" :
+                                            pTag.color === "orange" ? "#C2410C" :
+                                            pTag.color === "purple" ? "#7C3AED" :
+                                            pTag.color === "pink" ? "#DB2777" :
+                                            pTag.color === "emerald" ? "#059669" :
+                                            pTag.color === "cyan" ? "#0891B2" :
+                                            "#1F2937",
+                                            borderColor:
+                                            pTag.color === "red" ? "#F87171" :      
+                                            pTag.color === "blue" ? "#93C5FD" :     
+                                            pTag.color === "green" ? "#6EE7B7" :    
+                                            pTag.color === "yellow" ? "#FDE047" :   
+                                            pTag.color === "orange" ? "#FDBA74" :   
+                                            pTag.color === "purple" ? "#C4B5FD" :   
+                                            pTag.color === "pink" ? "#F9A8D4" :     
+                                            pTag.color === "emerald" ? "#6EE7B7" :  
+                                            pTag.color === "cyan" ? "#67E8F9" :     
+                                            "#4B5563"  
+                                          }}
                                         >                                
                                         <Text className="text-white text-[12px]" >{pTag.name}</Text>
                                     </TouchableOpacity>
@@ -118,7 +190,7 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
                     <Icon name="tag" size={10} color="white"/>
                     <Text className='text-white font-bold ml-2 text-[12px]'>Tags verwalten</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className='bg-white py-2 px-3 rounded-full'>
+                <TouchableOpacity className='bg-white py-2 px-3 rounded-full' onPress={()=> setIsVisible(false)}>
                     <Text className=' font-bold text-[12px] text-gray-900'>Fertig</Text>
                 </TouchableOpacity>
             </View>

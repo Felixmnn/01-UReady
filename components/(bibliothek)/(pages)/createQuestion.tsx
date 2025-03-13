@@ -49,7 +49,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     },[questions, setQuestions])
         
     const [questionActive, setQuestionActive] = useState(false)
-    const [answerActive, setAnswerActive] = useState(0)
+    const [answerActive, setAnswerActive] = useState(null)
     
         
   return (

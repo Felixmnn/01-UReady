@@ -44,11 +44,11 @@ const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi}) => {
                         <Icon name="times" size={20} color="white"/>
                     </View>
                     <View className='flex-row'>
-                        <Selectable icon={"file-alt"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} handlePress={()=> selectAi()}/>
-                        <Selectable icon={"plus"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Session hinzufügen"} empfolen={false}/>
+                        <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} handlePress={()=> selectAi()}/>
+                        <Selectable icon={"layer-group"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Session hinzufügen"} empfolen={false}/>
                     </View>
                     <View className='flex-row'>
-                        <Selectable icon={"file"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("AllModules")} />
+                        <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("AllModules")} />
                         <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false} />
                     </View>
                 </TouchableOpacity>

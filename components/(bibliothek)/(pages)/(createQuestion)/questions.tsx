@@ -1,7 +1,7 @@
 import { View, Text, FlatList, TouchableOpacity,  } from 'react-native'
 import React from 'react'
 
-const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuestion,newQuestion}) => {
+const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuestion,newQuestion, checkNewQuestion}) => {
       
         return (
             <View className={` border-r-[1px] border-gray-500`} 
@@ -17,7 +17,7 @@ const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuesti
                     ListHeaderComponent={()=> {
                         return (
                             <View>
-                                <TouchableOpacity className={`bg-white mx-2 mt-4 mb-2 rounded-full p-2 items-center justify-center`}>
+                                <TouchableOpacity onPress={()=> checkNewQuestion()} className={`bg-white mx-2 mt-4 mb-2 rounded-full p-2 items-center justify-center`}>
                                     <Text className='font-semibold'>+Neue Karteikarte</Text>
                                 </TouchableOpacity>
                                <TouchableOpacity onPress={()=> setSelectedQuestion(0)} className={`mx-3 my-2 w-[180px] h-[100px] bg-gray-800 rounded-[10px] ${selectedQuestion  == 0   ? "border-blue-700" : "border-gray-500"} border-[1px] p-1 items-center justify-center`}>

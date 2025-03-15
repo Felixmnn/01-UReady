@@ -6,9 +6,9 @@ import { updateDocument, updateModule } from '@/lib/appwriteEdit';
 import ModalEditTag from './modalEditTag';
 import uuid from 'react-native-uuid';
 
-const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selectedTags, selectedQuestion}) => {
+const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selectedTags, selectedQuestion, setNewQuestion}) => {
     const [dropdownVisible, setDropdownVisible] = useState(false)
-    
+    console.log(setNewQuestion ? "true" : "false")
     const [module, setModule] = useState(selectedModule.tags)
     const [newTag, setNewTag] = useState("")
     const [loading, setLoading] = useState(false)
@@ -16,9 +16,18 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
     async function addTag() {
         setLoading(true)
         const t = JSON.stringify({name: newTag, color: null, id: uuid.v4()});
-        selectedQuestion.tags.push(t);
         selectedModule.tags.push(t);
-        await updateDocument(selectedQuestion);
+        if (setNewQuestion) {
+            setNewQuestion(
+                {
+                    ...selectedQuestion,
+                    tags: [...selectedQuestion.tags, t]
+                }
+            )
+        } else {
+            selectedQuestion.tags.push(t);
+            await updateDocument(selectedQuestion);
+        }
         await updateModule(selectedModule);
         setNewTag("");
         setLoading(false);
@@ -27,15 +36,33 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
     async function removeTag(tag) {
         setLoading(true)
         const index = selectedQuestion.tags.indexOf(tag);
-        selectedQuestion.tags.splice(index, 1);
-        await updateDocument(selectedQuestion);
+        if (setNewQuestion) {
+            setNewQuestion(
+                {
+                    ...selectedQuestion,
+                    tags: selectedQuestion.tags.filter((item) => item !== tag)
+                }
+            )
+        } else {
+            selectedQuestion.tags.splice(index, 1);
+            await updateDocument(selectedQuestion);
+        }
         setLoading(false);
     }
 
     async function connectTag(tag) {
         setLoading(true)
-        selectedQuestion.tags.push(JSON.stringify(tag));
-        await updateDocument(selectedQuestion);
+        if (setNewQuestion) {
+            setNewQuestion(
+                {
+                    ...selectedQuestion,
+                    tags: [...selectedQuestion.tags, JSON.stringify(tag)]
+                }
+            )
+        } else {
+            selectedQuestion.tags.push(JSON.stringify(tag));
+            await updateDocument(selectedQuestion);
+        }
         setLoading(false);
     }
     const [modalVisible, setModalVisible] = useState(false);
@@ -50,8 +77,17 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
         const mIndex = module.findIndex(item => (item).includes(newTag.id));
         module[mIndex] = JSON.stringify(newTag);
         selectedModule.tags[moduleIndex] = JSON.stringify(newTag);
-        selectedQuestion.tags[questionIndex] = JSON.stringify(newTag);
-        await updateDocument(selectedQuestion);
+        if (setNewQuestion) {
+            setNewQuestion(
+                {
+                    ...selectedQuestion,
+                    tags: [...selectedQuestion.tags, JSON.stringify(newTag)]
+                }
+            )
+        } else {
+            selectedQuestion.tags[questionIndex] = JSON.stringify(newTag);
+            await updateDocument(selectedQuestion);
+        }
         await updateModule(selectedModule);
         setLoading(false);
     }

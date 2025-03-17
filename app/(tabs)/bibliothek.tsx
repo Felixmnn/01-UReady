@@ -81,6 +81,7 @@ const Bibliothek = () => {
         {selected == "AllModules" ? <AllModules setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
         {selected == "SingleModule" ? <SingleModule setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
         {selected == "CreateQuestion" ? <CreateQuestion setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
+
         </View>
         )
         }

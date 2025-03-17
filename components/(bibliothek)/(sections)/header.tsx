@@ -16,7 +16,7 @@ const Header = ({example,setSelected,sessions}) => {
     const [isVisibleAI, setIsVisibleAI] = useState(false)
   return (
     <View>
-        <ModalNewQuestion isVisible={isVisible} setIsVisible={setIsVisible} setSelected={()=> setSelected("CreateQuestion")} selectAi={()=> {setIsVisible(false);setIsVisibleAI(true)} }/> 
+        <ModalNewQuestion isVisible={isVisible} setIsVisible={setIsVisible} setSelected={setSelected} selectAi={()=> {setIsVisible(false);setIsVisibleAI(true)} }/> 
         <AiQuestion isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} sessions={sessions} />
       <View className='flex-row w-full justify-between p-4 items-center'>
                     <TouchableOpacity onPress={setSelected} >

@@ -5,11 +5,12 @@ import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
 
-const Data = ({selected,data,questions}) => {
+const Data = ({selected,data,questions,notes}) => {
 
 
 const filteredData = (selected > data.length) ? questions : questions.filter((item) => item.sessionID == data[selected])
-    
+const filteredNotes = (selected > data.length) ? notes : notes.filter((item) => item.sessionID == data[selected])
+
 
 const CounterText = ({title,count}) => {
     return (
@@ -104,8 +105,34 @@ return (
         /> : null}
         <CounterText title='Dateien' count={0}/>
         <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"} />
-        <CounterText title='Notizen' count={0}/>
-        <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} />
+        <CounterText title='Notizen' count={filteredNotes.length}/>
+        {
+            notes ? 
+            <FlatList
+            data={filteredNotes}
+            keyExtractor={(item) => item.$id}
+            className='w-full'
+            style={{
+                scrollbarWidth: 'thin', // Dünne Scrollbar
+                scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+              }}
+            renderItem={({item}) => {
+                return (
+                    <TouchableOpacity className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
+                        <View className='flex-row items-start justify-start'>
+                            <Icon name="file" size={40} color="white"/>
+                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : "Unbenannt"}</Text>
+                        </View>
+                        <TouchableOpacity>
+                            <Icon name="ellipsis-h" size={15} color="white"/>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                )}}
+            />
+            :
+            <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} />
+
+        }
     </View>
   )
 }

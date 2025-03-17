@@ -1,6 +1,7 @@
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { router } from 'expo-router'
 
 const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi}) => {
     const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
@@ -48,8 +49,11 @@ const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi}) => {
                         <Selectable icon={"layer-group"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Session hinzufügen"} empfolen={false}/>
                     </View>
                     <View className='flex-row'>
-                        <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("AllModules")} />
-                        <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false} />
+                        <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />
+                        <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false}  handlePress={()=> {
+                            setIsVisible(false);
+                            router.push("editNote")
+                            }}/>
                     </View>
                 </TouchableOpacity>
             </View>

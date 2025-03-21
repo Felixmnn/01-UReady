@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { FlatList } from 'react-native-gesture-handler'
+import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
@@ -68,7 +68,10 @@ const Status = ({status}) => {
 
     
 return (
-    <View>
+    <ScrollView className='' style={{
+        scrollbarWidth: 'thin', // Dünne Scrollbar
+        scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+      }}>
         <CounterText title='Fragen' count={filteredData.length}/>
         {filteredData ? 
         <FlatList
@@ -118,7 +121,11 @@ return (
               }}
             renderItem={({item}) => {
                 return (
-                    <TouchableOpacity className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
+                    <TouchableOpacity onPress={()=> {router.push({
+                                pathname:"editNote",
+                                params: {note: JSON.stringify(item)}
+                            }) }} 
+                            className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
                         <View className='flex-row items-start justify-start'>
                             <Icon name="file" size={40} color="white"/>
                             <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : "Unbenannt"}</Text>
@@ -133,7 +140,7 @@ return (
             <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} />
 
         }
-    </View>
+    </ScrollView>
   )
 }
 

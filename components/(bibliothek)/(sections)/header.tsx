@@ -6,7 +6,7 @@ import { useWindowDimensions } from 'react-native';
 import {router } from 'expo-router';
 import ModalNewQuestion from '../(modals)/newQuestion';
 import AiQuestion from '../(modals)/aiQuestion';
-const Header = ({example,setSelected,sessions}) => {
+const Header = ({example,setSelected,sessions, selected}) => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
 
@@ -15,8 +15,8 @@ const Header = ({example,setSelected,sessions}) => {
     const [isVisible, setIsVisible] = useState(false)
     const [isVisibleAI, setIsVisibleAI] = useState(false)
   return (
-    <View>
-        <ModalNewQuestion isVisible={isVisible} setIsVisible={setIsVisible} setSelected={setSelected} selectAi={()=> {setIsVisible(false);setIsVisibleAI(true)} }/> 
+    <View >
+        <ModalNewQuestion selected={selected} module={sessions} isVisible={isVisible} setIsVisible={setIsVisible} setSelected={setSelected} selectAi={()=> {setIsVisible(false);setIsVisibleAI(true) } } /> 
         <AiQuestion isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} sessions={sessions} />
       <View className='flex-row w-full justify-between p-4 items-center'>
                     <TouchableOpacity onPress={setSelected} >
@@ -35,9 +35,13 @@ const Header = ({example,setSelected,sessions}) => {
                 <View className='w-full  flex-row px-4 justify-between items-center'>
                     <Text className='text-gray-200 font-bold text-2xl'>{example.title}</Text>
                     <View className='flex-row items-center'>
-                        <TouchableOpacity onPress={()=> setIsVisible(true)} className='flex-row items-center rounded-full p-2 bg-gray-800 border-gray-600 border-[1px] mr-2'>
+                    <TouchableOpacity onPress={()=> setIsVisible(true)} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
+                    <Icon name={"layer-group"} color={"white"} size={15 }/>
+                            {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>Sessions</Text> : null}
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=> setIsVisible(true)} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name="plus" size={15} color="white"/>
-                            <Text className='text-gray-300 text-[12px] ml-1'>Material hinzufügen</Text>
+                            {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>Material hinzufügen</Text> : null}
                         </TouchableOpacity>
                         <TouchableOpacity className='flex-row items-center rounded-full p-2 bg-white mr-2 '>
                             <Icon name="play" size={15} color="black"/>

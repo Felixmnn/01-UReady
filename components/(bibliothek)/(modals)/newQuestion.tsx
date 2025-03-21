@@ -2,8 +2,9 @@ import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from 'expo-router'
+import { addNote } from '@/lib/appwriteEdit';
 
-const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi}) => {
+const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected}) => {
     const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
         return (
             <TouchableOpacity onPress={handlePress} className='justify-between max-w-[200px] min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'>
@@ -24,6 +25,31 @@ const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi}) => {
             </TouchableOpacity>
         )
     }
+
+async function SwichToEditNote() {
+    setIsVisible(false);
+
+    console.log("Das akutelle Modul",module)
+    console.log("Die Modul ID:",module.$id)
+
+    const note = {
+        notiz: "",
+        sessionID: module.sessions[selected],
+        subjectID: module.$id,
+        title: "",
+    }
+    try {
+        
+        const res = await addNote(note);
+        console.log(res);
+        router.push({
+            pathname:"editNote",
+            params: {note: JSON.stringify(res)}
+        })
+    } catch (error) {
+        console.log(error);
+    }}
+
   return (
     <View >
                 {
@@ -46,13 +72,12 @@ const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi}) => {
                     </View>
                     <View className='flex-row'>
                         <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} handlePress={()=> selectAi()}/>
-                        <Selectable icon={"layer-group"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Session hinzufügen"} empfolen={false}/>
+                        <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false}/>
                     </View>
                     <View className='flex-row'>
                         <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />
                         <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false}  handlePress={()=> {
-                            setIsVisible(false);
-                            router.push("editNote")
+                            SwichToEditNote(null);
                             }}/>
                     </View>
                 </TouchableOpacity>

@@ -180,10 +180,10 @@ const HomeGeneral = ({setSelectedPage}) => {
           {
             isVertical ?
             <View className='flex-1 px-3 pt-3 flex-row'>
-              <QuickAccess icon={"file-alt"} iconColor={"#7a5af8"} iconBackground={"bg-[#372292]"} title={"AI Quiz Generieren"} handlePress={()=> setSelectedPage("HomeChat")}/>
-              <QuickAccess icon={"file-pdf"} iconColor={"#519d19"} iconBackground={"bg-[#2b5314]"} title={"Modul Hinzufügen"}/>
-              <QuickAccess icon={"lightbulb"} iconColor={"#c1840b"} iconBackground={"bg-[#713b12]"} title={"Datei Hochladen"} handlePress={()=> setIsVisibleDataUpload(true)}/>
-              <QuickAccess icon={"folder"} iconColor={"#15b79e"} iconBackground={"bg-[#134e48]"} title={"Modul zusammenfassen"} handlePress={()=> setIsVisiblePremium(true)}/>
+              <QuickAccess icon={"robot"} iconColor={"#7a5af8"} iconBackground={"bg-[#372292]"} title={"AI Quiz Generieren"} handlePress={()=> setSelectedPage("HomeChat")}/>
+              <QuickAccess icon={"cubes"} iconColor={"#519d19"} iconBackground={"bg-[#2b5314]"} title={"Modul Hinzufügen"}/>
+              <QuickAccess icon={"file-alt"} iconColor={"#c1840b"} iconBackground={"bg-[#713b12]"} title={"Datei Hochladen"} handlePress={()=> setIsVisibleDataUpload(true)}/>
+              <QuickAccess icon={"layer-group"} iconColor={"#15b79e"} iconBackground={"bg-[#134e48]"} title={"Session Hinzufügen"} handlePress={()=> setIsVisiblePremium(true)}/>
             </View>
             :
             null

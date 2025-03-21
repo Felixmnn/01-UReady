@@ -56,7 +56,7 @@ const SingleModule = ({setSelected2, module, selectedModule}) => {
             <View className='flex-1 w-full bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
                 { loading ? <Text>Skeleton View</Text> :
                 <View className='flex-1'>
-                <Header example={example} setSelected={setSelected2} sessions={module.documents[selectedModule]}/>
+                <Header example={example} setSelected={setSelected2} sessions={module.documents[selectedModule]} selected={selected} />
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab1={"Fragen"} tab2={"Roadmap"} bg={"bg-gray-900"}/> : null }
                 <View className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}/>
                 <View className='flex-1 flex-row'>

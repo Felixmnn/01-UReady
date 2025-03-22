@@ -6,6 +6,7 @@ import { useWindowDimensions } from 'react-native';
 import SwichTab from '../(tabs)/swichTab';
 import InfoModule from '../(tabs)/infoModule';
 import OptionSelector from '../(tabs)/optionSelector';
+import GratisPremiumButton from '../(general)/gratisPremiumButton';
 
 const General = ({setPage, setPage2}) => {
         const {user} = useGlobalContext();
@@ -32,28 +33,30 @@ const General = ({setPage, setPage2}) => {
   }
       
   return (
-    <View className='flex-1 bg-[#0c111d] rounded-[10px]'>
+    <View className={`flex-1  rounded-[10px] rounded-[10px] ${isVertical ? " border-gray-500 border-[1px] " : null} bg-[#0c111d]`}>
+      <View className='bg-[#0c111d]  rounded-t-[10px]'>
           {
             isVertical ?
-            <View className='flex-row justify-end mt-2 mx-5 '>
-              <CustomButton title="Gratis Premium testen" handlePress={()=> {}} containerStyles={"bg-blue-500 mr-2"}/>
+            <View className='flex-row justify-end mt-2 mx-5 items-center '>
+              <GratisPremiumButton/>
               <CustomButton iconName={"share-alt"} iconSize={20} iconColor={"white"} title={"UReady teilen"} textStyles={"ml-2"} containerStyles={"bg-gray-900 mr-2"} />
               <CustomButton iconName={"cog"} iconSize={20} iconColor={"white"} containerStyles={"bg-gray-900 mr-2"} handlePress={()=> setPage()}/>
             </View>
             :
-            <View className='flex-row justify-between mt-2 mx-5'>
+            <View className='flex-row justify-between items-center mt-2 mx-5'>
               <View className='flex-row'>
               <CustomButton iconName={"share-alt"} iconSize={20} iconColor={"white"} containerStyles={"bg-gray-900 mr-2"} />
               <CustomButton iconName={"cog"} iconSize={20} iconColor={"white"} containerStyles={"bg-gray-900"} handlePress={()=> setPage()}/>
               </View>
-              <CustomButton title="Gratis Premium testen" handlePress={()=> {}} containerStyles={"bg-red-500"}/>
+              <GratisPremiumButton/>
 
             </View>
           }
+          </View>
         <SwichTab tabWidth={tabWidth} setTab={setTab} tab1={"Profil"} tab2={"Statistiken"}/>
         <View className='w-full border-t-[1px] border-gray-800'/>
           { tab == 0 ?
-          <View className='flex-1 justify-start '>
+          <View className='flex-1 justify-start bg-[#0c111d] rounded-[10px] '>
             <InfoModule content={()=> { return(
               <TouchableOpacity className='flex-row' onPress={()=> setPage2()}>
                 <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>
@@ -72,7 +75,7 @@ const General = ({setPage, setPage2}) => {
             </View>
             <InfoModule content={()=> {
               return (
-                  <View className='flex-row justify-center w-full'>
+                  <View className='flex-row justify-center'>
                     {durationBlock({duration:"3.5h",name:"Insgesamt",styles:"px-10"})}
                     {durationBlock({duration:"0.7",name:"Pro Tag",styles:"px-10"})}
                     {durationBlock({duration:"2h",name:"Tagesrekord",styles:"px-10"})}

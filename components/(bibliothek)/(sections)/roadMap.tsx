@@ -4,7 +4,7 @@ import SessionProgress from '../sessionProgress'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from 'react-native-gesture-handler';
 
-const RoadMap = ({data, selected, setSelected, questions}) => { 
+const RoadMap = ({moduleSessions, selected, setSelected, questions}) => { 
   
   function getAll(){
     let bad = 0
@@ -28,60 +28,43 @@ const RoadMap = ({data, selected, setSelected, questions}) => {
   }
   const percentA = getAll()
   const {width} = useWindowDimensions()
-  const exampleSessions = [
-    {
-      title:"Session 1",
-      percent: 50,
-      iconName: "layer-group",
-      color: "red",
-      questions: 1,
-      description:"",
-      tags: []
-      
-    },
-    {
-      title:"Session 2",
-      percent: 70,
-      iconName: "layer-group"
-    },
-    {
-      title:"Session 3",
-      percent: 90,
-      iconName: "layer-group"
-    },
-    {
-      title:"Session 4",
-      percent: 100,
-      iconName: "layer-group"
-    },
-    {
-      title:"Session 5",
-      percent: 100,
-      iconName: "layer-group"
-    },
-    {
-      title:"Session 6",
-      percent: 100,
-      iconName: "layer-group"
-    }
-    
-   
-    
-    
-  ]
-  const CircularButton = ({ onPress,children }) => {
+  
+
+ 
+  const CircularButton = ({ onPress,children,index,color }) => {
     const [isPressed, setIsPressed] = useState(false);
   
     return (
       <View className="items-center justify-center">
       <TouchableOpacity
         activeOpacity={1}
+        onPress={()=> setSelected(index)}
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
-        className="rounded-full flex items-center justify-center  bg-red-500"
+        className="rounded-full flex items-center justify-center"
+        
         style={{
           transform: [{ translateY: isPressed ? 2 : 0 }], 
-          shadowColor: "#800000",
+          shadowColor: 
+          color == "red" ? "#800000" :       // Dunkelrot
+          color == "orange" ? "#803300" :    // Dunkelorange
+          color == "yellow" ? "#806600" :    // Senfgelb
+          color == "emerald" ? "#006644" :   // Dunkelgrün
+          color == "cyan" ? "#006666" :      // Dunkelcyan
+          color == "blue" ? "#0056B3" :      // Dunkelblau
+          color == "purple" ? "#400080" :    // Dunkellila
+          color == "pink" ? "#800040" :      // Dunkelpink
+          "#1F2937", 
+          backgroundColor:
+            color == "red" ? "#FF4D4D" :      // Kräftiges Hellrot  
+            color == "orange" ? "#FF884D" :   // Kräftiges Hellorange  
+            color == "yellow" ? "#FFD700" :   // Kräftiges Goldgelb  
+            color == "emerald" ? "#2ECC71" :  // Kräftiges Smaragdgrün  
+            color == "cyan" ? "#17D4FC" :     // Kräftiges Cyanblau  
+            color == "blue" ? "#1E90FF" :     // Kräftiges Hellblau  
+            color == "purple" ? "#A64DFF" :   // Kräftiges Lila  
+            color == "pink" ? "#FF4DA6" :     // Kräftiges Pink  
+            "#E5E7EB",
           shadowOffset: { width: 0, height: isPressed ? 2 : 6 },
           shadowOpacity: 1,
           shadowRadius: 2,
@@ -216,9 +199,9 @@ const RoadMap = ({data, selected, setSelected, questions}) => {
       scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
     }}>
       {
-        exampleSessions.map((module, index) => {
+        moduleSessions.map((module, index) => {
           //const percent = getAmount(index)
-          const { marginLeft, marginRight, marginTop,marginBottom } = getMargins(index, exampleSessions.length + 1);
+          const { marginLeft, marginRight, marginTop,marginBottom } = getMargins(index, moduleSessions.length + 1);
 
             return (
 
@@ -230,8 +213,17 @@ const RoadMap = ({data, selected, setSelected, questions}) => {
                 setSelected={()=> setSelected(index)} 
                 first={index == 0}  
                 progressr={module.percent}
+                strokeColor={module.color == "red" ? "#FF4D4D" :      // Kräftiges Hellrot  
+                  module.color == "orange" ? "#FF884D" :   // Kräftiges Hellorange  
+                  module.color == "yellow" ? "#FFD700" :   // Kräftiges Goldgelb  
+                  module.color == "emerald" ? "#2ECC71" :  // Kräftiges Smaragdgrün  
+                  module.color == "cyan" ? "#17D4FC" :     // Kräftiges Cyanblau  
+                  module.color == "blue" ? "#1E90FF" :     // Kräftiges Hellblau  
+                  module.color == "purple" ? "#A64DFF" :   // Kräftiges Lila  
+                  module.color == "pink" ? "#FF4DA6" :     // Kräftiges Pink  
+                  "#E5E7EB"}
                 > 
-                     <CircularButton >
+                     <CircularButton index={index} color={module.color}> 
                         <Icon name={module.iconName} size={20} color="white"/>
                       </CircularButton>
                 </SessionProgress>
@@ -239,12 +231,14 @@ const RoadMap = ({data, selected, setSelected, questions}) => {
             )
     })
     }
-    <SessionProgress selected={selected == data.length +1}
-                     setSelected={()=> setSelected(data.length +1)}
+    <SessionProgress selected={selected == moduleSessions.length +1}
+                     setSelected={()=> setSelected(moduleSessions.length +1)}
                      first={false} progress={10}
                      progressr={percentA.bad}
                         >
-                    <Text className='text-white'>All</Text>
+                    <CircularButton index={moduleSessions.length +1} >
+                        <Icon name={"file"} size={20} color="white"/>
+                    </CircularButton>
     </SessionProgress>
     
     </ScrollView>

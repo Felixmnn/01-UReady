@@ -11,6 +11,7 @@ import CustomButton from '../(general)/customButton';
 import { signOut } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ProfileSettings = ({setPage}) => {
     const {setIsLoggedIn, setUser} = useGlobalContext();
@@ -81,7 +82,7 @@ const ProfileSettings = ({setPage}) => {
   return (
     <View className='flex-1 items-center '>
             {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70'></View> : null }
-        <View className='flex-1 w-full bg-[#0c111d] rounded-[10px]'>
+        <View className={`flex-1 w-full  rounded-[10px] bg-[#0c111d] ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
       <TouchableOpacity className='w-full rounded-t-[10px] h-[70px] bg-gray-800 bg-gray-800 flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
         <TouchableOpacity className='rounded-full p-2' onPress={()=> setPage()}>
           <Icon name="arrow-left" size={20} color="white"/>
@@ -89,6 +90,7 @@ const ProfileSettings = ({setPage}) => {
         <Text className='text-white text-[20px] font-semibold ml-4 mb-1'>Einstellungen</Text>
       </TouchableOpacity>
       <View className='mt-2'/>
+      <ScrollView>
       <InfoModule content={()=> { return(
               <View className={`flex-1 ${isVertical ? "flex-row justify-start items-center" : "items-start"}`}>
                 <OptionSelector title={"Darstellung"} options={colorOptions}/>
@@ -105,7 +107,7 @@ const ProfileSettings = ({setPage}) => {
   
         </View>
       )}} hideHead = {true}/> 
-      
+      </ScrollView>
     </View>
     </View>
   )

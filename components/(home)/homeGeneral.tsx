@@ -10,6 +10,8 @@ import ModalStreak from '@/components/(home)/modalStreak';
 import ModalPremium from '@/components/(home)/modalPremium';
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import CustomTextInputChat from '../(general)/customTextInputChat';
+import { ScrollView } from 'react-native-gesture-handler';
+import GratisPremiumButton from '../(general)/gratisPremiumButton';
 
 const HomeGeneral = ({setSelectedPage}) => {
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -104,16 +106,14 @@ const HomeGeneral = ({setSelectedPage}) => {
         <ModalPremium isVisible={isVisiblePremium} setIsVisible={setIsVisiblePremium}/>
         <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
 
-        <View className='flex-1 m-4'>
+        <ScrollView className='flex-1 mx-4 mb-2 mt-4'>
         {/*Top Bar*/}
         <View className='flex-row justify-between'>
           <TouchableOpacity className='flex-row rounded-full bg-gradient-to-b from-black to-[#ed481c] items-center py-1 px-2' onPress={()=> setIsVisible(true)}>
             <Icon name="fire" size={15} color="#f79009"/>
             <Text className='text-gray-400 font-bold ml-1'>12</Text>
           </TouchableOpacity>
-          <TouchableOpacity className='flex-row rounded-full bg-blue-400 items-center py-1 px-2' onPress={()=> {setIsVisiblePremium(true)}}>
-            <Text className='text-gray-800 font-semibold ml-1'>Gratis Premium testen</Text>
-          </TouchableOpacity>
+          <GratisPremiumButton/>
         {/*Speaking Bubble*/}
         </View>
         <View className='w-full items-center my-3'>
@@ -175,7 +175,7 @@ const HomeGeneral = ({setSelectedPage}) => {
             :
             null
           }
-        </View>
+        </ScrollView>
         <View className='border-t-[1px] border-gray-700'>
           {
             isVertical ?

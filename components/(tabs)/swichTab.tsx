@@ -16,7 +16,7 @@ const animatedIndicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
 }));
   return (
-    <View className=" pt-4">
+    <View className=" pt-4 bg-[#0c111d] ">
             <View className="flex-row justify-start relative">
               <TouchableOpacity
                 className="ml-2 w-[60px] items-center pb-2"

@@ -6,6 +6,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import CustomTextInput from '../(general)/customTextInput'
 import CustomTextInput1 from '../(general)/customTextInput1'
 import { useWindowDimensions } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const PersonalInfo = ({setPage}) => {
     const {user} = useGlobalContext()
@@ -23,21 +24,22 @@ const PersonalInfo = ({setPage}) => {
 
   return (
     <View className='flex-1 items-center '>
+    
         {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70'></View> : null }
-    <View className='flex-1 w-full bg-[#0c111d] rounded-[10px]'>
-      <TouchableOpacity className='w-full h-[70px] rounded-t-[10px] bg-gray-800 bg-gray-800 flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
+    <View className='flex-1 w-full   rounded-[10px] bg-[#0c111d] '>
+      <TouchableOpacity className=' w-full h-[70px] rounded-t-[10px] bg-gray-800 bg-gray-800 flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
               <TouchableOpacity className='rounded-full p-2' onPress={()=> setPage()}>
                 <Icon name="arrow-left" size={20} color="white"/>
               </TouchableOpacity>
               <Text className='text-white text-[20px] font-semibold ml-4 mb-1'>Einstellungen</Text>
         </TouchableOpacity>
-        <View className='mt-2'>
+        <ScrollView className='mt-2'>
             <InfoModule content={()=> {
                 return(
                     <View className='flex-1 items-center'>
                         <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>
                         {personalInput("Felix","Vorname")}
-                        {personalInput("Manemann","Nachname")}
+                        {personalInput("Man","Nachname")}
                         {personalInput("test@test.test","Email")}
                         {
                             true ?
@@ -64,7 +66,7 @@ const PersonalInfo = ({setPage}) => {
                     </View>
                 )
             }} hideHead={true}/>
-        </View>
+        </ScrollView>
     </View>
     </View>
   )

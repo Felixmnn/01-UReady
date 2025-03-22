@@ -22,7 +22,7 @@ const entdecken = () => {
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1 w-full bg-[#0c111d] rounded-[10px]'>
-                <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] ${!isVertical ? "bg-gradient-to-b from-blue-900 to-[#0c111d]" : null}`}>
+                <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
                   <Text className='font-bold text-3xl text-gray-100'>
                     Entdecken
                   </Text>

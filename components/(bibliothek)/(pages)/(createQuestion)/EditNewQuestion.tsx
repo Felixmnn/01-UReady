@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity, TextInput, FlatList } from 'react-native'
+import { View, Text,TouchableOpacity, TextInput, FlatList, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import ToggleSwitch from '@/components/(general)/toggleSwich'
@@ -9,6 +9,8 @@ import ModalSelectSession from './modalSelectSession'
 const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule }) => {
      const [text, setText] = useState(newQuestion.question)
      const [selectedAnswer, setSelectedAnswer] = useState(null)
+     const {width} = useWindowDimensions()
+     const isVertical = width < 700;
         
         function toggleIndex(index) {
             setNewQuestion(prevState => ({
@@ -155,11 +157,21 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                                     answers: [...prevState.answers, "Neue Antwort"] // Neue Antwort hinzufügen
                                                 }));
                                                 selectedAnswer == null || !(newQuestion.answers.length > 0)  ? setSelectedAnswer(0) : setSelectedAnswer(selectedAnswer + 1 );
-                                        }} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
+                                        }} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'
+                                        style={{
+                                            width: isVertical ?  100 : 170,
+                                        }}
+                                        >
                                     <Icon name="plus" size={10} color="white"/>
-                                    <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
-                                        Antwort hinzufügen
-                                    </Text>
+                                    { !isVertical ? 
+                                                                <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
+                                                                    Antwort hinzufügen
+                                                                </Text>
+                                                                :
+                                                                <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
+                                                                    Antwort
+                                                                </Text>
+                                                                }
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                                     

@@ -14,6 +14,7 @@ import EditQuestions from './(createQuestion)/editQuestions';
 import ModalAddTags from './(createQuestion)/modalAddTags';
 import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     const {user} = useGlobalContext();
@@ -107,32 +108,64 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
         {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
         {
             questions.length > 0 ?
-            <View className=' w-full bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
+            <View className='h-full w-full bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
                 <Header setSelected={()=> setSelected2("SingleModule")} ungespeichert={ungespeichert} moduleName={module.documents[selectedModule].name}/>
-                <View className='w-full flex-row'>
-                <Questions   
-                    screenHeight={height} 
-                    questions={questions} 
-                    setSelectedQuestion={setSelectedQuestion} 
-                    selectedQuestion={selectedQuestion}
-                    newQuestion={newQuestion}
-                    checkNewQuestion={checkNewQuestion}
-                    />
-                 <EditQuestions
-                    setQuestions={setQuestions} 
-                    questionActive={questionActive}
-                    setQuestionActive={setQuestionActive}
-                    questions={questions}
-                    selectedQuestion={selectedQuestion}
-                    setSelectedQuestion={setSelectedQuestion}
-                    answerActive={answerActive}
-                    setAnswerActive={setAnswerActive}
-                    newQuestion={newQuestion}
-                    setNewQuestion={setNewQuestion}
-                    selectedModule={module.documents[selectedModule]}
-                    
-                />
-                </View>
+               
+                {
+                    isVertical ? 
+                    <View className='w-full flex-row'>
+                        <Questions   
+                            screenHeight={height} 
+                            questions={questions} 
+                            setSelectedQuestion={setSelectedQuestion} 
+                            selectedQuestion={selectedQuestion}
+                            newQuestion={newQuestion}
+                            checkNewQuestion={checkNewQuestion}
+                            />
+                        <EditQuestions
+                            setQuestions={setQuestions} 
+                            questionActive={questionActive}
+                            setQuestionActive={setQuestionActive}
+                            questions={questions}
+                            selectedQuestion={selectedQuestion}
+                            setSelectedQuestion={setSelectedQuestion}
+                            answerActive={answerActive}
+                            setAnswerActive={setAnswerActive}
+                            newQuestion={newQuestion}
+                            setNewQuestion={setNewQuestion}
+                            selectedModule={module.documents[selectedModule]}
+                            
+                        />
+                    </View>
+                    :
+                    <View className='flex-1   justify-between'>
+                        <ScrollView>
+                        <EditQuestions
+                            setQuestions={setQuestions} 
+                            questionActive={questionActive}
+                            setQuestionActive={setQuestionActive}
+                            questions={questions}
+                            selectedQuestion={selectedQuestion}
+                            setSelectedQuestion={setSelectedQuestion}
+                            answerActive={answerActive}
+                            setAnswerActive={setAnswerActive}
+                            newQuestion={newQuestion}
+                            setNewQuestion={setNewQuestion}
+                            selectedModule={module.documents[selectedModule]}
+                            
+                        />
+                        </ScrollView>
+                        <Questions   
+                            screenHeight={height} 
+                            questions={questions} 
+                            setSelectedQuestion={setSelectedQuestion} 
+                            selectedQuestion={selectedQuestion}
+                            newQuestion={newQuestion}
+                            checkNewQuestion={checkNewQuestion}
+                            />
+                    </View>
+                }
+
             </View>
         :
             <Text className='text-white'>Stelle dir einen Skeleton view vor</Text>

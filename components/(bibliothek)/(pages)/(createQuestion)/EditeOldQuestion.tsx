@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, Modal, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -9,7 +9,8 @@ import ModalAddTags from './modalAddTags';
 import ModalSelectSession from './modalSelectSession';
 
 const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQuestion, setSelectedQuestion, questionActive, setQuestionActive, setAnswerActive, answerActive }) => {
-    
+    const {width} = useWindowDimensions()
+    const isVertical = width < 700;
     function addAnswer() {
         setQuestions(prevQuestions =>
             prevQuestions.map((question, i) =>
@@ -177,11 +178,21 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                         })
                     }  
                     <View className='p-1 w-full  justify-between items-center flex-row'>
-                        <TouchableOpacity onPress={() => addAnswer()} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
+                        <TouchableOpacity onPress={() => addAnswer()} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] '
+                            style={{
+                                width: isVertical ?  100 : 170,
+                            }}
+                            >
                             <Icon name="plus" size={10} color="white"/>
+                            { !isVertical ? 
                             <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
                                 Antwort hinzufügen
                             </Text>
+                            :
+                            <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
+                                Antwort
+                            </Text>
+                            }
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                             

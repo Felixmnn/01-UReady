@@ -3,7 +3,7 @@ import React from 'react'
 
 const InfoModule = ({content, header, additional,hideHead,infoStyles}) => {
   return (
-    <View className={`mx-5 ${infoStyles}`}>
+    <View className={`mx-3 ${infoStyles}`}>
           {
             hideHead ? null :
             <View className='flex-row items-end'>

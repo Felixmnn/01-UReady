@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from 'expo-router'
 import { addNote } from '@/lib/appwriteEdit';
 
-const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected}) => {
+const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions}) => {
     const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
         return (
             <TouchableOpacity onPress={handlePress} className='justify-between max-w-[200px] min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'>
@@ -34,7 +34,7 @@ async function SwichToEditNote() {
 
     const note = {
         notiz: "",
-        sessionID: module.sessions[selected],
+        sessionID: sessions[selected].title,
         subjectID: module.$id,
         title: "",
     }

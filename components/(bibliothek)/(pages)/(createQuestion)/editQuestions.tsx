@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native'
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import EditeOldQuestion from './EditeOldQuestion';
@@ -9,7 +9,8 @@ import { removeQuestion } from '@/lib/appwriteEdit';
 const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionActive,questions,selectedQuestion,setSelectedQuestion, answerActive, setAnswerActive, newQuestion, setNewQuestion}) => {    
     const [isVisible, setIsVisible] = useState(false)
     const [showEllipse, setShowEllipse] = useState(false)
-    
+    const {width} = useWindowDimensions()
+    const isVertical = width < 700;
     function addTags(tags){
         setQuestions(prevQuestions =>
             prevQuestions.map((question, i) =>
@@ -25,7 +26,8 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
 
     }
         return (
-            <View className='flex-1 items-center justify-center p-4'>
+            <View className='flex-1 h-full  items-center justify-center p-4'
+            >
                 {selectedQuestion !== 0 ? 
                 <ModalAddTags isVisible={isVisible} setIsVisible={setIsVisible} selectedModule={selectedModule} addTags={addTags} selectedTags={questions[selectedQuestion -1].tags} selectedQuestion={questions[selectedQuestion -1]}/> 
                 : 

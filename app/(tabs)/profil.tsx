@@ -9,6 +9,7 @@ import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
 import General from '@/components/(profile)/general'
 import ProfileSettings from '@/components/(profile)/profileSettings'
 import PersonalInfo from '@/components/(profile)/personalInfo'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const profil = () => {
   const {user} = useGlobalContext();
@@ -20,7 +21,7 @@ const profil = () => {
   return (
       <Tabbar content={()=> { return(
         user ? 
-        <View className='flex-1'>
+        <View className='flex-1 '>
           { page == "profil" ? <General setPage={()=> setPage("profil-settings")} setPage2={()=> setPage("profil-personal-details")}/> : null}
           { page == "profil-settings" ? <ProfileSettings setPage={()=> setPage("profil")}/> : null}
           { page == "profil-personal-details" ? <PersonalInfo setPage={()=> setPage("profil")} /> : null}

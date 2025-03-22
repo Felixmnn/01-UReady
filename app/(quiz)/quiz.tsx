@@ -5,10 +5,13 @@ import { router,useLocalSearchParams } from "expo-router"
 import Index from '..';
 import {testAppwrite, updateDocument} from "../../lib/appwriteEdit"
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
+import { useWindowDimensions } from 'react-native';
 
 const quiz = () => {
     const {questions} = useLocalSearchParams()
     const [questionsParsed, setQuestionParsed] = useState(JSON.parse(questions))
+    const {width} = useWindowDimensions();
+    const isVertical = width > 700;
     
     const questionSegmentation = () => {
         let bad = 0
@@ -52,15 +55,20 @@ const quiz = () => {
                     <TouchableOpacity onPress={()=> tryBack()}>
                         <Icon name="arrow-left" size={20} color="white"/>
                     </TouchableOpacity>
-                    <Text className='font-semibold text-xl ml-2 text-white'>Karteikarten für "Alogrythmen"</Text>
+                    <Text className='font-semibold text-xl ml-2 text-white'>Algorythmen</Text>
                 </View>
-                <View className='flex-row items-center justify-center rounded-full border-gray-600 border-[1px] py-2 px-3'>
+                <View className={`flex-row items-center justify-center rounded-full border-gray-600 border-[1px] py-2 px-3 ${isVertical ? "" : "h-[35px] w-[35px]"} `}>
                     <TouchableOpacity className='items-center justify-center'>
                         <Icon name="cog" size={10} color="white"/>
                     </TouchableOpacity>
+                    {
+
+                    isVertical ? 
                     <Text className='text-gray-200 ml-2 text-[12px]'>
                         Einstellungen
                     </Text>
+                    : null
+                    }
                 </View>
                 </View>
                 <View className='rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row'>
@@ -168,11 +176,12 @@ const quiz = () => {
                         <View className='flex-row items-center'>
                         {questionsParsed[selectedQuestion].status !== null ? <Status status={questionsParsed[selectedQuestion].status}/> : null}
                         <TouchableOpacity className='bg-gray-900 rounded-[5px] items-center justify-cneter border-gray-600 border-[1px] ml-2'>
+                            
                             <Text className="m-1 text-gray-300 text-[10px] px-1">+ Tags hinzufügen</Text>
                         </TouchableOpacity>
                         </View>
                         <View className='flex-row items-center'>
-                            {questionsParsed[selectedQuestion].aiGenerated ? <Icon name="microchip" size={15} color="white"/> : null}
+                            {questionsParsed[selectedQuestion].aiGenerated ? <Icon name="robot" size={15} color="white"/> : null}
                             <TouchableOpacity className='items-center justify-center ml-2'>
                                 <Icon name="ellipsis-v" size={15} color="white"/>
                             </TouchableOpacity>
@@ -210,9 +219,9 @@ const quiz = () => {
                         {
                             navOptions.map((option) => {
                                 return (
-                                    <TouchableOpacity onPress={()=> nextQuestion(option.status, 1)} className={`border-[1px] border-${option.iconColor}-600 items-center justify-center py-4 rounded-[10px] w-[100px] mx-1 ${option.bg}`}>
+                                    <TouchableOpacity onPress={()=> nextQuestion(option.status, 1)} className={`border-[1px] border-${option.iconColor}-600 items-center justify-center py-4 rounded-[10px]  mx-1 ${option.bg} ${isVertical ? " w-[100px]" : "p-4"} `}>
                                         <Icon name={option.icon} size={20} color={option.iconColor}/>
-                                        <Text className='font-semibold text-white mt-1'>{option.title}</Text>
+                                        {isVertical ? <Text className='font-semibold text-white mt-1'>{option.title}</Text> : null}
                                     </TouchableOpacity>
                                 )
                             })
@@ -239,7 +248,7 @@ const quiz = () => {
         return (
             <View className='flex-1'>
                 <Text className='text-white p-4 text-xl font-bold'>{question.question}</Text>
-                <View className='flex-row p-4'>
+                <View className={` p-4 ${isVertical ? "flex-row" : "flex-col"} `}>
                     {
                         question.answers.map((answer,index) => {
                             return (

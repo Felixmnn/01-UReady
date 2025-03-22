@@ -5,11 +5,11 @@ import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
 
-const Data = ({selected,data,questions,notes}) => {
+const Data = ({selected,moduleSessions,questions,notes}) => {
 
 
-const filteredData = (selected > data.length) ? questions : questions.filter((item) => item.sessionID == data[selected])
-const filteredNotes = (selected > data.length) ? notes : notes.filter((item) => item.sessionID == data[selected])
+const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
 
 
 const CounterText = ({title,count}) => {
@@ -93,8 +93,9 @@ return (
                             {item.status !== null ? <Status status={item.status}/> : null}
                             <View className='bg-gray-900 rounded-[5px] items-center justify-cneter'>
                                 <Text className="m-1 text-white text-[10px] px-1">+ Tags hinzufügen</Text>
+                                
                             </View>
-                            <Icon name="microchip" size={15} color="white"/>
+                            <Icon name="robot" size={15} color="white"/>
                         </View>
                         <Text className='text-white'>{item.question}</Text>
                         <View className='border-b-[1px] border-gray-600 my-4 w-full'/>

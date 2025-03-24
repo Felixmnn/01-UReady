@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
-const SwichTab = ({tabWidth,setTab, tab1, tab2, bg}) => {
+const SwichTab = ({tabWidth,setTab, tab1, tab2, bg, tab}) => {
 const [activeTab, setActiveTab] = useState(0);
 const translateX = useSharedValue(0);
 
@@ -11,6 +11,9 @@ const switchTab = (index) => {
     setTab(index)
     translateX.value = withTiming(index * 68, { duration: 300 }); // Weicher Übergang
 };
+useEffect(() => {
+  switchTab(tab)
+}, [tab]);
 
 const animatedIndicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],

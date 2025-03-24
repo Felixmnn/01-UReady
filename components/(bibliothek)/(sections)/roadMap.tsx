@@ -4,7 +4,7 @@ import SessionProgress from '../sessionProgress'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from 'react-native-gesture-handler';
 
-const RoadMap = ({moduleSessions, selected, setSelected, questions}) => { 
+const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab}) => { 
   
   function getAll(){
     let bad = 0
@@ -38,7 +38,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions}) => {
       <View className="items-center justify-center">
       <TouchableOpacity
         activeOpacity={1}
-        onPress={()=> setSelected(index)}
+        onPress={()=> {setSelected(index); setTab(0)}}
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
         className="rounded-full flex items-center justify-center"

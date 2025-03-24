@@ -1,8 +1,12 @@
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from 'expo-router'
-import { addNote } from '@/lib/appwriteEdit';
+import { addNote, addDocumentConfig, addDocumentToBucket } from '@/lib/appwriteEdit';
+import ModalDocumentPicker from './modalDocumentPicker';
+import * as DocumentPicker from 'expo-document-picker';
+import uuid from 'react-native-uuid';
+
 
 const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions}) => {
     const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
@@ -50,6 +54,9 @@ async function SwichToEditNote() {
         console.log(error);
     }}
 
+    const [documtenPickerVisible, setDocumentPickerVisible] = useState(false);
+
+    
   return (
     <View >
                 {
@@ -64,6 +71,7 @@ async function SwichToEditNote() {
             style={{ backgroundColor: 'rgba(17, 24, 39, 0.5)' }}  // 50% Transparenz
             onPress={() => setIsVisible(false)}
         >
+            <ModalDocumentPicker isVisible={documtenPickerVisible} setIsVisible={setDocumentPickerVisible}/>
             <View className='p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl'>
                 <TouchableOpacity onPress={() => setIsVisible(false)}>
                     <View className='flex-row flex-1 justify-between'>
@@ -72,7 +80,7 @@ async function SwichToEditNote() {
                     </View>
                     <View className='flex-row'>
                         <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} handlePress={()=> selectAi()}/>
-                        <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false}/>
+                        <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {}}/>
                     </View>
                     <View className='flex-row'>
                         <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />

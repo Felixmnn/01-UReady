@@ -37,7 +37,7 @@ const Header = ({setSelectedScreen,selectedModule, selected, sessions, setSessio
                     </View>
                 </View>
                 <View className='w-full  flex-row px-4 justify-between items-center'>
-                    <Text className='text-gray-200 font-bold text-2xl'>{"example.title"}</Text>
+                    <Text className='text-gray-200 font-bold text-2xl'>{sessions[selected].title}</Text>
                     <View className='flex-row items-center'>
                     <TouchableOpacity onPress={()=> setShowSessionList(true)} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name={"layer-group"} color={"white"} size={15 }/>

@@ -13,6 +13,9 @@ const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selecte
     const [newTag, setNewTag] = useState("")
     const [loading, setLoading] = useState(false)
 
+
+   
+
     async function addTag() {
         setLoading(true)
         const t = JSON.stringify({name: newTag, color: null, id: uuid.v4()});

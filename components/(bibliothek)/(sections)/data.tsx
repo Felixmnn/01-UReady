@@ -1,15 +1,16 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
 
-const Data = ({selected,moduleSessions,questions,notes}) => {
+const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument, addDocument}) => {
 
 
 const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
+const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
 
 
 const CounterText = ({title,count}) => {
@@ -21,7 +22,7 @@ const CounterText = ({title,count}) => {
     )
 }
 
-const AddData = ({title, subTitle, button}) => {
+const AddData = ({title, subTitle, button, handlePress}) => {
     return (
     <View className='flex-row p-2 bg-gray-800 rounded-[10px] items-start justify-start border-[1px] border-gray-500 border-dashed'>
             <View className="items-center justify-center p-2">
@@ -30,7 +31,7 @@ const AddData = ({title, subTitle, button}) => {
             <View className="ml-2">
                 <Text className='text-white'>{title}</Text>
                 <Text className='text-gray-300 text-[12px]'>{subTitle}</Text> 
-                <TouchableOpacity className='rounded-full p-2 bg-gray-800 flex-row items-center justify-center border-[1px] border-gray-600 mt-2'>
+                <TouchableOpacity onPress={handlePress} className='rounded-full p-2 bg-gray-800 flex-row items-center justify-center border-[1px] border-gray-600 mt-2'>
                     <Icon name="plus" size={15} color="white"/>
                     <Text className='ml-2 text-gray-300 text-[12px]'>{button}</Text>  
                 </TouchableOpacity>
@@ -65,6 +66,32 @@ const Status = ({status}) => {
         </View>
     )
 }
+const {width, height} = useWindowDimensions();
+const isVertical = width == 700;
+
+const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
+        return (
+            <TouchableOpacity onPress={handlePress} 
+                className=' justify-between w-full  min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'
+              
+                >
+                <View className={`h-[45px] w-[45px] ${bgColor} items-center justify-center rounded-full`}>
+                    <Icon name={icon} size={25} color={iconColor}/>
+                </View>
+                { empfolen ?
+                    <View className='items-center justify-center border-[1px] border-green-500 bg-green-700 bg-opacity-10 rounded-[5px] max-w-[60px]'>
+                        <Text className='text-green-500 text-[10px]'>Empfohlen</Text>
+                    </View>
+                    :
+                    null
+                }
+                <View className='flex-row items-center justify-between'>
+                    <Text className='text-gray-200 font-bold text-[15px] pr-2'>{title}</Text>
+                    <Icon name="chevron-right" size={20} color="white"/>
+                </View>
+            </TouchableOpacity>
+        )
+    }
 
     
 return (
@@ -72,6 +99,21 @@ return (
         scrollbarWidth: 'thin', // Dünne Scrollbar
         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
       }}>
+        {
+            filteredData.length == 0 && filteredDocuments.length == 0 && filteredNotes.length == 0 ?
+            <View className='p-4 flex-1 items-center justify-center'>
+                
+                <View className={`${width > 815 &&  width > 700? "flex-row" : "flex-col"} w-full`}>
+                    <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} />
+                    <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {}}/>
+                </View>
+                <View className={`${width > 815 &&  width > 700? "flex-row" : "flex-col"} w-full`}>
+                    <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false}  />
+                    <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false} />
+                </View>
+            </View>
+            :
+            <View className='flex-1'>
         <CounterText title='Fragen' count={filteredData.length}/>
         {filteredData ? 
         <FlatList
@@ -107,11 +149,56 @@ return (
             }}
             horizontal={true}
         /> : null}
-        <CounterText title='Dateien' count={0}/>
-        <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"} />
+        {filteredData.length == 0 ? <AddData title={"Fragen hinzufügen"} subTitle={"Erstelle deine ersten Fragen"} button={"Dokument hochladen"}  handlePress={()=> addDocument()}/> : null}
+
+        <CounterText title='Dateien' count={filteredDocuments.length}/>{
+            documents ? 
+            <FlatList
+            data={filteredDocuments}
+            keyExtractor={(item) => item.$id}
+            className='w-full'
+            style={{
+                scrollbarWidth: 'thin', // Dünne Scrollbar
+                scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+              }}
+            renderItem={({item}) => {
+                return (
+                    <TouchableOpacity onPress={()=> {router.push({
+                                pathname:"pdf",
+                                params: {item: JSON.stringify(item)}
+                            }) }} 
+                            className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
+                        <View className='flex-row items-start justify-start'>
+                            <Icon name="file" size={40} color="white"/>
+                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : "Unbenannt"}</Text>
+                        </View>
+                        <View className='flex-row items-center justify-between'>
+                        { item.uploaded ?
+                        null
+                        :
+                        <ActivityIndicator size="small" color="#1E90ff" />
+                        }
+                        {
+                            item.uploaded ?
+                            <TouchableOpacity className='mr-2' onPress={() => {deleteDocument(item.$id)}} >
+                                <Icon name="trash" size={15} color="white"/>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity className='ml-2' onPress={() => {deleteDocument(item.$id)}} >
+                                <Icon name="times" size={15} color="white"/>
+                            </TouchableOpacity>
+                        }
+                        </View>
+                    </TouchableOpacity>
+                )}}
+            />
+            :
+            <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"} />
+        }
+        {filteredDocuments.length == 0 ? <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"}  handlePress={()=> addDocument()}/> : null}
         <CounterText title='Notizen' count={filteredNotes.length}/>
         {
-            notes ? 
+            notes  ? 
             <FlatList
             data={filteredNotes}
             keyExtractor={(item) => item.$id}
@@ -141,6 +228,9 @@ return (
             <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} />
 
         }
+        { filteredNotes.length == 0  ? <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} /> : null}
+    
+        </View>}
     </ScrollView>
   )
 }

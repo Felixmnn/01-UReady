@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, useWindowDimensions } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, ActivityIndicator, useWindowDimensions, Modal } from 'react-native'
+import React, { useState } from 'react'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
@@ -11,7 +11,7 @@ const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument,
 const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
-
+console.log("Filtered Data:", questions)
 
 const CounterText = ({title,count}) => {
     return (
@@ -92,6 +92,22 @@ const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) =>
             </TouchableOpacity>
         )
     }
+    const [wrongType, setWrongType] = useState(false);
+const NichtUnterstuzterDateityp = () => {
+    return (
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={wrongType}
+        >
+        <TouchableOpacity onPress={()=> setWrongType(false)} className='flex-1 items-center justify-start mt-10'>
+            <View className='bg-red-800 p-4 rounded-[10px]'>
+                <Text className='text-white'>Dieser Dateityp wird nicht unterstützt</Text>
+            </View>
+        </TouchableOpacity>
+        </Modal>
+    )
+}
 
     
 return (
@@ -99,6 +115,7 @@ return (
         scrollbarWidth: 'thin', // Dünne Scrollbar
         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
       }}>
+        <NichtUnterstuzterDateityp/>
         {
             filteredData.length == 0 && filteredDocuments.length == 0 && filteredNotes.length == 0 ?
             <View className='p-4 flex-1 items-center justify-center'>
@@ -163,10 +180,24 @@ return (
               }}
             renderItem={({item}) => {
                 return (
-                    <TouchableOpacity onPress={()=> {router.push({
-                                pathname:"pdf",
-                                params: {item: JSON.stringify(item)}
-                            }) }} 
+                    <TouchableOpacity onPress={() => {
+                        const fileType = item.fileType;
+                    
+                        if (fileType === "application/pdf") {
+                            router.push({
+                                pathname: "pdf",
+                                params: { item: JSON.stringify(item) }
+                            });
+                        } else if (fileType === "application/msword" || fileType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                            router.push({
+                                pathname: "word",
+                                params: { item: JSON.stringify(item) }
+                            });
+                        } else {
+                            setWrongType(true);
+                            console.log("Unbekannter Dateityp:", fileType);
+                        }
+                    }}
                             className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
                         <View className='flex-row items-start justify-start'>
                             <Icon name="file" size={40} color="white"/>

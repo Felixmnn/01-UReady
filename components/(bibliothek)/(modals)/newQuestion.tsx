@@ -8,7 +8,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import uuid from 'react-native-uuid';
 
 
-const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions}) => {
+const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument}) => {
     const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
         return (
             <TouchableOpacity onPress={handlePress} className='justify-between max-w-[200px] min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'>
@@ -80,7 +80,7 @@ async function SwichToEditNote() {
                     </View>
                     <View className='flex-row'>
                         <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} handlePress={()=> selectAi()}/>
-                        <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {}}/>
+                        <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {addDocument()}}/>
                     </View>
                     <View className='flex-row'>
                         <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />

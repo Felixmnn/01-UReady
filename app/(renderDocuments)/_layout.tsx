@@ -12,7 +12,13 @@ const renderDocumentsLayout = () => {
                     headerShown: false 
                   }}
                 />
+                <Stack.Screen name="word"  
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
             </Stack>
+            
         </>
     </View>
   )

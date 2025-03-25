@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import ModalPremium from '../(home)/modalPremium'
 
-const GratisPremiumButton = ({children}) => {
+const GratisPremiumButton = ({children, aditionalStyles, handlePress}) => {
     const [isPressed, setIsPressed] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
   return (
@@ -11,7 +11,7 @@ const GratisPremiumButton = ({children}) => {
       activeOpacity={1}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
-      onPress={()=> setIsVisible(true)}
+      onPress={()=> {handlePress ? handlePress() : setIsVisible(true)}}
       className="items-center justify-center rounded-full h-[30px] "
       style={{
         transform: [{ translateY: isPressed ? 2 : 0 }],
@@ -22,7 +22,7 @@ const GratisPremiumButton = ({children}) => {
         marginBottom: 5,
       }}
     >
-        <View className='flex-1 items-center rounded-full justify-center bg-gradient-to-b from-blue-300 to-blue-500 px-2'>
+        <View className={`flex-1 items-center rounded-full justify-center bg-gradient-to-b from-blue-300 to-blue-500 px-2 ${aditionalStyles}`}>
             <ModalPremium isVisible={isVisible} setIsVisible={setIsVisible} />
             {
                 children ? children :<Text className='text-[12px] text-gray-100 font-semibold'>Gratis Premium testen</Text>

@@ -3,6 +3,7 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useWindowDimensions } from 'react-native';
 import { router } from 'expo-router';
+import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 
 const Header = ({setSelected, moduleName, ungespeichert }) => {
     const {width} = useWindowDimensions();
@@ -18,10 +19,13 @@ const Header = ({setSelected, moduleName, ungespeichert }) => {
                 <Text className='text-gray-500 text-[12px]'> {ungespeichert? "Ungespeicherte Änderungen " : "Alle änderungen gespeichert"}</Text>
             </View>
         </View>
-        <View className={`flex-row bg-gradient-to-b from-[#2b3d69] to-blue-500 items-center justify-center  rounded-full ${!isVertical ? "h-[35px] w-[35px]" : "px-2 py-1" }`}>
+        <GratisPremiumButton>
+        <View className='flex-row items-center'>
             <Icon name="robot" size={15} color="white"/>
             {isVertical ?  <Text className='text-white ml-2'>Mit AI generieren</Text> : null}
         </View>
+        </GratisPremiumButton>
+
     </View>
   )
 }

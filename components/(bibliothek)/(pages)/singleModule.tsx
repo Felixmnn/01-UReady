@@ -21,11 +21,13 @@ const SingleModule = ({setSelectedScreen, module}) => {
     const isVertical = width > 700;
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState([]);
+    
     const [notes, setNotes] = useState([]);
     const [documents, setDocuments] = useState([]);
 
     const parsedSessions = module.sessions.map(session => JSON.parse(session));
     const [sessions, setSessions] = useState(parsedSessions);
+    console.log("Sessions:",sessions)
 
     useEffect(() => {
         async function updateModuleLocal () {
@@ -34,6 +36,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
                 sessions: sessions.map(session => JSON.stringify(session))
         }
         await updateModule(newModule);
+    
     }
     updateModuleLocal()
     }, [sessions])
@@ -49,6 +52,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
                 const questionArray = questions.documents
                 const filteredQuestions = questionArray.filter((question) => question.subjectID == module.$id);
                 setQuestions(filteredQuestions)  
+                console.log("Question Array ist hier:",questionArray)
             }  
             if (notes) {
                 const noteArray = notes.documents
@@ -127,25 +131,24 @@ const SingleModule = ({setSelectedScreen, module}) => {
             <View className='flex-1 w-full bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
                 { loading ? <Text>Skeleton View</Text> :
                 <View className='flex-1'>
-                <Header setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
+                <Header questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Fragen"} tab2={"Roadmap"} bg={"bg-gray-900"}/> : null }
                 <View className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}/>
                 
                 <View className={`flex-1 ${isVertical ? "flex-row" : null}`}>
                         { 
                             tab == 0 ?
-                    <View className='p-4 flex-1'>
-                        
-                            <Data addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents}/>
-                            
-                    </View>
-                    : null
+                            <View className='p-4 flex-1'>
+                                <Data addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents}/>
+                            </View>
+                            : null
                         }
-                    {isVertical || tab == 1 ?
-                    <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[700px]'>
-                       <RoadMap setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions}/> 
-                    </View>
-                    : null }
+                        {isVertical || tab == 1 ?
+                            <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[700px]'>
+                                <RoadMap setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions}/> 
+                            </View>
+                            : null 
+                        }
                 </View>
                 </View>
                 }   

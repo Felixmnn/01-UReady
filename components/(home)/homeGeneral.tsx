@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Modal } from 'react-native'
 import React, { useState } from 'react'
 import { signOut } from '@/lib/appwrite'
 import Tabbar from '@/components/(tabs)/tabbar'
@@ -12,18 +12,25 @@ import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import CustomTextInputChat from '../(general)/customTextInputChat';
 import { ScrollView } from 'react-native-gesture-handler';
 import GratisPremiumButton from '../(general)/gratisPremiumButton';
+import AddModule from '../(general)/(modal)/addModule';
+import { loadUserData } from '@/lib/appwriteDaten';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { addNewUserConfig } from '@/lib/appwriteAdd';
+import ModalAddFile from '../(general)/(modal)/addFile';
 
 const HomeGeneral = ({setSelectedPage}) => {
+  const {user} = useGlobalContext();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   console.log("Api URl",apiUrl)
   {/*Homepage allgemein*/}
-    const t = new Date().getDay();
+      const t = new Date().getDay();
     
       const [selected, setSelected] = useState(t)
       const [isVisible, setIsVisible] = useState(false);
       const [isVisiblePremium, setIsVisiblePremium] = useState(false);
       const [isVisibleDataUpload, setIsVisibleDataUpload] = useState(false);
-    
+      const [isVisibleNewModule, setIsVisibleNewModule] = useState(false);
+      const [isvisibleNewFile, setIsVisibleNewFile] = useState(false);
     
       const { width } = useWindowDimensions(); // Bildschirmbreite holen
         const isVertical = width > 700;
@@ -105,7 +112,8 @@ const HomeGeneral = ({setSelectedPage}) => {
         <ModalStreak isVisible={isVisible} setIsVisible={setIsVisible} tage={12} days={days}/>
         <ModalPremium isVisible={isVisiblePremium} setIsVisible={setIsVisiblePremium}/>
         <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
-
+        <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule}/>
+        <ModalAddFile isVisible={isvisibleNewFile} setIsVisible={setIsVisibleNewFile}/>
         <ScrollView className='flex-1 mx-4 mb-2 mt-4'>
         {/*Top Bar*/}
         <View className='flex-row justify-between'>
@@ -146,7 +154,9 @@ const HomeGeneral = ({setSelectedPage}) => {
               <Icon name="chevron-right" size={20} color="gray"/>
             </TouchableOpacity>
           </View>
+          
         </View>
+        
         
           {
             longVertical ?
@@ -181,9 +191,9 @@ const HomeGeneral = ({setSelectedPage}) => {
             isVertical ?
             <View className='flex-1 px-3 pt-3 flex-row'>
               <QuickAccess icon={"robot"} iconColor={"#7a5af8"} iconBackground={"bg-[#372292]"} title={"AI Quiz Generieren"} handlePress={()=> setSelectedPage("HomeChat")}/>
-              <QuickAccess icon={"cubes"} iconColor={"#519d19"} iconBackground={"bg-[#2b5314]"} title={"Modul Hinzufügen"}/>
-              <QuickAccess icon={"file-alt"} iconColor={"#c1840b"} iconBackground={"bg-[#713b12]"} title={"Datei Hochladen"} handlePress={()=> setIsVisibleDataUpload(true)}/>
-              <QuickAccess icon={"layer-group"} iconColor={"#15b79e"} iconBackground={"bg-[#134e48]"} title={"Session Hinzufügen"} handlePress={()=> setIsVisiblePremium(true)}/>
+              <QuickAccess icon={"cubes"} iconColor={"#519d19"} iconBackground={"bg-[#2b5314]"} title={"Modul Hinzufügen"} handlePress={()=> setIsVisibleNewModule(true)}/>
+              <QuickAccess icon={"file-alt"} iconColor={"#c1840b"} iconBackground={"bg-[#713b12]"} title={"Datei Hochladen"} handlePress={()=> setIsVisibleNewFile(true)}/>
+              <QuickAccess icon={"layer-group"} iconColor={"#15b79e"} iconBackground={"bg-[#134e48]"} title={"Session Hinzufügen"} />
             </View>
             :
             null

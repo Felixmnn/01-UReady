@@ -10,13 +10,15 @@ import General from '@/components/(profile)/general'
 import ProfileSettings from '@/components/(profile)/profileSettings'
 import PersonalInfo from '@/components/(profile)/personalInfo'
 import { ScrollView } from 'react-native-gesture-handler'
+import SkeletonList from '@/components/(general)/(skeleton)/skeletonList'
+import SkeletonListProfile from '@/components/(general)/(skeleton)/skeletonListProfile'
 
 const profil = () => {
   const {user} = useGlobalContext();
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const isVertical = width > 700;
   const tabWidth = width / 2; // Da es zwei Tabs gibt
-  const [page,setPage] = useState("profil-personal-details")
+  const [page,setPage] = useState("profil")
  
   return (
       <Tabbar content={()=> { return(
@@ -28,9 +30,10 @@ const profil = () => {
 
         </View>
         :
-        <View>
-          <Text>Lade</Text>
+        <View className='flex-1 bg-[#0c111d] rounded-[10px] p-2 border-gray-500 border-[1px]'>
+          <SkeletonListProfile/>
         </View>
+
     )}} page={"Profil"} hide={true}/>
   )
 }

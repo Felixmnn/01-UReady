@@ -14,7 +14,7 @@ const General = ({setPage, setPage2}) => {
       const { width } = useWindowDimensions(); // Bildschirmbreite holen
       const isVertical = width > 700;
       const tabWidth = width / 2; // Da es zwei Tabs gibt
-      const [ tab, setTab ] = useState(0)
+      const [ tab, setTab ] = useState(1)
       const timeOptions = [
         { label: "Tage", value: "d" },
         { label: "Wochen", value: "w" },

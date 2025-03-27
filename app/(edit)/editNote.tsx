@@ -29,7 +29,7 @@ const CreateNote = () => {
         <View className='flex-1 items-center '>
             {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
 
-            <View className='flex-1 w-full  bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
+            <View className='flex-1 w-full   bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
                 <Header setSelected={()=> router.back()} ungespeichert={ungespeichert} moduleName={"Edit Note"}/>
                 <TextInput
                     className=' bg-gray-800 mt-2 mx-2 border-gray-700 border-[1px] rounded-[10px] p-2 text-white '

@@ -5,10 +5,32 @@ import { createUser, signIn,loginWithGoogle } from "@/lib/appwrite";
 import { useWindowDimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useEffect, useState } from "react";
+import { loadUserData } from "@/lib/appwriteDaten";
+
+
 export default function Index() {
 
-  const { isLoggedIn, isLoading } = useGlobalContext();
-  if (isLoading) {
+  const { isLoggedIn, isLoading,user, userData, setUserData } = useGlobalContext();
+
+  useEffect(() => {
+          if (user === null ) return;
+          async function fetchUserData() {
+              try {
+                  console.log("Loading")
+                  const userD = await loadUserData(user.$id);
+                  setUserData(userD);
+                  if (userD.signInProcessStep !== "FINISHED" ) {
+                      router.push("/personalize");
+                  }
+              } catch (error) {
+                  console.log(error);
+              }
+          }
+          fetchUserData();
+      }, [user]);
+
+
+  if (isLoading && userData !== null) {
     return (
       <SafeAreaView className="flex-1 bg-black">
         <View className="flex-1 justify-center items-center">

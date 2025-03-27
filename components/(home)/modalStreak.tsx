@@ -30,7 +30,7 @@ const ModalStreak = ({isVisible, setIsVisible,tage, days}) => {
         visible={isVisible}
     >
       <TouchableOpacity className="absolute top-0 left-0 w-full h-full justify-center items-center " onPress={()=> setIsVisible(false)}>
-        <View className="bg-gray-800 border-gray-700 border-[1px] p-5 rounded-xl items-center">
+        <View className="bg-gray-900 border-gray-700 border-[1px] p-5 rounded-xl items-center">
           <Image
                      source={require("../../assets/Black Minimalist Letter R Monogram Logo (2).gif")}
                      style={{ width:50, height:50}}

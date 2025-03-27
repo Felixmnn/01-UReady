@@ -1,5 +1,6 @@
 import { createContext,useContext, useEffect, useState } from "react";
 import { getCurrentUser,checkSession } from "../lib/appwrite";
+import { loadUserData } from "@/lib/appwriteDaten";
 
 const GlobalContext = createContext();
 
@@ -11,7 +12,9 @@ const GlobalProvider = ({children}) => {
     const [ isLoading, setIsLoading] = useState(true);
     const [ colorScheme, setColorScheme ] = useState('light');
     const [ language,setLanguage ] = useState('de');
-     
+    const [ userData, setUserData ] = useState(null);
+
+
     useEffect(() => {
         try {
             checkSession()
@@ -36,6 +39,9 @@ const GlobalProvider = ({children}) => {
         }
     }, []);
 
+    
+    
+
 
 
 
@@ -51,6 +57,8 @@ const GlobalProvider = ({children}) => {
                 setColorScheme,
                 language,
                 setLanguage,
+                userData,
+                setUserData
             }}>
             {children}
         </GlobalContext.Provider>

@@ -71,7 +71,6 @@ async function SwichToEditNote() {
             style={{ backgroundColor: 'rgba(17, 24, 39, 0.5)' }}  // 50% Transparenz
             onPress={() => setIsVisible(false)}
         >
-            <ModalDocumentPicker isVisible={documtenPickerVisible} setIsVisible={setDocumentPickerVisible}/>
             <View className='p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl'>
                 <TouchableOpacity onPress={() => setIsVisible(false)}>
                     <View className='flex-row flex-1 justify-between'>

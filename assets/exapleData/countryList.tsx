@@ -1029,53 +1029,109 @@ export const LeibnizSubjects = [
     }
 ]
 
-export const ausbildungsTypen = [
+export const ausbildungsTypen = 
+[
     {
-      "name": "Bau & Handwerk",
+      "name": {
+        "DE": "Bau & Handwerk",
+        "GB": "Construction & Craft",
+        "US": "Construction & Trades",
+        "AU": "Building & Trades",
+        "ES": "Construcción y Artesanía"
+      },
       "id": "bau_handwerk",
       "icon": "hammer"
     },
     {
-      "name": "Metall, Elektro & Technik",
+      "name": {
+        "DE": "Metall & Technik",
+        "GB": "Metals & Tech",
+        "US": "Metals & Tech",
+        "AU": "Metals & Tech",
+        "ES": "Metales y Tecnología"
+      },
       "id": "metall_elektro_technik",
-      "icon": "cogs"
+        "icon": "cogs"
     },
     {
-      "name": "Produktion & Logistik",
+      "name": {
+        "DE": "Produktion & Logistik",
+        "GB": "Production & Logistics",
+        "US": "Production & Logistics",
+        "AU": "Production & Logistics",
+        "ES": "Producción y Logística"
+      },
       "id": "produktion_logistik",
       "icon": "truck"
     },
     {
-      "name": "Gesundheit & Pflege",
+      "name": {
+        "DE": "Gesundheit & Pflege",
+        "GB": "Health & Care",
+        "US": "Health & Care",
+        "AU": "Health & Care",
+        "ES": "Salud y Cuidado"
+      },
       "id": "gesundheit_pflege",
       "icon": "user-md"
     },
     {
-      "name": "Gastronomie & Tourismus",
+      "name": {
+        "DE": "Gastronomie & Tourismus",
+        "GB": "Hospitality & Tourism",
+        "US": "Hospitality & Tourism",
+        "AU": "Hospitality & Tourism",
+        "ES": "Hostelería y Turismo"
+      },
       "id": "gastronomie_tourismus",
       "icon": "utensils"
     },
     {
-      "name": "IT & Medien",
+      "name": {
+        "DE": "IT & Medien",
+        "GB": "IT & Media",
+        "US": "IT & Media",
+        "AU": "IT & Media",
+        "ES": "TI y Medios"
+      },
       "id": "it_medien",
       "icon": "laptop"
     },
     {
-      "name": "Kunst & Gestaltung",
+      "name": {
+        "DE": "Kunst & Gestaltung",
+        "GB": "Art & Design",
+        "US": "Art & Design",
+        "AU": "Art & Design",
+        "ES": "Arte y Diseño"
+      },
       "id": "kunst_gestaltung",
       "icon": "paint-brush"
     },
     {
-      "name": "Wirtschaft & Verwaltung",
+      "name": {
+        "DE": "Wirtschaft & Verwaltung",
+        "GB": "Business & Admin",
+        "US": "Business & Admin",
+        "AU": "Business & Admin",
+        "ES": "Negocios y Administración"
+      },
       "id": "wirtschaft_verwaltung",
       "icon": "chart-line"
     },
     {
-      "name": "Umwelt & Natur",
+      "name": {
+        "DE": "Umwelt & Natur",
+        "GB": "Environment & Nature",
+        "US": "Environment & Nature",
+        "AU": "Environment & Nature",
+        "ES": "Medio Ambiente y Naturaleza"
+      },
       "id": "umwelt_natur",
       "icon": "leaf"
     }
   ]
+      
   
 
 export const ausbildungsListDeutschland = {

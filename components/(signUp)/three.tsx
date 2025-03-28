@@ -6,9 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelectedCountry, countryList ,setSelectedKathegorie, userData, setUserData}) => {
     const [isActive, setIsActive] = useState(false)
-    const TouchSquare = ({text, handlePress}) => {
+    const TouchSquare = ({text, handlePress,icon}) => {
         return (
-            <TouchableOpacity onPress={handlePress} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 h-[100px] w-[100px] items-center justify-center m-1' >
+            <TouchableOpacity onPress={handlePress} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 h-[120px] w-[120px] items-center justify-center m-1' 
+            style={{width:120, height:120}}
+            >
+                <Icon name={icon} size={20} color="#D1D5DB" />
                 <Text className='text-gray-100 font-semibold text-[15px] '>{text}</Text>
             </TouchableOpacity>
         )
@@ -16,7 +19,7 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
     const buttons = [
         { "DE": "Schule", "GB": "School", "US": "School", "AU": "School", "ES": "Escuela" },
         { "DE": "Universität", "GB": "University", "US": "College", "AU": "Uni", "ES": "Universidad" },
-        { "DE": "Ausbildung", "GB": "Education", "US": "Education", "AU": "Education", "ES": "Educación" },
+        { "DE": "Ausbildung", "GB": "Apprenticeship", "US": "Apprenticeship", "AU": "Apprenticeship", "ES": "Educación" },
         { "DE": "Sonstiges", "GB": "Other", "US": "Other", "AU": "Other", "ES": "Otro" }
     ]
     const robotMessage = {
@@ -89,20 +92,24 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
                                 <TouchSquare
                                         text={selectedLanguage == null ? buttons[0]["DE"] : buttons[0][languages[selectedLanguage].code]}
                                         handlePress={()=> {setSelectedKathegorie("SCHOOL"), setUserData({...userData,signInProcessStep:"FOUR"})}}
+                                        icon={"school"}
                                 />
                                 <TouchSquare
                                     text={selectedLanguage == null ? buttons[1]["DE"] : buttons[1][languages[selectedLanguage].code]}
                                     handlePress={()=> {setSelectedKathegorie("UNIVERSITY"), setUserData({...userData,signInProcessStep:"FOUR"})}}
+                                    icon={"university"}
                                 />
                               </View>
                               <View className='flex-row'>
                                 <TouchSquare
                                         text={selectedLanguage == null ? buttons[2]["DE"] : buttons[2][languages[selectedLanguage].code]}
                                         handlePress={()=> {setSelectedKathegorie("EDUCATION"), setUserData({...userData,signInProcessStep:"FOUR"})}}
+                                        icon={"tools"}
                                 />
                                 <TouchSquare
                                     text={selectedLanguage == null ? buttons[3]["DE"] : buttons[3][languages[selectedLanguage].code]}
                                     handlePress={()=> {setSelectedKathegorie("OTHER"), setUserData({...userData,signInProcessStep:"SIX"})}}
+                                    icon={"ellipsis-h"}
                                 />
                               </View>
                           </View>

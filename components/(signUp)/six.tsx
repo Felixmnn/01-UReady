@@ -10,8 +10,13 @@ import SearchList from './(components)/searchList'
 
 const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, setUserData, setSelectedSubjects, selectedSubjects, selectedDegree, selectedField , setSelectedField}) => {
     const handlePress = () => {
+        if (selectedKathegorie === "SCHOOL") {
         setUserData({...userData,signInProcessStep:"FIVE"})
+        } else{
+            setUserData({...userData,signInProcessStep:"THREE"})
+
         };
+    }
 
     const handleItemPress = (item) => {
         if (selectedSubjects.includes(item)) {
@@ -22,18 +27,18 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
         }
     }
     const robotMessage = {
-        "DE":"Perfekt! In welchem Bereich machst du deine Ausbildung 1234?",
-        "GB":"Perfect! In which field are you doing your apprenticeship?",
-        "US":"Perfect! What field is your trade school or apprenticeship in?",
-        "AU":"Perfect! What field’s your apprenticeship in?",
-        "ES":"¡Perfecto! ¿En qué área estás haciendo tu formación profesional?",
+        "DE":"Nur noch eins: Welche Fächer darf ich für dich eintragen?",
+        "GB": "Just one more thing: Which subjects should I add for you?",
+        "US": "Just one more thing: Which subjects would you like me to add for you?",
+        "AU": "Just one more thing: Which subjects do you want me to add for you?",
+        "ES": "Solo una cosa más: ¿Qué asignaturas quieres que añada para ti?",
         }
     const continueMessage = {
-        "DE":"Fertig!",
-        "GB":"Let's carry on!",
-        "US":"Let's move on!",
-        "AU":"Let’s keep moving!",
-        "ES":"Vamos"
+        "DE":"Los geht’s!“",
+        "GB":"Let's go!",
+        "US":"Let's go!",
+        "AU":"Let's go!",
+        "ES":"¡Vamos!"
     }
 
     if (selectedKathegorie === "SCHOOL" || selectedKathegorie === "OTHER") {
@@ -64,19 +69,20 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
     else if (selectedKathegorie === "UNIVERSITY") {
         const [ subjectFilter, setSubjectFilter ] = useState("");
         const message = {
-            "DE":"Perfekt! In welchem Bereich machst du deine Ausbildung 1234?",
-            "GB":"Perfect! In which field are you doing your apprenticeship?",
-            "US":"Perfect! What field is your trade school or apprenticeship in?",
-            "AU":"Perfect! What field’s your apprenticeship in?",
-            "ES":"¡Perfecto! ¿En qué área estás haciendo tu formación profesional?",
+            "DE":"Fast geschafft! Was genau studierst du?",
+            "GB":"Just one last thing before we finish! What’s your program or field of study?",
+            "US":"Almost there! What’s your major or area of study?",
+            "AU":"You're almost done! What’s your course or field of study?",
+            "ES":"¡Casi terminado! ¿En qué programa o área estás estudiando?",
             }
-        const continueMessage = {
-            "DE":"Fertig!",
-            "GB":"Let's carry on!",
-            "US":"Let's move on!",
-            "AU":"Let’s keep moving!",
-            "ES":"Vamos"
-        }
+            const continueMessage = {
+                "DE":"Los geht’s!“",
+                "GB":"Let's go!",
+                "US":"Let's go!",
+                "AU":"Let's go!",
+                "ES":"¡Vamos!"
+            }
+        
         const handlePress = () => {
             setUserData({...userData,signInProcessStep:"FIVE"})
             };

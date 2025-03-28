@@ -7,8 +7,8 @@ const BotTopLeft = ({text,source}) => {
       <Image source={require("../../../assets/Check.gif")}  style={{height:150, width:150}}/> 
           <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]' style={{height:10, width:10, top:20, left:10}}/> 
           <View className='absoloute rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 ' style={{height:15, width:15, top:12, left:10}}/>
-          <View className='w-full max-w-[360px] h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'
-          style={{maxWidth:360}}
+          <View className='w-full max-w-[360px] h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10 p-3'
+          style={{maxWidth:300}}
           >
           <Text className='font-semibold text-[15px] text-gray-100 text-center'>{
               text

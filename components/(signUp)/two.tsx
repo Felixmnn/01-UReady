@@ -26,7 +26,8 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
         <View className='h-full  w-full justify-between items-center py-5'>
             <ProgressBar percent={30} handlePress={()=> setUserData({...userData,signInProcessStep:"ONE"})}/>
                 <View className='items-center justiy-center'>
-                        <View className='w-full max-w-[400px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
+                        <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'
+                        >
                             <Text className='font-semibold text-[15px] text-gray-100 text-center'>{
                                 selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]
                                 }</Text>

@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity,Image } from 'react-native'
+import { View, Text, TouchableOpacity,Image,ScrollView } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
+import { getSepcificModules} from '@/lib/appwriteQuerys'
 const StepSeven = ({languages, userData, setUserData, selectedField,selectedSubjects,classNumber,selectedAusbildung,degree,selectedUniversity,ausbildungKathegorie,school,selectedRegion,selectedKathegorie,selectedLanguage,name,selectedCountry}) => {
     
   return (
@@ -45,7 +46,7 @@ const StepSeven = ({languages, userData, setUserData, selectedField,selectedSubj
                             </View>
                         </View>
                     </View>
-      <View>
+      <ScrollView>
       <View className='flex-row'>
         <View className='rounded-[10px] bg-gray-900 p-5 items-start justify-start m-2 w-[300px] h-[300px]'>
           <Text className='text-white font-bold'>Schüler</Text>
@@ -78,7 +79,7 @@ const StepSeven = ({languages, userData, setUserData, selectedField,selectedSubj
           <Text className="text-gray-300">Name:                       {name}</Text>
           <Text className="text-gray-300">Ausgewähltes Land:          {selectedCountry.name}</Text>
           <Text className="text-gray-300">Ausgewählte Sprache:        {selectedLanguage}</Text>
-          <Text className="text-gray-300">Ausgewählte Kathegorie:      {ausbildungKathegorie ? ausbildungKathegorie.name : null}</Text>
+          <Text className="text-gray-300">Ausgewählte Kathegorie:      {selectedLanguage == null ? ausbildungKathegorie.name.DE: ausbildungKathegorie.name[languages[selectedLanguage].code]}</Text>
           <Text className="text-gray-300">Ausgewählte Ausbildung:     {selectedAusbildung ? selectedAusbildung.name : null}</Text>
         </View>
         <View className='rounded-[10px] bg-gray-900 p-5 items-start justify-start m-2 w-[300px] h-[300px]'>
@@ -91,8 +92,8 @@ const StepSeven = ({languages, userData, setUserData, selectedField,selectedSubj
           ))}
           </View>
         </View>
-      </View>
-      <GratisPremiumButton aditionalStyles={"rounded-full w-full "} >
+      </ScrollView>
+      <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={() => getSepcificModules()}>
                     <Text className='text-gray-100 font-semibold text-[15px]'>{
                         selectedLanguage == null || languages[selectedLanguage].code == "DE" ? "Weiter gehts":
                         languages[selectedLanguage].code == "GB" ? "Let's carry on!":

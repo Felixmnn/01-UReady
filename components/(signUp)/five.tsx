@@ -20,10 +20,19 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
         { name: "Magister", icon: "book-reader" }, 
         { name: "Others", icon: "question-circle" } 
     ];
+    const robotMessage = {
+        "DE": "Super! Welchen Abschluss machst du?",
+        "GB": "Great! What type of degree are you pursuing?",
+        "US": "Great! What kind of degree are you working towards?",
+        "AU": "Great! What type of degree are you studying for, mate?",
+        "ES": "¡Genial! ¿Qué tipo de título estás cursando?",
+    }
     return (
         <View className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>
                     <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
+                    <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+
                 </View>
                 <View className='justify-center items-center'>
                     <FlatList
@@ -53,13 +62,22 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
             setSelectedAusbildung(item);
              setUserData({...userData,signInProcessStep:"SEVEN"})
         }
+        const robotMessage = {
+            "DE": "Ein interessantes Gebiet. Mal schauen ob wir deine Ausbildung finden.",
+            "GB": "An interesting field. Let's see if we can find your apprenticeship.",
+            "US": "An interesting field. Let's see if we can find your trade school or apprenticeship.",
+            "AU": "An interesting field. Let's see if we can find your apprenticeship.",
+            "ES": "Un campo interesante. Vamos a ver si podemos encontrar tu formación profesional.",
+        }
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>
-                <ProgressBar percent={75} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>                    
+                <ProgressBar percent={75} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>  
+                <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+                  
                 </View>
                 <SearchList 
-                    data={ausbildungsListDeutschland[ausbildungKathegorie.name].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
+                    data={selectedLanguage == null ? ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase())) : ausbildungsListDeutschland[ausbildungKathegorie.name[languages[selectedLanguage].code]].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
                     filter={ausbildungsFilter}
                     setFilter={setAusbildungFilter}
                     handlePress={handlePress}
@@ -71,17 +89,17 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
     }
     else if (setSelectedKathegorie == "SCHOOL") {
         const robotMessage = {
-            "DE":"In welcher Klasse bist du?",
-            "GB":"In which field are you doing your apprenticeship?",
-            "US":"What field is your trade school or apprenticeship in?",
-            "AU":"What field’s your apprenticeship in?",
-            "ES":"¿En qué área estás haciendo tu formación profesional?",
+            "DE": `${school.name === "Sonstige" ? "Interessant, du" : "Du"} gehst also auf ${school.name === "Gymnasium" ? "ein" : "eine"} ${school.name === "Sonstige" ? "Schulform, die nicht in der Liste war" : school.name}. In welche Klasse gehst du dort?`,
+            "GB": `${school.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school.name === "Gymnasium" ? "a" : "an"} ${school.name === "Sonstige" ? "education type not listed" : school.name}. What year are you in?`,
+            "US": `${school.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school.name === "Gymnasium" ? "a" : "an"} ${school.name === "Sonstige" ? "school type that's not listed" : school.name}. What grade are you in?`,
+            "AU": `${school.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school.name === "Gymnasium" ? "a" : "an"} ${school.name === "Sonstige" ? "school type not listed" : school.name}. What year level are you in?`,
+            "ES": `${school.name === "Sonstige" ? "Interesante, tú" : "Entonces, estás en"} ${school.name === "Gymnasium" ? "un" : "una"} ${school.name === "Sonstige" ? "tipo de escuela no listado" : school.name}. ¿En qué curso estás?`,
         }
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
             <View className='w-full'>
-                <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage.languages[selectedLanguage].code}/>
+                <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
+                <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
             </View>
             <View className='justify-center items-center'>
                 <FlatList

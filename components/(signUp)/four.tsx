@@ -13,16 +13,16 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
     const Sonstige ={name:"Sonstige", id:"4058177f-0cd4-4820-8f71-5dsfsf57c4b27dd42", klassenstufen: [1,2,3,4,5,6,7,8,9,10,11,12,13] }
     const Other = {name:"Other", id:"Other", icon:"question"}
     const [universityFilter, setUniversityFilter] = useState("")
-    const robotMessage = {
-        "DE": "Wo gehst du zur Schule, an die Uni oder machst eine Ausbildung?",
-        "GB": "Where do you go to school, university, or do an apprenticeship?",
-        "US": "Where do you go to school, college, or do an apprenticeship?",
-        "AU": "Where do you go to school, uni, or do an apprenticeship?",
-        "ES": "¿Dónde vas a la escuela, a la universidad o haces una formación profesional?",
-    }
+    
 
     if (selectedKathegorie == "SCHOOL") {
-
+        const robotMessage = {
+            "DE": "An welcher Schule bist du?",
+            "GB": "Which school do you go to?",
+            "US": "Which school are you attending?",
+            "AU": "Which school are you at?",
+            "ES": "¿A qué escuela vas?",
+        }
     return ( 
         <View className='h-full  w-full justify-between items-center py-5'>
             <View className='w-full'>
@@ -194,16 +194,16 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                     numColumns={width < 400 ? 2 : 3}
                     className='z-100'
                     renderItem={({item}) => (
-                        <TouchableOpacity key={item.name} onPress={()=> {setAusbildungKathegorie(item); setUserData({...userData,signInProcessStep:"FIVE"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                            style={{width:120, height:120}}
+                        <TouchableOpacity key={item.id} onPress={()=> {setAusbildungKathegorie(item); setUserData({...userData,signInProcessStep:"FIVE"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                            style={{width:125, height:125}}
                         >
                             <Icon name={item.icon} size={20} color="#D1D5DB" />
-                           <Text className='text-gray-100 font-semibold text-[15px] text-center' numberOfLines={item.length > 13 ? 2 : null}>
-                                {item.name}
+                           <Text className='text-gray-100 font-semibold text-[15px] text-center' numberOfLines={selectedLanguage == null ? item.name.DE : item.name[languages[selectedLanguage].code].length > 13 ? 2 : null}>
+                                {selectedLanguage == null ? item.name.DE : item.name[languages[selectedLanguage].code]}
                             </Text> 
                         </TouchableOpacity>
                     )}
-                    keyExtractor={(item) => item.name}
+                    keyExtractor={(item) => item.id}
                     
                 />
             </View>

@@ -14,12 +14,13 @@ import StepTwo from '@/components/(signUp)/two';
 import StepFour from '@/components/(signUp)/four';
 import StepThree from '@/components/(signUp)/three';
 import StepFive from '@/components/(signUp)/five';
+import StepSix from '@/components/(signUp)/six';
+import StepSeven from '@/components/(signUp)/seven';
 
 const personalize = () => {
+
     const { user } = useGlobalContext();
     const [userData, setUserData] = useState(null);
-    const [name, setName] = useState("");
-    const [ isActive, setIsActive ] = useState(false);
     const languages = [
         {name:"Deutsch", enum:"DEUTSCH", code:"DE"},
         {name:"English", enum:"BRITISH", code:"GB"},
@@ -27,21 +28,19 @@ const personalize = () => {
         {name:"Spanish", enum:"SPANISH", code:"ES"},
         {name:"Australian", enum:"AUSTRALIAN", code:"AU"},
     ]
-    const [ selectedCountry, setSelectedCountry ] = useState( {name:"Deutschland",code:"DE", id:"4058177f-0cd4-4820-8f71-557c4b27dd42" }
-    );
+    const [name, setName] = useState("");
+    const [ selectedCountry, setSelectedCountry ] = useState( {name:"Deutschland",code:"DE", id:"4058177f-0cd4-4820-8f71-557c4b27dd42" });
     const [selectedLanguage, setSelectedLanguage] = useState(null);
     const [selectedKathegorie, setSelectedKathegorie] = useState(null);
     const [selectedRegion, setSelectedRegion] = useState(null);
     const [school, setSchool] = useState(null);
-
-    const [grade, setGrade] = useState(null);
     const [ausbildungKathegorie, setAusbildungKathegorie] = useState(null);
-
-    const [uni, setUni] = useState(null);
     const [selectedUniversity, setSelectedUniversity] = useState(null);
-    const [other, setOther] = useState(null);
-    const [selectedOther, setSelectedOther] = useState(null);
-
+    const [degree, setDegree] = useState(null);
+    const [ selectedAusbildung, setSelectedAusbildung ] = useState(null);
+    const [ classNumber, setClassNumber ] = useState(null);
+    const [ selectedSubjects, setSelectedSubjects ] = useState([]);
+    const [ selectedField, setSelectedField ] = useState([]);
     useEffect(() => {
               if (user === null ) return;
               async function fetchUserData() {
@@ -65,7 +64,10 @@ const personalize = () => {
         {userData !== null && userData.signInProcessStep == "TWO" ? <StepTwo name={name} selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} languages={languages} userData={userData} setUserData={setUserData}/> : null}
         {userData !== null && userData.signInProcessStep == "THREE" ? <StepThree userData={userData} setUserData={setUserData} setSelectedKathegorie={setSelectedKathegorie} selectedLanguage={selectedLanguage} languages={languages} name={name} selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} countryList={countryList}/> : null}
         {userData !== null && userData.signInProcessStep == "FOUR" ? <StepFour selectedUniversity={selectedUniversity} setSelectedUniversity={setSelectedUniversity} ausbildungKathegorie={ausbildungKathegorie} setAusbildungKathegorie={setAusbildungKathegorie} school={school} setSchool={setSchool} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} selectedKathegorie={selectedKathegorie} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} setUserData={setUserData} userData={userData} languages={languages}/> : null}
-        {userData !== null && userData.signInProcessStep == "FIVE" ? <StepFive/> : null}
+        {userData !== null && userData.signInProcessStep == "FIVE" ? <StepFive setClass={setClassNumber} setSelectedKathegorie={selectedKathegorie} setSelectedAusbildung={setSelectedAusbildung} setDegree={setDegree} languages={languages} selectedLanguage={selectedLanguage} userData={userData} setUserData={setUserData} selectedUniversity={selectedUniversity} school={school} ausbildungKathegorie={ausbildungKathegorie}/> : null}
+        {userData !== null && userData.signInProcessStep == "SIX" ? <StepSix selectedField={selectedField} setSelectedField={setSelectedField} selectedDegree={degree} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} userData={userData} setUserData={setUserData} selectedKathegorie={selectedKathegorie} languages={languages} selectedLanguage={selectedLanguage}/> : null}
+        {userData !== null && userData.signInProcessStep == "SEVEN" ? <StepSeven  languages={languages} setUserData={setUserData} userData={userData} selectedField={selectedField} selectedSubjects={selectedSubjects} classNumber={classNumber}  selectedAusbildung={selectedAusbildung}  degree={degree} selectedUniversity={selectedUniversity} ausbildungKathegorie={ausbildungKathegorie} school={school} name={name} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} selectedKathegorie={selectedKathegorie} selectedRegion={selectedRegion}   /> : null}
+
     </SafeAreaView>
   )
 }

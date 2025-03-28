@@ -26,8 +26,8 @@ export const schoolListDeutschland = {
         {name:"Haupt-/ Mittelschule", id:"4058177ffwwfe-0cd4-4820-8f71-557c4b27dd42", klassenstufen: [5,6,7,8,9,10] },
         {name:"Realschule", id:"4058177f-0cd4-fwefw4820-8f71-557c4b27dd42", klassenstufen: [5,6,7,8,9,10] },
         {name:"Gymnasium", id:"4058177f-0cd4-fwef-8f71-557c4b27dd42", klassenstufen: [5,6,7,8,9,10,11,12,13] },
-        {name:"Gesamtschule", id:"4058177f-0cd4-wef-8f71-557c4b27dd42", klassenstufen: [5,6,7,8,9,10] },
-        {name:"Berufsschule", id:"ew-0cd4-fwef-8f71-557c4b27dd42", klassenstufen: [1,2,3] },
+        {name:"Gesamtschule", id:"4058177f-0cd4-wef-8f71-557c4b27dd42", klassenstufen: [5,6,7,8,9,10,11,12,13] },
+        {name:"Berufsschule", id:"ew-0cd4-fwef-8f71-557c4b27dd42", klassenstufen: [5,6,7,8,9,10,11,12,13] },
     ],
     schoolSubjects: [
         {name:"Deutsch", id:"4058177f-0cd4-4820-8f71-557c4b27dd42", icon: "book-open" },
@@ -61,7 +61,7 @@ export const schoolListDeutschland = {
 }
 
 export const universityListDeutschland = [
-    {name:"Leibniz Universität Hannover",code:"LUH", id:"4058177f-0cd4-4820-8f71-557c4b27dd42",image:"https://th.bing.com/th?id=ODLS.5d53dd9b-63d7-41f7-ba62-89ffd0f95a6f&w=32&h=32&o=6&pid=1.2" },
+    {name:"Leibniz Universität Hannover",code:"LUH", id:"4058177f-0cd4-4820-8f71-557c4b27dd42",image:"https://th.bing.com/th?id=ODLS.5d53dd9b-63d7-41f7-ba62-89ffd0f95a6f&w=32&h=32&o=6&pid=1.2",slang:"LUH" },
 ]
 
 export const LeibnizSubjects = [
@@ -990,7 +990,7 @@ export const LeibnizSubjects = [
                 "faculty": "Wirtschaftswissenschaftliche Fakultät"
             }
         ],
-        "Staatsexamen/Staatliche Prüfung": [
+        "Staatsexamen": [
             {
                 "name": "Rechtswissenschaften (Staatsexamen)",
                 "type": "Staatsexamen/Staatliche Prüfung",
@@ -1029,1646 +1029,1379 @@ export const LeibnizSubjects = [
     }
 ]
 
+export const ausbildungsTypen = [
+    {
+      "name": "Bau & Handwerk",
+      "id": "bau_handwerk",
+      "icon": "hammer"
+    },
+    {
+      "name": "Metall, Elektro & Technik",
+      "id": "metall_elektro_technik",
+      "icon": "cogs"
+    },
+    {
+      "name": "Produktion & Logistik",
+      "id": "produktion_logistik",
+      "icon": "truck"
+    },
+    {
+      "name": "Gesundheit & Pflege",
+      "id": "gesundheit_pflege",
+      "icon": "user-md"
+    },
+    {
+      "name": "Gastronomie & Tourismus",
+      "id": "gastronomie_tourismus",
+      "icon": "utensils"
+    },
+    {
+      "name": "IT & Medien",
+      "id": "it_medien",
+      "icon": "laptop"
+    },
+    {
+      "name": "Kunst & Gestaltung",
+      "id": "kunst_gestaltung",
+      "icon": "paint-brush"
+    },
+    {
+      "name": "Wirtschaft & Verwaltung",
+      "id": "wirtschaft_verwaltung",
+      "icon": "chart-line"
+    },
+    {
+      "name": "Umwelt & Natur",
+      "id": "umwelt_natur",
+      "icon": "leaf"
+    }
+  ]
+  
 
 export const ausbildungsListDeutschland = {
-    "ausbildungsTypen": [
-        {name:"Handwerk & Industrie", id:"Handwerk & Industrie", icon:"tools"},
-        {name:"Kaufmännische Berufe", id:"Kaufmännische Berufe", icon:"briefcase"},
-        {name:"Gesundheit & Pflege", id:"Gesundheit & Pflege", icon:"user-md"},
-        {name:"Gastronomie & Tourismus", id:"Gastronomie & Tourismus", icon:"utensils"},
-        {name:"IT & Medien", id:"IT & Medien", icon:"laptop"},
-        {name:"Kunst & Gestaltung", id:"Kunst & Gestaltung", icon:"paint-brush"},
-        
-    ],
-    "Handwerk & Industrie": [    
-    {
-        "name": "Änderungsschneider/Änderungsschneiderin",
-        "id": "1",
-        "icon": "cut"
-    },
-    {
-        "name": "Ausbaufacharbeiter/Ausbaufacharbeiterin",
-        "id": "2",
-        "icon": "hammer"
-    },
-    {
-        "name": "Berg- und Maschinenmann/Berg- und Maschinenfrau",
-        "id": "3",
-        "icon": "hard-hat"
-    },
-    {
-        "name": "Chemielaborjungwerker/Chemielaborjungwerkerin",
-        "id": "4",
-        "icon": "flask"
-    },
-    {
-        "name": "Fachkraft für Gastronomie",
-        "id": "5",
-        "icon": "utensils"
-    },
-    {
-        "name": "Fachkraft für Holz- und Bautenschutzarbeiten",
-        "id": "6",
-        "icon": "tools"
-    },
-    {
-        "name": "Fachkraft für Kurier-, Express- und Postdienstleistungen",
-        "id": "7",
-        "icon": "truck"
-    },
-    {
-        "name": "Fachkraft für Lederverarbeitung",
-        "id": "8",
-        "icon": "shoe-prints"
-    },
-    {
-        "name": "Fachkraft für Metalltechnik",
-        "id": "9",
-        "icon": "cogs"
-    },
-    {
-        "name": "Fachkraft Küche",
-        "id": "10",
-        "icon": "utensil-spoon"
-    },
-    {
-        "name": "Fachlagerist/Fachlageristin",
-        "id": "11",
-        "icon": "boxes"
-    },
-    {
-        "name": "Fahrradmonteur/Fahrradmonteurin",
-        "id": "12",
-        "icon": "bicycle"
-    },
-    {
-        "name": "Hochbaufacharbeiter/Hochbaufacharbeiterin",
-        "id": "13",
-        "icon": "building"
-    },
-    {
-        "name": "Industrieelektriker/Industrieelektrikerin",
-        "id": "14",
-        "icon": "bolt"
-    },{
-        "name": "Isolierfacharbeiter/Isolierfacharbeiterin",
-        "id": "15",
-        "icon": "thermometer-half"
-    },
-    {
-        "name": "Maschinen- und Anlagenführer/Maschinen- und Anlagenführerin",
-        "id": "16",
-        "icon": "cogs"
-    },
-    {
-        "name": "Polster- und Dekorationsnäher/Polster- und Dekorationsnäherin",
-        "id": "17",
-        "icon": "couch"
-    },
-    {
-        "name": "Produktionsfachkraft Chemie",
-        "id": "18",
-        "icon": "flask"
-    },
-    {
-        "name": "Produktprüfer-Textil/Produktprüferin-Textil",
-        "id": "19",
-        "icon": "search"
-    },
-    {
-        "name": "Servicefahrer/Servicefahrerin",
-        "id": "21",
-        "icon": "truck"
-    },
-    {
-        "name": "Textil- und Modenäher/Textil- und Modenäherin",
-        "id": "23",
-        "icon": "tshirt"
-    },
-    {
-        "name": "Tiefbaufacharbeiter/Tiefbaufacharbeiterin",
-        "id": "24",
-        "icon": "tools"
-    },
-    {
-        "name": "Vorpolierer Schmuck- und Kleingeräteherstellung/Vorpoliererin Schmuck- und Kleingeräteherstellung",
-        "id": "26",
-        "icon": "gem"
-    },
-    {
-        "name": "Asphaltbauer/Asphaltbauerin",
-        "id": "27",
-        "icon": "road"
-    },
-    {
-        "name": "Aufbereitungsmechaniker/Aufbereitungsmechanikerin",
-        "id": "28",
-        "icon": "wrench"
-    },
-    {
-        "name": "Bäcker/Bäckerin",
-        "id": "2",
-        "icon": "bread-slice"
-    },
-    {
-        "name": "Baugeräteführer/Baugeräteführerin",
-        "id": "4",
-        "icon": "dolly"
-    },
-    {
-        "name": "Baustoffprüfer/Baustoffprüferin",
-        "id": "5",
-        "icon": "tasks"
-    },
-    {
-        "name": "Bauwerksabdichter/Bauwerksabdichterin",
-        "id": "6",
-        "icon": "house-damage"
-    },
-    {
-        "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik/Bauwerksmechanikerin für Abbruch und Betontrenntechnik",
-        "id": "7",
-        "icon": "democrat"
-    },
-    {
-        "name": "Bauzeichner/Bauzeichnerin",
-        "id": "8",
-        "icon": "drafting-compass"
-    },
-    {
-        "name": "Bergbautechnologe/Bergbautechnologin",
-        "id": "9",
-        "icon": "industry"
-    },
-    {
-        "name": "Berufskraftfahrer/Berufskraftfahrerin",
-        "id": "10",
-        "icon": "truck"
-    },
-    {
-        "name": "Beton- und Stahlbetonbauer/Beton- und Stahlbetonbauerin",
-        "id": "12",
-        "icon": "bricks"
-    },
-    {
-        "name": "Betonfertigteilbauer/Betonfertigteilbauerin",
-        "id": "13",
-        "icon": "cubes"
-    },
-    {
-        "name": "Binnenschiffer/Binnenschifferin",
-        "id": "14",
-        "icon": "ship"
-    },{
-        "name": "Biologiemodellmacher/Biologiemodellmacherin",
-        "id": "15",
-        "icon": "dna"
-    },
-    {
-        "name": "Bodenleger/Bodenlegerin",
-        "id": "16",
-        "icon": "layer-group"
-    },
-    {
-        "name": "Bogenmacher/Bogenmacherin",
-        "id": "17",
-        "icon": "bow-arrow"
-    },
-    {
-        "name": "Böttcher/Böttcherin",
-        "id": "18",
-        "icon": "wine-barrel"
-    },
-    {
-        "name": "Brauer und Mälzer/Brauerin und Mälzerin",
-        "id": "19",
-        "icon": "beer"
-    },
-    {
-        "name": "Brenner/Brennerin",
-        "id": "20",
-        "icon": "fire"
-    },
-    {
-        "name": "Brunnenbauer/Brunnenbauerin",
-        "id": "21",
-        "icon": "faucet"
-    },
-    {
-        "name": "Buchbinder/Buchbinderin",
-        "id": "22",
-        "icon": "book"
-    },
-    {
-        "name": "Büchsenmacher/Büchsenmacherin",
-        "id": "24",
-        "icon": "crosshairs"
-    },
-    {
-        "name": "Bürsten- und Pinselmacher/Bürsten- und Pinselmacherin",
-        "id": "26",
-        "icon": "paint-brush"
-    },
-    {
-        "name": "Dachdecker/Dachdeckerin",
-        "id": "27",
-        "icon": "house"
-    },
-    {
-        "name": "Destillateur/Destillateurin",
-        "id": "28",
-        "icon": "bong"
-    },
-    {
-        "name": "Drechsler (Elfenbeinschnitzer)/Drechslerin (Elfenbeinschnitzerin)",
-        "id": "29",
-        "icon": "chess"
-    },
-    {
-        "name": "Edelmetallprüfer/Edelmetallprüferin",
-        "id": "1",
-        "icon": "balance-scale"
-    },
-    {
-        "name": "Edelsteinschleifer/Edelsteinschleiferin",
-        "id": "2",
-        "icon": "gem"
-    },
-    {
-        "name": "Eisenbahner im Betriebsdienst Lokführer und Transport/Eisenbahnerin im Betriebsdienst Lokführerin und Transport",
-        "id": "3",
-        "icon": "train"
-    },
-    {
-        "name": "Eisenbahner in der Zugverkehrssteuerung/Eisenbahnerin in der Zugverkehrssteuerung",
-        "id": "4",
-        "icon": "traffic-light"
-    },
-    {
-        "name": "Elektroanlagenmonteur/Elektroanlagenmonteurin",
-        "id": "5",
-        "icon": "plug"
-    },
-    {
-        "name": "Estrichleger/Estrichlegerin",
-        "id": "6",
-        "icon": "ruler-combined"
-    },
-    {
-        "name": "Fachkraft Agrarservice",
-        "id": "12",
-        "icon": "tractor"
-    },
-    {
-        "name": "Fachkraft für Abwassertechnik",
-        "id": "13",
-        "icon": "water"
-    },
-    {
-        "name": "Fachkraft für Fruchtsafttechnik",
-        "id": "14",
-        "icon": "glass-martini"
-    },{
-        "name": "Fachkraft für Hafenlogistik",
-        "id": "15",
-        "icon": "anchor"
-    },
-    {
-        "name": "Fachkraft für Kreislauf- und Abfallwirtschaft",
-        "id": "16",
-        "icon": "recycle"
-    },
-    {
-        "name": "Fachkraft für Lagerlogistik",
-        "id": "17",
-        "icon": "boxes"
-    },
-    {
-        "name": "Fachkraft für Lebensmitteltechnik",
-        "id": "18",
-        "icon": "utensils"
-    },
-    {
-        "name": "Fachkraft für Lederherstellung und Gerbereitechnik",
-        "id": "19",
-        "icon": "shoe-prints"
-    },
-    {
-        "name": "Fachkraft für Möbel-, Küchen- und Umzugsservice",
-        "id": "20",
-        "icon": "truck-moving"
-    },
-    {
-        "name": "Fachkraft für Rohr-, Kanal- und Industrieservice",
-        "id": "21",
-        "icon": "water"
-    },
-    {
-        "name": "Fachkraft für Schutz und Sicherheit",
-        "id": "22",
-        "icon": "shield-alt"
-    },
-    {
-        "name": "Fachkraft für Straßen- und Verkehrstechnik",
-        "id": "23",
-        "icon": "road"
-    },
-    {
-        "name": "Fachkraft für Wasserversorgungstechnik",
-        "id": "25",
-        "icon": "faucet"
-    },
-    {
-        "name": "Fachkraft für Wasserwirtschaft",
-        "id": "26",
-        "icon": "tint"
-    },
-    {
-        "name": "Fachkraft im Fahrbetrieb",
-        "id": "27",
-        "icon": "bus"
-    },
-    {
-        "name": "Fachverkäufer im Lebensmittelhandwerk/Fachverkäuferin im Lebensmittelhandwerk",
-        "id": "30",
-        "icon": "shopping-basket"
-    },
-    {
-        "name": "Fahrzeuginterieur-Mechaniker/Fahrzeuginterieur-Mechanikerin",
-        "id": "1",
-        "icon": "car"
-    },
-    {
-        "name": "Fahrzeuglackierer/Fahrzeuglackiererin",
-        "id": "2",
-        "icon": "spray-can"
-    },
-    {
-        "name": "Fassadenmonteur/Fassadenmonteurin",
-        "id": "3",
-        "icon": "building"
-    },
-    {
-        "name": "Feinpolierer/Feinpoliererin",
-        "id": "4",
-        "icon": "gem"
-    },
-    {
-        "name": "Fertigungsmechaniker/Fertigungsmechanikerin",
-        "id": "5",
-        "icon": "cogs"
-    },
-    {
-        "name": "Feuerungs- und Schornsteinbauer/Feuerungs- und Schornsteinbauerin",
-        "id": "6",
-        "icon": "fire-alt"
-    },
-    {
-        "name": "Figurenkeramformer/Figurenkeramformerin",
-        "id": "7",
-        "icon": "chess-knight"
-    },
-    {
-        "name": "Fischwirt/Fischwirtin",
-        "id": "8",
-        "icon": "fish"
-    },
-    {
-        "name": "Flachglastechnologe/Flachglastechnologin",
-        "id": "9",
-        "icon": "glass"
-    },
-    {
-        "name": "Flechtwerkgestalter/Flechtwerkgestalterin",
-        "id": "10",
-        "icon": "drafting-compass"
-    },
-    {
-        "name": "Fleischer/Fleischerin",
-        "id": "11",
-        "icon": "drumstick-bite"
-    },
-    {
-        "name": "Fliesen-, Platten- und Mosaikleger/Fliesen-, Platten- und Mosaiklegerin",
-        "id": "12",
-        "icon": "th-large"
-    },
-    {
-        "name": "Florist/Floristin",
-        "id": "13",
-        "icon": "seedling"
-    },
-    {
-        "name": "Forstwirt/Forstwirtin",
-        "id": "14",
-        "icon": "tree"
-    },{
-        "name": "Friseur/Friseurin",
-        "id": "17",
-        "icon": "cut"
-    },
-    {
-        "name": "Gärtner/Gärtnerin",
-        "id": "18",
-        "icon": "seedling"
-    },
-    {
-        "name": "Gebäudereiniger/Gebäudereinigerin",
-        "id": "19",
-        "icon": "broom"
-    },
-    {
-        "name": "Geigenbauer/Geigenbauerin",
-        "id": "20",
-        "icon": "music"
-    },
-    {
-        "name": "Gerüstbauer/Gerüstbauerin",
-        "id": "22",
-        "icon": "tools"
-    },
-    {
-        "name": "Glasapparatebauer/Glasapparatebauerin",
-        "id": "26",
-        "icon": "flask"
-    },
-    {
-        "name": "Glasbläser/Glasbläserin",
-        "id": "27",
-        "icon": "wine-bottle"
-    },
-    {
-        "name": "Glaser/Glaserin",
-        "id": "28",
-        "icon": "glass-whiskey"
-    },
-    {
-        "name": "Glasmacher/Glasmacherin",
-        "id": "29",
-        "icon": "glass-cheers"
-    },
-    {
-        "name": "Glasveredler/Glasveredlerin",
-        "id": "30",
-        "icon": "gem"
-    },
-    {
-        "name": "Gleisbauer/Gleisbauerin",
-        "id": "1",
-        "icon": "train"
-    },
-    {
-        "name": "Graveur/Graveurin",
-        "id": "2",
-        "icon": "pen-fancy"
-    },
-    {
-        "name": "Hafenschiffer/Hafenschifferin",
-        "id": "3",
-        "icon": "ship"
-    },
-    {
-        "name": "Handzuginstrumentenmacher/Handzuginstrumentenmacherin",
-        "id": "4",
-        "icon": "accordion"
-    },
-    {
-        "name": "Holz- und Bautenschützer/Holz- und Bautenschützerin",
-        "id": "6",
-        "icon": "hard-hat"
-    },
-    {
-        "name": "Holzbearbeitungsmechaniker/Holzbearbeitungsmechanikerin",
-        "id": "7",
-        "icon": "screwdriver"
-    },
-    {
-        "name": "Holzbildhauer/Holzbildhauerin",
-        "id": "8",
-        "icon": "tree"
-    },
-    {
-        "name": "Holzblasinstrumentenmacher/Holzblasinstrumentenmacherin",
-        "id": "9",
-        "icon": "wind"
-    },
-    {
-        "name": "Holzmechaniker/Holzmechanikerin",
-        "id": "10",
-        "icon": "cogs"
-    },
-    {
-        "name": "Holzspielzeugmacher/Holzspielzeugmacherin",
-        "id": "11",
-        "icon": "puzzle-piece"
-    },
-    {
-        "name": "Industrie-Isolierer/Industrie-Isoliererin",
-        "id": "15",
-        "icon": "thermometer-three-quarters"
-    },{
-        "name": "Industriekeramiker Anlagentechnik/Industriekeramikerin Anlagentechnik",
-        "id": "17",
-        "icon": "industry"
-    },
-    {
-        "name": "Industriekeramiker Dekorationstechnik/Industriekeramikerin Dekorationstechnik",
-        "id": "18",
-        "icon": "paint-brush"
-    },
-    {
-        "name": "Industriekeramiker Modelltechnik/Industriekeramikerin Modelltechnik",
-        "id": "19",
-        "icon": "cube"
-    },
-    {
-        "name": "Industriekeramiker Verfahrenstechnik/Industriekeramikerin Verfahrenstechnik",
-        "id": "20",
-        "icon": "cogs"
-    },
-    {
-        "name": "Kanalbauer/Kanalbauerin",
-        "id": "24",
-        "icon": "water"
-    },
-    {
-        "name": "Keramiker/Keramikerin",
-        "id": "2",
-        "icon": "mug-hot"
-    },
-    {
-        "name": "Kerzenhersteller und Wachsbildner/Kerzenherstellerin und Wachsbildnerin",
-        "id": "3",
-        "icon": "candle"
-    },
-    {
-        "name": "Koch/Köchin",
-        "id": "4",
-        "icon": "utensils"
-    },
-    {
-        "name": "Konditor/Konditorin",
-        "id": "5",
-        "icon": "birthday-cake"
-    },
-    {
-        "name": "Kunststoff- und Kautschuktechnologe/Kunststoff- und Kautschuktechnologin",
-        "id": "7",
-        "icon": "flask"
-    },
-    {
-        "name": "Kürschner/Kürschnerin",
-        "id": "8",
-        "icon": "feather-alt"
-    },
-    {
-        "name": "Landwirt/Landwirtin",
-        "id": "9",
-        "icon": "tractor"
-    },
-    {
-        "name": "Leichtflugzeugbauer/Leichtflugzeugbauerin",
-        "id": "10",
-        "icon": "plane"
-    },
-    {
-        "name": "Leuchtröhrenglasbläser/Leuchtröhrenglasbläserin",
-        "id": "11",
-        "icon": "lightbulb"
-    },
-    {
-        "name": "Maler und Lackierer/Malerin und Lackiererin",
-        "id": "13",
-        "icon": "paint-roller"
-    },
-    {
-        "name": "Maßschneider/Maßschneiderin",
-        "id": "15",
-        "icon": "tape"
-    },
-    {
-        "name": "Maßschuhmacher/Maßschuhmacherin",
-        "id": "16",
-        "icon": "shoe-prints"
-    },
-    {
-        "name": "Maurer/Maurerin",
-        "id": "18",
-        "icon": "bricks"
-    },
-    {
-        "name": "Mechaniker für Reifen- und Vulkanisationstechnik/Mechanikerin für Reifen- und Vulkanisationstechnik",
-        "id": "19",
-        "icon": "circle-notch"
-    },
-    {
-        "name": "Medientechnologe Druck/Medientechnologin Druck",
-        "id": "23",
-        "icon": "print"
-    },
-    {
-        "name": "Medientechnologe Druckverarbeitung/Medientechnologin Druckverarbeitung",
-        "id": "24",
-        "icon": "book-open"
-    },
-    {
-        "name": "Medientechnologe Siebdruck/Medientechnologin Siebdruck",
-        "id": "25",
-        "icon": "image"
-    },
-    {
-        "name": "Metall- und Glockengießer/Metall- und Glockengießerin",
-        "id": "27",
-        "icon": "bell"
-    },
-    {
-        "name": "Metallbildner/Metallbildnerin",
-        "id": "28",
-        "icon": "wrench"
-    },
-    {
-        "name": "Metallblasinstrumentenmacher/Metallblasinstrumentenmacherin",
-        "id": "1",
-        "icon": "trumpet"
-    },
-    {
-        "name": "Milchtechnologe/Milchtechnologin",
-        "id": "3",
-        "icon": "cheese"
-    },
-    {
-        "name": "Milchwirtschaftlicher Laborant/Milchwirtschaftliche Laborantin",
-        "id": "4",
-        "icon": "vial"
-    },
-    {
-        "name": "Modist/Modistin",
-        "id": "5",
-        "icon": "hat-cowboy"
-    },
-    {
-        "name": "Naturwerksteinmechaniker/Naturwerksteinmechanikerin",
-        "id": "7",
-        "icon": "mountain"
-    },
-    {
-        "name": "Oberflächenbeschichter/Oberflächenbeschichterin",
-        "id": "9",
-        "icon": "layer-group"
-    },
-    {
-        "name": "Ofen- und Luftheizungsbauer/Ofen- und Luftheizungsbauerin",
-        "id": "10",
-        "icon": "fire-alt"
-    },
-    {
-        "name": "Packmitteltechnologe/Packmitteltechnologin",
-        "id": "12",
-        "icon": "box-open"
-    },
-    {
-        "name": "Papiertechnologe/Papiertechnologin",
-        "id": "13",
-        "icon": "scroll"
-    },
-    {
-        "name": "Parkettleger/Parkettlegerin",
-        "id": "14",
-        "icon": "th"
-    },{
-        "name": "Pelzveredler/Pelzveredlerin",
-        "id": "16",
-        "icon": "feather-alt"
-    },
-    {
-        "name": "Pferdewirt/Pferdewirtin",
-        "id": "18",
-        "icon": "horse"
-    },
-    {
-        "name": "Pflanzentechnologe/Pflanzentechnologin",
-        "id": "19",
-        "icon": "seedling"
-    },
-    {
-        "name": "Polsterer/Polsterin",
-        "id": "21",
-        "icon": "couch"
-    },
-    {
-        "name": "Produktionsmechaniker-Textil/Produktionsmechanikerin-Textil",
-        "id": "23",
-        "icon": "thread"
-    },
-    {
-        "name": "Produktionstechnologe/Produktionstechnologin",
-        "id": "24",
-        "icon": "cogs"
-    },
-    {
-        "name": "Produktveredler-Textil/Produktveredlerin-Textil",
-        "id": "25",
-        "icon": "tshirt"
-    },
-    {
-        "name": "Prüftechnologe Keramik/Prüftechnologin Keramik",
-        "id": "26",
-        "icon": "flask"
-    },
-    {
-        "name": "Raumausstatter/Raumausstatterin",
-        "id": "27",
-        "icon": "home"
-    },
-    {
-        "name": "Revierjäger/Revierjägerin",
-        "id": "30",
-        "icon": "paw"
-    },
-    {
-        "name": "Rohrleitungsbauer/Rohrleitungsbauerin",
-        "id": "1",
-        "icon": "faucet"
-    },
-    {
-        "name": "Rollladen- und Sonnenschutzmechatroniker/Rollladen- und Sonnenschutzmechatronikerin",
-        "id": "2",
-        "icon": "sun"
-    },
-    {
-        "name": "Sattler/Sattlerin",
-        "id": "3",
-        "icon": "horse-head"
-    },
-    {
-        "name": "Schädlingsbekämpfer/Schädlingsbekämpferin",
-        "id": "4",
-        "icon": "bug"
-    },
-    {
-        "name": "Schornsteinfeger/Schornsteinfegerin",
-        "id": "7",
-        "icon": "fire"
-    },
-    {
-        "name": "Schuhfertiger/Schuhfertigerin",
-        "id": "8",
-        "icon": "shoe-prints"
-    },
-    {
-        "name": "Segelmacher/Segelmacherin",
-        "id": "9",
-        "icon": "anchor"
-    },
-    {
-        "name": "Seiler/Seilerin",
-        "id": "10",
-        "icon": "link"
-    },
-    {
-        "name": "Spezialtiefbauer/Spezialtiefbauerin",
-        "id": "13",
-        "icon": "hard-hat"
-    },
-    {
-        "name": "Spielzeughersteller/Spielzeugherstellerin",
-        "id": "14",
-        "icon": "puzzle-piece"
-    },    {
-        "name": "Stanz- und Umformmechaniker/Stanz- und Umformmechanikerin",
-        "id": "17",
-        "icon": "compress-arrows-alt"
-    },
-    {
-        "name": "Steinmetz und Steinbildhauer/Steinmetzin und Steinbildhauerin",
-        "id": "18",
-        "icon": "mountain"
-    },
-    {
-        "name": "Straßenbauer/Straßenbauerin",
-        "id": "20",
-        "icon": "road"
-    },
-    {
-        "name": "Straßenwärter/Straßenwärterin",
-        "id": "21",
-        "icon": "traffic-cone"
-    },
-    {
-        "name": "Stuckateur/Stuckateurin",
-        "id": "22",
-        "icon": "paint-roller"
-    },
-    {
-        "name": "Süßwarentechnologe/Süßwarentechnologin",
-        "id": "23",
-        "icon": "candy-cane"
-    },
-    {
-        "name": "Tankwart/Tankwartin",
-        "id": "24",
-        "icon": "gas-pump"
-    },
-    {
-        "name": "Technischer Konfektionär/Technische Konfektionärin",
-        "id": "25",
-        "icon": "ruler-combined"
-    },
-    {
-        "name": "Textil- und Modeschneider/Textil- und Modeschneiderin",
-        "id": "26",
-        "icon": "cut"
-    },
-    {
-        "name": "Textilgestalter im Handwerk/Textilgestalterin im Handwerk",
-        "id": "27",
-        "icon": "palette"
-    },
-    {
-        "name": "Textilreiniger/Textilreinigerin",
-        "id": "28",
-        "icon": "soap"
-    },
-    {
-        "name": "Thermometermacher/Thermometermacherin",
-        "id": "29",
-        "icon": "thermometer-half"
-    },
-    {
-        "name": "Tierwirt/Tierwirtin",
-        "id": "3",
-        "icon": "paw"
-    },
-    {
-        "name": "Tischler/Tischlerin",
-        "id": "4",
-        "icon": "tools"
-    },
-    {
-        "name": "Trockenbaumonteur/Trockenbaumonteurin",
-        "id": "6",
-        "icon": "hard-hat"
-    },
-    {
-        "name": "Uhrmacher/Uhrmacherin",
-        "id": "7",
-        "icon": "clock"
-    },
-    {
-        "name": "Verfahrensmechaniker für Beschichtungstechnik/Verfahrensmechanikerin für Beschichtungstechnik",
-        "id": "9",
-        "icon": "layer-group"
-    },
-    {
-        "name": "Verfahrensmechaniker für Brillenoptik/Verfahrensmechanikerin für Brillenoptik",
-        "id": "10",
-        "icon": "glasses"
-    },
-    {
-        "name": "Verfahrensmechaniker Glastechnik/Verfahrensmechanikerin Glastechnik",
-        "id": "11",
-        "icon": "glass-martini"
-    },
-    {
-        "name": "Verfahrensmechaniker in der Steine- und Erdenindustrie/Verfahrensmechanikerin in der Steine- und Erdenindustrie",
-        "id": "12",
-        "icon": "cube"
-    },
-    {
-        "name": "Verfahrenstechnologe Mühlen- und Getreidewirtschaft/Verfahrenstechnologin Mühlen- und Getreidewirtschaft",
-        "id": "13",
-        "icon": "wheat"
-    },
-    {
-        "name": "Wärme-, Kälte- und Schallschutzisolierer/Wärme-, Kälte- und Schallschutzisoliererin",
-        "id": "17",
-        "icon": "thermometer-three-quarters"
-    },
-    {
-        "name": "Wasserbauer/Wasserbauerin",
-        "id": "18",
-        "icon": "water"
-    },
-    {
-        "name": "Weintechnologe/Weintechnologin",
-        "id": "19",
-        "icon": "wine-bottle"
-    },
-    {
-        "name": "Werkfeuerwehrmann/Werkfeuerwehrfrau",
-        "id": "20",
-        "icon": "fire-extinguisher"
-    },
-    {
-        "name": "Werkgehilfe Schmuckwarenindustrie, Taschen- und Armbanduhren/Werkgehilfin Schmuckwarenindustrie, Taschen- und Armbanduhren",
-        "id": "21",
-        "icon": "gem"
-    },
-    {
-        "name": "Werksteinhersteller/Werksteinherstellerin",
-        "id": "22",
-        "icon": "th"
-    },{
-        "name": "Winzer/Winzerin",
-        "id": "23",
-        "icon": "wine-glass"
-    },
-    {
-        "name": "Zimmerer/Zimmerin",
-        "id": "25",
-        "icon": "hammer"
-    },
-    {
-        "name": "Zupfinstrumentenmacher/Zupfinstrumentenmacherin",
-        "id": "26",
-        "icon": "music"
-    },
-    {
-        "name": "Anlagenmechaniker für Sanitär-, Heizungs- und Klimatechnik/Anlagenmechanikerin für Sanitär-, Heizungs- und Klimatechnik",
-        "id": "27",
-        "icon": "tools"
-    },
-    {
-        "name": "Anlagenmechaniker/Anlagenmechanikerin",
-        "id": "28",
-        "icon": "cogs"
-    },
-    {
-        "name": "Behälter- und Apparatebauer/Behälter- und Apparatebauerin",
-        "id": "29",
-        "icon": "briefcase"
-    },
-    {
-        "name": "Binnenschifffahrtskapitän/Binnenschifffahrtskapitänin",
-        "id": "30",
-        "icon": "ship"
-    },
-    {
-        "name": "Bootsbauer/Bootsbauerin",
-        "id": "2",
-        "icon": "anchor"
-    },
-    {
-        "name": "Chemikant/Chemikantin",
-        "id": "4",
-        "icon": "flask"
-    },
-    {
-        "name": "Elektroniker für Maschinen und Antriebstechnik nach der Handwerksordnung/Elektronikerin für Maschinen und Antriebstechnik nach der Handwerksordnung",
-        "id": "14",
-        "icon": "bolt"
-    },
-    {
-        "name": "Feinwerkmechaniker/Feinwerkmechanikerin",
-        "id": "17",
-        "icon": "screwdriver"
-    },
-    {
-        "name": "Fluggerätmechaniker/Fluggerätmechanikerin",
-        "id": "19",
-        "icon": "plane"
-    },
-    {
-        "name": "Gießereimechaniker/Gießereimechanikerin",
-        "id": "20",
-        "icon": "fire-alt"
-    },
-    {
-        "name": "Industriemechaniker/Industriemechanikerin",
-        "id": "22",
-        "icon": "industry"
-    },
-    {
-        "name": "Karosserie- und Fahrzeugbaumechaniker/Karosserie- und Fahrzeugbaumechanikerin",
-        "id": "24",
-        "icon": "car"
-    },{
-        "name": "Klempner/Klempnerin",
-        "id": "26",
-        "icon": "wrench"
-    },
-    {
-        "name": "Konstruktionsmechaniker/Konstruktionsmechanikerin",
-        "id": "27",
-        "icon": "drafting-compass"
-    },
-    {
-        "name": "Kraftfahrzeugmechatroniker/Kraftfahrzeugmechatronikerin",
-        "id": "28",
-        "icon": "car"
-    },
-    {
-        "name": "Lacklaborant/Lacklaborantin",
-        "id": "29",
-        "icon": "palette"
-    },
-    {
-        "name": "Land- und Baumaschinenmechatroniker/Land- und Baumaschinenmechatronikerin",
-        "id": "30",
-        "icon": "tractor"
-    },
-    {
-        "name": "Mechatroniker/Mechatronikerin",
-        "id": "3",
-        "icon": "robot"
-    },
-    {
-        "name": "Metallbauer/Metallbauerin",
-        "id": "4",
-        "icon": "tools"
-    },
-    {
-        "name": "Präzisionswerkzeugmechaniker/Präzisionswerkzeugmechanikerin",
-        "id": "9",
-        "icon": "cogs"
-    },
-    {
-        "name": "Verfahrenstechnologe Metall/Verfahrenstechnologin Metall",
-        "id": "15",
-        "icon": "industry"
-    },
-    {
-        "name": "Werkzeugmechaniker/Werkzeugmechanikerin",
-        "id": "17",
-        "icon": "wrench"
-    },
-    {
-        "name": "Zerspanungsmechaniker/Zerspanungsmechanikerin",
-        "id": "19",
-        "icon": "cut"
-    },
-    {
-        "name": "Zweiradmechatroniker/Zweiradmechatronikerin",
-        "id": "20",
-        "icon": "bicycle"
-    }],
-    "Gesundheits- und Sozialwesen": [
-    {
-        "name": "Servicekraft für Schutz und Sicherheit",
-        "id": "22",
-        "icon": "shield-alt"
-    },
-    {
-        "name": "Augenoptiker/Augenoptikerin",
-        "id": "29",
-        "icon": "glasses"
-    },
-    {
-        "name": "Bestattungsfachkraft",
-        "id": "11",
-        "icon": "cross"
-    },
-    {
-        "name": "Drogist/Drogistin",
-        "id": "30",
-        "icon": "prescription-bottle-alt"
-    },
-    {
-        "name": "Fachangestellter für Bäderbetriebe/Fachangestellte für Bäderbetriebe",
-        "id": "8",
-        "icon": "swimmer"
-    },
-    {
-        "name": "Fachmann für Restaurants und Veranstaltungsgastronomie/Fachfrau für Restaurants und Veranstaltungsgastronomie",
-        "id": "28",
-        "icon": "utensils"
-    },
-    {
-        "name": "Fachmann für Systemgastronomie/Fachfrau für Systemgastronomie",
-        "id": "29",
-        "icon": "concierge-bell"
-    }, {
-        "name": "Hauswirtschafter/Hauswirtschafterin",
-        "id": "5",
-        "icon": "home"
-    },
-    {
-        "name": "Hörakustiker/Hörakustikerin",
-        "id": "12",
-        "icon": "deaf"
-    },
-    {
-        "name": "Kaufmann im Gesundheitswesen/Kauffrau im Gesundheitswesen",
-        "id": "1",
-        "icon": "briefcase-medical"
-    },
-    {
-        "name": "Kosmetiker/Kosmetikerin",
-        "id": "6",
-        "icon": "spa"
-    },
-    {
-        "name": "Medizinischer Fachangestellter/Medizinische Fachangestellte",
-        "id": "26",
-        "icon": "stethoscope"
-    },
-    {
-        "name": "Orthopädietechnik-Mechaniker/Orthopädietechnik-Mechanikerin",
-        "id": "11",
-        "icon": "wheelchair"
-    },
-    {
-        "name": "Pharmazeutisch-kaufmännischer Angestellter/Pharmazeutisch-kaufmännische Angestellte",
-        "id": "20",
-        "icon": "pills"
-    },
-    {
-        "name": "Sportfachmann/Sportfachfrau",
-        "id": "16",
-        "icon": "dumbbell"
-    },
-    {
-        "name": "Tiermedizinischer Fachangestellter/Tiermedizinische Fachangestellte",
-        "id": "1",
-        "icon": "paw"
-    },
-    {
-        "name": "Tierpfleger/Tierpflegerin",
-        "id": "2",
-        "icon": "paw"
-    },
-    {
-        "name": "Zahnmedizinischer Fachangestellter/Zahnmedizinische Fachangestellte",
-        "id": "24",
-        "icon": "tooth"
-    },{
-        "name": "Biologielaborant/Biologielaborantin",
-        "id": "1",
-        "icon": "dna"
-    },
-    {
-        "name": "Chirurgiemechaniker/Chirurgiemechanikerin",
-        "id": "5",
-        "icon": "syringe"
-    },
-    {
-        "name": "Orthopädieschuhmacher/Orthopädieschuhmacherin",
-        "id": "6",
-        "icon": "shoe-prints"
-    },
-    {
-        "name": "Pharmakant/Pharmakantin",
-        "id": "7",
-        "icon": "capsules"
-    },
-    {
-        "name": "Zahntechniker/Zahntechnikerin",
-        "id": "18",
-        "icon": "teeth"
-    }],
-    "Technologie & Informatik": [
-    {
-        "name": "Automatenfachmann/Automatenfachfrau",
-        "id": "30",
-        "icon": "vending-machine"
-    },
-    {
-        "name": "Fachangestellter für Medien- und Informationsdienste/Fachangestellte für Medien- und Informationsdienste",
-        "id": "10",
-        "icon": "book"
-    },
-    {
-        "name": "Fachinformatiker/Fachinformatikerin",
-        "id": "11",
-        "icon": "laptop-code"
-    },
-    {
-        "name": "Geomatiker/Geomatikerin",
-        "id": "21",
-        "icon": "map"
-    },
-    {
-        "name": "IT-System-Elektroniker/IT-System-Elektronikerin",
-        "id": "22",
-        "icon": "server"
-    },
-    {
-        "name": "Kaufmann für IT-System-Management/Kauffrau für IT-System-Management",
-        "id": "31",
-        "icon": "network-wired"
-    },
-    {
-        "name": "Mathematisch-technischer Softwareentwickler/Mathematisch-technische Softwareentwicklerin",
-        "id": "17",
-        "icon": "code"
-    },
-    {
-        "name": "Mikrotechnologe/Mikrotechnologin",
-        "id": "2",
-        "icon": "microchip"
-    },
-    {
-        "name": "Vermessungstechniker/Vermessungstechnikerin",
-        "id": "15",
-        "icon": "ruler"
-    },
-    {
-        "name": "Chemielaborant/Chemielaborantin",
-        "id": "3",
-        "icon": "flask"
-    },
-    {
-        "name": "Elektroniker für Automatisierungstechnik/Elektronikerin für Automatisierungstechnik",
-        "id": "7",
-        "icon": "cogs"
-    },
-    {
-        "name": "Elektroniker für Betriebstechnik/Elektronikerin für Betriebstechnik",
-        "id": "8",
-        "icon": "plug"
-    },
-    {
-        "name": "Elektroniker für Gebäude- und Infrastruktursysteme/Elektronikerin für Gebäude- und Infrastruktursysteme",
-        "id": "9",
-        "icon": "building"
-    },
-    {
-        "name": "Elektroniker für Gebäudesystemintegration/Elektronikerin für Gebäudesystemintegration",
-        "id": "10",
-        "icon": "home"
-    },
-    {
-        "name": "Elektroniker für Geräte und Systeme/Elektronikerin für Geräte und Systeme",
-        "id": "11",
-        "icon": "tv"
-    },
-    {
-        "name": "Elektroniker für Informations- und Systemtechnik/Elektronikerin für Informations- und Systemtechnik",
-        "id": "12",
-        "icon": "satellite"
-    },
-    {
-        "name": "Elektroniker für Maschinen und Antriebstechnik nach dem Berufsbildungsgesetz/Elektronikerin für Maschinen und Antriebstechnik nach dem Berufsbildungsgesetz",
-        "id": "13",
-        "icon": "gears"
-    },
-    {
-        "name": "Elektroniker/Elektronikerin",
-        "id": "15",
-        "icon": "microchip"
-    },
-    {
-        "name": "Feinoptiker/Feinoptikerin",
-        "id": "16",
-        "icon": "eye"
-    },
-    {
-        "name": "Fluggerätelektroniker/Fluggerätelektronikerin",
-        "id": "18",
-        "icon": "plane"
-    },
-    {
-        "name": "Informationselektroniker/Informationselektronikerin",
-        "id": "23",
-        "icon": "info-circle"
-    },
-    {
-        "name": "Mechatroniker für Kältetechnik/Mechatronikerin für Kältetechnik",
-        "id": "2",
-        "icon": "snowflake"
-    },
-    {
-        "name": "Physiklaborant/Physiklaborantin",
-        "id": "8",
-        "icon": "atom"
-    },
-    {
-        "name": "Technischer Modellbauer/Technische Modellbauerin",
-        "id": "11",
-        "icon": "cubes"
-    },
-    {
-        "name": "Technischer Systemplaner/Technische Systemplanerin",
-        "id": "13",
-        "icon": "project-diagram"
-    },
-    {
-        "name": "Textillaborant/Textillaborantin",
-        "id": "14",
-        "icon": "tshirt"
-    },
-    {
-        "name": "Werkstoffprüfer/Werkstoffprüferin",
-        "id": "16",
-        "icon": "clipboard-check"
-    }],
-    "Verwaltung & Wirtschaft": [
-    {
-        "name": "Servicefachkraft für Dialogmarketing",
-        "id": "20",
-        "icon": "comments"
-    },
-    {
-        "name": "Verkäufer/Verkäuferin",
-        "id": "25",
-        "icon": "shopping-cart"
-    },
-    {
-        "name": "Automobilkaufmann/Automobilkauffrau",
-        "id": "1",
-        "icon": "car"
-    },
-    {
-        "name": "Bankkaufmann/Bankkauffrau",
-        "id": "3",
-        "icon": "university"
-    },
-    {
-        "name": "Buchhändler/Buchhändlerin",
-        "id": "23",
-        "icon": "book"
-    },
-    {
-        "name": "Fachangestellter für Arbeitsmarktdienstleistungen/Fachangestellte für Arbeitsmarktdienstleistungen",
-        "id": "7",
-        "icon": "briefcase"
-    },
-    {
-        "name": "Fachangestellter für Markt- und Sozialforschung/Fachangestellte für Markt- und Sozialforschung",
-        "id": "9",
-        "icon": "chart-bar"
-    },
-    {
-        "name": "Hotelfachmann/Hotelfachfrau",
-        "id": "13",
-        "icon": "hotel"
-    },
-    {
-        "name": "Immobilienkaufmann/Immobilienkauffrau",
-        "id": "14",
-        "icon": "building"
-    },
-    {
-        "name": "Industriekaufmann/Industriekauffrau",
-        "id": "16",
-        "icon": "industry"
-    },
-    {
-        "name": "Investmentfondskaufmann/Investmentfondskauffrau",
-        "id": "21",
-        "icon": "chart-line"
-    },
-    {
-        "name": "Justizfachangestellter/Justizfachangestellte",
-        "id": "23",
-        "icon": "gavel"
-    },
-    {
-        "name": "Kaufmann für Büromanagement/Kauffrau für Büromanagement",
-        "id": "26",
-        "icon": "clipboard"
-    },
-    {
-        "name": "Kaufmann für Dialogmarketing/Kauffrau für Dialogmarketing",
-        "id": "27",
-        "icon": "phone-alt"
-    },
-    {
-        "name": "Kaufmann für Digitalisierungsmanagement/Kauffrau für Digitalisierungsmanagement",
-        "id": "28",
-        "icon": "cloud"
-    },
-    {
-        "name": "Kaufmann für Groß- und Außenhandelsmanagement/Kauffrau für Groß- und Außenhandelsmanagement",
-        "id": "29",
-        "icon": "exchange-alt"
-    },
-    {
-        "name": "Kaufmann für Hotelmanagement/Kauffrau für Hotelmanagement",
-        "id": "30",
-        "icon": "concierge-bell"
-    },
-    {
-        "name": "Kaufmann für Kurier-, Express- und Postdienstleistungen/Kauffrau für Kurier-, Express- und Postdienstleistungen",
-        "id": "32",
-        "icon": "envelope"
-    },
-    {
-        "name": "Kaufmann für Marketingkommunikation/Kauffrau für Marketingkommunikation",
-        "id": "33",
-        "icon": "bullhorn"
-    },
-    {
-        "name": "Kaufmann für Spedition und Logistikdienstleistung/Kauffrau für Spedition und Logistikdienstleistung",
-        "id": "34",
-        "icon": "truck"
-    },
-    {
-        "name": "Kaufmann für Tourismus und Freizeit/Kauffrau für Tourismus und Freizeit",
-        "id": "35",
-        "icon": "suitcase"
-    },
-    {
-        "name": "Kaufmann für Verkehrsservice/Kauffrau für Verkehrsservice",
-        "id": "36",
-        "icon": "bus"
-    },
-    {
-        "name": "Kaufmann für Versicherungen und Finanzanlagen/Kauffrau für Versicherungen und Finanzanlagen",
-        "id": "37",
-        "icon": "shield-alt"
-    },
-    {
-        "name": "Kaufmann im E-Commerce/Kauffrau im E-Commerce",
-        "id": "38",
-        "icon": "shopping-bag"
-    },
-    {
-        "name": "Kaufmann im Einzelhandel/Kauffrau im Einzelhandel",
-        "id": "39",
-        "icon": "store"
-    },
-    {
-        "name": "Kaufmann im Eisenbahn- und Straßenverkehr/Kauffrau im Eisenbahn- und Straßenverkehr",
-        "id": "40",
-        "icon": "train"
-    },
-    {
-        "name": "Luftverkehrskaufmann/Luftverkehrskauffrau",
-        "id": "12",
-        "icon": "plane"
-    },
-    {
-        "name": "Musikfachhändler/Musikfachhändlerin",
-        "id": "6",
-        "icon": "music"
-    },
-    {
-        "name": "Notarfachangestellter/Notarfachangestellte",
-        "id": "8",
-        "icon": "file-signature"
-    },
-    {
-        "name": "Patentanwaltsfachangestellter/Patentanwaltsfachangestellte",
-        "id": "15",
-        "icon": "lightbulb"
-    },
-    {
-        "name": "Personaldienstleistungskaufmann/Personaldienstleistungskauffrau",
-        "id": "17",
-        "icon": "user-tie"
-    },
-    {
-        "name": "Rechtsanwalts- und Notarfachangestellter/Rechtsanwalts- und Notarfachangestellte",
-        "id": "28",
-        "icon": "balance-scale"
-    },
-    {
-        "name": "Rechtsanwaltsfachangestellter/Rechtsanwaltsfachangestellte",
-        "id": "29",
-        "icon": "gavel"
-    },
-    {
-        "name": "Schifffahrtskaufmann/Schifffahrtskauffrau",
-        "id": "5",
-        "icon": "ship"
-    },
-    {
-        "name": "Servicekaufmann im Luftverkehr/Servicekauffrau im Luftverkehr",
-        "id": "11",
-        "icon": "plane-departure"
-    },
-    {
-        "name": "Sozialversicherungsfachangestellter/Sozialversicherungsfachangestellte",
-        "id": "12",
-        "icon": "hand-holding-heart"
-    },
-    {
-        "name": "Sport- und Fitnesskaufmann/Sport- und Fitnesskauffrau",
-        "id": "15",
-        "icon": "running"
-    },
-    {
-        "name": "Steuerfachangestellter/Steuerfachangestellte",
-        "id": "19",
-        "icon": "calculator"
-    },
-    {
-        "name": "Tourismuskaufmann (Kaufmann für Privat- und Geschäftsreisen)/Tourismuskauffrau (Kauffrau für Privat- und Geschäftsreisen)",
-        "id": "5",
-        "icon": "passport"
-    },
-    {
-        "name": "Veranstaltungskaufmann/Veranstaltungskauffrau",
-        "id": "8",
-        "icon": "calendar-check"
-    },
-    {
-        "name": "Verwaltungsfachangestellter/Verwaltungsfachangestellte",
-        "id": "16",
-        "icon": "file-alt"
-    }],
-    "Kunst, Design & Medien": [
-    {
-        "name": "Bühnenmaler und -plastiker/Bühnenmalerin und -plastikerin",
-        "id": "25",
-        "icon": "paint-roller"
-    },
-    {
-        "name": "Fachkraft für Veranstaltungstechnik",
-        "id": "24",
-        "icon": "lightbulb"
-    },
-    {
-        "name": "Fotograf/Fotografin",
-        "id": "15",
-        "icon": "camera"
-    },
-    {
-        "name": "Fotomedienfachmann/Fotomedienfachfrau",
-        "id": "16",
-        "icon": "images"
-    },
-    {
-        "name": "Gestalter für immersive Medien/Gestalterin für immersive Medien",
-        "id": "23",
-        "icon": "vr-cardboard"
-    },
-    {
-        "name": "Gestalter für visuelles Marketing/Gestalterin für visuelles Marketing",
-        "id": "24",
-        "icon": "eye"
-    },
-    {
-        "name": "Glas- und Porzellanmaler/Glas- und Porzellanmalerin",
-        "id": "25",
-        "icon": "palette"
-    },
-    {
-        "name": "Kaufmann für audiovisuelle Medien/Kauffrau für audiovisuelle Medien",
-        "id": "25",
-        "icon": "photo-video"
-    },
-    {
-        "name": "Maskenbildner/Maskenbildnerin",
-        "id": "14",
-        "icon": "theater-masks"
-    },
-    {
-        "name": "Mediengestalter Bild und Ton/Mediengestalterin Bild und Ton",
-        "id": "20",
-        "icon": "film"
-    },
-    {
-        "name": "Mediengestalter Digital und Print/Mediengestalterin Digital und Print",
-        "id": "21",
-        "icon": "desktop"
-    },
-    {
-        "name": "Medienkaufmann Digital und Print/Medienkauffrau Digital und Print",
-        "id": "22",
-        "icon": "print"
-    },
-    {
-        "name": "Produktgestalter-Textil/Produktgestalterin-Textil",
-        "id": "22",
-        "icon": "tshirt"
-    },
-    {
-        "name": "Schilder- und Lichtreklamehersteller/Schilder- und Lichtreklameherstellerin",
-        "id": "6",
-        "icon": "sign"
-    },
-    {
-        "name": "Vergolder/Vergolderin",
-        "id": "14",
-        "icon": "coins"
-    },
-    {
-        "name": "Edelsteinfasser/Edelsteinfasserin",
-        "id": "6",
-        "icon": "gem"
-    },
-    {
-        "name": "Goldschmied/Goldschmiedin",
-        "id": "21",
-        "icon": "ring"
-    },
-    {
-        "name": "Klavier- und Cembalobauer/Klavier- und Cembalobauerin",
-        "id": "25",
-        "icon": "music"
-    },
-    {
-        "name": "Manufakturporzellanmaler/Manufakturporzellanmalerin",
-        "id": "1",
-        "icon": "mug-hot"
-    },
-    {
-        "name": "Orgelbauer/Orgelbauerin",
-        "id": "5",
-        "icon": "organ"
-    },
-    {
-        "name": "Silberschmied/Silberschmiedin",
-        "id": "10",
-        "icon": "trophy"
-    },
-    {
-        "name": "Technischer Produktdesigner/Technische Produktdesignerin",
-        "id": "12",
-        "icon": "drafting-compass"
-    }]}
+        "Gastronomie & Tourismus": [
+            {
+                "name": "Fachkraft für Gastronomie",
+                "icon": "utensils"
+            },
+            {
+                "name": "Fachkraft Küche",
+                "icon": "bread-slice"
+            },
+            {
+                "name": "Bäcker/Bäckerin",
+                "icon": "bread-slice"
+            },
+            {
+                "name": "Brauer und Mälzer/Brauerin und Mälzerin",
+                "icon": "beer"
+            },
+            {
+                "name": "Brenner/Brennerin",
+                "icon": "wine-glass"
+            },
+            {
+                "name": "Destillateur/Destillateurin",
+                "icon": "cocktail"
+            },
+            {
+                "name": "Fachkraft für Fruchtsafttechnik",
+                "icon": "wine-glass"
+            },
+            {
+                "name": "Fachkraft für Lebensmitteltechnik",
+                "icon": "utensils"
+            },
+            {
+                "name": "Fachmann für Restaurants und Veranstaltungsgastronomie/Fachfrau für Restaurants und Veranstaltungsgastronomie",
+                "icon": "wine-glass-alt"
+            },
+            {
+                "name": "Fachmann für Systemgastronomie/Fachfrau für Systemgastronomie",
+                "icon": "utensils"
+            },
+            {
+                "name": "Fachverkäufer im Lebensmittelhandwerk/Fachverkäuferin im Lebensmittelhandwerk",
+                "icon": "shopping-basket"
+            },
+            {
+                "name": "Fleischer/Fleischerin",
+                "icon": "drumstick-bite"
+            },
+            {
+                "name": "Hotelfachmann/Hotelfachfrau",
+                "icon": "hotel"
+            },
+            {
+                "name": "Kaufmann für Hotelmanagement/Kauffrau für Hotelmanagement",
+                "icon": "concierge-bell"
+            },
+            {
+                "name": "Kaufmann für Tourismus und Freizeit/Kauffrau für Tourismus und Freizeit",
+                "icon": "plane"
+            },
+            {
+                "name": "Koch/Köchin",
+                "icon": "utensils"
+            },
+            {
+                "name": "Konditor/Konditorin",
+                "icon": "birthday-cake"
+            },
+            {
+                "name": "Servicekaufmann im Luftverkehr/Servicekauffrau im Luftverkehr",
+                "icon": "plane"
+            },
+            {
+                "name": "Tourismuskaufmann (Kaufmann für Privat- und Geschäftsreisen)/Tourismuskauffrau (Kauffrau für Privat- und Geschäftsreisen)",
+                "icon": "passport"
+            },
+            {
+                "name": "Veranstaltungskaufmann/Veranstaltungskauffrau",
+                "icon": "calendar-check"
+            }
+        ],
+        "Bau & Handwerk": [
+            {
+                "name": "Ausbaufacharbeiter/Ausbaufacharbeiterin",
+                "icon": "tools"
+            },
+            {
+                "name": "Fachkraft für Holz- und Bautenschutzarbeiten",
+                "icon": "tree"
+            },
+            {
+                "name": "Hochbaufacharbeiter/Hochbaufacharbeiterin",
+                "icon": "building"
+            },
+            {
+                "name": "Isolierfacharbeiter/Isolierfacharbeiterin",
+                "icon": "fire-extinguisher"
+            },
+            {
+                "name": "Tiefbaufacharbeiter/Tiefbaufacharbeiterin",
+                "icon": "road"
+            },
+            {
+                "name": "Asphaltbauer/Asphaltbauerin",
+                "icon": "road"
+            },
+            {
+                "name": "Baugeräteführer/Baugeräteführerin",
+                "icon": "tractor"
+            },
+            {
+                "name": "Bauwerksabdichter/Bauwerksabdichterin",
+                "icon": "building"
+            },
+            {
+                "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik/Bauwerksmechanikerin für Abbruch und Betontrenntechnik",
+                "icon": "hammer"
+            },
+            {
+                "name": "Bauzeichner/Bauzeichnerin",
+                "icon": "drafting-compass"
+            },
+            {
+                "name": "Beton- und Stahlbetonbauer/Beton- und Stahlbetonbauerin",
+                "icon": "tools"
+            },
+            {
+                "name": "Bodenleger/Bodenlegerin",
+                "icon": "ruler-combined"
+            },
+            {
+                "name": "Böttcher/Böttcherin",
+                "icon": "wine-bottle"
+            },
+            {
+                "name": "Brunnenbauer/Brunnenbauerin",
+                "icon": "faucet"
+            },
+            {
+                "name": "Dachdecker/Dachdeckerin",
+                "icon": "house-damage"
+            },
+            {
+                "name": "Estrichleger/Estrichlegerin",
+                "icon": "ruler-combined"
+            },
+            {
+                "name": "Fachkraft für Rohr-, Kanal- und Industrieservice",
+                "icon": "wrench"
+            },
+            {
+                "name": "Fachkraft für Straßen- und Verkehrstechnik",
+                "icon": "road"
+            },
+            {
+                "name": "Fassadenmonteur/Fassadenmonteurin",
+                "icon": "building"
+            },
+            {
+                "name": "Feuerungs- und Schornsteinbauer/Feuerungs- und Schornsteinbauerin",
+                "icon": "fire"
+            },
+            {
+                "name": "Fliesen-, Platten- und Mosaikleger/Fliesen-, Platten- und Mosaiklegerin",
+                "icon": "th-large"
+            },
+            {
+                "name": "Gerüstbauer/Gerüstbauerin",
+                "icon": "building"
+            },
+            {
+                "name": "Glaser/Glaserin",
+                "icon": "window-maximize"
+            },
+            {
+                "name": "Gleisbauer/Gleisbauerin",
+                "icon": "train"
+            },
+            {
+                "name": "Holz- und Bautenschützer/Holz- und Bautenschützerin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Kanalbauer/Kanalbauerin",
+                "icon": "water"
+            },
+            {
+                "name": "Maler und Lackierer/Malerin und Lackiererin",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Maurer/Maurerin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Naturwerksteinmechaniker/Naturwerksteinmechanikerin",
+                "icon": "stone"
+            },
+            {
+                "name": "Ofen- und Luftheizungsbauer/Ofen- und Luftheizungsbauerin",
+                "icon": "fireplace"
+            },
+            {
+                "name": "Parkettleger/Parkettlegerin",
+                "icon": "hard-hat"
+            },
+            {
+                "name": "Polsterer/Polsterin",
+                "icon": "couch"
+            },
+            {
+                "name": "Raumausstatter/Raumausstatterin",
+                "icon": "couch"
+            },
+            {
+                "name": "Rohrleitungsbauer/Rohrleitungsbauerin",
+                "icon": "pipe"
+            },
+            {
+                "name": "Schornsteinfeger/Schornsteinfegerin",
+                "icon": "smoking"
+            },
+            {
+                "name": "Segelmacher/Segelmacherin",
+                "icon": "ship"
+            },
+            {
+                "name": "Seiler/Seilerin",
+                "icon": "sitemap"
+            },
+            {
+                "name": "Spezialtiefbauer/Spezialtiefbauerin",
+                "icon": "hard-hat"
+            },
+            {
+                "name": "Steinmetz und Steinbildhauer/Steinmetzin und Steinbildhauerin",
+                "icon": "stone"
+            },
+            {
+                "name": "Straßenbauer/Straßenbauerin",
+                "icon": "road"
+            },
+            {
+                "name": "Straßenwärter/Straßenwärterin",
+                "icon": "wrench"
+            },
+            {
+                "name": "Stuckateur/Stuckateurin",
+                "icon": "paint-roller"
+            },
+            {
+                "name": "Tischler/Tischlerin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Trockenbaumonteur/Trockenbaumonteurin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Vermessungstechniker/Vermessungstechnikerin",
+                "icon": "compass"
+            },
+            {
+                "name": "Wärme-, Kälte- und Schallschutzisolierer/Wärme-, Kälte- und Schallschutzisoliererin",
+                "icon": "cloud"
+            },
+            {
+                "name": "Werksteinhersteller/Werksteinherstellerin",
+                "icon": "stone"
+            },
+            {
+                "name": "Zimmerer/Zimmerin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Bootsbauer/Bootsbauerin",
+                "icon": "ship"
+            },
+            {
+                "name": "Klempner/Klempnerin",
+                "icon": "pipe"
+            }
+        ],
+        "Metall, Elektro & Technik": [
+            {
+                "name": "Fachkraft für Metalltechnik",
+                "icon": "cogs"
+            },
+            {
+                "name": "Fahrradmonteur/Fahrradmonteurin",
+                "icon": "bicycle"
+            },
+            {
+                "name": "Industrieelektriker/Industrieelektrikerin",
+                "icon": "bolt"
+            },
+            {
+                "name": "Automatenfachmann/Automatenfachfrau",
+                "icon": "robot"
+            },
+            {
+                "name": "Büchsenmacher/Büchsenmacherin",
+                "icon": "crosshairs"
+            },
+            {
+                "name": "Edelmetallprüfer/Edelmetallprüferin",
+                "icon": "balance-scale"
+            },
+            {
+                "name": "Elektroanlagenmonteur/Elektroanlagenmonteurin",
+                "icon": "bolt"
+            },
+            {
+                "name": "Fahrzeuginterieur-Mechaniker/Fahrzeuginterieur-Mechanikerin",
+                "icon": "car-seat"
+            },
+            {
+                "name": "Fahrzeuglackierer/Fahrzeuglackiererin",
+                "icon": "paint-roller"
+            },
+            {
+                "name": "Feinpolierer/Feinpoliererin",
+                "icon": "gem"
+            },
+            {
+                "name": "Glasapparatebauer/Glasapparatebauerin",
+                "icon": "flask"
+            },
+            {
+                "name": "Graveur/Graveurin",
+                "icon": "stamp"
+            },
+            {
+                "name": "Industrie-Isolierer/Industrie-Isoliererin",
+                "icon": "thermometer-half"
+            },
+            {
+                "name": "Leichtflugzeugbauer/Leichtflugzeugbauerin",
+                "icon": "plane"
+            },
+            {
+                "name": "Mechaniker für Reifen- und Vulkanisationstechnik/Mechanikerin für Reifen- und Vulkanisationstechnik",
+                "icon": "wrench"
+            },
+            {
+                "name": "Metall- und Glockengießer/Metall- und Glockengießerin",
+                "icon": "bell"
+            },
+            {
+                "name": "Metallbildner/Metallbildnerin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Mikrotechnologe/Mikrotechnologin",
+                "icon": "microchip"
+            },
+            {
+                "name": "Oberflächenbeschichter/Oberflächenbeschichterin",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Rollladen- und Sonnenschutzmechatroniker/Rollladen- und Sonnenschutzmechatronikerin",
+                "icon": "blinds"
+            },
+            {
+                "name": "Stanz- und Umformmechaniker/Stanz- und Umformmechanikerin",
+                "icon": "cogs"
+            },
+            {
+                "name": "Technischer Konfektionär/Technische Konfektionärin",
+                "icon": "scissors"
+            },
+            {
+                "name": "Thermometermacher/Thermometermacherin",
+                "icon": "thermometer"
+            },
+            {
+                "name": "Uhrmacher/Uhrmacherin",
+                "icon": "clock"
+            },
+            {
+                "name": "Verfahrensmechaniker für Brillenoptik/Verfahrensmechanikerin für Brillenoptik",
+                "icon": "glasses"
+            },
+            {
+                "name": "Verfahrensmechaniker Glastechnik/Verfahrensmechanikerin Glastechnik",
+                "icon": "glass-whiskey"
+            },
+            {
+                "name": "Werkgehilfe Schmuckwarenindustrie, Taschen- und Armbanduhren/Werkgehilfin Schmuckwarenindustrie, Taschen- und Armbanduhren",
+                "icon": "gem"
+            },
+            {
+                "name": "Anlagenmechaniker für Sanitär-, Heizungs- und Klimatechnik/Anlagenmechanikerin für Sanitär-, Heizungs- und Klimatechnik",
+                "icon": "water"
+            },
+            {
+                "name": "Anlagenmechaniker/Anlagenmechanikerin",
+                "icon": "tools"
+            },
+            {
+                "name": "Behälter- und Apparatebauer/Behälter- und Apparatebauerin",
+                "icon": "archive"
+            },
+            {
+                "name": "Chemielaborant/Chemielaborantin",
+                "icon": "flask"
+            },
+            {
+                "name": "Chemikant/Chemikantin",
+                "icon": "flask"
+            },
+            {
+                "name": "Elektroniker für Automatisierungstechnik/Elektronikerin für Automatisierungstechnik",
+                "icon": "cogs"
+            },
+            {
+                "name": "Elektroniker für Betriebstechnik/Elektronikerin für Betriebstechnik",
+                "icon": "plug"
+            },
+            {
+                "name": "Elektroniker für Gebäude- und Infrastruktursysteme/Elektronikerin für Gebäude- und Infrastruktursysteme",
+                "icon": "home"
+            },
+            {
+                "name": "Elektroniker für Gebäudesystemintegration/Elektronikerin für Gebäudesystemintegration",
+                "icon": "building"
+            },
+            {
+                "name": "Elektroniker für Geräte und Systeme/Elektronikerin für Geräte und Systeme",
+                "icon": "desktop"
+            },
+            {
+                "name": "Elektroniker für Informations- und Systemtechnik/Elektronikerin für Informations- und Systemtechnik",
+                "icon": "network-wired"
+            },
+            {
+                "name": "Elektroniker für Maschinen und Antriebstechnik nach dem Berufsbildungsgesetz/Elektronikerin für Maschinen und Antriebstechnik nach dem Berufsbildungsgesetz",
+                "icon": "cogs"
+            },
+            {
+                "name": "Elektroniker für Maschinen und Antriebstechnik nach der Handwerksordnung/Elektronikerin für Maschinen und Antriebstechnik nach der Handwerksordnung",
+                "icon": "wrench"
+            },
+            {
+                "name": "Elektroniker/Elektronikerin",
+                "icon": "bolt"
+            },
+            {
+                "name": "Feinoptiker/Feinoptikerin",
+                "icon": "eye"
+            },
+            {
+                "name": "Feinwerkmechaniker/Feinwerkmechanikerin",
+                "icon": "tools"
+            },
+            {
+                "name": "Fluggerätelektroniker/Fluggerätelektronikerin",
+                "icon": "plane"
+            },
+            {
+                "name": "Fluggerätmechaniker/Fluggerätmechanikerin",
+                "icon": "plane"
+            },
+            {
+                "name": "Gießereimechaniker/Gießereimechanikerin",
+                "icon": "industry"
+            },
+            {
+                "name": "Industriemechaniker/Industriemechanikerin",
+                "icon": "cogs"
+            },
+            {
+                "name": "Karosserie- und Fahrzeugbaumechaniker/Karosserie- und Fahrzeugbaumechanikerin",
+                "icon": "car"
+            },
+            {
+                "name": "Konstruktionsmechaniker/Konstruktionsmechanikerin",
+                "icon": "tools"
+            },
+            {
+                "name": "Kraftfahrzeugmechatroniker/Kraftfahrzeugmechatronikerin",
+                "icon": "car"
+            },
+            {
+                "name": "Lacklaborant/Lacklaborantin",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Land- und Baumaschinenmechatroniker/Land- und Baumaschinenmechatronikerin",
+                "icon": "tractor"
+            },
+            {
+                "name": "Mechatroniker für Kältetechnik/Mechatronikerin für Kältetechnik",
+                "icon": "snowflake"
+            },
+            {
+                "name": "Mechatroniker/Mechatronikerin",
+                "icon": "robot"
+            },
+            {
+                "name": "Metallbauer/Metallbauerin",
+                "icon": "hammer"
+            },
+            {
+                "name": "Physiklaborant/Physiklaborantin",
+                "icon": "flask"
+            },
+            {
+                "name": "Präzisionswerkzeugmechaniker/Präzisionswerkzeugmechanikerin",
+                "icon": "wrench"
+            },
+            {
+                "name": "Technischer Modellbauer/Technische Modellbauerin",
+                "icon": "cube"
+            },
+            {
+                "name": "Technischer Produktdesigner/Technische Produktdesignerin",
+                "icon": "pencil-ruler"
+            },
+            {
+                "name": "Technischer Systemplaner/Technische Systemplanerin",
+                "icon": "project-diagram"
+            },
+            {
+                "name": "Werkzeugmechaniker/Werkzeugmechanikerin",
+                "icon": "tools"
+            },
+            {
+                "name": "Zerspanungsmechaniker/Zerspanungsmechanikerin",
+                "icon": "cut"
+            },
+            {
+                "name": "Zweiradmechatroniker/Zweiradmechatronikerin",
+                "icon": "bicycle"
+            }
+        ],
+        "Umwelt & Natur": [
+            {
+                "name": "Chemielaborjungwerker/Chemielaborjungwerkerin",
+                "icon": "flask"
+            },
+            {
+                "name": "Produktionsfachkraft Chemie",
+                "icon": "flask"
+            },
+            {
+                "name": "Baustoffprüfer/Baustoffprüferin",
+                "icon": "flask"
+            },
+            {
+                "name": "Biologiemodellmacher/Biologiemodellmacherin",
+                "icon": "flask"
+            },
+            {
+                "name": "Fachkraft Agrarservice",
+                "icon": "seedling"
+            },
+            {
+                "name": "Fachkraft für Abwassertechnik",
+                "icon": "water"
+            },
+            {
+                "name": "Fachkraft für Kreislauf- und Abfallwirtschaft",
+                "icon": "recycle"
+            },
+            {
+                "name": "Fachkraft für Wasserversorgungstechnik",
+                "icon": "faucet"
+            },
+            {
+                "name": "Fachkraft für Wasserwirtschaft",
+                "icon": "tint"
+            },
+            {
+                "name": "Fischwirt/Fischwirtin",
+                "icon": "fish"
+            },
+            {
+                "name": "Florist/Floristin",
+                "icon": "spa"
+            },
+            {
+                "name": "Forstwirt/Forstwirtin",
+                "icon": "tree"
+            },
+            {
+                "name": "Gärtner/Gärtnerin",
+                "icon": "seedling"
+            },
+            {
+                "name": "Geomatiker/Geomatikerin",
+                "icon": "map-marked-alt"
+            },
+            {
+                "name": "Landwirt/Landwirtin",
+                "icon": "tractor"
+            },
+            {
+                "name": "Pferdewirt/Pferdewirtin",
+                "icon": "horse"
+            },
+            {
+                "name": "Pflanzentechnologe/Pflanzentechnologin",
+                "icon": "seedling"
+            },
+            {
+                "name": "Revierjäger/Revierjägerin",
+                "icon": "paw"
+            },
+            {
+                "name": "Schädlingsbekämpfer/Schädlingsbekämpferin",
+                "icon": "bug"
+            },
+            {
+                "name": "Tierpfleger/Tierpflegerin",
+                "icon": "paw"
+            },
+            {
+                "name": "Tierwirt/Tierwirtin",
+                "icon": "paw"
+            },
+            {
+                "name": "Wasserbauer/Wasserbauerin",
+                "icon": "water"
+            },
+            {
+                "name": "Winzer/Winzerin",
+                "icon": "wine-bottle"
+            }
+        ],
+        "Gesundheit & Pflege": [
+            {
+                "name": "Augenoptiker/Augenoptikerin",
+                "icon": "glasses"
+            },
+            {
+                "name": "Bestattungsfachkraft",
+                "icon": "cross"
+            },
+            {
+                "name": "Drogist/Drogistin",
+                "icon": "capsules"
+            },
+            {
+                "name": "Fachangestellter für Bäderbetriebe/Fachangestellte für Bäderbetriebe",
+                "icon": "swimmer"
+            },
+            {
+                "name": "Friseur/Friseurin",
+                "icon": "cut"
+            },
+            {
+                "name": "Hauswirtschafter/Hauswirtschafterin",
+                "icon": "home"
+            },
+            {
+                "name": "Hörakustiker/Hörakustikerin",
+                "icon": "deaf"
+            },
+            {
+                "name": "Kaufmann im Gesundheitswesen/Kauffrau im Gesundheitswesen",
+                "icon": "heartbeat"
+            },
+            {
+                "name": "Kosmetiker/Kosmetikerin",
+                "icon": "spa"
+            },
+            {
+                "name": "Medizinischer Fachangestellter/Medizinische Fachangestellte",
+                "icon": "user-md"
+            },
+            {
+                "name": "Orthopädietechnik-Mechaniker/Orthopädietechnik-Mechanikerin",
+                "icon": "user-md"
+            },
+            {
+                "name": "Pharmazeutisch-kaufmännischer Angestellter/Pharmazeutisch-kaufmännische Angestellte",
+                "icon": "capsules"
+            },
+            {
+                "name": "Sport- und Fitnesskaufmann/Sport- und Fitnesskauffrau",
+                "icon": "dumbbell"
+            },
+            {
+                "name": "Sportfachmann/Sportfachfrau",
+                "icon": "futbol"
+            },
+            {
+                "name": "Tiermedizinischer Fachangestellter/Tiermedizinische Fachangestellte",
+                "icon": "paw"
+            },
+            {
+                "name": "Werkfeuerwehrmann/Werkfeuerwehrfrau",
+                "icon": "fire-extinguisher"
+            },
+            {
+                "name": "Zahnmedizinischer Fachangestellter/Zahnmedizinische Fachangestellte",
+                "icon": "tooth"
+            },
+            {
+                "name": "Biologielaborant/Biologielaborantin",
+                "icon": "flask"
+            },
+            {
+                "name": "Chirurgiemechaniker/Chirurgiemechanikerin",
+                "icon": "heartbeat"
+            },
+            {
+                "name": "Orthopädieschuhmacher/Orthopädieschuhmacherin",
+                "icon": "shoe-prints"
+            },
+            {
+                "name": "Pharmakant/Pharmakantin",
+                "icon": "capsules"
+            },
+            {
+                "name": "Zahntechniker/Zahntechnikerin",
+                "icon": "tooth"
+            }
+        ],
+        "IT & Medien": [
+            {
+                "name": "Fachangestellter für Medien- und Informationsdienste/Fachangestellte für Medien- und Informationsdienste",
+                "icon": "book-open"
+            },
+            {
+                "name": "Fachinformatiker/Fachinformatikerin",
+                "icon": "laptop-code"
+            },
+            {
+                "name": "Fotomedienfachmann/Fotomedienfachfrau",
+                "icon": "images"
+            },
+            {
+                "name": "Gestalter für immersive Medien/Gestalterin für immersive Medien",
+                "icon": "vr-cardboard"
+            },
+            {
+                "name": "IT-System-Elektroniker/IT-System-Elektronikerin",
+                "icon": "server"
+            },
+            {
+                "name": "Kaufmann für audiovisuelle Medien/Kauffrau für audiovisuelle Medien",
+                "icon": "film"
+            },
+            {
+                "name": "Kaufmann für Digitalisierungsmanagement/Kauffrau für Digitalisierungsmanagement",
+                "icon": "cloud"
+            },
+            {
+                "name": "Kaufmann für IT-System-Management/Kauffrau für IT-System-Management",
+                "icon": "desktop"
+            },
+            {
+                "name": "Mathematisch-technischer Softwareentwickler/Mathematisch-technische Softwareentwicklerin",
+                "icon": "laptop-code"
+            },
+            {
+                "name": "Mediengestalter Bild und Ton/Mediengestalterin Bild und Ton",
+                "icon": "camera-retro"
+            },
+            {
+                "name": "Mediengestalter Digital und Print/Mediengestalterin Digital und Print",
+                "icon": "print"
+            },
+            {
+                "name": "Informationselektroniker/Informationselektronikerin",
+                "icon": "desktop"
+            }
+        ],
+        "Kunst & Gestaltung": [
+            {
+                "name": "Änderungsschneider/Änderungsschneiderin",
+                "icon": "cut"
+            },
+            {
+                "name": "Fachkraft für Lederverarbeitung",
+                "icon": "shoe-prints"
+            },
+            {
+                "name": "Polster- und Dekorationsnäher/Polster- und Dekorationsnäherin",
+                "icon": "couch"
+            },
+            {
+                "name": "Produktprüfer-Textil/Produktprüferin-Textil",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Textil- und Modenäher/Textil- und Modenäherin",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Vorpolierer Schmuck- und Kleingeräteherstellung/Vorpoliererin Schmuck- und Kleingeräteherstellung",
+                "icon": "gem"
+            },
+            {
+                "name": "Bogenmacher/Bogenmacherin",
+                "icon": "bow-arrow"
+            },
+            {
+                "name": "Buchbinder/Buchbinderin",
+                "icon": "book"
+            },
+            {
+                "name": "Bühnenmaler und -plastiker/Bühnenmalerin und -plastikerin",
+                "icon": "palette"
+            },
+            {
+                "name": "Bürsten- und Pinselmacher/Bürsten- und Pinselmacherin",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Drechsler (Elfenbeinschnitzer)/Drechslerin (Elfenbeinschnitzerin)",
+                "icon": "cogs"
+            },
+            {
+                "name": "Edelsteinschleifer/Edelsteinschleiferin",
+                "icon": "gem"
+            },
+            {
+                "name": "Fachkraft für Veranstaltungstechnik",
+                "icon": "lightbulb"
+            },
+            {
+                "name": "Figurenkeramformer/Figurenkeramformerin",
+                "icon": "palette"
+            },
+            {
+                "name": "Flechtwerkgestalter/Flechtwerkgestalterin",
+                "icon": "chair"
+            },
+            {
+                "name": "Fotograf/Fotografin",
+                "icon": "camera"
+            },
+            {
+                "name": "Geigenbauer/Geigenbauerin",
+                "icon": "music"
+            },
+            {
+                "name": "Gestalter für visuelles Marketing/Gestalterin für visuelles Marketing",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Glas- und Porzellanmaler/Glas- und Porzellanmalerin",
+                "icon": "palette"
+            },
+            {
+                "name": "Glasbläser/Glasbläserin",
+                "icon": "wind"
+            },
+            {
+                "name": "Glasveredler/Glasveredlerin",
+                "icon": "gem"
+            },
+            {
+                "name": "Handzuginstrumentenmacher/Handzuginstrumentenmacherin",
+                "icon": "music"
+            },
+            {
+                "name": "Holzbildhauer/Holzbildhauerin",
+                "icon": "chess"
+            },
+            {
+                "name": "Holzblasinstrumentenmacher/Holzblasinstrumentenmacherin",
+                "icon": "music"
+            },
+            {
+                "name": "Holzspielzeugmacher/Holzspielzeugmacherin",
+                "icon": "puzzle-piece"
+            },
+            {
+                "name": "Industriekeramiker Dekorationstechnik/Industriekeramikerin Dekorationstechnik",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Keramiker/Keramikerin",
+                "icon": "mug-hot"
+            },
+            {
+                "name": "Kerzenhersteller und Wachsbildner/Kerzenherstellerin und Wachsbildnerin",
+                "icon": "fire"
+            },
+            {
+                "name": "Kürschner/Kürschnerin",
+                "icon": "coat-hanger"
+            },
+            {
+                "name": "Leuchtröhrenglasbläser/Leuchtröhrenglasbläserin",
+                "icon": "glass-cheers"
+            },
+            {
+                "name": "Maskenbildner/Maskenbildnerin",
+                "icon": "theater-masks"
+            },
+            {
+                "name": "Maßschneider/Maßschneiderin",
+                "icon": "scissors"
+            },
+            {
+                "name": "Maßschuhmacher/Maßschuhmacherin",
+                "icon": "shoe-prints"
+            },
+            {
+                "name": "Metallblasinstrumentenmacher/Metallblasinstrumentenmacherin",
+                "icon": "music"
+            },
+            {
+                "name": "Modist/Modistin",
+                "icon": "hat-cowboy"
+            },
+            {
+                "name": "Pelzveredler/Pelzveredlerin",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Produktgestalter-Textil/Produktgestalterin-Textil",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Sattler/Sattlerin",
+                "icon": "user-tie"
+            },
+            {
+                "name": "Schilder- und Lichtreklamehersteller/Schilder- und Lichtreklameherstellerin",
+                "icon": "sign"
+            },
+            {
+                "name": "Schuhfertiger/Schuhfertigerin",
+                "icon": "shoe-prints"
+            },
+            {
+                "name": "Spielzeughersteller/Spielzeugherstellerin",
+                "icon": "toy"
+            },
+            {
+                "name": "Textil- und Modeschneider/Textil- und Modeschneiderin",
+                "icon": "scissors"
+            },
+            {
+                "name": "Textilgestalter im Handwerk/Textilgestalterin im Handwerk",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Vergolder/Vergolderin",
+                "icon": "star"
+            },
+            {
+                "name": "Zupfinstrumentenmacher/Zupfinstrumentenmacherin",
+                "icon": "guitar"
+            },
+            {
+                "name": "Edelsteinfasser/Edelsteinfasserin",
+                "icon": "gem"
+            },
+            {
+                "name": "Goldschmied/Goldschmiedin",
+                "icon": "gem"
+            },
+            {
+                "name": "Klavier- und Cembalobauer/Klavier- und Cembalobauerin",
+                "icon": "music"
+            },
+            {
+                "name": "Manufakturporzellanmaler/Manufakturporzellanmalerin",
+                "icon": "paint-brush"
+            },
+            {
+                "name": "Orgelbauer/Orgelbauerin",
+                "icon": "music"
+            },
+            {
+                "name": "Silberschmied/Silberschmiedin",
+                "icon": "gem"
+            }
+        ],
+        "Wirtschaft & Verwaltung": [
+            {
+                "name": "Servicefachkraft für Dialogmarketing",
+                "icon": "headset"
+            },
+            {
+                "name": "Servicekraft für Schutz und Sicherheit",
+                "icon": "shield-alt"
+            },
+            {
+                "name": "Verkäufer/Verkäuferin",
+                "icon": "shopping-cart"
+            },
+            {
+                "name": "Automobilkaufmann/Automobilkauffrau",
+                "icon": "car"
+            },
+            {
+                "name": "Bankkaufmann/Bankkauffrau",
+                "icon": "university"
+            },
+            {
+                "name": "Buchhändler/Buchhändlerin",
+                "icon": "store"
+            },
+            {
+                "name": "Fachangestellter für Arbeitsmarktdienstleistungen/Fachangestellte für Arbeitsmarktdienstleistungen",
+                "icon": "briefcase"
+            },
+            {
+                "name": "Fachangestellter für Markt- und Sozialforschung/Fachangestellte für Markt- und Sozialforschung",
+                "icon": "chart-bar"
+            },
+            {
+                "name": "Fachkraft für Schutz und Sicherheit",
+                "icon": "shield-alt"
+            },
+            {
+                "name": "Immobilienkaufmann/Immobilienkauffrau",
+                "icon": "building"
+            },
+            {
+                "name": "Industriekaufmann/Industriekauffrau",
+                "icon": "chart-line"
+            },
+            {
+                "name": "Investmentfondskaufmann/Investmentfondskauffrau",
+                "icon": "chart-line"
+            },
+            {
+                "name": "Justizfachangestellter/Justizfachangestellte",
+                "icon": "gavel"
+            },
+            {
+                "name": "Kaufmann für Büromanagement/Kauffrau für Büromanagement",
+                "icon": "briefcase"
+            },
+            {
+                "name": "Kaufmann für Dialogmarketing/Kauffrau für Dialogmarketing",
+                "icon": "comments"
+            },
+            {
+                "name": "Kaufmann für Groß- und Außenhandelsmanagement/Kauffrau für Groß- und Außenhandelsmanagement",
+                "icon": "exchange-alt"
+            },
+            {
+                "name": "Kaufmann für Marketingkommunikation/Kauffrau für Marketingkommunikation",
+                "icon": "bullhorn"
+            },
+            {
+                "name": "Kaufmann für Versicherungen und Finanzanlagen/Kauffrau für Versicherungen und Finanzanlagen",
+                "icon": "shield-alt"
+            },
+            {
+                "name": "Kaufmann im E-Commerce/Kauffrau im E-Commerce",
+                "icon": "shopping-cart"
+            },
+            {
+                "name": "Kaufmann im Einzelhandel/Kauffrau im Einzelhandel",
+                "icon": "store"
+            },
+            {
+                "name": "Luftverkehrskaufmann/Luftverkehrskauffrau",
+                "icon": "plane-departure"
+            },
+            {
+                "name": "Medienkaufmann Digital und Print/Medienkauffrau Digital und Print",
+                "icon": "file-alt"
+            },
+            {
+                "name": "Musikfachhändler/Musikfachhändlerin",
+                "icon": "guitar"
+            },
+            {
+                "name": "Notarfachangestellter/Notarfachangestellte",
+                "icon": "file-contract"
+            },
+            {
+                "name": "Patentanwaltsfachangestellter/Patentanwaltsfachangestellte",
+                "icon": "gavel"
+            },
+            {
+                "name": "Personaldienstleistungskaufmann/Personaldienstleistungskauffrau",
+                "icon": "user-tie"
+            },
+            {
+                "name": "Rechtsanwalts- und Notarfachangestellter/Rechtsanwalts- und Notarfachangestellte",
+                "icon": "file-contract"
+            },
+            {
+                "name": "Rechtsanwaltsfachangestellter/Rechtsanwaltsfachangestellte",
+                "icon": "gavel"
+            },
+            {
+                "name": "Schifffahrtskaufmann/Schifffahrtskauffrau",
+                "icon": "ship"
+            },
+            {
+                "name": "Sozialversicherungsfachangestellter/Sozialversicherungsfachangestellte",
+                "icon": "shield-alt"
+            },
+            {
+                "name": "Steuerfachangestellter/Steuerfachangestellte",
+                "icon": "calculator"
+            },
+            {
+                "name": "Verwaltungsfachangestellter/Verwaltungsfachangestellte",
+                "icon": "cogs"
+            }
+        ],
+        "Produktion & Logistik": [
+            {
+                "name": "Berg- und Maschinenmann/Berg- und Maschinenfrau",
+                "icon": "hard-hat"
+            },
+            {
+                "name": "Fachkraft für Kurier-, Express- und Postdienstleistungen",
+                "icon": "truck"
+            },
+            {
+                "name": "Fachlagerist/Fachlageristin",
+                "icon": "boxes"
+            },
+            {
+                "name": "Maschinen- und Anlagenführer/Maschinen- und Anlagenführerin",
+                "icon": "industry"
+            },
+            {
+                "name": "Servicefahrer/Servicefahrerin",
+                "icon": "truck"
+            },
+            {
+                "name": "Aufbereitungsmechaniker/Aufbereitungsmechanikerin",
+                "icon": "industry"
+            },
+            {
+                "name": "Bergbautechnologe/Bergbautechnologin",
+                "icon": "hard-hat"
+            },
+            {
+                "name": "Berufskraftfahrer/Berufskraftfahrerin",
+                "icon": "truck-moving"
+            },
+            {
+                "name": "Betonfertigteilbauer/Betonfertigteilbauerin",
+                "icon": "industry"
+            },
+            {
+                "name": "Binnenschiffer/Binnenschifferin",
+                "icon": "ship"
+            },
+            {
+                "name": "Eisenbahner im Betriebsdienst Lokführer und Transport/Eisenbahnerin im Betriebsdienst Lokführerin und Transport",
+                "icon": "train"
+            },
+            {
+                "name": "Eisenbahner in der Zugverkehrssteuerung/Eisenbahnerin in der Zugverkehrssteuerung",
+                "icon": "traffic-light"
+            },
+            {
+                "name": "Fachkraft für Hafenlogistik",
+                "icon": "ship"
+            },
+            {
+                "name": "Fachkraft für Lagerlogistik",
+                "icon": "boxes"
+            },
+            {
+                "name": "Fachkraft für Lederherstellung und Gerbereitechnik",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Fachkraft für Möbel-, Küchen- und Umzugsservice",
+                "icon": "couch"
+            },
+            {
+                "name": "Fachkraft im Fahrbetrieb",
+                "icon": "bus"
+            },
+            {
+                "name": "Fertigungsmechaniker/Fertigungsmechanikerin",
+                "icon": "cogs"
+            },
+            {
+                "name": "Flachglastechnologe/Flachglastechnologin",
+                "icon": "window-maximize"
+            },
+            {
+                "name": "Gebäudereiniger/Gebäudereinigerin",
+                "icon": "broom"
+            },
+            {
+                "name": "Glasmacher/Glasmacherin",
+                "icon": "industry"
+            },
+            {
+                "name": "Hafenschiffer/Hafenschifferin",
+                "icon": "ship"
+            },
+            {
+                "name": "Holzbearbeitungsmechaniker/Holzbearbeitungsmechanikerin",
+                "icon": "tree"
+            },
+            {
+                "name": "Holzmechaniker/Holzmechanikerin",
+                "icon": "cogs"
+            },
+            {
+                "name": "Industriekeramiker Anlagentechnik/Industriekeramikerin Anlagentechnik",
+                "icon": "industry"
+            },
+            {
+                "name": "Industriekeramiker Modelltechnik/Industriekeramikerin Modelltechnik",
+                "icon": "cubes"
+            },
+            {
+                "name": "Industriekeramiker Verfahrenstechnik/Industriekeramikerin Verfahrenstechnik",
+                "icon": "flask"
+            },
+            {
+                "name": "Kaufmann für Kurier-, Express- und Postdienstleistungen/Kauffrau für Kurier-, Express- und Postdienstleistungen",
+                "icon": "truck"
+            },
+            {
+                "name": "Kaufmann für Spedition und Logistikdienstleistung/Kauffrau für Spedition und Logistikdienstleistung",
+                "icon": "shipping-fast"
+            },
+            {
+                "name": "Kaufmann für Verkehrsservice/Kauffrau für Verkehrsservice",
+                "icon": "bus"
+            },
+            {
+                "name": "Kaufmann im Eisenbahn- und Straßenverkehr/Kauffrau im Eisenbahn- und Straßenverkehr",
+                "icon": "train"
+            },
+            {
+                "name": "Kunststoff- und Kautschuktechnologe/Kunststoff- und Kautschuktechnologin",
+                "icon": "cogs"
+            },
+            {
+                "name": "Medientechnologe Druck/Medientechnologin Druck",
+                "icon": "fax"
+            },
+            {
+                "name": "Medientechnologe Druckverarbeitung/Medientechnologin Druckverarbeitung",
+                "icon": "cut"
+            },
+            {
+                "name": "Medientechnologe Siebdruck/Medientechnologin Siebdruck",
+                "icon": "print"
+            },
+            {
+                "name": "Milchtechnologe/Milchtechnologin",
+                "icon": "glass-cheers"
+            },
+            {
+                "name": "Milchwirtschaftlicher Laborant/Milchwirtschaftliche Laborantin",
+                "icon": "flask"
+            },
+            {
+                "name": "Packmitteltechnologe/Packmitteltechnologin",
+                "icon": "box"
+            },
+            {
+                "name": "Papiertechnologe/Papiertechnologin",
+                "icon": "file-alt"
+            },
+            {
+                "name": "Produktionsmechaniker-Textil/Produktionsmechanikerin-Textil",
+                "icon": "cogs"
+            },
+            {
+                "name": "Produktionstechnologe/Produktionstechnologin",
+                "icon": "cogs"
+            },
+            {
+                "name": "Produktveredler-Textil/Produktveredlerin-Textil",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Prüftechnologe Keramik/Prüftechnologin Keramik",
+                "icon": "flask"
+            },
+            {
+                "name": "Süßwarentechnologe/Süßwarentechnologin",
+                "icon": "candy-cane"
+            },
+            {
+                "name": "Tankwart/Tankwartin",
+                "icon": "gas-pump"
+            },
+            {
+                "name": "Textilreiniger/Textilreinigerin",
+                "icon": "tshirt"
+            },
+            {
+                "name": "Verfahrensmechaniker für Beschichtungstechnik/Verfahrensmechanikerin für Beschichtungstechnik",
+                "icon": "paint-roller"
+            },
+            {
+                "name": "Verfahrensmechaniker in der Steine- und Erdenindustrie/Verfahrensmechanikerin in der Steine- und Erdenindustrie",
+                "icon": "stone"
+            },
+            {
+                "name": "Verfahrenstechnologe Mühlen- und Getreidewirtschaft/Verfahrenstechnologin Mühlen- und Getreidewirtschaft",
+                "icon": "seedling"
+            },
+            {
+                "name": "Weintechnologe/Weintechnologin",
+                "icon": "wine-glass"
+            },
+            {
+                "name": "Textillaborant/Textillaborantin",
+                "icon": "thread"
+            },
+            {
+                "name": "Verfahrenstechnologe Metall/Verfahrenstechnologin Metall",
+                "icon": "industry"
+            },
+            {
+                "name": "Werkstoffprüfer/Werkstoffprüferin",
+                "icon": "search"
+            }
+        ]
+    }
 
 
 

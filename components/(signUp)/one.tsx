@@ -1,13 +1,12 @@
-import { View, Text, Image, TextInput } from 'react-native'
+import { View, Text, Image, TextInput,TouchableOpacity } from 'react-native'
 import React from 'react'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
-
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import ProgressBar from './(components)/progressBar'
 const StepOne = ({name, setName, userData, setUserData}) => {
     return (
         <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='bg-gray-900 w-full rounded-[10px] ' style={{height:6}}>
-                            <View className={`bg-blue-500 h-full w-[${20}%] rounded-full`} style={{width:`${20}%`}}/>
-            </View>
+            <ProgressBar percent={20} handlePress={()=> setUserData({...userData,signInProcessStep:"ZERO"})}/>
                 <View className='items-center justiy-center'>
                     <View className='w-full max-w-[400px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
                         <Text className='font-semibold text-[15px] text-gray-100 text-center'>Wie heißt du eigentlich</Text>

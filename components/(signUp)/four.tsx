@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity, FlatList, useWindowDimensions,ScrollView, Image, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
-import { schoolListDeutschland, ausbildungsListDeutschland, universityListDeutschland } from '@/assets/exapleData/countryList';
+import { schoolListDeutschland, ausbildungsListDeutschland, universityListDeutschland, ausbildungsTypen } from '@/assets/exapleData/countryList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ProgressBar from './(components)/progressBar';
+import BotTopLeft from './(components)/botTopLeft';
 
 const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedCountry, setSelectedRegion ,selectedRegion, selectedKathegorie, school, setSchool, setAusbildungKathegorie, ausbildungKathegorie, selectedUniversity, setSelectedUniversity }) => {
     const {width} = useWindowDimensions()
@@ -11,13 +13,21 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
     const Sonstige ={name:"Sonstige", id:"4058177f-0cd4-4820-8f71-5dsfsf57c4b27dd42", klassenstufen: [1,2,3,4,5,6,7,8,9,10,11,12,13] }
     const Other = {name:"Other", id:"Other", icon:"question"}
     const [universityFilter, setUniversityFilter] = useState("")
+    const robotMessage = {
+        "DE": "Wo gehst du zur Schule, an die Uni oder machst eine Ausbildung?",
+        "GB": "Where do you go to school, university, or do an apprenticeship?",
+        "US": "Where do you go to school, college, or do an apprenticeship?",
+        "AU": "Where do you go to school, uni, or do an apprenticeship?",
+        "ES": "¿Dónde vas a la escuela, a la universidad o haces una formación profesional?",
+    }
 
     if (selectedKathegorie == "SCHOOL") {
 
     return ( 
         <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='bg-gray-900 w-full rounded-[10px] ' style={{height:6}}>
-                <View className={`bg-blue-500 h-full w-[${50}%] rounded-full`} style={{width:`${50}%`}}/>
+            <View className='w-full'>
+                <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
+                <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
             </View>
                 <View className='items-center'>
                 <View style={{ position: 'relative', zIndex: 10 }}>
@@ -111,10 +121,18 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
 
 
     } else if (selectedKathegorie == "UNIVERSITY") {
+        const robotMessage = {
+            "DE": "Perfekt! An welcher Uni bist du?",
+            "GB": "Perfect! Which university are you at?",
+            "US": "Perfect! What college are you at?",
+            "AU": "Perfect! Which uni ya at?",
+            "ES": "¡Perfecto! ¿En qué universidad estás?",
+        }
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='bg-gray-900 w-full rounded-[10px] ' style={{height:6}}>
-                <View className={`bg-blue-500 h-full w-[${50}%] rounded-full`} style={{width:`${50}%`}}/>
+            <View className='w-full'>
+                <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
+                <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
             </View>
             <View className='bg-gray-900 h-full w-full max-w-[600px] max-h-[700px] rounded-[10px] '
                 style={{maxWidth:600, maxHeight:700}}
@@ -157,14 +175,22 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
 
 
     } else if ( selectedKathegorie == "EDUCATION" ) {
+        const robotMessage = {
+            "DE": "Perfekt! In welchem Bereich machst du deine Ausbildung?",
+            "GB": "Perfect! In which field are you doing your apprenticeship?",
+            "US": "Perfect! What field is your trade school or apprenticeship in?",
+            "AU": "Perfect! What field’s your apprenticeship in?",
+            "ES": "¡Perfecto! ¿En qué área estás haciendo tu formación profesional?",
+        }
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='bg-gray-900 w-full rounded-[10px] ' style={{height:6}}>
-                <View className={`bg-blue-500 h-full w-[${50}%] rounded-full`} style={{width:`${50}%`}}/>
+            <View className='w-full'>
+                <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
+                <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
             </View>
             <View className='justify-center items-center'>
                 <FlatList
-                    data = {ausbildungsListDeutschland.ausbildungsTypen}
+                    data = {ausbildungsTypen}
                     numColumns={width < 400 ? 2 : 3}
                     className='z-100'
                     renderItem={({item}) => (
@@ -178,21 +204,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                         </TouchableOpacity>
                     )}
                     keyExtractor={(item) => item.name}
-                    ListFooterComponent={ ()=> {
-                        return (
-                            <View className='w-full justify-center items-center'>
-                            <TouchableOpacity onPress={()=> {setAusbildungKathegorie(Other); setUserData({...userData,signInProcessStep:"FIVE"})}} key={Other.id} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                            style={{width:120, height:120}}
-                            >     
-                                <Icon name="ellipsis-h" size={15} color="#D1D5DB" />
-                                <Text className='text-gray-100 font-semibold text-[15px] text-center' >
-                                    {Other.name}
-                                </Text>
-
-                            </TouchableOpacity>
-                            </View>
-                        )
-                    }}
+                    
                 />
             </View>
             <View className='items-center justiy-center'></View>

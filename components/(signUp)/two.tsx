@@ -3,31 +3,33 @@ import React, { useState } from 'react'
 import Flag from "react-world-flags";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
+import ProgressBar from './(components)/progressBar';
+import BotCenter from './(components)/botCenter';
 
 const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, name }) => {
     const [isActive, setIsActive] = useState(false)
-
+    const continueButtonText = {
+        "DE": "Weiter gehts",
+        "GB": "Let's carry on!",
+        "US": "Let's move on!",
+        "AU": "Let’s keep moving!",
+        "ES": "Vamos",
+    }
+    const robotMessage = {
+        "DE": "Freut mich, dich kennenzulernen. In welcher Sprache wollen wir uns unterhalten?",
+        "GB": "Nice to meet you. Which language would you like to speak?",
+        "US": "Nice to meet you. What language do you wanna talk in?",
+        "AU": "G’day! Which language ya keen to chat in?",
+        "ES": "Encantado de conocerte. ¿En qué idioma quieres hablar?",
+    }
     return (
         <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='bg-gray-900 w-full rounded-[10px] ' style={{height:6}}>
-                            <View className={`bg-blue-500 h-full w-[${30}%] rounded-full`} style={{width:`${30}%`}}/>
-            </View>
+            <ProgressBar percent={30} handlePress={()=> setUserData({...userData,signInProcessStep:"ONE"})}/>
                 <View className='items-center justiy-center'>
                         <View className='w-full max-w-[400px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
                             <Text className='font-semibold text-[15px] text-gray-100 text-center'>{
-
-                            selectedLanguage == null || languages[selectedLanguage].code == "DE"
-                            ? `Freut mich, ${name}. In welcher Sprache wollen wir uns unterhalten`
-                            : languages[selectedLanguage].code == "GB"
-                            ? `Nice to meet you, ${name}. Which language would you like to speak?`
-                            : languages[selectedLanguage].code == "US"
-                            ? `Nice to meet you, ${name}. What language do you wanna talk in?`
-                            : languages[selectedLanguage].code == "AU"
-                            ? `G’day, ${name}! Which language ya keen to chat in?`
-                            : languages[selectedLanguage].code == "ES"
-                            ? `Encantado de conocerte, ${name}. ¿En qué idioma quieres hablar?`
-                            : `Freut mich, ${name}. In welcher Sprache wollen wir uns unterhalten`
-                            }</Text>
+                                selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]
+                                }</Text>
                         </View>
                             <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
                             <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
@@ -63,12 +65,7 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
             <View className='w-full max-w-[200px]'>
                 <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={()=> {setUserData({...userData,signInProcessStep:"THREE"}); setIsActive(false)}}>
                     <Text className='text-gray-100 font-semibold text-[15px]'>{
-                        selectedLanguage == null || languages[selectedLanguage].code == "DE" ? "Weiter gehts":
-                        languages[selectedLanguage].code == "GB" ? "Let's carry on!":
-                        languages[selectedLanguage].code == "US" ? "Let's move on!":
-                        languages[selectedLanguage].code == "AU" ? "Let’s keep moving!":
-                        languages[selectedLanguage].code == "ES" ? "Vamos":
-                        "Weiter gehts"
+                        selectedLanguage == null ? continueButtonText.DE : continueButtonText[languages[selectedLanguage].code]
                         }</Text>
                 </GratisPremiumButton>
             </View>

@@ -22,6 +22,11 @@ const authLayout = () => {
                     headerShown: false 
                   }}
                 />
+                <Stack.Screen name="getting-started"
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
             </Stack>
         </>
     </View>

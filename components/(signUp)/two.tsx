@@ -64,7 +64,13 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
                                 </View>
                     </View>
             <View className='w-full max-w-[200px]'>
-                <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={()=> {setUserData({...userData,signInProcessStep:"THREE"}); setIsActive(false)}}>
+                <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={()=> {
+                    if (selectedLanguage == null) {
+                        setSelectedLanguage(0);
+                    }
+                    setUserData({...userData,signInProcessStep:"THREE"});
+                     setIsActive(false);
+                    }}>
                     <Text className='text-gray-100 font-semibold text-[15px]'>{
                         selectedLanguage == null ? continueButtonText.DE : continueButtonText[languages[selectedLanguage].code]
                         }</Text>

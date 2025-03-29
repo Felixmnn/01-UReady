@@ -59,14 +59,32 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                             </Text>
 
                             <TextInput
-                                className={`text-white flex-1 rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                                className={`text-white flex-1 rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
                                 value={newTag ? newTag.name : null}
+                                maxLength={30}
                                 placeholder={session.title}
                                 onChangeText={(e) => setSessions(prevSessions =>
                                     prevSessions.map((session, i) =>
                                         i === index ? { ...session, title: e } : session
                                     )
                                 )}
+                            />
+                            <Text className='text-gray-400 font-bold text-[12px]'>
+                                Session Description
+                            </Text>
+
+                            <TextInput
+                            value={newTag ? newTag.description : ""}
+                            maxLength={30}
+                            className={`text-white flex-1 rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                            onChangeText={(e) => {
+                                setNewTag((prev) => ({ ...prev, description: e }));
+                                setSessions((prevSessions) =>
+                                prevSessions.map((sessionItem, i) =>
+                                    i === index ? { ...sessionItem, description: e } : sessionItem
+                                )
+                                );
+                            }}
                             />
                             <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title="Session Farbe" indexItem={index} />
                             <IconPicker selectedIcon={selectedIcon} setSelectedIcon={changeIcon} title={"Session Icons"} selectedColor={selectedColor} indexItem={index} />

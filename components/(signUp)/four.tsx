@@ -84,7 +84,14 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                     numColumns={width < 400 ? 2 : 3}
                     className='z-100'
                     renderItem={({item}) => (
-                        <TouchableOpacity key={item.id} onPress={()=> {setSchool(item); setUserData({...userData,signInProcessStep:"FIVE"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                        <TouchableOpacity key={item.id} onPress={()=> {
+                            if (selectedRegion == null) {
+                                setSelectedRegion(0);
+                            }
+                            setSchool(item);
+                             setUserData({...userData,signInProcessStep:"FIVE"})
+
+                        }} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
                             style={{width:120, height:120}}
                         >
                             <Icon name="school" size={20} color="#D1D5DB" />
@@ -194,7 +201,10 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                     numColumns={width < 400 ? 2 : 3}
                     className='z-100'
                     renderItem={({item}) => (
-                        <TouchableOpacity key={item.id} onPress={()=> {setAusbildungKathegorie(item); setUserData({...userData,signInProcessStep:"FIVE"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                        <TouchableOpacity key={item.id} onPress={()=> {
+                            setAusbildungKathegorie(item); 
+                            setUserData({...userData,signInProcessStep:"FIVE"})
+                        }} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
                             style={{width:125, height:125}}
                         >
                             <Icon name={item.icon} size={20} color="#D1D5DB" />

@@ -18,7 +18,7 @@ const IconPicker = ({selectedIcon, setSelectedIcon, title,indexItem, selectedCol
     <Text className='text-gray-400 font-bold text-[12px]'>
                         {title}
                       </Text>
-                      <View className='flex-row flex-1 items-center justify-center border-gray-700 border-[1px] p-2 rounded-[10px] m-2'>
+                      <View className='flex-row flex-1 items-center justify-center border-gray-700  border-[1px] p-2 rounded-[10px] m-2 shadow-lg bg-[#0c111d]'>
                         {icons.map((icon, index) => {
                           return (
                             <TouchableOpacity

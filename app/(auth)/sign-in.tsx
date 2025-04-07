@@ -57,12 +57,31 @@ const SignIn = () => {
         }
       };
 
+      const LogInOption = ({iconName, title, bgColor, handlePress}) => {
+        return (
+          <TouchableOpacity onPress={()=>{
+              if (handlePress){
+                  handlePress()
+              } else {
+                  setIsVisible(true)
+              }
+          }} className={`flex-1 p-2 w-full flex-row items-center justify-center bg-blue-900 rounded-[10px] mx-2 my-1 ${bgColor}`}>
+            <Icon name={iconName} size={20} color="#fff" />
+            <Text className="ml-2 text-white font-bold">{title}</Text>
+          </TouchableOpacity>
+        )
+      }
+
     const NotSelected = () => {
         return (
-            <View className="w-full">
-                <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" textColor={"text-white"}   />
-                <LogInOption iconName={"apple"} title="Weiter mit Apple" bgColor="bg-gray-500" textColor={"text-white"} />
-                <LogInOption iconName={"envelope"} title="Mit E-Mail registrieren" bgColor="bg-[#4285F4]" textColor={"text-white"} handlePress={()=> setSelectedOption(3)} />
+            <View className="flex-1 items-center justify-center "
+            style={{
+              width:300
+            }}
+            >
+                <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]"    />
+                <LogInOption iconName={"apple"} title="Weiter mit Apple" bgColor="bg-gray-500"  />
+                <LogInOption iconName={"envelope"} title="Mit E-Mail registrieren" bgColor="bg-[#4285F4]" handlePress={()=> setSelectedOption(3)} />
                 <TouchableOpacity onPress={()=> setSelectedOption(4)} className={`flex-1 p-2 flex-row items-center justify-center bg-gray-900 rounded-full `}>
                     <Text className="ml-2 text-gray-600 font-bold tex-[10px] ">Ich habe bereits einen Account</Text>
                 </TouchableOpacity>
@@ -90,7 +109,7 @@ const SignIn = () => {
     }
     const MailSingIn = ()=>{
         return(
-            <View className="w-full items-center justify-center">
+            <View className="w-full  justify-center">
                 <Text className='text-white font-bold text-xl'>Sign Up</Text>
                 <CustomTextInput1 value="Username" inputStyles="mt-2 text-white p-2 rounded-[10px] w-full"/>
                 <CustomTextInput1 value="E-Mail" inputStyles="mt-2 text-white p-2 rounded-[10px] w-full"/>
@@ -109,23 +128,12 @@ const SignIn = () => {
 
 
   
-    const LogInOption = ({iconName, title, bgColor,textColor, handlePress}) => {
-      return (
-        <TouchableOpacity onPress={()=>{
-            if (handlePress){
-                handlePress()
-            } else {
-                setIsVisible(true)
-            }
-        }} className={`flex-1 p-2 flex-row items-center justify-center bg-gray-900 rounded-[10px] mx-2 my-1 ${bgColor}`}>
-          <Icon name={iconName} size={20} color="#fff" />
-          <Text className="ml-2 text-white font-bold">{title}</Text>
-        </TouchableOpacity>
-      )
-    }
+    
   
     return (
-      <SafeAreaView className="flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center">
+      <SafeAreaView className="flex-1  bg-red-900 items-center justify-center"
+     
+      >
         <View className="items-center jusitfy-center">
           <View className="items-center justify-center flex-row">
             <Icon name="trophy" size={50} color="#fff" />
@@ -137,7 +145,7 @@ const SignIn = () => {
             <Icon name="trophy" size={50} color="#fff" />
           </View>
           <View className="rounded-[10px] mt-2 border-gray-500 border-[1px]">
-          <View className={`flex-1 ${isVertical ? "flex-row" : null} items-center justify-center`}>
+          <View className={` ${isVertical ? "flex-row" : null} items-center justify-center`}>
             {
               isVertical ? (
                 <View className="min-h-[300px]  min-w-[300px] h-full rounded-l-[10px] bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center p-4">

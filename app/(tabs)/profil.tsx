@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, Settings } from 'react-native'
+import { View, Text, StatusBar, Settings,ScrollView } from 'react-native'
 import React, { useContext, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import InfoModule from '@/components/(tabs)/infoModule'
@@ -9,7 +9,6 @@ import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
 import General from '@/components/(profile)/general'
 import ProfileSettings from '@/components/(profile)/profileSettings'
 import PersonalInfo from '@/components/(profile)/personalInfo'
-import { ScrollView } from 'react-native-gesture-handler'
 import SkeletonList from '@/components/(general)/(skeleton)/skeletonList'
 import SkeletonListProfile from '@/components/(general)/(skeleton)/skeletonListProfile'
 

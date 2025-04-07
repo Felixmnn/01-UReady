@@ -1,7 +1,6 @@
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity,TextInput } from 'react-native'
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { TextInput } from 'react-native-gesture-handler';
 import { updateDocument, updateModule } from '@/lib/appwriteEdit';
 import ModalEditTag from './modalEditTag';
 import uuid from 'react-native-uuid';

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList,TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList,TextInput,ScrollView } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
@@ -14,7 +14,6 @@ import EditQuestions from './(createQuestion)/editQuestions';
 import ModalAddTags from './(createQuestion)/modalAddTags';
 import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     const {user} = useGlobalContext();

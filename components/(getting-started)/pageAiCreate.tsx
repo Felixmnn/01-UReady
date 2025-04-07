@@ -16,7 +16,8 @@ const PageAiCreate = ({userChoices, setUserChoices}) => {
         <View className="flex-row">
             <ContinueBox text={"Erstelle ein Modul zu einem Text"} colorBorder={"#7a5af8"} colorBG={"#372292"} iconName={"pen"} handlePress={()=> setUserChoices("TEXTBASED")}/>
             <ContinueBox text={"Erstelle ein Modul zu einem Thema"} colorBorder={"#20c1e1"} colorBG={"#0d2d3a"} iconName={"layer-group"} handlePress={()=> setUserChoices("THEMENBASED")}/>
-            <ContinueBox text={"Erstelle ein Modul aus einer Datei"} colorBorder={"#4f9c19"} colorBG={"#2b5314"} iconName={"file"} handlePress={()=> setUserChoices("THEMENBASED")}/>
+            <ContinueBox text={"Erstelle ein Modul aus einer Datei"} colorBorder={"#4f9c19"} colorBG={"#2b5314"} iconName={"file"} handlePress={()=> setUserChoices("DOCUMENTBASED")}/>
+
         </View>
     </View>
   )

@@ -42,8 +42,12 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
             {
               modules && modules.documents.map((module,index) => {
                 if (index < 7) {
-                  return <Karteikarte handlePress={()=> {setSelected("SingleModule"); setSelectedModule(index)}} farbe={module.color}percentage={module.progress} titel={module.name} studiengang={module.subject} fragenAnzahl={module.questions} notizAnzahl={module.notes} creator={module.creator} availability={module.public} icon={"clock"} publicM={module.public} />
-                }
+                  return  (
+                <View className='m-2'>
+                    <Karteikarte handlePress={()=> {setSelected("SingleModule"); setSelectedModule(index)}} farbe={module.color}percentage={module.progress} titel={module.name} studiengang={module.subject} fragenAnzahl={module.questions} notizAnzahl={module.notes} creator={module.creator} availability={module.public} icon={"clock"} publicM={module.public} />
+                  </View>
+                  )
+                  }
               })
             }
             {/*

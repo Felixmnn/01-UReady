@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Modal,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { signOut } from '@/lib/appwrite'
 import Tabbar from '@/components/(tabs)/tabbar'
@@ -10,12 +10,12 @@ import ModalStreak from '@/components/(home)/modalStreak';
 import ModalPremium from '@/components/(home)/modalPremium';
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import CustomTextInputChat from '../(general)/customTextInputChat';
-import { ScrollView } from 'react-native-gesture-handler';
 import GratisPremiumButton from '../(general)/gratisPremiumButton';
 import AddModule from '../(general)/(modal)/addModule';
 import { loadUserData } from '@/lib/appwriteDaten';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
+import { callAppwriteFunction } from '@/lib/appwriteFunctions';
 import ModalAddFile from '../(general)/(modal)/addFile';
 
 const HomeGeneral = ({setSelectedPage}) => {
@@ -109,11 +109,11 @@ const HomeGeneral = ({setSelectedPage}) => {
       }
   return (
     <View className='flex-1 justify-between '>
-        <ModalStreak isVisible={isVisible} setIsVisible={setIsVisible} tage={12} days={days}/>
+       <ModalStreak isVisible={isVisible} setIsVisible={setIsVisible} tage={12} days={days}/>
         <ModalPremium isVisible={isVisiblePremium} setIsVisible={setIsVisiblePremium}/>
         <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
         <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule}/>
-        <ModalAddFile isVisible={isvisibleNewFile} setIsVisible={setIsVisibleNewFile}/>
+        {/*<ModalAddFile isVisible={isvisibleNewFile} setIsVisible={setIsVisibleNewFile}/>*/}
         <ScrollView className='flex-1 mx-4 mb-2 mt-4'>
         {/*Top Bar*/}
         <View className='flex-row justify-between'>
@@ -154,7 +154,9 @@ const HomeGeneral = ({setSelectedPage}) => {
               <Icon name="chevron-right" size={20} color="gray"/>
             </TouchableOpacity>
           </View>
-          
+          <TouchableOpacity onPress={()=> callAppwriteFunction()} className='bg-red-900 p-4'>
+            <Text className='text-gray-300 font-bold'>Use Fucntion</Text>
+          </TouchableOpacity>
         </View>
         
         
@@ -206,7 +208,7 @@ const HomeGeneral = ({setSelectedPage}) => {
           <CustomTextInputChat placeholder={"Frag mich was cooles..."}/>
           </View>
           </View>
-        </View>
+        </View> 
       </View>
   )
 }

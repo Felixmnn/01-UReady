@@ -29,6 +29,7 @@ const Tabbar = ({content,page, hide}) => {
                 {tabbarIcon('book', 25, 'white', 'Bibliothek',"/bibliothek")}
                 {tabbarIcon('search', 25, 'white', 'Entdecken',"/entdecken")}
                 {tabbarIcon('user', 25, 'white', 'Profil',"/profil")}
+
                 </View>  
                 <View className='items-center my-1'>
                     {tabbarIcon('question', 25, 'white', 'Hilfe')}

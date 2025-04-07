@@ -1,7 +1,6 @@
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity,TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomTextInput from '../customTextInput'
-import { TextInput } from 'react-native-gesture-handler'
 import ColorPicker from '../colorPicker'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import FinalTextInput from '../finalTextInput'

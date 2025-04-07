@@ -70,962 +70,1146 @@ export const LeibnizSubjects = [
             {
                 "name": "Angewandte Sprachwissenschaft im Bachelorstudiengang Sonderpädagogik, außerschulisch (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Architektur (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Kunst, Design & Medien"
             },
             {
                 "name": "Bau- und Umweltingenieurwesen (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "kathegory": "Umwelttechnik"
             },
             {
                 "name": "Bautechnik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Biochemie (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Biologie (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Biologie im Fächerübergreifenden Bachelor (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Chemie (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Chemie im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Chemie im Fächerübergreifenden Bachelor (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Darstellendes Spiel im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Kunst, Design & Medien"
             },
             {
                 "name": "Deutsch im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Deutsch im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Deutsch im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Elektrotechnik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Elektrotechnik im Masterstudiengang Lehramt an berufsbildenden Schulen für Fachbachelor (LBS-Sprint) (Master of Education)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Elektrotechnik und Informationstechnik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Energietechnik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Englisch im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Englisch im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Erdkunde / Geographie im Fächerübergreifenden Bachelor (Bachelor of Arts, Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Geowissenschaften & Umweltwissenschaften"
             },
             {
                 "name": "Erdkunde / Geographie im Fächerübergreifenden Bachelor (Bachelor of Arts, Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Geowissenschaften & Umweltwissenschaften"
             },
             {
                 "name": "Evangelische Religion im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Evangelische Religion im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Evangelische Theologie im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Fächerübergreifender Bachelor (Bachelor of Arts, Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Farbtechnik und Raumgestaltung im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Kunst, Design & Medien"
             },
             {
                 "name": "Geodäsie und Geoinformatik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "kathegory": "Geowissenschaften & Umweltwissenschaften"
             },
             {
                 "name": "Geographie (Bachelor of Arts, Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Geowissenschaften & Umweltwissenschaften"
             },
             {
                 "name": "Geowissenschaften (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Geowissenschaften & Umweltwissenschaften"
             },
             {
                 "name": "Geschichte im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Geschichte & Archäologie"
             },
             {
                 "name": "Geschichte im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Geschichte & Archäologie"
             },
             {
                 "name": "Holztechnik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Informatik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Informatik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Informatik im Fächerübergreifenden Bachelor (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Informationstechnologierecht und Recht des geistigen Eigentums (LL.B) (Bachelor of Laws)",
                 "type": "Bachelor",
-                "faculty": "Juristische Fakultät"
+                "faculty": "Juristische Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Katholische Religion im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Katholische Religion im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Katholische Theologie im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Kunst im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Bildende Kunst"
             },
             {
                 "name": "Landschaftsarchitektur und Umweltplanung (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Architektur & Stadtplanung"
             },
             {
                 "name": "Lebensmittelwissenschaft im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Lehramt an berufsbildenden Schulen für Fachbachelor (LBS-Sprint) (Master of Education)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Life Science (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Maschinenbau (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Mathematik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Mathematik im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Mathematik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Mathematik im Fächerübergreifenden Bachelor (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Mechatronik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Metalltechnik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Metalltechnik im Masterstudiengang Lehramt an berufsbildenden Schulen für Fachbachelor (LBS-Sprint) (Master of Education)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Musik im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Musik & Musikpädagogik"
             },
             {
                 "name": "Musik im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Musik & Musikpädagogik"
             },
             {
                 "name": "Nachhaltige Ingenieurwissenschaft (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Umwelt, Landwirtschaft & Nachhaltigkeit"
             },
             {
                 "name": "Nanotechnologie (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Optische Technologien: Laser und Photonik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Pflanzenbiotechnologie (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Pflege im Masterstudiengang Lehramt an berufsbildenden Schulen für Fachbachelor (LBS-Sprint) (Master of Education)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Philosophie im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Philosophie & Ethik"
             },
             {
                 "name": "Physik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Physik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Physik im Fächerübergreifenden Bachelor (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Politikwissenschaft (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Politikwissenschaft & Internationale Beziehungen"
             },
             {
                 "name": "Politikwissenschaft (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Politikwissenschaft & Internationale Beziehungen"
             },
             {
                 "name": "Politikwissenschaft (Politik) im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Politikwissenschaft (Politik) im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Politikwissenschaft & Internationale Beziehungen"
             },
             {
                 "name": "Religionswissenschaft / Werte und Normen im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Sachunterricht im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Sozialwissenschaften (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Soziologie & Sozialwissenschaften"
             },
             {
                 "name": "Spanisch im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Spanisch im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Sport im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Sport im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Sport im Fächerübergreifenden Bachelor (Bachelor of Arts)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Technische Informatik (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Umweltmeteorologie (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Wirtschaftsingenieurwesen (Bachelor of Science)",
                 "type": "Bachelor",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             }
         ],
         "Master": [
             {
                 "name": "Arbeitswissenschaft berufsbegleitend (Master of Arts)",
                 "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "category": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Architektur und Städtebau (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Atlantic Studies/ History, Culture and Society (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Bauingenieurwesen (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Bauingenieurwesen - Vertiefung Konstruktiver Ingenieurbau (Fernstudium) (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Bautechnik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Bildungswissenschaften (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Biochemie (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Biologie im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Biomedizintechnik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Chemie (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Chemie im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Chemie im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Computational Methods in Engineering (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Darstellendes Spiel im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Deutsch im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Deutsch im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Deutsch im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Elektrotechnik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Elektrotechnik und Informationstechnik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Energietechnik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Energy Technology (Master of Science, Double Degree)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Englisch im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Englisch im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Europäische Rechtspraxis LL.M. Joint Degree (Master of Laws)",
                 "type": "Master",
-                "faculty": "Juristische Fakultät"
+                "faculty": "Juristische Fakultät",
+                "category": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "European Master in Landscape Architecture (EMiLA) (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Evangelische Religion im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Evangelische Religion im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Evangelische Religion im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Farbtechnik und Raumgestaltung im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Geodäsie und Geoinformatik, Vertiefung Geomatik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Geodäsie und Geoinformatik, Vertiefung Navigation und Umweltrobotik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Geodäsie und Geoinformatik, Vertiefung Remote Sensing and GIS (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Geowissenschaften (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Geschichte im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Geschichte im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Hochschule, Wissenschaft, Gesellschaft (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Holztechnik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Informatik - Vertiefung Logic and Computation (Double Degree, Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
-            },
-            {
-                "name": "Informatik - Vertiefung Logic and Computation (Double Degree, Master of Science)",
-                "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Informatik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Informatik im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "category": "Informatik & Technik"
             },
             {
                 "name": "Informationstechnologierecht und Recht des geistigen Eigentums (LL.M) (Master of Laws)",
                 "type": "Master",
-                "faculty": "Juristische Fakultät"
+                "faculty": "Juristische Fakultät",
+                "category": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Katholische Religion im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Katholische Religion im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Katholische Religion im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Kunst im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Landschaftsarchitektur (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "category": "Kunst, Design & Medien"
             },
             {
                 "name": "Landschaftswissenschaften (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Lebensmittelwissenschaft im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "category": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "category": "Geistes- und Sozialwissenschaften"
             },
             {
                 "name": "Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Life Science (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Maschinenbau (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Mathematik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Mathematik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Mathematik im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Mathematik im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Mechatronik und Robotik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Metalltechnik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Meteorologie (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Molekulare Mikrobiologie (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Musik im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Musik & Musikpädagogik"
             },
             {
                 "name": "Musik im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Musik & Musikpädagogik"
             },
             {
                 "name": "Nachhaltige Gesundheitsförderung durch Sport (Master of Science)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Nachhaltige Ingenieurwissenschaft (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Nanotechnologie (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Neuere Deutsche Literaturwissenschaft (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "North American Studies (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Optische Technologien (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Pflanzenbiotechnologie (Master of Science)",
                 "type": "Master",
-                "faculty": "Naturwissenschaftliche Fakultät"
+                "faculty": "Naturwissenschaftliche Fakultät",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Philosophie im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Philosophie & Ethik"
             },
             {
                 "name": "Philosophy of Science (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Philosophie & Ethik"
             },
             {
                 "name": "Physik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
                 "name": "Physik im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Physik im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Politikwissenschaft (Politik) im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Politikwissenschaft & Internationale Beziehungen"
             },
             {
                 "name": "Politikwissenschaft (Politik-Wirtschaft) im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Politikwissenschaft & Internationale Beziehungen"
             },
             {
                 "name": "Produktion und Logistik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Quantum Engineering (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Mathematik und Physik"
+                "faculty": "Fakultät für Mathematik und Physik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Religion in the Public Sphere (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Religion in the Public Sphere - Double Degree Track (Master of Arts, Double Degree)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Theologie & Religionswissenschaften"
             },
             {
                 "name": "Sachunterricht im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Sachunterricht im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Sonderpädagogik und Rehabilitationswissenschaften (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Soziologie (Master of Arts)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Soziologie & Sozialwissenschaften"
             },
             {
                 "name": "Spanisch im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Spanisch im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sprach- & Literaturwissenschaften"
             },
             {
                 "name": "Sport im Masterstudiengang Lehramt an berufsbildenden Schulen (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Sport im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Sport im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Sportwissenschaften"
             },
             {
                 "name": "Technische Informatik (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Elektrotechnik und Informatik"
+                "faculty": "Fakultät für Elektrotechnik und Informatik",
+                "kathegory": "Informatik & Technik"
             },
             {
                 "name": "Umwelt- und Regionalplanung - Vertiefung Naturschutz und Landschaftsplanung (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Umwelt, Landwirtschaft & Nachhaltigkeit"
             },
             {
                 "name": "Umwelt- und Regionalplanung - Vertiefung Regionalplanung (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Architektur und Landschaft"
+                "faculty": "Fakultät für Architektur und Landschaft",
+                "kathegory": "Umwelt, Landwirtschaft & Nachhaltigkeit"
             },
             {
                 "name": "Umweltingenieurwesen (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Maschinenbau"
+                "faculty": "Fakultät für Maschinenbau",
+                "kathegory": "Umwelttechnik"
             },
             {
                 "name": "Wasser und Umwelt (Fernstudium) (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "kathegory": "Umwelt, Landwirtschaft & Nachhaltigkeit"
             },
             {
                 "name": "Water Resources and Environmental Management (Master of Science)",
                 "type": "Master",
-                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie"
+                "faculty": "Fakultät für Bauingenieurwesen und Geodäsie",
+                "kathegory": "Umwelt, Landwirtschaft & Nachhaltigkeit"
             },
             {
                 "name": "Werte und Normen im Masterstudiengang Lehramt an Gymnasien (Master of Education)",
                 "type": "Master",
-                "faculty": "Philosophische Fakultät"
+                "faculty": "Philosophische Fakultät",
+                "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
                 "name": "Wirtschaftsgeographie, Innovation und Nachhaltigkeit (Master of Science)",
                 "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Wirtschaftsgeographie, Innovation und Nachhaltigkeit - Double Degree Track (Master of Science, Double Degree)",
                 "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Wirtschaftsingenieurwesen (Master of Science)",
                 "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Wirtschaftsingenieurwesen (Master of Science)",
                 "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             },
             {
                 "name": "Wirtschaftswissenschaft (Master of Science)",
                 "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät"
+                "faculty": "Wirtschaftswissenschaftliche Fakultät",
+                "kathegory": "Wirtschafts- und Rechtswissenschaften"
             }
         ],
         "Staatsexamen": [
-            {
-                "name": "Rechtswissenschaften (Staatsexamen)",
-                "type": "Staatsexamen/Staatliche Prüfung",
-                "faculty": "Juristische Fakultät"
-            }
+        {
+            "name": "Rechtswissenschaften (Staatsexamen)",
+            "type": "Staatsexamen/Staatliche Prüfung",
+            "faculty": "Juristische Fakultät",
+            "kathegory": "Rechtswissenschaften (Jura)"
+        }
         ],
         "Diplom": [],
         "Magister": [],
         "Others": [
-            {
-                "name": "Ästhetische Bildung und Gestaltung (Zertifikat)",
-                "type": "Others",
-                "faculty": "Philosophische Fakultät"
-            },
-            {
-                "name": "Kautschuktechnologie (Zertifikat)",
-                "type": "Others",
-                "faculty": "Naturwissenschaftliche Fakultät"
-            },
-            {
-                "name": "Lehramt an berufsbildenden Schulen, zweites Fach (Zertifikat)",
-                "type": "Others",
-                "faculty": "Philosophische Fakultät"
-            },
-            {
-                "name": "Lehramt an Gymnasien, drittes Fach (Zertifikat)",
-                "type": "Others",
-                "faculty": "Philosophische Fakultät"
-            },
-            {
-                "name": "Lehramt für Sonderpädagogik, zweites Fach (Zertifikat)",
-                "type": "Others",
-                "faculty": "Philosophische Fakultät"
-            }
-        ]
+        {
+            "name": "Ästhetische Bildung und Gestaltung (Zertifikat)",
+            "type": "Others",
+            "faculty": "Philosophische Fakultät",
+            "category": "Erziehungswissenschaften & Pädagogik"
+        },
+        {
+            "name": "Kautschuktechnologie (Zertifikat)",
+            "type": "Others",
+            "faculty": "Naturwissenschaftliche Fakultät",
+            "category": "Chemie"
+        },
+        {
+            "name": "Lehramt an berufsbildenden Schulen, zweites Fach (Zertifikat)",
+            "type": "Others",
+            "faculty": "Philosophische Fakultät",
+            "category": "Erziehungswissenschaften & Pädagogik"
+        },
+        {
+            "name": "Lehramt an Gymnasien, drittes Fach (Zertifikat)",
+            "type": "Others",
+            "faculty": "Philosophische Fakultät",
+            "category": "Erziehungswissenschaften & Pädagogik"
+        },
+        {
+            "name": "Lehramt für Sonderpädagogik, zweites Fach (Zertifikat)",
+            "type": "Others",
+            "faculty": "Philosophische Fakultät",
+            "category": "Erziehungswissenschaften & Pädagogik"
+        }
+    ]
     }
 ]
 

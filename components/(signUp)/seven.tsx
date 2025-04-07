@@ -6,7 +6,6 @@ import { getSepcificModules} from '@/lib/appwriteQuerys'
 import { schoolListDeutschland } from '@/assets/exapleData/countryList'
 import Svg, { SvgUri } from 'react-native-svg'
 import ContinueBox from './(components)/continueBox'
-import { TextInput } from 'react-native-gesture-handler'
 import ColorPicker from '../(general)/colorPicker'
 import { router } from 'expo-router'
 

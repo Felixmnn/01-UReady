@@ -1,50 +1,43 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity,ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from '../(general)/colorPicker';
 import GratisPremiumButton from '../(general)/gratisPremiumButton';
 import ModalAddTags from '../(bibliothek)/(pages)/(createQuestion)/modalAddTags';
 import ModalSessionList from '../(bibliothek)/(modals)/modalSessionList';
-import { ScrollView } from 'react-native-gesture-handler';
-const PageCreateModule = ({userChoices, setUserChoices, userData}) => {
-    const [ newModule, setNewModule] = useState({
-        name: "",
-        subject: "",
-        questions: 0,
-        notes: 0,
-        documents: 0,
-        public: false,
-        progress: 0,
-        creator: "",
-        color: null,
-        sessions: [],
-        tags: [],
-        description: "",
-        releaseDate: null,
-        connectedModules: [],
-        qualityScore: 0,
-        duration: 0,
-        upvotes: 0,
-        downVotes: 0,
-        creationCountry: null,
-        creationUniversity: null,
-        creationUniversityProfession: null,
-        creationRegion: null,
-        creationUniversitySubject: null,
-        creationSubject: null,
-        creationEducationSubject: null,
-        creationUniversityFaculty: null,
-        creationSchoolForm: null,
-        creationKlassNumber: null,
-        creationLanguage: null,
-        });
+import { addNewModule } from '@/lib/appwriteAdd';
+import { router } from 'expo-router';
+import { setUserDataSetup } from '@/lib/appwriteEdit';
+import { useGlobalContext } from '@/context/GlobalProvider';
+const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, setNewModule}) => {
+    const { user } = useGlobalContext()
+    
         const [ sessions, setSessions ] = useState([]);
+        
         const [ selectedColor, setSelectedColor ] = useState(null);
         const changeColor = (color) => {
             setSelectedColor(color);
             setNewModule({...newModule, color: color});
         }
         const [ isVisible, setIsVisible ] = useState(false);
+
+        useEffect(() => {
+            setNewModule({
+                ...newModule, 
+                creationCountry: userData.country,
+                creationUniversity: userData.university,
+                creationUniversityProfession: userData.studiengangZiel,
+                creationRegion: userData.region,
+                creationUniversitySubject: userData.studiengang,
+                creationSubject: userData.schoolSubjects,
+                creationEducationSubject: userData.educationSubject,
+                creationUniversityFaculty: userData.faculty,
+                creationSchoolForm: userData.schoolType,
+                creationKlassNumber: userData.schoolGrade,
+                creationLanguage: userData.language,
+                creationEducationKathegory:userData.educationKathegory
+            });
+        },[userData])
   return (
     <View className="h-full w-full items-center justify-center m-4 p-4">
         <ModalSessionList sessions={sessions} setSessions={setSessions} isVisible={isVisible} setIsVisible={setIsVisible} />
@@ -155,7 +148,14 @@ const PageCreateModule = ({userChoices, setUserChoices, userData}) => {
             </View>
 
             <View className='mx-2 mt-2 w-full px-2'>
-                <GratisPremiumButton aditionalStyles={"rounded-[10px] mx-3 w-full "}>
+                <GratisPremiumButton aditionalStyles={"rounded-[10px] mx-3 w-full "} handlePress={async()=> {
+                    if (newModule.name !== "" && newModule.description !== "" && newModule.color !== null && sessions.length > 0){
+                     console.log("Module: ", newModule)
+                     const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), sessions:sessions.map(item => JSON.stringify(item)) });
+                     console.log("Module added: ", res)
+                        setUserDataSetup(user.$id)
+                     router.push("/bibliothek")
+                }}}>
                     <Text className='text-gray-700 font-semibold text-[15px]'>
                     Modul erstellen
                     </Text>

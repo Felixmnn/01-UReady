@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity,ScrollView,Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity,ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from '../../(general)/colorPicker';
@@ -9,41 +9,39 @@ import { addNewModule } from '@/lib/appwriteAdd';
 import { router } from 'expo-router';
 import { setUserDataSetup } from '@/lib/appwriteEdit';
 import { useGlobalContext } from '@/context/GlobalProvider';
-const PageModulThema = ({ newModule, userData, setNewModule}) => {
 
-    const [ newTopic, setNewTopic] = useState("")
-    const [ modules, setModules] = useState([])
+const PageModuleDocument = ({ newModule, userData, setNewModule}) => {
     const { user } = useGlobalContext()
-            
-                const [ sessions, setSessions ] = useState([]);
-                
-                const [ selectedColor, setSelectedColor ] = useState(null);
-                const changeColor = (color) => {
-                    setSelectedColor(color);
-                    setNewModule({...newModule, color: color});
-                }
-                const [ isVisible, setIsVisible ] = useState(false);
-                const [ manualSesions, setManualSessions ] = useState(false);
-                const [ manualColor, setManualColor ] = useState(false);
-                    const [ manualDescription, setManualDescription ] = useState(false);
+    
+        const [ sessions, setSessions ] = useState([]);
         
-                useEffect(() => {
-                    setNewModule({
-                        ...newModule, 
-                        creationCountry: userData.country,
-                        creationUniversity: userData.university,
-                        creationUniversityProfession: userData.studiengangZiel,
-                        creationRegion: userData.region,
-                        creationUniversitySubject: userData.studiengang,
-                        creationSubject: userData.schoolSubjects,
-                        creationEducationSubject: userData.educationSubject,
-                        creationUniversityFaculty: userData.faculty,
-                        creationSchoolForm: userData.schoolType,
-                        creationKlassNumber: userData.schoolGrade,
-                        creationLanguage: userData.language,
-                        creationEducationKathegory:userData.educationKathegory
-                    });
-                },[userData])
+        const [ selectedColor, setSelectedColor ] = useState(null);
+        const changeColor = (color) => {
+            setSelectedColor(color);
+            setNewModule({...newModule, color: color});
+        }
+        const [ isVisible, setIsVisible ] = useState(false);
+        const [ manualSesions, setManualSessions ] = useState(false);
+        const [ manualColor, setManualColor ] = useState(false);
+            const [ manualDescription, setManualDescription ] = useState(false);
+
+        useEffect(() => {
+            setNewModule({
+                ...newModule, 
+                creationCountry: userData.country,
+                creationUniversity: userData.university,
+                creationUniversityProfession: userData.studiengangZiel,
+                creationRegion: userData.region,
+                creationUniversitySubject: userData.studiengang,
+                creationSubject: userData.schoolSubjects,
+                creationEducationSubject: userData.educationSubject,
+                creationUniversityFaculty: userData.faculty,
+                creationSchoolForm: userData.schoolType,
+                creationKlassNumber: userData.schoolGrade,
+                creationLanguage: userData.language,
+                creationEducationKathegory:userData.educationKathegory
+            });
+        },[userData])
   return (
     <View className="h-full w-full items-center justify-center m-4 p-4">
         <ModalSessionList sessions={sessions} setSessions={setSessions} isVisible={isVisible} setIsVisible={setIsVisible} />
@@ -85,27 +83,27 @@ const PageModulThema = ({ newModule, userData, setNewModule}) => {
                 </TouchableOpacity>
             </View>
             <View className='w-full'>
-                <View className='flex-row justify-between items-center pr-2'>
-                        <Text className='text-gray-300 font-semibold text-[15px] '>
-                            {
-                                manualDescription ? "Manuelle Sitzungen" : "Automatische Sitzungen"
-                            }
-                        </Text>
-                        <Icon name={manualDescription ? "square" : "check-square"} size={20} color="#4B5563" onPress={()=> setManualDescription(!manualDescription)}/>
-                    </View>
-                    { manualDescription ?
-                    <TextInput
-                        maxLength={200}
-                        onChangeText={(text) => setNewModule({...newModule, description: text})}
-                        value={newModule.description}
-                        placeholder="Hier kannst du eine Beschreibung für dein Modul eingeben..."
-                        multiline={true}
-                        numberOfLines={4}
-                        className={`text-white rounded-[10px] p-1 bg-[#0c111d] p-2 m-2  border-gray-800 border-[1px] shadow-lg `}
-                    />
-                    :null
-                    }
-                </View>
+                            <View className='flex-row justify-between items-center pr-2'>
+                                    <Text className='text-gray-300 font-semibold text-[15px] '>
+                                        {
+                                            manualDescription ? "Manuelle Sitzungen" : "Automatische Sitzungen"
+                                        }
+                                    </Text>
+                                    <Icon name={manualDescription ? "square" : "check-square"} size={20} color="#4B5563" onPress={()=> setManualDescription(!manualDescription)}/>
+                                </View>
+                                { manualDescription ?
+                                <TextInput
+                                    maxLength={200}
+                                    onChangeText={(text) => setNewModule({...newModule, description: text})}
+                                    value={newModule.description}
+                                    placeholder="Hier kannst du eine Beschreibung für dein Modul eingeben..."
+                                    multiline={true}
+                                    numberOfLines={4}
+                                    className={`text-white rounded-[10px] p-1 bg-[#0c111d] p-2 m-2  border-gray-800 border-[1px] shadow-lg `}
+                                />
+                                :null
+                                }
+                            </View>
             <View className='w-full flex-row justify-start'>
                 <View  className='flex-1 justify-between my-2 '>
                     <View className='flex-row justify-between items-center pr-2'>
@@ -174,64 +172,11 @@ const PageModulThema = ({ newModule, userData, setNewModule}) => {
                 :null
                 }
             </View>
-            <View className='w-full m-2 '>
-                    <Text className='text-gray-300 font-semibold text-[15px]'>
-                            Ergänze ein Thema:
-                        </Text>
-                        <View className='flex-row items-center justify-start'>
-                           <TouchableOpacity onPress={()=> {
-                                if(newTopic !== ""){
-                                    setModules([...modules, newTopic])
-                                    setNewTopic("")
-                                }
-                           }} className='bg-[#0c111d] flex-row p-2 m-2 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg'
-                            style={{
-                                height: 34,
-                                width: 34
-                            }}
-                            >
-                                <Icon name="plus" size={15} color="#4B5563" />
-                            </TouchableOpacity>
-                           <TextInput
-                                maxLength={50}
-                                onChangeText={(text) => setNewTopic(text)}
-                                value={newTopic.name}
-                                placeholder="Eine neue Kathegorie ..."
-                                className={`text-white w-[50%] rounded-[10px] p-1 bg-[#0c111d] p-2 border-gray-800 border-[1px] shadow-lg `}
-                            />
-                            </View>
-                    <Text className='text-gray-300 font-semibold text-[15px] m-1'>
-                        Deine Themen:
-                    </Text>
-                    <View className='flex-row flex-wrap justify-start items-center'>
-                        {
-                            modules.length > 0 ?
-                            modules.map((module, index) => (
-                                <TouchableOpacity key={index} className='bg-[#0c111d] flex-row p-2 m-1 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg'
-                                style={{
-                                    height: 30,
-                                }}
-                                >   
-                                    <Text className='text-gray-300 font-semibold text-[12px] mb-[1px] ml-1'>
-                                        {module}
-                                    </Text>
-                                </TouchableOpacity>
-                            ))
-                            :
-                    <TouchableOpacity className='bg-[#0c111d] flex-row p-2 m-2 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg'
-                    style={{
-                        height: 30,
-                        width: 150
-                    }}
-                    >   
-                        <Icon name="book-open" size={15} color="#4B5563" />
-                        <Text className='text-gray-300 font-semibold text-[12px] mb-[1px] ml-1'>
-                            Noch keine Themen
-                        </Text>
-                    </TouchableOpacity>
-                    }
-                    </View>
-                </View>
+            <View className='w-full items-start m-2'>
+                <Text className='text-gray-300 font-semibold text-[15px]'>
+                    Dokumente:
+                </Text>
+            </View>
             <View className='mx-2 mt-2 w-full px-2'>
                 <GratisPremiumButton aditionalStyles={"rounded-[10px] mx-3 w-full "} handlePress={async()=> {
                     if (newModule.name !== "" && newModule.description !== "" && newModule.color !== null && sessions.length > 0){
@@ -251,4 +196,4 @@ const PageModulThema = ({ newModule, userData, setNewModule}) => {
   )
 }
 
-export default PageModulThema
+export default PageModuleDocument

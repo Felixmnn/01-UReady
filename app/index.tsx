@@ -18,9 +18,14 @@ export default function Index() {
               try {
                   console.log("Loading")
                   const userD = await loadUserData(user.$id);
+                  console.log("UserData ", userD);
                   setUserData(userD);
-                  if (userD.signInProcessStep !== "FINISHED" ) {
+                  if (userD.signInProcessStep !== "ZERO" ) {
                       router.push("/personalize");
+                  } else if (userD.signInProcessStep === "FINISHED") {
+                      router.push("/getting-started");
+                  } else {
+                      router.push("/home");
                   }
               } catch (error) {
                   console.log(error);

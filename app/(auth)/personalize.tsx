@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text,SafeAreaView, TouchableOpacity, Image, TextInput,FlatList, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -7,7 +7,6 @@ import { router } from 'expo-router';
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 import Flag from "react-world-flags";
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import StepZero from '@/components/(signUp)/zero';
 import StepOne from '@/components/(signUp)/one';
 import StepTwo from '@/components/(signUp)/two';
@@ -73,6 +72,8 @@ const personalize = () => {
                             } catch (error) {
                                 console.log("Error loading user data kathegory", error);
                             }
+                      } else if (userD.signInProcessStep == "DONE"){
+                            router.push("/home")
                       }
                   } catch (error) {
                       console.log(error);
@@ -96,6 +97,7 @@ const personalize = () => {
             educationSubject:                   selectedAusbildung ? selectedAusbildung.name : null,
             educationKathegory:                 ausbildungKathegorie ? ausbildungKathegorie.name[languages[selectedLanguage].code].toUpperCase().replace(/\s+/g, '') : null,
             language :                          selectedLanguage ? languages[selectedLanguage].name.toUpperCase() : languages[0].name.toUpperCase(),
+            studiengangKathegory:               selectedField ? selectedField.map(item => item.kathegory) : null,
         }
         console.log("Saving User Data", newUserData)
         try {
@@ -111,6 +113,7 @@ const personalize = () => {
                     uid:userData.uid,
                     university:userData.university,
                     signInProcessStep:"FINISHED",
+                    
             }
             await updateUserData(user.$id, updatedUserData);
         }

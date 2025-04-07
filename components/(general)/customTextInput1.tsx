@@ -14,7 +14,9 @@ const CustomTextInput1 = ({ value, inputStyles, placeholderSize,multiline, numbe
         onChange(text); // Übergib den aktuellen Wert des Textfeldes an onChange
     };
     return (
-        <View className="relative w-full">
+        <View className=" w-full"
+        style={{width:300}}
+        >
             <TextInput
                 className={`p-3 rounded-[10px] w-full ${focused ? "border-blue-500 border-w-[1px]" : "border-gray-500 "} ${inputStyles}`}
                 style={{

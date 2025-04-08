@@ -9,6 +9,7 @@ import { Alert } from 'react-native';
 import {router} from 'expo-router';
 import { signIn, getCurrentUser, createUser } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { addNewUserConfig } from '@/lib/appwriteAdd';
 
 const SignIn = () => {
   const { setIsLoggedIn,setUser } = useGlobalContext();
@@ -30,6 +31,7 @@ const SignIn = () => {
         email: "",
         password: "",
       });
+   
       const [isSubmitting, setIsSubmitting] = useState(false);
     
       const handleFormChange = (key, value) => {
@@ -108,15 +110,65 @@ const SignIn = () => {
         )
     }
     const MailSingIn = ()=>{
+      const [ signUpForm, setSignUpForm] = useState({
+        email: "",
+        password: "",
+        passwordConfirm: "",
+        username: ""
+      });
         return(
             <View className="w-full  justify-center">
                 <Text className='text-white font-bold text-xl'>Sign Up</Text>
-                <CustomTextInput1 value="Username" inputStyles="mt-2 text-white p-2 rounded-[10px] w-full"/>
-                <CustomTextInput1 value="E-Mail" inputStyles="mt-2 text-white p-2 rounded-[10px] w-full"/>
-                <CustomTextInput1 value="Password" inputStyles="mt-2 text-white p-2 rounded-[10px] w-full" password={true}/>
-                <CustomTextInput1 value="Password bestätigen" inputStyles="mt-2 text-white p-2 rounded-[10px] w-full" password={true}/>
+                <TextInput
+                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    placeholder="Username"
+                    placeholderTextColor="#fff"
+                    value={signUpForm.username}
+                    onChangeText={(text) => setSignUpForm({ ...signUpForm, username: text })}
+                />
+                <TextInput
+                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    placeholder="E-Mail"
+                    placeholderTextColor="#fff"
+                    value={signUpForm.email}
+                    onChangeText={(text) => setSignUpForm({ ...signUpForm, email: text })}
+                />
+                <TextInput
+                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    placeholder="Password"
+                    placeholderTextColor="#fff"
+                    secureTextEntry={true}
+                    value={signUpForm.password}
+                    onChangeText={(text) => setSignUpForm({ ...signUpForm, password: text })}
+                />
+                <TextInput
+                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    placeholder="Password bestätigen"
+                    placeholderTextColor="#fff"
+                    secureTextEntry={true}
+                    value={signUpForm.passwordConfirm}
+                    onChangeText={(text) => setSignUpForm({ ...signUpForm, passwordConfirm: text })}
+                />
+                <TouchableOpacity className="bg-blue-500 p-2 w-full rounded-[10px] mt-2 items-center justify-center"
+                  onPress={async () => {
+                    if (signUpForm.password !== signUpForm.passwordConfirm) {
+                      Alert.alert("Error", "Passwords do not match");
+                      return;
+                    }
+                    try {
+                      const user = await createUser(signUpForm.email, signUpForm.password, signUpForm.username);
+                      console.log("User", user);
+                      const userData = addNewUserConfig(user.$id);
 
-                <TouchableOpacity className="bg-blue-500 p-2 w-full rounded-[10px] mt-2 items-center justify-center">
+                      setUser(user);
+                      setIsLoggedIn(true);
+                      console.log("Success", "You have successfully signed up");
+                      router.push("/personalize");
+                    } catch (error) {
+                      console.log("Error", error);
+                    } 
+                  }}
+                >
                     <Text className="text-white">Sign Up</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=> setSelectedOption(4)} className="mt-2 items-center justify-center">

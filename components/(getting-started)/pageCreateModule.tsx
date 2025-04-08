@@ -20,24 +20,8 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
             setNewModule({...newModule, color: color});
         }
         const [ isVisible, setIsVisible ] = useState(false);
-
-        useEffect(() => {
-            setNewModule({
-                ...newModule, 
-                creationCountry: userData.country,
-                creationUniversity: userData.university,
-                creationUniversityProfession: userData.studiengangZiel,
-                creationRegion: userData.region,
-                creationUniversitySubject: userData.studiengang,
-                creationSubject: userData.schoolSubjects,
-                creationEducationSubject: userData.educationSubject,
-                creationUniversityFaculty: userData.faculty,
-                creationSchoolForm: userData.schoolType,
-                creationKlassNumber: userData.schoolGrade,
-                creationLanguage: userData.language,
-                creationEducationKathegory:userData.educationKathegory
-            });
-        },[userData])
+        const active = selectedColor !== null && newModule.name !== "" && newModule.description !== "" && sessions.length > 0;
+        
   return (
     <View className="h-full w-full items-center justify-center m-4 p-4">
         <ModalSessionList sessions={sessions} setSessions={setSessions} isVisible={isVisible} setIsVisible={setIsVisible} />
@@ -148,16 +132,18 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
             </View>
 
             <View className='mx-2 mt-2 w-full px-2'>
-                <GratisPremiumButton aditionalStyles={"rounded-[10px] mx-3 w-full "} handlePress={async()=> {
-                    if (newModule.name !== "" && newModule.description !== "" && newModule.color !== null && sessions.length > 0){
+                <GratisPremiumButton aditionalStyles={`rounded-[10px] mx-3 w-full ${active? "" : "opacity-50"} `} active={active} handlePress={async()=> {
+                    if (active){
                      console.log("Module: ", newModule)
                      const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), sessions:sessions.map(item => JSON.stringify(item)) });
                      console.log("Module added: ", res)
-                        setUserDataSetup(user.$id)
+                    const resp = await setUserDataSetup(user.$id)
+                    console.log(user.$id)
+                    console.log("User data updated: ", resp)
                      router.push("/bibliothek")
                 }}}>
                     <Text className='text-gray-700 font-semibold text-[15px]'>
-                    Modul erstellen
+                    {active ? "Modul erstellen" :   !(sessions.length > 0 )? "Bitte mindestens eine Session erstellen" : "Bitte alle Felder ausfüllen"}
                     </Text>
                 </GratisPremiumButton>
             </View>

@@ -12,13 +12,10 @@ import { router } from 'expo-router'
 const StepSeven = ({userDataKathegory, saveUserData, languages, userData, setUserData, selectedField,selectedSubjects,classNumber,selectedAusbildung,degree,selectedUniversity,ausbildungKathegorie,school,selectedRegion,selectedKathegorie,selectedLanguage,name,selectedCountry}) => {
     useEffect(() => {
       if (userDataKathegory != null) {
-        router.push({
-          pathname:"getting-started",
-          params: { userData:JSON.stringify(userDataKathegory)}
-        })
+        router.push("/getting-started")
       }
       saveUserData();
-      router.push("getting-started")
+      router.push("/getting-started")
     }, []);
     const [ userChoices, setUserChoices ] = useState(null);
 

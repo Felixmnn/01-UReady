@@ -10,7 +10,6 @@ import PageDiscover from '@/components/(getting-started)/pageDiscover';
 import PageCreateModule from '@/components/(getting-started)/pageCreateModule';
 import PageModulText from '@/components/(getting-started)/(aiCreate)/pageModulText';
 import PageModulThema from '@/components/(getting-started)/(aiCreate)/pageModulThema';
-import { useLocalSearchParams } from "expo-router"
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import PageModuleDocument from '@/components/(getting-started)/(aiCreate)/pageModuleDocument';
@@ -19,7 +18,29 @@ const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
     const { user } = useGlobalContext()
     const [ userData, setUserData] = useState(null)
-    
+
+    useEffect(() => {
+      if (userData == null) return ;
+      setNewModule({
+          ...newModule, 
+          releaseDate: new Date(),
+          creator:userData.$id,
+          creationCountry: userData.country,
+          creationUniversity: userData.university,
+          creationUniversityProfession: userData.studiengangZiel,
+          creationRegion: userData.region,
+          creationUniversitySubject: userData.studiengang,
+          creationSubject: userData.schoolSubjects,
+          creationEducationSubject: userData.educationSubject,
+          creationUniversityFaculty: userData.faculty,
+          creationSchoolForm: userData.schoolType,
+          creationKlassNumber: userData.schoolGrade,
+          creationLanguage: userData.language,
+          creationEducationKathegory:userData.educationKathegory,
+          studiengangKathegory:userData.studiengangKathegory
+      });
+  },[userData])
+
     useEffect(() => {
         if (user == null) return;
         async function fetchUserData() {
@@ -85,7 +106,7 @@ const gettingStarted = () => {
           :null
           }
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
-          : userChoices == "GENERATE" ?     <PageAiCreate userChoices={userChoices} setUserChoices={setUserChoices}/>
+          : userChoices == "GENERATE" ?     <PageAiCreate userChoices={userChoices} setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userData}/>
           : userChoices == "CREATE" ?       <PageCreateModule userChoices={userChoices} setUserChoices={setUserChoices} userData={userData} newModule={newModule} setNewModule={setNewModule}/>
           : userChoices == "TEXTBASED" ?    <PageModulText newModule={newModule} setNewModule={setNewModule} userData={userData}/>

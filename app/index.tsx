@@ -16,11 +16,10 @@ export default function Index() {
           if (user === null ) return;
           async function fetchUserData() {
               try {
-                  console.log("Loading")
                   const userD = await loadUserData(user.$id);
-                  console.log("UserData ", userD);
+                  console.log("UserDaten", userD)
                   setUserData(userD);
-                  if (userD.signInProcessStep !== "ZERO" ) {
+                  if (userD.signInProcessStep == "ZERO" ) {
                       router.push("/personalize");
                   } else if (userD.signInProcessStep === "FINISHED") {
                       router.push("/getting-started");
@@ -46,7 +45,6 @@ export default function Index() {
     );
   }
   if (isLoggedIn) {
-    console.log("isLoggedIn", isLoggedIn);
     return <Redirect href="/home" />;
   }
   {

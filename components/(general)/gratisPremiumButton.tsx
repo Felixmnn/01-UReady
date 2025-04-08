@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import ModalPremium from '../(home)/modalPremium'
 
-const GratisPremiumButton = ({children, aditionalStyles, handlePress}) => {
+const GratisPremiumButton = ({children, aditionalStyles, handlePress, active}) => {
     const [isPressed, setIsPressed] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
   return (
@@ -11,6 +11,7 @@ const GratisPremiumButton = ({children, aditionalStyles, handlePress}) => {
       activeOpacity={1}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
+      disabled={active ? !active : false}
       onPress={()=> {handlePress ? handlePress() : setIsVisible(true)}}
       className="items-center justify-center rounded-full h-[30px] "
       style={{

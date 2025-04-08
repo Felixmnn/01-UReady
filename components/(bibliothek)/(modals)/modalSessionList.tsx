@@ -101,6 +101,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
                             description:"",
                             tags: [],
                             id: uuid.v4(),
+                            generating: false,
                         }])
                     }} className='flex-row items-center justify-center p-2 border-gray-600 bg-gray-900 border-[1px] rounded-xl mt-2'>
                         <Text className='text-white'>Session hinzufügen</Text>

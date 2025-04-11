@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import Flag from "react-world-flags";
+//import Flag from "react-world-flags";
+import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar';
@@ -40,7 +41,7 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
                                     onPress={() => setIsActive(!isActive)} 
                                     className='flex-row w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 my-2 items-center justify-center mx-1'
                                     >
-                                    <Flag code={selectedLanguage == null ? "DE" : languages[selectedLanguage].code} style={{ width: 30, height: 18 }} />
+                                    <CountryFlag isoCode={selectedLanguage == null ? "DE" : languages[selectedLanguage].code} style={{ width: 30, height: 18 }} />
                                     <Text className='text-gray-300 font-semibold text-center mx-2 mt-[1px]'>
                                         {selectedLanguage == null ? "Deutsch" : languages[selectedLanguage].name}
                                     </Text>
@@ -55,7 +56,7 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
                                             onPress={() => { setSelectedLanguage(index); setIsActive(false); }} 
                                             className='flex-row justify-start items-center p-2 rounded-lg m-1'
                                         >
-                                            <Flag code={language.code} style={{ width: 30, height: 18 }} />
+                                            <CountryFlag isoCode={language.code} style={{ width: 30, height: 18 }} />
                                             <Text className='text-gray-300 font-semibold text-center ml-2 mt-[1px] '>{language.name}</Text>
                                         </TouchableOpacity>
                                         ))}
@@ -64,7 +65,7 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
                                 </View>
                     </View>
             <View className='w-full max-w-[200px]'>
-                <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={()=> {
+                <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500 "} handlePress={()=> {
                     if (selectedLanguage == null) {
                         setSelectedLanguage(0);
                     }

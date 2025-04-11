@@ -2,17 +2,19 @@ import { View, Text,TouchableOpacity , Image} from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-const ContinueBox = ({colorBorder, colorBG, iconName, handlePress, text}) => {
+const ContinueBox = ({colorBorder, colorBG, iconName, handlePress, text,selected}) => {
   return (
     <View
-                    className="w-[200px] h-[200px] rounded-[10px] bg-[#0c111d] border-gray-800 border-[1px] p-2 m-2 items-center justify-center shadow-lg"
+                    className=" rounded-[10px] bg-[#0c111d] border-gray-800 border-[1px] p-2 m-2 items-center justify-center shadow-lg"
                     style={{
                       height: 200,
                       width: 200,
-                      shadowColor: colorBorder, // Grau-Blauer Glow
+                      borderColor: colorBorder,
+                      shadowColor: selected ? colorBorder : null, // Grau-Blauer Glow
+                      shadowRadius: selected ? 10 : 0, // Größe des Glows
+                      shadowOpacity: selected ? 0.8 : 0, // Sichtbarkeit des Glows
+
                       shadowOffset: { width: 0, height: 0 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 10,
                       elevation: 10, // Für Android
                     }}
                   >

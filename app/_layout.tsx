@@ -9,7 +9,7 @@ export default function RootLayout() {
   return (
   <GlobalProvider>
 
-    <StatusBar style="light" />
+    <StatusBar backgroundColor="#0c111e" style="light" />
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />

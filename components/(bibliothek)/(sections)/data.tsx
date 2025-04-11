@@ -71,7 +71,7 @@ const isVertical = width == 700;
 const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
         return (
             <TouchableOpacity onPress={handlePress} 
-                className=' justify-between w-full  min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'
+                className=' justify-between flex-1 min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'
               
                 >
                 <View className={`h-[45px] w-[45px] ${bgColor} items-center justify-center rounded-full`}>
@@ -108,26 +108,22 @@ const NichtUnterstuzterDateityp = () => {
     )
 }
 
+
+
     
 return (
-    <ScrollView className='' style={{
-        scrollbarWidth: 'thin', // Dünne Scrollbar
-        scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
-      }}>
+    <View className='flex-1'>
         <NichtUnterstuzterDateityp/>
         {
             filteredData.length == 0 && filteredDocuments.length == 0 && filteredNotes.length == 0 ?
-            <View className='p-4 flex-1 items-center justify-center'>
-                
-                <View className={`${width > 815 &&  width > 700? "flex-row" : "flex-col"} w-full`}>
+            <ScrollView >
+                <View className='flex-1'>
                     <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} />
                     <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {}}/>
-                </View>
-                <View className={`${width > 815 &&  width > 700? "flex-row" : "flex-col"} w-full`}>
                     <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false}  />
                     <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false} />
                 </View>
-            </View>
+            </ScrollView>
             :
             <View className='flex-1'>
         <CounterText title='Fragen' count={filteredData.length}/>
@@ -261,7 +257,7 @@ return (
         { filteredNotes.length == 0  ? <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} /> : null}
     
         </View>}
-    </ScrollView>
+    </View>
   )
 }
 

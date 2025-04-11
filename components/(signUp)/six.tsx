@@ -105,8 +105,8 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                                 filter={subjectFilter}
                                 setFilter={setSubjectFilter}
                                 />
-            <View className='w-full max-w-[200px]'>
-                    <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
+            <View className='w-full max-w-[200px] mt-3'>
+                    <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500  "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
                     <Text className='text-gray-100 font-semibold text-[15px]'>{selectedLanguage == null || continueMessage[languages[selectedLanguage].code] == undefined ? continueMessage["DE"] : continueMessage[languages[selectedLanguage].code]}</Text>
                 </GratisPremiumButton>  
             </View>

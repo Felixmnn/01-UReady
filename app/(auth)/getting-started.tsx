@@ -85,7 +85,7 @@ const gettingStarted = () => {
       });
     
   return (
-        <SafeAreaView className="flex-1 p-4 bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center">
+        <SafeAreaView className="bg-[#0c111d] flex-1 p-4 bg-gradient-to-b from-blue-900 to-[#0c111d]  items-center justify-center">
           {
             userChoices !== null ?
           <TouchableOpacity onPress={()=> {

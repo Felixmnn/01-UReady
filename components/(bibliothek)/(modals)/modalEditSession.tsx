@@ -44,7 +44,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                     transparent={true}
                     visible={isVisible}
                 >
-                    <View className="absolute top-0 left-0 w-full h-full justify-center items-center ">
+                    <View className="absolute top-0 left-0 w-full h-full justify-center items-center m-2 ">
                         <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' style={{ minWidth: 400 }}>
                             <View className='justify-between flex-row'>
                                 <Text className='text-white font-bold text-[15px]'>

@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native'
 import React, { useState } from 'react'
-import Flag from "react-world-flags";
+import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
@@ -42,7 +42,7 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
                     </TouchableOpacity>
                 </View>
                   <View className='items-center justiy-center'>
-                      <View className='w-full max-w-[400px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
+                      <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
                           <Text className='font-semibold text-[15px] text-gray-100 text-center'>{name} {
                                 selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]
                               }</Text>
@@ -53,12 +53,12 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
                         
                           <View style={{ position: 'relative', zIndex: 10 }}>
                           <TouchableOpacity onPress={() => setIsActive(!isActive)} className='flex-row w-[180px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] py-2 px-3 my-2 items-center justify-center mx-1'>
-                                          <Flag code={selectedCountry.code} style={{ width: 30, height: 18 }} />
+                                          <CountryFlag isoCode={selectedCountry.code} style={{ width: 30, height: 18 }} />
                                           <Text className='text-gray-300 font-semibold text-center mx-2 mt-[1px]'>{selectedCountry.name}</Text>
                                           <Icon name={!isActive ? "caret-down" : "caret-up"} size={20} color="#4B5563"  />
                               </TouchableOpacity>
                               {isActive ? (
-                                  <ScrollView 
+                                  <View 
                                   className='absolute top-[48px] left-1 w-[180px] max-h-[300px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 shadow-lg'
                                   style={{ zIndex: 10,
                                        elevation: 10,
@@ -77,13 +77,13 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
                                                   onPress={() => { setSelectedCountry(item); setIsActive(false); }} 
                                                   className='flex-row justify-start items-center p-2 rounded-lg m-1'
                                               >
-                                                  <Flag code={item.code} style={{ width: 30, height: 18 }} />
+                                                  <CountryFlag isoCode={item.code} style={{ width: 30, height: 18 }} />
                                                   <Text className='text-gray-300 font-semibold text-center ml-2 mt-[1px] '>{item.name}</Text>
                                               </TouchableOpacity>
                                           )}
                                           keyExtractor={(item) => item.id}
                                       />
-                                      </ScrollView>
+                                      </View>
                                   ) : null}
                               </View>
                           

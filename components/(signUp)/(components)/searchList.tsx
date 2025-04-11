@@ -5,14 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const SearchList = ({data, filter, setFilter, handlePress, selectedItems}) => {
   return (
-    <View className='bg-gray-900 h-full w-full max-w-[600px] max-h-[700px] rounded-[10px] '
+    <View className='flex-1 bg-gray-900 max-w-[600px] max-h-[700px] rounded-[10px] pb-2 '
         style={{maxWidth:600, maxHeight:700}}
         >
         <TextInput
             className={`text-gray-400 rounded-[10px] bg-[#0c111d] p-2 m-2 border-blue-700 border-[1px]  `} 
             value={filter}
             onChangeText={(text) => setFilter(text)} 
-            placeholder="Deine Universität"
+            placeholder="Deine Studiengang"
+            placeholderTextColor="#AAAAAA" 
         />
         <View className='flex-1'>
             <FlatList

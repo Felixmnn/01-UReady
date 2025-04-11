@@ -21,7 +21,7 @@ const entdecken = () => {
 
   return (
       <Tabbar content={()=> { return(
-        <View className='flex-1 w-full bg-[#0c111d] rounded-[10px]'>
+        <View className='flex-1 w-full bg-[#0c111d] '>
                 <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
                   <Text className='font-bold text-3xl text-gray-100'>
                     Entdecken

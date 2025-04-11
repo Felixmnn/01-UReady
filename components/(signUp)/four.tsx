@@ -24,7 +24,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
             "ES": "¿A qué escuela vas?",
         }
     return ( 
-        <View className='h-full  w-full justify-between items-center py-5'>
+        <ScrollView className='h-full  w-full justify-between items-center py-5'>
             <View className='w-full'>
                 <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
                 <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
@@ -45,37 +45,42 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                                     <Icon name={!isActive ? "caret-down" : "caret-up"} size={20} color="#4B5563"  />
                         </TouchableOpacity>
                         {isActive ? (
-                            <ScrollView 
-                            className='absolute  left-1 max-h-[300px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 shadow-lg'
-                            style={{ zIndex: 10,
+                            <View
+                                className="absolute left-1 bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 shadow-lg"
+                                style={{
+                                zIndex: 10,
                                 elevation: 10,
-                                width:250,
+                                width: 250,
                                 top: 55,
-                                scrollbarWidth: 'thin', 
-                                scrollbarColor: 'gray transparent'
-                                }} // ⬅ WICHTIG
-                            
-                        >
+                                maxHeight: 300, // Maximale Höhe für die Liste
+                                }}
+                            >
                                 <FlatList
-                                    data = {schoolListDeutschland.regions}
-                                    className='z-100'
-                                    
-                                    renderItem={({item,index}) => (
-                                        <TouchableOpacity 
-                                            key={item.id} 
-                                            onPress={() => { setSelectedRegion(index); setIsActive(false); }} 
-                                            className='flex-row justify-start items-center p-2 rounded-lg m-1'
-                                        >   
-                                            <Image
-                                                source={{ uri: item.image }}
-                                                style={{ width: 30, height: 30, borderRadius: 5  }}
-                                                />
-                                            <Text className='text-gray-300 font-semibold text-start ml-2 mt-[1px] '>{item.name}</Text>
-                                        </TouchableOpacity>
-                                    )}
-                                    keyExtractor={(item) => item.id}
+                                data={schoolListDeutschland.regions}
+                                className="z-100"
+                                nestedScrollEnabled={true} // Ermöglicht verschachteltes Scrollen
+                                keyboardShouldPersistTaps="handled" // Verhindert, dass das Keyboard geschlossen wird
+                                renderItem={({ item, index }) => (
+                                    <TouchableOpacity
+                                    key={item.id}
+                                    onPress={() => {
+                                        setSelectedRegion(index);
+                                        setIsActive(false);
+                                    }}
+                                    className="flex-row justify-start items-center p-2 rounded-lg m-1"
+                                    >
+                                    <Image
+                                        source={{ uri: item.image }}
+                                        style={{ width: 30, height: 30, borderRadius: 5 }}
+                                    />
+                                    <Text className="text-gray-300 font-semibold text-start ml-2 mt-[1px]">
+                                        {item.name}
+                                    </Text>
+                                    </TouchableOpacity>
+                                )}
+                                keyExtractor={(item) => item.id}
                                 />
-                                </ScrollView>
+                            </View>
                             ) : null}
                         </View>
             <View className='justify-center items-center'>
@@ -122,7 +127,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
             </View> 
             <View className='items-center justiy-center'></View>
             
-        </View>
+        </ScrollView>
     )
 
 
@@ -141,7 +146,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                 <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
                 <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
             </View>
-            <View className='bg-gray-900 h-full w-full max-w-[600px] max-h-[700px] rounded-[10px] '
+            <View className='flex-1 bg-gray-900 w-full  max-w-[600px] max-h-[700px] rounded-[10px] '
                 style={{maxWidth:600, maxHeight:700}}
                 >
                 <TextInput
@@ -149,6 +154,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                     value={universityFilter}
                     onChangeText={(text) => setUniversityFilter(text)}
                     placeholder="Deine Universität"
+                    placeholderTextColor="#AAAAAA" // 👈 Farbe vom Placeholder
                 />
                 <View className='flex-1'>
                     <FlatList

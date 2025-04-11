@@ -130,7 +130,7 @@ const personalize = () => {
 
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center">
+    <SafeAreaView className="flex-1 p-4  bg-gradient-to-b from-blue-900 to-[#0c111d] bg-[#0c111d] items-center justify-center">
         {userData !== null && userData.signInProcessStep == "ZERO" ? <StepZero userData={userData} setUserData={setUserData}/> : null}
         {userData !== null && userData.signInProcessStep == "ONE" ? <StepOne name={name} setName={setName} userData={userData} setUserData={setUserData}/> : null}
         {userData !== null && userData.signInProcessStep == "TWO" ? <StepTwo name={name} selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} languages={languages} userData={userData} setUserData={setUserData}/> : null}

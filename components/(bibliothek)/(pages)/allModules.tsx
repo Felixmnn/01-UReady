@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
@@ -18,7 +18,7 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
 
     console.log("Modules",modules.documents)
   return (
-    <View className='flex-1 bg-[#0c111d] rounded-[10px]'>
+    <View className='flex-1 bg-[#0c111d] '>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule}/>
 
         <View className={`flex-row p-4 justify-between items-center h-[60px] rouned-[10px] `}>
@@ -31,19 +31,20 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
           </TouchableOpacity>
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
-        <View className=' p-4 bg-[#0c111d] '>
+        <View className='flex-1 p-4 bg-[#0c111d] flex-wrap '>
           <TouchableOpacity className='' onPress={()=> setLast7Hidden(!last7Hidden)}>
             <View className='flex-row items-center justify-between'>
               <Text className='font-bold text-gray-100 text-[18px]'>Last 7 Days</Text>
               <Icon name={last7Hidden ? "chevron-down" : "chevron-up"} size={15} color="white"/>
             </View>
           </TouchableOpacity>
-        <View className={`w-full ${toTight ? "flex-row": "flex-1 w-full"}`}>
+        <ScrollView className={`flex-1 ${toTight ? "flex-row": "flex-1 w-full"}`}>
             {
               modules && modules.documents.map((module,index) => {
                 if (index < 7) {
                   return  (
-                <View className='m-2'>
+                <View key={module.$id} className='flex-1 m-2 '
+                >
                     <Karteikarte handlePress={()=> {setSelected("SingleModule"); setSelectedModule(index)}} farbe={module.color}percentage={module.progress} titel={module.name} studiengang={module.subject} fragenAnzahl={module.questions} notizAnzahl={module.notes} creator={module.creator} availability={module.public} icon={"clock"} publicM={module.public} />
                   </View>
                   )
@@ -54,7 +55,7 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
             <Karteikarte handlePress={()=> setSelected("SingleModule")} farbe={"#06aed4"} titel={"modules[0].name"} studiengang={"Informatik"} fragenAnzahl={21} notizAnzahl={1} creator={"YOU"} availability={false} icon={"clock"}/>
             <Karteikarte farbe={"#06aed4"} titel={"Algorythmen"} studiengang={"Informatik"} fragenAnzahl={21} notizAnzahl={1} creator={"YOU"} availability={false} icon={"clock"}/>
             */}
-            </View>
+            </ScrollView>
         </View>
       </View>
   )

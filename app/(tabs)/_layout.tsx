@@ -11,15 +11,15 @@ const RootLayout = () => {
         <View className="flex-1">
          <Tabs
             screenOptions={({ route }) => ({
-                tabBarStyle: { display: isVertical ? 'none' : 'flex', 
-                                backgroundColor: '#0c111d', 
-                                height: 50, 
-                                paddingTop:5,
-                                borderTopWidth: 1,
-                                borderTopColor: '#6b7280',
-                                
-                              
-                              }, // Verstecke die Tab-Leiste auf kleinen Bildschirmen
+              tabBarStyle: { 
+                display: isVertical ? 'none' : 'flex',
+                backgroundColor: '#0c111d',
+                height: 50,      // höher als 50
+                paddingTop: 5,
+                paddingBottom: 5, // zusätzlicher Innenabstand
+                borderTopWidth: 0, // Linie entfernen
+                borderTopColor: '#6b7280'
+              },
                               tabBarShowLabel: false, 
                 tabBarIcon: ({ color, size, focused }) => {
                     let iconName;
@@ -38,7 +38,13 @@ const RootLayout = () => {
                       iconName = 'store';
                   }
 
-                    return <Icon name={iconName} size={iconSize} color={color} />;
+                    return <View style={{
+                      height: iconSize + 17, // Höhe des Containers
+                      width: iconSize + 17, // Breite des Containers
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: 5, // Innenabstand für den Container
+                    }}><Icon name={iconName} size={iconSize} color={color} /></View>;
                 },
                 tabBarActiveTintColor: '#FFFFFF',
                 tabBarInactiveTintColor: '#A1A1AA',

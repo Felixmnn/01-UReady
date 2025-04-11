@@ -127,12 +127,12 @@ const SingleModule = ({setSelectedScreen, module}) => {
     return (
         <View className='flex-1 items-center '>
             
-            {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
-            <View className='flex-1 w-full bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
+            {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
+            <View className='flex-1 w-full bg-gray-900  border-gray-700 '>
                 { loading ? <Text>Skeleton View</Text> :
                 <View className='flex-1'>
                 <Header questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
-                {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Fragen"} tab2={"Roadmap"} bg={"bg-gray-900"}/> : null }
+                {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Fragen"} tab2={"Navigation"} bg={"bg-gray-900"}/> : null }
                 <View className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}/>
                 
                 <View className={`flex-1 ${isVertical ? "flex-row" : null}`}>

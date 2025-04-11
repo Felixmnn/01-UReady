@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, ScrollView, Image, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { View, Text, ActivityIndicator, ScrollView, Image, TouchableOpacity, useWindowDimensions, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getSepcificModules } from '@/lib/appwriteQuerys'
 import Karteikarte from '../(karteimodul)/karteiKarte'
@@ -40,8 +40,8 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         }
     }
   return (
-    <View>
-        <View className='items-center justiy-center'>
+    <SafeAreaView className='w-full h-full p-2'>
+        <View className='flex-1 items-center justiy-center '>
             <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
                 <Text className='font-semibold text-[15px] text-gray-100 text-center'>{loading ? "Gib mir einen Moment..." : matchingModules.length > 0  ? "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu" : "Leider habe ich nichts gefunden aber kein Problem"}</Text>
             </View>
@@ -49,19 +49,26 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
             <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
             <Image source={require('../../assets/Search.gif')}  style={{height:150, width:150}}/>
         </View>
-        <ScrollView className="rounded-[10px] p-1 bg-gray-900  border-gray-800 border-[1px] m-2 w-full  h-[75px] items-center justify-center z-10 py-3"
-            style={{height: 500, maxWidth: 700,shadowColor: "#2970ff", // Grau-Blauer Glow
+        <View className="flex-1 w-full  rounded-[10px] p-1 bg-gray-900  border-gray-800 border-[1px]  w-full  justify-center z-10 py-3 "
+            style={{shadowColor: "#2970ff", // Grau-Blauer Glow
                 paddingTop: width < 668 ? 100 : null,
                 shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 0.8,
                 shadowRadius: 10,
                 elevation: 10, // Für Android
-                scrollbarWidth: 'thin', // Dünne Scrollbar
-                scrollbarColor: 'gray transparent', 
+                
             }}>
-            <View className='w-full h-full items-ceter justify-start p-4 mt-4'>
+        <ScrollView 
+        style={{
+            scrollbarWidth: 'thin', // Dünne Scrollbar
+            scrollbarColor: 'gray transparent', 
+        }}
+        className='w-full'
+        >
+            
+            <View className='w-full h-full items-ceter justify-start  mt-4'>
             { loading ? 
-                <View className='flex-row items-center justify-center '>
+                <View className='w-full flex-row items-center justify-center '>
                     
                     <ActivityIndicator size="small" color="#20c1e1" />
                     <Text className='text-gray-100 font-semibold text-[15px] m-2'>Suche läuft...</Text>
@@ -124,6 +131,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                 }
             </View>
         </ScrollView>
+        </View>
         <View className='items-center justify-center m-2'>
             <GratisPremiumButton
                 aditionalStyles={"w-full max-w-[300px] rounded-[10px]  "}
@@ -188,7 +196,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                 </Text>
             </GratisPremiumButton>
         </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

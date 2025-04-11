@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ContinueBox from '@/components/(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -13,6 +13,8 @@ import PageModulThema from '@/components/(getting-started)/(aiCreate)/pageModulT
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import PageModuleDocument from '@/components/(getting-started)/(aiCreate)/pageModuleDocument';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
@@ -85,26 +87,12 @@ const gettingStarted = () => {
       });
     
   return (
-        <SafeAreaView className="bg-[#0c111d] flex-1 p-4 bg-gradient-to-b from-blue-900 to-[#0c111d]  items-center justify-center">
-          {
-            userChoices !== null ?
-          <TouchableOpacity onPress={()=> {
-            if (userChoices == "TEXTBASED" || userChoices == "THEMENBASED"){
-                setUserChoices("GENERATE")
-            } else {
-                setUserChoices(null);
-            }
-          }} className='absolute top-5 left-5 p-2 bg-gray-900 border-gray-800 border-[1px] items-center justify-center rounded-full shadow-lg'
-            style={{
-              height: 34,
-              width: 34,
-              zIndex:100,
-            }}
-            >
-            <Icon name="arrow-left" size={20} color="white"/>
-          </TouchableOpacity>
-          :null
-          }
+        <SafeAreaView className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]  items-center justify-center"
+        style={{
+          backgroundColor: "#111c3b",
+        }}
+        >
+          
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
           : userChoices == "GENERATE" ?     <PageAiCreate userChoices={userChoices} setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userData}/>

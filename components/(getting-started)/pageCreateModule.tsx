@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity,ScrollView } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity,ScrollView, SafeAreaView, useWindowDimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from '../(general)/colorPicker';
@@ -21,14 +21,14 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
         }
         const [ isVisible, setIsVisible ] = useState(false);
         const active = selectedColor !== null && newModule.name !== "" && newModule.description !== "" && sessions.length > 0;
-        
+       const {width} = useWindowDimensions()
   return (
-    <View className="h-full w-full items-center justify-center m-4 p-4">
+    <View className={`h-full w-full items-center justify-center  bg-blue-500 ${width > 700 ? " m-4 p-4"  : " "}`}>
         <ModalSessionList sessions={sessions} setSessions={setSessions} isVisible={isVisible} setIsVisible={setIsVisible} />
         
-        <View className='bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-4 m-2 items-center justify-start shadow-lg'
+        <View className={`flex-1 bg-gray-900 border-gray-800 border-[1px]  items-start justify-start shadow-lg ${width > 700 ? "w-full rounded-[10px] p-4" : "p-2"} `}
         style={{
-            width: 800,
+           
             shadowColor: newModule != null && newModule.color === "red" ? "#DC2626" :
             newModule.color === "blue" ? "#2563EB" :
             newModule.color === "green" ? "#059669" :
@@ -45,7 +45,12 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
             elevation: 10, // Für Android
         }} 
         >   
+        <View className='m-2 w-full flex-row items-center justify-start '>
+            <Icon name="arrow-left" size={20} color="white" onPress={() => setUserChoices(null)} />
+            <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Modul mit KI support</Text>
+          </View>
             <View className='flex-row w-full'>
+                
                 <View className='flex-1 justify-between'>
                     <Text className='text-gray-300 font-semibold text-[15px]'>
                     Modul Name
@@ -55,15 +60,16 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
                             onChangeText={(text) => setNewModule({...newModule, name: text})}
                             value={newModule.name}
                             placeholder="Ein Origneller Name :)..."
-                            className={`text-white w-[50%] rounded-[10px] p-1 bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] `}
+                            className={`text-white  rounded-[10px] p-1 bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] `}
+                            placeholderTextColor={"#AAAAAA"}
                         />
                 </View>
                 <TouchableOpacity>
-                    <Icon name="globe" size={30} color="#4B5563" />
+                    <Icon name="globe" size={20} color="#fff" />
                 </TouchableOpacity>
             </View>
-            <View className='w-full'>
-                <View className='flex-1 justify-between my-2'>
+            <View className='w-full flex-row'>
+                <View className='flex-1'>
                     <Text className='text-gray-300 font-semibold text-[15px]'>
                     Modul Beschreibung
                     </Text>
@@ -92,14 +98,19 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
                             >
                             <Icon name="layer-group" size={30} color="#4B5563" />
                         </TouchableOpacity>
-                        <ScrollView className='flex-row items-center justify-start'
+                        
+                        <ScrollView 
                             horizontal={true}
                             contentContainerStyle={{ paddingRight: 20 }}
                             style={{ 
-                                height: 80, 
                                 scrollbarWidth: 'thin', // Dünne Scrollbar
                                 scrollbarColor: 'gray transparent' 
                             }}>
+                                <View 
+                                className='items-ceter justify-start '
+                                style={{
+                            height:80
+                        }}></View>
                             {
                         sessions !== null && sessions.length > 0 ? sessions.map((session, index) => {
                             return (
@@ -120,6 +131,7 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
                             )}):null}
                         <View>
                         </View>
+                        
                         </ScrollView>
                     </View>
                 </View>
@@ -132,7 +144,7 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
             </View>
 
             <View className='mx-2 mt-2 w-full px-2'>
-                <GratisPremiumButton aditionalStyles={`rounded-[10px] mx-3 w-full ${active? "" : "opacity-50"} `} active={active} handlePress={async()=> {
+                <GratisPremiumButton aditionalStyles={`rounded-[10px] mx-3 w-full bg-blue-500 ${active? "" : "opacity-50"} `} active={active} handlePress={async()=> {
                     if (active){
                      console.log("Module: ", newModule)
                      const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), sessions:sessions.map(item => JSON.stringify(item)) });
@@ -142,7 +154,7 @@ const PageCreateModule = ({userChoices, setUserChoices, userData, newModule, set
                     console.log("User data updated: ", resp)
                      router.push("/bibliothek")
                 }}}>
-                    <Text className='text-gray-700 font-semibold text-[15px]'>
+                    <Text className='text-gray-100 font-semibold text-[15px]'>
                     {active ? "Modul erstellen" :   !(sessions.length > 0 )? "Bitte mindestens eine Session erstellen" : "Bitte alle Felder ausfüllen"}
                     </Text>
                 </GratisPremiumButton>

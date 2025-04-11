@@ -23,7 +23,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
             
             visible={isVisible}
         >
-            <TouchableOpacity onPress={() => setIsVisible(false)} className='absolute top-0 left-0 w-full h-full justify-center items-center ' style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }} >
+            <TouchableOpacity onPress={() => setIsVisible(false)} className='absolute top-0 left-0 w-full h-full justify-center items-center p-2 ' style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }} >
                 <View className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl ${width < 400 ? "w-full" : " w-[400px]"}`}>
                     <View className='flex-row items-center justify-between'>
                         <Text className='text-white text-xl mb-2 font-semibold'>Sessions</Text>

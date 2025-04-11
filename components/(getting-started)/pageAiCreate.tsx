@@ -1,5 +1,5 @@
 
-import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Modal, useWindowDimensions, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ColorPicker from '../(general)/colorPicker';
@@ -82,9 +82,33 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
     setItems([...items, {...newitem, id: uuid.v4(), sessionID:selectedSession.id}]);
     setNewItem({ ...newitem, content: '' });
   };
-
+  const {width} = useWindowDimensions()
   return (
-    <View className="h-full w-full items-center justify-center m-4 p-4">
+    <ScrollView className={`flex-1 bg-gray-900 p-2  shadow-lg ${width > 700 ? " rounded-[10px]" : ""}`}
+
+      style={{
+        width: '100%',
+        marginTop:  27,
+        shadowColor:
+          (newModule?.color === 'red' && '#DC2626') ||
+          (newModule?.color === 'blue' && '#2563EB') ||
+          (newModule?.color === 'green' && '#059669') ||
+          (newModule?.color === 'yellow' && '#CA8A04') ||
+          (newModule?.color === 'orange' && '#C2410C') ||
+          (newModule?.color === 'purple' && '#7C3AED') ||
+          (newModule?.color === 'pink' && '#DB2777') ||
+          (newModule?.color === 'emerald' && '#059669') ||
+          (newModule?.color === 'cyan' && '#0891B2') ||
+          '#1F2937',
+
+        
+        borderWidth: 1,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.8,
+        shadowRadius: 10,
+        elevation: 10, // Android
+      }}
+      >
       <ErrorModal isError={isError} setIsError={setIsError}/>
       <ModalSessionList
         sessions={sessions}
@@ -92,48 +116,30 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
         isVisible={isVisible}
         setIsVisible={setIsVisible}
       />
-
-      <View
-        className="bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-4 m-2 items-center justify-start shadow-lg"
-        style={{
-          width: 800,
-          shadowColor:
-            (newModule?.color === 'red' && '#DC2626') ||
-            (newModule?.color === 'blue' && '#2563EB') ||
-            (newModule?.color === 'green' && '#059669') ||
-            (newModule?.color === 'yellow' && '#CA8A04') ||
-            (newModule?.color === 'orange' && '#C2410C') ||
-            (newModule?.color === 'purple' && '#7C3AED') ||
-            (newModule?.color === 'pink' && '#DB2777') ||
-            (newModule?.color === 'emerald' && '#059669') ||
-            (newModule?.color === 'cyan' && '#0891B2') ||
-            '#1F2937',
-          borderColor:newModule?.color,
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 0.8,
-          shadowRadius: 10,
-          elevation: 10, // Android
-        }}
-      >
-        {/* Modulnamen-Eingabe */}
-        <View className="flex-row w-full">
-          <View className="flex-1 justify-between">
-            <Text className="text-gray-300 font-semibold text-[15px]">Modul Name</Text>
-            <TextInput
-              maxLength={50}
-              onChangeText={(text) => setNewModule({ ...newModule, name: text })}
-              value={newModule?.name}
-              placeholder="Ein origineller Name :)..."
-              className="text-white w-[50%] bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] rounded-[10px]"
-            />
+        <View className='w-full'>
+          <View className='m-2 flex-row items-center'>
+            <Icon name="arrow-left" size={20} color="white" onPress={() => setUserChoices(null)} />
+            <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Modul mit KI support</Text>
           </View>
-          <TouchableOpacity>
-            <Icon name="globe" size={30} color="#4B5563" />
-          </TouchableOpacity>
-        </View>
+          <View className="flex-row ">
+            <View className="flex-1 justify-between">
+              <Text className="text-gray-300 font-semibold text-[15px]">Modul Name</Text>
+              <TextInput
+                maxLength={50}
+                onChangeText={(text) => setNewModule({ ...newModule, name: text })}
+                value={newModule?.name}
+                placeholder="Ein origineller Name :)..."
+                className="text-white w-full bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] rounded-[10px]"
+                placeholderTextColor="#AAAAAA"
+              />
+            </View>
+            <TouchableOpacity>
+              <Icon name="globe" size={20} color="#4B5563" />
+            </TouchableOpacity>
+          </View>
 
-        {/* Beschreibung */}
-        <View className="w-full">
+          {/* Beschreibung */}
+        <View className="">
           <View className="flex-row justify-between items-center pr-2">
             <Text className="text-gray-300 font-semibold text-[15px]">Beschreibung</Text>
           </View>
@@ -141,6 +147,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
             maxLength={200}
             onChangeText={(text) => setNewModule({ ...newModule, description: text })}
             value={newModule?.description}
+            placeholderTextColor={"#AAAAAA"}
             placeholder="Beschreibung für dein Modul..."
             multiline
             numberOfLines={4}
@@ -148,16 +155,16 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
           />
         </View>
 
-        {/* Farbe */}
-        <View className="w-full items-start">
+         {/* Farbe */}
+         <View className=" items-start">
           <View className="w-full flex-row justify-between items-center pr-2">
             <Text className="text-gray-300 font-semibold text-[15px]">Farbe</Text>
           </View>
           <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title={null} />
         </View>
 
-        {/* Sitzungen (Sessions) */}
-        <View className="w-full flex-row justify-start">
+{/* Sitzungen (Sessions) */}
+<View className=" flex-row justify-start">
           <View className="flex-1 justify-between my-2">
             <View className="flex-row justify-between items-center pr-2">
               <Text className="text-gray-300 font-semibold text-[15px]">
@@ -178,17 +185,21 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
                   <Icon name="layer-group" size={30} color="#4B5563" />
                 </TouchableOpacity>
                 <ScrollView
-                  className="flex-row items-center justify-start"
+                  
                   horizontal
                   contentContainerStyle={{ paddingRight: 20 }}
-                  style={{ height: 80, scrollbarWidth: 'thin', scrollbarColor: 'gray transparent' }}
+                  style={{scrollbarWidth: 'thin', scrollbarColor: 'gray transparent' }}
                 >
+                  <View className="flex-row items-center justify-start"
+                    style={{ height: 80}}
+
+                  >
                   {sessions?.length > 0 &&
                     sessions.map((session, index) => (
                       <TouchableOpacity
                         key={index}
                         onPress={() => setSelectedSession(session)}
-                        className="bg-[#0c111d] p-3 border-[1px] rounded-[10px] items-center justify-center shadow-lg"
+                        className="bg-[#0c111d]  border-[1px] rounded-[10px] items-center justify-center shadow-lg"
                         style={{
                           width: selectedSession.id == session.id ? 60 : 50,
                           height: selectedSession.id == session.id ? 60 : 50,
@@ -206,14 +217,12 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
                         <Icon name={session.iconName} size={30} color={session.color} />
                       </TouchableOpacity>
                     ))}
+                    </View>
                 </ScrollView>
               </View>
-            
-          </View>
-        </View>
 
-        {/* Material (Themen, Text, Dateien) */}
-        <View className="w-full m-2">
+              {/* Material (Themen, Text, Dateien) */}
+        <View className=" m-2">
           <View className="flex-row justify-between items-center pr-2">
             <Text className="text-gray-300 font-semibold text-[15px]">
               {selectedMaterialType === 'PEN'
@@ -276,14 +285,19 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
                 onChangeText={(text) => setNewItem({ ...newitem, content: text })}
                 value={newitem.content}
                 placeholder="Eine neue Kategorie ..."
-                className="text-white w-[50%] bg-[#0c111d] p-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] ml-2"
+                className="flex-1 text-white  bg-[#0c111d] p-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] ml-2"
+                style={{
+                  height:112,
+                  textAlign: 'left',
+                  justifyContent: 'start',
+                }}
               />
             </View>
           )}
 
           {/* PEN hinzufügen */}
           {selectedMaterialType === 'PEN' && (
-            <View className="flex-row items-start w-full">
+            <View className="flex-row items-start ">
               <View className='items-center justify-between mt-2 mb-2 ml-2'>
                 <TouchableOpacity
                   disabled={newitem.content.length < 2}
@@ -317,7 +331,12 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
                 maxLength={5000}
                 onChangeText={(text) => setNewItem({ ...newitem, content: text })}
                 value={newitem.content}
-                className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] w-full"
+                className="flex-1 text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] "
+                style={{
+                  height:112,
+                  textAlign: 'left',
+                  justifyContent: 'start',
+                }}
               />
             </View>
           )}
@@ -397,11 +416,11 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
             )}
           </View>
         </View>
-
-        {/* Button zum Generieren des Moduls */}
-        <View className="mx-2 mt-2 w-full px-2">
+            
+             {/* Button zum Generieren des Moduls */}
+        <View className="mx-2 mt-2  px-2">
           <GratisPremiumButton
-            aditionalStyles="rounded-[10px] mx-3 w-full"
+            aditionalStyles="rounded-[10px] mx-3 bg-blue-500"
             handlePress={async () => {
               if (newModule.name.length < 2) {
                 setErrorMessage('Bitte einen Modulnamen eingeben!');
@@ -442,9 +461,12 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
               
             
           </GratisPremiumButton>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+
+        </View>
+      </ScrollView>
   );
 };
 

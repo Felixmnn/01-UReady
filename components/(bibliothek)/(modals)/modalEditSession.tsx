@@ -37,15 +37,13 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
     }
 
     return (
-        <View>
-            {isVisible ? (
                 <Modal
                     animationType="fade"
                     transparent={true}
                     visible={isVisible}
                 >
-                    <View className="absolute top-0 left-0 w-full h-full justify-center items-center m-2 ">
-                        <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' style={{ minWidth: 400 }}>
+                    <View className="h-full absolute top-0 left-0   justify-center items-center m-2 ">
+                        <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' >
                             <View className='justify-between flex-row'>
                                 <Text className='text-white font-bold text-[15px]'>
                                     Session Bearbeiten
@@ -59,10 +57,14 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                             </Text>
 
                             <TextInput
-                                className={`text-white flex-1 rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                                className={`text-white  rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                                style={{
+                                    height: 40,	
+                                }}
                                 value={newTag ? newTag.name : null}
                                 maxLength={30}
                                 placeholder={session.title}
+                                placeholderTextColor={"AAAAAA"}
                                 onChangeText={(e) => setSessions(prevSessions =>
                                     prevSessions.map((session, i) =>
                                         i === index ? { ...session, title: e } : session
@@ -76,7 +78,12 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                             <TextInput
                             value={newTag ? newTag.description : ""}
                             maxLength={30}
-                            className={`text-white flex-1 rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                            placeholderTextColor={"AAAAAA"}
+
+                            className={`text-white  rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                            style={{
+                                height: 40,	
+                            }}
                             onChangeText={(e) => {
                                 setNewTag((prev) => ({ ...prev, description: e }));
                                 setSessions((prevSessions) =>
@@ -92,8 +99,6 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                         </View>
                     </View>
                 </Modal>
-            ) : null}
-        </View>
     )
 }
 

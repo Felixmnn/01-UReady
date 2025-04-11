@@ -91,7 +91,7 @@ const gettingStarted = () => {
         style={{
           backgroundColor: "#111c3b",
         }}
-        >
+        > 
           
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
           : userChoices == "GENERATE" ?     <PageAiCreate userChoices={userChoices} setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>

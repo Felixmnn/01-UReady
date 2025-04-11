@@ -1,5 +1,5 @@
 import { View, Text, Touchable, TouchableOpacity, Modal,ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
 import InfoModule from '../(tabs)/infoModule';
 import OptionSelector from '../(tabs)/optionSelector';
@@ -8,13 +8,39 @@ import SettingsOption from '../(tabs)/settingsOption';
 import { useState } from 'react';
 import CustomTextInput from '../(general)/customTextInput';
 import CustomButton from '../(general)/customButton';
-import { signOut } from '@/lib/appwrite';
+import { signOut, updateUserEmail, updateUserName } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import CustomTextInput1 from '../(general)/customTextInput1';
+import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
+import SkeletonList from '../(general)/(skeleton)/skeletonList';
+import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
 
 const ProfileSettings = ({setPage}) => {
-    const {user} = useGlobalContext()
+    const {user} = useGlobalContext() 
+    const [userData, setUserData] = useState(null)
+    const [ userDataKathegory, setUserDataKathegory] = useState(null)
+    const [ loading, setLoading] = useState(true)
+    const [selectedColorMode, setSelectedColorMode] = useState("Darstellung");
+    const [selectedLanguage, setSelectedLanguage] = useState("Sprache")
+    
+
+    useEffect(() => {
+      if (user == null) return ;
+      console.log("user", user)
+      async function fetchUserData() {
+        const userData = await loadUserData(user.$id);
+        setSelectedColorMode(userData.darkorMode ? "Dunkel" : "Hell")
+        console.log("userData", userData)
+        setUserData(userData)
+        const userDataKathegory = await loadUserDataKathegory(user.$id);
+        setSelectedLanguage(userDataKathegory.language)
+        console.log("userDataKathegory", userDataKathegory)
+        setUserDataKathegory(userDataKathegory)
+        setLoading(false)
+      }
+      fetchUserData();
+    },[user])
     const {setIsLoggedIn, setUser} = useGlobalContext();
   
     const [modalVisible, setModalVisible] = useState(false);
@@ -24,15 +50,15 @@ const ProfileSettings = ({setPage}) => {
       setModalVisible(!modalVisible);
     };
 
-    const personalInput = (value, title) => {
+    const personalInput = (value, title,onChange) => {
       return (
         <TouchableOpacity className="flex-1 w-full">
           <Text className="text-gray-300 font-bold text-[13px] m-2">{title}</Text>
-          <CustomTextInput1 value={value} />
+          <CustomTextInput1 value={value} onChange={onChange} />
         </TouchableOpacity>
       )
-    }
-
+    } 
+    
     const modal = () => {
       return (
       <Modal
@@ -47,7 +73,7 @@ const ProfileSettings = ({setPage}) => {
               <CustomTextInput text={text} setText={setText}  isFocused={isFocused} setFocused={setFocused} firstFocus={firstFocus} setFirstFocus={setFirstFocus}/>
               <View className='flex-1 flex-row items-center justify-center'>
                 <CustomButton title="Abbrechen" handlePress={toggleModal} containerStyles={"w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"}/>
-                <CustomButton title="Ok" handlePress={toggleModal} containerStyles={!isFocused && firstFocus && text == "" ? "w-[50%] bg-gray-700 mx-1 border-gray-700" :"w-[50%] bg-white mx-1"} textStyles={"text-black"} disabled={!isFocused && firstFocus && text == ""}/>
+                <CustomButton title="Ok" handlePress={toggleModal} containerStyles={!isFocused && firstFocus && text == "" ? "w-[50%] bg-gray-700 mx-1 border-gray-700" :"w-[50%] bg-blue-500 mx-1"} textStyles={"text-gray-300"} disabled={!isFocused && firstFocus && text == ""}/>
               </View>
             </View>
           </View>
@@ -58,22 +84,30 @@ const ProfileSettings = ({setPage}) => {
     const [isFocused, setFocused] = useState(false);
     const [firstFocus, setFirstFocus] = useState(false)
     const [text, setText]=useState("")
-
+   
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
   const languageoptions = [
-    { label: "Deutsch", value: "de" },
-    { label: "English (UK)", value: "en-UK" },
-    { label: "English (US)", value: "en-US" },
-    { label: "Español", value: "es" },
-    { label: "Français", value: "fr" },
-    { label: "Português", value: "pt" },
+    { label: "Deutsch", value: "DE" },
+    { label: "English(UK)", value: "GB" },
+    { label: "English(US)", value: "US" },
+    { label: "Español", value: "ES" },
+    { label: "Australian", value: "AU" },
   ];
   const colorOptions = [
     { label: "Hell", value: "light" },
     { label: "Dunkel", value: "dark" }
   ]
   
+  async function updateLanguage (text) {
+    setSelectedLanguage(text)
+    await setLanguage(user.$id, text.toUpperCase())
+  }
+  async function updateColorMode (text) {
+    setSelectedColorMode(text)
+    await setColorMode(user.$id, text == "Hell" ? false : true)
+  }
+
   async function logOut () {
     await signOut();
     await setIsLoggedIn(false)
@@ -84,7 +118,11 @@ const ProfileSettings = ({setPage}) => {
 
   return (
     <View className='flex-1 items-center '>
-            {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70'></View> : null }
+      { !loading ?
+      <View className='flex-1 w-full items-center'>
+            {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[96%] bg-gray-900 bg-opacity-70'
+           
+            ></View> : null }
         <View className={`flex-1 w-full  rounded-[10px] bg-[#0c111d] ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
       <TouchableOpacity className='w-full rounded-t-[10px] h-[70px] bg-gray-800 bg-gray-800 flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
         <TouchableOpacity className='rounded-full p-2' onPress={()=> setPage()}>
@@ -98,28 +136,125 @@ const ProfileSettings = ({setPage}) => {
                 return(
                     <View className='flex-1 items-center'>
                         <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>
-                        {personalInput("Felix","Vorname")}
-                        {personalInput("Man","Nachname")}
-                        {personalInput("test@test.test","Email")}
+                        {personalInput(user.name,"Vorname", (text) => updateUserName(text))}
+                        {personalInput(user.email,"Email", (text) => updateUserEmail(text) )}
                         {
-                            true ?
+                            !user.emailVerification ?
                             <View className={`${isVertical ? "flex-row w-[96%] justify-between items-center" : "justify-start items-start"} py-2 `}>
                                 <Text className='text-red-300 font-bold text-[12px]'>Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.</Text>
                                 <TouchableOpacity className='py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]'><Text className='font-bold text-gray-300'>Email erneut senden</Text> </TouchableOpacity>
                             </View>
-                            : null
+
+                            : 
+
+                            <View className='w-full m-2 px-2'>
+                            <Text>
+                                <Text className='text-green-300 font-bold text-[12px]'>Email-Adresse bestätigt</Text>
+                            </Text>
+                            </View>
                         }
-                        {personalInput("Status","Telefonnummer")}
-                        {personalInput("Student","Status")}
+                        {personalInput(user.phone !== "" ? user.phone : "-","Telefonnummer")}
                         <View className='justify-start w-full my-3'>
-                        <Text className='font-bold text-white '>Hochschule/ Universität</Text>
-                        <Text className='font-semibold text-white'>Testuni</Text>
-                        <Text className='font-bold text-white mt-3'>Studiengang</Text>
-                        <Text className='font-semibold text-white'>Informatik</Text>
+                          {
+                            userDataKathegory.kategoryType == "UNIVERSITY" ?
+                            <View className='w-full'>
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Hochschule/ Universität</Text>
+                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.university}</Text> 
+                              
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Fakultät</Text>
+                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.faculty}</Text> 
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Studiengang</Text>
+                              <View>
+                                {
+                                  userDataKathegory.studiengang.map((studiengang, index) => {
+                                    return(
+                                      <Text key={index} className='font-semibold text-white ml-2'>{studiengang}</Text>
+                                    )
+                                  })
+                                }
+                              </View>
+                            </View>
+                            : userDataKathegory.kategoryType == "SCHOOL" ?
+                            <View className='w-full'>
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Schulform</Text>
+                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.schoolType}</Text> 
+                              
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Schulklasse</Text>
+                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.schoolGrade}</Text> 
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Schulfächer</Text>
+                              <View>
+                                {
+                                  userDataKathegory.schoolSubjects.map((schoolSubjects, index) => {
+                                    return(
+                                      <Text key={index} className='font-semibold text-white ml-2'>{schoolSubjects}</Text>
+                                    )
+                                  })
+                                }
+                              </View>
+                            </View>
+                            : userDataKathegory.kategoryType == "EDUCATION" ?
+                            <View className='w-full'>
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Ausbildungskathegorie</Text>
+                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.educationKathegory}</Text> 
+                              
+                              <Text className='font-semibold text-white text-gray-500  '
+                              style={{
+                                color: "#808080",
+                              }}
+                              >Ausbildungfach</Text>
+                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.educationSubject}</Text> 
+                              
+                            </View>
+                            :<View className='w-full'>
+                            
+                            <Text className='font-semibold text-white text-gray-500  '
+                            style={{
+                              color: "#808080",
+                            }}
+                            >Fächer</Text>
+                            <View>
+                              {
+                                userDataKathegory.schoolSubjects.map((schoolSubjects, index) => {
+                                  return(
+                                    <Text key={index} className='font-semibold text-white ml-2'>{schoolSubjects}</Text>
+                                  )
+                                })
+                              }
+                            </View>
+                          </View>
+                          }
+                        
+                        
                         </View>
-                        <View className={`flex-row w-full justify-between items-center py-2 `}>
-                            <TouchableOpacity className='py-2 px-3 rounded-full border-gray-500 border-[1px]'><Text className='font-bold text-gray-300'>Email erneut senden</Text> </TouchableOpacity>
-                        </View>
+                        
 
 
 
@@ -127,9 +262,9 @@ const ProfileSettings = ({setPage}) => {
                 )
             }} hideHead={true}/>
       <InfoModule content={()=> { return(
-              <View className={`flex-1 ${isVertical ? "flex-row justify-start items-center" : "items-start"}`}>
-                <OptionSelector title={"Darstellung"} options={colorOptions}/>
-                <OptionSelector title={"Sprache"} options={languageoptions}/>
+              <View className={`flex-1 ${isVertical ? "flex-row justify-start  items-center" : "items-start"}`}>
+                <OptionSelector title={"Darstellung"} options={colorOptions} selectedValue={selectedColorMode} setSelectedValue={setSelectedColorMode} onChangeItem={updateColorMode}/>
+                <OptionSelector title={"Sprache"} options={languageoptions} selectedValue={selectedLanguage} setSelectedValue={setSelectedLanguage} onChangeItem={updateLanguage}/>
               </View>
               )}} hideHead = {true} infoStyles="z-20"/> 
       <InfoModule content={()=> { return(
@@ -144,6 +279,10 @@ const ProfileSettings = ({setPage}) => {
       )}} hideHead = {true}/> 
       </ScrollView>
     </View>
+    </View>
+
+    : <SkeletonList/>
+    }
     </View>
   )
 }

@@ -3,8 +3,7 @@ import React from 'react'
 import RNPickerSelect from "react-native-picker-select";
 import { useState,useRef } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome";
-const OptionSelector = ({title, options, selectedOption, containerStyles, marginChanges, hideTitle, width}) => {
-    const [selectedValue, setSelectedValue] = useState(title);
+const OptionSelector = ({title, options, selectedOption, containerStyles, marginChanges, hideTitle, width,selectedValue, setSelectedValue, onChangeItem}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const buttonRef = useRef(null);
 
@@ -41,14 +40,14 @@ const OptionSelector = ({title, options, selectedOption, containerStyles, margin
             zIndex: 10, // Damit es über anderen Elementen liegt
           }}
         >
-          <FlatList
-            data={options}
-            keyExtractor={(item) => item.value}
-            renderItem={({ item }) => (
+          {
+              options.map((item) => (
               <TouchableOpacity
-                onPress={() => {
+                key={item.value}
+                onPress={async () => {
                   setSelectedValue(item.label);
                   setIsDropdownOpen(false);
+                  await onChangeItem(item.label);
                 }}
                 className='border-gray-600 rounded-[10px]'
                 style={{
@@ -58,8 +57,8 @@ const OptionSelector = ({title, options, selectedOption, containerStyles, margin
               >
                 <Text className='text-white font-semibold'>{item.label}</Text>
               </TouchableOpacity>
-            )}
-          />
+            ))
+          }
         </View>
       )}
     </View>)

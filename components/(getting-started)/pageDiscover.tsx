@@ -7,6 +7,7 @@ import { addNewModule } from '@/lib/appwriteAdd'
 import { router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { setUserDataSetup } from '@/lib/appwriteEdit'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     const [ loading, setLoading] = useState(true)
@@ -41,6 +42,11 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     }
   return (
     <SafeAreaView className='w-full h-full p-2'>
+        <View>
+            <Icon name="arrow-left" size={20} color="#20c1e1" onPress={() => {
+                setUserChoices(null)
+            }}/>
+        </View>
         <View className='flex-1 items-center justiy-center '>
             <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
                 <Text className='font-semibold text-[15px] text-gray-100 text-center'>{loading ? "Gib mir einen Moment..." : matchingModules.length > 0  ? "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu" : "Leider habe ich nichts gefunden aber kein Problem"}</Text>

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router,useLocalSearchParams } from "expo-router"
@@ -6,6 +6,7 @@ import Index from '..';
 import {testAppwrite, updateDocument} from "../../lib/appwriteEdit"
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import { useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const quiz = () => {
     const {questions} = useLocalSearchParams()
@@ -138,18 +139,19 @@ const quiz = () => {
         async function nextQuestion (status, change){
             console.log("Übergbe den Status", status)
             setShowAnswers(false)
-            if (!(selectedAnswers.length == 0)){
             
                 
             setQuestionParsed(prevState =>
                 prevState.map((q, index) =>
-                    index === selectedQuestion ? { ...q, status: status } : q
+                    index === selectedQuestion ? { ...q, status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status } : q
                 )
             );
-            }
+            
+            console.log("Der Status ist", questionsParsed[selectedQuestion].status)
+            console.log("Der neu Status soll sein Status ist", status)
             const updatedItem = {
                 ...questionsParsed[selectedQuestion],
-                status: status, // Status aktualisieren
+                status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status, // Status aktualisieren
             };
             await updateDocument(updatedItem)
             if (change == 1){
@@ -181,7 +183,14 @@ const quiz = () => {
                         </TouchableOpacity>
                         </View>
                         <View className='flex-row items-center'>
-                            {questionsParsed[selectedQuestion].aiGenerated ? <Icon name="robot" size={15} color="white"/> : null}
+                            {questionsParsed[selectedQuestion].aiGenerated ? <Image 
+                                                                source={require('../../assets/bot.png')} 
+                                                                style={{
+                                                                  height: 20, 
+                                                                  width: 20, 
+                                                                  tintColor: "#fff" 
+                                                                }} 
+                                                              /> : null}
                             <TouchableOpacity className='items-center justify-center ml-2'>
                                 <Icon name="ellipsis-v" size={15} color="white"/>
                             </TouchableOpacity>
@@ -192,7 +201,12 @@ const quiz = () => {
                         
                         {
                             showAnsers ? (
-                                <View>
+
+                                <View className='flex-row justify-between items-center w-full px-3'>
+                                    <TouchableOpacity onPress={()=> nextQuestion(correctAnswers() ? "GOOD" : "BAD",0)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
+                                        <Icon name="chevron-left" size={20} color={"white"}/>
+                                    </TouchableOpacity>
+                                    <View>
                                     {
                                         correctAnswers() ? (
                                             <Text className='text-green-500'>Richtig</Text>
@@ -202,33 +216,27 @@ const quiz = () => {
                                         )
                                     }
                                 </View>
+                                    <TouchableOpacity onPress={()=> nextQuestion(correctAnswers() ? "GOOD" : "BAD",1)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
+                                    <Icon name="chevron-right" size={20} color={"white"}/>
+                                    </TouchableOpacity>
+                                </View>
+
+                                
                             ) : (
-                                <TouchableOpacity onPress={()=> { changeVisibility()}} className='items-center justify-center p-2 bg-blue-900 rounded-[10px]'>
-                                    <Text className='text-white'>Prüfen</Text>
-                                </TouchableOpacity>
+                                <View className='flex-row justify-between items-center w-full px-3'>
+                                    <TouchableOpacity onPress={()=> nextQuestion("OK",0)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
+                                        <Icon name="chevron-left" size={20} color={"white"}/>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=> { changeVisibility()}} className='items-center justify-center p-2 bg-blue-900 rounded-[10px]'>
+                                        <Text className='text-white'>Prüfen</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=> nextQuestion("OK",1)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
+                                    <Icon name="chevron-right" size={20} color={"white"}/>
+                                    </TouchableOpacity>
+                                </View>
                             )
                         }
                        
-                    </View>
-                </View>
-                <View className='items-center justify-center p-4'>
-                    <View className='flex-row items-center justify-between p-4 '>
-                        <TouchableOpacity onPress={()=> nextQuestion(correctAnswers() ? "GOOD" : "BAD",0)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
-                            <Icon name="chevron-left" size={20} color={"white"}/>
-                        </TouchableOpacity>
-                        {
-                            navOptions.map((option) => {
-                                return (
-                                    <TouchableOpacity onPress={()=> nextQuestion(option.status, 1)} className={`border-[1px] border-${option.iconColor}-600 items-center justify-center py-4 rounded-[10px]  mx-1 ${option.bg} ${isVertical ? " w-[100px]" : "p-4"} `}>
-                                        <Icon name={option.icon} size={20} color={option.iconColor}/>
-                                        {isVertical ? <Text className='font-semibold text-white mt-1'>{option.title}</Text> : null}
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                        <TouchableOpacity onPress={()=> nextQuestion(correctAnswers() ? "GOOD" : "BAD",1)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
-                        <Icon name="chevron-right" size={20} color={"white"}/>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -248,7 +256,7 @@ const quiz = () => {
         return (
             <View className='flex-1'>
                 <Text className='text-white p-4 text-xl font-bold'>{question.question}</Text>
-                <View className={` p-4 ${isVertical ? "flex-row" : "flex-col"} `}>
+                <View className={`flex-1  p-4 ${isVertical ? "flex-row" : "flex-col"} `}>
                     {
                         question.answers.map((answer,index) => {
                             return (
@@ -273,14 +281,14 @@ const quiz = () => {
 
     const [isVisibleDataUpload,setIsVisibleDataUpload] = useState(false)
   return (
-    <View className='flex-1 items-center p-3 justify-center bg-gradient-to-b from-[#2b3d69] to-[#0c111d]'>
-      <View className='flex-1 border-[1px] border-gray-600 w-full bg-[#0c111d] rounded-[10px]'>
+    <SafeAreaView className={`flex-1 items-center justify-center bg-gradient-to-b from-[#2b3d69] to-[#0c111d] ${isVertical ? "p-3" : ""}`}>
+      <View className={`flex-1  w-full bg-[#0c111d]  ${isVertical ? "rounded-[10px] border-[1px] border-gray-600" : ""}`}>
         <Header/>
         <Quiz />
         <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
 
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

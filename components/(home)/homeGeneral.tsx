@@ -34,7 +34,7 @@ const HomeGeneral = ({setSelectedPage}) => {
     itemActivationTime: null,
     batteryCharge: 5,
     batteryLastCharge: new Date(),
-    mikroChips: 10000,
+    mikroChips: "∞",
     superCharges:0,
     fusionCharges:0,
     radioactiveCharges:0,

@@ -21,7 +21,9 @@ const OptionSelector = ({title, options, selectedOption, containerStyles, margin
           alignItems: "center",
         }}
       >
-        <Text className='text-white text-semibold mr-2'>{selectedValue ? selectedValue :  options[0].label}</Text>
+        <Text className='text-white text-semibold mr-2'>
+          {selectedValue ? String(selectedValue) : String(options[0]?.label || '')}
+        </Text>
         <Icon name="chevron-down" size={18} color="white" />
       </TouchableOpacity>
 

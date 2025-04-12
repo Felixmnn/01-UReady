@@ -206,7 +206,9 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
 
               <View style={{
                 marginLeft, marginRight, marginTop,marginBottom
-              }}>
+              }}
+              key={module.$id}
+              >
                 <SessionProgress 
                 selected={selected == index} 
                 setSelected={()=> setSelected(index)} 

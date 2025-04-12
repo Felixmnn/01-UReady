@@ -34,9 +34,11 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                 <ModalAddTags isVisible={isVisible} setIsVisible={setIsVisible} selectedModule={selectedModule} addTags={addTags} selectedTags={newQuestion.tags} selectedQuestion={newQuestion} setNewQuestion={setNewQuestion}/> 
                 }
                 
-                <View className='w-full bg-gray-800 border-gray-700 border-[1px] p-4 rounded-[10px]'>
+                <View className='flex-1 w-full h-full bg-gray-800 border-gray-700 border-[1px] p-4 rounded-[10px] '
+                
+                >
                     <View className='flex-row justify-between'>
-                        <View>
+                        <View className=''>
                             {
                                 selectedQuestion !== 0 && questions[selectedQuestion -1 ].tags.length > 0 ?
                                 <View>
@@ -80,7 +82,7 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                                     </View>
                                 </View>
                                 : selectedQuestion == 0 && newQuestion.tags.length > 0 ?
-                                <View>
+                                <View className=''>
                                     <Text className='text-white font-bold text-[12px]'>Tags:</Text>
                                     <View className='flex-row'>
                                         {

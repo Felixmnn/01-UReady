@@ -21,7 +21,7 @@ const entdecken = () => {
 
   return (
       <Tabbar content={()=> { return(
-        <View className='flex-1 w-full bg-[#0c111d] '>
+        <View className='flex-1 w-full bg-[#0c111d] rounded-[10px]'>
                 <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
                   <Text className='font-bold text-3xl text-gray-100'>
                     Entdecken
@@ -43,10 +43,10 @@ const entdecken = () => {
             { longVertical ? 
           <View className='flex-row mx-1 justify-between'>
             <View className='flex-row'>
-            <OptionSelector title={"Alle Fächer"} hideTitle={true} width={150}/>
-            <OptionSelector title={"Alle Hochschulen"} hideTitle={true} width={180}/>
-            <OptionSelector title={"Alle Studiengänge"} hideTitle={true} width={180}/>
-            <OptionSelector title={"Deutsch,Englisch"} hideTitle={true} width={150}/>
+            <OptionSelector title={"Alle Fächer"} hideTitle={true} width={150} onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
+            <OptionSelector title={"Alle Hochschulen"} hideTitle={true} width={180}  onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
+            <OptionSelector title={"Alle Studiengänge"} hideTitle={true} width={180}  onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
+            <OptionSelector title={"Deutsch,Englisch"} hideTitle={true} width={150}  onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
             </View>
             <TouchableOpacity className='flex-row items-center border-[1px] border-gray-700 rounded-full py-2 px-3'>
               <Icon name="undo" size={12} color="white"/>

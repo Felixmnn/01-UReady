@@ -11,8 +11,11 @@ import AllModules from '@/components/(bibliothek)/(pages)/allModules';
 import SingleModule from '@/components/(bibliothek)/(pages)/singleModule';
 import {loadModules, loadQuestions} from "../../lib/appwriteDaten"
 import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
+import { getModules } from '@/lib/appwriteQuerys';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const Bibliothek = () => {
+  const {user} = useGlobalContext();
   const [last7Hidden, setLast7Hidden ] = useState(true)
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
@@ -22,10 +25,12 @@ const Bibliothek = () => {
     const [modules,setModules] = useState(null)
     const [loading,setLoading] = useState(true)
     const [selectedModule, setSelectedModule] = useState(null)
+
     useEffect(() => {
+      if (user === null) return;
       async function fetchModules() {
         await loadQuestions()
-        const modulesLoaded = await loadModules()
+        const modulesLoaded = await getModules(user.$id)
         if (modulesLoaded) {
           setModules(modulesLoaded)
         }
@@ -33,7 +38,7 @@ const Bibliothek = () => {
       }
       fetchModules()
     }
-    ,[])
+    ,[user])
 
     const SkeletonItem = () => {
       const opacity = new Animated.Value(0.3);

@@ -111,7 +111,7 @@ const ProfileSettings = ({setPage}) => {
   async function logOut () {
     await signOut();
     await setIsLoggedIn(false)
-    await setUser(null)
+    await setUser(undefined)
     router.push("/")
     
   }
@@ -131,7 +131,12 @@ const ProfileSettings = ({setPage}) => {
         <Text className='text-white text-[20px] font-semibold ml-4 mb-1'>Einstellungen</Text>
       </TouchableOpacity>
       <View className='mt-2'/>
-      <ScrollView>
+      <ScrollView
+      style={{
+        scrollbarWidth: 'thin', // Dünne Scrollbar
+                        scrollbarColor: 'gray transparent',
+      }}
+      >
       <InfoModule content={()=> {
                 return(
                     <View className='flex-1 items-center'>
@@ -142,7 +147,9 @@ const ProfileSettings = ({setPage}) => {
                             !user.emailVerification ?
                             <View className={`${isVertical ? "flex-row w-[96%] justify-between items-center" : "justify-start items-start"} py-2 `}>
                                 <Text className='text-red-300 font-bold text-[12px]'>Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.</Text>
-                                <TouchableOpacity className='py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]'><Text className='font-bold text-gray-300'>Email erneut senden</Text> </TouchableOpacity>
+                                <TouchableOpacity className='py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]'>
+                                  <Text className='text-gray-300 font-bold text-[12px]'>Erneut senden</Text>
+                                </TouchableOpacity>
                             </View>
 
                             : 

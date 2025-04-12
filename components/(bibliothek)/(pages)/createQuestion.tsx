@@ -14,6 +14,7 @@ import EditQuestions from './(createQuestion)/editQuestions';
 import ModalAddTags from './(createQuestion)/modalAddTags';
 import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { getAllQuestions } from '@/lib/appwriteQuerys';
 
 const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     const {user} = useGlobalContext();
@@ -37,16 +38,21 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     })
     useEffect(() => { 
         async function fetchQuestions() {
-            const questions = await loadQuestions()
+            if (module == null) return;
+            console.log("Fetch Questions")
+            const questions = await getAllQuestions(module.documents[selectedModule].$id)
+            console.log("Questions", questions)
             if (questions) {
                 const questionArray = questions.documents
+                console.log("Question Array", questionArray)
                 const filteredQuestions = questionArray.filter((question) => question.subjectID == module.documents[selectedModule].$id);
+                console.log("Filtered Questions", filteredQuestions)
                 setQuestions(filteredQuestions.reverse())  
             }  
         }
         fetchQuestions()
         setLoading(false)
-    }, [])
+    }, [module])
         
     useEffect(()=> {
             console.log("Changes where made")

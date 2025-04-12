@@ -8,6 +8,7 @@ import {router} from 'expo-router';
 
 export async function materialToModule(user,material,userData,newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading) {
     setLoading(true)
+    let directQuestions = []
     for (let i = 0; i < material.length; i++) {
         try {
             let res;
@@ -23,6 +24,7 @@ export async function materialToModule(user,material,userData,newModule, setNewM
             }
             if (typeof res == "object"){
                 if (Array.isArray(res)) {
+                    directQuestions = [...directQuestions, ...res]
                     setQuestions((prev) => [...prev, ...res]); 
                   }
                 
@@ -35,13 +37,13 @@ export async function materialToModule(user,material,userData,newModule, setNewM
         
     }
     console.log("Die Fragen sind:", questions)
-    const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), sessions:sessions.map(item => JSON.stringify(item)) });
+    const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), questions: questions.length, sessions:sessions.map(item => JSON.stringify(item)) });
     console.log("Das neue Modul ist:", res)
-    for (let i = 0; i < questions.length; i++) {
-        console.log("So liegt Questions vor:", questions[i])
+    for (let i = 0; i < directQuestions.length; i++) {
+        console.log("So liegt Questions vor:", directQuestions[i])
         try {
             
-        const question = {...questions[i], subjectID: res.$id};
+        const question = {...directQuestions[i], subjectID: res.$id};
 
         const s = await addQUestion (question); 
         console.log("Erfolg 🔴🔴🔴", s)

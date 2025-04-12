@@ -88,7 +88,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                 }));
             }
   return (
-    <View className='flex-1 items-center justify-center'>
+    <View className='flex-1  items-center justify-center'>
         <ModalSelectSession changeSession={changeSession} modalVisible= {modalVisible} setModalVisible={setModalVisible} selectedQuestion={newQuestion} selectedModule={selectedModule}/>
 
                             { 
@@ -113,7 +113,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                     
                                 </TouchableOpacity>
                                 :
-                                <TouchableOpacity onPress={()=> {setQuestionActive(true);setAnswerActive(false)}} className='flex-row w-full px-2 py-1 '>
+                                <TouchableOpacity onPress={()=> {setQuestionActive(true);setAnswerActive(false)}} className='flex-1 flex-row items-center justify-center w-full px-2 py-1  '>
                                     {
                                         newQuestion.question.length > 0 ?
                                         <TouchableOpacity onPress={()=>{setQuestionActive(true)}} className='w-full'>
@@ -121,9 +121,9 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                             <Text className='text-gray-300 font-bold m-2'>{newQuestion.question}</Text>
                                         </TouchableOpacity>
                                         :
-                                        <View className='flex-row items-center'>
-                                        <Icon name="plus" size={15} color="white"/>
-                                        <Text className='text-white font-bold ml-2'>Frage hinzufügen</Text>
+                                        <View className='w-full flex-row items-center justify-center border-[1px] border-gray-500 rounded-full px-2 py-1 m-2'>
+                                            <Icon name="plus" size={15} color="white"/>
+                                            <Text className='text-white font-bold m-1 '>Frage hinzufügen</Text>
                                         </View>
                                     }
                                     
@@ -132,10 +132,10 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             <View className='border-t-[1px] border-gray-500 w-full my-2'/>
                             {
                                 newQuestion.answers.length > 0 ?
-                                <View className='w-full flex-1 items-center justify-center'>
+                                <View className='w-full flex-1 items-center justify-center '>
                                     <FlatList
                                         data={newQuestion.answers}
-                                        keyExtractor={(item)=> item}
+                                        keyExtractor={(index)=> index.toString()}
                                         style={{ width: '100%' }} // Setzt die Breite auf 100%
     
                                         renderItem={({ item,index }) => {
@@ -150,36 +150,34 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             }
                             
 
-                            <View className='p-1 w-full  justify-between items-center flex-row'>
+                            <View className='flex-1 p-1 w-full  justify-center items-center flex-row'>
                                 <TouchableOpacity onPress={()=> {
                                     setNewQuestion(prevState => ({
                                                     ...prevState,
                                                     answers: [...prevState.answers, "Neue Antwort"] // Neue Antwort hinzufügen
                                                 }));
                                                 selectedAnswer == null || !(newQuestion.answers.length > 0)  ? setSelectedAnswer(0) : setSelectedAnswer(selectedAnswer + 1 );
-                                        }} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'
-                                        style={{
-                                            width: isVertical ?  100 : 170,
-                                        }}
+                                        }} className='w-full flex-row items-center justify-center px-2 py-1 rounded-full border-gray-500 border-[1px] m-2 '
+
                                         >
-                                    <Icon name="plus" size={10} color="white"/>
-                                    { !isVertical ? 
-                                                                <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
+                                            <Icon name="plus" size={15} color="white"/>
+                                            { !isVertical ? 
+                                                                <Text className='text-white font-bold m-1 '>
                                                                     Antwort hinzufügen
                                                                 </Text>
                                                                 :
-                                                                <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
-                                                                    Antwort
+                                                                <Text className='text-white font-bold m-1 '>
+                                                                    Antwort hinzufügen
                                                                 </Text>
                                                                 }
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
+                                
+                            </View>  
+                            <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                                     
                                     <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID ? newQuestion.sessionID : "Select a Session"}</Text>
                                     
                                 </TouchableOpacity>
-                            </View>  
-                            
                         </View>
   )
 }

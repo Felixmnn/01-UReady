@@ -12,6 +12,7 @@ import { loadDocuments, loadNotes, loadQuestions } from '@/lib/appwriteDaten';
 import { addDocumentConfig, addDocumentToBucket, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
+import { getQuestions } from '@/lib/appwriteQuerys';
 
 const SingleModule = ({setSelectedScreen, module}) => {
     const { width } = useWindowDimensions();
@@ -44,16 +45,16 @@ const SingleModule = ({setSelectedScreen, module}) => {
       
       
     useEffect(() => { 
+        if ( sessions == undefined  ) return;
         async function fetchQuestions() {
-            const questions = await loadQuestions();
-            const notes = await loadNotes();
-            const documents = await loadDocuments();
+            const questions = await getQuestions(sessions[selectedSession].id);
+            console.log("🔷 Fragen zur Session wurden erfolgreich geladen:",questions)
+            //const notes = await loadNotes();
+            //const documents = await loadDocuments();
             if (questions) {
-                const questionArray = questions.documents
-                const filteredQuestions = questionArray.filter((question) => question.subjectID == module.$id);
-                setQuestions(filteredQuestions)  
-                console.log("Question Array ist hier:",questionArray)
-            }  
+                setQuestions((prevQuestions) => [...prevQuestions, ...questions.documents]);  
+            }
+            /*
             if (notes) {
                 const noteArray = notes.documents
                 console.log("Note Array ist hier:",noteArray)
@@ -65,11 +66,14 @@ const SingleModule = ({setSelectedScreen, module}) => {
                 const filteredDocuments = docArray.filter((document) => document.subjectID == module.$id);
                 setDocuments(filteredDocuments)
             }
+                */
 
         }
         fetchQuestions()
         setLoading(false) 
-    }, [])
+    }, [sessions, selectedSession])
+
+
     async function addDocument (){
         try {
              

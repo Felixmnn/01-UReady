@@ -77,12 +77,12 @@ const gettingStarted = () => {
       creationRegion: null,
       creationUniversitySubject: [],
       creationSubject: [],
-      creationEducationSubject: [],
+      creationEducationSubject: "",
       creationUniversityFaculty: [],
       creationSchoolForm: null,
       creationKlassNumber: null,
       creationLanguage: null,
-      creationEducationKathegory:[],
+      creationEducationKathegory:"",
       copy: false,
       });
     
@@ -103,7 +103,6 @@ const gettingStarted = () => {
           : null
 }  
         </SafeAreaView>
-    
   )
 }
 

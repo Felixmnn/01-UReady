@@ -142,6 +142,7 @@ return (
                             pathname:"quiz",
                             params: {questions: JSON.stringify(filteredData)}
                         })} 
+                    
                         className='p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800'>
                         <View className='w-full justify-between flex-row items-center '>
                             {item.status !== null ? <Status status={item.status}/> : null}

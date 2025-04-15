@@ -15,6 +15,7 @@ import AddModule from '../(general)/(modal)/addModule';
 import { loadUserData } from '@/lib/appwriteDaten';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
+import { createFunction } from '@/lib/appwriteFunctions';
 import { callAppwriteFunction } from '@/lib/appwriteFunctions';
 import ModalAddFile from '../(general)/(modal)/addFile';
 import Battery from '../tokens/battery';
@@ -38,6 +39,15 @@ const HomeGeneral = ({setSelectedPage}) => {
     superCharges:0,
     fusionCharges:0,
     radioactiveCharges:0,
+    last3Modul: [
+      {
+        name
+      },
+      
+    ],
+    last5Sessions:[
+      
+    ]
   })
   {/*Homepage allgemein*/}
       const t = new Date().getDay();
@@ -258,13 +268,22 @@ const HomeGeneral = ({setSelectedPage}) => {
             <Aktionsempfehlung title={"Quick Quizz"} subTitle={"15 Fragen"} icon={"clock"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
             <Aktionsempfehlung title={"Long Quizz"} subTitle={"30 Fragen"} icon={"brain"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
           </View>
+          <TouchableOpacity
+          className='bg-red-500 rounded-[10px] p-2 mt-2'
+          onPress={async ()=> await createFunction()}
+          >
+            <Text>
+              Trigger Appwrite Function
+            </Text>
+          </TouchableOpacity>
+
           </View>
         </View>
         
         </View>
         <View className='flex-row justify-between mx-4 mb-2'>
           <QuickAccess icon={"bot"} iconColor={"#7a5af8"} iconBackground={"bg-[#372292]"} title={"Erstellen wir ein Modul"} handlePress={()=> setSelectedPage("HomeChat")}/>
-          <QuickAccess icon={"search"} iconColor={"#20c1e1"} iconBackground={"bg-[#0d2d3a]"} title={"Entdecke Module"} handlePress={()=> setIsVisibleNewModule(true)}/>
+          <QuickAccess icon={"search"} iconColor={"#20c1e1"} iconBackground={"bg-[#0d2d3a]"} title={"Entdecke Module"} handlePress={()=> router.push("/entdecken")}/>
           <QuickAccess icon={"cubes"} iconColor={"#4f9c19"} iconBackground={"bg-[#2b5314]"} title={"Erstelle dein eigenes Modul."} handlePress={()=> setIsVisibleNewFile(true)}/>
         </View>
       </View>

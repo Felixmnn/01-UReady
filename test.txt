@@ -1,0 +1,39 @@
+.
+├── app
+│   ├── (auth)
+│   ├── (edit)
+│   ├── (quiz)
+│   ├── (renderDocuments)
+│   └── (tabs)
+├── assets
+│   ├── exapleData
+│   ├── fonts
+│   ├── images
+│   └── tokens
+├── components
+│   ├── (bibliothek)
+│   │   ├── (modals)
+│   │   ├── (pages)
+│   │   │   └── (createQuestion)
+│   │   └── (sections)
+│   ├── (general)
+│   │   ├── (modal)
+│   │   └── (skeleton)
+│   ├── (getting-started)
+│   │   └── (aiCreate)
+│   ├── (home)
+│   ├── (karteimodul)
+│   ├── (profile)
+│   ├── (quiz)
+│   ├── (signUp)
+│   │   └── (components)
+│   ├── (tabs)
+│   └── tokens
+├── context
+├── functions
+│   ├── (aiQuestions)
+│   ├── (createItems)
+│   └── (personalize)
+└── lib
+
+37 directories

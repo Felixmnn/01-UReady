@@ -2,6 +2,14 @@ export const countryList = [
     {name:"Deutschland",code:"DE", id:"4058177f-0cd4-4820-8f71-557c4b27dd42" },
 ]
 
+export const languages = [
+    {name:"Deutsch", enum:"DEUTSCH", code:"DE"},
+    {name:"English", enum:"ENGLISH(UK)", code:"GB"},
+    {name:"English", enum:"ENGLISH(US)", code:"US"},
+    {name:"Spanish", enum:"SPANISH", code:"ES"},
+    {name:"Australian", enum:"AUSTRALIAN", code:"AU"},
+]
+
 export const schoolListDeutschland = {
     regions: [
         {name:"Baden-Württemberg",code:"BW", id:"4058177f-0cdwrwe4-4820-8f71-557c4b27dd42", image:"https://th.bing.com/th?id=OSK.P6VpupmuV666_3CFOVcxLcjoT7EePC5Q-arLptqh3hY&w=46&h=46&c=11&rs=1&qlt=80&o=6&dpr=2&pid=SANGAM" },
@@ -1316,8 +1324,6 @@ export const ausbildungsTypen =
     }
   ]
       
-  
-
 export const ausbildungsListDeutschland = {
         "Gastronomie & Tourismus": [
             {

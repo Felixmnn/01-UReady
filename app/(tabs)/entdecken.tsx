@@ -8,16 +8,72 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
 import SwichTab from '@/components/(tabs)/swichTab';
 import OptionSelector from '@/components/(tabs)/optionSelector';
+import { loadUserDataKathegory } from '@/lib/appwriteDaten';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { addUserDatakathegory } from '@/lib/appwriteAdd';
+import { ausbildungsListDeutschland, ausbildungsTypen, countryList, languages, LeibnizSubjects, schoolListDeutschland, universityListDeutschland } from '@/assets/exapleData/countryList';
 
 const entdecken = () => {
+  const {user } = useGlobalContext(); // User aus dem Context holen
+  const [ loadUserDataKathegorys, setLoadUserDataKathegorys ] = useState(null) // User Daten Kathegorys
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const [ tab, setTab ] = useState(0)
   const tabWidth = width / 2; // Da es zwei Tabs gibt
-
+  useEffect(() => {
+    if (!user) return; 
+    async function fetchUserDataKathegorys() {
+      const data = await loadUserDataKathegory(user.$id); // User ID aus dem Context holen
+      console.log(data)
+      setLoadUserDataKathegorys(data.documents); // Daten setzen
+    }
+    fetchUserDataKathegorys(); // Funktion aufrufen
+  }
+  , [user]);
   const isVertical = width > 700;
   const toTight = width > 800;
   const longVertical = width > 900;
- 
+
+  const filters = {
+    UNIVERSITY: ["Sprache", "Land", "Universität","Abschlussziel",  "Fakultät", "Studiengang"],
+    SCHOOL: ["Sprache", "Land", "Region", "Klasse", "Schultyp", "Fächer"],
+    EDUCATION: ["Sprache", "Land", "Kathegorie", "Ausbildung"],
+    OTHER: ["Sprache", "Land", "Fächer"],
+  }
+
+  
+  const keys = Object.keys(LeibnizSubjects[0]);
+  console.log(LeibnizSubjects[0].Bachelor[0].faculty)
+  keys.map((key) => {
+
+    for (let i = 0; i < LeibnizSubjects[0][key].length; i++) {
+      const element = LeibnizSubjects[0][key][i].kathegory;
+      if (!Kathegorie.includes(element)) {
+        Kathegorie.push(element)
+      }
+    }
+  }
+  )
+  console.log(Kathegorie)
+
+
+  
+  
+
+  const FilterListe = ({type}) => {
+    return (
+      <View className='w-full flex-row justify-between items-center p-2 '>
+        {
+          filters[type].map((filter, index) => {
+            return (
+              <View className='flex-1 items-center justify-center bg-gray-700 p-2 m-1' key={index}>
+                <Text>{filter}</Text>
+              </View>
+            )
+          })
+        }
+      </View>
+    )
+  }
 
   return (
       <Tabbar content={()=> { return(
@@ -42,13 +98,12 @@ const entdecken = () => {
           <View className='mx-3 mt-2'>
             { longVertical ? 
           <View className='flex-row mx-1 justify-between'>
-            <View className='flex-row'>
-            <OptionSelector title={"Alle Fächer"} hideTitle={true} width={150} onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
-            <OptionSelector title={"Alle Hochschulen"} hideTitle={true} width={180}  onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
-            <OptionSelector title={"Alle Studiengänge"} hideTitle={true} width={180}  onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
-            <OptionSelector title={"Deutsch,Englisch"} hideTitle={true} width={150}  onChangeItem={null} selectedValue={null} setSelectedValue={null}/>
+            <View className='flex-1 flex-row'>
+              {
+                <FilterListe type={"EDUCATION"}/>
+              }
             </View>
-            <TouchableOpacity className='flex-row items-center border-[1px] border-gray-700 rounded-full py-2 px-3'>
+            <TouchableOpacity className='flex-row items-center border-[1px] border-gray-700 rounded-full py-1 px-3'>
               <Icon name="undo" size={12} color="white"/>
               <Text className='text-[12px] text-gray-300 ml-2'>Filter Zurücksetzen</Text>
             </TouchableOpacity>

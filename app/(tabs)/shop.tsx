@@ -65,50 +65,13 @@ const shop = () => {
   }
  
   return (
-    <Tabbar content={()=> { return(
-      <ScrollView  className='bg-[#0c111e]'
-      style={{
-        backgroundColor:"#0c111e"
-
-      }}
-      >
-        
-        <Banner title={"Energie aufüllen"}/>
-        <View className="flex-row flex-wrap items-center justify-center">
-          <ShopItem price={500} name={"Recharge"} type={"battery"} currency={"chips"} amount={"1"}/>  
-          <ShopItem price={2500} name={"Recharge"} type={"battery"} currency={"chips"} amount={"5"}/>  
-          <ShopItem price={5000} name={"Recharge"} type={"battery"} currency={"chips"} amount={"10"}/>  
-        </View>
-        <Banner title={"Unendlich Energie für 1 Stunde"}/>
-        <View className="flex-row flex-wrap items-center justify-center">
-          <ShopItem price={500} name={"Super Charge"} type={"supercharge"} currency={"chips"} amount={"1"}/>  
-          <ShopItem price={2500} name={"Super Charge"} type={"supercharge"} currency={"chips"} amount={"3"}/>  
-          <ShopItem price={5000} name={"Super Charge"} type={"supercharge"} currency={"chips"} amount={"5"}/>  
-        </View>
-        <Banner title={"Unendlich Energie für 1 Tag"}/>
-        <View className="flex-row flex-wrap items-center justify-center">
-          <ShopItem price={1099} name={"Radioactive Charge"} type={"radioactive"} currency={"euro"} amount={"1"}/>  
-          <ShopItem price={4099} name={"Radioactive Charge"} type={"radioactive"} currency={"euro"} amount={"5"}/>  
-          <ShopItem price={9999} name={"Radioactive Charge"} type={"radioactive"} currency={"euro"} amount={"10"}/>  
-        </View>
-        <View className="flex-row flex-wrap items-center justify-center">
-        <Banner title={"Unendlich Energie für 1 Monat"}/>
-        <View className='w-full items-center justify-center'>
-          <ShopItem price={5999} name={"Fusion Charge"} type={"fusion"} currency={"euro"} amount={"1"}/>  
-        </View>  
-        </View>
-        <Banner title={"Währung"}/>
-        <View className="flex-row flex-wrap items-center justify-center">
-          <ShopItem price={99} name={"Chips"} type={"chip"} currency={"euro"} amount={"100"}/>  
-          <ShopItem price={599} name={"Chips"} type={"chip"} currency={"euro"} amount={"1.000"}/>  
-          <ShopItem price={1099} name={"Chips"} type={"chip"} currency={"euro"} amount={"5.000"}/>  
-        </View>
-        <View className="flex-row flex-wrap items-center justify-center">
-          <ShopItem price={2099} name={"Chips"} type={"chip"} currency={"euro"} amount={"20.000"}/>  
-          <ShopItem price={5099} name={"Chips"} type={"chip"} currency={"euro"} amount={"50.000"}/>  
-          <ShopItem price={9995} name={"Chips"} type={"chip"} currency={"euro"} amount={"100.000"}/>  
-        </View>
-      </ScrollView>
+    <Tabbar content={()=> { return( 
+      <View className='flex-1 items-center justify-center bg-[#0c111e]'>
+        <Image source={require("../../assets/gift.png")} className='h-[200px] w-[200px]'/>
+        <Text className='text-white font-bold text-2xl'>Danke fürs Mitentwickeln!</Text>
+        <Text className='text-gray-300 font-semibold text-[15px]'>🎉 Alle Features sind in der Beta gratis.</Text>
+      </View>
+      
   )}} page={"Home"} hide={false}/>
   )
   }

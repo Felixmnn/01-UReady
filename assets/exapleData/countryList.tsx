@@ -1220,6 +1220,8 @@ export const LeibnizSubjects = [
     ]
     }
 ]
+export const LeibnizFaculties =     ['Philosophische Fakultät', 'Fakultät für Architektur und Landschaft', 'Fakultät für Bauingenieurwesen und Geodäsie', 'Naturwissenschaftliche Fakultät', 'Fakultät für Elektrotechnik und Informatik', 'Fakultät für Maschinenbau', 'Juristische Fakultät', 'Fakultät für Mathematik und Physik', 'Wirtschaftswissenschaftliche Fakultät']
+
 
 export const ausbildungsTypen = 
 [

@@ -19,7 +19,7 @@ const Tabbar = ({content,page, hide}) => {
         }
 
   return (
-    <View className='bg-blue-500 flex-1'>
+    <View className='bg-[#0c111d] flex-1'>
         { isVertical ?
         <View className='bg-gradient-to-b from-blue-800 to-[#0c111d] flex-1 py-3 pr-3 flex-row '>
             <View className='bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[100px] items-center justify-between'>

@@ -124,22 +124,24 @@ const ProfileSettings = ({setPage}) => {
            
             ></View> : null }
         <View className={`flex-1 w-full  rounded-[10px] bg-[#0c111d] ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
-      <TouchableOpacity className='w-full rounded-t-[10px] h-[70px] bg-gray-800 bg-gray-800 flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
-        <TouchableOpacity className='rounded-full p-2' onPress={()=> setPage()}>
+      <TouchableOpacity className='w-full rounded-t-[10px] h-[70px] bg-[#0c111d] flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
+        <TouchableOpacity className='rounded-full p-2 ' onPress={()=> setPage()}>
           <Icon name="arrow-left" size={20} color="white"/>
         </TouchableOpacity>
         <Text className='text-white text-[20px] font-semibold ml-4 mb-1'>Einstellungen</Text>
       </TouchableOpacity>
-      <View className='mt-2'/>
+      <View className='mt-2  border-t-[1px] border-gray-700 '/>
       <ScrollView
+      className='bg-gray-900'
       style={{
         scrollbarWidth: 'thin', // Dünne Scrollbar
-                        scrollbarColor: 'gray transparent',
+        scrollbarColor: 'gray transparent',
+        
       }}
       >
       <InfoModule content={()=> {
                 return(
-                    <View className='flex-1 items-center'>
+                    <View className='flex-1 items-center '>
                         <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>
                         {personalInput(user.name,"Vorname", (text) => updateUserName(text))}
                         {personalInput(user.email,"Email", (text) => updateUserEmail(text) )}
@@ -269,7 +271,7 @@ const ProfileSettings = ({setPage}) => {
                 )
             }} hideHead={true}/>
       <InfoModule content={()=> { return(
-              <View className={`flex-1 ${isVertical ? "flex-row justify-start  items-center" : "items-start"}`}>
+              <View className={`flex-1  ${isVertical ? "flex-row justify-start  items-center" : "items-start"}`}>
                 <OptionSelector title={"Darstellung"} options={colorOptions} selectedValue={selectedColorMode} setSelectedValue={setSelectedColorMode} onChangeItem={updateColorMode}/>
                 <OptionSelector title={"Sprache"} options={languageoptions} selectedValue={selectedLanguage} setSelectedValue={setSelectedLanguage} onChangeItem={updateLanguage}/>
               </View>

@@ -3,7 +3,7 @@ import React from 'react'
 
 const InfoModule = ({content, header, additional,hideHead,infoStyles}) => {
   return (
-    <View className={`mx-3 ${infoStyles}`}>
+    <View className={`mx-3  ${infoStyles}`}>
           {
             hideHead ? null :
             <View className='flex-row items-end'>
@@ -13,7 +13,7 @@ const InfoModule = ({content, header, additional,hideHead,infoStyles}) => {
               </View>
             </View>
           }
-        <View className='bg-gray-800 p-4 my-2 rounded-[10px] border border-[1px] border-gray-600'>
+        <View className=' p-4 my-2 rounded-[10px] border border-[1px] border-gray-600 bg-[#0c111d]'>
         {content()}
         </View>
     </View>

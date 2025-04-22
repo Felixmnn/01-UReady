@@ -8,16 +8,18 @@ const DropDownList = ({
     setSelectedOptions,
     height
   }) => {
+    
     const [droppedDown, setDroppedDown] = useState(false);
   
     return (
       <View className="flex-1 relative z-10 mx-1">
         <TouchableOpacity
           className="flex-1"
+          
           onPress={() => setDroppedDown(!droppedDown)}
         >
           {/* Titel + Auswahl */}
-          <View className="bg-gray-800 border border-gray-600 rounded-[10px] p-2">
+          <View className="bg-gray-800 border border-gray-600 rounded-[10px] p-2 h-[35px]">
             <Text className="text-gray-200 font-semibold text-[13px]" numberOfLines={1}>
               {title}: {selectedOptions}
             </Text>

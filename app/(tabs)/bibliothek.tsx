@@ -78,7 +78,7 @@ const Bibliothek = () => {
   return (
       <Tabbar content={()=> { return(
         
-        <View className='flex-1'>
+        <View className='flex-1 '>
           {loading ? (
           <SkeletonList />
         ) : (

@@ -14,6 +14,10 @@ import { addUserDatakathegory } from '@/lib/appwriteAdd';
 import { ausbildungsListDeutschland, ausbildungsTypen, countryList, languages, LeibnizSubjects, schoolListDeutschland, universityListDeutschland } from '@/assets/exapleData/countryList';
 import UniversityFilters from '@/components/(entdecken)/university';
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
+import SchoolFilters from '@/components/(entdecken)/school';
+import EudcationFilters from '@/components/(entdecken)/education';
+import OtherFilters from '@/components/(entdecken)/other';
+import CountryFlag from 'react-native-country-flag';
 
 const entdecken = () => {
   
@@ -30,20 +34,90 @@ const entdecken = () => {
   const kathegorys = ["UNIVERSITY", "SCHOOL", "AUSBLIDUNG","OTHER"]
 
   //Allgemeine Filter
-  const [ selctedCountry, setSelectedCountry] = useState(countryList[0])
+  const [ selectedCountry, setSelectedCountry] = useState(countryList[0])
+  const [ filterVisible, setFilterVisible] = useState(false)
   const [ selectedKathegory, setSelectedKathegory ] = useState("UNIVERSITY")
 
   //Module entdecken
   const [ loading, setLoading ] = useState(false)
   const [ modules, setModules ] = useState([])
 
+  const options = [
+    {
+      name: "Universität",
+      enum: "UNIVERSITY",
+      icon: "university",
+      color: "#7a5af8",
+      handlePress: () => {
+        setSelectedKathegory("UNIVERSITY")
+        setFilterVisible(false)
+      },
+    },
+    {
+      name: "Schule",
+      enum: "SCHOOL",
+      icon: "school",
+      color: "#20c1e1",
+      handlePress: () => {
+        setSelectedKathegory("SCHOOL")
+        setFilterVisible(false)
+      },
+    },
+    {
+      name: "Ausbildung",
+      enum: "EDUCATION",
+      icon: "tools",
+      color: "#4f9c19",
+      handlePress: () => {
+        setSelectedKathegory("EDUCATION")
+        setFilterVisible(false)
+      },
+    },
+    {
+      name: "Sonstiges",
+      enum: "OTHER",
+      icon: "ellipsis-h",
+      color: "#f39c12",
+      handlePress: () => {
+        setSelectedKathegory("OTHER")
+        setFilterVisible(false)
+      },
+    }
+  ]
+
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] relative'>
           <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
-            <Text className='font-bold text-3xl text-gray-100'>
-              Entdecken
-            </Text>
+            {
+              width > 400 ?
+                <Text className='font-bold text-3xl text-gray-100'>
+                  Entdecken
+                </Text>
+                : null
+            }
+            <View className={` flex-row  items-center ${width > 400 ? "" : "justify-between w-full"}`}>
+              <View className='flex-1 justify-between flex-row items-center bg-gray-800 rounded-full px-1 ' style={{ height: 40 }}>
+                {
+                  options.map((option, index) => (
+                        <TouchableOpacity className={` rounded-full ${width > 600 ? "p-3" : "p-2"} ${selectedKathegory == option.enum ? "bg-gray-500 w-[100px] items-center" : ""}`} onPress={() => {setSelectedKathegory(option.enum)}}>
+                    {
+                        width > 600 ?
+                      <Text className='text-white'>{option.name}</Text>
+                        :
+                        <View className='flex-row items-center'>
+                          <Icon name={option.icon} size={20} color="#D1D5DB" />
+                          {selectedKathegory == option.enum? <Text className='text-white'>{option.name}</Text> : null}
+                        </View>
+                      }
+                    </TouchableOpacity>
+                      ))
+                }
+              </View>
+              <TouchableOpacity className='h-[35px] rounded-[10px] p-2 items-center justify-center'>
+                <CountryFlag isoCode={selectedCountry.code} style={{ width: 30, height: 18 }} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View className='flex-row w-full items-center'>
             <View className='flex-1 h-[35px] bg-gray-800 rounded-[10px] ml-4 mr-2 mb-2 p-3 flex-row items-center justify-between'>
@@ -57,22 +131,50 @@ const entdecken = () => {
                             }}/>
               </View>
             </View>
-            {longVertical ? null : <TouchableOpacity className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'><Icon name="filter" size={15} color="white"/> </TouchableOpacity> }
+            {longVertical ? null : <TouchableOpacity onPress={()=> setFilterVisible(!filterVisible)} className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'><Icon name="filter" size={15} color="white"/> </TouchableOpacity> }
           </View>
-          <View className="w-full flex-1" style={{ flex: 1, position: "relative" }}>
+          <View className="w-full flex-1" style={{ flex: 1, position: "relative", }}>
   
             {/* UniversityFilters liegt ganz oben */}
+          
             <View style={{ zIndex: 10, position: "relative" }}>
-              <UniversityFilters
-                setModules={setModules}
-                setLoading={setLoading}
-                country={countryList[0]}
-              />
+              {
+                selectedKathegory == "UNIVERSITY" && filterVisible ? (
+                  <UniversityFilters
+                    setModules={setModules}
+                    setLoading={setLoading}
+                    country={countryList[0]}
+                  />
+                ) : selectedKathegory == "SCHOOL" && filterVisible  ? (
+                  <SchoolFilters
+                    setModules={setModules}
+                    setLoading={setLoading}
+                    country={countryList[0]}
+                  />
+                ) : selectedKathegory == "EDUCATION" && filterVisible  ? (
+                  <EudcationFilters
+                    setModules={setModules}
+                    setLoading={setLoading}
+                    country={countryList[0]}
+                  />
+                ) : selectedKathegory == "OTHER" && filterVisible  ? (
+                  <OtherFilters
+                    setModules={setModules}
+                    setLoading={setLoading}
+                    country={countryList[0]}
+                  /> ): null
+              }
             </View>
+            <View
+                        className='w-full bg-gray-500 border-gray-500 border-t-[1px]'
+                        style={{ zIndex: 0, marginTop: 10 }}
+            
+                    />
+
 
             {/* Restlicher Inhalt liegt darunter */}
             <View
-              className="flex-1 p-4"
+              className="flex-1 p-4 bg-gray-900 "
               style={{ zIndex: 1, position: "relative" }}
             >
               {!loading ? (

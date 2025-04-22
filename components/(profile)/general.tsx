@@ -49,9 +49,9 @@ const General = ({setPage, setPage2}) => {
             </View>
           }
           </View>
-        <View className='w-full border-t-[1px] border-gray-800'/>
+        <View className='w-full border-t-[1px] border-gray-700'/>
        
-          <View className='flex-1 justify-start bg-[#0c111d] rounded-[10px] '>
+          <View className='flex-1 justify-start bg-gray-900 rounded-[10px] '>
             <InfoModule content={()=> { return(
               <TouchableOpacity className='flex-row' >
                 <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>

@@ -33,7 +33,7 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
           </TouchableOpacity>
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
-        <View className={`flex-1  bg-[#0c111d] ${isVertical ? "p-4" : "p-2"} `}>
+        <View className={`flex-1  bg-gray-900 ${isVertical ? "p-4" : "p-2"} `}>
           <TouchableOpacity className='' onPress={()=> setLast7Hidden(!last7Hidden)}>
             <View className='flex-row items-center justify-between w-full mb-2'>
               <Text className='font-bold text-gray-100 text-[18px]'>Last 7 Days</Text>

@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Image, Modal,ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, Image, Modal,ScrollView, Dimensions } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { signOut } from '@/lib/appwrite'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -25,8 +25,66 @@ import RadioactiveCharege from '../tokens/radioactivecharege';
 import MikroChip from '../tokens/mikroChip';
 import {router} from 'expo-router';
 
+
+const { width } = Dimensions.get('window');
+const ITEM_WIDTH = width * 0.7;
+const SPACER_WIDTH = (width - ITEM_WIDTH) / 2;
+
 const HomeGeneral = ({setSelectedPage}) => {
   const {user} = useGlobalContext();
+
+  const scrollRef = useRef();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const options = [
+    {
+      icon:"bot",
+      iconColor:"#7a5af8",
+      iconBackground:"bg-[#372292]",
+      title:"Erstellen wir ein Modul",
+      handlePress:()=> setSelectedPage("HomeChat")
+    },
+    {
+      icon:"search",
+      iconColor:"#20c1e1",
+      iconBackground:"bg-[#0d2d3a]",
+      title:"Entdecke Module",
+      handlePress:()=> router.push("/entdecken")
+    },
+    {
+      icon:"cubes",
+      iconColor:"#4f9c19",
+      iconBackground:"bg-[#2b5314]",
+      title:"Erstelle dein eigenes Modul.",
+      handlePress:()=> setIsVisibleNewModule(true)
+    }
+  ]
+  const extendedOptions = [...options, ...options, ...options];
+    const middleIndex = Math.floor(extendedOptions.length / 3);
+  
+    useEffect(() => {
+      if (width > 700) return;
+      scrollRef.current.scrollTo({ x: middleIndex * ITEM_WIDTH, animated: false });
+      setCurrentIndex(middleIndex);
+    }, []);
+  
+    const onScroll = (event) => {
+      const offsetX = event.nativeEvent.contentOffset.x;
+      const index = Math.round(offsetX / ITEM_WIDTH);
+      setCurrentIndex(index);
+    };
+  
+    const onScrollEnd = (event) => {
+      const offsetX = event.nativeEvent.contentOffset.x;
+      const totalWidth = ITEM_WIDTH * extendedOptions.length;
+  
+      if (offsetX <= 0 || offsetX >= totalWidth - width) {
+        scrollRef.current.scrollTo({ x: totalWidth / 3, animated: false });
+        setCurrentIndex(options.length);
+      }
+    };
+  
+  
   const [ userDataUsage, setUserDataUsage] = useState({
     flameActive: false,
     flameCount: 0,
@@ -39,12 +97,7 @@ const HomeGeneral = ({setSelectedPage}) => {
     superCharges:0,
     fusionCharges:0,
     radioactiveCharges:0,
-    last3Modul: [
-      {
-        name
-      },
-      
-    ],
+   
     last5Sessions:[
       
     ]
@@ -109,40 +162,41 @@ const HomeGeneral = ({setSelectedPage}) => {
     
     
       {/* Quick Access */}
-      const QuickAccess = ({icon, iconColor, iconBackground, title, handlePress}) => {
+      const QuickAccess = ({icon, iconColor, iconBackground, title, handlePress,selected=false}) => {
         return (
           
-          <TouchableOpacity className={`flex-1 p-1  border-[1px] rounded-[10px] bg-gray-900  items-start justify-center  ${isVertical ? " items-center m-2" : " items-center m-1 border-gray-700"}`} 
-          onPress={handlePress}
-          style={{
-            borderColor: iconColor,
-            shadowColor: iconColor, // Grau-Blauer Glow
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.8,
-            shadowRadius: 10,
-            elevation: 10, // Für Android
-          }}
-          >
+          <TouchableOpacity className={`flex-1 mb-5 w-full  border-[1px] rounded-[10px] bg-gray-900  items-start justify-center  ${isVertical ? " items-center m-2" : " items-center m-1 border-gray-700 flex-row"}`} 
+            onPress={handlePress}
+            style={{
+              opacity: selected ? 0.9 : 0.5,
+              borderColor:"#232323",
+              shadowColor: selected ? iconColor : null, // Grau-Blauer Glow
+              shadowOffset: { width: 0, height: 0 },
+              shadowOpacity: selected ? 0.8 : 0, // Sichtbarkeit des Glows
+              shadowRadius: selected ? 10 : 0, // Größe des Glows
+              elevation: 5,
+            }}
+            >
             <View className={`rounded-full ${iconBackground} h-[50px] w-[50px] items-center justify-center`}
             style={{
               height: 40,
               width: 40,
-             
             }}
             >
-             { icon == "bot" ? 
-                                  
-                                    <Image 
-                                    source={require('../../assets/bot.png')} 
-                                    style={{
-                                      height: 28, 
-                                      width: 28, 
-                                      tintColor: iconColor 
-                                    }} 
-                                  />
-                                  : 
-                                  <Icon name={icon} size={25} color={iconColor}/>}
+             { icon == "bot" ?              
+              <Image 
+              source={require('../../assets/bot.png')} 
+              style={{
+                height: 28, 
+                width: 28, 
+                tintColor: iconColor 
+              }} 
+            />
+            : 
+              <Icon name={icon} size={25} color={iconColor}/>}
             </View>
+            <Text className='text-gray-100 font-bold text-[12px] mt-1 ml-2'>{title}</Text>
+
           </TouchableOpacity>
         )
       }
@@ -153,6 +207,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         <TouchableOpacity className='flex-1 flex-row px-3 border-gray-700 border-[1px]  rounded-[10px] bg-gray-900 items-center justify-start m-1 h-[60px]'
         style={{
           height: 60,
+          borderColor: iconColor,
         }}
 
         >
@@ -173,7 +228,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
         <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule}/>
         {/*<ModalAddFile isVisible={isvisiGbleNewFile} setIsVisible={setIsVisibleNewFile}/>*/}
-        <View className='flex-1 mx-4 mb-2 mt-4'>
+        <View className=' mx-2 flex-1 mb-2 mt-4'>
         {/*Top Bar*/}
         
         <View className='flex-row justify-between items-center'>
@@ -239,7 +294,7 @@ const HomeGeneral = ({setSelectedPage}) => {
           
         
         </View >
-        <View className='flex-1 items-center justify-center '>
+        <View className='w-full flex-1 items-center justify-center   '>
         <View className='w-full items-center my-3'>
           <View className='w-full max-w-[400px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
             <Text className='font-semibold text-[15px] text-gray-100 text-center'> Hier sind ein paar vorschläge mit denen du durchstarten könntest:</Text>
@@ -256,7 +311,7 @@ const HomeGeneral = ({setSelectedPage}) => {
             height: 60,
           }}
           >
-          <View className='flex-row items-center justify-center '
+          <View className=' flex-row items-center justify-center '
           style={{
             marginTop: 20
           }}
@@ -264,28 +319,47 @@ const HomeGeneral = ({setSelectedPage}) => {
             <Aktionsempfehlung title={"Bullet Quizz"} subTitle={"5 Fragen"} icon={"rocket"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
             <Aktionsempfehlung title={"Blitz Quizz"} subTitle={"10 Fragen"} icon={"bolt"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
           </View>
-          <View className='flex-row items-center justify-center'>
-            <Aktionsempfehlung title={"Quick Quizz"} subTitle={"15 Fragen"} icon={"clock"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
-            <Aktionsempfehlung title={"Long Quizz"} subTitle={"30 Fragen"} icon={"brain"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
-          </View>
-          <TouchableOpacity
-          className='bg-red-500 rounded-[10px] p-2 mt-2'
-          onPress={async ()=> await createFunction()}
-          >
-            <Text>
-              Trigger Appwrite Function
-            </Text>
-          </TouchableOpacity>
-
           </View>
         </View>
         
         </View>
-        <View className='flex-row justify-between mx-4 mb-2'>
-          <QuickAccess icon={"bot"} iconColor={"#7a5af8"} iconBackground={"bg-[#372292]"} title={"Erstellen wir ein Modul"} handlePress={()=> setSelectedPage("HomeChat")}/>
-          <QuickAccess icon={"search"} iconColor={"#20c1e1"} iconBackground={"bg-[#0d2d3a]"} title={"Entdecke Module"} handlePress={()=> router.push("/entdecken")}/>
-          <QuickAccess icon={"cubes"} iconColor={"#4f9c19"} iconBackground={"bg-[#2b5314]"} title={"Erstelle dein eigenes Modul."} handlePress={()=> setIsVisibleNewFile(true)}/>
-        </View>
+        <View style={{
+          height:75,
+          marginBottom: 10,
+        }}>
+        <ScrollView
+        ref={scrollRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        decelerationRate="fast"
+        snapToInterval={ITEM_WIDTH}
+        onScroll={onScroll}
+        onMomentumScrollEnd={onScrollEnd}
+        scrollEventThrottle={16}
+        bounces={false}
+      >
+        <View style={{ width: SPACER_WIDTH }} />
+        {extendedOptions.map((item, index) => {
+          const isCenter = index === currentIndex;
+          return (
+            <View
+              key={index}
+              style={{
+                paddingHorizontal: 5,
+                width: ITEM_WIDTH,
+                justifyContent: 'center',
+                alignItems: 'center',
+                transform: [{ scale: isCenter ? 1.1 : 0.9 }],
+                opacity: isCenter ? 1 : 0.5,
+              }}
+            >
+              <QuickAccess icon={item.icon} iconColor={item.iconColor} iconBackground={item.iconBackground} title={item.title} handlePress={item.handlePress} selected={isCenter}/>
+            </View>
+          );
+        })}
+        <View style={{ width: SPACER_WIDTH }} />
+      </ScrollView>
+      </View>
       </View>
   )
 }

@@ -65,6 +65,9 @@ export const schoolListDeutschland = {
         {name:"Darstellendes Spiel", id:"4058177f-0cd4-4820-8f71-557c4b27dd42", icon: "theater-masks" },
         {name:"Sonstige", id:"4058177f-0cd4-4820-8f71-557c4b27dd42", icon: "question-circle" },
         {name:"Psychologie", id:"4058177f-0cd4-4820-8f71-557c4b27dd42", icon: "brain" },
+    ],
+    schoolStages: [
+        1,2,3,4,5,6,7,8,9,10,11,12,13
     ]
 }
 

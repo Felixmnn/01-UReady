@@ -5,9 +5,10 @@ import OptionSelector from '../(tabs)/optionSelector'
 import SwichTab from '../(tabs)/swichTab'
 import { universityQuery } from '@/lib/appwriteQuerys'
 import DropDownList from './dropDownList'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => {
-    const { height } = useWindowDimensions();
+    const { height,width } = useWindowDimensions();
 
     //Allgemeine Universitätsdaten
     const abschlussziele = ["Bachelor", "Master", "Staatsexamen","Diplom","Magister","Other"]
@@ -18,7 +19,6 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
     const [ universitySubjects, setUniversitySubjects ] = useState(LeibnizSubjects[0][abschlussziele[0]])
 
     //Dynamische Filter basierend auf den User eingaben
-    const [ textInput, setTextInput ] = useState("");
     const [ selectedAbschlussziele, setSelectedAbschlussziele] = useState([abschlussziele[0]])
     const [ selectedFacultys, setSelectedFacultys] = useState([])
     const [ selectedSubjects, setSelectedSubjects] = useState([])
@@ -54,53 +54,47 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
 
     },[selectedUniversity,selectedFacultys,selectedSubjects])
 
+    const [selectedFilter, setSelectedFilter] = useState(0)
   return (
-    <View className=' w-full' style={{ position: "relative" /* Wichtig! */ }}>
-        <View className='flex-row' style={{  paddingHorizontal:11,zIndex: 1, position: 'relative', }}>
-        <DropDownList
-        title={"Universität"}
-        options={universityList.map((item) => item.name)}
-        selectedOptions={selectedUniversity}
-        setSelectedOptions={()=> {}}
-        height={height}
-        />
-        <DropDownList
-        title={"Abschlussziel"}
-        options={abschlussziele.map((item) => item)}
-        selectedOptions={selectedAbschlussziele}
-        setSelectedOptions={(item)=> {setSelectedAbschlussziele(item)}}
-        />
-        <DropDownList
-        title={"Fakultät"}
-        options={universityFacultys}
-        selectedOptions={selectedFacultys}
-        setSelectedOptions={(item)=> {
+    <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
+      <View className='w-full flex-row px-4 py-1'>
+      <TouchableOpacity onPress={()=> setSelectedFilter(selectedFilter == 0 ? 3 : selectedFilter -1)} className='bg-gray-800 rounded-full p-2'>
+        <Icon name="chevron-left" size={20} color={"white"}  />
+      </TouchableOpacity>
+        <View className={`flex-row flex-1  `} style={{  zIndex: 1, position: 'relative', }}>
+          {
+            selectedFilter == 0 || width > 600 ? 
+        <DropDownList title={"Universität"} options={universityList.map((item) => item.name)} selectedOptions={selectedUniversity} setSelectedOptions={()=> {}} height={height} />
+            : selectedFilter == 1  || width > 600 ? 
+        <DropDownList title={"Abschlussziel"} options={abschlussziele.map((item) => item)} selectedOptions={selectedAbschlussziele} setSelectedOptions={(item)=> {
+            setSelectedAbschlussziele(item)
+            setUniversitySubjects(LeibnizSubjects[0][abschlussziele[abschlussziele.indexOf(item)]])
+        }}/>
+        : selectedFilter == 2 || width > 600 ?
+        <DropDownList title={"Fakultät"} options={universityFacultys} selectedOptions={selectedFacultys} setSelectedOptions={(item)=> {
             if (selectedFacultys.includes(item)) {
                 setSelectedFacultys(selectedFacultys.filter((i) => i !== item));
               }
               else {
                 setSelectedFacultys([...selectedFacultys, item]);
               }
-        }}
-        />
-        <DropDownList
-        title={"Subjects"}
-        options={universitySubjects.map((item) => item.name)}
-        selectedOptions={selectedSubjects}
-        setSelectedOptions={(item)=> {
+        }}/>
+        : selectedFilter == 3 || width > 600 ?
+        <DropDownList title={"Subjects"} options={universitySubjects.map((item) => item.name)} selectedOptions={selectedSubjects} setSelectedOptions={(item)=> {
             if (selectedSubjects.includes(item)) {
                 setSelectedSubjects(selectedSubjects.filter((i) => i !== item));
               }
               else {
                 setSelectedSubjects([...selectedSubjects, item]);
               }
-        }}
-        />
-        </View> 
-        <View
-            className='w-full bg-gray-500 border-gray-500 border-t-[1px] mt-2'
-            style={{ zIndex: 0 }}
-        />
+        }}/>
+        : null
+          }
+        </View>
+        <TouchableOpacity onPress={()=> setSelectedFilter(selectedFilter == 3 ? 0 : selectedFilter +1)} className='bg-gray-800 rounded-full p-2'>
+        <Icon name="chevron-right" size={20} color={"white"}  />
+      </TouchableOpacity>
+      </View>
     </View>
   )
 }

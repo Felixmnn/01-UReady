@@ -88,7 +88,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
 
       style={{
         width: '100%',
-        marginTop:  27,
+
         shadowColor:
           (newModule?.color === 'red' && '#DC2626') ||
           (newModule?.color === 'blue' && '#2563EB') ||

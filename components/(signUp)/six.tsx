@@ -43,9 +43,9 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
     if (selectedKathegorie === "SCHOOL" || selectedKathegorie === "OTHER") {
         const [ subjectFilter, setSubjectFilter ] = useState("");
         return (
-            <View className='h-full  w-full justify-between items-center py-5'>
+            <View className='h-full  w-full justify-between items-center py-5 '>
             
-                <View className='w-full'>
+                <View className='w-full '>
                         <ProgressBar progress={85} handlePress={handlePress}/>
                         <BotTopLeft text={selectedLanguage == null || robotMessage[languages[selectedLanguage].code] == undefined ? robotMessage["DE"] : robotMessage[languages[selectedLanguage].code]} source={"../../assets/Check.gif"}/>     
                 </View>
@@ -54,6 +54,7 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                             selectedItems={selectedSubjects}
                             filter={subjectFilter}
                             setFilter={setSubjectFilter}
+                            abschlussziel='Deine Fächer'
                             />
             <View className='w-full max-w-[200px]'>
 

@@ -50,6 +50,7 @@ const personalize = () => {
                   try {
                       console.log("Loading")
                       const userD = await loadUserData(user.$id);
+                      if (!userD) return;
                       setUserData(userD);
                       console.log("User Data", userD);
                       if (userD.signInProcessStep == "FINISHED") {

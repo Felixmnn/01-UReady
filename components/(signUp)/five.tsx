@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,Image, FlatList, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity,Image, FlatList, TextInput,ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { LeibnizSubjects,ausbildungsListDeutschland } from '@/assets/exapleData/countryList';
@@ -28,7 +28,7 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
         "ES": "¡Genial! ¿Qué tipo de título estás cursando?",
     }
     return (
-        <View className='h-full  w-full justify-between items-center py-5'>
+            <View  className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>
                     <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
                     <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
@@ -96,32 +96,34 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
             "ES": `${school.name === "Sonstige" ? "Interesante, tú" : "Entonces, estás en"} ${school.name === "Gymnasium" ? "un" : "una"} ${school.name === "Sonstige" ? "tipo de escuela no listado" : school.name}. ¿En qué curso estás?`,
         }
         return (
-            <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='w-full'>
-                <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
-                <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
-            </View>
-            <View className='justify-center items-center'>
-                <FlatList
-                    data = {school.klassenstufen}
-                    numColumns={width < 400 ? 2 : 3}
-                    className='z-100'
-                    renderItem={({item}) => (
-                        <TouchableOpacity key={item} onPress={()=> {setClass(item); setUserData({...userData,signInProcessStep:"SIX"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                            style={{width:120, height:120}}
-                        >
-                            <Text className='text-gray-100 font-semibold text-[15px] text-center' numberOfLines={item.length > 13 ? 2 : null}>
-                                {item}
-                            </Text> 
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item}
-                    
-                />
-            </View>
-            <View className='items-center justiy-center'></View>
+            <ScrollView className='w-full h-full'>
+                <View className='h-full  w-full justify-between items-center py-5'>
+                    <View className='w-full'>
+                        <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
+                        <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+                    </View>
+                    <View className='justify-center items-center'>
+                        <FlatList
+                            data = {school.klassenstufen}
+                            numColumns={width < 400 ? 2 : 3}
+                            className='z-100'
+                            renderItem={({item}) => (
+                                <TouchableOpacity key={item} onPress={()=> {setClass(item); setUserData({...userData,signInProcessStep:"SIX"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                                    style={{width:120, height:120}}
+                                >
+                                    <Text className='text-gray-100 font-semibold text-[15px] text-center' numberOfLines={item.length > 13 ? 2 : null}>
+                                        {item}
+                                    </Text> 
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={(item) => item}
+                            
+                        />
+                    </View>
+                    <View className='items-center justiy-center'></View>
 
-        </View>
+                </View>
+            </ScrollView>
         )
     }
 }

@@ -5,7 +5,7 @@ const BotTopLeft = ({text,source}) => {
   return (
     <View className='flex-row p-4 ml-4 absoloute'
     style={{
-      left:-50,
+      left:-40,
     }}
     >
       

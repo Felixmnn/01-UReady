@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList, useWindowDimensions,ScrollView, Image, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, useWindowDimensions,ScrollView, Image, TextInput, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import { schoolListDeutschland, ausbildungsListDeutschland, universityListDeutschland, ausbildungsTypen } from '@/assets/exapleData/countryList';
@@ -24,7 +24,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
             "ES": "¿A qué escuela vas?",
         }
     return ( 
-        <ScrollView className='h-full  w-full justify-between items-center py-5'>
+            <View className='flex-1 h-full  w-full justify-between items-center '>
             <View className='w-full'>
                 <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
                 <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
@@ -34,7 +34,8 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                     <TouchableOpacity onPress={() => setIsActive(!isActive)} className='flex-row  bg-gray-900 border-gray-800 border-[1px] rounded-[10px] py-2 px-3 my-2 items-center justify-between mx-1'
                         style={{width:250}}
                         >           
-                                    <View className='flex-row items-center justify-center'>
+                                    <View className='flex-row items-center justify-center'
+                                    >
                                     <Image
                                         source={{ uri: selectedRegion == null ? schoolListDeutschland.regions[0].image : schoolListDeutschland.regions[selectedRegion].image }}
                                         style={{ width: 30, height: 30, borderRadius: 5  }}
@@ -46,88 +47,99 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                         </TouchableOpacity>
                         {isActive ? (
                             <View
-                                className="absolute left-1 bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 shadow-lg"
-                                style={{
-                                zIndex: 10,
-                                elevation: 10,
-                                width: 250,
-                                top: 55,
-                                maxHeight: 300, // Maximale Höhe für die Liste
-                                }}
-                            >
-                                <FlatList
-                                data={schoolListDeutschland.regions}
-                                className="z-100"
-                                nestedScrollEnabled={true} // Ermöglicht verschachteltes Scrollen
-                                keyboardShouldPersistTaps="handled" // Verhindert, dass das Keyboard geschlossen wird
-                                renderItem={({ item, index }) => (
-                                    <TouchableOpacity
-                                    key={item.id}
-                                    onPress={() => {
-                                        setSelectedRegion(index);
-                                        setIsActive(false);
-                                    }}
-                                    className="flex-row justify-start items-center p-2 rounded-lg m-1"
-                                    >
-                                    <Image
-                                        source={{ uri: item.image }}
-                                        style={{ width: 30, height: 30, borderRadius: 5 }}
-                                    />
-                                    <Text className="text-gray-300 font-semibold text-start ml-2 mt-[1px]">
-                                        {item.name}
-                                    </Text>
-                                    </TouchableOpacity>
-                                )}
-                                keyExtractor={(item) => item.id}
-                                />
-                            </View>
+                            className={`${Platform.OS == "android" ? "" : "absolute left-1 "} bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 shadow-lg`}
+                            style={{
+                              zIndex: 10,
+                              elevation: 10,
+                              width: 250,
+                              top: Platform.OS == "android" ? -8 : 55,
+                              left: Platform.OS == "android" ? 4 : 1,
+                              maxHeight: 300, // wichtig für Scrollbarkeit!
+                            }}
+                          >
+                            <FlatList
+                              data={schoolListDeutschland.regions}
+                              contentContainerStyle={{ paddingBottom: 10 }}
+                              nestedScrollEnabled={true}
+                              keyboardShouldPersistTaps="always"
+                              style = {{
+                                scrollbarWidth: 'thin', // Dünne Scrollbar
+                                scrollbarColor: 'gray transparent',
+                              }}
+                              renderItem={({ item, index }) => (
+                                <TouchableOpacity
+                                  key={item.id}
+                                  onPress={() => {
+                                    setSelectedRegion(index);
+                                    setIsActive(false);
+                                  }}
+                                  className="flex-row justify-start items-center p-2 rounded-lg m-1"
+                                >
+                                  <Image
+                                    source={{ uri: item.image }}
+                                    style={{ width: 30, height: 30, borderRadius: 5 }}
+                                  />
+                                  <Text className="text-gray-300 font-semibold text-start ml-2 mt-[1px]">
+                                    {item.name}
+                                  </Text>
+                                </TouchableOpacity>
+                              )}
+                              keyExtractor={(item) => item.id}
+                            />
+                          </View>
                             ) : null}
                         </View>
-            <View className='justify-center items-center'>
-                <FlatList
-                    data = {schoolListDeutschland.schoolTypes}
-                    numColumns={width < 400 ? 2 : 3}
-                    className='z-100'
-                    renderItem={({item}) => (
-                        <TouchableOpacity key={item.id} onPress={()=> {
-                            if (selectedRegion == null) {
-                                setSelectedRegion(0);
-                            }
-                            setSchool(item);
-                             setUserData({...userData,signInProcessStep:"FIVE"})
-
-                        }} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                            style={{width:120, height:120}}
-                        >
-                            <Icon name="school" size={20} color="#D1D5DB" />
-                           <Text className='text-gray-100 font-semibold text-[15px] text-center' numberOfLines={item.name.length > 13 ? 2 : null}>
-                                {item.name}
-                            </Text> 
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item.id}
-                    ListFooterComponent={ ()=> {
-                        return (
-                            <View className='w-full justify-center items-center'>
-                            <TouchableOpacity onPress={()=> {setSchool(Sonstige); setUserData({...userData,signInProcessStep:"FIVE"})}} key={Sonstige.id} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                            style={{width:120, height:120}}
-                            >     
-                                <Icon name="ellipsis-h" size={15} color="#D1D5DB" />
-                                <Text className='text-gray-100 font-semibold text-[15px] text-center' >
-                                    {Sonstige.name}
-                                </Text>
-
-                            </TouchableOpacity>
+                        <View className='flex-1 justify-center items-center w-full'>
+                            <FlatList
+                                data={schoolListDeutschland.schoolTypes}
+                                numColumns={width < 400 ? 2 : 3}
+                                keyExtractor={(item) => item.id}
+                                contentContainerStyle={{
+                                paddingBottom: 100,
+                                alignItems: 'center', // für Zentrierung
+                                }}
+                                renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    key={item.id}
+                                    onPress={() => {
+                                    if (selectedRegion == null) setSelectedRegion(0);
+                                    setSchool(item);
+                                    setUserData({ ...userData, signInProcessStep: "FIVE" });
+                                    }}
+                                    className="p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
+                                    style={{ width: 120, height: 120 }}
+                                >
+                                    <Icon name="school" size={20} color="#D1D5DB" />
+                                    <Text
+                                    className="text-gray-100 font-semibold text-[15px] text-center"
+                                    numberOfLines={item.name.length > 13 ? 2 : null}
+                                    >
+                                    {item.name}
+                                    </Text>
+                                </TouchableOpacity>
+                                )}
+                                ListFooterComponent={ ()=> {
+                                    return (
+                                        <View className='w-full justify-center items-center'>
+                                        <TouchableOpacity onPress={()=> {setSchool(Sonstige); setUserData({...userData,signInProcessStep:"FIVE"})}} key={Sonstige.id} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                                        style={{width:120, height:120}}
+                                        >     
+                                            <Icon name="ellipsis-h" size={15} color="#D1D5DB" />
+                                            <Text className='text-gray-100 font-semibold text-[15px] text-center' >
+                                                {Sonstige.name}
+                                            </Text>
+            
+                                        </TouchableOpacity>
+                                        </View>
+                                    )
+                                }
+                                }
+                            />
                             </View>
-                        )
-                    }
-                    }
-                />
-            </View>
+
             </View> 
             <View className='items-center justiy-center'></View>
-            
-        </ScrollView>
+            </View>
     )
 
 

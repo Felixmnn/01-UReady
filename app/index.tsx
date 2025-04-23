@@ -65,7 +65,7 @@ export default function Index() {
   return (
     <SafeAreaView className="flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center">
       <TouchableOpacity onPress={()=> router.push("/sign-in")} className="bg-blue-500 p-4 rounded-md m-2">
-        <Text>Lock in</Text>
+        <Text>Lets Go</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

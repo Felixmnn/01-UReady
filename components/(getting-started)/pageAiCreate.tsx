@@ -420,7 +420,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
              {/* Button zum Generieren des Moduls */}
         <View className="mx-2 mt-2  px-2">
           <GratisPremiumButton
-            aditionalStyles="rounded-[10px] mx-3 bg-blue-500"
+            aditionalStyles="w-full rounded-[10px] mx-3 bg-blue-500"
             handlePress={async () => {
               if (newModule.name.length < 2) {
                 setErrorMessage('Bitte einen Modulnamen eingeben!');

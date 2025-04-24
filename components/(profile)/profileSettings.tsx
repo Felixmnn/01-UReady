@@ -15,9 +15,10 @@ import CustomTextInput1 from '../(general)/customTextInput1';
 import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
 import SkeletonList from '../(general)/(skeleton)/skeletonList';
 import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
+import { addNewUserConfig } from '@/lib/appwriteAdd';
 
 const ProfileSettings = ({setPage}) => {
-    const {user} = useGlobalContext() 
+    const {user, setUser,setIsLoggedIn } = useGlobalContext() 
     const [userData, setUserData] = useState(null)
     const [ userDataKathegory, setUserDataKathegory] = useState(null)
     const [ loading, setLoading] = useState(true)
@@ -26,14 +27,18 @@ const ProfileSettings = ({setPage}) => {
     
 
     useEffect(() => {
-      if (user == null) return ;
+      if (user === null || user === undefined) return ;
       console.log("user", user)
       async function fetchUserData() {
-        const userData = await loadUserData(user.$id);
-        setSelectedColorMode(userData.darkorMode ? "Dunkel" : "Hell")
+        let userData = await loadUserData(user.$id);
+        if (!userData) {
+           userData = await addNewUserConfig(user.$id);
+        }
         console.log("userData", userData)
+        setSelectedColorMode(userData.darkmode ? "Dunkel" : "Hell")
         setUserData(userData)
         const userDataKathegory = await loadUserDataKathegory(user.$id);
+        console.log("userDataKathegory", userDataKathegory)
         setSelectedLanguage(userDataKathegory.language)
         console.log("userDataKathegory", userDataKathegory)
         setUserDataKathegory(userDataKathegory)
@@ -41,7 +46,6 @@ const ProfileSettings = ({setPage}) => {
       }
       fetchUserData();
     },[user])
-    const {setIsLoggedIn, setUser} = useGlobalContext();
   
     const [modalVisible, setModalVisible] = useState(false);
     const [inputTouched, setInputTouched] = useState(false);
@@ -112,8 +116,9 @@ const ProfileSettings = ({setPage}) => {
     await signOut();
     await setIsLoggedIn(false)
     await setUser(undefined)
-    router.push("/")
-    
+    router.replace("/");
+    window.location.reload(); // erzwingt ein vollständiges Neuladen
+
   }
 
   return (

@@ -1,30 +1,49 @@
-import { Text, View,TouchableOpacity, SafeAreaView, ActivityIndicator,Image } from "react-native";
+import { Text, View,TouchableOpacity, SafeAreaView, ActivityIndicator } from "react-native";
 import { router,Redirect } from "expo-router";
 import { useGlobalContext } from "../context/GlobalProvider";
-import { createUser, signIn,loginWithGoogle } from "@/lib/appwrite";
-import { useWindowDimensions } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import { useEffect, useState } from "react";
-import { loadUserData } from "@/lib/appwriteDaten";
+import { useEffect } from "react";
+import { loadUserData, loadUserDataKathegory } from "@/lib/appwriteDaten";
+import { addNewUserConfig, addUserDatakathegory } from "@/lib/appwriteAdd";
 
 
 export default function Index() {
 
-  const { isLoggedIn, isLoading,user, userData, setUserData } = useGlobalContext();
-
+  const { isLoggedIn, isLoading,user, setUserData, setUserCategory } = useGlobalContext();
   useEffect(() => {
+          console.log("🐋🐋🐋User",user)
           if (user === null ) return;
+          if (user === undefined) {
+              router.push("/sign-in");
+              return;
+          };
           async function fetchUserData() {
               try {
-                  const userD = await loadUserData(user.$id);
-                  console.log("UserDaten", userD)
-                  setUserData(userD);
-                  if (userD.signInProcessStep == "ZERO" ) {
-                      router.push("/personalize");
-                  } else if (userD.signInProcessStep === "FINISHED") {
-                      router.push("/getting-started");
+                  console.log("hi",user.$id)
+                  let userData = await loadUserData(user.$id);
+                  
+                  console.log("😶‍🌫️😶‍🌫️UserData",userData)
+                  if (userData != null) {
+                      setUserData(userData);
                   } else {
-                      router.push("/home");
+                      userData = await addNewUserConfig(user.$id)
+                      setUserData(userData);
+                      router.push("/getting-started");
+                  }
+                  if (!userData) {
+                    window.location.reload();
+                  }
+                  if (userData.signInProcessStep === "ZERO") {
+                      router.push("/personalize");
+                  } else if (userData.signInProcessStep === "FINISHED") {
+                      const userKathegory = await loadUserDataKathegory(user.$id);
+                      console.log("🫡🫡UserKathegory",userKathegory)
+                      setUserCategory(userKathegory);
+                      router.push("/getting-started");
+                  } else if (userData.signInProcessStep === "DONE") {
+                      const userKathegory = await loadUserDataKathegory(user.$id);
+                      console.log("🫡🫡UserKathegory",userKathegory)
+                      setUserCategory(userKathegory);
+                      router.push("/home");   
                   }
               } catch (error) {
                   console.log(error);
@@ -34,7 +53,7 @@ export default function Index() {
       }, [user]);
 
 
-  if (isLoading && userData !== null) {
+  if (isLoading || user === null) {
     return (
       <SafeAreaView className="flex-1 bg-black">
         <View className="flex-1 justify-center items-center">
@@ -44,22 +63,7 @@ export default function Index() {
       </SafeAreaView>
     );
   }
-  if (isLoggedIn) {
-    return <Redirect href="/home" />;
-  }
-  {
-    /*
-    <TouchableOpacity className="bg-blue-500 p-4 rounded-md " onPress={() => {router.push("/home"); signIn("test@test.test", "12345678")}}>
-        <Text>Sign In</Text>
-      </TouchableOpacity>
-      <TouchableOpacity className="bg-blue-500 p-4 m-2 rounded-md" onPress={() => {router.push("/home"); createUser("test@test.test", "12345678", "test")}}>
-        <Text>Sign Up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity className="bg-blue-500 p-4 rounded-md" onPress={() => {loginWithGoogle()}}>
-        <Text>Google Sign-In</Text>
-      </TouchableOpacity>
-    */
-  }
+ 
   
 
   return (

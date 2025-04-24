@@ -1,7 +1,6 @@
 import { createContext,useContext, useEffect, useState } from "react";
-import { getCurrentUser,checkSession } from "../lib/appwrite";
-import { loadUserData } from "@/lib/appwriteDaten";
-
+import { checkSession } from "../lib/appwrite";
+import { router } from "expo-router";
 const GlobalContext = createContext();
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -13,6 +12,7 @@ const GlobalProvider = ({children}) => {
     const [ colorScheme, setColorScheme ] = useState('light');
     const [ language,setLanguage ] = useState('de');
     const [ userData, setUserData ] = useState(null);
+    const [ userCathegory, setUserCategory ] = useState(null);
 
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const GlobalProvider = ({children}) => {
                     setUser(res)
                 } else {
                     setIsLoggedIn(false)
-                    setUser(null)
+                    setUser(undefined)
                 }
             } )
             .catch ((error) => {
@@ -37,6 +37,12 @@ const GlobalProvider = ({children}) => {
             console.log(error)
         }
     }, []);
+
+    useEffect(() => {
+        if (!user){
+            router.push("/")
+        }
+    },[user])
 
     
     
@@ -57,7 +63,9 @@ const GlobalProvider = ({children}) => {
                 language,
                 setLanguage,
                 userData,
-                setUserData
+                setUserData,
+                userCathegory,
+                setUserCategory,
             }}>
             {children}
         </GlobalContext.Provider>

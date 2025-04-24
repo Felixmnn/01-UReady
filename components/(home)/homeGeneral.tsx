@@ -165,7 +165,7 @@ const HomeGeneral = ({setSelectedPage}) => {
       const QuickAccess = ({icon, iconColor, iconBackground, title, handlePress,selected=false}) => {
         return (
           
-          <TouchableOpacity className={`flex-1 mb-5 w-full  border-[1px] rounded-[10px] bg-gray-900  items-start justify-center  ${isVertical ? " items-center m-2" : " items-center m-1 border-gray-700 flex-row"}`} 
+          <TouchableOpacity className={`flex-1 mb-5  border-[1px] rounded-[10px] bg-gray-900  items-start justify-center flex-row  w-full items-center  ${isVertical ? " p-3 m-2 " : "  m-1 border-gray-700  "}`} 
             onPress={handlePress}
             style={{
               opacity: selected ? 0.9 : 0.5,
@@ -327,38 +327,52 @@ const HomeGeneral = ({setSelectedPage}) => {
           height:75,
           marginBottom: 10,
         }}>
-        <ScrollView
-        ref={scrollRef}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        decelerationRate="fast"
-        snapToInterval={ITEM_WIDTH}
-        onScroll={onScroll}
-        onMomentumScrollEnd={onScrollEnd}
-        scrollEventThrottle={16}
-        bounces={false}
-      >
-        <View style={{ width: SPACER_WIDTH }} />
-        {extendedOptions.map((item, index) => {
-          const isCenter = index === currentIndex;
-          return (
-            <View
-              key={index}
-              style={{
-                paddingHorizontal: 5,
-                width: ITEM_WIDTH,
-                justifyContent: 'center',
-                alignItems: 'center',
-                transform: [{ scale: isCenter ? 1.1 : 0.9 }],
-                opacity: isCenter ? 1 : 0.5,
-              }}
-            >
-              <QuickAccess icon={item.icon} iconColor={item.iconColor} iconBackground={item.iconBackground} title={item.title} handlePress={item.handlePress} selected={isCenter}/>
-            </View>
-          );
-        })}
-        <View style={{ width: SPACER_WIDTH }} />
-      </ScrollView>
+          { width > 700 ?
+          <View className='w-full flex-row items-center '>
+            {
+              options.map((item, index) => {
+                return (
+                  <View key={index} className='flex-1 items-center justify-center mx-2'>
+                    <QuickAccess icon={item.icon} iconColor={item.iconColor} iconBackground={item.iconBackground} title={item.title} handlePress={item.handlePress} selected={true}/>
+                  </View>
+                );
+              })
+            }
+          </View>
+             :
+          <ScrollView
+            ref={scrollRef}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
+            snapToInterval={ITEM_WIDTH}
+            onScroll={onScroll}
+            onMomentumScrollEnd={onScrollEnd}
+            scrollEventThrottle={16}
+            bounces={false}
+          >
+          <View style={{ width: SPACER_WIDTH }} />
+          {extendedOptions.map((item, index) => {
+            const isCenter = index === currentIndex;
+            return (
+              <View
+                key={index}
+                style={{
+                  paddingHorizontal: 5,
+                  width: ITEM_WIDTH,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  transform: [{ scale: isCenter ? 1.1 : 0.9 }],
+                  opacity: isCenter ? 1 : 0.5,
+                }}
+              >
+                <QuickAccess icon={item.icon} iconColor={item.iconColor} iconBackground={item.iconBackground} title={item.title} handlePress={item.handlePress} selected={isCenter}/>
+              </View>
+            );
+          })}
+          <View style={{ width: SPACER_WIDTH }} />
+        </ScrollView>
+        }
       </View>
       </View>
   )

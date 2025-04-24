@@ -8,25 +8,16 @@ import InfoModule from '../(tabs)/infoModule';
 import OptionSelector from '../(tabs)/optionSelector';
 import GratisPremiumButton from '../(general)/gratisPremiumButton';
 
-const General = ({setPage, setPage2}) => {
-        const {user} = useGlobalContext();
-      console.log(user)
-      const { width } = useWindowDimensions(); // Bildschirmbreite holen
+const General = ({setPage}) => {
+    const { user } = useGlobalContext();
+    
+      const { width } = useWindowDimensions(); 
       const isVertical = width > 700;
-      const tabWidth = width / 2; // Da es zwei Tabs gibt
-      const [ tab, setTab ] = useState(1)
-      const timeOptions = [
-        { label: "Tage", value: "d" },
-        { label: "Wochen", value: "w" },
-        { label: "Monate", value: "m" },
-        { label: "Jahre", value: "m" }
-
-
-      ]
-  
-      
   return (
     <View className={`flex-1  rounded-[10px] rounded-[10px] ${isVertical ? " border-gray-500 border-[1px] " : null} bg-[#0c111d]`}>
+      {
+        user ?
+        <View className='flex-1 bg-[#0c111d] '>
       <View className='bg-[#0c111d]  rounded-t-[10px]'>
         
           {
@@ -54,16 +45,18 @@ const General = ({setPage, setPage2}) => {
           <View className='flex-1 justify-start bg-gray-900 rounded-[10px] '>
             <InfoModule content={()=> { return(
               <TouchableOpacity className='flex-row' >
-                <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>
+                <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user?.name?.[0] || "..."}</Text></View>
                 <View>
-                  <Text className='text-white font-bold text-[18px]'>{user.name}</Text>
-                  <Text className='text-gray-300 text-[12px] font-bold'>{user.email}</Text>
-                  <Text className='text-gray-300 text-[12px] font-bold'>{user.emailVerification ? "verified" : "unverified"}</Text>
+                  <Text className='text-white font-bold text-[18px]'>{user?.name || "name"}</Text>
+                  <Text className='text-gray-300 text-[12px] font-bold'>{user?.email || "e-mail"}</Text>
+                  <Text className='text-gray-300 text-[12px] font-bold'>{user?.emailVerification ? "verified" : "unverified"}</Text>
                 </View>
               </TouchableOpacity>
               )}} header={"Persönliche Infos"} additional={"Optional"}/>
           </View>
-          
+          </View>
+          : <Text>Ein wunderschöner Skeleton View</Text>
+          }
         </View>
   )
 }

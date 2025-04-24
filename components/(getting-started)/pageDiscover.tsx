@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, ScrollView, Image, TouchableOpacity, useWindowDimensions, SafeAreaView } from 'react-native'
+import { View, Text, ActivityIndicator, ScrollView, Image, TouchableOpacity, useWindowDimensions, SafeAreaView, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getSepcificModules } from '@/lib/appwriteQuerys'
 import Karteikarte from '../(karteimodul)/karteiKarte'
@@ -8,6 +8,8 @@ import { router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { setUserDataSetup } from '@/lib/appwriteEdit'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import OptionSelector from '../(tabs)/optionSelector'
+import ContinueBox from '../(signUp)/(components)/continueBox'
 
 const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     const [ loading, setLoading] = useState(true)
@@ -15,6 +17,8 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     const [ matchingModules, setMatchingModules] = useState([])
     const [ selectedModules, setSelectedModules] = useState([])
     const { width } = useWindowDimensions()
+    const numColumns = Math.floor(width / 300);
+
     useEffect(() => {   
         console.log("userData", userData)    
         if (userData == null) return;
@@ -41,13 +45,13 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         }
     }
   return (
-    <SafeAreaView className='w-full h-full p-2'>
+    <SafeAreaView className='w-full h-full p-4'>
         <View>
             <Icon name="arrow-left" size={20} color="#20c1e1" onPress={() => {
                 setUserChoices(null)
             }}/>
         </View>
-        <View className='flex-1 items-center justiy-center '>
+        <View className=' items-center justiy-center '>
             <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
                 <Text className='font-semibold text-[15px] text-gray-100 text-center'>{loading ? "Gib mir einen Moment..." : matchingModules.length > 0  ? "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu" : "Leider habe ich nichts gefunden aber kein Problem"}</Text>
             </View>
@@ -55,9 +59,9 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
             <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
             <Image source={require('../../assets/Search.gif')}  style={{height:150, width:150}}/>
         </View>
-        <View className="flex-1 w-full  rounded-[10px] p-1 bg-gray-900  border-gray-800 border-[1px]  w-full  justify-center z-10 py-3 "
+        { loading || matchingModules.length > 0 ?
+        <View className="flex-1    rounded-[10px] p-1 bg-gray-900  border-gray-800 border-[1px]   justify-center z-10 py-3  "
             style={{shadowColor: "#2970ff", // Grau-Blauer Glow
-                paddingTop: width < 668 ? 100 : null,
                 shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 0.8,
                 shadowRadius: 10,
@@ -72,7 +76,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         className='w-full'
         >
             
-            <View className='w-full h-full items-ceter justify-start  mt-4'>
+            <View className=' w-full h-full items-ceter justify-start  mt-4 '>
             { loading ? 
                 <View className='w-full flex-row items-center justify-center '>
                     
@@ -81,64 +85,60 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                     
                 </View>
                 :
-                <View>
-                    {
-                        matchingModules.length > 0 ?
-                        <View>
-                            <Text className='text-gray-300 font-semibold text-[15px]'>
-                                Hier sind einige Module, die zu dir passen könnten:
-                            </Text>
+                <View className={`${matchingModules.length > 0 ? "" : " items-center  justify-center"}`}>
+                        <View className='flex-1 '>
                             <View className='flex-row flex-wrap justify-start items-center'>
-                                {
-                                    matchingModules.map((module, index) => (
-                                        <View key={index} className={`min-w-[250px]  m-2 rounded-b-[10px] `}
-                                        style={{
-                                            borderTopLeftRadius: 5,
-                                            borderTopRightRadius: 5,
-                                            opacity: selectedModules.includes(module.name) ? 1 : 0.5,
-                                            shadowColor: selectedModules.includes(module.name) ? "#2970ff" : null, 
-                                            shadowOffset: { width: 0, height: 0 },
-                                            shadowOpacity: 0.8,
-                                            shadowRadius: 12,
-                                            elevation: 12, 
-                                        }}
-                                        >
-                                            <Karteikarte 
-                                                titel={module.name}
-                                                studiengang={module.description} //Das Feld wird umfunktioniert
-                                                fragenAnzahl={module.questions}
-                                                notizAnzahl={module.notes}
-                                                farbe={module.color}
-                                                creator={module.creator}
-                                                icon={"clock"}
-                                                percentage={null}
-                                                publicM={module.public}
-                                                handlePress={()=> {
-                                                    if (selectedModules.includes(module.name)){
-                                                        setSelectedModules(selectedModules.filter((item) => item !== module.name))
+                            <FlatList
+                                data={matchingModules}
+                                renderItem={({ item,index }) => (
+                                    <View className={`flex-1 mr-2  ${selectedModules.includes(item.name) ? "" : "opacity-50"} `}>
+                                    <Karteikarte handlePress={()=> {
+                                                    if (selectedModules.includes(item.name)){
+                                                        setSelectedModules(selectedModules.filter((module) => module !== item.name))
                                                     } else {
-                                                        setSelectedModules([...selectedModules, module.name])
+                                                        setSelectedModules([...selectedModules, item.name])
                                                     }
                                                 }}
-                                            />
-                                        </View>
-                                    ))
-                                }
+                                                farbe={item.color} studiengang={item.description} percentage={item.progress} titel={item.name}  fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
+                                    </View>
+                                )}
+                                keyExtractor={(item) => item.$id}
+                                key={numColumns}
+                                numColumns={numColumns}
+                                showsHorizontalScrollIndicator={false}
+                                showsVerticalScrollIndicator={false}
+                                />
                             </View>
                         </ View>
-                        : 
-                        <TouchableOpacity>
-                            <Text className='text-gray-300 font-semibold text-[15px] m-2'>
-                               Wollen wir zusammen kurz ein Modul erstellen?
-                            </Text>
-                        </TouchableOpacity>
-                    }
                 </View>
                 }
             </View>
         </ScrollView>
         </View>
+        :
+        <View className={`flex-1 justify-center${width > 500 ? "flex-row" : ""}`}>
+                            <ContinueBox
+                                text={"Erstellen wir zusammen ein Lernset."}
+                                colorBorder={"#7a5af8"}
+                                colorBG={"#372292"}
+                                iconName={"bot"}
+                                handlePress={() => setUserChoices("GENERATE")}
+                                horizontal={width > 700 ? false : true}
+                                selected={true}
+                                />
+                            <ContinueBox
+                                text="Erstelle dein eigenes Lernset."
+                                colorBorder={"#4f9c19"}
+                                colorBG={"#2b5314"}
+                                iconName={"cubes"}
+                                handlePress={() => setUserChoices("CREATE")}
+                                horizontal={width > 700 ? false : true}
+                                selected={true}
+                            />
+                        </View>
+}
         <View className='items-center justify-center m-2'>
+            {selectedModules.length > 0 ?
             <GratisPremiumButton
                 aditionalStyles={"w-full max-w-[300px] rounded-[10px]  "}
                 handlePress={async ()=> {
@@ -201,6 +201,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                 }
                 </Text>
             </GratisPremiumButton>
+            : null}
         </View>
     </SafeAreaView>
   )

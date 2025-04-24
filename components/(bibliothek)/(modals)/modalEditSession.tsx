@@ -1,4 +1,4 @@
-import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, TextInput, useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from '@/components/(general)/colorPicker';
@@ -6,6 +6,7 @@ import IconPicker from '@/components/(general)/iconPicker';
 
 const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, setSessions }) => {
     const [newTag, setNewTag] = useState(session);
+    const { width } = useWindowDimensions();
     const [on, setOn] = useState(false);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedIcon, setSelectedIcon] = useState(null);
@@ -35,7 +36,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
         setSessions(prevSessions => prevSessions.filter((_, i) => i !== index));
         setIsVisible(false);
     }
-
+ 
     return (
                 <Modal
                     animationType="fade"
@@ -44,7 +45,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                 >
                     <View className="h-full absolute top-0 left-0   justify-center items-center m-2 ">
                         <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' >
-                            <View className='justify-between flex-row'>
+                            <View className='justify-between  flex-row'>
                                 <Text className='text-white font-bold text-[15px]'>
                                     Session Bearbeiten
                                 </Text>
@@ -93,9 +94,15 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                                 );
                             }}
                             />
+                            <View 
+                            style={{
+                                width: width > 600 ? 500 : width - 40,
+
+                            }}
+                            >
                             <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title="Session Farbe" indexItem={index} />
                             <IconPicker selectedIcon={selectedIcon} setSelectedIcon={changeIcon} title={"Session Icons"} selectedColor={selectedColor} indexItem={index} />
-                            
+                            </View>
                         </View>
                     </View>
                 </Modal>

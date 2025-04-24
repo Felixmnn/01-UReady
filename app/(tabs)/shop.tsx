@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from 'react-native'
+import { View, Text, Image, ScrollView, Platform } from 'react-native'
 import React from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Battery from '@/components/tokens/battery'
@@ -67,7 +67,10 @@ const shop = () => {
   return (
     <Tabbar content={()=> { return( 
       <View className='flex-1 items-center justify-center bg-[#0c111e]'>
-        <Image source={require("../../assets/gift.png")} className='h-[200px] w-[200px]'/>
+        <Image source={require("../../assets/gift.png")} style={{
+          height: 200,
+          width: 200,
+        }}/>
         <Text className='text-white font-bold text-2xl'>Danke fürs Mitentwickeln!</Text>
         <Text className='text-gray-300 font-semibold text-[15px]'>🎉 Alle Features sind in der Beta gratis.</Text>
       </View>

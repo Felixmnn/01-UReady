@@ -1,11 +1,8 @@
 import { View, Text,SafeAreaView, TouchableOpacity, Image, TextInput,FlatList, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { router } from 'expo-router';
-import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
-import Flag from "react-world-flags";
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList';
 import StepZero from '@/components/(signUp)/zero';
 import StepOne from '@/components/(signUp)/one';
@@ -15,7 +12,7 @@ import StepThree from '@/components/(signUp)/three';
 import StepFive from '@/components/(signUp)/five';
 import StepSix from '@/components/(signUp)/six';
 import StepSeven from '@/components/(signUp)/seven';
-import { addUserDatakathegory, updateUserDatakathegory } from '@/lib/appwriteAdd';
+import { addNewUserConfig, addUserDatakathegory, updateUserDatakathegory } from '@/lib/appwriteAdd';
 import { updateUserData } from '@/lib/appwriteUpdate';
 
 const personalize = () => {
@@ -46,17 +43,26 @@ const personalize = () => {
 
     useEffect(() => {
               if (user === null ) return;
+              if (user === undefined) {
+                    router.push("/sign-in");
+                    return;
+              }
               async function fetchUserData() {
                   try {
                       console.log("Loading")
                       const userD = await loadUserData(user.$id);
-                      if (!userD) return;
-                      setUserData(userD);
-                      console.log("User Data", userD);
+                      if (!userD) {
+                        const userD = await addNewUserConfig(user.$id);
+                        setUserData(userD);
+
+                      } else {
+                        setUserData(userD);
+                      }
                       if (userD.signInProcessStep == "FINISHED") {
                         console.log("User already finished sign in process")
                             try {
                                 const userDK = await loadUserDataKathegory(user.$id);
+                                
                                 setUserDataKathegory(userDK);
                                 setUserData({
                                     birthday:userD.birthday,

@@ -14,11 +14,17 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import PageModuleDocument from '@/components/(getting-started)/(aiCreate)/pageModuleDocument';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { router } from 'expo-router';
 
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
-    const { user } = useGlobalContext()
+    const {user, isLoggedIn,isLoading } = useGlobalContext();
+      useEffect(() => {
+        if (!isLoading && (!user || !isLoggedIn)) {
+          router.replace("/"); // oder "/sign-in"
+        }
+      }, [user, isLoggedIn, isLoading]);
+      
     const [ userData, setUserData] = useState(null)
 
     useEffect(() => {

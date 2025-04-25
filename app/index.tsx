@@ -1,59 +1,34 @@
-import { Text, View,TouchableOpacity, SafeAreaView, ActivityIndicator } from "react-native";
-import { router,Redirect } from "expo-router";
-import { useGlobalContext } from "../context/GlobalProvider";
+import { Text, View, SafeAreaView, ActivityIndicator } from "react-native";
+import { router, Redirect } from "expo-router";
 import { useEffect } from "react";
-import { loadUserData, loadUserDataKathegory } from "@/lib/appwriteDaten";
-import { addNewUserConfig, addUserDatakathegory } from "@/lib/appwriteAdd";
-
+import { useGlobalContext } from "../context/GlobalProvider";
+import { loadUserData } from "@/lib/appwriteDaten";
+import { addNewUserConfig } from "@/lib/appwriteAdd";
 
 export default function Index() {
+  const { isLoggedIn, isLoading, user, userData, setUserData } = useGlobalContext();
 
-  const { isLoggedIn, isLoading,user, setUserData, setUserCategory } = useGlobalContext();
   useEffect(() => {
-          console.log("🐋🐋🐋User",user)
-          if (user === null ) return;
-          if (user === undefined) {
-              router.push("/sign-in");
-              return;
-          };
-          async function fetchUserData() {
-              try {
-                  console.log("hi",user.$id)
-                  let userData = await loadUserData(user.$id);
-                  
-                  console.log("😶‍🌫️😶‍🌫️UserData",userData)
-                  if (userData != null) {
-                      setUserData(userData);
-                  } else {
-                      userData = await addNewUserConfig(user.$id)
-                      setUserData(userData);
-                      router.push("/getting-started");
-                  }
-                  if (!userData) {
-                    window.location.reload();
-                  }
-                  if (userData.signInProcessStep === "ZERO") {
-                      router.push("/personalize");
-                  } else if (userData.signInProcessStep === "FINISHED") {
-                      const userKathegory = await loadUserDataKathegory(user.$id);
-                      console.log("🫡🫡UserKathegory",userKathegory)
-                      setUserCategory(userKathegory);
-                      router.push("/getting-started");
-                  } else if (userData.signInProcessStep === "DONE") {
-                      const userKathegory = await loadUserDataKathegory(user.$id);
-                      console.log("🫡🫡UserKathegory",userKathegory)
-                      setUserCategory(userKathegory);
-                      router.push("/home");   
-                  }
-              } catch (error) {
-                  console.log(error);
-              }
-          }
-          fetchUserData();
-      }, [user]);
+    if (!user) return;
+    async function fetchUserData() {
+      try {
+        let userD = await loadUserData(user.$id);
+        if (userD != null) {
+          setUserData(userD);
+        } else {
+          userD = await addNewUserConfig(user.$id);
+          setUserData(userD);
+          router.push("/getting-started");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchUserData();
+  }, [user]);
 
-
-  if (isLoading || user === null) {
+  // Solange geladen wird oder es noch keine userData gibt, zeigen wir einen Ladescreen
+  if (isLoading) {
     return (
       <SafeAreaView className="flex-1 bg-black">
         <View className="flex-1 justify-center items-center">
@@ -63,14 +38,31 @@ export default function Index() {
       </SafeAreaView>
     );
   }
- 
-  
 
+  // Falls eine Session vorliegt, leiten wir basierend auf signInProcessStep weiter
+  if (userData?.signInProcessStep === "ZERO") {
+    return <Redirect href="/personalize" />;
+  }
+  if (userData?.signInProcessStep === "FINISHED") {
+    return <Redirect href="/getting-started" />;
+  }
+  if (userData?.signInProcessStep === "DONE") {
+    return <Redirect href="/home" />;
+  }
+
+  // Falls wir hier ankommen, gibt es entweder keinen Benutzer oder
+  // userData wurde bereits geladen und kein Redirect ausgelöst – in diesem Fall:
+  if (!user) {
+    return <Redirect href="/sign-in" />;
+  }
+
+  // Optional: Falls ein gültiger user vorliegt, aber signInProcessStep noch nicht finalisiert ist,
+  // könntest du hier eine Standardansicht oder einen weiteren Ladescreen anzeigen.
   return (
-    <SafeAreaView className="flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center">
-      <TouchableOpacity onPress={()=> router.push("/sign-in")} className="bg-blue-500 p-4 rounded-md m-2">
-        <Text>Lets Go</Text>
-      </TouchableOpacity>
+    <SafeAreaView className="flex-1 bg-black">
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-white">Bitte warten, wir verarbeiten deine Daten...</Text>
+      </View>
     </SafeAreaView>
   );
 }

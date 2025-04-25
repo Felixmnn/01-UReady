@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewModule } from '@/lib/appwriteAdd';
 import { setUserDataSetup } from '@/lib/appwriteEdit';
+import ErrorPopup from './(modal)/errorPopup';
 
 const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
   // Lokale States
@@ -22,24 +23,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
   const [ errorMessage, setErrorMessage] = useState(null);
     console.log(sessions.length)
 
-  const ErrorModal = ({isError, setIsError}) => {
-    return (
-        <Modal
-            animationType="fade"
-            transparent={true}
-            visible={isError}
-            onRequestClose={() => {
-              setIsError(!isError);
-            }}
-        >
-            <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> setIsError(false)}>
-                <View className='red border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700'>
-                    <Text className='text-white'>{errorMessage}</Text>
-                </View>
-            </TouchableOpacity>
-        </Modal>
-    )
-}
+  
   // Farbauswahl übernehmen
   const changeColor = (color) => {
     setSelectedColor(color);
@@ -52,7 +36,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
   const {width} = useWindowDimensions()
   return (
     <ScrollView className={`flex-1 bg-gray-900 p-2  shadow-lg ${width > 700 ? " rounded-[10px]" : ""}`}
-
+   
       style={{
         width: '100%',
 
@@ -76,7 +60,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
         elevation: 10, // Android
       }}
       >
-      <ErrorModal isError={isError} setIsError={setIsError}/>
+        <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage}/>
       <ModalSessionList
         sessions={sessions}
         setSessions={setSessions}

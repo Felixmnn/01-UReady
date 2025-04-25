@@ -1,6 +1,5 @@
 import { createContext,useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
-import { router } from "expo-router";
 const GlobalContext = createContext();
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -36,13 +35,9 @@ const GlobalProvider = ({children}) => {
         } catch (error){
             console.log(error)
         }
-    }, []);
+    }, [isLoading,isLoggedIn]);
 
-    useEffect(() => {
-        if (!user){
-            router.push("/")
-        }
-    },[user])
+
 
     
     
@@ -58,6 +53,7 @@ const GlobalProvider = ({children}) => {
                 user,
                 setUser,
                 isLoading,
+                setIsLoading,
                 colorScheme,
                 setColorScheme,
                 language,

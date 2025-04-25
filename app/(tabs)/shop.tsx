@@ -1,13 +1,21 @@
 import { View, Text, Image, ScrollView, Platform } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Battery from '@/components/tokens/battery'
 import RadioactiveCharege from '@/components/tokens/radioactivecharege'
 import MikroChip from '@/components/tokens/mikroChip'
 import Supercharge from '@/components/tokens/supercharge'
 import Fusioncharge from '@/components/tokens/fusioncharge'
+import { useGlobalContext } from '@/context/GlobalProvider'
+import { router } from 'expo-router'
 
 const shop = () => {
+  const {user, isLoggedIn,isLoading } = useGlobalContext();
+    useEffect(() => {
+      if (!isLoading && (!user || !isLoggedIn)) {
+        router.replace("/"); // oder "/sign-in"
+      }
+    }, [user, isLoggedIn, isLoading]);
 
   const Banner = ({title}) => {
     return (

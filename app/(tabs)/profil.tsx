@@ -1,24 +1,27 @@
 import { View, Text, StatusBar, Settings,ScrollView } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { router } from 'expo-router';
 import Tabbar from '@/components/(tabs)/tabbar'
-import InfoModule from '@/components/(tabs)/infoModule'
-import CustomButton from '@/components/(general)/customButton'
 import { useWindowDimensions } from 'react-native';
-import SwichTab from '@/components/(tabs)/swichTab'
 import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
 import General from '@/components/(profile)/general'
 import ProfileSettings from '@/components/(profile)/profileSettings'
 import PersonalInfo from '@/components/(profile)/personalInfo'
-import SkeletonList from '@/components/(general)/(skeleton)/skeletonList'
 import SkeletonListProfile from '@/components/(general)/(skeleton)/skeletonListProfile'
 
 const profil = () => {
-  const {user} = useGlobalContext();
+  const {user, isLoggedIn,isLoading } = useGlobalContext();
+  useEffect(() => {
+    if (!isLoading && (!user || !isLoggedIn)) {
+      router.replace("/"); // oder "/sign-in"
+    }
+  }, [user, isLoggedIn, isLoading]);
+  
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
-  const isVertical = width > 700;
-  const tabWidth = width / 2; // Da es zwei Tabs gibt
   const [page,setPage] = useState("profil")
- 
+
+  
+
   return (
       <Tabbar content={()=> { return(
         user ? 

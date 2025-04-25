@@ -18,8 +18,15 @@ import SchoolFilters from '@/components/(entdecken)/school';
 import EudcationFilters from '@/components/(entdecken)/education';
 import OtherFilters from '@/components/(entdecken)/other';
 import CountryFlag from 'react-native-country-flag';
+import { router } from 'expo-router';
 
 const entdecken = () => {
+  const {user, isLoggedIn,isLoading } = useGlobalContext();
+    useEffect(() => {
+      if (!isLoading && (!user || !isLoggedIn)) {
+        router.replace("/"); // oder "/sign-in"
+      }
+    }, [user, isLoggedIn, isLoading]);
   
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const numColumns = Math.floor(width / 300);

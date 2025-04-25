@@ -18,7 +18,7 @@ import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 
 const ProfileSettings = ({setPage}) => {
-    const {user, setUser,setIsLoggedIn } = useGlobalContext() 
+    const {user, setUser,setIsLoggedIn, setIsLoading } = useGlobalContext() 
     const [userData, setUserData] = useState(null)
     const [ userDataKathegory, setUserDataKathegory] = useState(null)
     const [ loading, setLoading] = useState(true)
@@ -113,10 +113,14 @@ const ProfileSettings = ({setPage}) => {
   }
 
   async function logOut () {
+    await setIsLoading(true)
     await signOut();
     await setIsLoggedIn(false)
     await setUser(undefined)
-    router.replace("/");
+    router.push({
+                pathname:"/",
+                params: { signOut: "true" }
+            })
     window.location.reload(); // erzwingt ein vollständiges Neuladen
 
   }

@@ -13,9 +13,10 @@ import {loadModules, loadQuestions} from "../../lib/appwriteDaten"
 import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 import { getModules } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { router } from 'expo-router';
 
 const Bibliothek = () => {
-  const {user} = useGlobalContext();
+  const {user, isLoggedIn,isLoading } = useGlobalContext();
   const [last7Hidden, setLast7Hidden ] = useState(true)
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
@@ -25,6 +26,11 @@ const Bibliothek = () => {
     const [modules,setModules] = useState(null)
     const [loading,setLoading] = useState(true)
     const [selectedModule, setSelectedModule] = useState(null)
+    useEffect(() => {
+        if (!isLoading && (!user || !isLoggedIn)) {
+          router.replace("/"); // oder "/sign-in"
+        }
+      }, [user, isLoggedIn, isLoading]);
 
     useEffect(() => {
       if (user === null) return;

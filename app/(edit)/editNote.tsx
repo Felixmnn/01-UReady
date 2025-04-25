@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View,TextInput } from 'react-native'
 import Header from '@/components/(bibliothek)/(pages)/(createQuestion)/header';
 import { useWindowDimensions } from 'react-native';
 import Tabbar from '@/components/(tabs)/tabbar';
 import { router,useLocalSearchParams } from "expo-router"
 import { updateNote } from '@/lib/appwriteEdit';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const CreateNote = () => {
+    const {user, isLoggedIn,isLoading } = useGlobalContext();
     const {note} = useLocalSearchParams()
     const [noteData, setNoteData] = useState(JSON.parse(note))
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
@@ -18,6 +20,13 @@ const CreateNote = () => {
         await updateNote(noteData);
         setUngespeichert(false);
     }
+    useEffect(() => {
+        if (!isLoading && (!user || !isLoggedIn)) {
+          router.replace("/"); // oder "/sign-in"
+        }
+      }, [user, isLoggedIn, isLoading]);
+
+
     return (
         <Tabbar content={()=> { return(
         

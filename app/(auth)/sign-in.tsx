@@ -10,11 +10,13 @@ import {router} from 'expo-router';
 import { signIn, createUser } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
+import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 
 const SignIn = () => {
   console.log("Der Nutzer Landet hier")
   const { setIsLoggedIn,setUser } = useGlobalContext();
-
+  const [ isError, setIsError] = useState(false);
+  const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
   const { width } = useWindowDimensions();
   const isVertical = width > 700;
   const tools = [
@@ -33,25 +35,38 @@ const SignIn = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submitSignIn = async () => {
-        if (!form.email || !form.password) {
-        console.log(form.email, form.password)
-          console.log("Error", "Please fill in all the fields");
-        } else {
+      if (form.email.length < 5) {
+        setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
+        setIsError(true)
+        return;
+      } else if (form.password.length > 8) {
+        setErrorMessage("Bitte ein gültiges Passwort eingeben")
+        setIsError(true)
+        return;
+      } else {
           setIsSubmitting(true);
-    
           try {
             const user = await signIn(form.email, form.password);
-            console.log("User", user);
-            setUser(user);
-            setIsLoggedIn(true);
-            console.log("Success", "You have successfully signed in");
-            router.push("/home");
+            if (user.success === false) {
+              setErrorMessage(user.error)
+              setIsError(true)
+              return;
+            } else {
+              console.log("User", user);
+              setUser(user.data);
+              setIsLoggedIn(true);
+              console.log("Success", "You have successfully signed in");
+              router.push("/home");
+              return;
+            }
           } catch (error) {
             console.log("Error", error);
+            setErrorMessage(error.message)
+            setIsError(true)
           } finally {
             setIsSubmitting(false);
-          }
-        }
+          
+        }}
       };
       const LogInOption = ({iconName, title, bgColor, handlePress}) => {
         return (
@@ -83,26 +98,7 @@ const SignIn = () => {
             </View> 
         )
     }
-    const LogIn = ()=>{
-      
-        return(
-            <View className="w-full items-center justify-center">
-                <Text className='text-white font-bold text-xl'>Sign In</Text>
-                <CustomTextInput1 value={form.email} inputStyles="mt-2 text-white p-2 rounded-[10px] w-full" onChange={(value) =>{ setForm(prevForm => ({ ...prevForm, email: value })) }}  />
-                <CustomTextInput1 value={form.password} inputStyles="mt-2 text-white p-2 rounded-[10px] w-full" password={true} onChange={(value) => {setForm(prevForm => ({ ...prevForm, password: value }))}}/>
-                <TouchableOpacity className={`bg-blue-500 p-2 w-full rounded-[10px] mt-2 items-center justify-center`} disabled={isSubmitting} onPress={()=> submitSignIn()}>
-                    {
-                        isSubmitting ? <ActivityIndicator color="#fff" /> : <Text className="text-white">Sign In</Text>
-                    }
-                    
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=> setSelectedOption(3)} className="mt-2 items-center justify-center">
-                    <Text className="text-blue-500">Registrieren</Text>
-                </TouchableOpacity>
-                <Text>{form.email}{form.password}</Text>
-            </View>
-        )
-    }
+    
     const [ signUpForm, setSignUpForm] = useState({
       email: "",
       password: "",
@@ -114,6 +110,7 @@ const SignIn = () => {
       <SafeAreaView className="flex-1  items-center justify-center bg-[#0c111d]"
      
       >
+        <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage} />
         <View className="items-center jusitfy-center">
           <View className="items-center justify-center flex-row">
             <Icon name="trophy" size={50} color="#fff" />
@@ -153,28 +150,27 @@ const SignIn = () => {
                   <TouchableOpacity onPress={()=> setSelectedOption(3)} className="mt-2 items-center justify-center">
                       <Text className="text-blue-500">Registrieren</Text>
                   </TouchableOpacity>
-                  <Text>{form.email}{form.password}</Text>
               </View>) : null
             }
             {
                 selectedOption === 3 ? (<View className="w-full  justify-center">
                 <Text className='text-white font-bold text-xl'>Sign Up</Text>
                 <TextInput
-                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                     placeholder="Username"
                     placeholderTextColor="#fff"
                     value={signUpForm.username}
                     onChangeText={(text) => setSignUpForm({ ...signUpForm, username: text })}
                 />
                 <TextInput
-                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                     placeholder="E-Mail"
                     placeholderTextColor="#fff"
                     value={signUpForm.email}
                     onChangeText={(text) => setSignUpForm({ ...signUpForm, email: text })}
                 />
                 <TextInput
-                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                     placeholder="Password"
                     placeholderTextColor="#fff"
                     secureTextEntry={true}
@@ -182,7 +178,7 @@ const SignIn = () => {
                     onChangeText={(text) => setSignUpForm({ ...signUpForm, password: text })}
                 />
                 <TextInput
-                    className="text-white p-2 rounded-[10px] w-full mt-2"
+                    className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                     placeholder="Password bestätigen"
                     placeholderTextColor="#fff"
                     secureTextEntry={true}
@@ -191,23 +187,43 @@ const SignIn = () => {
                 />
                 <TouchableOpacity className="bg-blue-500 p-2 w-full rounded-[10px] mt-2 items-center justify-center"
                   onPress={async () => {
-                    if (signUpForm.password !== signUpForm.passwordConfirm) {
-                      Alert.alert("Error", "Passwords do not match");
+                    
+                    if (signUpForm.username.length < 3) {
+                      setErrorMessage("Bitte einen Benutzernamen eingeben")
+                      setIsError(true)
                       return;
-                    }
+                    } else if (signUpForm.email.length < 5) {
+                      setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
+                      setIsError(true)
+                      return;
+                    } else if (signUpForm.password.length < 8) {
+                      setErrorMessage("Passwort muss mindestens 8 Zeichen lang sein")
+                      setIsError(true)
+                      return;
+                    }  else if (signUpForm.password !== signUpForm.passwordConfirm) {
+                      setErrorMessage("Passwörter stimmen nicht überein")
+                      setIsError(true)
+                      return;
+                    } else {
                     try {
                       const user = await createUser(signUpForm.email, signUpForm.password, signUpForm.username);
-                      console.log("User", user);
-                      const userData = await addNewUserConfig(user.$id);
-
-                      setUser(user);
-                      setIsLoggedIn(true);
-                      console.log("Success", "You have successfully signed up");
-                      router.push("/personalize");
+                      if (user.success === false) {
+                        setErrorMessage(user.error)
+                        setIsError(true)
+                        return;
+                      } else {
+                        const userData = await addNewUserConfig(user.$id);
+                        setUser(user);
+                        setIsLoggedIn(true);
+                        console.log("Success", "You have successfully signed up");
+                        router.push("/personalize");
+                      }
+                      
                     } catch (error) {
-                      console.log("Error", error);
+                      setErrorMessage(error.message)
+                      setIsError(true)
                     } 
-                  }}
+                  }}}
                 >
                     <Text className="text-white">Sign Up</Text>
                 </TouchableOpacity>

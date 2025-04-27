@@ -50,15 +50,14 @@ const personalize = () => {
               async function fetchUserData() {
                   try {
                       console.log("Loading")
-                      const userD = await loadUserData(user.$id);
+                      let userD = await loadUserData(user.$id);
                       if (!userD) {
-                        const userD = await addNewUserConfig(user.$id);
+                         userD = await addNewUserConfig(user.$id);
                         setUserData(userD);
-
                       } else {
                         setUserData(userD);
                       }
-                      if (userD.signInProcessStep == "FINISHED") {
+                      if (userD?.signInProcessStep == "FINISHED") {
                         console.log("User already finished sign in process")
                             try {
                                 const userDK = await loadUserDataKathegory(user.$id);
@@ -102,7 +101,7 @@ const personalize = () => {
             schoolSubjects:                     selectedSubjects ? selectedSubjects.map(item => item.name) : null,
             schoolGrade:                        classNumber ? classNumber : null,
             educationSubject:                   selectedAusbildung ? selectedAusbildung.name : null,
-            educationKathegory:                 ausbildungKathegorie ? ausbildungKathegorie.name[languages[selectedLanguage].code].toUpperCase().replace(/\s+/g, '') : null,
+            educationKathegory:                 ausbildungKathegorie ? ausbildungKathegorie.name.DE.toUpperCase().replace(/\s+/g, '') : null,
             language :                          selectedLanguage ? languages[selectedLanguage].name.toUpperCase() : languages[0].name.toUpperCase(),
             studiengangKathegory:               selectedField ? selectedField.map(item => item.kathegory) : null,
         }

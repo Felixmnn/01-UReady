@@ -77,7 +77,7 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
                   
                 </View>
                 <SearchList 
-                    data={selectedLanguage == null ? ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase())) : ausbildungsListDeutschland[ausbildungKathegorie.name[languages[selectedLanguage].code]].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
+                    data={selectedLanguage == null ? ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase())) : ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
                     filter={ausbildungsFilter}
                     setFilter={setAusbildungFilter}
                     handlePress={handlePress}

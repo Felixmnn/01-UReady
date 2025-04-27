@@ -45,7 +45,7 @@ const VektorCircle = ({color, percentage, icon, strokeColor}) => {
               transform="rotate(-90 20 20)" // Start bei 12 Uhr
             />
             {/* 📌 Roter Punkt */}
-            <Circle cx={dotX} cy={dotY} r="5" fill="red" />
+            <Circle cx={dotX} cy={dotY} r="5" fill={color} />
           </Svg>
           {/* Icon/Text in der Mitte */}
           <View className="absolute top-3 left-0 right-0 flex items-center">

@@ -1,9 +1,10 @@
-import { View, Text, Modal,TouchableOpacity, Image } from 'react-native'
+import { View, Text, Modal,TouchableOpacity, Image,ScrollView } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-
-const ModalStreak = ({isVisible, setIsVisible,tage, days}) => {
+import { useWindowDimensions } from 'react-native';
+const ModalStreak = ({isVisible=false, setIsVisible,tage, days}) => {
+  const { width } = useWindowDimensions();
     const t = new Date().getDay();
     const DaySelect = ({ day, status}) => {
         return (
@@ -29,15 +30,33 @@ const ModalStreak = ({isVisible, setIsVisible,tage, days}) => {
         transparent={true}
         visible={isVisible}
     >
-      <TouchableOpacity className="absolute top-0 left-0 w-full h-full justify-center items-center " onPress={()=> setIsVisible(false)}>
-        <View className="bg-gray-900 border-gray-700 border-[1px] p-5 rounded-xl items-center">
+      <TouchableOpacity className="absolute top-0 left-0 w-full h-full justify-center items-center " onPress={()=> setIsVisible(false)}
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.5)", // Dunkler Hintergrund
+      }}
+        >
+        <View className="bg-gray-900 border-gray-700 border-[1px] p-3 rounded-xl items-center"
+       style={{
+        shadowRadius: 10, // Größe des Glows
+        shadowOpacity: 0.9, // Sichtbarkeit des Glows
+        shadowOffset: { width: 0, height: 0 },
+        elevation: 10,
+        shadowColor: "#FFA500", // Orange Glow (Hex für Orange)
+      }}
+      
+        >
           <Image
                      source={require("../../assets/Black Minimalist Letter R Monogram Logo (2).gif")}
                      style={{ width:50, height:50}}
                     />
         <Text className='text-white font-bold text-[18px]'>{tage ? tage : 0} Tage Streak </Text>
-        <View className='rounded-xl border-[1px] border-gray-700 items-center my-3 w-full'>
-            <View className='flex-1 rounded-t-xl w-full flex-row bg-[#0c111d] p-3'>
+        <View className='  rounded-xl border-[1px] border-gray-700  items-center my-3 '>
+            <ScrollView horizontal={true} >
+              <View className='flex-row'
+              style={{
+                width: width > 600 ? 500 : width - 60,
+              }}
+              >
                 <DaySelect day={"Mo"} status={"fire"}/>
                 <DaySelect day={"Di"} status={"fire"}/>
                 <DaySelect day={"Mi"} status={"fire"}/>
@@ -45,19 +64,8 @@ const ModalStreak = ({isVisible, setIsVisible,tage, days}) => {
                 <DaySelect day={"Fr"} status={"fire"}/>
                 <DaySelect day={"Sa"} status={"open"}/>
                 <DaySelect day={"So"} status={"open"}/>
-
-                
-            </View>
-            <View className='w-full border-t-[1px] border-gray-700'/>
-            <Text className='text-white font-bold text-[15px] pt-3 pb-1'> Starte eine Quiz zu Algorythmen</Text>
-
-            <TouchableOpacity 
-                className="mt-1 bg-red-500 px-4 py-2 rounded-full bg-gradient-to-b from-[#300202] to-[#ed481c] mx-2 mb-2 w-[96%] items-center"
-                onPress={() => setIsVisible(false)}
-            >
-                <Text className="text-gray-900 font-bold">{tage > 0 ? "Setze deine Streak fort" : "Starte deine Streak"}</Text>
-
-            </TouchableOpacity>
+              </View>
+            </ScrollView>
         </View>
         </View>
       </TouchableOpacity>

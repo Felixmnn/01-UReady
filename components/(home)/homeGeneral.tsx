@@ -1,380 +1,268 @@
-import { View, Text, TouchableOpacity, Image, Modal,ScrollView, Dimensions } from 'react-native'
+import { View, Dimensions, Text,ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { signOut } from '@/lib/appwrite'
-import Tabbar from '@/components/(tabs)/tabbar'
-import Icon from "react-native-vector-icons/FontAwesome5";
-import CustomButton from '@/components/(general)/customButton';
-import { useWindowDimensions } from 'react-native';
-import CustomTextInput1 from '@/components/(general)/customTextInput1';
 import ModalStreak from '@/components/(home)/modalStreak';
-import ModalPremium from '@/components/(home)/modalPremium';
-import ModalDataUpload from '@/components/(home)/modalDataUpload';
-import CustomTextInputChat from '../(general)/customTextInputChat';
-import GratisPremiumButton from '../(general)/gratisPremiumButton';
-import AddModule from '../(general)/(modal)/addModule';
-import { loadUserData } from '@/lib/appwriteDaten';
-import { useGlobalContext } from '@/context/GlobalProvider';
-import { addNewUserConfig } from '@/lib/appwriteAdd';
-import { createFunction } from '@/lib/appwriteFunctions';
-import { callAppwriteFunction } from '@/lib/appwriteFunctions';
-import ModalAddFile from '../(general)/(modal)/addFile';
-import Battery from '../tokens/battery';
-import Fusioncharge from '../tokens/fusioncharge';
-import Supercharge from '../tokens/supercharge';
-import RadioactiveCharege from '../tokens/radioactivecharege';
-import MikroChip from '../tokens/mikroChip';
-import {router} from 'expo-router';
+import ContinueBox from '../(signUp)/(components)/continueBox';
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import VektorCircle from '../(karteimodul)/vektorCircle';
 
 
 const { width } = Dimensions.get('window');
-const ITEM_WIDTH = width * 0.7;
-const SPACER_WIDTH = (width - ITEM_WIDTH) / 2;
 
 const HomeGeneral = ({setSelectedPage}) => {
-  const {user} = useGlobalContext();
-
-  const scrollRef = useRef();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   
-  const options = [
+
+  
+  {/*Überschrift für die einzelnen Abteie */}
+  const Header = ({title}) => {
+    return (
+      <View className='flex-row items-center justify-between my-2'>
+        <Text className='text-white font-bold text-[15px]'>{title}</Text>
+      </View>
+    )
+  }
+
+  {/* Letzte Module oder Sessions */}
+  const [last5Sessions, setLast5Sessions] = useState([
     {
-      icon:"bot",
-      iconColor:"#7a5af8",
-      iconBackground:"bg-[#372292]",
-      title:"Erstellen wir ein Modul",
-      handlePress:()=> setSelectedPage("HomeChat")
+      name: "Session 1",
+      percent : 50,
+      color: "red",
+      icon: "book",
+      questions : 10,
     },
     {
-      icon:"search",
-      iconColor:"#20c1e1",
-      iconBackground:"bg-[#0d2d3a]",
-      title:"Entdecke Module",
-      handlePress:()=> router.push("/entdecken")
+      name: "Session 2",
+      percent : 70,
+      color: "blue",
+      icon: "book",
+      questions : 10,
     },
     {
-      icon:"cubes",
-      iconColor:"#4f9c19",
-      iconBackground:"bg-[#2b5314]",
-      title:"Erstelle dein eigenes Modul.",
-      handlePress:()=> setIsVisibleNewModule(true)
+      name: "Session 3",
+      percent : 30,
+      color: "green",
+      icon: "book",
+      questions : 10,
+    },
+    {
+      name: "Session 4",
+      percent : 90,
+      color: "yellow",
+      icon: "book",
+      questions : 10,
+    },
+    {
+      name: "Session 5",
+      percent : 10,
+      color: "purple",
+      icon: "book",
+      questions : 10,
     }
+  ])
+  const [last5Modules, setLast5Modules] = useState([
+    {
+      name: "Module 1",
+      percent: 50,
+      color: "red",
+      fragen: 10,
+      sessions: 5,
+    },
+    {
+      name: "Module 2",
+      percent: 70,
+      color: "blue",
+      fragen: 10,
+      sessions: 5,
+    },
+    {
+      name: "Module 3",
+      percent: 30,
+      color: "green",
+      fragen: 10,
+      sessions: 5,
+    },
+    {
+      name: "Module 4",
+      percent: 90,
+      color: "yellow",
+      fragen: 10,
+      sessions: 5,
+    },
+    {
+      name: "Module 5",
+      percent: 10,
+      color: "purple",
+      fragen: 10,
+      sessions: 5,
+    }
+  ])
+
+  const options = [
+    "Modules",
+    "Sessions",
   ]
-  const extendedOptions = [...options, ...options, ...options];
-    const middleIndex = Math.floor(extendedOptions.length / 3);
-  
-    useEffect(() => {
-      if (width > 700) return;
-      scrollRef.current.scrollTo({ x: middleIndex * ITEM_WIDTH, animated: false });
-      setCurrentIndex(middleIndex);
-    }, []);
-  
-    const onScroll = (event) => {
-      const offsetX = event.nativeEvent.contentOffset.x;
-      const index = Math.round(offsetX / ITEM_WIDTH);
-      setCurrentIndex(index);
-    };
-  
-    const onScrollEnd = (event) => {
-      const offsetX = event.nativeEvent.contentOffset.x;
-      const totalWidth = ITEM_WIDTH * extendedOptions.length;
-  
-      if (offsetX <= 0 || offsetX >= totalWidth - width) {
-        scrollRef.current.scrollTo({ x: totalWidth / 3, animated: false });
-        setCurrentIndex(options.length);
-      }
-    };
-  
-  
-  const [ userDataUsage, setUserDataUsage] = useState({
-    flameActive: false,
-    flameCount: 0,
-    flameLastCharge: new Date(),
-    itemActive: null,
-    itemActivationTime: null,
-    batteryCharge: 5,
-    batteryLastCharge: new Date(),
-    mikroChips: "∞",
-    superCharges:0,
-    fusionCharges:0,
-    radioactiveCharges:0,
-   
-    last5Sessions:[
-      
-    ]
-  })
-  {/*Homepage allgemein*/}
-      const t = new Date().getDay();
-    
-      const [selected, setSelected] = useState(t)
-      const [isVisible, setIsVisible] = useState(false);
-      const [isVisiblePremium, setIsVisiblePremium] = useState(false);
-      const [isVisibleDataUpload, setIsVisibleDataUpload] = useState(false);
-      const [isVisibleNewModule, setIsVisibleNewModule] = useState(false);
-      const [isvisibleNewFile, setIsVisibleNewFile] = useState(false);
-    
-      const { width } = useWindowDimensions(); // Bildschirmbreite holen
-        const isVertical = width > 700;
-        const toTight = width > 800;
-        const longVertical = width > 900;
-    
-        {/*Day Settings */}
-        const days = [
-          {sDay:"Mo",lDay:"Montag"},
-          {sDay:"Di",lDay:"Dienstag"},
-          {sDay:"Mi",lDay:"Mittwoch"},
-          {sDay:"Do",lDay:"Donnerstag"},
-          {sDay:"Fr",lDay:"Freitag"},
-          {sDay:"Sa",lDay:"Samstag"},
-          {sDay:"So",lDay:"Sonntag"},
-        ]
-      function getDay() {
-        const t = new Date().getDay();
-        let diff = selected - t + 1
-        const date = new Date();
-        date.setDate(date.getDate() + diff)
-        const today = date.toLocaleDateString("de-DE", { month: "long", day: "numeric" })
-        return (today)
-      }
-      const DaySelect = ({date, day, status, handlePress}) => {
-        return (
-        <TouchableOpacity onPress={()=> handlePress()} className={`flex-1 m-1 ${toTight ? "flex-row p-3" : "p-2"} items-center justify-center rounded-[10px] ${days[selected].sDay == day ? "border-blue-500 border-[2px] bg-blue-500 bg-opacity-30" : "border-gray-700 border-[1px]"} `}>
-          <View className={`${toTight ? "items-start" : "items-center"}`}> 
-            <Text className='font-bold text-gray-100'>{day}</Text>
-            {toTight ? <Text className='text-[12px] text-gray-500 font-semibold'>{date}</Text> :null}
-          </View>
-          { status == "fire" ? <View className='mx-2'><Icon name="fire" size={25} color="#f79009"/></View> : null}
-          { status == "miss" ? <View className='mx-2 items-center justify-center rounded-full bg-gray-600 h-[25px] w-[25px]'><Icon name="times" size={15} color="gray" /></View> : null}
-          { status == "pause" ? <View className='mx-2 items-center justify-center rounded-full bg-gray-600 h-[25px] w-[25px]'><Text className='text-white'>II</Text></View> : null}
-          { status == "open" ? <View className={`mx-2 h-[25px] w-[25px] bg-gray-900 rounded-full border-dashed border-[1px] ${days[selected].sDay == day ? "border-blue-500" : "border-gray-500"}`}></View> : null}
-    
-        </TouchableOpacity>
-        )
-      }
-      function changeSelected (input) {
-        if (selected + input < 0){
-          setSelected(days.length -1)
-        } else if (selected + input == days.length){
-          setSelected(0)
-        } else {
-          setSelected(selected + input )
-        }
-      }
-    
-    
-      {/* Quick Access */}
-      const QuickAccess = ({icon, iconColor, iconBackground, title, handlePress,selected=false}) => {
-        return (
-          
-          <TouchableOpacity className={`flex-1 mb-5  border-[1px] rounded-[10px] bg-gray-900  items-start justify-center flex-row  w-full items-center  ${isVertical ? " p-3 m-2 " : "  m-1 border-gray-700  "}`} 
-            onPress={handlePress}
-            style={{
-              opacity: selected ? 0.9 : 0.5,
-              borderColor:"#232323",
-              shadowColor: selected ? iconColor : null, // Grau-Blauer Glow
-              shadowOffset: { width: 0, height: 0 },
-              shadowOpacity: selected ? 0.8 : 0, // Sichtbarkeit des Glows
-              shadowRadius: selected ? 10 : 0, // Größe des Glows
-              elevation: 5,
-            }}
-            >
-            <View className={`rounded-full ${iconBackground} h-[50px] w-[50px] items-center justify-center`}
-            style={{
-              height: 40,
-              width: 40,
-            }}
-            >
-             { icon == "bot" ?              
-              <Image 
-              source={require('../../assets/bot.png')} 
-              style={{
-                height: 28, 
-                width: 28, 
-                tintColor: iconColor 
-              }} 
-            />
-            : 
-              <Icon name={icon} size={25} color={iconColor}/>}
-            </View>
-            <Text className='text-gray-100 font-bold text-[12px] mt-1 ml-2'>{title}</Text>
 
-          </TouchableOpacity>
-        )
-      }
-    
-      {/*Aktionsempfehlungen */}
-      const Aktionsempfehlung = ({icon, iconColor, iconBackground, title, subTitle, handlePress}) => {
-        return (
-        <TouchableOpacity className='flex-1 flex-row px-3 border-gray-700 border-[1px]  rounded-[10px] bg-gray-900 items-center justify-start m-1 h-[60px]'
+  const Module = ({item}) => {
+    return (
+      <View className='bg-gray-900 rounded-[10px] mx-2 border-gray-800 border-[1px]  items-center justify-between'>
+        <View 
+        className={`bg-${item.color}-500 rounded-t-[10px]`}
         style={{
-          height: 60,
-          borderColor: iconColor,
+          width: "100%",
+          height: 5, 
         }}
+          />
+        <View className='p-3 justify-start'>
+          <View className='flex-row items-center justify-between'>
+            <Text className='text-white font-bold text-[15px]'>{item.name}</Text>
+            <VektorCircle color={item.color} percentage={item.percent} icon={"clock"} strokeColor={item.color}/>
 
-        >
-            <View className={`rounded-[5px] ${iconBackground} h-[25px] w-[25px] items-center justify-center mb-1 m-1`} >
-              <Icon name={icon} color={iconColor} size={15}/>
-            </View>
-            <View className='m-1'>
-              <Text className='font-bold text-gray-100'>{title}</Text>
-              <Text className=' text-gray-100 text-[12px]'>{subTitle}</Text>
-            </View>
-        </TouchableOpacity>
-        )
-      }
-  return (
-    <View className='flex-1 justify-between '>
-        <ModalStreak isVisible={isVisible} setIsVisible={setIsVisible} tage={12} days={days}/>
-        <ModalPremium isVisible={isVisiblePremium} setIsVisible={setIsVisiblePremium}/>
-        <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
-        <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule}/>
-        {/*<ModalAddFile isVisible={isvisiGbleNewFile} setIsVisible={setIsVisibleNewFile}/>*/}
-        <View className=' mx-2 flex-1 mb-2 mt-4'>
-        {/*Top Bar*/}
-        
-        <View className='flex-row justify-between items-center'>
-          <View className='flex-row items-center justify-center'>
-          <TouchableOpacity className='flex-row rounded-full bg-gradient-to-b from-black to-[#ed481c] items-center justify-center ' onPress={()=> setIsVisible(true)}
-            style={{
-              height: 30,
-              width: 50,
-              shadowColor: "#ed481c",
-              shadowOffset: {
-                width: 0,
-                height: 0,
-              },
-              shadowOpacity: 0.8,
-              shadowRadius: 10,
-              elevation: 10, // Für Android
-            }}
-            >
-            <Icon name="fire" size={15} color="#f79009"/>
-            <Text className='text-gray-400 font-bold ml-1'>{userDataUsage.flameCount}</Text>
-          </TouchableOpacity>
-          <View className=' flex-row justify-between items-center  rounded-full mx-2'
-          style={{
-            height: 30,
-            width: 50,
-            paddingBottom:2,
-            backgroundColor: "#2e5118",
-            shadowColor: "#2e5118",
-              shadowOffset: {
-                width: 0,
-                height: 0,
-              },
-              shadowOpacity: 0.8,
-              shadowRadius: 10,
-              elevation: 10, // Für Android
-
-           
-          }}
-          >
-            
-            <TouchableOpacity className='flex-1 flex-row items-center justify-center'>
-              <Battery charge={3}/>
-            </TouchableOpacity>
           </View>
-          </View>
+          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{item.fragen} Fragen • {item.sessions} Sessions</Text>
           
+        </View>
+      </View>
+    )
+  }
 
-          <View className='flex-1 flex-row justify-between items-center bg-black rounded-[10px] mx-2'
+  const Session = ({item}) => {
+    return (
+      <View className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between'>
+        <View className='flex-row items-center justify-between'>
+          <View className='items-start  '>
+            <Text className='text-white font-bold text-[15px]'>{item.name}</Text>
+            <Text className='text-gray-500 font-bold text-[15px]'>{item.questions} Fragen</Text>
+          </View>
+          <View className='p-3'>
+            <Icon name={item.icon} size={20} color={"white"}/>
+          </View>
+        </View>
+        <View className='rounded-full p-2'>
+          <Text className='text-white font-bold text-[15px]'>{item.percent}%</Text>
+        </View>
+        <View className='bg-gray-700 rounded-full w-full '>
+          <View className={` bg-${item.color}-500 rounded-full p-1`}
           style={{
-            height: 20,
-            maxWidth: 150
+            width: `${item.percent}%`,
+
           }}
-          >
-            
-          <View  className='bg-blue-500 border-blue-600 border-[2px] h-[25px] w-[25px] items-center justify-center rounded-[5px]' >
-              <Icon name="plus" size={15} color="#f79009" onPress={()=> router.push("/shop")}/>
-            </View>
-          <View className='flex-row items-center justify-center'>
-            <Text className='text-gray-400 font-bold mr-2'>{userDataUsage.mikroChips}</Text>
-            <MikroChip/>
-          </View>
-          </View>
-          
-        
-        </View >
-        <View className='w-full flex-1 items-center justify-center   '>
-        <View className='w-full items-center my-3'>
-          <View className='w-full max-w-[400px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
-            <Text className='font-semibold text-[15px] text-gray-100 text-center'> Hier sind ein paar vorschläge mit denen du durchstarten könntest:</Text>
-          </View>
-          <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
-          <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
-          <Image
-           source={require("../../assets/Black Minimalist Letter R Monogram Logo.gif")}
-           style={{ width:150, height:150}}
           />
         </View>
-          <View className='  items-center justify-center m-2'
-          style={{
-            height: 60,
-          }}
-          >
-          <View className=' flex-row items-center justify-center '
-          style={{
-            marginTop: 20
-          }}
-          >
-            <Aktionsempfehlung title={"Bullet Quizz"} subTitle={"5 Fragen"} icon={"rocket"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
-            <Aktionsempfehlung title={"Blitz Quizz"} subTitle={"10 Fragen"} icon={"bolt"} iconColor={"#21c3e4"} iconBackground={"bg-[#0d2d3a]"}/>
-          </View>
-          </View>
-        </View>
-        
-        </View>
-        <View style={{
-          height:75,
-          marginBottom: 10,
-        }}>
-          { width > 700 ?
-          <View className='w-full flex-row items-center '>
-            {
-              options.map((item, index) => {
-                return (
-                  <View key={index} className='flex-1 items-center justify-center mx-2'>
-                    <QuickAccess icon={item.icon} iconColor={item.iconColor} iconBackground={item.iconBackground} title={item.title} handlePress={item.handlePress} selected={true}/>
-                  </View>
-                );
-              })
-            }
-          </View>
-             :
-          <ScrollView
-            ref={scrollRef}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            decelerationRate="fast"
-            snapToInterval={ITEM_WIDTH}
-            onScroll={onScroll}
-            onMomentumScrollEnd={onScrollEnd}
-            scrollEventThrottle={16}
-            bounces={false}
-          >
-          <View style={{ width: SPACER_WIDTH }} />
-          {extendedOptions.map((item, index) => {
-            const isCenter = index === currentIndex;
+      </View>
+    )
+  }
+
+  {/* Schnelle Aktionen für den Nutzer */}
+  const [quickActions, setQuickActions] = useState([
+    {
+      text: 'Erstellen wir zusammen ein Lernset.',
+      colorBorder: '#7a5af8',
+      colorBG: '#372292',
+      iconName: 'bot',
+    },
+    {
+      text: 'Mal schauen was deine Komilitonen lernen.',
+      colorBorder: '#20c1e1',
+      colorBG: '#0d2d3a',
+      iconName: 'search',
+    },
+    {
+      text: 'Erstelle dein eigenes Lernset.',
+      colorBorder: '#4f9c19',
+      colorBG: '#2b5314',
+      iconName: 'cubes',
+    },
+  ])
+
+  const QuickAction = ({item}) => {
+    return (
+      <ContinueBox
+        text={item.text}
+        colorBorder={item.colorBorder}
+        colorBG={item.colorBG}
+        iconName={item.iconName}
+        handlePress={()=> {}}
+        horizontal={width > 700 ? false : true}
+        selected={true}
+      />
+    )
+  }
+
+  {/*Nutzer Aktivtäts Daten*/}
+  const [userActivity, setUserActivity] = useState({
+    streak: 0,
+    energy: 5,
+    microChips: 10000,
+  })
+
+  const [ streakModalVisible, setStreakModalVisible] = useState(false);
+  const days = [
+    {sDay:"Mo",lDay:"Montag"},
+    {sDay:"Di",lDay:"Dienstag"},
+    {sDay:"Mi",lDay:"Mittwoch"},
+    {sDay:"Do",lDay:"Donnerstag"},
+    {sDay:"Fr",lDay:"Freitag"},
+    {sDay:"Sa",lDay:"Samstag"},
+    {sDay:"So",lDay:"Sonntag"},
+  ]
+
+
+  
+  return (
+    <ScrollView>
+      <ModalStreak isVisible={streakModalVisible} setIsVisible={setStreakModalVisible} tage={userActivity.streak} days={days}/>
+    <View className='flex-1 p-2 rounded-[10px]'>
+      <View className='w-full flex-row justify-between'>
+                <TouchableOpacity className='flex-row m-2 p-5' onPress={()=> {setStreakModalVisible(true)}}>
+                  <Icon name="fire" size={20} color={"white"}/>
+                  <Text className='text-white font-bold text-[15px] ml-2'>{userActivity.streak}</Text>
+                </TouchableOpacity>
+
+                <View className='flex-row m-2 p-5' >
+                  <TouchableOpacity className='flex-row mx-5' >
+                    <Icon name="microchip" size={20} color={"white"}/>
+                    <Text className='text-white font-bold text-[15px] ml-2'>{userActivity.microChips}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity className='flex-row' >
+                    <Icon name="bolt" size={20} color={"white"}/>
+                    <Text className='text-white font-bold text-[15px] ml-2'>{userActivity.energy}</Text>
+                  </TouchableOpacity>
+                </View>
+
+      </View>
+      <Header title={"Letzte Module"}/>
+      <ScrollView  horizontal={true} className='flex-row'>
+          {
+            last5Modules.map((item, index) => {
+              return (
+                <Module key={index} item={item} />
+              )
+            })
+          }
+      </ScrollView>
+      <Header title={"Letzte Sessions"}/>
+      <ScrollView  horizontal={true} className='flex-row'>
+          {
+            last5Sessions.map((item, index) => {
+              return (
+                <Session key={index} item={item} />
+              )
+            })
+          }
+      </ScrollView>
+      <Header title={"Schnelle Aktionen"}/>
+      <View className={`${width > 700 ? "flex-row" : "flex-col"} `}>
+        {
+          quickActions.map((item, index) => {
             return (
-              <View
-                key={index}
-                style={{
-                  paddingHorizontal: 5,
-                  width: ITEM_WIDTH,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  transform: [{ scale: isCenter ? 1.1 : 0.9 }],
-                  opacity: isCenter ? 1 : 0.5,
-                }}
-              >
-                <QuickAccess icon={item.icon} iconColor={item.iconColor} iconBackground={item.iconBackground} title={item.title} handlePress={item.handlePress} selected={isCenter}/>
-              </View>
-            );
-          })}
-          <View style={{ width: SPACER_WIDTH }} />
-        </ScrollView>
+              <QuickAction key={index} item={item} />
+            )
+          })
         }
       </View>
-      </View>
+    </View>
+    </ScrollView>
   )
 }
 

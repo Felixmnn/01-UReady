@@ -111,18 +111,21 @@ console.log("New Module",newModule)
         {
           !last7Hidden ? null :
           <FlatList
-          data={modules.documents}
-          renderItem={({ item,index }) => (
-            <View className='flex-1 mr-2  '>
-              <Karteikarte handlePress={()=> {setSelected("SingleModule"); setSelectedModule(index)}} farbe={item.color} percentage={item.progress} titel={item.name} studiengang={item.description} fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
-            </View>
-          )}
-          keyExtractor={(item) => item.$id}
-          key={numColumns}
-          numColumns={numColumns}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        />
+            data={modules.documents}
+            renderItem={({ item,index }) => (
+              <View className='flex-1 mr-2  '>
+                <Karteikarte handlePress={()=> {setSelected("SingleModule"); setSelectedModule(index)}} farbe={item.color} percentage={item.progress} titel={item.name} studiengang={item.description} fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
+              </View>
+            )}
+            keyExtractor={(item) => item.$id}
+            key={numColumns}
+            numColumns={numColumns}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            onEndReached={fetchItems}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={loading ? <Text>Loading...</Text> : null}
+          />
         }
         
         </View>

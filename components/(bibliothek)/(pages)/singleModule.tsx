@@ -12,7 +12,8 @@ import { loadDocuments, loadNotes, loadQuestions } from '@/lib/appwriteDaten';
 import { addDocumentConfig, addDocumentToBucket, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
-import { getQuestions } from '@/lib/appwriteQuerys';
+import { getModuleAmout, getQuestions } from '@/lib/appwriteQuerys';
+import { updateModuleData } from '@/lib/appwriteUpdate';
 
 const SingleModule = ({setSelectedScreen, module}) => {
     const { width } = useWindowDimensions();
@@ -41,6 +42,19 @@ const SingleModule = ({setSelectedScreen, module}) => {
     }
     updateModuleLocal()
     }, [sessions])
+
+    useEffect(() => {
+        if (!module) return;
+        async function fetchQuestions() {
+            const res = await getModuleAmout(module.$id)
+            console.log("Module Amout 🐋:",res);
+            const resToRes = await updateModuleData(module.$id,{"questions":res?.questions,"notes":res?.notes})
+            console.log("Module Amout Update 🐋:",resToRes);
+        }
+    
+        fetchQuestions()
+    }
+    , [module])
     
       
       

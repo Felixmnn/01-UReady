@@ -18,7 +18,7 @@ const home = () => {
   return (
     <Tabbar content={()=> { return(
 
-      <View className="flex-1 bg-[#0c111d]">
+      <View className="flex-1 rounded-[10px] bg-[#0c111d]">
       { selected == "HomeGeneral" ? <HomeGeneral setSelectedPage={setSelected}/> : null}
       { selected == "HomeChat" ? <HomeChat setSelectedPage={setSelected}/> : null}
       </View>

@@ -211,9 +211,9 @@ const SignIn = () => {
                         setErrorMessage(user.error)
                         setIsError(true)
                         return;
-                      } else {
-                        const userData = await addNewUserConfig(user.$id);
-                        setUser(user);
+                      } else { 
+                        const userData = await addNewUserConfig(user.data.$id);
+                        setUser(user.data);
                         setIsLoggedIn(true);
                         console.log("Success", "You have successfully signed up");
                         router.push("/personalize");

@@ -171,8 +171,8 @@ const ProfileSettings = ({setPage}) => {
                             </Text>
                             </View>
                         }
-                        {personalInput(user.phone !== "" ? user.phone : "-","Telefonnummer")}
-                        <View className='justify-start w-full my-3'>
+                        
+                        <View className='justify-start w-full'>
                           {
                             userDataKathegory.kategoryType == "UNIVERSITY" ?
                             <View className='w-full'>

@@ -26,7 +26,7 @@ const AddModule = ({isVisible, setIsVisible, newModule, setNewModule,amount=0}) 
         visible={isVisible}
     >
         <View  className='absolute top-0 left-0 w-full h-full justify-center items-center '>
-            <CreateModule newModule={newModule} setNewModule={setNewModule} setUserChoices={()=> setIsVisible(false)}/>
+            <CreateModule newModule={newModule} setNewModule={setNewModule} setUserChoices={()=> setIsVisible(false)} isModal={setIsVisible}/>
         </View>
     </Modal>
   )

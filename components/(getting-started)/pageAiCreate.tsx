@@ -9,7 +9,7 @@ import { materialToModule } from '@/functions/(aiQuestions)/materialToModule';
 import uuid from 'react-native-uuid';
 import { useGlobalContext } from '@/context/GlobalProvider';
 
-const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userChoices }) => {
+const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices }) => {
   // Lokale States
   const { user } = useGlobalContext();
   const [newTopic, setNewTopic] = useState('');
@@ -118,7 +118,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, userC
       />
         <View className='w-full'>
           <View className='m-2 flex-row items-center'>
-            <Icon name="arrow-left" size={20} color="white" onPress={() => setUserChoices(null)} />
+            <Icon name="arrow-left" size={20} color="white" onPress={()=> setUserChoices(null)} />
             <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Modul mit KI support</Text>
           </View>
           <View className="flex-row ">

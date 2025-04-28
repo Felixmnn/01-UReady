@@ -1,16 +1,57 @@
 import { View, Dimensions, Text,ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import ModalStreak from '@/components/(home)/modalStreak';
 import ContinueBox from '../(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import VektorCircle from '../(karteimodul)/vektorCircle';
-
+import { router } from 'expo-router';
+import AddModule from '../(general)/(modal)/addModule';
+import AddAiModule from '../(general)/(modal)/addAiModule';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { loadUserUsage } from '@/lib/appwriteDaten';
+import { addUserUsage, addUserUsageData } from '@/lib/appwriteAdd';
 
 const { width } = Dimensions.get('window');
 
 const HomeGeneral = ({setSelectedPage}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  
+  const { user } = useGlobalContext()
+  const [ loading, setLoading ] = useState(true)
+  const [userUsage, setUserUsage] = useState({
+    streak: 0,
+    streakActive: false,
+    streakLastUpdate: new Date(),
+    energy: 5,
+    microchip: 0,
+    boostActive: true,
+    boostActivation: new Date(),
+    boostType: null,
+    lastModules: [],
+    lastSessions: [],
+  })
+
+  useEffect(() => {
+    if (!user) return;
+    async function fetchUserData() {
+      try {
+        const res = await loadUserUsage(user.$id)
+        console.log("Nutzer Daten wurden geladen:", res);
+        if (res) {
+          setUserUsage({res, lastModules: res.lastModules.map((item) => JSON.parse(item) ), lastSessions: res.lastSessions.map((item) => JSON.parse(item) )});
+          setLoading(false)
+        } else {
+          const res = await addUserUsage(user.$id,userUsage)
+          setUserUsage(res);
+          setLoading(false)
+
+          console.log("Nutzer Daten wurden erstellt:", res);
+
+
+        }
+      } catch (error) {
+        console.error("Fehler beim Abrufen der Nutzerdaten:", error);
+      }
+    }
+    fetchUserData();
+  },[user])
 
   
   {/*Überschrift für die einzelnen Abteie */}
@@ -98,11 +139,6 @@ const HomeGeneral = ({setSelectedPage}) => {
     }
   ])
 
-  const options = [
-    "Modules",
-    "Sessions",
-  ]
-
   const Module = ({item}) => {
     return (
       <View className='bg-gray-900 rounded-[10px] mx-2 border-gray-800 border-[1px]  items-center justify-between'>
@@ -160,20 +196,59 @@ const HomeGeneral = ({setSelectedPage}) => {
       colorBorder: '#7a5af8',
       colorBG: '#372292',
       iconName: 'bot',
+      handlePress: () => setIsVisibleAiModule(true),
     },
     {
       text: 'Mal schauen was deine Komilitonen lernen.',
       colorBorder: '#20c1e1',
       colorBG: '#0d2d3a',
       iconName: 'search',
+      handlePress: () => router.push("/entdecken"),
     },
     {
       text: 'Erstelle dein eigenes Lernset.',
       colorBorder: '#4f9c19',
       colorBG: '#2b5314',
       iconName: 'cubes',
+      handlePress: () => setIsVisibleNewModule(true),
+      
     },
   ])
+
+  const [ newModule, setNewModule] = useState({
+            name: "",
+            subject: "",
+            questions: 0,
+            notes: 0,
+            documents: 0,
+            public: false,
+            progress: 0,
+            creator: "",
+            color: null,
+            sessions: [],
+            tags: [],
+            description: "",
+            releaseDate: null,
+            connectedModules: [],
+            qualityScore: 0,
+            duration: 0,
+            upvotes: 0,
+            downVotes: 0,
+            creationCountry: null,
+            creationUniversity: null,
+            creationUniversityProfession: null,
+            creationRegion: null,
+            creationUniversitySubject: [],
+            creationSubject: [],
+            creationEducationSubject: "",
+            creationUniversityFaculty: [],
+            creationSchoolForm: null,
+            creationKlassNumber: null,
+            creationLanguage: null,
+            creationEducationKathegory:"",
+            copy: false,
+            });
+  const [ isVisibleNewModule, setIsVisibleNewModule] = useState(false)
 
   const QuickAction = ({item}) => {
     return (
@@ -182,7 +257,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         colorBorder={item.colorBorder}
         colorBG={item.colorBG}
         iconName={item.iconName}
-        handlePress={()=> {}}
+        handlePress={item.handlePress}
         horizontal={width > 700 ? false : true}
         selected={true}
       />
@@ -195,38 +270,30 @@ const HomeGeneral = ({setSelectedPage}) => {
     energy: 5,
     microChips: 10000,
   })
-
-  const [ streakModalVisible, setStreakModalVisible] = useState(false);
-  const days = [
-    {sDay:"Mo",lDay:"Montag"},
-    {sDay:"Di",lDay:"Dienstag"},
-    {sDay:"Mi",lDay:"Mittwoch"},
-    {sDay:"Do",lDay:"Donnerstag"},
-    {sDay:"Fr",lDay:"Freitag"},
-    {sDay:"Sa",lDay:"Samstag"},
-    {sDay:"So",lDay:"Sonntag"},
-  ]
-
-
+  
+  const [isVisibleNewAiModule, setIsVisibleAiModule] = useState(false)
   
   return (
     <ScrollView>
-      <ModalStreak isVisible={streakModalVisible} setIsVisible={setStreakModalVisible} tage={userActivity.streak} days={days}/>
+      <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
+      <AddAiModule isVisible={isVisibleNewAiModule} setIsVisible={setIsVisibleAiModule} />
+
     <View className='flex-1 p-2 rounded-[10px]'>
       <View className='w-full flex-row justify-between'>
-                <TouchableOpacity className='flex-row m-2 p-5' onPress={()=> {setStreakModalVisible(true)}}>
+                <TouchableOpacity className='flex-row m-2 p-5' >
                   <Icon name="fire" size={20} color={"white"}/>
-                  <Text className='text-white font-bold text-[15px] ml-2'>{userActivity.streak}</Text>
+                  <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.streak}</Text>
                 </TouchableOpacity>
 
                 <View className='flex-row m-2 p-5' >
-                  <TouchableOpacity className='flex-row mx-5' >
+                  <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
                     <Icon name="microchip" size={20} color={"white"}/>
-                    <Text className='text-white font-bold text-[15px] ml-2'>{userActivity.microChips}</Text>
+                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage.microChips}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity className='flex-row' >
+                  <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
+                  >
                     <Icon name="bolt" size={20} color={"white"}/>
-                    <Text className='text-white font-bold text-[15px] ml-2'>{userActivity.energy}</Text>
+                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage.boostActive ? "∞" : userUsage.energy}</Text>
                   </TouchableOpacity>
                 </View>
 
@@ -234,7 +301,18 @@ const HomeGeneral = ({setSelectedPage}) => {
       <Header title={"Letzte Module"}/>
       <ScrollView  horizontal={true} className='flex-row'>
           {
-            last5Modules.map((item, index) => {
+            userUsage.lastModules.length == 0 ?
+            <View>
+              <Module item={{
+                  name: "Getting Started",
+                  percent : 100,
+                  color: "blue",
+                  fragen : 10,
+                  sessions : 7,
+              }}/>
+            </View>
+            :
+            userUsage.lastModules.map((item, index) => {
               return (
                 <Module key={index} item={item} />
               )
@@ -244,7 +322,32 @@ const HomeGeneral = ({setSelectedPage}) => {
       <Header title={"Letzte Sessions"}/>
       <ScrollView  horizontal={true} className='flex-row'>
           {
-            last5Sessions.map((item, index) => {
+            userUsage.lastModules.length == 0 ?
+            <View className='flex-row'>
+              <Session item={{
+                  name: "Erstes Modul",
+                  percent : 100,
+                  color: "blue",
+                  icon: "cubes",
+                  questions : 5,
+              }}/>
+              <Session item={{
+                  name: "Personalisiertes Profil",
+                  percent : 100,
+                  color: "red",
+                  icon: "user",
+                  questions : 7,
+              }}/>
+              <Session item={{
+                  name: "Sign Up",
+                  percent : 100,
+                  color: "green",
+                  icon: "user",
+                  questions : 3,
+              }}/>
+            </View> 
+            :
+            userUsage.lastSessions.map((item, index) => {
               return (
                 <Session key={index} item={item} />
               )

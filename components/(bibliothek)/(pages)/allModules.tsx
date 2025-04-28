@@ -8,6 +8,7 @@ import {loadModules, loadUserDataKathegory} from "../../../lib/appwriteDaten"
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 import AddModule from '@/components/(general)/(modal)/addModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { updateUserUsageModules } from '@/lib/appwriteUpdate';
 
 const AllModules = ({setSelected, modules, setSelectedModule}) => {
     const [last7Hidden, setLast7Hidden ] = useState(true)
@@ -113,8 +114,17 @@ console.log("New Module",newModule)
           <FlatList
             data={modules.documents}
             renderItem={({ item,index }) => (
-              <View className='flex-1 mr-2  '>
-                <Karteikarte handlePress={()=> {setSelected("SingleModule"); setSelectedModule(index)}} farbe={item.color} percentage={item.progress} titel={item.name} studiengang={item.description} fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
+              <View className='flex-1 mr-2 '>
+                <Karteikarte handlePress={async ()=> {await updateUserUsageModules(
+                  user.$id, {
+                    name: item.name,
+                    percent : item.progress,
+                    color: item.color,
+                    fragen : item.questions,
+                    sessions : item.sessions.length,
+                    sessionID: item.$id
+                  }
+                );setSelected("SingleModule"); setSelectedModule(index); }} farbe={item.color} percentage={item.progress} titel={item.name} studiengang={item.description} fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
               </View>
             )}
             keyExtractor={(item) => item.$id}
@@ -122,9 +132,7 @@ console.log("New Module",newModule)
             numColumns={numColumns}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            onEndReached={fetchItems}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={loading ? <Text>Loading...</Text> : null}
+            
           />
         }
         

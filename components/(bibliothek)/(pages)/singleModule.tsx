@@ -1,14 +1,11 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
-import Icon from "react-native-vector-icons/FontAwesome5";
-import SessionProgress from '../sessionProgress';
 import RoadMap from '../(sections)/roadMap';
 import Data from '../(sections)/data';
 import Header from '../(sections)/header';
 import { quizQuestion } from '@/assets/exapleData/quizQuestion';
 import SwichTab from '../../(tabs)/swichTab';
-import { loadDocuments, loadNotes, loadQuestions } from '@/lib/appwriteDaten';
 import { addDocumentConfig, addDocumentToBucket, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';

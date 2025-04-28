@@ -10,8 +10,9 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewModule } from '@/lib/appwriteAdd';
 import { setUserDataSetup } from '@/lib/appwriteEdit';
 import ErrorPopup from './(modal)/errorPopup';
+import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 
-const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
+const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }) => {
   // Lokale States
   const { user } = useGlobalContext();
   const [sessions, setSessions] = useState([]);
@@ -21,8 +22,38 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
   const [selectedSession, setSelectedSession] = useState(0);
   const [isError, setIsError] = useState(false);
   const [ errorMessage, setErrorMessage] = useState(null);
-    console.log(sessions.length)
-
+  console.log(sessions.length)
+  const [ userData, setUserData] = useState(null)
+  useEffect(() => {
+          if (user == null) return;
+          async function fetchUserData() {
+              const res = await loadUserDataKathegory(user.$id);
+              setUserData(res);
+          }
+          fetchUserData()
+      }, [user])
+      
+  useEffect(() => {
+        if (userData == null) return ;
+        setNewModule({
+            ...newModule, 
+            releaseDate: new Date(),
+            creator:userData.$id,
+            creationCountry: userData.country,
+            creationUniversity: userData.university,
+            creationUniversityProfession: userData.studiengangZiel,
+            creationRegion: userData.region,
+            creationUniversitySubject: userData.studiengang,
+            creationSubject: userData.schoolSubjects,
+            creationEducationSubject: userData.educationSubject,
+            creationUniversityFaculty: userData.faculty,
+            creationSchoolForm: userData.schoolType,
+            creationKlassNumber: userData.schoolGrade,
+            creationLanguage: userData.language,
+            creationEducationKathegory:userData.educationKathegory,
+            studiengangKathegory:userData.studiengangKathegory
+        });
+    },[userData])
   
   // Farbauswahl übernehmen
   const changeColor = (color) => {
@@ -204,10 +235,13 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices }) => {
 
             const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
             const resp = await setUserDataSetup(user.$id)
-            console.log("Response",resp)
+            console.log("The new Module🐋",res)
             router.push("/bibliothek")
             
             console.log("Created new Module")
+            if ( isModal) {
+              isModal(false)
+            }
             }}
           >
             {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">Modul erstellsen</Text>}

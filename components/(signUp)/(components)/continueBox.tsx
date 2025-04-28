@@ -5,14 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 const ContinueBox = ({colorBorder, colorBG, iconName, handlePress, text,selected, horizontal=false}) => {
   return (
     <TouchableOpacity
-                    className={`flex-1 rounded-[10px] bg-[#0c111d] border-gray-800 border-[1px] p-2 m-2 items-center justify-start shadow-lg ${horizontal ? "flex-row " :""}`}
+                    className={`flex-1 rounded-[10px] bg-[#0c111d] border-gray-800 border-[1px] p-2 m-2 items-center justify-start shadow-lg ${horizontal ? "flex-row " :"w-full"}`}
                     onPress={handlePress}
                     style={{
                       borderColor: colorBorder,
                       shadowColor: selected ? colorBorder : null, // Grau-Blauer Glow
                       shadowRadius: selected ? 10 : 0, // Größe des Glows
                       shadowOpacity: selected ? 0.8 : 0, // Sichtbarkeit des Glows
-                      maxWidth: 300,
+                      maxWidth: horizontal ? null : 300,
                       shadowOffset: { width: 0, height: 0 },
                       elevation: 10, // Für Android
                     }}
@@ -44,7 +44,7 @@ const ContinueBox = ({colorBorder, colorBG, iconName, handlePress, text,selected
                     </TouchableOpacity>
                     
                   <View className='flex-1 pr-2 p-1'>
-                    <Text className="text-start text-gray-300 font-semibold text-[15px]"
+                    <Text className={`${horizontal ? "text-start" : "text-center"} text-gray-300 font-semibold text-[15px]`}
                     >
                       {text}
                     </Text>

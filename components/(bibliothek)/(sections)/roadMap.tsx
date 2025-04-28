@@ -2,9 +2,11 @@ import { View, Text, useWindowDimensions, TouchableOpacity,ScrollView } from 're
 import React, { useState } from 'react'
 import SessionProgress from '../sessionProgress'
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { updateUserUsageSessions } from '@/lib/appwriteUpdate';
 
 const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab}) => { 
-  
+  const { user } = useGlobalContext();
   function getAll(){
     let bad = 0
     let ok = 0
@@ -30,14 +32,21 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
   
 
  
-  const CircularButton = ({ onPress,children,index,color }) => {
+  const CircularButton = ({ onPress,children,index,color,session }) => {
     const [isPressed, setIsPressed] = useState(false);
   
     return (
       <View className="items-center justify-center">
       <TouchableOpacity
         activeOpacity={1}
-        onPress={()=> {setSelected(index); setTab(0)}}
+        onPress={()=> {setSelected(index); setTab(0);  updateUserUsageSessions(user.$id, {
+          name: session.title,
+          sessionID: session.id,
+          percent : session.percent,
+          color: session.color,
+          iconName: session.iconName,
+          questions : session.questions,
+        })}}
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
         className="rounded-full flex items-center justify-center"
@@ -211,7 +220,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
               >
                 <SessionProgress 
                 selected={selected == index} 
-                setSelected={()=> setSelected(index)} 
+                setSelected={()=> {setSelected(index)}} 
                 first={index == 0}  
                 progressr={module.percent}
                 strokeColor={module.color == "red" ? "#FF4D4D" :      // Kräftiges Hellrot  
@@ -224,7 +233,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
                   module.color == "pink" ? "#FF4DA6" :     // Kräftiges Pink  
                   "#E5E7EB"}
                 > 
-                     <CircularButton index={index} color={module.color}> 
+                     <CircularButton index={index} color={module.color} session={module}> 
                         <Icon name={module.iconName} size={20} color="white"/>
                       </CircularButton>
                 </SessionProgress>

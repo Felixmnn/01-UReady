@@ -2,15 +2,9 @@ import { View, Text, TouchableOpacity, Modal, TextInput ,Image, ActivityIndicato
 import React from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useState, useEffect } from 'react'
-import Svg, { Circle } from "react-native-svg";
-import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
-import SwichTab from '@/components/(tabs)/swichTab';
-import OptionSelector from '@/components/(tabs)/optionSelector';
-import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { addUserDatakathegory } from '@/lib/appwriteAdd';
 import { ausbildungsListDeutschland, ausbildungsTypen, countryList, languages, LeibnizSubjects, schoolListDeutschland, universityListDeutschland } from '@/assets/exapleData/countryList';
 import UniversityFilters from '@/components/(entdecken)/university';
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
@@ -19,6 +13,7 @@ import EudcationFilters from '@/components/(entdecken)/education';
 import OtherFilters from '@/components/(entdecken)/other';
 import CountryFlag from 'react-native-country-flag';
 import { router } from 'expo-router';
+import { addNewModule } from '@/lib/appwriteAdd';
 
 const entdecken = () => {
   const {user, isLoggedIn,isLoading } = useGlobalContext();
@@ -31,18 +26,13 @@ const entdecken = () => {
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const numColumns = Math.floor(width / 300);
 
-  const tabWidth = width / 2; // Da es zwei Tabs gibt
   const longVertical = width > 900;
   const [ tab, setTab ] = useState(0)
+  const [ selectedModules, setSelectedModules] = useState([])
   
-
-  //Liste mit Filern
-  const countrys = countryList
-  const kathegorys = ["UNIVERSITY", "SCHOOL", "AUSBLIDUNG","OTHER"]
-
   //Allgemeine Filter
   const [ selectedCountry, setSelectedCountry] = useState(countryList[0])
-  const [ filterVisible, setFilterVisible] = useState(false)
+  const [ filterVisible, setFilterVisible] = useState(true)
   const [ selectedKathegory, setSelectedKathegory ] = useState("UNIVERSITY")
 
   //Module entdecken
@@ -92,6 +82,20 @@ const entdecken = () => {
     }
   ]
 
+  const [ searchBarText, setSearchBarText ] = useState("")
+  const [ focused, setFocused ] = useState(false)
+  async function add(mod) {
+          setLoading(true)
+          console.log("Module", mod)
+          try {
+              const res = await addNewModule(mod)
+              console.log("Module added", res)
+              setLoading(false)
+          } catch (error) {
+              console.log("Error", error)
+              setLoading(false)
+          }
+      }
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] relative'>
@@ -99,7 +103,7 @@ const entdecken = () => {
             {
               width > 400 ?
                 <Text className='font-bold text-3xl text-gray-100'>
-                  Entdecken
+                  Entdecken {width}
                 </Text>
                 : null
             }
@@ -127,15 +131,22 @@ const entdecken = () => {
             </View>
           </View>
           <View className='flex-row w-full items-center'>
-            <View className='flex-1 h-[35px] bg-gray-800 rounded-[10px] ml-4 mr-2 mb-2 p-3 flex-row items-center justify-between'>
-              <View className='flex-row'>
+            <View className='flex-1 h-[35px] w-full bg-gray-800 rounded-[10px] ml-4 mr-2 mb-2 p-3 flex-row items-center justify-between'>
+              <View className='w-full flex-row '>
                 <Icon name="search" size={18} color="white" />
-                <TextInput  placeholder='Was möchtest du lernen?' 
-                            className='ml-3' 
+                <TextInput 
+                            className='ml-3 w-full text-white ' 
+                            style = {{
+                              borderColor: focused ? "#1f2937" : "#1f2937",
+                              outline: 'none',
+                              borderWidth: 1,
+                            }}
+                            onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)}
+                            placeholder="Suche nach Modulen"
+                            onChangeText={(text) => setSearchBarText(text)}
                             placeholderTextColor={"#797d83"} 
-                            style={{
-                              borderWidth: 0,
-                            }}/>
+                            />
               </View>
             </View>
             {longVertical ? null : <TouchableOpacity onPress={()=> setFilterVisible(!filterVisible)} className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'><Icon name="filter" size={15} color="white"/> </TouchableOpacity> }
@@ -146,29 +157,36 @@ const entdecken = () => {
           
             <View style={{ zIndex: 10, position: "relative" }}>
               {
-                selectedKathegory == "UNIVERSITY" && filterVisible ? (
+                selectedKathegory == "UNIVERSITY" && (filterVisible || width > 800) ? (
                   <UniversityFilters
                     setModules={setModules}
                     setLoading={setLoading}
                     country={countryList[0]}
+                    searchbarText={searchBarText}
                   />
-                ) : selectedKathegory == "SCHOOL" && filterVisible  ? (
+                ) : selectedKathegory == "SCHOOL" && (filterVisible || width > 800)  ? (
                   <SchoolFilters
                     setModules={setModules}
                     setLoading={setLoading}
                     country={countryList[0]}
+                    searchbarText={searchBarText}
+
                   />
-                ) : selectedKathegory == "EDUCATION" && filterVisible  ? (
+                ) : selectedKathegory == "EDUCATION" && (filterVisible || width > 800)  ? (
                   <EudcationFilters
                     setModules={setModules}
                     setLoading={setLoading}
                     country={countryList[0]}
+                    searchbarText={searchBarText}
+
                   />
-                ) : selectedKathegory == "OTHER" && filterVisible  ? (
+                ) : selectedKathegory == "OTHER" && (filterVisible || width > 800)  ? (
                   <OtherFilters
                     setModules={setModules}
                     setLoading={setLoading}
                     country={countryList[0]}
+                    searchbarText={searchBarText}
+
                   /> ): null
               }
             </View>
@@ -188,19 +206,39 @@ const entdecken = () => {
                 <View className='flex-1'>
                   {modules.length > 0 ? (
                     <View className='flex-1 w-full'>
-                    <FlatList
-                      data={modules}
-                      renderItem={({ item,index }) => (
-                        <View className='flex-1 mr-2  '>
-                          <Karteikarte handlePress={()=> {}} farbe={item.color} percentage={null} titel={item.name} studiengang={item.subject} fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
-                        </View>
-                      )}
-                      keyExtractor={(item) => item.$id}
-                      key={numColumns}
-                      numColumns={numColumns}
-                      showsHorizontalScrollIndicator={false}
-                      showsVerticalScrollIndicator={false}
-                    />
+                      <FlatList
+                        data={modules.filter((item) =>
+                          item.name.toLowerCase().includes(searchBarText.toLowerCase())
+                        )}
+                        renderItem={({ item, index }) => (
+                          <View className={`flex-1 mr-2  ${selectedModules.includes(item.name) ? "" : "opacity-50"} `}>
+                            <Karteikarte
+                              handlePress={()=> {
+                                if (selectedModules.includes(item.name)){
+                                    setSelectedModules(selectedModules.filter((module) => module !== item.name))
+                                } else {
+                                    setSelectedModules([...selectedModules, item.name])
+                                }
+                              }}
+                              farbe={item.color}
+                              percentage={null}
+                              titel={item.name}
+                              studiengang={item.subject}
+                              fragenAnzahl={item.questions}
+                              notizAnzahl={item.notes}
+                              creator={item.creator}
+                              availability={item.public}
+                              icon={"clock"}
+                              publicM={item.public}
+                            />
+                          </View>
+                        )}
+                        keyExtractor={(item) => item.$id}
+                        key={numColumns}
+                        numColumns={numColumns}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
+                      />
                     </View>
                   ) : (
                     <View className="flex-1 items-center justify-center">
@@ -223,7 +261,71 @@ const entdecken = () => {
                 </View>
               )}
             </View>
+            
           </View>
+          {
+            selectedModules.length == 0 ? null :
+          <View className='absolute bottom-0 w-full  rounded-full p-2' >
+            <TouchableOpacity disabled={loading} className='flex-row items-center justify-center p-2 bg-blue-500 rounded-full' 
+              onPress={async ()=> {
+                                  if (selectedModules.length > 0){
+                                      modules.map((module) => {
+                                          if (selectedModules.includes(module.name)){
+                                              const mod = {
+                                                  name: module.name + " (Kopie)",
+                                                  subject: module.subject,
+                                                  questions: module.questions,
+                                                  notes: module.notes,
+                                                  documents: module.documents,
+                                                  public: false,
+                                                  progress: 0,
+                                                  creator: user.$id,
+                                                  color: module.color,
+                                                  sessions: module.sessions,
+                                                  tags: module.tags,
+                                                  description: module.description,
+                                                  releaseDate: new Date() ,
+                                                  connectedModules: [],
+                                                  qualityScore: module.qualityScore,
+                                                  duration: 0,
+                                                  upvotes: 0,
+                                                  downVotes: 0,
+                                                  creationCountry: null,
+                                                  creationUniversity: null,
+                                                  creationUniversityProfession: null,
+                                                  creationRegion: null,
+                                                  creationUniversitySubject: [],
+                                                  creationSubject: [],
+                                                  creationEducationSubject: null,
+                                                  creationUniversityFaculty: [],
+                                                  creationSchoolForm: null,
+                                                  creationKlassNumber: null,
+                                                  creationLanguage: null,
+                                                  creationEducationKathegory:null,
+                                                  copy: true,
+                                              }
+                                              console.log("Module", mod)
+                                              add(mod)
+                                          }
+              
+                                      }
+                                      
+                                  )
+                                  } else {
+                                      console.log("Please select")
+                                  }
+                                  router.push("/bibliothek")
+                              }}
+            >
+              {
+                loading ? <ActivityIndicator size="small" color="#fff" /> :
+                <Text className='text-white  font-semibold text-[15px]'>{selectedModules.length == 1 ? "Modul Kopieren" : "Module Kopieren"}</Text>
+
+
+              }
+            </TouchableOpacity>
+          </View>
+        }
         </View>
       
 

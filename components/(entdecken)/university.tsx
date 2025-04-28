@@ -58,19 +58,27 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
   return (
     <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
       <View className='w-full flex-row px-4 py-1'>
+        {
+          width < 800 ?
       <TouchableOpacity onPress={()=> setSelectedFilter(selectedFilter == 0 ? 3 : selectedFilter -1)} className='bg-gray-800 rounded-full p-2'>
         <Icon name="chevron-left" size={20} color={"white"}  />
       </TouchableOpacity>
+          : null
+        }
         <View className={`flex-row flex-1  `} style={{  zIndex: 1, position: 'relative', }}>
           {
-            selectedFilter == 0 || width > 600 ? 
+            selectedFilter == 0 || width > 800 || (selectedFilter == 3 && width > 600) ? 
         <DropDownList title={"Universität"} options={universityList.map((item) => item.name)} selectedOptions={selectedUniversity} setSelectedOptions={()=> {}} height={height} />
-            : selectedFilter == 1  || width > 600 ? 
+        : null}
+        {    
+        selectedFilter == 1  || width > 800 || (selectedFilter == 0 && width > 600) ? 
         <DropDownList title={"Abschlussziel"} options={abschlussziele.map((item) => item)} selectedOptions={selectedAbschlussziele} setSelectedOptions={(item)=> {
             setSelectedAbschlussziele(item)
             setUniversitySubjects(LeibnizSubjects[0][abschlussziele[abschlussziele.indexOf(item)]])
         }}/>
-        : selectedFilter == 2 || width > 600 ?
+        : null}
+        {
+        selectedFilter == 2 || width > 800 || (selectedFilter == 1 && width > 600)  ?
         <DropDownList title={"Fakultät"} options={universityFacultys} selectedOptions={selectedFacultys} setSelectedOptions={(item)=> {
             if (selectedFacultys.includes(item)) {
                 setSelectedFacultys(selectedFacultys.filter((i) => i !== item));
@@ -79,7 +87,9 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
                 setSelectedFacultys([...selectedFacultys, item]);
               }
         }}/>
-        : selectedFilter == 3 || width > 600 ?
+        : null}
+        {
+        selectedFilter == 3 || width > 800 || (selectedFilter == 2 && width > 600)?
         <DropDownList title={"Subjects"} options={universitySubjects.map((item) => item.name)} selectedOptions={selectedSubjects} setSelectedOptions={(item)=> {
             if (selectedSubjects.includes(item)) {
                 setSelectedSubjects(selectedSubjects.filter((i) => i !== item));
@@ -91,9 +101,14 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
         : null
           }
         </View>
+
+        {
+          width < 800 ?
         <TouchableOpacity onPress={()=> setSelectedFilter(selectedFilter == 3 ? 0 : selectedFilter +1)} className='bg-gray-800 rounded-full p-2'>
         <Icon name="chevron-right" size={20} color={"white"}  />
       </TouchableOpacity>
+          : null
+        }
       </View>
     </View>
   )

@@ -99,7 +99,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                                                         setSelectedModules([...selectedModules, item.name])
                                                     }
                                                 }}
-                                                farbe={item.color} studiengang={item.description} percentage={item.progress} titel={item.name}  fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
+                                                farbe={item.color} studiengang={item.description} percentage={item.progress} titel={item.name}  fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={user.$id} availability={item.public} icon={"clock"} publicM={item.public} />
                                     </View>
                                 )}
                                 keyExtractor={(item) => item.$id}

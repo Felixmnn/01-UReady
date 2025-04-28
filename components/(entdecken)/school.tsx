@@ -1,8 +1,9 @@
-import { View, Text, useWindowDimensions } from 'react-native'
+import { View, Text, useWindowDimensions, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import DropDownList from './dropDownList'
 import { schoolQuery } from '@/lib/appwriteQuerys'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions()
@@ -51,9 +52,19 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
     
         },[selectedRegions,selectedSchoolTypes,selectedSchoolSubjects,selectedSchoolStages])
 
+        const [selectedFilter, setSelectedFilter] = useState(0)
   return (
-    <View className=' w-full' style={{ position: "relative" /* Wichtig! */ }}>
-        <View className='flex-row' style={{  paddingHorizontal:11,zIndex: 1, position: 'relative', }}>
+    <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
+          <View className='w-full flex-row px-4 py-1'>
+            {
+                width < 600 ?
+            <TouchableOpacity onPress={()=> setSelectedFilter(selectedFilter == 0 ? 3 : selectedFilter -1)} className='bg-gray-800 rounded-full p-2'>
+            <Icon name="chevron-left" size={20} color={"white"}  />
+            </TouchableOpacity>
+                : null
+            }
+            {
+            selectedFilter == 0 || width > 600 || (selectedFilter == 3 && width > 400) ? 
         <DropDownList
             title={"Region"}
             options={regions.map((item) => item)}
@@ -68,6 +79,9 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
             }}
             height={height}
             />
+            : null}
+        {    
+        selectedFilter == 1  || width > 600 || (selectedFilter == 0 && width > 400) ? 
         <DropDownList
             title={"Schulform"}
             options={scholTypes.map((item) => item)}
@@ -82,6 +96,10 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
             }}
             height={height}
             />
+            : null}
+        {
+        selectedFilter == 2 || width > 600 || (selectedFilter == 1 && width > 400)  ?
+
         <DropDownList
             title={"Fächer"}
             options={schoolSubjects.map((item) => item)}
@@ -96,6 +114,9 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
             }}
             height={height}
             />
+            : null}
+        {
+        selectedFilter == 3 || width > 600 || (selectedFilter == 2 && width > 400)?
         <DropDownList
             title={"Klasse"}
             options={schoolStages.map((item) => item)}
@@ -110,12 +131,17 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
             }}
             height={height}
             />  
+            : null
+          }
+            {
+                width < 600 ?
+            <TouchableOpacity onPress={()=> setSelectedFilter(selectedFilter == 3 ? 0 : selectedFilter +1)} className='bg-gray-800 rounded-full p-2'>
+            <Icon name="chevron-right" size={20} color={"white"}  />
+            </TouchableOpacity>
+                : null
+            }
         
         </View> 
-        <View
-            className='w-full bg-gray-500 border-gray-500 border-t-[1px] mt-2'
-            style={{ zIndex: 0 }}
-        />
     </View>
   )
 }

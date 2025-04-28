@@ -3,9 +3,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import CustomButton from '../../(general)/customButton';
-import {loadModules, loadUserDataKathegory} from "../../../lib/appwriteDaten"
-import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
+import { loadUserDataKathegory} from "../../../lib/appwriteDaten"
 import AddModule from '@/components/(general)/(modal)/addModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules } from '@/lib/appwriteUpdate';
@@ -109,6 +107,7 @@ console.log("New Module",newModule)
               <Icon name={last7Hidden ? "chevron-down" : "chevron-up"} size={15} color="white"/>
             </View>
           </TouchableOpacity>
+          
         {
           !last7Hidden ? null :
           <FlatList
@@ -136,6 +135,8 @@ console.log("New Module",newModule)
           />
         }
         
+        
+
         </View>
       </View>
   )

@@ -35,7 +35,11 @@ const HomeGeneral = ({setSelectedPage}) => {
         const res = await loadUserUsage(user.$id)
         console.log("Nutzer Daten wurden geladen:", res);
         if (res) {
-          setUserUsage({res, lastModules: res.lastModules.map((item) => JSON.parse(item) ), lastSessions: res.lastSessions.map((item) => JSON.parse(item) )});
+          setUserUsage({
+            ...res, 
+            lastModules: res.lastModules.map((item) => JSON.parse(item)),
+            lastSessions: res.lastSessions.map((item) => JSON.parse(item)),
+          })
           setLoading(false)
         } else {
           const res = await addUserUsage(user.$id,userUsage)
@@ -272,7 +276,7 @@ const HomeGeneral = ({setSelectedPage}) => {
   })
   
   const [isVisibleNewAiModule, setIsVisibleAiModule] = useState(false)
-  
+  console.log("User Usage",userUsage)
   return (
     <ScrollView>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
@@ -288,12 +292,12 @@ const HomeGeneral = ({setSelectedPage}) => {
                 <View className='flex-row m-2 p-5' >
                   <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
                     <Icon name="microchip" size={20} color={"white"}/>
-                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage.microChips}</Text>
+                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.microchip}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
                   >
                     <Icon name="bolt" size={20} color={"white"}/>
-                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage.boostActive ? "∞" : userUsage.energy}</Text>
+                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.boostActive ? "∞" : userUsage?.energy}</Text>
                   </TouchableOpacity>
                 </View>
 

@@ -60,6 +60,8 @@ const CreateNote = () => {
                     }}
                     onBlur={() => saveChanges()}
                     style={{
+                        textAlignVertical: 'top', // <-- Das ist entscheidend
+
                         scrollbarWidth: 'thin', // Dünne Scrollbar
                         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
                       }}

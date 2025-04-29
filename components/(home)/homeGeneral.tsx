@@ -147,7 +147,7 @@ const HomeGeneral = ({setSelectedPage}) => {
     return (
       <View className='bg-gray-900 rounded-[10px] mx-2 border-gray-800 border-[1px]  items-center justify-between'>
         <View 
-        className={`bg-${item.color}-500 rounded-t-[10px]`}
+        className={`bg-${item.color.toLowerCase()}-500 rounded-t-[10px]`}
         style={{
           width: "100%",
           height: 5, 
@@ -156,7 +156,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         <View className='p-3 justify-start'>
           <View className='flex-row items-center justify-between'>
             <Text className='text-white font-bold text-[15px]'>{item.name}</Text>
-            <VektorCircle color={item.color} percentage={item.percent} icon={"clock"} strokeColor={item.color}/>
+            <VektorCircle color={item.color.toLowerCase()} percentage={item.percent} icon={"clock"} strokeColor={item.color.toLowerCase()}/>
 
           </View>
           <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{item.fragen} Fragen • {item.sessions} Sessions</Text>
@@ -305,7 +305,7 @@ const HomeGeneral = ({setSelectedPage}) => {
       <Header title={"Letzte Module"}/>
       <ScrollView  horizontal={true} className='flex-row'>
           {
-            userUsage.lastModules.length == 0 ?
+            !userUsage || userUsage.lastModules.length == 0 ?
             <View>
               <Module item={{
                   name: "Getting Started",
@@ -326,7 +326,7 @@ const HomeGeneral = ({setSelectedPage}) => {
       <Header title={"Letzte Sessions"}/>
       <ScrollView  horizontal={true} className='flex-row'>
           {
-            userUsage.lastModules.length == 0 ?
+            !userUsage || userUsage.lastModules.length == 0 ?
             <View className='flex-row'>
               <Session item={{
                   name: "Erstes Modul",

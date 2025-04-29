@@ -101,7 +101,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
         <View className='w-full'>
           <View className='m-2 flex-row items-center'>
             <Icon name="arrow-left" size={20} color="white" onPress={() => setUserChoices(null)} />
-            <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Modul mit KI support</Text>
+            <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Neues Modul</Text>
           </View>
           <View className="flex-row ">
             <View className="flex-1 justify-between">
@@ -115,8 +115,16 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
                 placeholderTextColor="#AAAAAA"
               />
             </View>
-            <TouchableOpacity>
-              <Icon name="globe" size={20} color="#4B5563" />
+            <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
+              className='h-[30px] w-[30px]'
+              >
+              {
+                newModule?.public ? (
+                  <Icon name="globe" size={20} color="#4B5563" />
+                ) : (
+                  <Icon name="lock" size={20} color="#4B5563" />
+                )
+                }
             </TouchableOpacity>
           </View>
 

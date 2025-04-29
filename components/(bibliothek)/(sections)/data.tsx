@@ -130,7 +130,7 @@ return (
         {filteredData ? 
         <FlatList
             data={filteredData}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => `${item.$id}-${index}`}
             style={{
                 scrollbarWidth: 'thin', // Dünne Scrollbar
                 scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
@@ -168,7 +168,7 @@ return (
             documents ? 
             <FlatList
             data={filteredDocuments}
-            keyExtractor={(item) => item.$id}
+            keyExtractor={(item, index) => `${item.$id}-${index}`}
             className='w-full'
             style={{
                 scrollbarWidth: 'thin', // Dünne Scrollbar
@@ -236,7 +236,7 @@ return (
               }}
             renderItem={({item}) => {
                 return (
-                    <TouchableOpacity onPress={()=> {router.push({
+                    <TouchableOpacity  onPress={()=> {router.push({
                                 pathname:"editNote",
                                 params: {note: JSON.stringify(item)}
                             }) }} 

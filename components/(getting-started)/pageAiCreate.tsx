@@ -133,8 +133,16 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices }) => 
                 placeholderTextColor="#AAAAAA"
               />
             </View>
-            <TouchableOpacity>
-              <Icon name="globe" size={20} color="#4B5563" />
+            <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
+              className='h-[30px] w-[30px]'
+              >
+              {
+                newModule?.public ? (
+                  <Icon name="globe" size={20} color="#4B5563" />
+                ) : (
+                  <Icon name="lock" size={20} color="#4B5563" />
+                )
+                }
             </TouchableOpacity>
           </View>
 
@@ -443,6 +451,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices }) => 
                 setIsError(true);
                 return;
               }
+
               await materialToModule(
                 user,
                 items,

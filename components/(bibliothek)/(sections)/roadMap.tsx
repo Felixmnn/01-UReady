@@ -39,7 +39,11 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
       <View className="items-center justify-center">
       <TouchableOpacity
         activeOpacity={1}
-        onPress={()=> {setSelected(index); setTab(0);  updateUserUsageSessions(user.$id, {
+        onPress={()=> {
+          if (index > moduleSessions.length) {
+            setSelected(index); setTab(0); return
+          }
+          setSelected(index); setTab(0);  updateUserUsageSessions(user.$id, {
           name: session.title,
           sessionID: session.id,
           percent : session.percent,
@@ -216,7 +220,8 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
               <View style={{
                 marginLeft, marginRight, marginTop,marginBottom
               }}
-              key={module.$id}
+              key={`${module.$id}-${index}`}
+
               >
                 <SessionProgress 
                 selected={selected == index} 

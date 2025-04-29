@@ -71,8 +71,12 @@ const ProfileSettings = ({setPage}) => {
           visible={modalVisible}
           onRequestClose={toggleModal}
         >
-          <View className='flex-1 items-center justify-center' >
-            <View className='items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600'>
+          <View className='flex-1 items-center justify-center p-2' >
+            <View className='w-full  items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600'
+            style={{
+              height: 200,
+            }}
+            >
               <Text className='text-white font-bold text-[15px] my-3'> Aktioncode einlösen</Text>
               <CustomTextInput text={text} setText={setText}  isFocused={isFocused} setFocused={setFocused} firstFocus={firstFocus} setFirstFocus={setFirstFocus}/>
               <View className='flex-1 flex-row items-center justify-center'>

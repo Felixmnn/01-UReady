@@ -6,59 +6,81 @@ import { addQUestion, setUserDataSetup } from '@/lib/appwriteEdit';
 import {router} from 'expo-router';
 
 
-export async function materialToModule(user,material,userData,newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading) {
-    setLoading(true)
-    let directQuestions = []
-    for (let i = 0; i < material.length; i++) {
-        try {
-            let res;
-            if (material[i].type == "PEN" ) {
-                console.log("Erstelle Fragen aus Text...")
-                res = await generateQuestionsFromText(material[i].content, "5-10", material[i].sessionID , "PLACEHOLDER");
-            } else if (material[i].type == "TOPIC" ) {
-                console.log("Erstelle Fragen aus Themen...")
-                res = await questionFromTopic(material[i].content, material[i].sessionID , "PLACEHOLDER");
-            } else {
-                generateQuestionsFromFile(material[i].uri);
-                res = []
-            }
-            if (typeof res == "object"){
-                if (Array.isArray(res)) {
-                    directQuestions = [...directQuestions, ...res]
-                    setQuestions((prev) => [...prev, ...res]); 
-                  }
-                
-                console.log("Die Fragen sind:", res)
-            }
-            
-        } catch (error) {
-            console.log(error);
-        }
-        
-    }
-    console.log("Die Fragen sind:", questions)
-    const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), questions: questions.length, sessions:sessions.map(item => JSON.stringify(item)) });
-    console.log("Das neue Modul ist:", res)
-    for (let i = 0; i < directQuestions.length; i++) {
-        console.log("So liegt Questions vor:", directQuestions[i])
-        try {
-            
-        const question = {...directQuestions[i], subjectID: res.$id};
 
-        const s = await addQUestion (question); 
-        console.log("Erfolg 🔴🔴🔴", s)
-        } catch (error) {
-            console.log(error);
+export async function materialToModule(user, material, userData, newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading) {
+  setLoading(true);
+  let directQuestions = [];
+
+  try {
+    for (let i = 0; i < material.length; i++) {
+      try {
+        let res;
+        if (material[i].type == "PEN") {
+          console.log("Erstelle Fragen aus Text...");
+          res = await generateQuestionsFromText(material[i].content, "5-10", material[i].sessionID, "PLACEHOLDER");
+        } else if (material[i].type == "TOPIC") {
+          console.log("Erstelle Fragen aus Themen...");
+          res = await questionFromTopic(material[i].content, material[i].sessionID, "PLACEHOLDER");
+        } else {
+          console.log("Erstelle Fragen aus Datei...");
+          await generateQuestionsFromFile(material[i].uri);
+          res = [];
         }
-    //Speichern Des Moduls in der Appwrite Datenbank
-    //Speichern aller Fragen in der Appwrite Datenbank
-    
-}setLoading(false)
-    //Beenden des Moduls
-    const resp = await setUserDataSetup(user.$id)
-    console.log(user.$id)
-    console.log("User data updated: ", resp)
-    router.push("/bibliothek")
+
+        if (typeof res == "object" && Array.isArray(res)) {
+          directQuestions = [...directQuestions, ...res];
+          setQuestions((prev) => [...prev, ...res]);
+          console.log("Die Fragen sind:", res);
+        }
+      } catch (error) {
+        console.log("Fehler beim Fragen-Generieren:", error);
+        // Fehler hier wird ignoriert und der nächste Durchlauf beginnt
+      }
+    }
+
+    console.log("Alle gesammelten Fragen:", questions);
+
+    // Modul trotzdem speichern, selbst wenn Fragen fehlen
+    let newModuleData;
+    try {
+      newModuleData = await addNewModule({
+        ...newModule,
+        color: newModule.color.toUpperCase(),
+        questions: questions.length,
+        sessions: sessions.map((item) => JSON.stringify(item)),
+      });
+      console.log("Das neue Modul ist:", newModuleData);
+    } catch (error) {
+      console.log("Fehler beim Speichern des Moduls:", error);
+      // Wenn Modul-Speicherung fehlschlägt, redirect trotzdem ausführen
+    }
+
+    // Fragen speichern
+    if (newModuleData && newModuleData.$id) {
+      for (let i = 0; i < directQuestions.length; i++) {
+        try {
+          const question = { ...directQuestions[i], subjectID: newModuleData.$id };
+          const savedQuestion = await addQUestion(question);
+          console.log("Frage gespeichert 🔴🔴🔴", savedQuestion);
+        } catch (error) {
+          console.log("Fehler beim Speichern einer Frage:", error);
+        }
+      }
+    }
+
+    // Benutzer-Daten aktualisieren
+    try {
+      const resp = await setUserDataSetup(user.$id);
+      console.log("Benutzerdaten aktualisiert:", resp);
+    } catch (error) {
+      console.log("Fehler beim Aktualisieren der Benutzerdaten:", error);
+    }
+  } catch (error) {
+    console.log("Allgemeiner Fehler:", error);
+  } finally {
+    setLoading(false);
+    router.push("/bibliothek");
+  }
 }
 
 

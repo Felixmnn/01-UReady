@@ -7,9 +7,10 @@ import {router } from 'expo-router';
 import ModalNewQuestion from '../(modals)/newQuestion';
 import AiQuestion from '../(modals)/aiQuestion';
 import ModalSessionList from '../(modals)/modalSessionList';
-const Header = ({setSelectedScreen,selectedModule, selected, sessions, setSessions, addDocument, setQuestions, questions}) => {
+const Header = ({setSelectedScreen,selectedModule, selected, sessions, setSessions, addDocument, setQuestions, questions, moduleSessions}) => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
+    const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
 
     const [ tab, setTab ] = useState(0)
     const tabWidth = width / 2; // Da es zwei Tabs gibt
@@ -47,7 +48,11 @@ const Header = ({setSelectedScreen,selectedModule, selected, sessions, setSessio
                             <Icon name="plus" size={15} color="white"/>
                             {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>Material hinzufügen</Text> : null}
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> {}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
+                        <TouchableOpacity onPress={()=> router.push({
+                                                        pathname:"quiz",
+                                                        params: {questions: JSON.stringify(filteredData)}
+                            })}  
+                            className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name="play" size={15} color="white"/>
                             {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>Jetzt lernen</Text> : null}
                         </TouchableOpacity>

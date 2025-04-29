@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity, Modal, TextInput ,Image, ActivityIndicator, FlatList} from 'react-native'
+import { View, Text, TouchableOpacity, Modal, TextInput ,Image, ActivityIndicator, FlatList, Platform} from 'react-native'
 import React from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useState, useEffect } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { ausbildungsListDeutschland, ausbildungsTypen, countryList, languages, LeibnizSubjects, schoolListDeutschland, universityListDeutschland } from '@/assets/exapleData/countryList';
+import {countryList,} from '@/assets/exapleData/countryList';
 import UniversityFilters from '@/components/(entdecken)/university';
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import SchoolFilters from '@/components/(entdecken)/school';
@@ -16,6 +16,8 @@ import { router } from 'expo-router';
 import { addNewModule } from '@/lib/appwriteAdd';
 
 const entdecken = () => {
+
+  {/*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */}
   const {user, isLoggedIn,isLoading } = useGlobalContext();
     useEffect(() => {
       if (!isLoading && (!user || !isLoggedIn)) {
@@ -111,7 +113,7 @@ const entdecken = () => {
               <View className='flex-1 justify-between flex-row items-center bg-gray-800 rounded-full px-1 ' style={{ height: 40 }}>
                 {
                   options.map((option, index) => (
-                        <TouchableOpacity className={` rounded-full ${width > 600 ? "p-3" : "p-2"} ${selectedKathegory == option.enum ? "bg-gray-500 w-[100px] items-center" : ""}`} onPress={() => {setSelectedKathegory(option.enum)}}>
+                        <TouchableOpacity key={option.enum} className={` rounded-full ${width > 600 ? "p-3" : "p-2"} ${selectedKathegory == option.enum ? "bg-gray-500 w-[100px] items-center" : ""}`} onPress={() => {setSelectedKathegory(option.enum)}}>
                     {
                         width > 600 ?
                       <Text className='text-white'>{option.name}</Text>
@@ -131,26 +133,39 @@ const entdecken = () => {
             </View>
           </View>
           <View className='flex-row w-full items-center'>
-            <View className='flex-1 h-[35px] w-full bg-gray-800 rounded-[10px] ml-4 mr-2 mb-2 p-3 flex-row items-center justify-between'>
-              <View className='w-full flex-row '>
-                <Icon name="search" size={18} color="white" />
-                <TextInput 
-                            className='ml-3 w-full text-white ' 
+            <View className='flex-1    w-full bg-gray-800  rounded-[10px] ml-4 mr-2 mb-2  px-2 flex-row items-center justify-between'            >
+              <View className='w-full flex-row items-center'
+              style={{
+                height:40
+              }}
+              >
+              <Icon name="search" size={18} color="white" />
+              <TextInput 
+                            className='ml-3 w-full ' 
                             style = {{
+                              color: "white",
                               borderColor: focused ? "#1f2937" : "#1f2937",
                               outline: 'none',
                               borderWidth: 1,
                             }}
+                            value={searchBarText}
                             onFocus={() => setFocused(true)}
                             onBlur={() => setFocused(false)}
                             placeholder="Suche nach Modulen"
                             onChangeText={(text) => setSearchBarText(text)}
                             placeholderTextColor={"#797d83"} 
                             />
-              </View>
             </View>
-            {longVertical ? null : <TouchableOpacity onPress={()=> setFilterVisible(!filterVisible)} className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'><Icon name="filter" size={15} color="white"/> </TouchableOpacity> }
           </View>
+          {
+            longVertical ? 
+             null :
+              <TouchableOpacity onPress={()=> setFilterVisible(!filterVisible)} className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'>
+                <Icon name="filter" size={15} color="white"/> 
+              </TouchableOpacity>
+          }
+          </View>
+
           <View className="w-full flex-1" style={{ flex: 1, position: "relative", }}>
   
             {/* UniversityFilters liegt ganz oben */}
@@ -208,16 +223,16 @@ const entdecken = () => {
                     <View className='flex-1 w-full'>
                       <FlatList
                         data={modules.filter((item) =>
-                          item.name.toLowerCase().includes(searchBarText.toLowerCase())
+                          item.$id.toLowerCase().includes(searchBarText.toLowerCase())
                         )}
                         renderItem={({ item, index }) => (
-                          <View className={`flex-1 mr-2  ${selectedModules.includes(item.name) ? "" : "opacity-50"} `}>
+                          <View className={`flex-1 mr-2  ${selectedModules.includes(item.$id) ? "" : "opacity-50"} `}>
                             <Karteikarte
                               handlePress={()=> {
-                                if (selectedModules.includes(item.name)){
-                                    setSelectedModules(selectedModules.filter((module) => module !== item.name))
+                                if (selectedModules.includes(item.$id)){
+                                    setSelectedModules(selectedModules.filter((module) => module !== item.$id))
                                 } else {
-                                    setSelectedModules([...selectedModules, item.name])
+                                    setSelectedModules([...selectedModules, item.$id])
                                 }
                               }}
                               farbe={item.color}
@@ -265,12 +280,12 @@ const entdecken = () => {
           </View>
           {
             selectedModules.length == 0 ? null :
-          <View className='absolute bottom-0 w-full  rounded-full p-2' >
+          <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
             <TouchableOpacity disabled={loading} className='flex-row items-center justify-center p-2 bg-blue-500 rounded-full' 
               onPress={async ()=> {
                                   if (selectedModules.length > 0){
                                       modules.map((module) => {
-                                          if (selectedModules.includes(module.name)){
+                                          if (selectedModules.includes(module.$id)){
                                               const mod = {
                                                   name: module.name + " (Kopie)",
                                                   subject: module.subject,

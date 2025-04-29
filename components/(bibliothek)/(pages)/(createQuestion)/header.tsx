@@ -19,13 +19,6 @@ const Header = ({setSelected, moduleName, ungespeichert }) => {
                 <Text className='text-gray-500 text-[12px]'> {ungespeichert? "Ungespeicherte Änderungen " : "Alle änderungen gespeichert"}</Text>
             </View>
         </View>
-        <GratisPremiumButton>
-        <View className='flex-row items-center'>
-            <Icon name="robot" size={15} color="white"/>
-            {isVertical ?  <Text className='text-white ml-2'>Mit AI generieren</Text> : null}
-        </View>
-        </GratisPremiumButton>
-
     </View>
   )
 }

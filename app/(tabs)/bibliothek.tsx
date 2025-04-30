@@ -28,6 +28,8 @@ const Bibliothek = () => {
     const [selectedModule, setSelectedModule] = useState(null)
 
     const fetchModules = async () => {
+      if (!user) return;
+      console.log("User:",user);
       setLoading(true);
       await loadQuestions();
       const modulesLoaded = await getModules(user.$id);

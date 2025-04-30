@@ -56,7 +56,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
       
       
     useEffect(() => { 
-        if ( sessions == undefined  ) return;
+        if ( sessions == undefined || selectedSession > sessions[selectedSession].length ) return;
         async function fetchQuestions() {
             const questions = await getQuestions(sessions[selectedSession].id);
             console.log("🔷 Fragen zur Session wurden erfolgreich geladen:",questions)

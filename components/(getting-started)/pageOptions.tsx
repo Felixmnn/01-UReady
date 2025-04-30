@@ -60,7 +60,6 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
 
       {/* Carousel */}
       {
-        Platform.OS === "web" ?
           <View
           className='w-full items-center justify-center'
           >
@@ -69,7 +68,7 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
                 return (
                   <View
                     key={index}
-                    className='w-full'
+                    className='h-[100px] w-full'
                     >
                    
                     <ContinueBox
@@ -86,9 +85,6 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
               })
             }
           </View>
-          :
-          <CarouselOptions width={width} options={options}/>
-            
   }
       </View>
       :

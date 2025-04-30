@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator } from 'react-native'
+import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -115,7 +115,7 @@ const SignIn = () => {
           <View className="items-center justify-center flex-row">
             <Icon name="trophy" size={50} color="#fff" />
             <View className="items-center justify-center mx-4">
-              <Text className="text-white font-bold">1</Text>
+              <Text className="text-white font-bold">7</Text>
               <Text className="text-white font-bold">Nutzer</Text>
               <Text className="text-white font-bold">Weltweit</Text>
             </View>
@@ -153,10 +153,18 @@ const SignIn = () => {
               </View>) : null
             }
             {
-                selectedOption === 3 ? (<View className="w-full  justify-center">
-                <Text className='text-white font-bold text-xl'>Sign Up</Text>
+                selectedOption === 3 ? (<View className="w-full  justify-center"
+                style={{
+
+                }}
+                >
+                <Text className='w-full text-white font-bold text-xl'>Sign Up</Text>
                 <TextInput
-                    className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
+                    className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
+                    style={{
+                      width: Platform.OS === 'web' ? null : width - 60,
+                      height: 40
+                    }}
                     placeholder="Username"
                     placeholderTextColor="#fff"
                     value={signUpForm.username}
@@ -164,6 +172,10 @@ const SignIn = () => {
                 />
                 <TextInput
                     className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
+                    style={{
+                      width: Platform.OS === 'web' ? null : width - 60, 
+                      height: 40
+                    }}
                     placeholder="E-Mail"
                     placeholderTextColor="#fff"
                     value={signUpForm.email}
@@ -171,6 +183,10 @@ const SignIn = () => {
                 />
                 <TextInput
                     className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
+                    style={{
+                      width: Platform.OS === 'web' ? null : width - 60, 
+                      height: 40
+                    }}
                     placeholder="Password"
                     placeholderTextColor="#fff"
                     secureTextEntry={true}
@@ -179,6 +195,10 @@ const SignIn = () => {
                 />
                 <TextInput
                     className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
+                    style={{
+                      width: Platform.OS === 'web' ? null : width - 60, 
+                      height: 40
+                    }}
                     placeholder="Password bestätigen"
                     placeholderTextColor="#fff"
                     secureTextEntry={true}
@@ -186,6 +206,10 @@ const SignIn = () => {
                     onChangeText={(text) => setSignUpForm({ ...signUpForm, passwordConfirm: text })}
                 />
                 <TouchableOpacity className="bg-blue-500 p-2 w-full rounded-[10px] mt-2 items-center justify-center"
+                  style={{
+                    width: Platform.OS === 'web' ? null : width - 60, 
+                    height: 40
+                  }}
                   onPress={async () => {
                     
                     if (signUpForm.username.length < 3) {

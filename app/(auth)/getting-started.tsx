@@ -93,9 +93,9 @@ const gettingStarted = () => {
       });
     
   return (
-        <SafeAreaView className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]  items-center justify-center"
+        <SafeAreaView className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]    items-center justify-center"
         style={{
-          backgroundColor: "#111c3b",
+          backgroundColor: "#0c111d",
         }}
         > 
           

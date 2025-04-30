@@ -154,7 +154,8 @@ const quiz = () => {
                 
             setQuestionParsed(prevState =>
                 prevState.map((q, index) =>
-                    index === selectedQuestion ? { ...q, status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status } : q
+                    index === selectedQuestion ? { ...q, status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status == 
+                        "GREAT" )  && status == "GOOD" ? "GREAT" : status } : q
                 )
             );
             

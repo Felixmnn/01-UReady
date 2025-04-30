@@ -109,12 +109,6 @@ export const LeibnizSubjects = [
                 "kathegory": "Naturwissenschaften & Mathematik"
             },
             {
-                "name": "Biologie (Bachelor of Science)",
-                "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät",
-                "kathegory": "Naturwissenschaften & Mathematik"
-            },
-            {
                 "name": "Biologie im Fächerübergreifenden Bachelor (Bachelor of Science)",
                 "type": "Bachelor",
                 "faculty": "Naturwissenschaftliche Fakultät",
@@ -205,19 +199,7 @@ export const LeibnizSubjects = [
                 "kathegory": "Geowissenschaften & Umweltwissenschaften"
             },
             {
-                "name": "Erdkunde / Geographie im Fächerübergreifenden Bachelor (Bachelor of Arts, Bachelor of Science)",
-                "type": "Bachelor",
-                "faculty": "Naturwissenschaftliche Fakultät",
-                "kathegory": "Geowissenschaften & Umweltwissenschaften"
-            },
-            {
                 "name": "Evangelische Religion im Bachelorstudiengang Sonderpädagogik (Bachelor of Arts)",
-                "type": "Bachelor",
-                "faculty": "Philosophische Fakultät",
-                "kathegory": "Theologie & Religionswissenschaften"
-            },
-            {
-                "name": "Evangelische Religion im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
                 "faculty": "Philosophische Fakultät",
                 "kathegory": "Theologie & Religionswissenschaften"
@@ -274,12 +256,6 @@ export const LeibnizSubjects = [
                 "name": "Holztechnik im Bachelorstudiengang Technical Education (Bachelor of Science)",
                 "type": "Bachelor",
                 "faculty": "Fakultät für Architektur und Landschaft",
-                "kathegory": "Informatik & Technik"
-            },
-            {
-                "name": "Informatik (Bachelor of Science)",
-                "type": "Bachelor",
-                "faculty": "Fakultät für Elektrotechnik und Informatik",
                 "kathegory": "Informatik & Technik"
             },
             {
@@ -461,12 +437,6 @@ export const LeibnizSubjects = [
                 "type": "Bachelor",
                 "faculty": "Fakultät für Mathematik und Physik",
                 "kathegory": "Naturwissenschaften & Mathematik"
-            },
-            {
-                "name": "Politikwissenschaft (Bachelor of Arts)",
-                "type": "Bachelor",
-                "faculty": "Philosophische Fakultät",
-                "kathegory": "Politikwissenschaft & Internationale Beziehungen"
             },
             {
                 "name": "Politikwissenschaft (Bachelor of Arts)",
@@ -1059,12 +1029,6 @@ export const LeibnizSubjects = [
                 "kathegory": "Erziehungswissenschaften & Pädagogik"
             },
             {
-                "name": "Sachunterricht im Masterstudiengang Lehramt für Sonderpädagogik (Master of Education)",
-                "type": "Master",
-                "faculty": "Philosophische Fakultät",
-                "kathegory": "Erziehungswissenschaften & Pädagogik"
-            },
-            {
                 "name": "Sonderpädagogik und Rehabilitationswissenschaften (Master of Arts)",
                 "type": "Master",
                 "faculty": "Philosophische Fakultät",
@@ -1156,12 +1120,6 @@ export const LeibnizSubjects = [
             },
             {
                 "name": "Wirtschaftsgeographie, Innovation und Nachhaltigkeit - Double Degree Track (Master of Science, Double Degree)",
-                "type": "Master",
-                "faculty": "Wirtschaftswissenschaftliche Fakultät",
-                "kathegory": "Wirtschafts- und Rechtswissenschaften"
-            },
-            {
-                "name": "Wirtschaftsingenieurwesen (Master of Science)",
                 "type": "Master",
                 "faculty": "Wirtschaftswissenschaftliche Fakultät",
                 "kathegory": "Wirtschafts- und Rechtswissenschaften"
@@ -1527,11 +1485,11 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Naturwerksteinmechaniker/Naturwerksteinmechanikerin",
-                "icon": "stone"
+                "icon": "gem"
             },
             {
                 "name": "Ofen- und Luftheizungsbauer/Ofen- und Luftheizungsbauerin",
-                "icon": "fireplace"
+                "icon": "fire"
             },
             {
                 "name": "Parkettleger/Parkettlegerin",
@@ -1547,7 +1505,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Rohrleitungsbauer/Rohrleitungsbauerin",
-                "icon": "pipe"
+                "icon": "wrench"
             },
             {
                 "name": "Schornsteinfeger/Schornsteinfegerin",
@@ -1567,7 +1525,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Steinmetz und Steinbildhauer/Steinmetzin und Steinbildhauerin",
-                "icon": "stone"
+                "icon": "gem"
             },
             {
                 "name": "Straßenbauer/Straßenbauerin",
@@ -1599,7 +1557,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Werksteinhersteller/Werksteinherstellerin",
-                "icon": "stone"
+                "icon": "gem"
             },
             {
                 "name": "Zimmerer/Zimmerin",
@@ -1611,10 +1569,10 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Klempner/Klempnerin",
-                "icon": "pipe"
+                "icon": "wrench"
             }
         ],
-        "Metall, Elektro & Technik": [
+        "Metall & Technik": [
             {
                 "name": "Fachkraft für Metalltechnik",
                 "icon": "cogs"
@@ -1645,7 +1603,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Fahrzeuginterieur-Mechaniker/Fahrzeuginterieur-Mechanikerin",
-                "icon": "car-seat"
+                "icon": "car"
             },
             {
                 "name": "Fahrzeuglackierer/Fahrzeuglackiererin",
@@ -1693,7 +1651,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Rollladen- und Sonnenschutzmechatroniker/Rollladen- und Sonnenschutzmechatronikerin",
-                "icon": "blinds"
+                "icon": "window-maximize"
             },
             {
                 "name": "Stanz- und Umformmechaniker/Stanz- und Umformmechanikerin",
@@ -1701,7 +1659,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Technischer Konfektionär/Technische Konfektionärin",
-                "icon": "scissors"
+                "icon": "cut"
             },
             {
                 "name": "Thermometermacher/Thermometermacherin",
@@ -2129,7 +2087,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Bogenmacher/Bogenmacherin",
-                "icon": "bow-arrow"
+                "icon": "bullseye"
             },
             {
                 "name": "Buchbinder/Buchbinderin",
@@ -2217,7 +2175,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Kürschner/Kürschnerin",
-                "icon": "coat-hanger"
+                "icon": "tshirt"
             },
             {
                 "name": "Leuchtröhrenglasbläser/Leuchtröhrenglasbläserin",
@@ -2229,7 +2187,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Maßschneider/Maßschneiderin",
-                "icon": "scissors"
+                "icon": "cut"
             },
             {
                 "name": "Maßschuhmacher/Maßschuhmacherin",
@@ -2265,11 +2223,11 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Spielzeughersteller/Spielzeugherstellerin",
-                "icon": "toy"
+                "icon": "gamepad"
             },
             {
                 "name": "Textil- und Modeschneider/Textil- und Modeschneiderin",
-                "icon": "scissors"
+                "icon": "cut"
             },
             {
                 "name": "Textilgestalter im Handwerk/Textilgestalterin im Handwerk",
@@ -2629,7 +2587,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Verfahrensmechaniker in der Steine- und Erdenindustrie/Verfahrensmechanikerin in der Steine- und Erdenindustrie",
-                "icon": "stone"
+                "icon": "gem"
             },
             {
                 "name": "Verfahrenstechnologe Mühlen- und Getreidewirtschaft/Verfahrenstechnologin Mühlen- und Getreidewirtschaft",
@@ -2641,7 +2599,7 @@ export const ausbildungsListDeutschland = {
             },
             {
                 "name": "Textillaborant/Textillaborantin",
-                "icon": "thread"
+                "icon": "yarn"
             },
             {
                 "name": "Verfahrenstechnologe Metall/Verfahrenstechnologin Metall",

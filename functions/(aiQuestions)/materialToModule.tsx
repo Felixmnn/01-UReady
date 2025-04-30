@@ -7,7 +7,7 @@ import {router} from 'expo-router';
 
 
 
-export async function materialToModule(user, material, userData, newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading) {
+export async function materialToModule(user, material, userData, newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading, reloadNeeded, setReloadNeeded) {
   setLoading(true);
   let directQuestions = [];
 
@@ -78,6 +78,7 @@ export async function materialToModule(user, material, userData, newModule, setN
   } catch (error) {
     console.log("Allgemeiner Fehler:", error);
   } finally {
+    setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
     setLoading(false);
     router.push("/bibliothek");
   }

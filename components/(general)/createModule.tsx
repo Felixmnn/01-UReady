@@ -14,7 +14,7 @@ import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 
 const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }) => {
   // Lokale States
-  const { user } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
   const [sessions, setSessions] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -242,6 +242,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
               }
 
             const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
+            setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
             const resp = await setUserDataSetup(user.$id)
             console.log("The new Module🐋",res)
             router.push("/bibliothek")

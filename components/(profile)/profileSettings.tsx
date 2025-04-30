@@ -8,7 +8,7 @@ import SettingsOption from '../(tabs)/settingsOption';
 import { useState } from 'react';
 import CustomTextInput from '../(general)/customTextInput';
 import CustomButton from '../(general)/customButton';
-import { signOut, updateUserEmail, updateUserName } from '@/lib/appwrite';
+import { deleteAccount, signOut, updateUserEmail, updateUserName } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import CustomTextInput1 from '../(general)/customTextInput1';
@@ -121,12 +121,20 @@ const ProfileSettings = ({setPage}) => {
     await signOut();
     await setIsLoggedIn(false)
     await setUser(undefined)
+    router.push("/sign-out")
+    window.location.reload(); // erzwingt ein vollständiges Neuladen
+  }
+  async function deleteUser () {
+    console.log("deleteAccount")
+    await setIsLoading(true)
+    await signOut();
+    await setIsLoggedIn(false)
+    await setUser(undefined)
     router.push({
                 pathname:"/",
-                params: { signOut: "true" }
+                params: { deleteAccount: "true" }
             })
     window.location.reload(); // erzwingt ein vollständiges Neuladen
-
   }
 
   return (
@@ -294,7 +302,7 @@ const ProfileSettings = ({setPage}) => {
           { !isVertical ? <SettingsOption title={"Hilfe"} iconName={"life-ring"}/> : null}
           <SettingsOption title={"Aktion einlösen"} iconName={"bolt"} item={modal()} handlePress={()=> setModalVisible(true)}/>  
           <SettingsOption title={"Abmelden"} iconName={"sign-out"} handlePress={()=> logOut()}/>
-          <SettingsOption title={"Account löschen"} iconName="trash" bottom={"true"}/>
+          <SettingsOption title={"Account löschen"} iconName="trash" bottom={"true"} handlePress={() => deleteUser()}/>
   
   
         </View>

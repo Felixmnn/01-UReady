@@ -58,7 +58,7 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                             />
             <View className='w-full max-w-[200px]'>
 
-                    <GratisPremiumButton aditionalStyles={"rounded-full w-full "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
+                <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500 mt-2 "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
                     <Text className='text-gray-100 font-semibold text-[15px]'>{selectedLanguage == null || continueMessage[languages[selectedLanguage].code] == undefined ? continueMessage["DE"] : continueMessage[languages[selectedLanguage].code]}</Text>
                 </GratisPremiumButton>  
             </View>
@@ -82,6 +82,7 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                 "AU":"Let's go!",
                 "ES":"¡Vamos!"
             }
+
         
         const handlePress = () => {
             setUserData({...userData,signInProcessStep:"FIVE"})
@@ -100,7 +101,7 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                     <ProgressBar progress={85} handlePress={handlePress}/>
                     <BotTopLeft text={selectedLanguage == null || message[languages[selectedLanguage].code] == undefined ? message["DE"] : message[languages[selectedLanguage].code]} source={"../../assets/Check.gif"}/>
                 </View> 
-                    <SearchList data={LeibnizSubjects[0][selectedDegree ? selectedDegree.name : "Other"].filter((item) => item.name.toLowerCase().includes(subjectFilter.toLowerCase()))}
+                    <SearchList data={LeibnizSubjects[0][selectedDegree ? selectedDegree.name : "Others"].filter((item) => item.name.toLowerCase().includes(subjectFilter.toLowerCase()))}
                                 handlePress={handleItemPress}
                                 selectedItems={selectedField}
                                 filter={subjectFilter}

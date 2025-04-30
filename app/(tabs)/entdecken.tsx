@@ -18,7 +18,7 @@ import { addNewModule } from '@/lib/appwriteAdd';
 const entdecken = () => {
 
   {/*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */}
-  const {user, isLoggedIn,isLoading } = useGlobalContext();
+  const {user, isLoggedIn,isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
     useEffect(() => {
       if (!isLoading && (!user || !isLoggedIn)) {
         router.replace("/"); // oder "/sign-in"
@@ -283,7 +283,8 @@ const entdecken = () => {
           <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
             <TouchableOpacity disabled={loading} className='flex-row items-center justify-center p-2 bg-blue-500 rounded-full' 
               onPress={async ()=> {
-                                  if (selectedModules.length > 0){
+                  setReloadNeeded([...reloadNeeded, "Bibliothek"])
+                if (selectedModules.length > 0){
                                       modules.map((module) => {
                                           if (selectedModules.includes(module.$id)){
                                               const mod = {

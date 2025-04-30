@@ -60,14 +60,8 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
             <Image source={require('../../assets/Search.gif')}  style={{height:150, width:150}}/>
         </View>
         { loading || matchingModules.length > 0 ?
-        <View className="flex-1    rounded-[10px] p-1 bg-gray-900  border-gray-800 border-[1px]   justify-center z-10 py-3  "
-            style={{shadowColor: "#2970ff", // Grau-Blauer Glow
-                shadowOffset: { width: 0, height: 0 },
-                shadowOpacity: 0.8,
-                shadowRadius: 10,
-                elevation: 10, // Für Android
-                
-            }}>
+        <View className="flex-1    rounded-[10px] ml-2  justify-center z-10   "
+            >
         <ScrollView 
         style={{
             scrollbarWidth: 'thin', // Dünne Scrollbar
@@ -116,7 +110,11 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         </ScrollView>
         </View>
         :
-        <View className={`flex-1 justify-center${width > 500 ? "flex-row" : ""}`}>
+        <View className={`flex-1 justify-center ${width > 500 ? "flex-row " : ""}`}
+        style={{
+            height:200
+        }}
+        >
                             <ContinueBox
                                 text={"Erstellen wir zusammen ein Lernset."}
                                 colorBorder={"#7a5af8"}
@@ -140,7 +138,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         <View className='items-center justify-center m-2'>
             {selectedModules.length > 0 ?
             <GratisPremiumButton
-                aditionalStyles={"w-full max-w-[300px] rounded-[10px]  "}
+                aditionalStyles={"w-full max-w-[300px] rounded-[10px] bg-blue-500  "}
                 handlePress={async ()=> {
                     if (selectedModules.length > 0){
                         matchingModules.map((module) => {
@@ -153,7 +151,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                                     documents: module.documents,
                                     public: false,
                                     progress: 0,
-                                    creator: module.$id,
+                                    creator: user.$id,
                                     color: module.color,
                                     sessions: module.sessions,
                                     tags: module.tags,

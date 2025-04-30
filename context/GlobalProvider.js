@@ -12,6 +12,7 @@ const GlobalProvider = ({children}) => {
     const [ language,setLanguage ] = useState('de');
     const [ userData, setUserData ] = useState(null);
     const [ userCathegory, setUserCategory ] = useState(null);
+    const [ reloadNeeded, setReloadNeeded ] = useState([]);
 
 
     useEffect(() => {
@@ -62,6 +63,8 @@ const GlobalProvider = ({children}) => {
                 setUserData,
                 userCathegory,
                 setUserCategory,
+                reloadNeeded,
+                setReloadNeeded,
             }}>
             {children}
         </GlobalContext.Provider>

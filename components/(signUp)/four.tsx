@@ -8,12 +8,24 @@ import BotTopLeft from './(components)/botTopLeft';
 
 const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedCountry, setSelectedRegion ,selectedRegion, selectedKathegorie, school, setSchool, setAusbildungKathegorie, ausbildungKathegorie, selectedUniversity, setSelectedUniversity }) => {
     const {width} = useWindowDimensions()
+    const numColumns = width < 400 ? 2 : 3;
+
     const [isActive, setIsActive] = useState(false) 
     const [countryData, setCountryData] = useState(null)
     const Sonstige ={name:"Sonstige", id:"4058177f-0cd4-4820-8f71-5dsfsf57c4b27dd42", klassenstufen: [1,2,3,4,5,6,7,8,9,10,11,12,13] }
     const Other = {name:"Other", id:"Other", icon:"question"}
     const [universityFilter, setUniversityFilter] = useState("")
-    
+    const chunkArray = (arr, size) => {
+        const chunked = [];
+        for (let i = 0; i < arr.length; i += size) {
+          chunked.push(arr.slice(i, i + size));
+        }
+        return chunked;
+      };
+
+      const groupedData = chunkArray(schoolListDeutschland.schoolTypes, numColumns);
+      const groupedDataEdu = chunkArray(ausbildungsTypen, numColumns);
+
 
     if (selectedKathegorie == "SCHOOL") {
         const robotMessage = {
@@ -24,8 +36,14 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
             "ES": "¿A qué escuela vas?",
         }
     return ( 
-            <View className='flex-1 h-full  w-full justify-between items-center '>
-            <View className='w-full'>
+        <ScrollView className='w-full '
+            style={{
+                scrollbarWidth: 'thin', 
+                scrollbarColor: 'gray transparent',       
+            }}
+        >
+            <View className='w-full justify-between items-center '>
+            <View className={`w-full ${Platform.OS == "android" ? "top-5" : null} `}>
                 <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
                 <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
             </View>
@@ -54,92 +72,78 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
                               width: 250,
                               top: Platform.OS == "android" ? -8 : 55,
                               left: Platform.OS == "android" ? 4 : 1,
-                              maxHeight: 300, // wichtig für Scrollbarkeit!
                             }}
                           >
-                            <FlatList
-                              data={schoolListDeutschland.regions}
-                              contentContainerStyle={{ paddingBottom: 10 }}
-                              nestedScrollEnabled={true}
-                              keyboardShouldPersistTaps="always"
-                              style = {{
-                                scrollbarWidth: 'thin', // Dünne Scrollbar
-                                scrollbarColor: 'gray transparent',
-                              }}
-                              renderItem={({ item, index }) => (
+                            {schoolListDeutschland.regions.map((item, index) => (
                                 <TouchableOpacity
-                                  key={item.id}
-                                  onPress={() => {
+                                key={item.id}
+                                onPress={() => {
                                     setSelectedRegion(index);
                                     setIsActive(false);
-                                  }}
-                                  className="flex-row justify-start items-center p-2 rounded-lg m-1"
+                                }}
+                                className="flex-row justify-start items-center p-2 rounded-lg m-1"
                                 >
-                                  <Image
+                                <Image
                                     source={{ uri: item.image }}
                                     style={{ width: 30, height: 30, borderRadius: 5 }}
-                                  />
-                                  <Text className="text-gray-300 font-semibold text-start ml-2 mt-[1px]">
+                                />
+                                <Text className="text-gray-300 font-semibold text-start ml-2 mt-[1px]">
                                     {item.name}
-                                  </Text>
+                                </Text>
                                 </TouchableOpacity>
-                              )}
-                              keyExtractor={(item) => item.id}
-                            />
+                            ))}
                           </View>
                             ) : null}
                         </View>
-                        <View className='flex-1 justify-center items-center w-full'>
-                            <FlatList
-                                data={schoolListDeutschland.schoolTypes}
-                                numColumns={width < 400 ? 2 : 3}
-                                keyExtractor={(item) => item.id}
-                                contentContainerStyle={{
-                                paddingBottom: 100,
-                                alignItems: 'center', // für Zentrierung
-                                }}
-                                renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    key={item.id}
+                        <View className='justify-center items-center w-full'>
+                        {groupedData.map((row, rowIndex) => (
+                                    <View key={rowIndex} style={{ flexDirection: 'row' }}>
+                                    {row.map((item) => (
+                                        <TouchableOpacity
+                                        key={item.id}
+                                        onPress={() => {
+                                            if (selectedRegion == null) setSelectedRegion(0);
+                                            setSchool(item);
+                                            setUserData({ ...userData, signInProcessStep: "FIVE" });
+                                        }}
+                                        className="p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
+                                        style={{ width: 120, height: 120 }}
+                                        >
+                                        <Icon name="school" size={20} color="#D1D5DB" />
+                                        <Text
+                                            className="text-gray-100 font-semibold text-[15px] text-center"
+                                            numberOfLines={item.name.length > 13 ? 2 : null}
+                                        >
+                                            {item.name}
+                                        </Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                    </View>
+                                ))}
+
+                                {/* Footer Element (Sonstige) */}
+                                <View className="w-full justify-center items-center">
+                                    <TouchableOpacity
                                     onPress={() => {
-                                    if (selectedRegion == null) setSelectedRegion(0);
-                                    setSchool(item);
-                                    setUserData({ ...userData, signInProcessStep: "FIVE" });
+                                        setSchool(Sonstige);
+                                        setUserData({ ...userData, signInProcessStep: "FIVE" });
                                     }}
+                                    key={Sonstige.id}
                                     className="p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
                                     style={{ width: 120, height: 120 }}
-                                >
-                                    <Icon name="school" size={20} color="#D1D5DB" />
-                                    <Text
-                                    className="text-gray-100 font-semibold text-[15px] text-center"
-                                    numberOfLines={item.name.length > 13 ? 2 : null}
                                     >
-                                    {item.name}
+                                    <Icon name="ellipsis-h" size={15} color="#D1D5DB" />
+                                    <Text className="text-gray-100 font-semibold text-[15px] text-center">
+                                        {Sonstige.name}
                                     </Text>
-                                </TouchableOpacity>
-                                )}
-                                ListFooterComponent={ ()=> {
-                                    return (
-                                        <View className='w-full justify-center items-center'>
-                                        <TouchableOpacity onPress={()=> {setSchool(Sonstige); setUserData({...userData,signInProcessStep:"FIVE"})}} key={Sonstige.id} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                                        style={{width:120, height:120}}
-                                        >     
-                                            <Icon name="ellipsis-h" size={15} color="#D1D5DB" />
-                                            <Text className='text-gray-100 font-semibold text-[15px] text-center' >
-                                                {Sonstige.name}
-                                            </Text>
-            
-                                        </TouchableOpacity>
-                                        </View>
-                                    )
-                                }
-                                }
-                            />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
             </View> 
             <View className='items-center justiy-center'></View>
             </View>
+            </ScrollView>
     )
 
 
@@ -208,36 +212,46 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
             "ES": "¡Perfecto! ¿En qué área estás haciendo tu formación profesional?",
         }
         return (
-            <View className='h-full  w-full justify-between items-center py-5'>
-            <View className='w-full'>
-                <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
-            </View>
-            <View className='justify-center items-center'>
-                <FlatList
-                    data = {ausbildungsTypen}
-                    numColumns={width < 400 ? 2 : 3}
-                    className='z-100'
-                    renderItem={({item}) => (
-                        <TouchableOpacity key={item.id} onPress={()=> {
-                            setAusbildungKathegorie(item); 
-                            setUserData({...userData,signInProcessStep:"FIVE"})
-                        }} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
-                            style={{width:125, height:125}}
-                        >
+            <ScrollView className='w-full '>
+                <View className='h-full  w-full justify-between items-center py-5'>
+                <View className='w-full'>
+                    <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
+                    <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+                </View>
+                <View className='justify-center items-center'>
+                {groupedDataEdu.map((row, rowIndex) => (
+                        <View key={rowIndex} style={{ flexDirection: 'row' }}>
+                        {row.map((item) => (
+                            <TouchableOpacity
+                            key={item.id}
+                            onPress={() => {
+                                setAusbildungKathegorie(item);
+                                setUserData({ ...userData, signInProcessStep: "FIVE" });
+                            }}
+                            className="p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
+                            style={{ width: 125, height: 125 }}
+                            >
                             <Icon name={item.icon} size={20} color="#D1D5DB" />
-                           <Text className='text-gray-100 font-semibold text-[15px] text-center' numberOfLines={selectedLanguage == null ? item.name.DE : item.name[languages[selectedLanguage].code].length > 13 ? 2 : null}>
-                                {selectedLanguage == null ? item.name.DE : item.name[languages[selectedLanguage].code]}
-                            </Text> 
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item.id}
-                    
-                />
-            </View>
-            <View className='items-center justiy-center'></View>
-                
-            </View>
+                            <Text
+                                className="text-gray-100 font-semibold text-[15px] text-center"
+                                numberOfLines={
+                                selectedLanguage == null
+                                    ? item.name.DE.length > 13 ? 2 : null
+                                    : item.name[languages[selectedLanguage].code].length > 13 ? 2 : null
+                                }
+                            >
+                                {selectedLanguage == null
+                                ? item.name.DE
+                                : item.name[languages[selectedLanguage].code]}
+                            </Text>
+                            </TouchableOpacity>
+                        ))}
+                        </View>
+                    ))}
+                </View>
+                <View className='items-center justiy-center'></View>
+                </View>
+            </ScrollView>
         )
 
 

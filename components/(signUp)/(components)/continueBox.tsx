@@ -13,6 +13,7 @@ const ContinueBox = ({colorBorder, colorBG, iconName, handlePress, text,selected
                       shadowRadius: selected ? 10 : 0, // Größe des Glows
                       shadowOpacity: selected ? 0.8 : 0, // Sichtbarkeit des Glows
                       maxWidth: horizontal ? null : 300,
+                      maxHeight: horizontal ? null : 150,
                       shadowOffset: { width: 0, height: 0 },
                       elevation: 10, // Für Android
                     }}

@@ -11,7 +11,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 
 const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices }) => {
   // Lokale States
-  const { user } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
   const [newTopic, setNewTopic] = useState('');
   const [questions, setQuestions] = useState([]);
   const [sessions, setSessions] = useState([]);
@@ -463,6 +463,8 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices }) => 
                 sessions,
                 setSessions,
                 setLoading,
+                reloadNeeded,
+                setReloadNeeded
               );
             }}
           >

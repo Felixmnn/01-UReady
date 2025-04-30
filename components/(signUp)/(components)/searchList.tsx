@@ -18,13 +18,13 @@ const SearchList = ({data, filter, setFilter, handlePress, selectedItems, abschl
         <View className='flex-1'>
             <FlatList
                 data={data}
-                keyExtractor={(index )=> index.toString()}
+                keyExtractor={(item) => item.name}
                 style={{
                     scrollbarWidth: 'thin', 
                     scrollbarColor: 'gray transparent'  
                 }}
                 renderItem={({item,index}) => (
-                    <TouchableOpacity key={index} onPress={()=> handlePress(item)} 
+                    <TouchableOpacity key={item.name} onPress={()=> handlePress(item)} 
                     className={`flex-row p-2 border-gray-800 border-[1px] rounded-[10px] ${selectedItems && selectedItems.includes(item) ? "bg-blue-700 " : "bg-gray-800"}  items-center justify-start m-2`}
                     >
                         <Icon name={item.icon} size={20} color="white" />

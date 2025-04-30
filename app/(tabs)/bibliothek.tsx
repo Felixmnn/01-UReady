@@ -16,7 +16,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 
 const Bibliothek = () => {
-  const {user, isLoggedIn,isLoading } = useGlobalContext();
+  const {user, isLoggedIn,isLoading, reloadNeeded, setReloadNeeded } = useGlobalContext();
   const [last7Hidden, setLast7Hidden ] = useState(true)
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
@@ -26,22 +26,30 @@ const Bibliothek = () => {
     const [modules,setModules] = useState(null)
     const [loading,setLoading] = useState(true)
     const [selectedModule, setSelectedModule] = useState(null)
+
+    const fetchModules = async () => {
+      setLoading(true);
+      await loadQuestions();
+      const modulesLoaded = await getModules(user.$id);
+      if (modulesLoaded) {
+        setModules(modulesLoaded);
+      }
+      setLoading(false);
+    };
+
     useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
           router.replace("/"); // oder "/sign-in"
         }
       }, [user, isLoggedIn, isLoading]);
 
+      useEffect(() => {
+        console.log("ReloadNeeded",reloadNeeded)
+        fetchModules()
+      },[reloadNeeded])
+
     useEffect(() => {
       if (user === null) return;
-      async function fetchModules() {
-        await loadQuestions()
-        const modulesLoaded = await getModules(user.$id)
-        if (modulesLoaded) {
-          setModules(modulesLoaded)
-        }
-        setLoading(false)
-      }
       fetchModules()
     }
     ,[user])

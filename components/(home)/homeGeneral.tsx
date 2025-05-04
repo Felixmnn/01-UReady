@@ -9,6 +9,9 @@ import AddAiModule from '../(general)/(modal)/addAiModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserUsage } from '@/lib/appwriteDaten';
 import { addUserUsage, addUserUsageData } from '@/lib/appwriteAdd';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
+SystemNavigationBar.navigationHide();
+
 
 const { width } = Dimensions.get('window');
 

@@ -1,5 +1,5 @@
 import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator, Platform } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image } from 'react-native';
@@ -7,12 +7,27 @@ import SlowDeveloper from '@/components/(general)/slowDeveloper';
 import CustomTextInput1 from '@/components/(general)/customTextInput1';
 import { Alert } from 'react-native';
 import {router} from 'expo-router';
-import { signIn, createUser } from '@/lib/appwrite';
+import { signIn, createUser, loginWithGoogle } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
+import * as NavigationBar from 'expo-navigation-bar';
+
 
 const SignIn = () => {
+  const goFullscreen = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { // Safari
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // IE11
+      elem.msRequestFullscreen();
+    }
+  };
+ 
+
+  
   console.log("Der Nutzer Landet hier")
   const { setIsLoggedIn,setUser } = useGlobalContext();
   const [ isError, setIsError] = useState(false);
@@ -88,8 +103,10 @@ const SignIn = () => {
             style={{
               width:300
             }}
-            >
-                <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]"    />
+            >     <TouchableOpacity onPress={()=> goFullscreen()} className="bg-red-500">
+                <Text className="text-white">Fullscreen</Text>  
+            </TouchableOpacity>
+                <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => loginWithGoogle()}    />
                 <LogInOption iconName={"apple"} title="Weiter mit Apple" bgColor="bg-gray-500"  />
                 <LogInOption iconName={"envelope"} title="Mit E-Mail registrieren" bgColor="bg-[#4285F4]" handlePress={()=> setSelectedOption(3)} />
                 <TouchableOpacity onPress={()=> setSelectedOption(4)} className={`flex-1 p-2 flex-row items-center justify-center bg-gray-900 rounded-full `}>

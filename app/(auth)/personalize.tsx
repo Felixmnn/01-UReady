@@ -43,10 +43,6 @@ const personalize = () => {
 
     useEffect(() => {
               if (user === null ) return;
-              if (user === undefined) {
-                    router.push("/sign-in");
-                    return;
-              }
               async function fetchUserData() {
                   try {
                       console.log("Loading")

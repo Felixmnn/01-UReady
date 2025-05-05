@@ -9,9 +9,7 @@ import AddAiModule from '../(general)/(modal)/addAiModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserUsage } from '@/lib/appwriteDaten';
 import { addUserUsage, addUserUsageData } from '@/lib/appwriteAdd';
-import SystemNavigationBar from 'react-native-system-navigation-bar';
-SystemNavigationBar.navigationHide();
-
+import * as Linking from 'expo-linking';
 
 const { width } = Dimensions.get('window');
 
@@ -30,6 +28,9 @@ const HomeGeneral = ({setSelectedPage}) => {
     lastModules: [],
     lastSessions: [],
   })
+  const redirectUri = Linking.createURL('oauth-callback');
+  console.log("Redirect URI:", redirectUri);
+
 
   useEffect(() => {
     if (!user) return;
@@ -168,6 +169,22 @@ const HomeGeneral = ({setSelectedPage}) => {
       </View>
     )
   }
+
+
+  const openWhatsApp = () => {
+    let url = 'whatsapp://'; // Deeplink, der WhatsApp öffnet
+
+    // Überprüfen, ob WhatsApp installiert ist
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          Alert.alert('WhatsApp ist nicht installiert!');
+        } else {
+          return Linking.openURL(url); // Öffnet WhatsApp
+        }
+      })
+      .catch((err) => console.error('Fehler beim Öffnen von WhatsApp:', err));
+  };
 
   const Session = ({item}) => {
     return (

@@ -7,7 +7,7 @@ import SlowDeveloper from '@/components/(general)/slowDeveloper';
 import CustomTextInput1 from '@/components/(general)/customTextInput1';
 import { Alert } from 'react-native';
 import {router} from 'expo-router';
-import { signIn, createUser, loginWithGoogle } from '@/lib/appwrite';
+import { signIn, createUser, loginWithGoogle, loginWithGoogle2 } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
@@ -91,7 +91,7 @@ const SignIn = () => {
               } else {
                   setIsVisible(true)
               }
-          }} className={`flex-1 p-2 w-full flex-row items-center justify-center bg-blue-900 rounded-[10px] mx-2 my-1 ${bgColor}`}>
+          }} className={`flex-1 p-2 w-full flex-row items-center justify-center bg-blue-900 rounded-[10px] mx-2 my-1 max-h-[50px] ${bgColor}`}>
             <Icon name={iconName} size={20} color="#fff" />
             <Text className="ml-2 text-white font-bold">{title}</Text>
           </TouchableOpacity>
@@ -99,16 +99,22 @@ const SignIn = () => {
       }
     const NotSelected = () => {
         return (
-            <View className="flex-1 items-center justify-center "
+            <View className="flex-1 items-center "
             style={{
               width:300
             }}
-            >     <TouchableOpacity onPress={()=> goFullscreen()} className="bg-red-500">
+            >     <TouchableOpacity onPress={()=> goFullscreen()} className="bg-red-500 ">
                 <Text className="text-white">Fullscreen</Text>  
             </TouchableOpacity>
-                <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => loginWithGoogle()}    />
-                <LogInOption iconName={"apple"} title="Weiter mit Apple" bgColor="bg-gray-500"  />
-                <LogInOption iconName={"envelope"} title="Mit E-Mail registrieren" bgColor="bg-[#4285F4]" handlePress={()=> setSelectedOption(3)} />
+                  <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
+                    if ( Platform.OS === "web") {
+                    loginWithGoogle2()}
+                    else {
+                      loginWithGoogle()
+                    }
+                    }}    />
+                  {/*<LogInOption iconName={"apple"} title="Weiter mit Apple" bgColor="bg-gray-500"  />*/}
+                  <LogInOption iconName={"envelope"} title="Mit E-Mail registrieren" bgColor="bg-[#4285F4]" handlePress={()=> setSelectedOption(3)} />
                 <TouchableOpacity onPress={()=> setSelectedOption(4)} className={`flex-1 p-2 flex-row items-center justify-center bg-gray-900 rounded-full `}>
                     <Text className="ml-2 text-gray-600 font-bold tex-[10px] ">Ich habe bereits einen Account</Text>
                 </TouchableOpacity>

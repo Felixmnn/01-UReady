@@ -108,11 +108,9 @@ const SignIn = () => {
             </TouchableOpacity>
                   <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
                     if ( Platform.OS === "web") {
-                    loginWithGoogle2()}
-                    else {
-                      loginWithGoogle()
-                    }
-                    }}    />
+                    loginWithGoogle()}
+                  }
+                    }    />
                   {/*<LogInOption iconName={"apple"} title="Weiter mit Apple" bgColor="bg-gray-500"  />*/}
                   <LogInOption iconName={"envelope"} title="Mit E-Mail registrieren" bgColor="bg-[#4285F4]" handlePress={()=> setSelectedOption(3)} />
                 <TouchableOpacity onPress={()=> setSelectedOption(4)} className={`flex-1 p-2 flex-row items-center justify-center bg-gray-900 rounded-full `}>

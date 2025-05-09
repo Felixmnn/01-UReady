@@ -90,7 +90,8 @@ const NichtUnterstuzterDateityp = () => {
 
 
 
-    
+console.log("Selced Sessuin", moduleSessions[selected].tags)
+console.log("Filtered Data:", moduleSessions[selected].tags == "JOB-PENDING")
 return (
     <View className='flex-1'>
         
@@ -118,6 +119,32 @@ return (
                 scrollbarWidth: 'thin', // Dünne Scrollbar
                 scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
               }}
+            ListHeaderComponent={() => {
+                return (
+                    <View className='h-full p-1'>
+                        {
+                          moduleSessions[selected].tags == "JOB-PENDING" ?
+                            <View className='flex-1  items-center justify-center p-2 bg-gray-800 rounded-[10px] border-[1px] border-gray-500 border-dashed'
+                                style={{
+                                    height: 150,
+                                    width: 150,
+                                }}
+                            >
+                                <Image 
+                                    source={require('../../../assets/bot.png')} 
+                                    style={{
+                                        height: 50, 
+                                        width: 50, 
+                                        tintColor: "#fff" 
+                                    }}
+                                />
+                                <Text className='text-white text-center'>{texts[selectedLanguage].pendingAI}</Text>
+                            </View>
+                            :null
+                        }
+                    </View>
+                )
+            }}
             renderItem={({item}) => {
                 return (
                     <TouchableOpacity 
@@ -164,6 +191,7 @@ return (
             renderItem={({item}) => {
                 return (
                     <TouchableOpacity onPress={() => {
+                        /*
                         const fileType = item.fileType;
                     
                         if (fileType === "application/pdf") {
@@ -180,6 +208,7 @@ return (
                             setWrongType(true);
                             console.log("Unbekannter Dateityp:", fileType);
                         }
+                            */{}
                     }}
                             className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
                         <View className='flex-row items-start justify-start'>
@@ -239,7 +268,7 @@ return (
                 )}}
             />
             :
-            <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} />
+            <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} handlePress={()=> SwichToEditNote(null)} />
 
         }
         { filteredNotes.length == 0  ? <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} /> : null}

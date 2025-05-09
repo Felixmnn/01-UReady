@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import  Selectable  from '../selectable'
 
-const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument, SwichToEditNote,texts, selectedLanguage}) => {
+const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument, SwichToEditNote,texts, selectedLanguage, documents}) => {
     
 
 

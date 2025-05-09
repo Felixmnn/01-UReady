@@ -1,5 +1,5 @@
-import { View, Text, Modal, TouchableOpacity, Touchable, ActivityIndicator, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Modal, TouchableOpacity, Touchable, ActivityIndicator, TextInput,ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 import { generateQuestionsFromText } from '@/functions/(aiQuestions)/questionFromText';
@@ -7,10 +7,99 @@ import { questionFromTopic } from '@/functions/(aiQuestions)/questionFromTopic';
 import { addQUestion } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import { materialToQuestion } from '@/functions/(aiQuestions)/materialToQuestions';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { addDocumentJob } from '@/lib/appwriteAdd';
 
 
-const AiQuestion = ({isVisible, setIsVisible, setSelected ,selectedModule , selectedSession, setQuestions, questions}) => {
-console.log("🐋🐋🐋", questions)
+const AiQuestion = ({isVisible, setIsVisible, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
+const { language } = useGlobalContext()
+ const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    useEffect(() => {
+    if(language) {
+        setSelectedLanguage(language)
+    }
+    }, [language])
+
+const texts = {
+    "DEUTSCH": {
+        "title": "Generiere Karteikarten mit AI aus...",
+        "text": "Text",
+        "topic": "Thema",
+        "file": "Datei",
+        "generateCards": "Karten generieren",
+        "sumDocument": "Dokument zusammenfassen",
+        "selectFile": "Wähle eine Datei aus:",
+        "dragFile": "Ziehe eine Datei hier hin oder lade sie hoch",
+        "uploadDocument": "Dokument hochladen",
+        "yourTopics": "Deine Themen:",
+        "yourTexts": "Deine Texte:",
+        "noMaterials": "Noch keine Materialien",
+        "generateCardsDisabled": "Karten generieren",
+    },
+    "ENGLISH(US)": {
+        "title": "Generate flashcards with AI from...",
+        "text": "Text",
+        "topic": "Topic",
+        "file": "File",
+        "generateCards": "Generate cards",
+        "selectFile": "Select a file:",
+        "dragFile": "Drag a file here or upload it",
+        "uploadDocument": "Upload document",
+        "yourTopics": "Your topics:",
+        "yourTexts": "Your texts:",
+        "noMaterials": "No materials yet",
+        "generateCardsDisabled": "Generate cards",
+        "sumDocument": "Summarize document",
+    },
+    "ENGLISH(UK)": {
+        "title": "Generate flashcards with AI from...",
+        "text": "Text",
+        "topic": "Topic",
+        "file": "File",
+        "generateCards": "Generate cards",
+        "selectFile": "Select a file:",
+        "dragFile": "Drag a file here or upload it",
+        "uploadDocument": "Upload document",
+        "yourTopics": "Your topics:",
+        "yourTexts": "Your texts:",
+        "noMaterials": "No materials yet",
+        "generateCardsDisabled": "Generate cards",
+        "sumDocument": "Summarize document",
+    },
+    "AUSTRALIAN": {
+        "title": "Generate flashcards with AI from...",
+        "text": "Text",
+        "topic": "Topic",
+        "file": "File",
+        "generateCards": "Generate cards",
+        "selectFile": "Select a file:",
+        "dragFile": "Drag a file here or upload it",
+        "uploadDocument": "Upload document",
+        "yourTopics": "Your topics:",
+        "yourTexts": "Your texts:",
+        "noMaterials": "No materials yet",
+        "generateCardsDisabled": "Generate cards",
+        "sumDocument": "Summarize document",
+    },
+    "SPANISH": {
+        "title": "Generar tarjetas con AI a partir de...",
+        "text": "Texto",
+        "topic": "Tema",
+        "file": "Archivo",
+        "generateCards": "Generar tarjetas",
+        "selectFile": "Selecciona un archivo:",
+        "dragFile": "Arrastra un archivo aquí o súbelo",
+        "uploadDocument": "Subir documento",
+        "yourTopics": "Tus temas:",
+        "yourTexts": "Tus textos:",
+        "noMaterials": "Aún no hay materiales",
+        "generateCardsDisabled": "Generar tarjetas",
+        "sumDocument": "Resumir documento",
+    },
+}
+
+
+    console.log("🐋🐋🐋", questions)
 const [selectedType, setSelectedType] = useState("FILE")
 const [promt, setPromt] = useState("")
 const [topics, setTopics] = useState(["Algorythmen", "Datenstrukturen", "Java", "C++"])
@@ -63,32 +152,60 @@ async function generateItems(type) {
     setIsVisible(false);
 
 }
-
-
+const [ selectedFile, setSelectedFile ] = useState(null)
+console.log("🐋🐋🐋", documents)
 const GenerateByFile = () => {
+    
     return (
         <View className='flex-1 p-4 justify-between'>
             <Text className='text-gray-200'>
-                Wähle eine Datei aus:
+            {texts[selectedLanguage].selectFile}
             </Text>
-            <View className='w-full rounded-[10px] border-gray-600 border-[1px] p-2 mt-2 border-dashed'>
-                <Text className='text-gray-200 text-[12px]'>Ziehe eine Datei hier hin oder lade sie hoch</Text>
-                <TouchableOpacity className='flex-row items-center justify-center bg-gray-800 rounded-full p-2 mt-2'>
-                    <Icon name="upload" size={20} color="white"/>
-                    <Text className='text-gray-300 ml-2 font-bold'>Dokument hochladen</Text>
-                </TouchableOpacity>
+            <View className='w-full rounded-[10px] border-gray-600 border-[1px] p-2 mt-2 border-dashed '>
+                {
+                    documents && documents.length > 0 ?
+                    <ScrollView className=' overflow-y-auto '
+                    style={{ maxHeight: 150 }}
+                    >
+                        {
+                        documents.map((item, index) => {
+                            return (
+                                <TouchableOpacity onPress={()=> setSelectedFile(item)} key={index} className='flex-row items-center justify-between bg-gray-800 rounded-[10px] p-2 mt-2'
+                                    style={{
+                                        borderColor: selectedFile?.title == item.title ? "#7a5af8" : "#0c111d",
+                                        borderWidth: selectedFile?.title == item.title ? 2 : 1,
+                                        backgroundColor: selectedFile?.title == item.title ? 'rgba(59, 51, 134, 0.59)' : "#0c111d",
+                                    }}
+                                >
+                                    <View className='flex-row items-center'>
+                                        <Icon name="file-pdf" size={20} color="white"/>
+                                        <Text className='text-gray-300 ml-2 font-bold'>{item.title}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                    </ScrollView>
+                    : 
+                    <View className="items-center justify-center" style={{ height: 150 }}  >
+                        <TouchableOpacity onPress={()=> uploadDocument()}  className='flex-row items-center justify-center bg-gray-800 rounded-full p-2 mt-2'>
+                            <Icon name="upload" size={20} color="white"/>
+                            <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].uploadDocument}</Text>
+                        </TouchableOpacity>
+                    </View>
+                }   
             </View>
-            { true ?
+            { false ?
             <TouchableOpacity disabled={true} className={`flex-row items-center justify-center bg-gray-700 rounded-full p-2 mt-2 opacity-50`}>
-            <Text className='text-gray-300 ml-2 font-bold'>Karten generieren</Text>
+                <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].sumDocument}</Text>
             </TouchableOpacity>
             :
-            <GratisPremiumButton aditionalStyles={"w-full"} handlePress={()=> generateItems("FILE")}>
+            <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={()=> {createDocumentJob()}} >
                 {
                     isLoading ?
                      <ActivityIndicator size="small" color="#00ff00" />
                      :
-                     <Text className='text-gray-300 ml-2 font-bold'>Karten generieren</Text> 
+                     <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].sumDocument}</Text> 
 
                 }
             </GratisPremiumButton>
@@ -96,6 +213,26 @@ const GenerateByFile = () => {
         </View>
     )
 }
+
+async function createDocumentJob(document) {
+    const job = {
+        databucketID: selectedFile.databucketID,
+        subjectID: selectedModule.$id,
+        sessionID: selectedSession.id,
+    }
+    console.log("🚀 ~ file: aiQuestion.tsx:195 ~ createDocumentJob ~ job:", job)
+    await addDocumentJob(job)
+    setSessions((prevSessions) => {
+        const newSessions = [...prevSessions];
+        const sessionIndex = newSessions.findIndex((session) => session.id === selectedSession.id);
+        if (sessionIndex !== -1) {
+            newSessions[sessionIndex].tags = "JOB-PENDING";
+        }
+        return newSessions;
+    })
+    setIsVisible(false)
+}
+
 
 
 
@@ -116,7 +253,7 @@ const handleDeleteItem = (itemId) => {
   };
 
 return (
-    <View >
+    <View className='' >
                 {
     isVisible ? 
     <Modal 
@@ -124,23 +261,26 @@ return (
         transparent={true}
         visible={isVisible}
     >
-        <View className="h-full w-full absolute top-0 left-0   justify-center items-center p-2 ">
-            <View className='w-full max-w-[400px] bg-[#0c111d] border-gray-700 rounded-xl'
-                style={{ borderWidth: 2 }}>
+        <View className="h-full w-full absolute top-0 left-0   justify-center items-center p-2  "
+        style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }}
+        >
+            <View className='w-full h-full  max-w-[400px] bg-[#0c111d] border-gray-700 rounded-xl'
+
+                style={{ borderWidth: 2, maxHeight: 350 }}>
                 <TouchableOpacity  onPress={() => setIsVisible(false)} 
                     className=' p-4  flex-row justify-between '>
-                    <Text className='text-gray-300 font-bold mr-2 '>Generiere Karteikarten mit AI aus...</Text>
+                    <Text className='text-gray-300 font-bold mr-2 '>{texts[selectedLanguage].title}</Text>
                     <Icon name="times" size={20} color="white"/>
                 </TouchableOpacity>
                 <View className='flex-row items-center justify-between bg-[#0c111d] '>
                     <TouchableOpacity onPress={()=> setSelectedType("FILE")} className={`flex-1 p-2 border-blue-600 items-center mx-2 ${selectedType == "FILE" ? "border-b-[2px] " : null}`}>
-                        <Text className={`text-gray-200 text-[15px] ${selectedType == "FILE" ? "text-white" : null}`}>Datei</Text>      
+                        <Text className={`text-gray-200 text-[15px] ${selectedType == "FILE" ? "text-white" : null}`}>{texts[selectedLanguage].file}</Text>      
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=> setSelectedType("TOPIC")} className={`flex-1 p-2 border-blue-600 items-center mx-2 ${selectedType == "TOPIC" ? "border-b-[2px] " : null}`}>
-                        <Text className={`text-gray-200 text-[15px] ${selectedType == "FILE" ? "text-white" : null}`}>Topic</Text>      
+                        <Text className={`text-gray-200 text-[15px] ${selectedType == "FILE" ? "text-white" : null}`}>{texts[selectedLanguage].topic}</Text>      
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=> setSelectedType("TEXT")} className={`flex-1 p-2 border-blue-600  items-center  mx-2 ${selectedType == "TEXT" ? "border-b-[2px] " : null}`}>
-                        <Text className={`text-gray-200 text-[15px] ${selectedType == "TEXT" ? "text-white" : null}`}>Text</Text>
+                        <Text className={`text-gray-200 text-[15px] ${selectedType == "TEXT" ? "text-white" : null}`}>{texts[selectedLanguage].text}</Text>
                     </TouchableOpacity>
                 </View>  
                 <View className='flex-1 min-h-[250px] bg-gray-800    rounded-b-[10px]'>
@@ -186,7 +326,7 @@ return (
                             />
                             
                         </View>
-                        <Text className="text-gray-300 font-semibold text-[15px]">Deine Themen:</Text>
+                        <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].yourTopics}</Text>
                                   <View className="flex-row flex-wrap justify-start items-center mb-2">
                                     {items.length > 0 ? (
                                       items.filter(item => item.sessionID == selectedSession.id).map((item, index) => {
@@ -220,17 +360,17 @@ return (
                                       >
                                         <Icon name="book-open" size={15} color="#4B5563" />
                                         <Text className="text-gray-300 font-semibold text-[12px] mb-[1px] ml-1">
-                                          Noch keine Materialien
+                                            {texts[selectedLanguage].noMaterials}
                                         </Text>
                                       </TouchableOpacity>
                                     )}
                                   </View>
                                   { items.length == 0 ?
                                     <TouchableOpacity disabled={true} className={`flex-row items-center justify-center bg-gray-700 rounded-full p-2 mt-2 opacity-50`}>
-                                        <Text className='text-gray-300 ml-2 font-bold'>Karten generieren</Text>
+                                        <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].generateCards}</Text>
                                     </TouchableOpacity>
                                     :
-                                    <GratisPremiumButton aditionalStyles={"w-full"} handlePress={async ()=> {
+                                    <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={async ()=> {
                                         const res = await materialToQuestion(
                                             items.filter(item => item.sessionID == selectedSession.id), 
                                             selectedSession.id, 
@@ -247,7 +387,7 @@ return (
                                             isLoading ?
                                             <ActivityIndicator size="small" color="#00ff00" />
                                             :
-                                            <Text className='text-gray-300 ml-2 font-bold'>Karten generieren</Text> 
+                                            <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].generateCards}</Text> 
 
                                         }
                                     </GratisPremiumButton>
@@ -291,7 +431,7 @@ return (
                             />
                             
                         </View>
-                        <Text className="text-gray-300 font-semibold text-[15px]">Deine Texte:</Text>
+                        <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].yourTexts}</Text>
                                   <View className="flex-row flex-wrap justify-start items-center mb-2">
                                     {items.length > 0 ? (
                                       items.filter(item => item.sessionID == selectedSession.id).map((item, index) => {
@@ -325,17 +465,17 @@ return (
                                       >
                                         <Icon name="book-open" size={15} color="#4B5563" />
                                         <Text className="text-gray-300 font-semibold text-[12px] mb-[1px] ml-1">
-                                          Noch keine Materialien
+                                            {texts[selectedLanguage].noMaterials}
                                         </Text>
                                       </TouchableOpacity>
                                     )}
                                   </View>
                                   { items.length == 0 ?
                                     <TouchableOpacity disabled={true} className={`flex-row items-center justify-center bg-gray-700 rounded-full p-2 mt-2 opacity-50`}>
-                                        <Text className='text-gray-300 ml-2 font-bold'>Karten generieren</Text>
+                                        <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].generateCards}</Text>
                                     </TouchableOpacity>
                                     :
-                                    <GratisPremiumButton aditionalStyles={"w-full"} handlePress={async ()=> {
+                                    <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={async ()=> {
                                         const res = await materialToQuestion(
                                             items.filter(item => item.sessionID == selectedSession.id), 
                                             selectedSession.id, 
@@ -352,7 +492,7 @@ return (
                                             isLoading ?
                                             <ActivityIndicator size="small" color="#00ff00" />
                                             :
-                                            <Text className='text-gray-300 ml-2 font-bold'>Karten generieren</Text> 
+                                            <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].generateCards}</Text> 
 
                                         }
                                     </GratisPremiumButton>

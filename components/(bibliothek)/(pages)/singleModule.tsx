@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import RoadMap from '../(sections)/roadMap';
@@ -9,16 +9,15 @@ import SwichTab from '../../(tabs)/swichTab';
 import { addDocumentConfig, addDocumentToBucket, addNote, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
-import { getModuleAmout, getQuestions, getSessionQuestions } from '@/lib/appwriteQuerys';
+import { getAllDocuments, getModuleAmout, getQuestions, getSessionNotes, getSessionQuestions } from '@/lib/appwriteQuerys';
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import ModalNewQuestion from '../(modals)/newQuestion';
 import AiQuestion from '../(modals)/aiQuestion';
 import { router } from 'expo-router';
-import { useGlobalContext } from '@/context/GlobalProvider';
+import * as FileSystem from 'expo-file-system';
 
 const SingleModule = ({setSelectedScreen, module}) => {
-    const { width } = useWindowDimensions();
-    const { language } = useGlobalContext()
+    const { width, language } = useWindowDimensions();
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
     if(language) {
@@ -52,6 +51,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
             dokUpload: "Dokument hochladen",
             crtQuestio: "Frage erstellen",
             crtNote: "Notiz erstellen",
+            pendingAI: "AI Quiz wird generiert",
 
         },
         "ENGLISH(US)":{
@@ -79,6 +79,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
             dokUpload: "Upload Document",
             crtQuestio: "Create Question",
             crtNote: "Create Note",
+            pendingAI: "AI Quiz is generating",
 
         },
         "ENGLISH(UK)":{
@@ -106,6 +107,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
             dokUpload: "Upload Document",
             crtQuestio: "Create Question",
             crtNote: "Create Note",
+            pendingAI: "AI Quiz is generating",
 
         },
         "AUSTRALIAN":{
@@ -133,6 +135,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
             dokUpload: "Upload Document",
             crtQuestio: "Create Question",
             crtNote: "Create Note",
+            pendingAI: "AI Quiz is generating",
 
         },
         "SPANISH":{
@@ -160,6 +163,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
             dokUpload: "Subir documento",
             crtQuestio: "Crear pregunta",
             crtNote: "Crear nota",
+            pendingAI: "El cuestionario AI se está generando",
 
         },
     }
@@ -253,24 +257,23 @@ const SingleModule = ({setSelectedScreen, module}) => {
                 }
             });
             
-            //const notes = await loadNotes();
-            //const documents = await loadDocuments();
+            const notes = await getSessionNotes(sessionID);
+            const documents = await getAllDocuments(sessionID);
+
             if (questions) {
                 setQuestions((prevQuestions) => [...prevQuestions, ...sessionQuestions]);  
             }
+           
             
-            /*
             if (notes) {
-                const noteArray = notes.documents
-                const filteredNotes = noteArray.filter((note) => note.subjectID == module.$id);
-                setNotes(filteredNotes)  
+                setNotes(notes)  
             }
+            
             if (documents) {
-                const docArray = documents.documents
-                const filteredDocuments = docArray.filter((document) => document.subjectID == module.$id);
-                setDocuments(filteredDocuments)
+                
+                setDocuments(documents)
             }
-                */
+                
         }
         if ( sessions == undefined || selectedSession > sessions.length || questionLoadedSessions.includes(sessions[selectedSession].id) ) {
             if (selectedSession > sessions.length) {
@@ -295,7 +298,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
     
         const note = {
             notiz: "",
-            sessionID: sessions[selectedSession].title,
+            sessionID: sessions[selectedSession].id,
             subjectID: module.$id,
             title: "",
         }
@@ -313,48 +316,66 @@ const SingleModule = ({setSelectedScreen, module}) => {
 
 
 
-    async function addDocument (){
-        try {
-             
-            const res = await DocumentPicker.getDocumentAsync({type: "*/*"});
+        async function addDocument() {
+            try {
+                const res = await DocumentPicker.getDocumentAsync({ type: "*/*" });
+        
+                if (res.canceled) return;
+        
+                const file = res.assets[0];
+        
+                const doc = {
+                    title: file.name,
+                    subjectID: module.$id,
+                    sessionID: sessions[selectedSession].id,
+                    id: uuid.v4(),
+                    type: file.mimeType || "application/octet-stream",
+                    uploaded: false,
+                };
+        
+                setDocuments([...documents, doc]);
+        
+                // Step 2 - Save the config
+                const appwriteRes = await addDocumentConfig(doc);
+        
+                // Step 3 - Read the file differently based on platform
+                let fileBlob;
+        
+                if (Platform.OS === 'web') {
+                    // Web: fetch URI as Blob
+                    fileBlob = await fetch(file.uri).then(res => res.blob());
+                } else {
+                    // Native (Android/iOS): read file as base64, then convert to Blob
+                    const base64 = await FileSystem.readAsStringAsync(file.uri, {
+                        encoding: FileSystem.EncodingType.Base64,
+                    });
+                    const byteCharacters = atob(base64);
+                    const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
+                    const byteArray = new Uint8Array(byteNumbers);
+                    fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
+                }
+                console.log("AppwriteRes 🐋🐋🐋💕",appwriteRes)
 
-            if (res.canceled) {
+                const uploadRes = await addDocumentToBucket({
+                    fileID: doc.id,
+                    fileBlob: fileBlob,
+                });
+                if (uploadRes) {
+                    
+                }
+                setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
+                appwriteRes.uploaded = true;
+                console.log("AppwriteRes 🐋🐋🐋💕",appwriteRes)
+                const final = await updateDocumentConfig(appwriteRes);
+                setDocuments(documents.map(document => document.id === doc.id ? final : document));
                 return;
-            }
-            //Step 1 - Create a new Document-Config
-            const file = res.assets[0];
 
-            const doc = {
-                title: file.name,
-                subjectID: module.$id,
-                sessionID: sessions[selectedSession].id,
-                id: uuid.v4(),
-                type: file.mimeType,
-                uploaded:false,
+                
+        
+            } catch (error) {
+                console.log('Error in addDocument: 🐋🐋🐋💕', error);
             }
-            setDocuments([...documents, doc]);
-            //Step 2 - Save the Document-Config
-            let appwriteRes = await addDocumentConfig(doc);
-            if (appwriteRes) {
-            }
-            //Step 3 - Upload the Document
-            const fileBlob = await fetch(file.uri).then(res => res.blob());
-            const data = {
-                fileID: doc.id,
-                fileBlob: fileBlob,
-            }
-            const uploadRes = await addDocumentToBucket(data);
-            //Set Upload to true && close the modal
-            setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
-            appwriteRes.uploaded = true;
-            const final = await updateDocumentConfig(appwriteRes);
-            setDocuments(documents.map(document => document.id === doc.id ? final : document));
-            return;
-                        
-        } catch (error) {
-            console.log(error);
         }
-    }
 
     async function deleteDocument (id){
         try {
@@ -373,8 +394,8 @@ const SingleModule = ({setSelectedScreen, module}) => {
 
     return (
         <View className='flex-1 items-center '>
-            <ModalNewQuestion texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
-            <AiQuestion questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
+            <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
+            <AiQuestion uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
 
             {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
             <View className='flex-1 w-full bg-gray-900  border-gray-700 '>

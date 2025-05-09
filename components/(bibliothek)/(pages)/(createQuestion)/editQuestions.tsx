@@ -25,6 +25,7 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
         setSelectedQuestion(0);
 
     }
+    console.log("Selected Question", selectedModule)
         return (
             <View className='flex-1 h-full  items-center justify-center p-4'
             >
@@ -124,11 +125,7 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                                 </View>
                                 :
 
-                                <TouchableOpacity onPress={()=> setIsVisible(true)} className='flex-row items-center px-2 py-1 border-[1px] border-gray-500'>
-                                    
-                                    <Icon name="plus" size={15} color="white"/>
-                                    <Text className='text-white font-bold ml-2 text-[12px]'>Tags hinzufügen</Text>
-                                </TouchableOpacity>
+                                null
                             }
                         </View>
                         <TouchableOpacity onPress={()=> setShowEllipse(!showEllipse)} >
@@ -168,6 +165,9 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                         questionActive={questionActive}
                         setQuestionActive={setQuestionActive}
                         selectedModule={selectedModule}
+                        questions={questions}
+                        setQuestions={setQuestions}
+                        subjectID={selectedModule.$id}
                     />
                         :
                     <EditeOldQuestion

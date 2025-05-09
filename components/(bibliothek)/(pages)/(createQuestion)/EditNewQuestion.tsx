@@ -5,8 +5,9 @@ import ToggleSwitch from '@/components/(general)/toggleSwich'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import FinalTextInput from '@/components/(general)/finalTextInput'
 import ModalSelectSession from './modalSelectSession'
+import { addQUestion } from '@/lib/appwriteEdit'
 
-const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule }) => {
+const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule, questions, setQuestions,subjectID }) => {
      const [text, setText] = useState(newQuestion.question)
      const [selectedAnswer, setSelectedAnswer] = useState(null)
      const {width} = useWindowDimensions()
@@ -38,7 +39,8 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                 answers: prevState.answers.filter((_, i) => i !== index)
             }));
         }
-    
+
+        
         return (
             <View className={`my-1 w-full rounded-[10px] p-2 ${isOn ? "bg-green-900" : "bg-red-900"}`} >
                 <View className='flex-row justify-between'>
@@ -80,6 +82,41 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
             </View>
         );
     };
+
+    async function saveQuestion() {
+        if (newQuestion.question.length < 1) {
+            console.log("Question is empty")
+            return;
+        } else if (newQuestion.answers.length < 1) {
+            console.log("Answers are empty")
+            return;
+        } else if (newQuestion.answerIndex.length < 1) {
+            console.log("Answer Index is empty")
+            return;
+        } else if (!newQuestion.sessionID) {
+            console.log("Session ID is empty")
+            return;
+        } 
+        
+        addQUestion({...newQuestion, sessionID: JSON.parse(newQuestion.sessionID).id})
+        setQuestions(prevState => [newQuestion, ...prevState])
+
+        setNewQuestion({
+            question: "",
+            answers: [],
+            answerIndex: [],
+            tags: [],
+            public: false,
+            sessionID:null,
+            aiGenerated: false,
+            subjectID: subjectID,
+            status:null
+        })
+            
+        console.log("Saving Question")
+    }
+
+
             const [modalVisible, setModalVisible] = useState(false)
             function changeSession(sessionID) {
                 setNewQuestion(prevState => ({
@@ -172,12 +209,17 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                                                 }
                                 </TouchableOpacity>
                                 
-                            </View>  
-                            <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
-                                    
-                                    <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID ? newQuestion.sessionID : "Select a Session"}</Text>
-                                    
+                            </View> 
+                            <View className='flex-row items-center justify-between w-full px-2 py-1'>
+                                <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
+                                        
+                                        <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID ? newQuestion.sessionID : "Select a Session"}</Text>
+                                        
                                 </TouchableOpacity>
+                                <TouchableOpacity className='p-2 bg-blue-500 rounded-full' onPress={()=> saveQuestion()}>
+                                    <Text className='text-white text-[12px] font-semibold'>Frage Speichern</Text>
+                                </TouchableOpacity>
+                            </View> 
                         </View>
   )
 }

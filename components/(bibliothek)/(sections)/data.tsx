@@ -176,7 +176,7 @@ return (
             }}
             horizontal={true}
         /> : null}
-        {filteredData.length == 0 ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> addDocument()}/> : null}
+        {filteredData.length == 0 && !(moduleSessions[selected].tags == "JOB-PENDING")  ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> addDocument()}/> : null}
 
         <CounterText title={texts[selectedLanguage].file} count={filteredDocuments.length}/>{
             documents ? 

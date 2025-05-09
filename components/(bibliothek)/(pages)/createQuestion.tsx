@@ -1,17 +1,11 @@
 import { View, Text, TouchableOpacity, FlatList,TextInput,ScrollView } from 'react-native'
 import React from 'react'
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
 import { useState,useEffect } from 'react';
-import { loadQuestions } from '@/lib/appwriteDaten';
-import ToggleSwitch from '@/components/(general)/toggleSwich';
-import { setNativeProps } from 'react-native-reanimated';
 import { addQUestion, updateDocument } from '@/lib/appwriteEdit';
-import { tags } from 'react-native-svg/lib/typescript/xmlTags';
 import Header from './(createQuestion)/header';
 import Questions from './(createQuestion)/questions';
 import EditQuestions from './(createQuestion)/editQuestions';
-import ModalAddTags from './(createQuestion)/modalAddTags';
 import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getAllQuestions } from '@/lib/appwriteQuerys';
@@ -51,13 +45,16 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
             }  
         }
         fetchQuestions()
+        
         setLoading(false)
     }, [module])
         
     useEffect(()=> {
             console.log("Changes where made")
             async function push(){
-            await updateDocument(questions[selectedQuestion-1])
+                if (questions[selectedQuestion-1]){
+                    await updateDocument(questions[selectedQuestion-1])
+                }
             }
             push()
             setUngespeichert(false)
@@ -112,7 +109,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
         <ModalIncompleat modalVisible={reqModalVisible} setModalVisible={setReqModalVisible} missingRequirements={missingRequirements}/>
         {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
         {
-            questions.length > 0 ?
+            questions.length > 0 || loading == false ?
             <View className='h-full w-full bg-gray-900 rounded-[10px] border-gray-700 border-[1px]'>
                 <Header setSelected={()=> setSelected2("SingleModule")} ungespeichert={ungespeichert} moduleName={module.documents[selectedModule].name}/>
                
@@ -139,6 +136,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
                             newQuestion={newQuestion}
                             setNewQuestion={setNewQuestion}
                             selectedModule={module.documents[selectedModule]}
+                            
                             
                         />
                     </View>

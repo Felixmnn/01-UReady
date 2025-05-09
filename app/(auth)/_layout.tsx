@@ -27,6 +27,11 @@ const authLayout = () => {
                     headerShown: false 
                   }}
                 />
+                 <Stack.Screen name="sign-out"
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
             </Stack>
         </>
     </View>

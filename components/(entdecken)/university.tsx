@@ -1,15 +1,54 @@
-import { View, Text, TouchableOpacity, FlatList, useWindowDimensions } from 'react-native'
+import { View, TouchableOpacity, useWindowDimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { countryList, LeibnizFaculties, LeibnizSubjects, universityListDeutschland } from '@/assets/exapleData/countryList'
-import OptionSelector from '../(tabs)/optionSelector'
-import SwichTab from '../(tabs)/swichTab'
 import { universityQuery } from '@/lib/appwriteQuerys'
 import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { useGlobalContext } from '@/context/GlobalProvider'
 
 const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions();
 
+  const { user,language } = useGlobalContext()
+  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+  useEffect(() => {
+    if(language) {
+      setSelectedLanguage(language)
+    }
+  }, [language])
+
+    const texts = {
+      "DEUTSCH": {
+        universtity: "Universität",
+        abschlussziel: "Abschlussziel",
+        fakultät: "Fakultät",
+        subject: "Fach",
+      },
+      "ENGLISH(US)": {
+        universtity: "University",
+        abschlussziel: "Degree",
+        fakultät: "Faculty",
+        subject: "Subject",
+      },
+      "ENGLISH(UK)": {
+        universtity: "University",
+        abschlussziel: "Degree",
+        fakultät: "Faculty",
+        subject: "Subject",
+      },
+      "AUSTRALIAN": {
+        universtity: "University",
+        abschlussziel: "Degree",
+        fakultät: "Faculty",
+        subject: "Subject",
+      },
+      "SPANISH": {
+        universtity: "Universidad",
+        abschlussziel: "Grado",
+        fakultät: "Facultad",
+        subject: "Asignatura",
+      },
+    }
     //Allgemeine Universitätsdaten
     const abschlussziele = ["Bachelor", "Master", "Staatsexamen","Diplom","Magister","Other"]
 
@@ -68,18 +107,18 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
         <View className={`flex-row flex-1  `} style={{  zIndex: 1, position: 'relative', }}>
           {
             selectedFilter == 0 || width > 800 || (selectedFilter == 3 && width > 600) ? 
-        <DropDownList title={"Universität"} options={universityList.map((item) => item.name)} selectedOptions={selectedUniversity} setSelectedOptions={()=> {}} height={height} />
+        <DropDownList title={texts[selectedLanguage].universtity} options={universityList.map((item) => item.name)} selectedOptions={selectedUniversity} setSelectedOptions={()=> {}} height={height} />
         : null}
         {    
         selectedFilter == 1  || width > 800 || (selectedFilter == 0 && width > 600) ? 
-        <DropDownList title={"Abschlussziel"} options={abschlussziele.map((item) => item)} selectedOptions={selectedAbschlussziele} setSelectedOptions={(item)=> {
+        <DropDownList title={texts[selectedLanguage].abschlussziel} options={abschlussziele.map((item) => item)} selectedOptions={selectedAbschlussziele} setSelectedOptions={(item)=> {
             setSelectedAbschlussziele(item)
             setUniversitySubjects(LeibnizSubjects[0][abschlussziele[abschlussziele.indexOf(item)]])
         }}/>
         : null}
         {
         selectedFilter == 2 || width > 800 || (selectedFilter == 1 && width > 600)  ?
-        <DropDownList title={"Fakultät"} options={universityFacultys} selectedOptions={selectedFacultys} setSelectedOptions={(item)=> {
+        <DropDownList title={texts[selectedLanguage].fakultät} options={universityFacultys} selectedOptions={selectedFacultys} setSelectedOptions={(item)=> {
             if (selectedFacultys.includes(item)) {
                 setSelectedFacultys(selectedFacultys.filter((i) => i !== item));
               }
@@ -90,7 +129,7 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
         : null}
         {
         selectedFilter == 3 || width > 800 || (selectedFilter == 2 && width > 600)?
-        <DropDownList title={"Subjects"} options={universitySubjects.map((item) => item.name)} selectedOptions={selectedSubjects} setSelectedOptions={(item)=> {
+        <DropDownList title={texts[selectedLanguage].subject} options={universitySubjects.map((item) => item.name)} selectedOptions={selectedSubjects} setSelectedOptions={(item)=> {
             if (selectedSubjects.includes(item)) {
                 setSelectedSubjects(selectedSubjects.filter((i) => i !== item));
               }

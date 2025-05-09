@@ -1,58 +1,11 @@
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { router } from 'expo-router'
-import { addNote, addDocumentConfig, addDocumentToBucket } from '@/lib/appwriteEdit';
-import ModalDocumentPicker from './modalDocumentPicker';
-import * as DocumentPicker from 'expo-document-picker';
-import uuid from 'react-native-uuid';
+import  Selectable  from '../selectable'
 
+const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument, SwichToEditNote,texts, selectedLanguage}) => {
+    
 
-const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument}) => {
-    const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
-        return (
-            <TouchableOpacity onPress={handlePress} className='w-full justify-between p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] my-2'>
-                <View className={`h-[45px] w-[45px] ${bgColor} items-center justify-center rounded-full`}>
-                    <Icon name={icon} size={25} color={iconColor}/>
-                </View>
-                { empfolen ?
-                    <View className='items-center justify-center border-[1px] border-green-500 bg-green-700 bg-opacity-10 rounded-[5px] max-w-[60px] my-1'>
-                        <Text className='text-green-500 text-[10px]'>Empfohlen</Text>
-                    </View>
-                    :
-                    null
-                }
-                <View className='flex-row items-center justify-between'>
-                    <Text className='text-gray-200 font-bold text-[15px] pr-2'>{title}</Text>
-                    <Icon name="chevron-right" size={20} color="white"/>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
-async function SwichToEditNote() {
-    setIsVisible(false);
-
-    console.log("Das akutelle Modul",module)
-    console.log("Die Modul ID:",module.$id)
-
-    const note = {
-        notiz: "",
-        sessionID: sessions[selected].title,
-        subjectID: module.$id,
-        title: "",
-    }
-    try {
-        
-        const res = await addNote(note);
-        console.log(res);
-        router.push({
-            pathname:"editNote",
-            params: {note: JSON.stringify(res)}
-        })
-    } catch (error) {
-        console.log(error);
-    }}
 
     const [documtenPickerVisible, setDocumentPickerVisible] = useState(false);
 
@@ -71,16 +24,16 @@ async function SwichToEditNote() {
             style={{ backgroundColor: 'rgba(17, 24, 39, 0.5)' }}  // 50% Transparenz
             onPress={() => setIsVisible(false)}
         >
-            <View className=' w-full items-center justify-center bg-gray-800 border-gray-700 border-[1px] rounded-xl p-2'>
+            <View className=' w-full max-w-[600px] items-center justify-center bg-gray-800 border-gray-700 border-[1px] rounded-xl p-2'>
                 <View className='w-full flex-row justify-between'>
-                    <Text className='text-white font-bold mr-2 text-[15px]' >Material hinzufügen</Text>
+                    <Text className='text-white font-bold mr-2 text-[15px]' >{texts[selectedLanguage].addMaterial}</Text>
                     <Icon name="times" size={20} color="white"/>
                 </View>
                 <View className='w-full p-2'>
-                    <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} handlePress={()=> selectAi()}/>
-                    <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {addDocument()}}/>
-                    <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />
-                    <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false}  handlePress={()=> {
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={texts[selectedLanguage].aiQuiz} empfolen={true} handlePress={()=> selectAi()}/>
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/>
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={texts[selectedLanguage].crtQuestio} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={texts[selectedLanguage].crtNote} empfolen={false}  handlePress={()=> {
                         SwichToEditNote(null);
                         }}/>
                 </View>

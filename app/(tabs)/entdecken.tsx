@@ -17,6 +17,78 @@ import { addNewModule } from '@/lib/appwriteAdd';
 
 const entdecken = () => {
 
+  const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+
+  const texts = {
+    "DEUTSCH":{
+      title: "Entdecken",
+      university:"Universität",
+      school:"Schule",
+      education:"Ausbildung",
+      other:"Sonstiges",
+      searchText: "Suche nach Modulen",
+      noResults: "Keine Ergebnisse gefunden",
+      loading: "Lade deine Module...",
+      copy1: "Modul Kopieren",
+      copy2: "Module Kopieren",
+    },
+    "ENGLISH(US)":{
+      title: "Discover",
+      university:"University",
+      school:"School",
+      education:"Education",
+      other:"Other",
+      searchText: "Search for modules",
+      noResults: "No results found",
+      loading: "Loading your modules...",
+      copy1: "Copy Module",
+      copy2: "Copy Modules",
+    },
+    "ENGLISH(UK)":{
+      title: "Discover",
+      university:"University",
+      school:"School",
+      education:"Education",
+      other:"Other",
+      searchText: "Search for modules",
+      noResults: "No results found",
+      loading: "Loading your modules...",
+      copy1: "Copy Module",
+      copy2: "Copy Modules",
+    },
+    "AUSTRALIAN":{
+      title: "Discover",
+      university:"University",
+      school:"School",
+      education:"Education",
+      other:"Other",
+      searchText: "Search for modules",
+      noResults: "No results found",
+      loading: "Loading your modules...",
+      copy1: "Copy Module",
+      copy2: "Copy Modules",
+    },
+    "SPANISH":{
+      title: "Descubrir",
+      university:"Universidad",
+      school:"Escuela",
+      education:"Educación",
+      other:"Otro",
+      searchText: "Buscar módulos",
+      noResults: "No se encontraron resultados",
+      loading: "Cargando tus módulos...",
+      copy1: "Copiar módulo",
+      copy2: "Copiar módulos",
+    },
+
+  }
+
   {/*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */}
   const {user, isLoggedIn,isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
     useEffect(() => {
@@ -43,7 +115,7 @@ const entdecken = () => {
 
   const options = [
     {
-      name: "Universität",
+      name: texts[selectedLanguage].university,
       enum: "UNIVERSITY",
       icon: "university",
       color: "#7a5af8",
@@ -53,7 +125,7 @@ const entdecken = () => {
       },
     },
     {
-      name: "Schule",
+      name: texts[selectedLanguage].school,
       enum: "SCHOOL",
       icon: "school",
       color: "#20c1e1",
@@ -63,7 +135,7 @@ const entdecken = () => {
       },
     },
     {
-      name: "Ausbildung",
+      name: texts[selectedLanguage].education,
       enum: "EDUCATION",
       icon: "tools",
       color: "#4f9c19",
@@ -73,7 +145,7 @@ const entdecken = () => {
       },
     },
     {
-      name: "Sonstiges",
+      name: texts[selectedLanguage].other,
       enum: "OTHER",
       icon: "ellipsis-h",
       color: "#f39c12",
@@ -105,7 +177,7 @@ const entdecken = () => {
             {
               width > 400 ?
                 <Text className='font-bold text-3xl text-gray-100'>
-                  Entdecken {width}
+                  {texts[selectedLanguage].title}
                 </Text>
                 : null
             }
@@ -151,7 +223,7 @@ const entdecken = () => {
                             value={searchBarText}
                             onFocus={() => setFocused(true)}
                             onBlur={() => setFocused(false)}
-                            placeholder="Suche nach Modulen"
+                            placeholder={texts[selectedLanguage].searchText}
                             onChangeText={(text) => setSearchBarText(text)}
                             placeholderTextColor={"#797d83"} 
                             />
@@ -238,7 +310,7 @@ const entdecken = () => {
                               farbe={item.color}
                               percentage={null}
                               titel={item.name}
-                              studiengang={item.subject}
+                              studiengang={item.description}
                               fragenAnzahl={item.questions}
                               notizAnzahl={item.notes}
                               creator={item.creator}
@@ -262,7 +334,7 @@ const entdecken = () => {
                         style={{ width: 200, height: 200, borderRadius: 5 }}
                       />
                       <Text className="text-gray-300 font-bold text-[18px]">
-                        Keine Ergebnisse gefunden
+                        {texts[selectedLanguage].noResults}
                       </Text>
                     </View>
                   )}
@@ -271,7 +343,7 @@ const entdecken = () => {
                 <View>
                   <ActivityIndicator size="small" color="#b2e0fe" />
                   <Text className="text-gray-300 font-bold text-[18px]">
-                    Lade deine Module...
+                     {texts[selectedLanguage].loading}
                   </Text>
                 </View>
               )}
@@ -335,7 +407,7 @@ const entdecken = () => {
             >
               {
                 loading ? <ActivityIndicator size="small" color="#fff" /> :
-                <Text className='text-white  font-semibold text-[15px]'>{selectedModules.length == 1 ? "Modul Kopieren" : "Module Kopieren"}</Text>
+                <Text className='text-white  font-semibold text-[15px]'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2}</Text>
 
 
               }

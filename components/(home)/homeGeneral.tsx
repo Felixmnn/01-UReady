@@ -14,7 +14,60 @@ import * as Linking from 'expo-linking';
 const { width } = Dimensions.get('window');
 
 const HomeGeneral = ({setSelectedPage}) => {
-  const { user } = useGlobalContext()
+  const { user,language } = useGlobalContext()
+  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+  useEffect(() => {
+    if(language) {
+      setSelectedLanguage(language)
+    }
+  }, [language])
+
+
+  const texts = {
+    "DEUTSCH":{
+      lastModules:"Letzte Module",
+      lastSessions:"Letzte Sessions",
+      quickActions:"Schnelle Aktionen",
+      learnSetKI:"Erstellen wir zusammen ein Lernset.",
+      learnSetDiscover:"Mal schauen was deine Komilitonen lernen.",
+      learnSetCreate:"Erstelle dein eigenes Lernset.",
+    },
+    "ENGLISH(US)":{
+      lastModules:"Last Modules",
+      lastSessions:"Last Sessions",
+      quickActions:"Quick Actions",
+      learnSetKI:"Let's create a learning set together.",
+      learnSetDiscover:"Let's see what your classmates are learning.",
+      learnSetCreate:"Create your own learning set.",
+    },
+    "ENGLISH(UK)":{
+      lastModules:"Last Modules",
+      lastSessions:"Last Sessions",
+      quickActions:"Quick Actions",
+      learnSetKI:"Let's create a learning set together.",
+      learnSetDiscover:"Let's see what your classmates are learning.",
+      learnSetCreate:"Create your own learning set.",
+    },
+    "AUSTRALIAN":{
+      lastModules:"Last Modules",
+      lastSessions:"Last Sessions",
+      quickActions:"Quick Actions",
+      learnSetKI:"Let's create a learning set together.",
+      learnSetDiscover:"Let's see what your classmates are learning.",
+      learnSetCreate:"Create your own learning set.",
+    },
+    "SPANISH":{
+      lastModules:"Últimos módulos",
+      lastSessions:"Últimas sesiones",
+      quickActions:"Acciones rápidas",
+      learnSetKI:"Creemos un conjunto de aprendizaje juntos.",
+      learnSetDiscover:"Veamos qué están aprendiendo tus compañeros.",
+      learnSetCreate:"Crea tu propio conjunto de aprendizaje.",
+    },
+  }
+
+
+
   const [ loading, setLoading ] = useState(true)
   const [userUsage, setUserUsage] = useState({
     streak: 0,
@@ -216,21 +269,21 @@ const HomeGeneral = ({setSelectedPage}) => {
   {/* Schnelle Aktionen für den Nutzer */}
   const [quickActions, setQuickActions] = useState([
     {
-      text: 'Erstellen wir zusammen ein Lernset.',
+      text: texts[selectedLanguage].learnSetKI,
       colorBorder: '#7a5af8',
       colorBG: '#372292',
       iconName: 'bot',
       handlePress: () => setIsVisibleAiModule(true),
     },
     {
-      text: 'Mal schauen was deine Komilitonen lernen.',
+      text: texts[selectedLanguage].learnSetDiscover,
       colorBorder: '#20c1e1',
       colorBG: '#0d2d3a',
       iconName: 'search',
       handlePress: () => router.push("/entdecken"),
     },
     {
-      text: 'Erstelle dein eigenes Lernset.',
+      text: texts[selectedLanguage].learnSetCreate,
       colorBorder: '#4f9c19',
       colorBG: '#2b5314',
       iconName: 'cubes',
@@ -322,8 +375,12 @@ const HomeGeneral = ({setSelectedPage}) => {
                 </View>
 
       </View>
-      <Header title={"Letzte Module"}/>
-      <ScrollView  horizontal={true} className='flex-row'>
+      <Header title={texts[selectedLanguage].lastModules}/>
+      <ScrollView  horizontal={true} className='flex-row'
+      style={{
+        scrollbarWidth: 'thin', // Dünne Scrollbar
+        scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+      }}>
           {
             !userUsage || userUsage.lastModules.length == 0 ?
             <View>
@@ -343,8 +400,12 @@ const HomeGeneral = ({setSelectedPage}) => {
             })
           }
       </ScrollView>
-      <Header title={"Letzte Sessions"}/>
-      <ScrollView  horizontal={true} className='flex-row'>
+      <Header title={texts[selectedLanguage].lastSessions}/>
+      <ScrollView  horizontal={true} className='flex-row'
+      style={{
+        scrollbarWidth: 'thin', // Dünne Scrollbar
+        scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+      }}>
           {
             !userUsage || userUsage.lastModules.length == 0 ?
             <View className='flex-row'>
@@ -378,7 +439,7 @@ const HomeGeneral = ({setSelectedPage}) => {
             })
           }
       </ScrollView>
-      <Header title={"Schnelle Aktionen"}/>
+      <Header title={texts[selectedLanguage].quickActions}/>
       <View className={`${width > 700 ? "flex-row" : "flex-col"} `}>
         {
           quickActions.map((item, index) => {

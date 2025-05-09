@@ -3,8 +3,61 @@ import React, { useEffect, useState } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from '@/components/(general)/colorPicker';
 import IconPicker from '@/components/(general)/iconPicker';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, setSessions }) => {
+
+    const { user,language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    useEffect(() => {
+        if(language) {
+        setSelectedLanguage(language)
+        }
+    }, [language])
+    const texts ={
+        "DEUTSCH":{
+            title: "Session bearbeiten",
+            name: "Session Name",
+            descriotion: "Session Beschreibung",
+            icons: "Session Icons",
+            placeholderSessions: "Sessions",
+            placeholderDescription: "Beschreibung",
+            },
+        "ENGLISH(US)":{
+            title: "Edit Session",
+            name: "Session Name",
+            descriotion: "Session Description",
+            icons: "Session Icons",
+            placeholderSessions: "Sessions",
+            placeholderDescription: "Description",
+            },
+        "ENGLISH(UK)":{
+            title: "Edit Session",
+            name: "Session Name",
+            descriotion: "Session Description",
+            icons: "Session Icons",
+            placeholderSessions: "Sessions",
+            placeholderDescription: "Description",
+            },
+        "AUSTRALIAN":{
+            title: "Edit Session",
+            name: "Session Name",
+            descriotion: "Session Description",
+            icons: "Session Icons",
+            placeholderSessions: "Sessions",
+            placeholderDescription: "Description",
+            },
+        "SPANISH":{
+            title: "Editar sesión",
+            name: "Nombre de la sesión",
+            descriotion: "Descripción de la sesión",
+            icons: "Iconos de sesión",
+            placeholderSessions: "Sesiones",
+            placeholderDescription: "Descripción",
+            },
+
+        
+    }
     const [newTag, setNewTag] = useState(session);
     const { width } = useWindowDimensions();
     const [on, setOn] = useState(false);
@@ -43,18 +96,18 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                     transparent={true}
                     visible={isVisible}
                 >
-                    <View className="h-full absolute top-0 left-0   justify-center items-center m-2 ">
+                    <View className="h-full w-full absolute top-0 left-0   justify-center items-center m-2 ">
                         <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' >
                             <View className='justify-between  flex-row'>
                                 <Text className='text-white font-bold text-[15px]'>
-                                    Session Bearbeiten
+                                    {texts[selectedLanguage].title}
                                 </Text>
                                 <TouchableOpacity onPress={() => setIsVisible(false)}>
                                     <Icon name="times" size={20} color="white" />
                                 </TouchableOpacity>
                             </View>
                             <Text className='text-gray-400 font-bold text-[12px]'>
-                                Session Name
+                                {texts[selectedLanguage].name}
                             </Text>
 
                             <TextInput
@@ -64,7 +117,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                                 }}
                                 value={newTag ? newTag.name : null}
                                 maxLength={30}
-                                placeholder={session.title}
+                                placeholder={session.title ? session.title : texts[selectedLanguage].placeholderSessions}
                                 placeholderTextColor={"AAAAAA"}
                                 onChangeText={(e) => setSessions(prevSessions =>
                                     prevSessions.map((session, i) =>
@@ -73,26 +126,26 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                                 )}
                             />
                             <Text className='text-gray-400 font-bold text-[12px]'>
-                                Session Description
+                                {texts[selectedLanguage].descriotion}
                             </Text>
 
                             <TextInput
-                            value={newTag ? newTag.description : ""}
-                            maxLength={30}
-                            placeholderTextColor={"AAAAAA"}
-
-                            className={`text-white  rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
-                            style={{
-                                height: 40,	
-                            }}
-                            onChangeText={(e) => {
-                                setNewTag((prev) => ({ ...prev, description: e }));
-                                setSessions((prevSessions) =>
-                                prevSessions.map((sessionItem, i) =>
-                                    i === index ? { ...sessionItem, description: e } : sessionItem
-                                )
-                                );
-                            }}
+                                value={newTag ? newTag.description : ""}
+                                maxLength={30}
+                                placeholderTextColor={"AAAAAA"}
+                                placeholder={session.description ? session.description : texts[selectedLanguage].placeholderDescription}
+                                className={`text-white  rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
+                                style={{
+                                    height: 40,	
+                                }}
+                                onChangeText={(e) => {
+                                    setNewTag((prev) => ({ ...prev, description: e }));
+                                    setSessions((prevSessions) =>
+                                    prevSessions.map((sessionItem, i) =>
+                                        i === index ? { ...sessionItem, description: e } : sessionItem
+                                    )
+                                    );
+                                }}
                             />
                             <View 
                             style={{
@@ -100,8 +153,8 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
 
                             }}
                             >
-                            <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title="Session Farbe" indexItem={index} />
-                            <IconPicker selectedIcon={selectedIcon} setSelectedIcon={changeIcon} title={"Session Icons"} selectedColor={selectedColor} indexItem={index} />
+                            <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title={"Session Farbe"} indexItem={index} />
+                            <IconPicker selectedIcon={selectedIcon} setSelectedIcon={changeIcon} title={texts[selectedLanguage].icons} selectedColor={selectedColor} indexItem={index} />
                             </View>
                         </View>
                     </View>

@@ -18,7 +18,7 @@ const profil = () => {
   }, [user, isLoggedIn, isLoading]);
   
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
-  const [page,setPage] = useState("profil")
+  const [page,setPage] = useState("profil-settings")
 
   
 

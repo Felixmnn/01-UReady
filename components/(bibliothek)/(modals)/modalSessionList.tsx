@@ -1,11 +1,45 @@
 import { View, Text, Modal, TouchableOpacity, useWindowDimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ModalEditSession from './modalEditSession';
 import uuid from 'react-native-uuid';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) => {
     const { width } = useWindowDimensions();
+
+    const { user,language } = useGlobalContext()
+  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+  useEffect(() => {
+    if(language) {
+      setSelectedLanguage(language)
+    }
+  }, [language])
+
+    const texts = {
+        "DEUTSCH":{
+            title: "Sessions",
+            addSession: "Session hinzufügen"
+            },
+        "ENGLISH(US)":{
+            title: "Sessions",
+            addSession: "Add Session"
+            },
+        "ENGLISH(UK)":{
+            title: "Sessions",
+            addSession: "Add Session"
+            },
+        "AUSTRALIAN":{
+            title: "Sessions",
+            addSession: "Add Session"
+            },
+        "SPANISH":{
+            title: "Sesiones",
+            addSession: "Agregar sesión"
+            },
+    }
+
+
     const [isVisibleEdit, setIsVisibleEdit] = useState(false);
     const [selectedSession, setSelectedSession] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -26,7 +60,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
             <TouchableOpacity onPress={() => setIsVisible(false)} className='absolute top-0 left-0 w-full h-full justify-center items-center p-2 ' style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }} >
                 <View className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl ${width < 400 ? "w-full" : " w-[400px]"}`}>
                     <View className='flex-row items-center justify-between'>
-                        <Text className='text-white text-xl mb-2 font-semibold'>Sessions</Text>
+                        <Text className='text-white text-xl mb-2 font-semibold'>{texts[selectedLanguage].title}</Text>
                         <TouchableOpacity>
                             <Icon name="times" size={20} color="white" onPress={() => setIsVisible(false)}  />
                         </TouchableOpacity>
@@ -104,7 +138,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
                             generating: false,
                         }])
                     }} className='flex-row items-center justify-center p-2 border-gray-600 bg-gray-900 border-[1px] rounded-xl mt-2'>
-                        <Text className='text-white'>Session hinzufügen</Text>
+                        <Text className='text-white'>{texts[selectedLanguage].addSession}</Text>
                     </TouchableOpacity>
                 </View>
             </TouchableOpacity>

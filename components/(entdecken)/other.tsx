@@ -3,10 +3,37 @@ import React, { useEffect, useState } from 'react'
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import DropDownList from './dropDownList'
 import { otherQuery } from '@/lib/appwriteQuerys'
+import { useGlobalContext } from '@/context/GlobalProvider'
 
 const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height } = useWindowDimensions()
 
+    const { user,language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
+
+    const texts = {
+      "DEUTSCH": {
+        subjects: "Fächer",
+
+    },
+      "ENGLISH(US)": {
+        subjects: "Subjects",
+      },
+      "ENGLISH(UK)": {
+        subjects: "Subjects",
+      },
+      "AUSTRALIAN": {
+        subjects: "Subjects",
+      },
+      "SPANISH": {
+        subjects: "Asignaturas",
+      },
+    }
     //Algemeine Schuldaten
 
     //Dynnamische Schuldaten basierend auf dem Land
@@ -46,7 +73,7 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
     <View className=' w-full' style={{ position: "relative" /* Wichtig! */ }}>
         <View className='flex-row' style={{  paddingHorizontal:11,zIndex: 1, position: 'relative', }}>
         <DropDownList
-            title={"Fächer"}
+            title={texts[selectedLanguage].subjects}
             options={otherSubjects.map((item) => item)}
             selectedOptions={selectedOtherSubjects}
             setSelectedOptions={(item)=> {
@@ -60,10 +87,7 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
             height={height}
             />
         </View> 
-        <View
-            className='w-full bg-gray-500 border-gray-500 border-t-[1px] mt-2'
-            style={{ zIndex: 0 }}
-        />
+        
     </View>
   )
 }

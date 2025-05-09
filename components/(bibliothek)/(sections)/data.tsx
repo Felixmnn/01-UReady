@@ -1,16 +1,18 @@
-import { View, Text,FlatList, ScrollView, TouchableOpacity, ActivityIndicator, useWindowDimensions, Modal } from 'react-native'
+import { View, Text,FlatList, ScrollView, TouchableOpacity, ActivityIndicator, useWindowDimensions, Modal, Image } from 'react-native'
 import React, { useState } from 'react'
 import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
+import  Selectable  from '../selectable'
 
-const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument, addDocument}) => {
+const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
 
 
 const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
 console.log("Filtered Data:", questions)
+console.log("texts", texts[selectedLanguage])
 
 const CounterText = ({title,count}) => {
     return (
@@ -66,32 +68,10 @@ const Status = ({status}) => {
     )
 }
 const {width, height} = useWindowDimensions();
-const isVertical = width == 700;
 
-const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress}) => {
-        return (
-            <TouchableOpacity onPress={handlePress} 
-                className=' justify-between flex-1 min-h-[130px] flex-1 p-3 rounded-10px border-gray-600 border-[1px] rounded-[10px] m-2'
-              
-                >
-                <View className={`h-[45px] w-[45px] ${bgColor} items-center justify-center rounded-full`}>
-                    <Icon name={icon} size={25} color={iconColor}/>
-                </View>
-                { empfolen ?
-                    <View className='items-center justify-center border-[1px] border-green-500 bg-green-700 bg-opacity-10 rounded-[5px] max-w-[60px]'>
-                        <Text className='text-green-500 text-[10px]'>Empfohlen</Text>
-                    </View>
-                    :
-                    null
-                }
-                <View className='flex-row items-center justify-between'>
-                    <Text className='text-gray-200 font-bold text-[15px] pr-2'>{title}</Text>
-                    <Icon name="chevron-right" size={20} color="white"/>
-                </View>
-            </TouchableOpacity>
-        )
-    }
+
     const [wrongType, setWrongType] = useState(false);
+
 const NichtUnterstuzterDateityp = () => {
     return (
         <Modal
@@ -101,7 +81,7 @@ const NichtUnterstuzterDateityp = () => {
         >
         <TouchableOpacity onPress={()=> setWrongType(false)} className='flex-1 items-center justify-start mt-10'>
             <View className='bg-red-800 p-4 rounded-[10px]'>
-                <Text className='text-white'>Dieser Dateityp wird nicht unterstützt</Text>
+                <Text className='text-white'>{texts[selectedLanguage].unsupported}</Text>
             </View>
         </TouchableOpacity>
         </Modal>
@@ -113,20 +93,23 @@ const NichtUnterstuzterDateityp = () => {
     
 return (
     <View className='flex-1'>
+        
         <NichtUnterstuzterDateityp/>
         {
             filteredData.length == 0 && filteredDocuments.length == 0 && filteredNotes.length == 0 ?
             <ScrollView >
                 <View className='flex-1'>
-                    <Selectable icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={"AI Quiz Generieren"} empfolen={true} />
-                    <Selectable icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={"Dokument hinzufügen"} empfolen={false} handlePress={()=> {}}/>
-                    <Selectable icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={"Erstelle Fragen"} empfolen={false}  />
-                    <Selectable icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={"Erstelle eine Notiz"} empfolen={false} />
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={texts[selectedLanguage].aiQuiz} empfolen={true} handlePress={()=> setIsVisibleAI(true)}/>
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/>
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={texts[selectedLanguage].crtQuestio} empfolen={false} handlePress={()=> setSelected("CreateQuestion")} />
+                    <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={texts[selectedLanguage].crtNote} empfolen={false}  handlePress={()=> {
+                        SwichToEditNote(null);
+                        }}/>
                 </View>
             </ScrollView>
             :
             <View className='flex-1'>
-        <CounterText title='Fragen' count={filteredData.length}/>
+        <CounterText title={texts[selectedLanguage].questio} count={filteredData.length}/>
         {filteredData ? 
         <FlatList
             data={filteredData}
@@ -146,11 +129,15 @@ return (
                         className='p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800'>
                         <View className='w-full justify-between flex-row items-center '>
                             {item.status !== null ? <Status status={item.status}/> : null}
-                            <View className='bg-gray-900 rounded-[5px] items-center justify-cneter'>
-                                <Text className="m-1 text-white text-[10px] px-1">+ Tags hinzufügen</Text>
-                                
-                            </View>
-                            <Icon name="robot" size={15} color="white"/>
+                            
+                            <Image 
+                                source={require('../../../assets/bot.png')} 
+                                style={{
+                                height: 20, 
+                                width: 20, 
+                                tintColor: "#fff" 
+                                }} 
+                            />
                         </View>
                         <Text className='text-white'>{item.question}</Text>
                         <View className='border-b-[1px] border-gray-600 my-4 w-full'/>
@@ -162,9 +149,9 @@ return (
             }}
             horizontal={true}
         /> : null}
-        {filteredData.length == 0 ? <AddData title={"Fragen hinzufügen"} subTitle={"Erstelle deine ersten Fragen"} button={"Dokument hochladen"}  handlePress={()=> addDocument()}/> : null}
+        {filteredData.length == 0 ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> addDocument()}/> : null}
 
-        <CounterText title='Dateien' count={filteredDocuments.length}/>{
+        <CounterText title={texts[selectedLanguage].file} count={filteredDocuments.length}/>{
             documents ? 
             <FlatList
             data={filteredDocuments}
@@ -197,7 +184,7 @@ return (
                             className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
                         <View className='flex-row items-start justify-start'>
                             <Icon name="file" size={40} color="white"/>
-                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : "Unbenannt"}</Text>
+                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : texts[selectedLanguage].unnamed}</Text>
                         </View>
                         <View className='flex-row items-center justify-between'>
                         { item.uploaded ?
@@ -220,10 +207,10 @@ return (
                 )}}
             />
             :
-            <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"} />
+            <AddData title={texts[selectedLanguage].fileH} subTitle={texts[selectedLanguage].fileSH} button={texts[selectedLanguage].fileBtn} />
         }
-        {filteredDocuments.length == 0 ? <AddData title={"Datei hinzufügen"} subTitle={"Lade deine erste Datei hoch"} button={"Dokument hochladen"}  handlePress={()=> addDocument()}/> : null}
-        <CounterText title='Notizen' count={filteredNotes.length}/>
+        {filteredDocuments.length == 0 ? <AddData title={texts[selectedLanguage].fileH} subTitle={texts[selectedLanguage].fileSH} button={texts[selectedLanguage].fileBtn}  handlePress={()=> addDocument()}/> : null}
+        <CounterText title={texts[selectedLanguage].note} count={filteredNotes.length}/>
         {
             notes  ? 
             <FlatList
@@ -243,7 +230,7 @@ return (
                             className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
                         <View className='flex-row items-start justify-start'>
                             <Icon name="file" size={40} color="white"/>
-                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : "Unbenannt"}</Text>
+                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : texts[selectedLanguage].unnamed}</Text>
                         </View>
                         <TouchableOpacity>
                             <Icon name="ellipsis-h" size={15} color="white"/>
@@ -252,10 +239,10 @@ return (
                 )}}
             />
             :
-            <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} />
+            <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} />
 
         }
-        { filteredNotes.length == 0  ? <AddData title={"Notizen hinzufügen"} subTitle={"Erstelle jetzt deine erste."} button={"Notiz ergänzen"} /> : null}
+        { filteredNotes.length == 0  ? <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} /> : null}
     
         </View>}
     </View>

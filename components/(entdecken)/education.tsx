@@ -1,11 +1,42 @@
 import { View, Text, useWindowDimensions, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ausbildungsListDeutschland, ausbildungsTypen, countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { useGlobalContext } from '@/context/GlobalProvider'
 const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height, width } = useWindowDimensions()
 
+    const { user,language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
+      
+    const texts = {
+        "DEUTSCH": {
+            kathegory: "Kathegorie",
+            subject: "Ausbildungsfach", 
+        },
+        "ENGLISH(US)": {
+            kathegory: "Category",
+            subject: "Subject", 
+        },
+        "ENGLISH(UK)": {
+            kathegory: "Category",
+            subject: "Subject", 
+        },
+        "AUSTRALIAN": {
+            kathegory: "Category",
+            subject: "Subject", 
+        },
+        "SPANISH": {
+            kathegory: "Categoría",
+            subject: "Asignatura", 
+        },
+    }
     //Algemeine Ausbildungdaten
 
     //Dynnamische Ausbildungdaten basierend auf dem Land
@@ -32,7 +63,7 @@ const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
 
                 width > 450 || selectedFilter == 0 ?
         <DropDownList
-            title={"Ausbildungskathegorien"}
+            title={texts[selectedLanguage].kathegory}
             options={educationKathegorys.map((item) => item)}
             selectedOptions={selectedEducationKathegory}
             setSelectedOptions={(item)=> {
@@ -45,7 +76,7 @@ const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
         {
             width > 450 || selectedFilter == 1 ?
         <DropDownList
-            title={"Ausbildungsfächer"}
+            title={texts[selectedLanguage].subject}
             options={educationSubjects.map((item) => item)}
             selectedOptions={selectedEducationSubjects}
             setSelectedOptions={(item)=> {

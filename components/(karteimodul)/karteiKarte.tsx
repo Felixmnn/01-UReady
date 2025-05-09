@@ -1,10 +1,42 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VektorCircle from './vektorCircle'
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator,handlePress, percentage, publicM}) => {
   // Studiengang ist jetz Beschreibung
+
+  const { user,language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+
+  const texts = {
+    "DEUTSCH": {
+      questio: "Fragen",
+      notes: "Notizen",
+    },
+    "ENGLISH(US)": {
+      questio: "Questions",
+      notes: "Notes",
+    },
+    "ENGLISH(UK)": {
+      questio: "Questions",
+      notes: "Notes",
+    },
+    "AUSTRALIAN": {
+      questio: "Questions",
+      notes: "Notes",
+    },
+    "SPANISH": {
+      questio: "Preguntas",
+      notes: "Notas",
+    },
+  }
     const color = 
       farbe === "RED" ? "#DC2626" :
       farbe === "BLUE" ? "#2563EB" :
@@ -37,7 +69,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
           }
         </View>
         <View className='flex-row'>
-          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{fragenAnzahl} Fragen • {notizAnzahl} Notizen</Text>
+          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{fragenAnzahl} {texts[selectedLanguage].questio} • {notizAnzahl} {texts[selectedLanguage].notes}</Text>
         </View>
         <View className='border-t-[1px] border-gray-700 my-2'/>
         <View className='flex-row justify-between items-center'>

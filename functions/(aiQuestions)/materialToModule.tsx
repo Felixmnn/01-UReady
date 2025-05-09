@@ -86,7 +86,7 @@ export async function materialToModule(user, material, userData, newModule, setN
 
 
 
-async function generateQuestionsFromText (text, amount, sessionID, subjectID) {
+export async function generateQuestionsFromText (text, amount, sessionID, subjectID) {
     const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
     const url = 'https://api.openai.com/v1/chat/completions';  // ChatGPT Endpunkt
     const headers = {
@@ -142,7 +142,7 @@ async function generateQuestionsFromText (text, amount, sessionID, subjectID) {
     }
   };
 
-  async function questionFromTopic (topics, sessionID, subjectID) {
+  export async function questionFromTopic (topics, sessionID, subjectID) {
     const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
     const url = 'https://api.openai.com/v1/chat/completions';  // ChatGPT Endpunkt
     const headers = {

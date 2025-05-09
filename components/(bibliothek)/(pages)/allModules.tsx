@@ -10,7 +10,42 @@ import { updateUserUsageModules } from '@/lib/appwriteUpdate';
 
 const AllModules = ({setSelected, modules, setSelectedModule}) => {
     const [last7Hidden, setLast7Hidden ] = useState(true)
-    const { user } = useGlobalContext();
+    const { user,language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
+      
+    const texts = {
+      "DEUTSCH":{
+        title: "Bibliothek",
+        last7: "Letzte 7 Tage",
+        erstelleModul: "Modul erstellen",
+      },
+      "ENGLISH(US)":{
+        title: "Library",
+        last7: "Last 7 Days",
+        erstelleModul: "Create Module",
+      },
+      "ENGLISH(UK)":{
+        title: "Library",
+        last7: "Last 7 Days",
+        erstelleModul: "Create Module",
+      },
+      "AUSTRALIAN":{
+        title: "Library",
+        last7: "Last 7 Days",
+        erstelleModul: "Create Module",
+      },
+      "SPANISH":{
+        title: "Biblioteca",
+        last7: "Últimos 7 días",
+        erstelleModul: "Crear módulo",
+      },
+    }
+
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
     const toTight = width > 800;
@@ -92,18 +127,18 @@ console.log("New Module",newModule)
 
         <View className={`flex-row p-4 justify-between items-center h-[60px] rouned-[10px] `}>
           <Text className='font-bold text-3xl text-gray-100'>
-            Bibliothek {width}
+            {texts[selectedLanguage].title}
           </Text>
           <TouchableOpacity onPress={()=> {setIsVisibleNewModule(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
               <Icon name="cubes" size={15} color="white"/>
-              {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>Modul erstellen</Text> : null}
+              {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> : null}
           </TouchableOpacity>
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
         <View className={`flex-1  bg-gray-900 ${isVertical ? "p-4" : "p-2"} `}>
           <TouchableOpacity className='' onPress={()=> setLast7Hidden(!last7Hidden)}>
             <View className='flex-row items-center justify-between w-full mb-2'>
-              <Text className='font-bold text-gray-100 text-[18px]'>Last 7 Days</Text>
+              <Text className='font-bold text-gray-100 text-[18px]'>{texts[selectedLanguage].last7}</Text>
               <Icon name={last7Hidden ? "chevron-down" : "chevron-up"} size={15} color="white"/>
             </View>
           </TouchableOpacity>

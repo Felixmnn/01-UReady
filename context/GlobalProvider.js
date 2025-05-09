@@ -1,5 +1,6 @@
 import { createContext,useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
+import { loadUserDataKathegory } from "@/lib/appwriteDaten";
 const GlobalContext = createContext();
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -9,7 +10,7 @@ const GlobalProvider = ({children}) => {
     const [ user,setUser ] = useState(null);
     const [ isLoading, setIsLoading] = useState(true);
     const [ colorScheme, setColorScheme ] = useState('light');
-    const [ language,setLanguage ] = useState('de');
+    const [ language,setNewLanguage ] = useState('DEUTSCH');
     const [ userData, setUserData ] = useState(null);
     const [ userCathegory, setUserCategory ] = useState(null);
     const [ reloadNeeded, setReloadNeeded ] = useState([]);
@@ -38,6 +39,16 @@ const GlobalProvider = ({children}) => {
         }
     }, [isLoading,isLoggedIn]);
 
+    useEffect(() => {
+        if (!user) return;
+        async function fetchUserData() {
+            const userDataKathegory = await loadUserDataKathegory(user.$id);
+            const allowedLanguages = ["DEUTSCH", "ENGLISH(US)", "ENGLISH(UK)", "AUSTRALIAN", "SPANISH"];
+            setNewLanguage(allowedLanguages.includes(userDataKathegory.language) ? userDataKathegory.language : "DEUTSCH");
+        }
+        fetchUserData()
+    },[user]);
+
 
 
     
@@ -58,7 +69,7 @@ const GlobalProvider = ({children}) => {
                 colorScheme,
                 setColorScheme,
                 language,
-                setLanguage,
+                setNewLanguage,
                 userData,
                 setUserData,
                 userCathegory,

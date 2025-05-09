@@ -4,9 +4,52 @@ import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryL
 import DropDownList from './dropDownList'
 import { schoolQuery } from '@/lib/appwriteQuerys'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { useGlobalContext } from '@/context/GlobalProvider'
 
 const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions()
+
+    const { user,language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
+
+    const texts = {
+        "DEUTSCH": {
+            region: "Region",
+            schoolform: "Schulform",
+            subject: "Fach",
+            class: "Klasse",
+        },
+        "ENGLISH(US)": {
+            region: "Region",
+            schoolform: "School form",
+            subject: "Subject",
+            class: "Class",
+        },
+        "ENGLISH(UK)": {
+            region: "Region",
+            schoolform: "School form",
+            subject: "Subject",
+            class: "Class",
+        },
+        "AUSTRALIAN": {
+            region: "Region",
+            schoolform: "School form",
+            subject: "Subject",
+            class: "Class",
+        },
+        "SPANISH": {
+            region: "Región",
+            schoolform: "Forma escolar",
+            subject: "Asignatura",
+            class: "Clase",
+        },
+
+    }
 
     //Algemeine Schuldaten
 
@@ -66,7 +109,7 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
             {
             selectedFilter == 0 || width > 600 || (selectedFilter == 3 && width > 400) ? 
         <DropDownList
-            title={"Region"}
+            title={texts[selectedLanguage].region}
             options={regions.map((item) => item)}
             selectedOptions={selectedRegions}
             setSelectedOptions={(item)=> {
@@ -83,7 +126,7 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
         {    
         selectedFilter == 1  || width > 600 || (selectedFilter == 0 && width > 400) ? 
         <DropDownList
-            title={"Schulform"}
+            title={texts[selectedLanguage].schoolform}
             options={scholTypes.map((item) => item)}
             selectedOptions={selectedSchoolTypes}
             setSelectedOptions={(item)=> {
@@ -101,7 +144,7 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
         selectedFilter == 2 || width > 600 || (selectedFilter == 1 && width > 400)  ?
 
         <DropDownList
-            title={"Fächer"}
+            title={texts[selectedLanguage].subject}
             options={schoolSubjects.map((item) => item)}
             selectedOptions={selectedSchoolSubjects}
             setSelectedOptions={(item)=> {
@@ -118,7 +161,7 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
         {
         selectedFilter == 3 || width > 600 || (selectedFilter == 2 && width > 400)?
         <DropDownList
-            title={"Klasse"}
+            title={texts[selectedLanguage].class}
             options={schoolStages.map((item) => item)}
             selectedOptions={selectedSchoolStages}
             setSelectedOptions={(item)=> {

@@ -26,7 +26,7 @@ const personalize = () => {
         {name:"English", enum:"AMERICAN", code:"US"},
         {name:"Spanish", enum:"SPANISH", code:"ES"},
         {name:"Australian", enum:"AUSTRALIAN", code:"AU"},
-    ]
+    ] 
     const [ name, setName] = useState("");
     const [ selectedCountry, setSelectedCountry ] = useState( {name:"Deutschland",code:"DE", id:"4058177f-0cd4-4820-8f71-557c4b27dd42" });
     const [ selectedLanguage, setSelectedLanguage] = useState(0);

@@ -10,6 +10,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserUsage } from '@/lib/appwriteDaten';
 import { addUserUsage, addUserUsageData } from '@/lib/appwriteAdd';
 import * as Linking from 'expo-linking';
+import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 
 const { width } = Dimensions.get('window');
 
@@ -124,85 +125,27 @@ const HomeGeneral = ({setSelectedPage}) => {
     )
   }
 
-  {/* Letzte Module oder Sessions */}
-  const [last5Sessions, setLast5Sessions] = useState([
-    {
-      name: "Session 1",
-      percent : 50,
-      color: "red",
-      icon: "book",
-      questions : 10,
-    },
-    {
-      name: "Session 2",
-      percent : 70,
-      color: "blue",
-      icon: "book",
-      questions : 10,
-    },
-    {
-      name: "Session 3",
-      percent : 30,
-      color: "green",
-      icon: "book",
-      questions : 10,
-    },
-    {
-      name: "Session 4",
-      percent : 90,
-      color: "yellow",
-      icon: "book",
-      questions : 10,
-    },
-    {
-      name: "Session 5",
-      percent : 10,
-      color: "purple",
-      icon: "book",
-      questions : 10,
+  async function directToModule(moduleID) {
+    const allModules = await getModules(user.$id);
+    console.log("All Modules",allModules?.documents)
+    const index = allModules?.documents.findIndex((item) => {
+      item.$id === moduleID
+      return item.$id === moduleID
+    });
+    console.log("Index",index)
+    if (index !== -1) {
+      router.push({
+        pathname:"/bibliothek",
+        params: {selectedModuleIndex: index?.toString()}
+      })
+    } else {
+      router.push("/bibliothek")
     }
-  ])
-  const [last5Modules, setLast5Modules] = useState([
-    {
-      name: "Module 1",
-      percent: 50,
-      color: "red",
-      fragen: 10,
-      sessions: 5,
-    },
-    {
-      name: "Module 2",
-      percent: 70,
-      color: "blue",
-      fragen: 10,
-      sessions: 5,
-    },
-    {
-      name: "Module 3",
-      percent: 30,
-      color: "green",
-      fragen: 10,
-      sessions: 5,
-    },
-    {
-      name: "Module 4",
-      percent: 90,
-      color: "yellow",
-      fragen: 10,
-      sessions: 5,
-    },
-    {
-      name: "Module 5",
-      percent: 10,
-      color: "purple",
-      fragen: 10,
-      sessions: 5,
-    }
-  ])
+  }
 
   const Module = ({item}) => {
     return (
-      <View className='bg-gray-900 rounded-[10px] mx-2 border-gray-800 border-[1px]  items-center justify-between'>
+      <TouchableOpacity className='bg-gray-900 rounded-[10px] mx-2 border-gray-800 border-[1px]  items-center justify-between' onPress={() => {directToModule(item.sessionID)}}>
         <View 
         className={`bg-${item.color.toLowerCase()}-500 rounded-t-[10px]`}
         style={{
@@ -219,29 +162,30 @@ const HomeGeneral = ({setSelectedPage}) => {
           <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{item.fragen} Fragen • {item.sessions} Sessions</Text>
           
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
 
-  const openWhatsApp = () => {
-    let url = 'whatsapp://'; // Deeplink, der WhatsApp öffnet
 
-    // Überprüfen, ob WhatsApp installiert ist
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          Alert.alert('WhatsApp ist nicht installiert!');
-        } else {
-          return Linking.openURL(url); // Öffnet WhatsApp
-        }
-      })
-      .catch((err) => console.error('Fehler beim Öffnen von WhatsApp:', err));
-  };
+  async function startQuiz(session) {
+    const questions = await getSessionQuestions(session.sessionID)
+    console.log("Questions",questions)
+    if (!questions || questions.length == 0) {
+      router.push("/bibliothek")
+      return;
+    }
+    router.push({
+                  pathname:"quiz",
+                  params: {questions: JSON.stringify(questions)}
+              }) 
+  }
+
+
 
   const Session = ({item}) => {
     return (
-      <View className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between'>
+      <TouchableOpacity className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between' onPress={() => startQuiz(item)}>
         <View className='flex-row items-center justify-between'>
           <View className='items-start  '>
             <Text className='text-white font-bold text-[15px]'>{item.name}</Text>
@@ -262,7 +206,7 @@ const HomeGeneral = ({setSelectedPage}) => {
           }}
           />
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 

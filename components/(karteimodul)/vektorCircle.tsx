@@ -40,7 +40,7 @@ const VektorCircle = ({color, percentage, icon, strokeColor}) => {
               strokeWidth={strokeWidth}
               fill="none"
               strokeDasharray={circumference}
-              strokeDashoffset={circumference - progress}
+              strokeDashoffset={circumference? circumference - progress: 0}
               strokeLinecap="round"
               transform="rotate(-90 20 20)" // Start bei 12 Uhr
             />

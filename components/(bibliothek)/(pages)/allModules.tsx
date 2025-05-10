@@ -118,11 +118,9 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
         }
         fetchUserData()
     }, [user])
-console.log("New Module",newModule)
 
-    console.log("Modules",modules.documents)
   return (
-    <View className='flex-1 bg-[#0c111d] '>
+    <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
 
         <View className={`flex-row p-4 justify-between items-center h-[60px] rouned-[10px] `}>

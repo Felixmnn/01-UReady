@@ -99,24 +99,20 @@ const texts = {
 }
 
 
-    console.log("🐋🐋🐋", questions)
 const [selectedType, setSelectedType] = useState("FILE")
 const [promt, setPromt] = useState("")
 const [topics, setTopics] = useState(["Algorythmen", "Datenstrukturen", "Java", "C++"])
 const [selectedTopic, setSelectedTopic] = useState([])
 const [settingsVisible, setSettingsVisible] = useState(false)
 const [isLoading, setIsLoading] = useState(false)
-console.log(selectedSession)
 
 async function generateItems(type) {
     setIsLoading(true)
 
     if (type == "TEXT") {
         const res = await generateQuestionsFromText(promt, 10, selectedSession.id, selectedModule.$id)
-        console.log(res)
         const match = res.match(/\[.*\]/s);
         const jsonData = JSON.parse(match[0]);
-        console.log(jsonData)
         for (let i = 0; i < jsonData.length; i++) {
             try {
                 jsonData[i].sessionID = selectedSession.id;
@@ -131,10 +127,8 @@ async function generateItems(type) {
         }
     } else if (type == "TOPIC") {
         const res = await questionFromTopic(selectedTopic, selectedSession.id, selectedModule.$id)
-        console.log(res)
         const match = res.match(/\[.*\]/s);
         const jsonData = JSON.parse(match[0]);
-        console.log(jsonData)
         for (let i = 0; i < jsonData.length; i++) {
             try {
                 await addQUestion(jsonData[i])
@@ -153,7 +147,6 @@ async function generateItems(type) {
 
 }
 const [ selectedFile, setSelectedFile ] = useState(null)
-console.log("🐋🐋🐋", documents)
 const GenerateByFile = () => {
     
     return (
@@ -220,7 +213,6 @@ async function createDocumentJob(document) {
         subjectID: selectedModule.$id,
         sessionID: selectedSession.id,
     }
-    console.log("🚀 ~ file: aiQuestion.tsx:195 ~ createDocumentJob ~ job:", job)
     await addDocumentJob(job)
     setSessions((prevSessions) => {
         const newSessions = [...prevSessions];

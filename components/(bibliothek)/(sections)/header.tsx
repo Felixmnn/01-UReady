@@ -6,7 +6,7 @@ import { useWindowDimensions } from 'react-native';
 import {router } from 'expo-router';
 import ModalSessionList from '../(modals)/modalSessionList';
 
-const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage}) => {
+const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName}) => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
 
     
@@ -31,7 +31,7 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
                     </View>
                 </View>
                 <View className='w-full  flex-row px-4 justify-between items-center'>
-                    <Text className='text-gray-200 font-bold text-2xl'>{sessions.length < sessions ?  sessions[selected].title : texts[selectedLanguage].title}</Text>
+                    <Text className='text-gray-200 font-bold text-2xl'>{moduleName}</Text>
                     <View className='flex-row items-center'>
                     <TouchableOpacity onPress={()=> setShowSessionList(true)} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name={"layer-group"} color={"white"} size={15 }/>

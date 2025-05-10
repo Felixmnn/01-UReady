@@ -11,8 +11,7 @@ const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument,
 const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
-console.log("Filtered Data:", questions)
-console.log("texts", texts[selectedLanguage])
+
 
 const CounterText = ({title,count}) => {
     return (
@@ -90,8 +89,7 @@ const NichtUnterstuzterDateityp = () => {
 
 
 
-console.log("Selced Sessuin", moduleSessions[selected].tags)
-console.log("Filtered Data:", moduleSessions[selected].tags == "JOB-PENDING")
+
 return (
     <View className='flex-1'>
         

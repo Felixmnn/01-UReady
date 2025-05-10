@@ -1,10 +1,9 @@
-import { View, Text, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import RoadMap from '../(sections)/roadMap';
 import Data from '../(sections)/data';
 import Header from '../(sections)/header';
-import { quizQuestion } from '@/assets/exapleData/quizQuestion';
 import SwichTab from '../../(tabs)/swichTab';
 import { addDocumentConfig, addDocumentToBucket, addNote, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
@@ -15,10 +14,12 @@ import ModalNewQuestion from '../(modals)/newQuestion';
 import AiQuestion from '../(modals)/aiQuestion';
 import { router } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const SingleModule = ({setSelectedScreen, module}) => {
-    const { width, language } = useWindowDimensions();
+    const { width, } = useWindowDimensions();
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const { language } = useGlobalContext()
     useEffect(() => {
     if(language) {
         setSelectedLanguage(language)
@@ -231,15 +232,16 @@ const SingleModule = ({setSelectedScreen, module}) => {
         async function fetchQuestions(sessionID) {
             const sessionQuestions = await getSessionQuestions(sessionID)
             setQuestionLoadedSessions([...questionLoadedSessions,sessionID])
+
+            
             const percent = calculatePercent(sessionQuestions);
-            console.log("😒😒😒😒",percent)
+            console.log("Percent: 😍😍😍 ", percent)
             sessions.forEach((session) => {
                 
                 if (
                     session.id === sessionID &&
                     (session.percent !== percent || session.questions !== sessionQuestions.length)
                 ) {
-                    console.log("Session updated:", sessionID, percent, sessionQuestions.length);
                     setSessions((prevSessions) => {
                         const updatedSessions = [...prevSessions];
                         const index = updatedSessions.findIndex((s) => s.id === sessionID);
@@ -354,7 +356,6 @@ const SingleModule = ({setSelectedScreen, module}) => {
                     const byteArray = new Uint8Array(byteNumbers);
                     fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
                 }
-                console.log("AppwriteRes 🐋🐋🐋💕",appwriteRes)
 
                 const uploadRes = await addDocumentToBucket({
                     fileID: doc.id,
@@ -365,7 +366,6 @@ const SingleModule = ({setSelectedScreen, module}) => {
                 }
                 setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
                 appwriteRes.uploaded = true;
-                console.log("AppwriteRes 🐋🐋🐋💕",appwriteRes)
                 const final = await updateDocumentConfig(appwriteRes);
                 setDocuments(documents.map(document => document.id === doc.id ? final : document));
                 return;
@@ -393,15 +393,15 @@ const SingleModule = ({setSelectedScreen, module}) => {
     
 
     return (
-        <View className='flex-1 items-center '>
+        <View className='flex-1 rounded-[10px] items-center '>
             <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
             <AiQuestion uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
 
-            {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70  opacity-50'></View> : null }
-            <View className='flex-1 w-full bg-gray-900  border-gray-700 '>
+            {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50'></View> : null }
+            <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>
                 { loading ? <Text>Skeleton View</Text> :
                 <View className='flex-1'>
-                <Header texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI} isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions} questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
+                <Header moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI} isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions} questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Map"} tab2={"Fragen"} bg={"bg-gray-900"} change={change}/> : null }
                 <View className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}/>
                 

@@ -1,43 +1,43 @@
-import { View, Text, TouchableOpacity,FlatList,Animated, ActivityIndicator } from 'react-native'
+import { View, FlatList,Animated,  } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
-import Icon from "react-native-vector-icons/FontAwesome5";
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
-import Svg, { Circle } from "react-native-svg";
-import VektorCircle from '@/components/(karteimodul)/vektorCircle';
-import { useWindowDimensions } from 'react-native';
-import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import AllModules from '@/components/(bibliothek)/(pages)/allModules';
 import SingleModule from '@/components/(bibliothek)/(pages)/singleModule';
 import {loadModules, loadQuestions} from "../../lib/appwriteDaten"
 import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 import { getModules } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { router } from 'expo-router';
+import { router,useLocalSearchParams } from "expo-router"
 
 const Bibliothek = () => {
   const {user, isLoggedIn,isLoading, reloadNeeded, setReloadNeeded } = useGlobalContext();
-  const [last7Hidden, setLast7Hidden ] = useState(true)
-  const { width } = useWindowDimensions(); // Bildschirmbreite holen
-    const isVertical = width > 700;
-    const toTight = width > 800;
-    const longVertical = width > 900;
-    const [selected, setSelected] = useState("AllModules")
-    const [modules,setModules] = useState(null)
-    const [loading,setLoading] = useState(true)
-    const [selectedModule, setSelectedModule] = useState(null)
+  const [selectedModule, setSelectedModule] = useState(null)
 
-    const fetchModules = async () => {
-      if (!user) return;
-      console.log("User:",user);
-      setLoading(true);
-      await loadQuestions();
-      const modulesLoaded = await getModules(user.$id);
-      if (modulesLoaded) {
-        setModules(modulesLoaded);
-      }
-      setLoading(false);
-    };
+  const { selectedModuleIndex } = useLocalSearchParams()
+  useEffect(() => {
+    if (selectedModuleIndex) {
+      setSelectedModule(selectedModuleIndex)
+      setSelected("SingleModule")
+    }
+  }
+  , [selectedModuleIndex])
+
+
+  const [selected, setSelected] = useState("AllModules")
+  const [modules,setModules] = useState(null)
+  const [loading,setLoading] = useState(true)
+  const fetchModules = async () => {
+    if (!user) return;
+    setLoading(true);
+    await loadQuestions();
+    const modulesLoaded = await getModules(user.$id);
+    if (modulesLoaded) {
+      setModules(modulesLoaded);
+    }
+    setLoading(false);
+  };
+
+
 
     useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
@@ -46,7 +46,6 @@ const Bibliothek = () => {
       }, [user, isLoggedIn, isLoading]);
 
       useEffect(() => {
-        console.log("ReloadNeeded",reloadNeeded)
         fetchModules()
       },[reloadNeeded])
 
@@ -98,7 +97,7 @@ const Bibliothek = () => {
           {loading ? (
           <SkeletonList />
         ) : (
-        <View className='flex-1'>
+        <View className='flex-1 rounded-[10px] '>
         {selected == "AllModules" ? <AllModules setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
         {selected == "SingleModule" ? <SingleModule setSelectedScreen={setSelected} module={modules.documents[selectedModule]}  /> : null}
         {selected == "CreateQuestion" ? <CreateQuestion setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}

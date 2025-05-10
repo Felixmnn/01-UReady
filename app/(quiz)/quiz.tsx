@@ -2,8 +2,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router,useLocalSearchParams } from "expo-router"
-import Index from '..';
-import {testAppwrite, updateDocument} from "../../lib/appwriteEdit"
+import { updateDocument} from "../../lib/appwriteEdit"
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import { useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

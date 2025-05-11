@@ -120,7 +120,7 @@ return (
                 return (
                     <View className='h-full p-1'>
                         {
-                          moduleSessions[selected].tags == "JOB-PENDING" ?
+                          moduleSessions[selected]?.tags == "JOB-PENDING" ?
                             <View className='flex-1  items-center justify-center p-2 bg-gray-800 rounded-[10px] border-[1px] border-gray-500 border-dashed'
                                 style={{
                                     height: 150,
@@ -173,7 +173,7 @@ return (
             }}
             horizontal={true}
         /> : null}
-        {filteredData.length == 0 && !(moduleSessions[selected].tags == "JOB-PENDING")  ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> addDocument()}/> : null}
+        {filteredData.length == 0 && !(moduleSessions[selected]?.tags == "JOB-PENDING")  ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> addDocument()}/> : null}
 
         <CounterText title={texts[selectedLanguage].file} count={filteredDocuments.length}/>{
             documents ? 

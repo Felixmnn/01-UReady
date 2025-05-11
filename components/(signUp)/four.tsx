@@ -10,9 +10,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
     const numColumns = width < 400 ? 2 : 3;
 
     const [isActive, setIsActive] = useState(false) 
-    const [countryData, setCountryData] = useState(null)
     const Sonstige ={name:"Sonstige", id:"4058177f-0cd4-4820-8f71-5dsfsf57c4b27dd42", klassenstufen: [1,2,3,4,5,6,7,8,9,10,11,12,13] }
-    const Other = {name:"Other", id:"Other", icon:"question"}
     const [universityFilter, setUniversityFilter] = useState("")
     const chunkArray = (arr, size) => {
         const chunked = [];

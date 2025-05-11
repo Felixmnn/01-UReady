@@ -26,7 +26,7 @@ const profil = () => {
       <Tabbar content={()=> { return(
         user ? 
         <View className='flex-1 '>
-          { page == "profil" ? <General setPage={()=> setPage("profil-settings")} setPage2={()=> setPage("profil-personal-details")}/> : null}
+          { page == "profil" ? <General setPage={()=> setPage("profil-settings")} /> : null}
           { page == "profil-settings" ? <ProfileSettings setPage={()=> setPage("profil")}/> : null}
           { page == "profil-personal-details" ? <PersonalInfo setPage={()=> setPage("profil")} /> : null}
 

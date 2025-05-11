@@ -13,7 +13,6 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
     let ok = 0
     let good = 0
     let great = 0
-    let total = 0
     for (let i = 0; i < questions.length; i++) {
       if (questions[i].status == "BAD" ){
         bad += 1
@@ -77,9 +76,6 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
   };
 
   const getMargins = (index, totalItems) => {
-    const marginValue = 200;
-    
-    const curveFactor = 5;  
     if (totalItems === 1 || totalItems === 2) {
         return { marginLeft: 0, marginRight: 0, marginTop:0, marginBottom: 0 };
     } else if (totalItems === 3){

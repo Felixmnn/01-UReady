@@ -4,7 +4,6 @@ import Svg, { Rect,Path } from 'react-native-svg';
 
 
 const Battery = ({charge}) => {
-    const state = 0
     const [ show, setShow ] = React.useState(null)
     useEffect(() => {
         const interval = setInterval(() => {

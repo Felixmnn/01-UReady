@@ -21,7 +21,6 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
 
 
   if ("UNIVERSITY" == setSelectedKathegorie) {
-    const [ degreeFilter, setDegreeFilter ] = useState("");
     const degrees = [
         { name: "Bachelor", icon: "graduation-cap" },
         { name: "Master", icon: "user-graduate" }, 

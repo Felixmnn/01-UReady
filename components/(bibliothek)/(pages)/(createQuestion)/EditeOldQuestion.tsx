@@ -161,8 +161,6 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                     </View>
                 )
             }
-            const [showSessionSelect, setShowSessionSelect] = useState(false)
-
             return (
                 <View className='items-center justify-center w-full'>
                     {

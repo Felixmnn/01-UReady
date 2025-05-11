@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
-const SwichTab = ({tabWidth,setTab, tab1, tab2, bg, tab, change}) => {
+const SwichTab = ({setTab, tab1, tab2, bg, tab, change}) => {
 const [activeTab, setActiveTab] = useState(0);
 const translateX = useSharedValue(0);
 

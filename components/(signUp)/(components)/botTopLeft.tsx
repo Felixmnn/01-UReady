@@ -1,7 +1,7 @@
 import { View, Text,Image } from 'react-native'
 import React from 'react'
 
-const BotTopLeft = ({text,source}) => {
+const BotTopLeft = ({text}) => {
   return (
     <View className='flex-row p-4 ml-4 absoloute'
     style={{

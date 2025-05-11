@@ -1,14 +1,9 @@
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import  Selectable  from '../selectable'
 
 const ModalNewQuestion = ({isVisible, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument, SwichToEditNote,texts, selectedLanguage, documents}) => {
-    
-
-
-    const [documtenPickerVisible, setDocumentPickerVisible] = useState(false);
-
     
   return (
     <View >

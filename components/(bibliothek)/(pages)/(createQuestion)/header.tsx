@@ -1,11 +1,8 @@
 import { View, Text,TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useWindowDimensions } from 'react-native';
 
 const Header = ({setSelected, moduleName, ungespeichert }) => {
-    const {width} = useWindowDimensions();
-    const isVertical = width > 700;
   return (
     <View className='flex-row justify-between items-center p-3 bg-gray-800  w-full rounded-t-[10px]'>
         <View className='flex-row items-center'>

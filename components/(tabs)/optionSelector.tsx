@@ -1,6 +1,5 @@
-import { View, Text, FlatList, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, Modal } from 'react-native'
 import React from 'react'
-import RNPickerSelect from "react-native-picker-select";
 import { useState,useRef } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome";
 const OptionSelector = ({title, options, selectedOption, containerStyles, marginChanges, hideTitle, width,selectedValue, setSelectedValue, onChangeItem}) => {

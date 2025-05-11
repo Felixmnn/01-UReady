@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Battery from '@/components/tokens/battery'
 import RadioactiveCharege from '@/components/tokens/radioactivecharege'
-import MikroChip from '@/components/tokens/mikroChip'
 import Supercharge from '@/components/tokens/supercharge'
 import Fusioncharge from '@/components/tokens/fusioncharge'
 import { useGlobalContext } from '@/context/GlobalProvider'
@@ -54,7 +53,6 @@ const shop = () => {
               {amount}
             </Text>
             <View>
-              {type == "chip" ? <MikroChip/> : null}
               {type =="battery" ? <Battery charge={5}/> : null}
               {type =="radioactive" ? <RadioactiveCharege/> : null}
               {type == "supercharge" ? <Supercharge/> : null}

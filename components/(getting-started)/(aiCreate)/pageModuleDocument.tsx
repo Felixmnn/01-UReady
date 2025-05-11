@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from '../../(general)/colorPicker';
 import GratisPremiumButton from '../../(general)/gratisPremiumButton';
-import ModalAddTags from '../../(bibliothek)/(pages)/(createQuestion)/modalAddTags';
 import ModalSessionList from '../../(bibliothek)/(modals)/modalSessionList';
 import { addNewModule } from '@/lib/appwriteAdd';
 import { router } from 'expo-router';

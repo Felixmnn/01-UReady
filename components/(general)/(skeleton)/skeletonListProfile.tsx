@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,FlatList,Animated, ActivityIndicator } from 'react-native'
+import { View, Animated } from 'react-native'
 import React, { useEffect } from 'react'
 import { withDecay } from 'react-native-reanimated';
 

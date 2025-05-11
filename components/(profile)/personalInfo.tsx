@@ -3,7 +3,6 @@ import React from 'react'
 import Icon from "@expo/vector-icons/FontAwesome"
 import InfoModule from '../(tabs)/infoModule'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import CustomTextInput from '../(general)/customTextInput'
 import CustomTextInput1 from '../(general)/customTextInput1'
 import { useWindowDimensions } from 'react-native'
 

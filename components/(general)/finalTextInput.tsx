@@ -1,4 +1,4 @@
-import { View, Text,TextInput } from 'react-native'
+import { TextInput } from 'react-native'
 import React from 'react'
 
 const FinalTextInput = ({handleChangeText, onBlur, containerStyles, aditionalSyles, value, placeHolder}) => {

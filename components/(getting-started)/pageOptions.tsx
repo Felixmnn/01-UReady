@@ -1,7 +1,6 @@
-import { View, Text, Image, ScrollView, Dimensions, Platform } from 'react-native';
-import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, Image, Dimensions } from 'react-native';
+import React from 'react';
 import ContinueBox from '../(signUp)/(components)/continueBox';
-import CarouselOptions from './carouselOptions';
 
 
 const PageOptions = ({ userChoices, setUserChoices }) => {

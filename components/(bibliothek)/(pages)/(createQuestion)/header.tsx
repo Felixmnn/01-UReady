@@ -2,8 +2,6 @@ import { View, Text,TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useWindowDimensions } from 'react-native';
-import { router } from 'expo-router';
-import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 
 const Header = ({setSelected, moduleName, ungespeichert }) => {
     const {width} = useWindowDimensions();

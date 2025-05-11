@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import uuid from 'react-native-uuid';
-import * as FileSystem from 'expo-file-system';
+
 import { addNewModule } from '@/lib/appwriteAdd';
 import { addQUestion, setUserDataSetup } from '@/lib/appwriteEdit';
 import {router} from 'expo-router';

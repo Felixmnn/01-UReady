@@ -1,12 +1,9 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import CustomButton from '../(general)/customButton'
-import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
+import { useGlobalContext } from '@/context/GlobalProvider'
 import { useWindowDimensions } from 'react-native';
-import SwichTab from '../(tabs)/swichTab';
 import InfoModule from '../(tabs)/infoModule';
-import OptionSelector from '../(tabs)/optionSelector';
-import GratisPremiumButton from '../(general)/gratisPremiumButton';
 
 const General = ({setPage}) => {
     const { user } = useGlobalContext();

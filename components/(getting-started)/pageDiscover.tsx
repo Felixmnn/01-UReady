@@ -8,7 +8,6 @@ import { router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { setUserDataSetup } from '@/lib/appwriteEdit'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import OptionSelector from '../(tabs)/optionSelector'
 import ContinueBox from '../(signUp)/(components)/continueBox'
 
 const PageDiscover = ({userChoices, setUserChoices, userData}) => {

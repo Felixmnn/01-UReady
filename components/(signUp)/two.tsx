@@ -5,7 +5,6 @@ import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar';
-import BotCenter from './(components)/botCenter';
 
 const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, name }) => {
     const [isActive, setIsActive] = useState(false)

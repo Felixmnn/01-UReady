@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity,Image, FlatList, TextInput,ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, FlatList,ScrollView } from 'react-native'
+import React, {  useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { LeibnizSubjects,ausbildungsListDeutschland } from '@/assets/exapleData/countryList';
-import { withDecay } from 'react-native-reanimated';
+import { ausbildungsListDeutschland } from '@/assets/exapleData/countryList';
 import { useWindowDimensions } from 'react-native';
 import ProgressBar from './(components)/progressBar';
 import SearchList from './(components)/searchList';

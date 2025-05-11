@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, Animated, TouchableOpacity } from "react-native";
+import { Animated, TouchableOpacity } from "react-native";
 
 const ToggleSwitch = ({ onToggle, isOn = false }) => {
     const [toggled, setToggled] = useState(isOn);

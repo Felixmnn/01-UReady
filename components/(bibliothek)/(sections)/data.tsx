@@ -1,6 +1,5 @@
 import { View, Text,FlatList, ScrollView, TouchableOpacity, ActivityIndicator, useWindowDimensions, Modal, Image } from 'react-native'
 import React, { useState } from 'react'
-import { quizQuestion } from '@/assets/exapleData/quizQuestion'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
 import  Selectable  from '../selectable'

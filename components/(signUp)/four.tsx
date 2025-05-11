@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, FlatList, useWindowDimensions,ScrollView, Image, TextInput, Platform } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import GratisPremiumButton from '../(general)/gratisPremiumButton'
+import React, {  useState } from 'react'
 import { schoolListDeutschland, ausbildungsListDeutschland, universityListDeutschland, ausbildungsTypen } from '@/assets/exapleData/countryList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ProgressBar from './(components)/progressBar';

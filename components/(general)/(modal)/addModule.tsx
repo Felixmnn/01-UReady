@@ -1,11 +1,6 @@
-import { View, Text, Modal, TouchableOpacity,TextInput } from 'react-native'
+import { View, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import CustomTextInput from '../customTextInput'
-import ColorPicker from '../colorPicker'
-import Icon from "react-native-vector-icons/FontAwesome5";
-import FinalTextInput from '../finalTextInput'
 import { useGlobalContext } from '@/context/GlobalProvider'
-import { addNewModule } from "./../../../lib/appwriteAdd"
 import CreateModule from '../createModule';
 
 const AddModule = ({isVisible, setIsVisible, newModule, setNewModule,amount=0}) => {

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,FlatList,Animated, ActivityIndicator } from 'react-native'
+import { FlatList,Animated } from 'react-native'
 import React, { useEffect } from 'react'
 
 const SkeletonList = () => {

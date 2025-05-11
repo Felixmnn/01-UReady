@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,FlatList } from 'react-native'
+import { View, TouchableOpacity,FlatList } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 const ColorPicker = ({selectedColor, changeColor, title,indexItem}) => {

@@ -1,7 +1,5 @@
-import { View, Text, TouchableOpacity, Modal, TextInput } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
-import Tabbar from '@/components/(tabs)/tabbar'
-import { useState, useEffect } from 'react'
 import Svg, { Circle } from "react-native-svg";
 import Icon from "react-native-vector-icons/FontAwesome5";
 

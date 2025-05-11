@@ -1,4 +1,4 @@
-import { View, Text, Modal } from 'react-native'
+import { View, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import PageAiCreate from '@/components/(getting-started)/pageAiCreate'
 import { useGlobalContext } from '@/context/GlobalProvider';

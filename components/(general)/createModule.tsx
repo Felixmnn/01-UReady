@@ -1,5 +1,5 @@
 
-import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, Modal, useWindowDimensions, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ColorPicker from '../(general)/colorPicker';

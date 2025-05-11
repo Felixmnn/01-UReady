@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions, TouchableOpacity } from 'react-native'
+import { View, useWindowDimensions, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import DropDownList from './dropDownList'

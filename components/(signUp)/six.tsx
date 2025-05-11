@@ -1,7 +1,6 @@
-import { View, Text , Image, TouchableOpacity, FlatList, TextInput} from 'react-native'
+import { View, Text } from 'react-native'
 import React, { useState } from 'react'
 import { LeibnizSubjects, schoolListDeutschland } from '@/assets/exapleData/countryList'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import BotTopLeft from './(components)/botTopLeft'
 import ProgressBar from './(components)/progressBar'

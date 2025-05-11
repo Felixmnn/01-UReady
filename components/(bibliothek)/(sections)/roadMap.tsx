@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions, TouchableOpacity,ScrollView } from 'react-native'
+import { View, useWindowDimensions, TouchableOpacity,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import SessionProgress from '../sessionProgress'
 import Icon from "react-native-vector-icons/FontAwesome5";

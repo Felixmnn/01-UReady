@@ -1,6 +1,6 @@
-import { View, Text, useWindowDimensions, TouchableOpacity } from 'react-native'
+import { View,  useWindowDimensions, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { ausbildungsListDeutschland, ausbildungsTypen, countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
+import { ausbildungsListDeutschland, ausbildungsTypen, countryList } from '@/assets/exapleData/countryList'
 import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'

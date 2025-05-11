@@ -1,12 +1,9 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { ScrollView } from 'react-native-reanimated/lib/typescript/Animated';
-import CustomTextInput1 from '../(general)/customTextInput1';
 import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import CustomTextInputChat from '../(general)/customTextInputChat';
-import CustomButton from '../(general)/customButton';
 import { v4 as uuidv4 } from 'uuid';
 
 const HomeChat = ({setSelectedPage}) => {

@@ -5,7 +5,6 @@ import { loadModules } from '@/lib/appwriteDaten'
 
 const AddSession = ({isVisible,setIsVisible}) => {
     const [modules, setModules] = useState([])
-    const [selectedModule, setSelectedModule] = useState(null)
     useEffect(() => {
             async function getModules() {
                 const modules = await loadModules();

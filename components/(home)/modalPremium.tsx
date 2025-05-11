@@ -1,9 +1,7 @@
-import { View, Text, Modal, Animated, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React from 'react'
-import CustomButton from '../(general)/customButton'
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { useState, useRef, useEffect } from 'react';
-import SlideShowPremium from './slideShowPremium';
+import { useState} from 'react';
 
 const ModalPremium = ({isVisible, setIsVisible}) => {
 

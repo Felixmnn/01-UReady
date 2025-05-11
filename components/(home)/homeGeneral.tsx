@@ -1,5 +1,5 @@
 import { View, Dimensions, Text,ScrollView, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ContinueBox from '../(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import VektorCircle from '../(karteimodul)/vektorCircle';
@@ -8,7 +8,7 @@ import AddModule from '../(general)/(modal)/addModule';
 import AddAiModule from '../(general)/(modal)/addAiModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserUsage } from '@/lib/appwriteDaten';
-import { addUserUsage, addUserUsageData } from '@/lib/appwriteAdd';
+import { addUserUsage } from '@/lib/appwriteAdd';
 import * as Linking from 'expo-linking';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 

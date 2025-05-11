@@ -1,7 +1,6 @@
-import { View, Text, Image, TextInput,TouchableOpacity, KeyboardAvoidingView, Platform, useWindowDimensions} from 'react-native'
+import { View, Text, Image, TextInput, useWindowDimensions} from 'react-native'
 import React from 'react'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import ProgressBar from './(components)/progressBar'
 const StepOne = ({name, setName, userData, setUserData}) => {
     const {height} = useWindowDimensions()

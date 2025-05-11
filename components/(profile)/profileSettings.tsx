@@ -1,6 +1,5 @@
-import { View, Text, Touchable, TouchableOpacity, Modal,ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, Modal,ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
-import Icon from "react-native-vector-icons/FontAwesome";
 import InfoModule from '../(tabs)/infoModule';
 import OptionSelector from '../(tabs)/optionSelector';
 import { useWindowDimensions } from 'react-native';
@@ -8,7 +7,7 @@ import SettingsOption from '../(tabs)/settingsOption';
 import { useState } from 'react';
 import CustomTextInput from '../(general)/customTextInput';
 import CustomButton from '../(general)/customButton';
-import { deleteAccount, signOut, updateUserEmail, updateUserName } from '@/lib/appwrite';
+import {  updateUserEmail, updateUserName } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import CustomTextInput1 from '../(general)/customTextInput1';

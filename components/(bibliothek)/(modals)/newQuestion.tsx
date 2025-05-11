@@ -1,4 +1,4 @@
-import { View, Text, Modal, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import  Selectable  from '../selectable'

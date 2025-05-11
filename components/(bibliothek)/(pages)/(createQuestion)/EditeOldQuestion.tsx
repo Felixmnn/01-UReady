@@ -1,11 +1,9 @@
-import { View, Text, TouchableOpacity, TextInput, Modal, useWindowDimensions } from 'react-native'
+import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ToggleSwitch from '@/components/(general)/toggleSwich';
 import FinalTextInput from '@/components/(general)/finalTextInput';
-import { withDecay } from 'react-native-reanimated';
-import ModalAddTags from './modalAddTags';
 import ModalSelectSession from './modalSelectSession';
 
 const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQuestion, setSelectedQuestion, questionActive, setQuestionActive, setAnswerActive, answerActive }) => {

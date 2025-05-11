@@ -1,6 +1,5 @@
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React from 'react'
-import Icon from "react-native-vector-icons/FontAwesome5";
 
 const SlowDeveloper = ({isVisible, setIsVisible}) => {
   return (

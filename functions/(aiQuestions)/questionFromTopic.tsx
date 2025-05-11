@@ -45,7 +45,6 @@ export async function questionFromTopic (topics, sessionID, subjectID) {
       const data = await res.json();
 
       // Überprüfe, ob die Antwort `choices` enthält und greife auf den Text zu
-      console.log("Response:",data)
       if (data && data.choices && data.choices.length > 0) {
         const response = (data.choices[0].message.content.trim());  // Antworte mit dem Text
         return(data.choices[0].message.content.trim())

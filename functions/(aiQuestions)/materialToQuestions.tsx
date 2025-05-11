@@ -11,15 +11,12 @@ export async function materialToQuestion(material, sessionID, subjectID, questio
             try {
                 let res;
                 if (material[i].type == "PEN") {
-                    console.log("Erstelle Fragen aus Text...");
                     res = await generateQuestionsFromText(material[i].content, "5-10", sessionID, subjectID);
                 } else if (material[i].type == "TOPIC") {
-                    console.log("Erstelle Fragen aus Themen...");
                     res = await questionFromTopic(material[i].content, sessionID, subjectID);
                 }
                 if (typeof res == "object" && Array.isArray(res)) {
                     directQuestions = [...directQuestions, ...res];
-                    console.log("Die Fragen sind:", res);
                 }
             } catch (error) {
                 console.log("Fehler beim Fragen-Generieren:", error);

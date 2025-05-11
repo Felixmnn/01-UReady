@@ -23,9 +23,6 @@ export async function addDocument (sessionID, subjectID){
         }
         //Step 2 - Save the Document-Config
         let appwriteRes = await addDocumentConfig(doc);
-        if (appwriteRes) {
-            console.log("Appwrite Response",appwriteRes);
-        }
         //Step 3 - Upload the Document
         const fileBlob = await fetch(file.uri).then(res => res.blob());
         const data = {
@@ -33,7 +30,6 @@ export async function addDocument (sessionID, subjectID){
             fileBlob: fileBlob,
         }
         const uploadRes = await addDocumentToBucket(data);
-        console.log("Upload Response",uploadRes);
         //Set Upload to true && close the modal
         appwriteRes.uploaded = true;
         const final = await updateDocumentConfig(appwriteRes);

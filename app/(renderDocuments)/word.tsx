@@ -5,7 +5,6 @@ import { loadDocument } from '@/lib/appwriteDaten';
 import { Platform } from "react-native";
 import { WebView } from "react-native-webview"; // Für Expo Go
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import AiQuestionSettings from '@/components/(bibliothek)/(modals)/aiQuestionSettings';
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 
 const WordViewer = () => {

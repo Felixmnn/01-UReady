@@ -2,7 +2,6 @@ import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 const ModalIncompleat = ({modalVisible, setModalVisible, missingRequirements}) => {
-    console.log("Missing Requirements",missingRequirements)
   return (
     <Modal
         animationType="fade"

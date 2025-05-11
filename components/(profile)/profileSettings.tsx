@@ -164,17 +164,14 @@ const ProfileSettings = ({setPage}) => {
 
     useEffect(() => {
       if (user === null || user === undefined) return ;
-      console.log("user", user)
       async function fetchUserData() {
         let userData = await loadUserData(user.$id);
         if (!userData) {
            userData = await addNewUserConfig(user.$id);
         }
-        console.log("userData", userData)
         setSelectedColorMode(userData.darkmode ? texts[selectedLanguage].dunkel : texts[selectedLanguage].hell)
         setUserData(userData)
         const userDataKathegory = await loadUserDataKathegory(user.$id);
-        console.log("userDataKathegory", userDataKathegory)
         setSelectedLanguage(  userDataKathegory.language === "DEUTSCH" ||
                               userDataKathegory.language === "ENGLISH(US)" || 
                               userDataKathegory.language === "ENGLISH(UK)" || 

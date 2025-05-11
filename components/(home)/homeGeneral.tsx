@@ -83,7 +83,6 @@ const HomeGeneral = ({setSelectedPage}) => {
     lastSessions: [],
   })
   const redirectUri = Linking.createURL('oauth-callback');
-  console.log("Redirect URI:", redirectUri);
 
 
   useEffect(() => {
@@ -91,7 +90,6 @@ const HomeGeneral = ({setSelectedPage}) => {
     async function fetchUserData() {
       try {
         const res = await loadUserUsage(user.$id)
-        console.log("Nutzer Daten wurden geladen:", res);
         if (res) {
           setUserUsage({
             ...res, 
@@ -104,7 +102,6 @@ const HomeGeneral = ({setSelectedPage}) => {
           setUserUsage(res);
           setLoading(false)
 
-          console.log("Nutzer Daten wurden erstellt:", res);
 
 
         }
@@ -127,12 +124,10 @@ const HomeGeneral = ({setSelectedPage}) => {
 
   async function directToModule(moduleID) {
     const allModules = await getModules(user.$id);
-    console.log("All Modules",allModules?.documents)
     const index = allModules?.documents.findIndex((item) => {
       item.$id === moduleID
       return item.$id === moduleID
     });
-    console.log("Index",index)
     if (index !== -1) {
       router.push({
         pathname:"/bibliothek",
@@ -170,7 +165,6 @@ const HomeGeneral = ({setSelectedPage}) => {
 
   async function startQuiz(session) {
     const questions = await getSessionQuestions(session.sessionID)
-    console.log("Questions",questions)
     if (!questions || questions.length == 0) {
       router.push("/bibliothek")
       return;
@@ -293,7 +287,6 @@ const HomeGeneral = ({setSelectedPage}) => {
   })
   
   const [isVisibleNewAiModule, setIsVisibleAiModule] = useState(false)
-  console.log("User Usage",userUsage)
   return (
     <ScrollView>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />

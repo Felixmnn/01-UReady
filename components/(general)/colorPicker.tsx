@@ -29,7 +29,6 @@ const ColorPicker = ({selectedColor, changeColor, title,indexItem}) => {
                               key={index}
                               className={`p-1 m-1 rounded-full items-center justify-center`}
                               onPress={() => {
-                                console.log("The new color is",item)
                                 changeColor(item,indexItem);
                             }}
                               style={{

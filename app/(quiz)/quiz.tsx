@@ -40,12 +40,10 @@ const quiz = () => {
                 great++
             }
         }
-        console.log(bad,ok,good,great,questionsParsed.length)
         bad = Math.round((bad / questionsParsed.length) * 100);
         ok = Math.round((ok / questionsParsed.length) * 100);
         good = Math.round((good / questionsParsed.length) * 100);
         great = Math.round((great / questionsParsed.length) * 100);
-        console.log(bad,ok,good,great)
         return [bad,ok,good,great]
     } 
 
@@ -138,16 +136,13 @@ const quiz = () => {
             const correctAnswers = questionsParsed[selectedQuestion].answers.filter((answer,index) => questionsParsed[selectedQuestion].answerIndex.includes(index))
             correctAnswers.sort() 
             selectedAnswers.sort()      
-            console.log(correctAnswers,selectedAnswers)
             if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
-                console.log("Correct")
                 return true
             } else { 
                 return false
             }
         }
         async function nextQuestion (status, change){
-            console.log("Übergbe den Status", status)
             setShowAnswers(false)
             
                 
@@ -158,8 +153,6 @@ const quiz = () => {
                 )
             );
             
-            console.log("Der Status ist", questionsParsed[selectedQuestion].status)
-            console.log("Der neu Status soll sein Status ist", status)
             const updatedItem = {
                 ...questionsParsed[selectedQuestion],
                 status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status, // Status aktualisieren
@@ -179,7 +172,6 @@ const quiz = () => {
                     setSelectedQuestion(selectedQuestion - 1)
                 }
             }
-            console.log(selectedQuestion)
         }
 
         return (

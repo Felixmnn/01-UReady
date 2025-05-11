@@ -14,7 +14,6 @@ const CreateNote = () => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
     const [ungespeichert, setUngespeichert] = useState(false)
-    console.log(noteData)
     const loading = false;
     async function saveChanges() {
         await updateNote(noteData);

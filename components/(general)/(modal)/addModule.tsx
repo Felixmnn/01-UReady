@@ -10,7 +10,6 @@ import CreateModule from '../createModule';
 
 const AddModule = ({isVisible, setIsVisible, newModule, setNewModule,amount=0}) => {
     const {user} = useGlobalContext();
-    console.log("The user is",user)
 
     const [loading , setLoading] = useState(false);
 

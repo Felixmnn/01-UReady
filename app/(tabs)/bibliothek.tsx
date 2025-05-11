@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import AllModules from '@/components/(bibliothek)/(pages)/allModules';
 import SingleModule from '@/components/(bibliothek)/(pages)/singleModule';
-import {loadModules, loadQuestions} from "../../lib/appwriteDaten"
+import { loadQuestions} from "../../lib/appwriteDaten"
 import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 import { getModules } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';

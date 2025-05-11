@@ -65,8 +65,6 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
     const [selectedIcon, setSelectedIcon] = useState(null);
 
     function changeColor(newColor, index) {
-        console.log("Color wurde geändert", newColor);
-        console.log("Index ist", index);
         setSessions(prevSessions =>
             prevSessions.map((session, i) =>
                 i === index ? { ...session, color: newColor } : session

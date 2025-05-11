@@ -1,4 +1,4 @@
-import { View, Text,SafeAreaView, TouchableOpacity, Image, TextInput,FlatList, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
@@ -45,7 +45,6 @@ const personalize = () => {
               if (user === null ) return;
               async function fetchUserData() {
                   try {
-                      console.log("Loading")
                       let userD = await loadUserData(user.$id);
                       if (!userD) {
                          userD = await addNewUserConfig(user.$id);
@@ -54,7 +53,6 @@ const personalize = () => {
                         setUserData(userD);
                       }
                       if (userD?.signInProcessStep == "FINISHED") {
-                        console.log("User already finished sign in process")
                             try {
                                 const userDK = await loadUserDataKathegory(user.$id);
                                 
@@ -101,7 +99,6 @@ const personalize = () => {
             language :                          selectedLanguage ? languages[selectedLanguage].name.toUpperCase() : languages[0].name.toUpperCase(),
             studiengangKathegory:               selectedField ? selectedField.map(item => item.kathegory) : null,
         }
-        console.log("Saving User Data", newUserData)
         try {
             await addUserDatakathegory(user.$id,newUserData);
             const updatedUserData = {

@@ -1,17 +1,14 @@
 import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator, Platform } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image } from 'react-native';
 import SlowDeveloper from '@/components/(general)/slowDeveloper';
-import CustomTextInput1 from '@/components/(general)/customTextInput1';
-import { Alert } from 'react-native';
 import {router} from 'expo-router';
 import { signIn, createUser, loginWithGoogle, loginWithGoogle2 } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
-import * as NavigationBar from 'expo-navigation-bar';
 
 
 const SignIn = () => {
@@ -62,7 +59,6 @@ const SignIn = () => {
           const userData = await addNewUserConfig(user.data.$id);
           setUser(user.data);
           setIsLoggedIn(true);
-          console.log("Success", "You have successfully signed up");
           router.push("/personalize");
         }
         
@@ -88,15 +84,12 @@ const SignIn = () => {
               setIsError(true)
               return;
             } else {
-              console.log("User", user);
               setUser(user.data);
               setIsLoggedIn(true);
-              console.log("Success", "You have successfully signed in");
               router.push("/home");
               return;
             }
           } catch (error) {
-            console.log("Error", error);
             setErrorMessage(error.message)
             setIsError(true)
           } finally {

@@ -33,14 +33,10 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     useEffect(() => { 
         async function fetchQuestions() {
             if (module == null) return;
-            console.log("Fetch Questions")
             const questions = await getAllQuestions(module.documents[selectedModule].$id)
-            console.log("Questions", questions)
             if (questions) {
                 const questionArray = questions.documents
-                console.log("Question Array", questionArray)
                 const filteredQuestions = questionArray.filter((question) => question.subjectID == module.documents[selectedModule].$id);
-                console.log("Filtered Questions", filteredQuestions)
                 setQuestions(filteredQuestions.reverse())  
             }  
         }
@@ -50,7 +46,6 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     }, [module])
         
     useEffect(()=> {
-            console.log("Changes where made")
             async function push(){
                 if (questions[selectedQuestion-1]){
                     await updateDocument(questions[selectedQuestion-1])
@@ -66,7 +61,6 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     const [missingRequirements, setMissingRequirements] = useState([]);
 
     async function checkNewQuestion() {
-        console.log("Check New Question", newQuestion);
         setMissingRequirements([]);  
         let missing = []; 
     

@@ -1,9 +1,9 @@
-import { View, Text, StatusBar, Settings,ScrollView } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import { View } from 'react-native'
+import React, {  useEffect, useState } from 'react'
 import { router } from 'expo-router';
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useWindowDimensions } from 'react-native';
-import GlobalProvider, { useGlobalContext } from '@/context/GlobalProvider'
+import { useGlobalContext } from '@/context/GlobalProvider'
 import General from '@/components/(profile)/general'
 import ProfileSettings from '@/components/(profile)/profileSettings'
 import PersonalInfo from '@/components/(profile)/personalInfo'

@@ -235,7 +235,6 @@ const SingleModule = ({setSelectedScreen, module}) => {
 
             
             const percent = calculatePercent(sessionQuestions);
-            console.log("Percent: 😍😍😍 ", percent)
             sessions.forEach((session) => {
                 
                 if (

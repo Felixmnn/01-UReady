@@ -85,16 +85,12 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
 
     async function saveQuestion() {
         if (newQuestion.question.length < 1) {
-            console.log("Question is empty")
             return;
         } else if (newQuestion.answers.length < 1) {
-            console.log("Answers are empty")
             return;
         } else if (newQuestion.answerIndex.length < 1) {
-            console.log("Answer Index is empty")
             return;
         } else if (!newQuestion.sessionID) {
-            console.log("Session ID is empty")
             return;
         } 
         
@@ -112,8 +108,6 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
             subjectID: subjectID,
             status:null
         })
-            
-        console.log("Saving Question")
     }
 
 

@@ -14,7 +14,6 @@ const HomeChat = ({setSelectedPage}) => {
     const [isTyping, setIsTyping] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    console.log("Api",apiUrl)
     {/*Home Page mit chat Interface*/}
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
@@ -91,7 +90,6 @@ const HomeChat = ({setSelectedPage}) => {
       const data = await res.json();
 
       // Überprüfe, ob die Antwort `choices` enthält und greife auf den Text zu
-      console.log("Response:",data)
       if (data && data.choices && data.choices.length > 0) {
         setResponse(data.choices[0].message.content.trim());  // Antworte mit dem Text
         return(data.choices[0].message.content.trim())
@@ -165,7 +163,7 @@ const HomeChat = ({setSelectedPage}) => {
                 <View className='flex-1'>
                     <GiftedChat
                         messages={messages}
-                        onSend={(messages) => {onSend(messages);console.log(JSON.stringify(messages))}}
+                        onSend={(messages) => {onSend(messages)}}
                         user={{
                         _id: 1, // ID des aktuellen Nutzers
                         }}

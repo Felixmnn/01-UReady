@@ -29,7 +29,6 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
         "AU": "Are you at school, uni, or doing an apprenticeship?",
         "ES": "¿Vas al colegio, a la universidad o estás haciendo una formación?",
     }
-    console.log("selectedCountry", buttons[0]["DE"])
 
           return (
               <View className='h-full  w-full justify-between items-center py-5'>

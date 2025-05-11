@@ -7,7 +7,6 @@ import uuid from 'react-native-uuid';
 
 const ModalAddTags = ({selectedModule, addTags, isVisible, setIsVisible, selectedTags, selectedQuestion, setNewQuestion}) => {
     const [dropdownVisible, setDropdownVisible] = useState(false)
-    console.log(setNewQuestion ? "true" : "false")
     const [module, setModule] = useState(selectedModule.tags)
     const [newTag, setNewTag] = useState("")
     const [loading, setLoading] = useState(false)

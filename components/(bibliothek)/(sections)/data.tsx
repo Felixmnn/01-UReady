@@ -189,24 +189,6 @@ return (
             renderItem={({item}) => {
                 return (
                     <TouchableOpacity onPress={() => {
-                        /*
-                        const fileType = item.fileType;
-                    
-                        if (fileType === "application/pdf") {
-                            router.push({
-                                pathname: "pdf",
-                                params: { item: JSON.stringify(item) }
-                            });
-                        } else if (fileType === "application/msword" || fileType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                            router.push({
-                                pathname: "word",
-                                params: { item: JSON.stringify(item) }
-                            });
-                        } else {
-                            setWrongType(true);
-                            console.log("Unbekannter Dateityp:", fileType);
-                        }
-                            */{}
                     }}
                             className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
                         <View className='flex-row items-start justify-start'>

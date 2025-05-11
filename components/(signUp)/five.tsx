@@ -52,7 +52,7 @@ const StepFive = ({setDegree, selectedUniversity, ausbildungKathegorie,setSelect
                         numColumns={width < 400 ? 2 : 3}
                         className='z-100'
                         renderItem={({item}) => (
-                            <TouchableOpacity key={item.name} onPress={()=> {console.log("hello World");setDegree(item); setUserData({...userData,signInProcessStep:"SIX"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                            <TouchableOpacity key={item.name} onPress={()=> {setDegree(item); setUserData({...userData,signInProcessStep:"SIX"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
                                 style={{width:120, height:120}}
                             >
                                 <Icon name={item.icon} size={20} color="#D1D5DB" />

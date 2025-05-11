@@ -22,7 +22,6 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
   const [selectedSession, setSelectedSession] = useState(0);
   const [isError, setIsError] = useState(false);
   const [ errorMessage, setErrorMessage] = useState(null);
-  console.log(sessions.length)
   const [ userData, setUserData] = useState(null)
   useEffect(() => {
           if (user == null) return;
@@ -244,10 +243,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
             const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
             setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
             const resp = await setUserDataSetup(user.$id)
-            console.log("The new Module🐋",res)
             router.push("/bibliothek")
-            
-            console.log("Created new Module")
             if ( isModal) {
               isModal(false)
             }

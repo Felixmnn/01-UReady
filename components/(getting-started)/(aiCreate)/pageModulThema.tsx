@@ -235,9 +235,7 @@ const PageModulThema = ({ newModule, userData, setNewModule}) => {
             <View className='mx-2 mt-2 w-full px-2'>
                 <GratisPremiumButton aditionalStyles={"rounded-[10px] mx-3 w-full "} handlePress={async()=> {
                     if (newModule.name !== "" && newModule.description !== "" && newModule.color !== null && sessions.length > 0){
-                     console.log("Module: ", newModule)
                      const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), sessions:sessions.map(item => JSON.stringify(item)) });
-                     console.log("Module added: ", res)
                         setUserDataSetup(user.$id)
                      router.push("/bibliothek")
                 }}}>

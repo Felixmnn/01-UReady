@@ -16,29 +16,21 @@ export async function materialToModule(user, material, userData, newModule, setN
       try {
         let res;
         if (material[i].type == "PEN") {
-          console.log("Erstelle Fragen aus Text...");
           res = await generateQuestionsFromText(material[i].content, "5-10", material[i].sessionID, "PLACEHOLDER");
         } else if (material[i].type == "TOPIC") {
-          console.log("Erstelle Fragen aus Themen...");
           res = await questionFromTopic(material[i].content, material[i].sessionID, "PLACEHOLDER");
         } else {
-          console.log("Erstelle Fragen aus Datei...");
-          await generateQuestionsFromFile(material[i].uri);
           res = [];
         }
 
         if (typeof res == "object" && Array.isArray(res)) {
           directQuestions = [...directQuestions, ...res];
           setQuestions((prev) => [...prev, ...res]);
-          console.log("Die Fragen sind:", res);
         }
       } catch (error) {
-        console.log("Fehler beim Fragen-Generieren:", error);
-        // Fehler hier wird ignoriert und der nächste Durchlauf beginnt
       }
     }
 
-    console.log("Alle gesammelten Fragen:", questions);
 
     // Modul trotzdem speichern, selbst wenn Fragen fehlen
     let newModuleData;
@@ -49,7 +41,6 @@ export async function materialToModule(user, material, userData, newModule, setN
         questions: questions.length,
         sessions: sessions.map((item) => JSON.stringify(item)),
       });
-      console.log("Das neue Modul ist:", newModuleData);
     } catch (error) {
       console.log("Fehler beim Speichern des Moduls:", error);
       // Wenn Modul-Speicherung fehlschlägt, redirect trotzdem ausführen
@@ -61,7 +52,6 @@ export async function materialToModule(user, material, userData, newModule, setN
         try {
           const question = { ...directQuestions[i], subjectID: newModuleData.$id };
           const savedQuestion = await addQUestion(question);
-          console.log("Frage gespeichert 🔴🔴🔴", savedQuestion);
         } catch (error) {
           console.log("Fehler beim Speichern einer Frage:", error);
         }
@@ -71,7 +61,6 @@ export async function materialToModule(user, material, userData, newModule, setN
     // Benutzer-Daten aktualisieren
     try {
       const resp = await setUserDataSetup(user.$id);
-      console.log("Benutzerdaten aktualisiert:", resp);
     } catch (error) {
       console.log("Fehler beim Aktualisieren der Benutzerdaten:", error);
     }
@@ -198,12 +187,3 @@ export async function generateQuestionsFromText (text, amount, sessionID, subjec
       const response = ('Es gab einen Fehler bei der Anfrage!');
     }
   };
-
-  async function generateQuestionsFromFile(uri) {
-    try {
-        console.log("APPWRITE fucntion wird aufgerfuen 🔷🔷🔷")
-        
-    } catch (error) {
-        console.log(error);
-    }
-    }

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, TextInput ,Image, ActivityIndicator, FlatList, Platform} from 'react-native'
+import { View, Text, TouchableOpacity, TextInput ,Image, ActivityIndicator, FlatList, Platform} from 'react-native'
 import React from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useState, useEffect } from 'react'
@@ -160,10 +160,8 @@ const entdecken = () => {
   const [ focused, setFocused ] = useState(false)
   async function add(mod) {
           setLoading(true)
-          console.log("Module", mod)
           try {
               const res = await addNewModule(mod)
-              console.log("Module added", res)
               setLoading(false)
           } catch (error) {
               console.log("Error", error)
@@ -392,7 +390,6 @@ const entdecken = () => {
                                                   creationEducationKathegory:null,
                                                   copy: true,
                                               }
-                                              console.log("Module", mod)
                                               add(mod)
                                           }
               
@@ -400,7 +397,6 @@ const entdecken = () => {
                                       
                                   )
                                   } else {
-                                      console.log("Please select")
                                   }
                                   router.push("/bibliothek")
                               }}

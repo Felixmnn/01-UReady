@@ -20,11 +20,9 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     const numColumns = Math.floor(width / 300);
 
     useEffect(() => {   
-        console.log("userData", userData)    
         if (userData == null) return;
         async function fetchModules() {
             const modules = await getSepcificModules(userData)
-            console.log("Modules", modules)
             modules.length > 0 ? setMatchingModules(modules) : setMatchingModules([])
             setLoading(false)
         }
@@ -33,10 +31,8 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
 
     async function add(mod) {
         setLoading(true)
-        console.log("Module", mod)
         try {
             const res = await addNewModule(mod)
-            console.log("Module added", res)
             setLoading(false)
             setUserChoices(null)
         } catch (error) {
@@ -176,7 +172,6 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                                     creationEducationKathegory:null,
                                     copy: true,
                                 }
-                                console.log("Module", mod)
                                 add(mod)
                             }
 
@@ -184,7 +179,6 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                         
                     )
                     } else {
-                        console.log("Please select")
                     }
                     setUserDataSetup(user.$id)
                     router.push("/bibliothek")

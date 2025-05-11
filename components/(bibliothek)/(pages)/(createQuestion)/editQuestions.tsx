@@ -25,7 +25,6 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
         setSelectedQuestion(0);
 
     }
-    console.log("Selected Question", selectedModule)
         return (
             <View className='flex-1 h-full  items-center justify-center p-4'
             >

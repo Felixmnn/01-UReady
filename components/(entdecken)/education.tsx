@@ -42,7 +42,6 @@ const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
     //Dynnamische Ausbildungdaten basierend auf dem Land
     const [ educationKathegorys, setEducationKathegorys ] = useState(ausbildungsTypen.map((type) => type.name.DE))
     const [ educationSubjects, setEducationSubjects ] = useState(ausbildungsListDeutschland[ausbildungsTypen[0].name.DE].map((subject) => subject.name))
-    console.log("EducationSubjects",educationSubjects)
 
     //Dynamische Filter basierend auf den User eingaben
     const [ selectedEducationKathegory, setSelectedEducationKathegory] = useState([])

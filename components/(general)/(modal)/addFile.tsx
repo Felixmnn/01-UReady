@@ -13,7 +13,6 @@ const ModalAddFile = ({isVisible, setIsVisible}) => {
     useEffect(() => {
         async function getModules() {
             const modules = await loadModules();
-            console.log("Die M",modules.documents)
             setModules(modules.documents)
         }
         getModules()

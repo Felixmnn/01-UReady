@@ -51,7 +51,6 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
                 }
                 try {
                     const res = await otherQuery(query);
-                    console.log(res)
                     if (res) {
                       setModules(res);
                     } else {
@@ -61,7 +60,6 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
                     console.error("Fehler bei Datenfetch:", e);
                     setModules([]);
                   }
-                console.log("Query",query)
                 setLoading(false)
             }
             fetchData()

@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
-import { Stack, Tabs } from 'expo-router'
+import { Stack } from 'expo-router'
 
 const renderDocumentsLayout = () => {
   return (

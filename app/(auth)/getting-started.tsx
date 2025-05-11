@@ -1,9 +1,4 @@
-import { View, Text, Image, ActivityIndicator, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import ContinueBox from '@/components/(signUp)/(components)/continueBox';
-import Icon from 'react-native-vector-icons/FontAwesome5'
-import ColorPicker from '@/components/(general)/colorPicker';
-import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 import PageOptions from '@/components/(getting-started)/pageOptions';
 import PageAiCreate from '@/components/(getting-started)/pageAiCreate';
 import PageDiscover from '@/components/(getting-started)/pageDiscover';

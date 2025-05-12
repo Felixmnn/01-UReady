@@ -43,6 +43,7 @@ const GlobalProvider = ({children}) => {
         if (!user) return;
         async function fetchUserData() {
             const userDataKathegory = await loadUserDataKathegory(user.$id);
+            if (!userDataKathegory) return;
             const allowedLanguages = ["DEUTSCH", "ENGLISH(US)", "ENGLISH(UK)", "AUSTRALIAN", "SPANISH"];
             setNewLanguage(allowedLanguages.includes(userDataKathegory.language) ? userDataKathegory.language : "DEUTSCH");
         }

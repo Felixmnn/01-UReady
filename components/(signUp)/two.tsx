@@ -1,6 +1,5 @@
 import { View, Text, Image, TouchableOpacity, Platform } from 'react-native'
 import React, { useState } from 'react'
-//import Flag from "react-world-flags";
 import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'

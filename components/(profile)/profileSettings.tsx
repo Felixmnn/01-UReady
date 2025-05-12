@@ -258,9 +258,7 @@ const ProfileSettings = ({setPage}) => {
     <View className='flex-1 items-center '>
       { !loading ?
       <View className='flex-1 w-full items-center'>
-            {isVertical ? <View className='rounded-t-[10px] h-[15px] w-[96%] bg-gray-900 bg-opacity-70'
            
-            ></View> : null }
         <View className={`flex-1 w-full  rounded-[10px] bg-gray-900 ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
       {/*
       <TouchableOpacity className='w-full rounded-t-[10px] h-[70px] bg-[#0c111d] flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>

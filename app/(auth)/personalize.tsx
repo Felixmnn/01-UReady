@@ -22,8 +22,8 @@ const personalize = () => {
     const [ userDataKathegory, setUserDataKathegory] = useState(null);
     const languages = [
         {name:"Deutsch", enum:"DEUTSCH", code:"DE"},
-        {name:"English", enum:"BRITISH", code:"GB"},
-        {name:"English", enum:"AMERICAN", code:"US"},
+        {name:"English", enum:"ENGLISH(UK)", code:"GB"},
+        {name:"English", enum:"ENGLISH(US)", code:"US"},
         {name:"Spanish", enum:"SPANISH", code:"ES"},
         {name:"Australian", enum:"AUSTRALIAN", code:"AU"},
     ] 
@@ -96,7 +96,7 @@ const personalize = () => {
             schoolGrade:                        classNumber ? classNumber : null,
             educationSubject:                   selectedAusbildung ? selectedAusbildung.name : null,
             educationKathegory:                 ausbildungKathegorie ? ausbildungKathegorie.name.DE.toUpperCase().replace(/\s+/g, '') : null,
-            language :                          selectedLanguage ? languages[selectedLanguage].name.toUpperCase() : languages[0].name.toUpperCase(),
+            language :                          selectedLanguage ? languages[selectedLanguage].enum : languages[0].enum,
             studiengangKathegory:               selectedField ? selectedField.map(item => item.kathegory) : null,
         }
         try {

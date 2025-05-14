@@ -14,7 +14,7 @@ import OtherFilters from '@/components/(entdecken)/other';
 import CountryFlag from 'react-native-country-flag';
 import { router } from 'expo-router';
 import { addNewModule } from '@/lib/appwriteAdd';
-
+import languages from '@/assets/exapleData/languageTabs.json';
 const entdecken = () => {
 
   const { language } = useGlobalContext()
@@ -25,69 +25,8 @@ const entdecken = () => {
       }
     }, [language])
 
-  const texts = {
-    "DEUTSCH":{
-      title: "Entdecken",
-      university:"Universität",
-      school:"Schule",
-      education:"Ausbildung",
-      other:"Sonstiges",
-      searchText: "Suche nach Modulen",
-      noResults: "Keine Ergebnisse gefunden",
-      loading: "Lade deine Module...",
-      copy1: "Modul Kopieren",
-      copy2: "Module Kopieren",
-    },
-    "ENGLISH(US)":{
-      title: "Discover",
-      university:"University",
-      school:"School",
-      education:"Education",
-      other:"Other",
-      searchText: "Search for modules",
-      noResults: "No results found",
-      loading: "Loading your modules...",
-      copy1: "Copy Module",
-      copy2: "Copy Modules",
-    },
-    "ENGLISH(UK)":{
-      title: "Discover",
-      university:"University",
-      school:"School",
-      education:"Education",
-      other:"Other",
-      searchText: "Search for modules",
-      noResults: "No results found",
-      loading: "Loading your modules...",
-      copy1: "Copy Module",
-      copy2: "Copy Modules",
-    },
-    "AUSTRALIAN":{
-      title: "Discover",
-      university:"University",
-      school:"School",
-      education:"Education",
-      other:"Other",
-      searchText: "Search for modules",
-      noResults: "No results found",
-      loading: "Loading your modules...",
-      copy1: "Copy Module",
-      copy2: "Copy Modules",
-    },
-    "SPANISH":{
-      title: "Descubrir",
-      university:"Universidad",
-      school:"Escuela",
-      education:"Educación",
-      other:"Otro",
-      searchText: "Buscar módulos",
-      noResults: "No se encontraron resultados",
-      loading: "Cargando tus módulos...",
-      copy1: "Copiar módulo",
-      copy2: "Copiar módulos",
-    },
-
-  }
+    const texts = languages.endecken;
+  
 
   {/*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */}
   const {user, isLoggedIn,isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();

@@ -4,7 +4,7 @@ import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryL
 import DropDownList from './dropDownList'
 import { otherQuery } from '@/lib/appwriteQuerys'
 import { useGlobalContext } from '@/context/GlobalProvider'
-
+import languages  from '@/assets/exapleData/languageTabs.json'
 const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height } = useWindowDimensions()
 
@@ -15,25 +15,8 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
           setSelectedLanguage(language)
         }
       }, [language])
-
-    const texts = {
-      "DEUTSCH": {
-        subjects: "Fächer",
-
-    },
-      "ENGLISH(US)": {
-        subjects: "Subjects",
-      },
-      "ENGLISH(UK)": {
-        subjects: "Subjects",
-      },
-      "AUSTRALIAN": {
-        subjects: "Subjects",
-      },
-      "SPANISH": {
-        subjects: "Asignaturas",
-      },
-    }
+    const texts = languages.other;
+    
     //Algemeine Schuldaten
 
     //Dynnamische Schuldaten basierend auf dem Land

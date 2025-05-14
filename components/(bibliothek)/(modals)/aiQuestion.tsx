@@ -9,7 +9,7 @@ import uuid from 'react-native-uuid';
 import { materialToQuestion } from '@/functions/(aiQuestions)/materialToQuestions';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addDocumentJob } from '@/lib/appwriteAdd';
-
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const AiQuestion = ({isVisible, setIsVisible, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
 const { language } = useGlobalContext()
@@ -20,83 +20,7 @@ const { language } = useGlobalContext()
     }
     }, [language])
 
-const texts = {
-    "DEUTSCH": {
-        "title": "Generiere Karteikarten mit AI aus...",
-        "text": "Text",
-        "topic": "Thema",
-        "file": "Datei",
-        "generateCards": "Karten generieren",
-        "sumDocument": "Dokument zusammenfassen",
-        "selectFile": "Wähle eine Datei aus:",
-        "dragFile": "Ziehe eine Datei hier hin oder lade sie hoch",
-        "uploadDocument": "Dokument hochladen",
-        "yourTopics": "Deine Themen:",
-        "yourTexts": "Deine Texte:",
-        "noMaterials": "Noch keine Materialien",
-        "generateCardsDisabled": "Karten generieren",
-    },
-    "ENGLISH(US)": {
-        "title": "Generate flashcards with AI from...",
-        "text": "Text",
-        "topic": "Topic",
-        "file": "File",
-        "generateCards": "Generate cards",
-        "selectFile": "Select a file:",
-        "dragFile": "Drag a file here or upload it",
-        "uploadDocument": "Upload document",
-        "yourTopics": "Your topics:",
-        "yourTexts": "Your texts:",
-        "noMaterials": "No materials yet",
-        "generateCardsDisabled": "Generate cards",
-        "sumDocument": "Summarize document",
-    },
-    "ENGLISH(UK)": {
-        "title": "Generate flashcards with AI from...",
-        "text": "Text",
-        "topic": "Topic",
-        "file": "File",
-        "generateCards": "Generate cards",
-        "selectFile": "Select a file:",
-        "dragFile": "Drag a file here or upload it",
-        "uploadDocument": "Upload document",
-        "yourTopics": "Your topics:",
-        "yourTexts": "Your texts:",
-        "noMaterials": "No materials yet",
-        "generateCardsDisabled": "Generate cards",
-        "sumDocument": "Summarize document",
-    },
-    "AUSTRALIAN": {
-        "title": "Generate flashcards with AI from...",
-        "text": "Text",
-        "topic": "Topic",
-        "file": "File",
-        "generateCards": "Generate cards",
-        "selectFile": "Select a file:",
-        "dragFile": "Drag a file here or upload it",
-        "uploadDocument": "Upload document",
-        "yourTopics": "Your topics:",
-        "yourTexts": "Your texts:",
-        "noMaterials": "No materials yet",
-        "generateCardsDisabled": "Generate cards",
-        "sumDocument": "Summarize document",
-    },
-    "SPANISH": {
-        "title": "Generar tarjetas con AI a partir de...",
-        "text": "Texto",
-        "topic": "Tema",
-        "file": "Archivo",
-        "generateCards": "Generar tarjetas",
-        "selectFile": "Selecciona un archivo:",
-        "dragFile": "Arrastra un archivo aquí o súbelo",
-        "uploadDocument": "Subir documento",
-        "yourTopics": "Tus temas:",
-        "yourTexts": "Tus textos:",
-        "noMaterials": "Aún no hay materiales",
-        "generateCardsDisabled": "Generar tarjetas",
-        "sumDocument": "Resumir documento",
-    },
-}
+const texts = languages.aiQuestion;
 
 
 const [selectedType, setSelectedType] = useState("FILE")

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import VektorCircle from './vektorCircle'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from '@/context/GlobalProvider';
-
+import languages  from '@/assets/exapleData/languageTabs.json';
 const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator,handlePress, percentage, publicM}) => {
   // Studiengang ist jetz Beschreibung
 
@@ -14,29 +14,8 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
         setSelectedLanguage(language)
       }
     }, [language])
-
-  const texts = {
-    "DEUTSCH": {
-      questio: "Fragen",
-      notes: "Notizen",
-    },
-    "ENGLISH(US)": {
-      questio: "Questions",
-      notes: "Notes",
-    },
-    "ENGLISH(UK)": {
-      questio: "Questions",
-      notes: "Notes",
-    },
-    "AUSTRALIAN": {
-      questio: "Questions",
-      notes: "Notes",
-    },
-    "SPANISH": {
-      questio: "Preguntas",
-      notes: "Notas",
-    },
-  }
+    const texts = languages.karteikarte;
+  
     const color = 
       farbe === "RED" ? "#DC2626" :
       farbe === "BLUE" ? "#2563EB" :

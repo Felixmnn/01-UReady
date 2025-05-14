@@ -1,0 +1,680 @@
+
+{
+    "home": {
+        "DEUTSCH":{
+            "lastModules":"Letzte Module",
+            "lastSessions":"Letzte Sessions",
+            "quickActions":"Schnelle Aktionen",
+            "learnSetKI":"Erstellen wir zusammen ein Lernset.",
+            "learnSetDiscover":"Mal schauen was deine Komilitonen lernen.",
+            "learnSetCreate":"Erstelle dein eigenes Lernset."
+        },
+        "ENGLISH(US)":{
+            "lastModules":"Last Modules",
+            "lastSessions":"Last Sessions",
+            "quickActions":"Quick Actions",
+            "learnSetKI":"Let's create a learning set together.",
+            "learnSetDiscover":"Let's see what your classmates are learning.",
+            "learnSetCreate":"Create your own learning set."
+        },
+        "ENGLISH(UK)":{
+            "lastModules":"Last Modules",
+            "lastSessions":"Last Sessions",
+            "quickActions":"Quick Actions",
+            "learnSetKI":"Let's create a learning set together.",
+            "learnSetDiscover":"Let's see what your classmates are learning.",
+            "learnSetCreate":"Create your own learning set."
+        },
+        "AUSTRALIAN":{
+            "lastModules":"Last Modules",
+            "lastSessions":"Last Sessions",
+            "quickActions":"Quick Actions",
+            "learnSetKI":"Let's create a learning set together.",
+            "learnSetDiscover":"Let's see what your classmates are learning.",
+            "learnSetCreate":"Create your own learning set."
+        },
+        "SPANISH":{
+            "lastModules":"Últimos módulos",
+            "lastSessions":"Últimas sesiones",
+            "quickActions":"Acciones rápidas",
+            "learnSetKI":"Creemos un conjunto de aprendizaje juntos.",
+            "learnSetDiscover":"Veamos qué están aprendiendo tus compañeros.",
+            "learnSetCreate":"Crea tu propio conjunto de aprendizaje."
+        }
+    },
+    "singleModule":{
+       "DEUTSCH":{
+            "title": "Alle Fragen",
+            "sessions": "Sessions",
+            "addMaterial": "Material hinzufügen",
+            "learnNow": "Jetzt lernen",
+            "questio": "Fragen",
+            "questioH": "Frage hinzufügen",
+            "questioSH": "Erstelle deine erste Frage.",
+            "questioBtn": "Frage erstellen",
+            "file": "Dateien",
+            "fileH": "Datei hinzufügen",
+            "fileSH": "Lade deine erste Datei hoch",
+            "fileBtn": "Dokument hochladen",
+            "note": "Notizen",
+            "noteH": "Notiz hinzufügen",
+            "noteSH": "Erstelle deine erste Notiz.",
+            "noteBtn": "Notiz erstellen",
+            "share": "Teilen",
+            "unsupported": "Nicht unterstützter Dateityp",
+            "unnamed": "Unbenannt",
+            "recommended":"Empfolen",
+            "aiQuiz": "AI Quiz generieren",
+            "dokUpload": "Dokument hochladen",
+            "crtQuestio": "Frage erstellen",
+            "crtNote": "Notiz erstellen",
+            "pendingAI": "AI Quiz wird generiert"
+
+        },
+        "ENGLISH(US)":{
+            "title": "All Questions",
+            "sessions": "Sessions",
+            "addMaterial": "Add Material",
+            "learnNow": "Learn Now",
+            "questio": "Questions",
+            "questioH": "Add Question",
+            "questioSH": "Create your first question.",
+            "questioBtn": "Create Question",
+            "file": "Files",
+            "fileH": "Add File",
+            "fileSH": "Upload your first file",
+            "fileBtn": "Upload Document",
+            "note": "Notes",
+            "noteH": "Add Note",
+            "noteSH": "Create your first note.",
+            "noteBtn": "Create Note",
+            "share": "Share",
+            "unsupported": "Unsupported file type",
+            "unnamed": "Unnamed",
+            "recommended":"Recommended",
+            "aiQuiz": "Generate AI Quiz",
+            "dokUpload": "Upload Document",
+            "crtQuestio": "Create Question",
+            "crtNote": "Create Note",
+            "pendingAI": "AI Quiz is generating"
+
+        },
+        "ENGLISH(UK)":{
+            "title": "All Questions",
+            "sessions": "Sessions",
+            "addMaterial": "Add Material",
+            "learnNow": "Learn Now",
+            "questio": "Questions",
+            "questioH": "Add Question",
+            "questioSH": "Create your first question.",
+            "questioBtn": "Create Question",
+            "file": "Files",
+            "fileH": "Add File",
+            "fileSH": "Upload your first file",
+            "fileBtn": "Upload Document",
+            "note": "Notes",
+            "noteH": "Add Note",
+            "noteSH": "Create your first note.",
+            "noteBtn": "Create Note",
+            "share": "Share",
+            "unsupported": "Unsupported file type",
+            "unnamed": "Unnamed",
+            "recommended":"Recommended",
+            "aiQuiz": "Generate AI Quiz",
+            "dokUpload": "Upload Document",
+            "crtQuestio": "Create Question",
+            "crtNote": "Create Note",
+            "pendingAI": "AI Quiz is generating"
+
+        },
+        "AUSTRALIAN":{
+            "title": "All Questions",
+            "sessions": "Sessions",
+            "addMaterial": "Add Material",
+            "learnNow": "Learn Now",
+            "questio": "Questions",
+            "questioH": "Add Question",
+            "questioSH": "Create your first question.",
+            "questioBtn": "Create Question",
+            "file": "Files",
+            "fileH": "Add File",
+            "fileSH": "Upload your first file",
+            "fileBtn": "Upload Document",
+            "note": "Notes",
+            "noteH": "Add Note",
+            "noteSH": "Create your first note.",
+            "noteBtn": "Create Note",
+            "share": "Share",
+            "unsupported": "Unsupported file type",
+            "unnamed": "Unnamed",
+            "recommended":"Recommended",
+            "aiQuiz": "Generate AI Quiz",
+            "dokUpload": "Upload Document",
+            "crtQuestio": "Create Question",
+            "crtNote": "Create Note",
+            "pendingAI": "AI Quiz is generating"
+
+        },
+        "SPANISH":{
+            "title": "Todas las preguntas",
+            "sessions": "Sesiones",
+            "addMaterial": "Agregar material",
+            "learnNow": "Aprender ahora",
+            "questio": "Preguntas",
+            "questioH": "Agregar pregunta",
+            "questioSH": "Crea tu primera pregunta.",
+            "questioBtn": "Crear pregunta",
+            "file": "Archivos",
+            "fileH": "Agregar archivo",
+            "fileSH": "Sube tu primer archivo",
+            "fileBtn": "Subir documento",
+            "note": "Notas",
+            "noteH": "Agregar nota",
+            "noteSH": "Crea tu primera nota.",
+            "noteBtn": "Crear nota",
+            "share": "Compartir",
+            "unsupported": "Tipo de archivo no compatible",
+            "unnamed": "Sin nombre",
+            "recommended":"Recomendado",
+            "aiQuiz": "Generar cuestionario AI",
+            "dokUpload": "Subir documento",
+            "crtQuestio": "Crear pregunta",
+            "crtNote": "Crear nota",
+            "pendingAI": "El cuestionario AI se está generando"
+
+        } 
+    },
+    "education":{
+        "DEUTSCH": {
+            "kathegory": "Kathegorie",
+            "subject": "Ausbildungsfach"
+        },
+        "ENGLISH(US)": {
+            "kathegory": "Category",
+            "subject": "Subject" 
+        },
+        "ENGLISH(UK)": {
+            "kathegory": "Category",
+            "subject": "Subject" 
+        },
+        "AUSTRALIAN": {
+            "kathegory": "Category",
+            "subject": "Subject"
+        },
+        "SPANISH": {
+            "kathegory": "Categoría",
+            "subject": "Asignatura"
+        }
+    },
+    "modalSessionList":{
+        "DEUTSCH":{
+            "title": "Sessions",
+            "addSession": "Session hinzufügen"
+            },
+        "ENGLISH(US)":{
+            "title": "Sessions",
+            "addSession": "Add Session"
+            },
+        "ENGLISH(UK)":{
+            "title": "Sessions",
+            "addSession": "Add Session"
+            },
+        "AUSTRALIAN":{
+            "title": "Sessions",
+            "addSession": "Add Session"
+            },
+        "SPANISH":{
+            "title": "Sesiones",
+            "addSession": "Agregar sesión"
+            }
+    },
+    "other":{
+        "DEUTSCH": {
+            "subjects": "Fächer"
+        },
+        "ENGLISH(US)": {
+            "subjects": "Subjects"
+        },
+        "ENGLISH(UK)": {
+            "subjects": "Subjects"
+        },
+        "AUSTRALIAN": {
+            "subjects": "Subjects"
+        },
+        "SPANISH": {
+            "subjects": "Asignaturas"
+        }
+    },
+    "school":{
+       "DEUTSCH": {
+            "region": "Region",
+            "schoolform": "Schulform",
+            "subject": "Fach",
+            "class": "Klasse"
+        },
+        "ENGLISH(US)": {
+            "region": "Region",
+            "schoolform": "School form",
+            "subject": "Subject",
+            "class": "Class"
+        },
+        "ENGLISH(UK)": {
+            "region": "Region",
+            "schoolform": "School form",
+            "subject": "Subject",
+            "class": "Class"
+        },
+        "AUSTRALIAN": {
+            "region": "Region",
+            "schoolform": "School form",
+            "subject": "Subject",
+            "class": "Class"
+        },
+        "SPANISH": {
+            "region": "Región",
+            "schoolform": "Forma escolar",
+            "subject": "Asignatura",
+            "class": "Clase"
+        } 
+    },
+    "university": {
+        "DEUTSCH": {
+        "universtity": "Universität",
+        "abschlussziel": "Abschlussziel",
+        "fakultät": "Fakultät",
+        "subject": "Fach"
+      },
+      "ENGLISH(US)": {
+        "universtity": "University",
+        "abschlussziel": "Degree",
+        "fakultät": "Faculty",
+        "subject": "Subject"
+      },
+      "ENGLISH(UK)": {
+        "universtity": "University",
+        "abschlussziel": "Degree",
+        "fakultät": "Faculty",
+        "subject": "Subject"
+      },
+      "AUSTRALIAN": {
+        "universtity": "University",
+        "abschlussziel": "Degree",
+        "fakultät": "Faculty",
+        "subject": "Subject"
+      },
+      "SPANISH": {
+        "universtity": "Universidad",
+        "abschlussziel": "Grado",
+        "fakultät": "Facultad",
+        "subject": "Asignatura"
+      }
+    },
+    "karteikarte":{
+        "DEUTSCH": {
+        "questio": "Fragen",
+        "notes": "Notizen"
+        },
+        "ENGLISH(US)": {
+        "questio": "Questions",
+        "notes": "Notes"
+        },
+        "ENGLISH(UK)": {
+        "questio": "Questions",
+        "notes": "Notes"
+        },
+        "AUSTRALIAN": {
+        "questio": "Questions",
+        "notes": "Notes"
+        },
+        "SPANISH": {
+        "questio": "Preguntas",
+        "notes": "Notas"
+        }
+    },
+    "profileSettings":{
+        "DEUTSCH": {
+        "vorname": "Vorname",
+        "email": "Email",
+        "emailvalid": "Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.",
+        "emailvalid2": "Email-Adresse bestätigt",
+        "emailrenew": "Erneut senden",
+        "schooltype": "Schulform",
+        "schoolgrade": "Schulklasse",
+        "schoolsubjects": "Fächer",
+        "university": "Hochschule/ Universität",
+        "faculty": "Fakultät",
+        "studiengang": "Studiengang",
+        "abschlussziel": "Abschlussziel",
+        "actioncode": "Aktioncode",
+        "actioncodeText": "Aktioncode einlösen",
+        "help": "Hilfe",
+        "share": "Teilen",
+        "logout": "Abmelden",
+        "deleteAccount": "Account löschen",
+        "colorMode": "Darstellung",
+        "language": "Sprache",
+        "educationKathegory": "Ausbildungskathegorie",
+        "educationSubject": "Ausbildungfach",
+        "hell": "Hell",
+        "dunkel": "Dunkel"
+
+    },
+      "ENGLISH(US)": {
+        "vorname": "First name",
+        "email": "Email",
+        "emailvalid": "Please confirm your email address using the link in the email we sent you.",
+        "emailvalid2": "Email address confirmed",
+        "emailrenew": "Resend",
+        "schooltype": "School type",
+        "schoolgrade": "School grade",
+        "schoolsubjects": "Subjects",
+        "university": "University",
+        "faculty": "Faculty",
+        "studiengang": "Course of study",
+        "abschlussziel": "Degree goal",
+        "actioncode": "Action code",
+        "actioncodeText": "Redeem action code",
+        "help": "Help",
+        "share": "Share",
+        "logout": "Log out",
+        "deleteAccount": "Delete account",
+        "colorMode": "Display mode",
+        "language": "Language",
+        "hell": "Light",
+        "dunkel": "Dark"
+    } ,
+    "ENGLISH(UK)": {
+        "vorname": "First name",
+        "email": "Email",
+        "emailvalid": "Please confirm your email address using the link in the email we sent you.",
+        "emailvalid2": "Email address confirmed",
+        "emailrenew": "Resend",
+        "schooltype": "School type",
+        "schoolgrade": "School grade",
+        "schoolsubjects": "Subjects",
+        "university": "University",
+        "faculty": "Faculty",
+        "studiengang": "Course of study",
+        "abschlussziel": "Degree goal",
+        "actioncode": "Action code",
+        "actioncodeText": "Redeem action code",
+        "help": "Help",
+        "share": "Share",
+        "logout": "Log out",
+        "deleteAccount": "Delete account",
+        "colorMode": "Display mode",
+        "language": "Language",
+        "hell": "Light",
+        "dunkel": "Dark"
+
+    },
+    "AUSTRALIAN": {
+        "vorname": "First name",
+        "email": "Email",
+        "emailvalid": "Please confirm your email address using the link in the email we sent you.",
+        "emailvalid2": "Email address confirmed",
+        "emailrenew": "Resend",
+        "schooltype": "School type",
+        "schoolgrade": "School grade",
+        "schoolsubjects": "Subjects",
+        "university": "University",
+        "faculty": "Faculty",
+        "studiengang": "Course of study",
+        "abschlussziel": "Degree goal",
+        "actioncode": "Action code",
+        "actioncodeText": "Redeem action code",
+        "help": "Help",
+        "share": "Share",
+        "logout": "Log out",
+        "deleteAccount": "Delete account",
+        "colorMode": "Display mode",
+        "language": "Language",
+        "hell": "Light",
+        "dunkel": "Dark"
+
+
+    },
+    "SPANISH": {
+        "vorname": "Nombre",
+        "email": "Correo electrónico",
+        "emailvalid": "Confirma tu dirección de correo electrónico utilizando el enlace en el correo electrónico que te enviamos.",
+        "emailvalid2": "Dirección de correo electrónico confirmada",
+        "emailrenew": "Reenviar",
+        "schooltype": "Tipo de escuela",
+        "schoolgrade": "Grado escolar",
+        "schoolsubjects": "Asignaturas",
+        "university": "Universidad",
+        "faculty": "Facultad",
+        "studiengang": "Curso de estudio",
+        "abschlussziel": "Objetivo del título",
+        "actioncode": "Código de acción",
+        "actioncodeText": "Canjear código de acción",
+        "help": "Ayuda",
+        "share": "Compartir",
+        "logout": "Cerrar sesión",
+        "deleteAccount": "Eliminar cuenta",
+        "colorMode": "Modo de visualización",
+        "language": "Idioma",
+        "hell": "Claro",
+        "dunkel": "Oscuro"
+
+    }
+    },
+    "tabbar":{
+         "DEUTSCH": {
+            "home": "Startseite",
+            "bibliothek": "Bibliothek",
+            "entdecken": "Entdecken",
+            "profil": "Profil",
+            "help": "Hilfe",
+            "share": "Teilen",
+            "shop": "Shop"
+        },
+        "ENGLISH(US)": {
+            "home": "Home",
+            "bibliothek": "Library",
+            "entdecken": "Discover",
+            "profil": "Profile",
+            "help": "Help",
+            "share": "Share",
+            "shop": "Shop"
+        },
+        "ENGLISH(UK)": {
+            "home": "Home",
+            "bibliothek": "Library",
+            "entdecken": "Discover",
+            "profil": "Profile",
+            "help": "Help",
+            "share": "Share",
+            "shop": "Shop"
+        },
+        "AUSTRALIAN": {
+            "home": "Home",
+            "bibliothek": "Library",
+            "entdecken": "Discover",
+            "profil": "Profile",
+            "help": "Help",
+            "share": "Share",
+            "shop": "Shop"
+        },
+        "SPANISH": {
+            "home": "Inicio",
+            "bibliothek": "Biblioteca",
+            "entdecken": "Descubrir",
+            "profil": "Perfil",
+            "help": "Ayuda",
+            "share": "Compartir",
+            "shop": "Tienda"
+        }
+    },
+
+    "aiQuestion":{
+        "DEUTSCH": {
+                "title": "Generiere Karteikarten mit AI aus...",
+                "text": "Text",
+                "topic": "Thema",
+                "file": "Datei",
+                "generateCards": "Karten generieren",
+                "sumDocument": "Dokument zusammenfassen",
+                "selectFile": "Wähle eine Datei aus:",
+                "dragFile": "Ziehe eine Datei hier hin oder lade sie hoch",
+                "uploadDocument": "Dokument hochladen",
+                "yourTopics": "Deine Themen:",
+                "yourTexts": "Deine Texte:",
+                "noMaterials": "Noch keine Materialien",
+                "generateCardsDisabled": "Karten generieren"
+            },
+        "ENGLISH(US)": {
+            "title": "Generate flashcards with AI from...",
+            "text": "Text",
+            "topic": "Topic",
+            "file": "File",
+            "generateCards": "Generate cards",
+            "selectFile": "Select a file:",
+            "dragFile": "Drag a file here or upload it",
+            "uploadDocument": "Upload document",
+            "yourTopics": "Your topics:",
+            "yourTexts": "Your texts:",
+            "noMaterials": "No materials yet",
+            "generateCardsDisabled": "Generate cards",
+            "sumDocument": "Summarize document"
+        },
+        "ENGLISH(UK)": {
+            "title": "Generate flashcards with AI from...",
+            "text": "Text",
+            "topic": "Topic",
+            "file": "File",
+            "generateCards": "Generate cards",
+            "selectFile": "Select a file:",
+            "dragFile": "Drag a file here or upload it",
+            "uploadDocument": "Upload document",
+            "yourTopics": "Your topics:",
+            "yourTexts": "Your texts:",
+            "noMaterials": "No materials yet",
+            "generateCardsDisabled": "Generate cards",
+            "sumDocument": "Summarize document"
+        },
+        "AUSTRALIAN": {
+            "title": "Generate flashcards with AI from...",
+            "text": "Text",
+            "topic": "Topic",
+            "file": "File",
+            "generateCards": "Generate cards",
+            "selectFile": "Select a file:",
+            "dragFile": "Drag a file here or upload it",
+            "uploadDocument": "Upload document",
+            "yourTopics": "Your topics:",
+            "yourTexts": "Your texts:",
+            "noMaterials": "No materials yet",
+            "generateCardsDisabled": "Generate cards",
+            "sumDocument": "Summarize document"
+        },
+        "SPANISH": {
+            "title": "Generar tarjetas con AI a partir de...",
+            "text": "Texto",
+            "topic": "Tema",
+            "file": "Archivo",
+            "generateCards": "Generar tarjetas",
+            "selectFile": "Selecciona un archivo:",
+            "dragFile": "Arrastra un archivo aquí o súbelo",
+            "uploadDocument": "Subir documento",
+            "yourTopics": "Tus temas:",
+            "yourTexts": "Tus textos:",
+            "noMaterials": "Aún no hay materiales",
+            "generateCardsDisabled": "Generar tarjetas",
+            "sumDocument": "Resumir documento"
+        }
+        },
+    "allModules":{
+        "DEUTSCH":{
+            "title": "Bibliothek",
+            "last7": "Letzte 7 Tage",
+            "erstelleModul": "Modul erstellen"
+        },
+        "ENGLISH(US)":{
+            "title": "Library",
+            "last7": "Last 7 Days",
+            "erstelleModul": "Create Module"
+        },
+        "ENGLISH(UK)":{
+            "title": "Library",
+            "last7": "Last 7 Days",
+            "erstelleModul": "Create Module"
+        },
+        "AUSTRALIAN":{
+            "title": "Library",
+            "last7": "Last 7 Days",
+            "erstelleModul": "Create Module"
+        },
+        "SPANISH":{
+            "title": "Biblioteca",
+            "last7": "Últimos 7 días",
+            "erstelleModul": "Crear módulo"
+        }
+    },
+    "endecken":{
+        "DEUTSCH":{
+            "title": "Entdecken",
+            "university":"Universität",
+            "school":"Schule",
+            "education":"Ausbildung",
+            "other":"Sonstiges",
+            "searchText": "Suche nach Modulen",
+            "noResults": "Keine Ergebnisse gefunden",
+            "loading": "Lade deine Module...",
+            "copy1": "Modul Kopieren",
+            "copy2": "Module Kopieren"
+        },
+        "ENGLISH(US)":{
+            "title": "Discover",
+            "university":"University",
+            "school":"School",
+            "education":"Education",
+            "other":"Other",
+            "searchText": "Search for modules",
+            "noResults": "No results found",
+            "loading": "Loading your modules...",
+            "copy1": "Copy Module",
+            "copy2": "Copy Modules"
+        },
+        "ENGLISH(UK)":{
+            "title": "Discover",
+            "university":"University",
+            "school":"School",
+            "education":"Education",
+            "other":"Other",
+            "searchText": "Search for modules",
+            "noResults": "No results found",
+            "loading": "Loading your modules...",
+            "copy1": "Copy Module",
+            "copy2": "Copy Modules"
+        },
+        "AUSTRALIAN":{
+            "title": "Discover",
+            "university":"University",
+            "school":"School",
+            "education":"Education",
+            "other":"Other",
+            "searchText": "Search for modules",
+            "noResults": "No results found",
+            "loading": "Loading your modules...",
+            "copy1": "Copy Module",
+            "copy2": "Copy Modules"
+        },
+        "SPANISH":{
+            "title": "Descubrir",
+            "university":"Universidad",
+            "school":"Escuela",
+            "education":"Educación",
+            "other":"Otro",
+            "searchText": "Buscar módulos",
+            "noResults": "No se encontraron resultados",
+            "loading": "Cargando tus módulos...",
+            "copy1": "Copiar módulo",
+            "copy2": "Copiar módulos"
+        }
+    },
+    "shop":{
+
+    }
+}

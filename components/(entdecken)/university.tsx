@@ -5,6 +5,7 @@ import { universityQuery } from '@/lib/appwriteQuerys'
 import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'
+import languages  from '@/assets/exapleData/languageTabs.json'
 
 const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions();
@@ -16,39 +17,8 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
       setSelectedLanguage(language)
     }
   }, [language])
-
-    const texts = {
-      "DEUTSCH": {
-        universtity: "Universität",
-        abschlussziel: "Abschlussziel",
-        fakultät: "Fakultät",
-        subject: "Fach",
-      },
-      "ENGLISH(US)": {
-        universtity: "University",
-        abschlussziel: "Degree",
-        fakultät: "Faculty",
-        subject: "Subject",
-      },
-      "ENGLISH(UK)": {
-        universtity: "University",
-        abschlussziel: "Degree",
-        fakultät: "Faculty",
-        subject: "Subject",
-      },
-      "AUSTRALIAN": {
-        universtity: "University",
-        abschlussziel: "Degree",
-        fakultät: "Faculty",
-        subject: "Subject",
-      },
-      "SPANISH": {
-        universtity: "Universidad",
-        abschlussziel: "Grado",
-        fakultät: "Facultad",
-        subject: "Asignatura",
-      },
-    }
+  const texts = languages.university;
+    
     //Allgemeine Universitätsdaten
     const abschlussziele = ["Bachelor", "Master", "Staatsexamen","Diplom","Magister","Other"]
 

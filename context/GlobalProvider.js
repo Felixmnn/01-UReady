@@ -14,6 +14,18 @@ const GlobalProvider = ({children}) => {
     const [ userData, setUserData ] = useState(null);
     const [ userCathegory, setUserCategory ] = useState(null);
     const [ reloadNeeded, setReloadNeeded ] = useState([]);
+    const [ userUsage, setUserUsage ] = useState({
+        streak: 0,
+        streakActive: false,
+        streakLastUpdate: new Date(),
+        energy: 5,
+        microchip: 0,
+        boostActive: true,
+        boostActivation: new Date(),
+        boostType: null,
+        lastModules: [],
+        lastSessions: [],
+    });
 
 
     useEffect(() => {
@@ -77,6 +89,8 @@ const GlobalProvider = ({children}) => {
                 setUserCategory,
                 reloadNeeded,
                 setReloadNeeded,
+                userUsage,
+                setUserUsage,
             }}>
             {children}
         </GlobalContext.Provider>

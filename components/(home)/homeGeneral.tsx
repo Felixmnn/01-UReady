@@ -11,61 +11,23 @@ import { loadUserUsage } from '@/lib/appwriteDaten';
 import { addUserUsage } from '@/lib/appwriteAdd';
 import * as Linking from 'expo-linking';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
+import  languages  from '@/assets/exapleData/languageTabs.json';
+
 
 const { width } = Dimensions.get('window');
 
 const HomeGeneral = ({setSelectedPage}) => {
   const { user,language } = useGlobalContext()
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+  const texts = languages.home;
+
   useEffect(() => {
     if(language) {
       setSelectedLanguage(language)
     }
   }, [language])
 
-
-  const texts = {
-    "DEUTSCH":{
-      lastModules:"Letzte Module",
-      lastSessions:"Letzte Sessions",
-      quickActions:"Schnelle Aktionen",
-      learnSetKI:"Erstellen wir zusammen ein Lernset.",
-      learnSetDiscover:"Mal schauen was deine Komilitonen lernen.",
-      learnSetCreate:"Erstelle dein eigenes Lernset.",
-    },
-    "ENGLISH(US)":{
-      lastModules:"Last Modules",
-      lastSessions:"Last Sessions",
-      quickActions:"Quick Actions",
-      learnSetKI:"Let's create a learning set together.",
-      learnSetDiscover:"Let's see what your classmates are learning.",
-      learnSetCreate:"Create your own learning set.",
-    },
-    "ENGLISH(UK)":{
-      lastModules:"Last Modules",
-      lastSessions:"Last Sessions",
-      quickActions:"Quick Actions",
-      learnSetKI:"Let's create a learning set together.",
-      learnSetDiscover:"Let's see what your classmates are learning.",
-      learnSetCreate:"Create your own learning set.",
-    },
-    "AUSTRALIAN":{
-      lastModules:"Last Modules",
-      lastSessions:"Last Sessions",
-      quickActions:"Quick Actions",
-      learnSetKI:"Let's create a learning set together.",
-      learnSetDiscover:"Let's see what your classmates are learning.",
-      learnSetCreate:"Create your own learning set.",
-    },
-    "SPANISH":{
-      lastModules:"Últimos módulos",
-      lastSessions:"Últimas sesiones",
-      quickActions:"Acciones rápidas",
-      learnSetKI:"Creemos un conjunto de aprendizaje juntos.",
-      learnSetDiscover:"Veamos qué están aprendiendo tus compañeros.",
-      learnSetCreate:"Crea tu propio conjunto de aprendizaje.",
-    },
-  }
+  
 
 
 
@@ -82,7 +44,6 @@ const HomeGeneral = ({setSelectedPage}) => {
     lastModules: [],
     lastSessions: [],
   })
-  const redirectUri = Linking.createURL('oauth-callback');
 
 
   useEffect(() => {
@@ -101,9 +62,6 @@ const HomeGeneral = ({setSelectedPage}) => {
           const res = await addUserUsage(user.$id,userUsage)
           setUserUsage(res);
           setLoading(false)
-
-
-
         }
       } catch (error) {
         console.error("Fehler beim Abrufen der Nutzerdaten:", error);
@@ -294,22 +252,22 @@ const HomeGeneral = ({setSelectedPage}) => {
 
     <View className='flex-1 p-2 rounded-[10px]'>
       <View className='w-full flex-row justify-between'>
-                <TouchableOpacity className='flex-row m-2 p-5' >
-                  <Icon name="fire" size={20} color={"white"}/>
-                  <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.streak}</Text>
-                </TouchableOpacity>
+          <TouchableOpacity className='flex-row m-2 p-5' >
+            <Icon name="fire" size={20} color={"white"}/>
+            <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.streak}</Text>
+          </TouchableOpacity>
 
-                <View className='flex-row m-2 p-5' >
-                  <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
-                    <Icon name="microchip" size={20} color={"white"}/>
-                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.microchip}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
-                  >
-                    <Icon name="bolt" size={20} color={"white"}/>
-                    <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.boostActive ? "∞" : userUsage?.energy}</Text>
-                  </TouchableOpacity>
-                </View>
+          <View className='flex-row m-2 p-5' >
+            <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
+              <Icon name="microchip" size={20} color={"white"}/>
+              <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.microchip}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
+            >
+              <Icon name="bolt" size={20} color={"white"}/>
+              <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.boostActive ? "∞" : userUsage?.energy}</Text>
+            </TouchableOpacity>
+          </View>
 
       </View>
       <Header title={texts[selectedLanguage].lastModules}/>

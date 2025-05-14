@@ -7,6 +7,7 @@ import { loadUserDataKathegory} from "../../../lib/appwriteDaten"
 import AddModule from '@/components/(general)/(modal)/addModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules } from '@/lib/appwriteUpdate';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const AllModules = ({setSelected, modules, setSelectedModule}) => {
     const [last7Hidden, setLast7Hidden ] = useState(true)
@@ -18,33 +19,8 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
         }
       }, [language])
       
-    const texts = {
-      "DEUTSCH":{
-        title: "Bibliothek",
-        last7: "Letzte 7 Tage",
-        erstelleModul: "Modul erstellen",
-      },
-      "ENGLISH(US)":{
-        title: "Library",
-        last7: "Last 7 Days",
-        erstelleModul: "Create Module",
-      },
-      "ENGLISH(UK)":{
-        title: "Library",
-        last7: "Last 7 Days",
-        erstelleModul: "Create Module",
-      },
-      "AUSTRALIAN":{
-        title: "Library",
-        last7: "Last 7 Days",
-        erstelleModul: "Create Module",
-      },
-      "SPANISH":{
-        title: "Biblioteca",
-        last7: "Últimos 7 días",
-        erstelleModul: "Crear módulo",
-      },
-    }
+    const texts = languages.allModules;
+   
 
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;

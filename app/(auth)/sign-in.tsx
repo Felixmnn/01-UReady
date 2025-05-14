@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image } from 'react-native';
 import SlowDeveloper from '@/components/(general)/slowDeveloper';
 import {router} from 'expo-router';
-import { signIn, createUser, loginWithGoogle, loginWithGoogle2 } from '@/lib/appwrite';
+import { signIn, createUser, loginWithGoogle } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
@@ -24,48 +24,8 @@ const SignIn = () => {
         password: "",
     });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [ signUpForm, setSignUpForm] = useState({
-      email: "",
-      password: "",
-      passwordConfirm: "",
-      username: ""
-    });
-
-  async function signUp() { 
-      if (signUpForm.username.length < 3) {
-        setErrorMessage("Bitte einen Benutzernamen eingeben")
-        setIsError(true)
-        return;
-      } else if (signUpForm.email.length < 5) {
-        setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
-        setIsError(true)
-        return;
-      } else if (signUpForm.password.length < 8) {
-        setErrorMessage("Passwort muss mindestens 8 Zeichen lang sein")
-        setIsError(true)
-        return;
-      }  else if (signUpForm.password !== signUpForm.passwordConfirm) {
-        setErrorMessage("Passwörter stimmen nicht überein")
-        setIsError(true)
-        return;
-      } else {
-      try {
-        const user = await createUser(signUpForm.email, signUpForm.password, signUpForm.username);
-        if (user.success === false) {
-          setErrorMessage(user.error)
-          setIsError(true)
-          return;
-        } else { 
-          const userData = await addNewUserConfig(user.data.$id);
-          setUser(user.data);
-          setIsLoggedIn(true);
-          router.push("/personalize");
-        }
-        
-      } catch (error) {
-        setErrorMessage(error.message)
-        setIsError(true)
-      } }}
+  
+ 
   const submitSignIn = async () => {
       if (form.email.length < 5) {
         setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
@@ -163,8 +123,7 @@ const SignIn = () => {
                   width: 300
                 }}
                 >
-                {
-                    selectedOption === 4 ? (
+
                     <View className="w-full items-center justify-center">
                       <Text className='text-white font-bold text-xl'>Sign In</Text>
                       <TextInput
@@ -195,72 +154,11 @@ const SignIn = () => {
                       <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
                         if ( Platform.OS === "web") {
                           loginWithGoogle()}}}/>
-                      <TouchableOpacity onPress={()=> setSelectedOption(3)} className="mt-2 items-center justify-center">
+                      <TouchableOpacity onPress={()=> router.push("/sign-up")} className="mt-2 items-center justify-center">
                           <Text className="text-blue-500">Registrieren</Text>
                       </TouchableOpacity>
                       
-                  </View>) : null
-                }
-                {
-                    selectedOption === 3 ? (
-                      <View className="w-full  items-center justify-center">
-                      <Text className='text-white font-bold text-xl'>Sign Up</Text>
-                    <TextInput
-                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
-                        style={{
-                          width: Platform.OS === 'web' ? null : width - 60,
-                          height: 40
-                        }}
-                        placeholder="Username"
-                        placeholderTextColor="#fff"
-                        value={signUpForm.username}
-                        onChangeText={(text) => setSignUpForm({ ...signUpForm, username: text })}
-                    />
-                    <TextInput
-                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
-                        style={{
-                          width: Platform.OS === 'web' ? null : width - 60, 
-                          height: 40
-                        }}
-                        placeholder="E-Mail"
-                        placeholderTextColor="#fff"
-                        value={signUpForm.email}
-                        onChangeText={(text) => setSignUpForm({ ...signUpForm, email: text })}
-                    />
-                    <TextInput
-                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
-                        style={{
-                          width: Platform.OS === 'web' ? null : width - 60, 
-                          height: 40
-                        }}
-                        placeholder="Password"
-                        placeholderTextColor="#fff"
-                        secureTextEntry={true}
-                        value={signUpForm.password}
-                        onChangeText={(text) => setSignUpForm({ ...signUpForm, password: text })}
-                    />
-                    <TextInput
-                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
-                        style={{
-                          width: Platform.OS === 'web' ? null : width - 60, 
-                          height: 40
-                        }}
-                        placeholder="Password bestätigen"
-                        placeholderTextColor="#fff"
-                        secureTextEntry={true}
-                        value={signUpForm.passwordConfirm}
-                        onChangeText={(text) => setSignUpForm({ ...signUpForm, passwordConfirm: text })}
-                    />
-                    <LoginButton title="Registrieren" handlePress={() => {signUp()}} />
-                    <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => { if ( Platform.OS === "web") {
-                        loginWithGoogle()}}}/>
-
-                    <TouchableOpacity onPress={()=> setSelectedOption(4)} className="mt-2 items-center justify-center">
-                        <Text className="text-blue-500">Anmelden</Text>
-                    </TouchableOpacity>
-                    
-                </View>) : null
-                }
+                  </View>
               </View>
             </View>
           </View>

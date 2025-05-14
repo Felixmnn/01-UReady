@@ -4,6 +4,7 @@ import { ausbildungsListDeutschland, ausbildungsTypen, countryList } from '@/ass
 import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'
+import  languages  from '@/assets/exapleData/languageTabs.json'
 const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height, width } = useWindowDimensions()
 
@@ -14,29 +15,8 @@ const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
           setSelectedLanguage(language)
         }
       }, [language])
-      
-    const texts = {
-        "DEUTSCH": {
-            kathegory: "Kathegorie",
-            subject: "Ausbildungsfach", 
-        },
-        "ENGLISH(US)": {
-            kathegory: "Category",
-            subject: "Subject", 
-        },
-        "ENGLISH(UK)": {
-            kathegory: "Category",
-            subject: "Subject", 
-        },
-        "AUSTRALIAN": {
-            kathegory: "Category",
-            subject: "Subject", 
-        },
-        "SPANISH": {
-            kathegory: "Categoría",
-            subject: "Asignatura", 
-        },
-    }
+    const texts = languages.education;
+   
     //Algemeine Ausbildungdaten
 
     //Dynnamische Ausbildungdaten basierend auf dem Land

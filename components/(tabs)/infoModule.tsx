@@ -13,7 +13,7 @@ const InfoModule = ({content, header, additional,hideHead,infoStyles}) => {
               </View>
             </View>
           }
-        <View className=' p-4 my-2 rounded-[10px] border border-[1px] border-gray-600 bg-[#0c111d]'>
+        <View className=' p-4 my-2 rounded-[10px] border border-[1px] border-gray-600 bg-gray-800'>
         {content()}
         </View>
     </View>

@@ -32,6 +32,16 @@ const authLayout = () => {
                     headerShown: false 
                   }}
                 />
+                <Stack.Screen name="validate-mail"
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
+                <Stack.Screen name="reset-password"
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
             </Stack>
         </>
     </View>

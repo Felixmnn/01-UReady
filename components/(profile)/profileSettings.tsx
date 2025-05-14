@@ -7,7 +7,7 @@ import SettingsOption from '../(tabs)/settingsOption';
 import { useState } from 'react';
 import CustomTextInput from '../(general)/customTextInput';
 import CustomButton from '../(general)/customButton';
-import {  updateUserEmail, updateUserName } from '@/lib/appwrite';
+import {  updateUserEmail, updateUserName, validateEmail } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import CustomTextInput1 from '../(general)/customTextInput1';
@@ -15,7 +15,7 @@ import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
 import SkeletonList from '../(general)/(skeleton)/skeletonList';
 import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
-
+import  languages  from '@/assets/exapleData/languageTabs.json';
 const ProfileSettings = ({setPage}) => {
     const {user, setUser,setIsLoggedIn, setIsLoading } = useGlobalContext() 
     const { language,setNewLanguage } = useGlobalContext()
@@ -31,135 +31,8 @@ const ProfileSettings = ({setPage}) => {
     const [ userDataKathegory, setUserDataKathegory] = useState(null)
     const [ loading, setLoading] = useState(true)
     const [selectedColorMode, setSelectedColorMode] = useState("Darstellung");
-    const texts = {
-      "DEUTSCH": {
-        vorname: "Vorname",
-        email: "Email",
-        emailvalid: "Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.",
-        emailvalid2: "Email-Adresse bestätigt",
-        emailrenew: "Erneut senden",
-        schooltype: "Schulform",
-        schoolgrade: "Schulklasse",
-        schoolsubjects: "Fächer",
-        university: "Hochschule/ Universität",
-        faculty: "Fakultät",
-        studiengang: "Studiengang",
-        abschlussziel: "Abschlussziel",
-        actioncode: "Aktioncode",
-        actioncodeText: "Aktioncode einlösen",
-        help: "Hilfe",
-        share: "Teilen",
-        logout: "Abmelden",
-        deleteAccount: "Account löschen",
-        colorMode: "Darstellung",
-        language: "Sprache",
-        educationKathegory: "Ausbildungskathegorie",
-        educationSubject: "Ausbildungfach",
-        hell: "Hell",
-        dunkel: "Dunkel",
-
-    },
-      "ENGLISH(US)": {
-        vorname: "First name",
-        email: "Email",
-        emailvalid: "Please confirm your email address using the link in the email we sent you.",
-        emailvalid2: "Email address confirmed",
-        emailrenew: "Resend",
-        schooltype: "School type",
-        schoolgrade: "School grade",
-        schoolsubjects: "Subjects",
-        university: "University",
-        faculty: "Faculty",
-        studiengang: "Course of study",
-        abschlussziel: "Degree goal",
-        actioncode: "Action code",
-        actioncodeText: "Redeem action code",
-        help: "Help",
-        share: "Share",
-        logout: "Log out",
-        deleteAccount: "Delete account",
-        colorMode: "Display mode",
-        language: "Language",
-        hell: "Light",
-        dunkel: "Dark",
-    } ,
-    "ENGLISH(UK)": {
-        vorname: "First name",
-        email: "Email",
-        emailvalid: "Please confirm your email address using the link in the email we sent you.",
-        emailvalid2: "Email address confirmed",
-        emailrenew: "Resend",
-        schooltype: "School type",
-        schoolgrade: "School grade",
-        schoolsubjects: "Subjects",
-        university: "University",
-        faculty: "Faculty",
-        studiengang: "Course of study",
-        abschlussziel: "Degree goal",
-        actioncode: "Action code",
-        actioncodeText: "Redeem action code",
-        help: "Help",
-        share: "Share",
-        logout: "Log out",
-        deleteAccount: "Delete account",
-        colorMode: "Display mode",
-        language: "Language",
-        hell: "Light",
-        dunkel: "Dark",
-
-    },
-    "AUSTRALIAN": {
-        vorname: "First name",
-        email: "Email",
-        emailvalid: "Please confirm your email address using the link in the email we sent you.",
-        emailvalid2: "Email address confirmed",
-        emailrenew: "Resend",
-        schooltype: "School type",
-        schoolgrade: "School grade",
-        schoolsubjects: "Subjects",
-        university: "University",
-        faculty: "Faculty",
-        studiengang: "Course of study",
-        abschlussziel: "Degree goal",
-        actioncode: "Action code",
-        actioncodeText: "Redeem action code",
-        help: "Help",
-        share: "Share",
-        logout: "Log out",
-        deleteAccount: "Delete account",
-        colorMode: "Display mode",
-        language: "Language",
-        hell: "Light",
-        dunkel: "Dark",
-
-
-    },
-    "SPANISH": {
-        vorname: "Nombre",
-        email: "Correo electrónico",
-        emailvalid: "Confirma tu dirección de correo electrónico utilizando el enlace en el correo electrónico que te enviamos.",
-        emailvalid2: "Dirección de correo electrónico confirmada",
-        emailrenew: "Reenviar",
-        schooltype: "Tipo de escuela",
-        schoolgrade: "Grado escolar",
-        schoolsubjects: "Asignaturas",
-        university: "Universidad",
-        faculty: "Facultad",
-        studiengang: "Curso de estudio",
-        abschlussziel: "Objetivo del título",
-        actioncode: "Código de acción",
-        actioncodeText: "Canjear código de acción",
-        help: "Ayuda",
-        share: "Compartir",
-        logout: "Cerrar sesión",
-        deleteAccount: "Eliminar cuenta",
-        colorMode: "Modo de visualización",
-        language: "Idioma",
-        hell: "Claro",
-        dunkel: "Oscuro",
-
-    },
-  }
+    const texts = languages.profileSettings;
+   
 
     useEffect(() => {
       if (user === null || user === undefined) return ;
@@ -189,11 +62,19 @@ const ProfileSettings = ({setPage}) => {
       setModalVisible(!modalVisible);
     };
 
-    const personalInput = (value, title,onChange) => {
+    const personalInput = (value, title,onChange,text=false) => {
       return (
-        <TouchableOpacity className="flex-1 w-full">
+        <TouchableOpacity className="flex-1 w-full mt-2">
+
           <Text className="text-gray-300 font-bold text-[13px] m-2">{title}</Text>
-          <CustomTextInput1 value={value} onChange={onChange} />
+          { 
+            text ?
+            <View className='m-1'>
+              <Text className='text-gray-300 font-bold text-[13px] ml-3'>{value}</Text>
+            </View>
+            :
+            <CustomTextInput1 value={value} onChange={onChange} />
+          }
         </TouchableOpacity>
       )
     } 
@@ -207,7 +88,7 @@ const ProfileSettings = ({setPage}) => {
           onRequestClose={toggleModal}
         >
           <View className='flex-1 items-center justify-center p-2' >
-            <View className='w-full  items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600'
+            <View className='w-full max-w-[300px] items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600'
             style={{
               height: 200,
             }}
@@ -282,12 +163,16 @@ const ProfileSettings = ({setPage}) => {
                     <View className='flex-1 items-center '>
                         <View className='bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center'><Text className='text-2xl text-gray-300 font-bold'>{user.name[0]}</Text></View>
                         {personalInput(user.name,texts[selectedLanguage].vorname, (text) => updateUserName(text))}
-                        {personalInput(user.email,texts[selectedLanguage].email, (text) => updateUserEmail(text) )}
+                        {personalInput(user.email,texts[selectedLanguage].email, (text) => updateUserEmail(text),true) }
                         {
                             !user.emailVerification ?
                             <View className={`${isVertical ? "flex-row w-[96%] justify-between items-center" : "justify-start items-start"} py-2 `}>
                                 <Text className='text-red-300 font-bold text-[12px]'>{texts[selectedLanguage].emailvalid}</Text>
-                                <TouchableOpacity className='py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]'>
+                                <TouchableOpacity className='py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]'
+                                 onPress={
+                                  ()=> {validateEmail()}
+                                 }
+                                >
                                   <Text className='text-gray-300 font-bold text-[12px]'>{texts[selectedLanguage].emailrenew}</Text>
                                 </TouchableOpacity>
                             </View>

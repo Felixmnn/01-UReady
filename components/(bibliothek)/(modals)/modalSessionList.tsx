@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import ModalEditSession from './modalEditSession';
 import uuid from 'react-native-uuid';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) => {
     const { width } = useWindowDimensions();
@@ -15,30 +16,8 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
       setSelectedLanguage(language)
     }
   }, [language])
-
-    const texts = {
-        "DEUTSCH":{
-            title: "Sessions",
-            addSession: "Session hinzufügen"
-            },
-        "ENGLISH(US)":{
-            title: "Sessions",
-            addSession: "Add Session"
-            },
-        "ENGLISH(UK)":{
-            title: "Sessions",
-            addSession: "Add Session"
-            },
-        "AUSTRALIAN":{
-            title: "Sessions",
-            addSession: "Add Session"
-            },
-        "SPANISH":{
-            title: "Sesiones",
-            addSession: "Agregar sesión"
-            },
-    }
-
+  const texts = languages.modalSessionList;
+   
 
     const [isVisibleEdit, setIsVisibleEdit] = useState(false);
     const [selectedSession, setSelectedSession] = useState(null);

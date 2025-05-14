@@ -5,7 +5,7 @@ import DropDownList from './dropDownList'
 import { schoolQuery } from '@/lib/appwriteQuerys'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'
-
+import languages  from '@/assets/exapleData/languageTabs.json'
 const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions()
 
@@ -16,40 +16,8 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
           setSelectedLanguage(language)
         }
       }, [language])
-
-    const texts = {
-        "DEUTSCH": {
-            region: "Region",
-            schoolform: "Schulform",
-            subject: "Fach",
-            class: "Klasse",
-        },
-        "ENGLISH(US)": {
-            region: "Region",
-            schoolform: "School form",
-            subject: "Subject",
-            class: "Class",
-        },
-        "ENGLISH(UK)": {
-            region: "Region",
-            schoolform: "School form",
-            subject: "Subject",
-            class: "Class",
-        },
-        "AUSTRALIAN": {
-            region: "Region",
-            schoolform: "School form",
-            subject: "Subject",
-            class: "Class",
-        },
-        "SPANISH": {
-            region: "Región",
-            schoolform: "Forma escolar",
-            subject: "Asignatura",
-            class: "Clase",
-        },
-
-    }
+    const texts = languages.school;
+    
 
     //Algemeine Schuldaten
 

@@ -4,7 +4,18 @@ import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelectedCountry, countryList ,setSelectedKathegorie, userData, setUserData, buttons, robotMessage}) => {
+const StepThree = ({    selectedLanguage,
+                        languages, 
+                        name, 
+                        selectedCountry, 
+                        setSelectedCountry, 
+                        countryList ,
+                        setSelectedKathegorie, 
+                        userData, 
+                        setUserData, 
+                        buttons, 
+                        robotMessage
+                    }) => {
     const [isActive, setIsActive] = useState(false)
     const TouchSquare = ({text, handlePress,icon}) => {
         return (

@@ -13,9 +13,14 @@ import StepSix from '@/components/(signUp)/six';
 import StepSeven from '@/components/(signUp)/seven';
 import { addNewUserConfig, addUserDatakathegory, updateUserDatakathegory } from '@/lib/appwriteAdd';
 import { updateUserData } from '@/lib/appwriteUpdate';
-import { getCountryList } from '@/lib/appwritePersonalize';
-import { schoolListDeutschland, universityListDeutschland, ausbildungsTypen,countryList,ausbildungsListDeutschland,LeibnizSubjects } from '@/assets/exapleData/countryList';
-
+import { getCountryList, getEducationList, getEducationSubjects, getSchoolList, getUniversityList, getUniversitySubjects } from '@/lib/appwritePersonalize';
+import {schoolListDeutschland, 
+        universityListDeutschland, 
+        ausbildungsTypen,
+        countryList,
+        ausbildungsListDeutschland,
+        LeibnizSubjects } from '@/assets/exapleData/countryList';
+import language from '@/assets/exapleData/languageTabs.json';
 
 const personalize = () => {
 
@@ -23,19 +28,35 @@ const personalize = () => {
     const [userData, setUserData] = useState(null);
     const [ userDataKathegory, setUserDataKathegory] = useState(null);
     const [ name, setName] = useState("");
-    const [ selectedCountry, setSelectedCountry ] = useState( {name:"Deutschland",code:"DE", id:"4058177f-0cd4-4820-8f71-557c4b27dd42" });
+    const [ selectedCountry, setSelectedCountry ] = useState( {name:"Deutschland",
+                                                                code:"DE", 
+                                                                id:"4058177f-0cd4-4820-8f71-557c4b27dd42",
+                                                                schoolListID:"68258dbd00191adc1197" ,
+                                                                universityListID:"68258531000478d62d95",
+                                                                educationListID:"68258892003985a9f425",
+                                                                educationSubjectListID:"8339653e-1288-4b55-83ed-dff8d2a74002"
+
+                                                            });
     const [ selectedLanguage, setSelectedLanguage] = useState(0);
     const [ selectedKathegorie, setSelectedKathegorie] = useState(null);
     const [ selectedRegion, setSelectedRegion] = useState(null);
     const [ school, setSchool] = useState(null);
     const [ ausbildungKathegorie, setAusbildungKathegorie] = useState(null);
     const [ selectedUniversity, setSelectedUniversity] = useState(null);
-    const [ degree, setDegree] = useState(null);
+    const [ degree, setDegree] = useState("Bachelor");
     const [ selectedAusbildung, setSelectedAusbildung ] = useState(null);
     const [ classNumber, setClassNumber ] = useState(null);
     const [ selectedSubjects, setSelectedSubjects ] = useState([]);
     const [ selectedField, setSelectedField ] = useState([]);
-    const [ countryListAppwrite, setCountryListAppwrite] = useState(null);
+
+    const [ countryListA, setCountryListA ] = useState(countryList);
+    const [ schoolList, setSchoolList ] = useState(schoolListDeutschland);
+    const [ universityList, setUniversityList ] = useState(universityListDeutschland);
+    const [ educationList, setEducationList ] = useState(ausbildungsListDeutschland);
+    const [ universitySubjectList, setUniversitySubjectList ] = useState([]);
+    const [ educationSubjectList, setEducationSubjectList ] = useState([]);
+
+    const textsTwo = 
 
     const languages = [
         {name:"Deutsch", enum:"DEUTSCH", code:"DE"},
@@ -61,45 +82,8 @@ const personalize = () => {
             "ES": `Encantado de conocerte, ${name}. ¿En qué idioma quieres hablar?`,
         }
     }
-    const textsThree = {
-        "buttons" : [
-            { "DE": "Schule", "GB": "School", "US": "School", "AU": "School", "ES": "Escuela" },
-            { "DE": "Universität", "GB": "University", "US": "College", "AU": "Uni", "ES": "Universidad" },
-            { "DE": "Ausbildung", "GB": "Apprenticeship", "US": "Apprenticeship", "AU": "Apprenticeship", "ES": "Educación" },
-            { "DE": "Sonstiges", "GB": "Other", "US": "Other", "AU": "Other", "ES": "Otro" }
-        ],
-        "robotMessage": {
-            "DE": "Gehst du zur Schule, an die Uni oder machst eine Ausbildung?",
-            "GB": "Are you going to school, university, or doing an apprenticeship?",
-            "US": "Are you in school, college, or doing an apprenticeship?",
-            "AU": "Are you at school, uni, or doing an apprenticeship?",
-            "ES": "¿Vas al colegio, a la universidad o estás haciendo una formación?",
-        }
-    }
-    const textsFour = {
-        "robotMessageUniversity": {
-            "DE": "Perfekt! An welcher Uni bist du?",
-            "GB": "Perfect! Which university are you at?",
-            "US": "Perfect! What college are you at?",
-            "AU": "Perfect! Which uni ya at?",
-            "ES": "¡Perfecto! ¿En qué universidad estás?",
-        },
-        "robotMessageSchool": {
-            "DE": "An welcher Schule bist du?",
-            "GB": "Which school do you go to?",
-            "US": "Which school are you attending?",
-            "AU": "Which school are you at?",
-            "ES": "¿A qué escuela vas?",
-        },
-        "robotMessageEducation": {
-            "DE": "Perfekt! In welchem Bereich machst du deine Ausbildung?",
-            "GB": "Perfect! In which field are you doing your apprenticeship?",
-            "US": "Perfect! What field is your trade school or apprenticeship in?",
-            "AU": "Perfect! What field’s your apprenticeship in?",
-            "ES": "¡Perfecto! ¿En qué área estás haciendo tu formación profesional?",
-        }
-    }
-
+    const textsThree = language.personalize.pageThree;
+    const textsFour = language.personalize.pageFour;
     const textsFive = {
         "robotMessageUniversity": {
             "DE": "An welcher Uni bist du?",
@@ -122,44 +106,105 @@ const personalize = () => {
             "AU": `${school?.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "school type not listed" : school?.name}. What year level are you in?`,
             "ES": `${school?.name === "Sonstige" ? "Interesante, tú" : "Entonces, estás en"} ${school?.name === "Gymnasium" ? "un" : "una"} ${school?.name === "Sonstige" ? "tipo de escuela no listado" : school?.name}. ¿En qué curso estás?`,
         }
-
     }
-    const textsSix = {
-        "robotMessageSchool": {
-            "DE":"Nur noch eins: Welche Fächer darf ich für dich eintragen?",
-            "GB": "Just one more thing: Which subjects should I add for you?",
-            "US": "Just one more thing: Which subjects would you like me to add for you?",
-            "AU": "Just one more thing: Which subjects do you want me to add for you?",
-            "ES": "Solo una cosa más: ¿Qué asignaturas quieres que añada para ti?",
-        },
-        "continueMessage": {
-            "DE":"Los geht’s!“",
-            "GB":"Let's go!",
-            "US":"Let's go!",
-            "AU":"Let's go!",
-            "ES":"¡Vamos!"
-        },
-        "robotMessageUniversity": {
-            "DE":"Fast geschafft! Was genau studierst du?",
-            "GB":"Just one last thing before we finish! What’s your program or field of study?",
-            "US":"Almost there! What’s your major or area of study?",
-            "AU":"You're almost done! What’s your course or field of study?",
-            "ES":"¡Casi terminado! ¿En qué programa o área estás estudiando?",
-        }
-
-    }
-
+    const textsSix = language.personalize.PageSix;
+    
     useEffect(() => {
         async function fetchCountryList() {
                 const response = await getCountryList();
-                console.log("Country List", response);
                 if (response) {
-                    setCountryListAppwrite(response);
+                    setCountryListA(response);
                 }
         }
         fetchCountryList();
     }
     , []);
+
+    function isJsonString(str) {
+    if (typeof str !== 'string') return false;
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+    }
+
+    useEffect(() => {
+        async function fetchList() {
+            if (selectedKathegorie === "SCHOOL" || selectedKathegorie === "OTHER") {
+                const res = await  getSchoolList(selectedCountry.schoolListID);
+                if (res) {
+                    setSchoolList({
+                        regions: res.regions.map((item) => JSON.parse(item)),
+                        schoolStages: res.schoolStages.map((item) => JSON.parse(item)),
+                        schoolTypes: res.schoolTypes.map((item) => JSON.parse(item)),
+                        schoolSubjects: res.schoolSubjects.map((item) => JSON.parse(item)),
+                    });
+                }
+            } else if (selectedKathegorie === "UNIVERSITY") {
+                const res = await getUniversityList(selectedCountry.universityListID);
+                if (res) {
+                    setUniversityList(res.list.map(item => JSON.parse(item)));
+                }
+            } else if (selectedKathegorie === "EDUCATION") {
+                const res = await getEducationList(selectedCountry.educationListID);
+                const res2 = await getEducationSubjects(selectedCountry.educationSubjectListID);
+                console.log("School List", res);
+                console.log("Education List", res2);
+                if (res && res2) {
+                    setEducationList(
+                        {
+                            "Bau & Handwerk": res2["BauHandwerk"] ? res2["BauHandwerk"].map(item => JSON.parse(item)) : [],
+                            "Gastronomie & Tourismus": res2["GastronomieTourismus"] ? res2["GastronomieTourismus"].map(item => JSON.parse(item)) : [],
+                            "Gesundheit & Pflege": res2["GesundheitPflege"] ? res2["GesundheitPflege"].map(item => JSON.parse(item)) : [],
+                            "IT & Medien": res2["ITMedien"] ? res2["ITMedien"].map(item => JSON.parse(item)) : [],
+                            "Kunst & Gestaltung": res2["KunstGestaltung"] ? res2["KunstGestaltung"].map(item => JSON.parse(item)) : [],
+                            "Metall & Technik": res2["MetallTechnik"] ? res2["MetallTechnik"].map(item => JSON.parse(item)) : [],
+                            "Produktion & Logistik": res2["ProduktionLogistik"] ? res2["ProduktionLogistik"].map(item => JSON.parse(item)) : [],
+                            "Umwelt & Natur": res2["UmweltNatur"] ? res2["UmweltNatur"].map(item => JSON.parse(item)) : [],
+                            "Wirtschaft & Verwaltung": res2["WirtschaftVerwaltung"] ? res2["WirtschaftVerwaltung"].map(item => JSON.parse(item)) : [],
+                        }
+                    );
+                }
+            }       
+    }
+        fetchList();
+    }, [selectedKathegorie]);
+
+    useEffect(() => {
+        async function fetchUniversitySubjects() {
+            if (selectedUniversity) {
+                console.log("Selected University", selectedUniversity);
+                const res = await getUniversitySubjects(selectedUniversity?.fakultyListID);
+                console.log("Uni List", res);
+                if (res) {
+                    setUniversitySubjectList(
+                        [
+                        {
+                            "Bachelor": res["Bachelor"] ? res["Bachelor"].map(item => JSON.parse(item)) : [],
+                            "Master": res["Master"] ? res["Master"].map(item => JSON.parse(item)) : [],
+                            "Staatsexamen": res["Staatsexamen"] ? res["Staatsexamen"].map(item => JSON.parse(item)) : [],
+                            "Diplom": res["Diplom"] ? res["Diplom"].map(item => JSON.parse(item)) : [],
+                            "Magister": res["Magister"] ? res["Magister"].map(item => JSON.parse(item)) : [],
+                            "Others": res["Others"] ? res["Others"].map(item => JSON.parse(item)) : [],
+                        }])}}}
+                fetchUniversitySubjects();
+        }, [selectedUniversity]);
+
+    useEffect(() => {
+        async function fetchEducationSubjects() {
+            if (ausbildungKathegorie) {
+                const res = await getEducationSubjects(selectedCountry.educationSubjectListID);
+                if (res) {
+                    setEducationSubjectList(res[ausbildungKathegorie.name.DE.replaceAll(" & ","")].map(item => JSON.parse(item)));
+                }
+            }
+        }
+        fetchEducationSubjects();
+    },[ausbildungKathegorie]);
+
+    
 
     useEffect(() => {
               if (user === null ) return;
@@ -203,13 +248,18 @@ const personalize = () => {
           }, [user]);
     
     const saveUserData = async () => {
+        console.log("Locating toUppercase Error...");
+        console.log(selectedCountry.name.toUpperCase());
+        console.log(school?.name.toUpperCase());
+        console.log(ausbildungKathegorie?.name.DE.toUpperCase().replace(/\s+/g, ''));
+        
         const newUserData = {
             country:                            selectedCountry ? selectedCountry.name.toUpperCase() : null,
             university:                         selectedUniversity ? selectedUniversity.name : null,
             faculty:                            selectedField ? selectedField.map(item => item.faculty) : null,
             studiengang:                        selectedField ? selectedField.map(item => item.name) : null,
             region:                             selectedRegion ? schoolListDeutschland.regions[selectedRegion].name : null,
-            studiengangZiel:                    degree ? degree.name.toUpperCase() : null,
+            studiengangZiel:                    degree && degree != "Bachelor" ? degree.name.toUpperCase() : null,
             schoolType:                         school ? school.name.toUpperCase() : null,
             kategoryType:                       selectedKathegorie ? selectedKathegorie : null,
             schoolSubjects:                     selectedSubjects ? selectedSubjects.map(item => item.name) : null,
@@ -247,17 +297,92 @@ const personalize = () => {
             }
     }}
 
+    console.log("Uni New List", educationList);
+
+    console.log("Uni Old List", ausbildungsListDeutschland);
 
   return (
     <SafeAreaView className="flex-1 p-4  bg-gradient-to-b from-blue-900 to-[#0c111d] bg-[#0c111d] items-center justify-center">
         {userData !== null && userData.signInProcessStep == "ZERO" ? <StepZero userData={userData} setUserData={setUserData}/> : null}
-        {userData !== null && userData.signInProcessStep == "ONE" ? <StepOne name={name} setName={setName} userData={userData} setUserData={setUserData}/> : null}
-        {userData !== null && userData.signInProcessStep == "TWO" ? <StepTwo robotMessage={textsTwo.robotMessage} continueButtonText={textsTwo.continueButtonText} name={name} selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} languages={languages} userData={userData} setUserData={setUserData}/> : null}
-        {userData !== null && userData.signInProcessStep == "THREE" ? <StepThree robotMessage={textsThree.robotMessage} buttons={textsThree.buttons} userData={userData} setUserData={setUserData} setSelectedKathegorie={setSelectedKathegorie} selectedLanguage={selectedLanguage} languages={languages} name={name} selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} countryList={countryList}/> : null}
-        {userData !== null && userData.signInProcessStep == "FOUR" ? <StepFour schoolListDeutschland={schoolListDeutschland} universityListDeutschland={universityListDeutschland} ausbildungsTypen={ausbildungsTypen} message={textsFour} selectedUniversity={selectedUniversity} setSelectedUniversity={setSelectedUniversity} ausbildungKathegorie={ausbildungKathegorie} setAusbildungKathegorie={setAusbildungKathegorie} school={school} setSchool={setSchool} setSelectedRegion={setSelectedRegion} selectedRegion={selectedRegion} selectedKathegorie={selectedKathegorie} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} setUserData={setUserData} userData={userData} languages={languages}/> : null}
-        {userData !== null && userData.signInProcessStep == "FIVE" ? <StepFive ausbildungsListDeutschland={ausbildungsListDeutschland} message={textsFive} languages={languages} setClass={setClassNumber} setSelectedKathegorie={selectedKathegorie} setSelectedAusbildung={setSelectedAusbildung} setDegree={setDegree}  selectedLanguage={selectedLanguage} userData={userData} setUserData={setUserData} selectedUniversity={selectedUniversity} school={school} ausbildungKathegorie={ausbildungKathegorie}/> : null}
-        {userData !== null && userData.signInProcessStep == "SIX" ? <StepSix LeibnizSubjects={LeibnizSubjects} schoolListDeutschland={schoolListDeutschland}  message={textsSix} selectedField={selectedField} setSelectedField={setSelectedField} selectedDegree={degree} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects} userData={userData} setUserData={setUserData} selectedKathegorie={selectedKathegorie} languages={languages} selectedLanguage={selectedLanguage}/> : null}
-        {userData !== null && userData.signInProcessStep == "SEVEN" ? <StepSeven userDataKathegory={userDataKathegory} saveUserData={saveUserData}  languages={languages} setUserData={setUserData} userData={userData} selectedField={selectedField} selectedSubjects={selectedSubjects} classNumber={classNumber}  selectedAusbildung={selectedAusbildung}  degree={degree} selectedUniversity={selectedUniversity} ausbildungKathegorie={ausbildungKathegorie} school={school} name={name} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} selectedKathegorie={selectedKathegorie} selectedRegion={selectedRegion}   /> : null}
+        {userData !== null && userData.signInProcessStep == "ONE" ? <StepOne 
+                                                                                name={name} 
+                                                                                setName={setName} 
+                                                                                userData={userData} 
+                                                                                setUserData={setUserData}
+                                                                    /> : null}
+        {userData !== null && userData.signInProcessStep == "TWO" ?     <StepTwo 
+                                                                            robotMessage={textsTwo.robotMessage} 
+                                                                            continueButtonText={textsTwo.continueButtonText}
+                                                                            name={name} 
+                                                                            selectedLanguage={selectedLanguage} 
+                                                                            setSelectedLanguage={setSelectedLanguage} 
+                                                                            languages={languages} 
+                                                                            userData={userData} 
+                                                                            setUserData={setUserData}
+                                                                        /> : null}
+        {userData !== null && userData.signInProcessStep == "THREE" ?   <StepThree 
+                                                                            robotMessage={textsThree.robotMessage} 
+                                                                            buttons={textsThree.buttons} 
+                                                                            userData={userData} 
+                                                                            setUserData={setUserData} 
+                                                                            setSelectedKathegorie={setSelectedKathegorie} 
+                                                                            selectedLanguage={selectedLanguage} 
+                                                                            languages={languages} 
+                                                                            name={name} 
+                                                                            selectedCountry={selectedCountry} 
+                                                                            setSelectedCountry={setSelectedCountry} 
+                                                                            countryList={countryListA? countryListA : countryList}
+                                                                        /> : null}
+        {userData !== null && userData.signInProcessStep == "FOUR" ?    <StepFour 
+                                                                            schoolListDeutschland={schoolList? schoolList : schoolListDeutschland} 
+                                                                            universityListDeutschland={universityList? universityList :universityListDeutschland} 
+                                                                            ausbildungsTypen={ausbildungsTypen? ausbildungsTypen : ausbildungsListDeutschland} 
+                                                                            message={textsFour} 
+                                                                            selectedUniversity={selectedUniversity} 
+                                                                            setSelectedUniversity={setSelectedUniversity} 
+                                                                            ausbildungKathegorie={educationList ? educationList :ausbildungKathegorie} 
+                                                                            setAusbildungKathegorie={setAusbildungKathegorie} 
+                                                                            school={school} 
+                                                                            setSchool={setSchool} 
+                                                                            setSelectedRegion={setSelectedRegion} 
+                                                                            selectedRegion={selectedRegion} 
+                                                                            selectedKathegorie={selectedKathegorie} 
+                                                                            selectedCountry={selectedCountry} 
+                                                                            selectedLanguage={selectedLanguage} 
+                                                                            setUserData={setUserData} 
+                                                                            userData={userData} 
+                                                                            languages={languages}
+                                                                        /> : null}
+        {userData !== null && userData.signInProcessStep == "FIVE" ?    <StepFive 
+                                                                            ausbildungsListDeutschland={educationList ? educationList : ausbildungsListDeutschland} 
+                                                                            message={textsFive} 
+                                                                            languages={languages} 
+                                                                            setClass={setClassNumber} 
+                                                                            setSelectedKathegorie={selectedKathegorie} 
+                                                                            setSelectedAusbildung={setSelectedAusbildung} 
+                                                                            setDegree={setDegree}  
+                                                                            selectedLanguage={selectedLanguage} 
+                                                                            userData={userData} 
+                                                                            setUserData={setUserData} 
+                                                                            selectedUniversity={selectedUniversity} 
+                                                                            school={school} 
+                                                                            ausbildungKathegorie={ausbildungKathegorie}
+                                                                        /> : null}
+        {userData !== null && userData.signInProcessStep == "SIX" ?     <StepSix 
+                                                                            LeibnizSubjects={universitySubjectList ? universitySubjectList :LeibnizSubjects} 
+                                                                            schoolListDeutschland={schoolList ? schoolList :schoolListDeutschland }  
+                                                                            message={textsSix} 
+                                                                            selectedField={selectedField} 
+                                                                            setSelectedField={setSelectedField} 
+                                                                            selectedDegree={degree} 
+                                                                            selectedSubjects={selectedSubjects} 
+                                                                            setSelectedSubjects={setSelectedSubjects} 
+                                                                            userData={userData} setUserData={setUserData} 
+                                                                            selectedKathegorie={selectedKathegorie} 
+                                                                            languages={languages} 
+                                                                            selectedLanguage={selectedLanguage}
+                                                                        /> : null}
+        {userData !== null && userData.signInProcessStep == "SEVEN" ?   <StepSeven userDataKathegory={userDataKathegory} saveUserData={saveUserData}  languages={languages} setUserData={setUserData} userData={userData} selectedField={selectedField} selectedSubjects={selectedSubjects} classNumber={classNumber}  selectedAusbildung={selectedAusbildung}  degree={degree} selectedUniversity={selectedUniversity} ausbildungKathegorie={ausbildungKathegorie} school={school} name={name} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} selectedKathegorie={selectedKathegorie} selectedRegion={selectedRegion}   /> : null}
 
     </SafeAreaView>
   )

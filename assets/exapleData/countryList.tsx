@@ -13,7 +13,7 @@ export const countryList = [
         id:"4058177f-0cd4-4820-8f71-557c4b27dd42", 
         schoolListID: "4058177f-0cd4-4820-8f71-557c4b27dd42",
         universityListID: "4058177f-0cd4-4820-8f71-557c4b27dd43",
-        educationListID: "4058177f-0cd4-4820-8f71-557c4b27dd44",
+        educationListID: "8339653e-1288-4b55-83ed-dff8d2a74002",
     },
 ]
 
@@ -84,7 +84,7 @@ export const universityListDeutschland = [
         id:"4058177f-0cd4-4820-8f71-557c4b27dd42",
         image:"https://th.bing.com/th?id=ODLS.5d53dd9b-63d7-41f7-ba62-89ffd0f95a6f&w=32&h=32&o=6&pid=1.2",
         slang:"LUH",
-        fakultyListID: "4058177f-0cd4-4820-8f71-557c4b27dd42",
+        universityListID: "f2286f9d-45af-477c-a4a6-d27ef9985f3b",
     },
 ]
 

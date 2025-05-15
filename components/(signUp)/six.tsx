@@ -1,12 +1,11 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
-import { LeibnizSubjects, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import BotTopLeft from './(components)/botTopLeft'
 import ProgressBar from './(components)/progressBar'
 import SearchList from './(components)/searchList'
 
-const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, setUserData, setSelectedSubjects, selectedSubjects, selectedDegree, selectedField , setSelectedField}) => {
+const StepSix = ({selectedKathegorie,LeibnizSubjects, schoolListDeutschland, message, selectedLanguage, languages, userData, setUserData, setSelectedSubjects, selectedSubjects, selectedDegree, selectedField , setSelectedField}) => {
     const handlePress = () => {
         if (selectedKathegorie === "SCHOOL") {
         setUserData({...userData,signInProcessStep:"FIVE"})
@@ -15,7 +14,6 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
 
         };
     }
-
     const handleItemPress = (item) => {
         if (selectedSubjects.includes(item)) {
             setSelectedSubjects(selectedSubjects.filter((subject) => subject !== item))
@@ -24,29 +22,13 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
             setSelectedSubjects([...selectedSubjects, item])
         }
     }
-    const robotMessage = {
-        "DE":"Nur noch eins: Welche Fächer darf ich für dich eintragen?",
-        "GB": "Just one more thing: Which subjects should I add for you?",
-        "US": "Just one more thing: Which subjects would you like me to add for you?",
-        "AU": "Just one more thing: Which subjects do you want me to add for you?",
-        "ES": "Solo una cosa más: ¿Qué asignaturas quieres que añada para ti?",
-        }
-    const continueMessage = {
-        "DE":"Los geht’s!“",
-        "GB":"Let's go!",
-        "US":"Let's go!",
-        "AU":"Let's go!",
-        "ES":"¡Vamos!"
-    }
-
     if (selectedKathegorie === "SCHOOL" || selectedKathegorie === "OTHER") {
         const [ subjectFilter, setSubjectFilter ] = useState("");
         return (
             <View className='h-full  w-full justify-between items-center py-5 '>
-            
                 <View className='w-full '>
                         <ProgressBar progress={85} handlePress={handlePress}/>
-                        <BotTopLeft text={selectedLanguage == null || robotMessage[languages[selectedLanguage].code] == undefined ? robotMessage["DE"] : robotMessage[languages[selectedLanguage].code]} source={"../../assets/Check.gif"}/>     
+                        <BotTopLeft text={selectedLanguage == null || message.robotMessageSchool[languages[selectedLanguage].code] == undefined ? message.robotMessageSchool["DE"] : message.robotMessageSchool[languages[selectedLanguage].code]} source={"../../assets/Check.gif"}/>     
                 </View>
                 <SearchList data={schoolListDeutschland.schoolSubjects.filter((item) => item.name.toLowerCase().includes(subjectFilter.toLowerCase()))}
                             handlePress={handleItemPress}
@@ -56,9 +38,8 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                             abschlussziel='Deine Fächer'
                             />
             <View className='w-full max-w-[200px]'>
-
                 <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500 mt-2 "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
-                    <Text className='text-gray-100 font-semibold text-[15px]'>{selectedLanguage == null || continueMessage[languages[selectedLanguage].code] == undefined ? continueMessage["DE"] : continueMessage[languages[selectedLanguage].code]}</Text>
+                    <Text className='text-gray-100 font-semibold text-[15px]'>{selectedLanguage == null || message.continueMessage[languages[selectedLanguage].code] == undefined ? message.continueMessage["DE"] : message.continueMessage[languages[selectedLanguage].code]}</Text>
                 </GratisPremiumButton>  
             </View>
             </View>
@@ -67,22 +48,6 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
     
     else if (selectedKathegorie === "UNIVERSITY") {
         const [ subjectFilter, setSubjectFilter ] = useState("");
-        const message = {
-            "DE":"Fast geschafft! Was genau studierst du?",
-            "GB":"Just one last thing before we finish! What’s your program or field of study?",
-            "US":"Almost there! What’s your major or area of study?",
-            "AU":"You're almost done! What’s your course or field of study?",
-            "ES":"¡Casi terminado! ¿En qué programa o área estás estudiando?",
-            }
-            const continueMessage = {
-                "DE":"Los geht’s!“",
-                "GB":"Let's go!",
-                "US":"Let's go!",
-                "AU":"Let's go!",
-                "ES":"¡Vamos!"
-            }
-
-        
         const handlePress = () => {
             setUserData({...userData,signInProcessStep:"FIVE"})
             };
@@ -98,7 +63,7 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
             <View className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>  
                     <ProgressBar progress={85} handlePress={handlePress}/>
-                    <BotTopLeft text={selectedLanguage == null || message[languages[selectedLanguage].code] == undefined ? message["DE"] : message[languages[selectedLanguage].code]} source={"../../assets/Check.gif"}/>
+                    <BotTopLeft text={selectedLanguage == null || message.robotMessageUniversity[languages[selectedLanguage].code] == undefined ? message["DE"] : message.robotMessageUniversity[languages[selectedLanguage].code]} source={"../../assets/Check.gif"}/>
                 </View> 
                     <SearchList data={LeibnizSubjects[0][selectedDegree ? selectedDegree.name : "Others"].filter((item) => item.name.toLowerCase().includes(subjectFilter.toLowerCase()))}
                                 handlePress={handleItemPress}
@@ -108,7 +73,7 @@ const StepSix = ({selectedKathegorie, selectedLanguage, languages, userData, set
                                 />
             <View className='w-full max-w-[200px] mt-3'>
                     <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500  "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
-                    <Text className='text-gray-100 font-semibold text-[15px]'>{selectedLanguage == null || continueMessage[languages[selectedLanguage].code] == undefined ? continueMessage["DE"] : continueMessage[languages[selectedLanguage].code]}</Text>
+                    <Text className='text-gray-100 font-semibold text-[15px]'>{selectedLanguage == null || message.continueMessage[languages[selectedLanguage].code] == undefined ? message.continueMessage["DE"] : message.continueMessage[languages[selectedLanguage].code]}</Text>
                 </GratisPremiumButton>  
             </View>
             </View>

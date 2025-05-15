@@ -1,14 +1,12 @@
 import { View, Text, TouchableOpacity, FlatList, useWindowDimensions,ScrollView, Image, TextInput, Platform } from 'react-native'
 import React, {  useState } from 'react'
-import { schoolListDeutschland, ausbildungsListDeutschland, universityListDeutschland, ausbildungsTypen } from '@/assets/exapleData/countryList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ProgressBar from './(components)/progressBar';
 import BotTopLeft from './(components)/botTopLeft';
 
-const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedCountry, setSelectedRegion ,selectedRegion, selectedKathegorie, school, setSchool, setAusbildungKathegorie, ausbildungKathegorie, selectedUniversity, setSelectedUniversity }) => {
+const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutschland, ausbildungsTypen, setUserData, userData, languages, setSelectedRegion ,selectedRegion, selectedKathegorie, setSchool, setAusbildungKathegorie, ausbildungKathegorie, selectedUniversity, setSelectedUniversity, message }) => {
     const {width} = useWindowDimensions()
     const numColumns = width < 400 ? 2 : 3;
-
     const [isActive, setIsActive] = useState(false) 
     const Sonstige ={name:"Sonstige", id:"4058177f-0cd4-4820-8f71-5dsfsf57c4b27dd42", klassenstufen: [1,2,3,4,5,6,7,8,9,10,11,12,13] }
     const [universityFilter, setUniversityFilter] = useState("")
@@ -19,19 +17,9 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
         }
         return chunked;
       };
-
-      const groupedData = chunkArray(schoolListDeutschland.schoolTypes, numColumns);
-      const groupedDataEdu = chunkArray(ausbildungsTypen, numColumns);
-
-
+    const groupedData = chunkArray(schoolListDeutschland.schoolTypes, numColumns);
+    const groupedDataEdu = chunkArray(ausbildungsTypen, numColumns);
     if (selectedKathegorie == "SCHOOL") {
-        const robotMessage = {
-            "DE": "An welcher Schule bist du?",
-            "GB": "Which school do you go to?",
-            "US": "Which school are you attending?",
-            "AU": "Which school are you at?",
-            "ES": "¿A qué escuela vas?",
-        }
     return ( 
         <ScrollView className='w-full '
             style={{
@@ -42,7 +30,7 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
             <View className='w-full justify-between items-center '>
             <View className={`w-full ${Platform.OS == "android" ? "top-5" : null} `}>
                 <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+                <BotTopLeft text={selectedLanguage == null ? message.robotMessageSchool.DE : message.robotMessageSchool[languages[selectedLanguage].code]}/>
             </View>
                 <View className='items-center'>
                 <View style={{ position: 'relative', zIndex: 10 }}>
@@ -146,18 +134,11 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
 
 
     } else if (selectedKathegorie == "UNIVERSITY") {
-        const robotMessage = {
-            "DE": "Perfekt! An welcher Uni bist du?",
-            "GB": "Perfect! Which university are you at?",
-            "US": "Perfect! What college are you at?",
-            "AU": "Perfect! Which uni ya at?",
-            "ES": "¡Perfecto! ¿En qué universidad estás?",
-        }
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
             <View className='w-full'>
                 <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+                <BotTopLeft text={selectedLanguage == null ? message.robotMessageUniversity.DE : message.robotMessageUniversity[languages[selectedLanguage].code]}/>
             </View>
             <View className='flex-1 bg-gray-900 w-full  max-w-[600px] max-h-[700px] rounded-[10px] '
                 style={{maxWidth:600, maxHeight:700}}
@@ -201,19 +182,12 @@ const StepFour = ({selectedLanguage, setUserData, userData, languages, selectedC
 
 
     } else if ( selectedKathegorie == "EDUCATION" ) {
-        const robotMessage = {
-            "DE": "Perfekt! In welchem Bereich machst du deine Ausbildung?",
-            "GB": "Perfect! In which field are you doing your apprenticeship?",
-            "US": "Perfect! What field is your trade school or apprenticeship in?",
-            "AU": "Perfect! What field’s your apprenticeship in?",
-            "ES": "¡Perfecto! ¿En qué área estás haciendo tu formación profesional?",
-        }
         return (
             <ScrollView className='w-full '>
                 <View className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>
                     <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                    <BotTopLeft text={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}/>
+                    <BotTopLeft text={selectedLanguage == null ? message.robotMessageEducation.DE : message.robotMessageEducation[languages[selectedLanguage].code]}/>
                 </View>
                 <View className='justify-center items-center'>
                 {groupedDataEdu.map((row, rowIndex) => (

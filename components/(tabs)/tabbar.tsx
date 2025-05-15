@@ -16,7 +16,7 @@ const Tabbar = ({content,page, hide}) => {
           setSelectedLanguage(language)
         }
       }, [language])
-      const texts = language.tabbar;
+      const texts = languages.tabbar;
     
     const isVertical = width > 700; // Prüfen, ob Breite über 700px ist
 

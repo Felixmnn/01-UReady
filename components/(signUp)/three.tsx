@@ -4,7 +4,7 @@ import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
-const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelectedCountry, countryList ,setSelectedKathegorie, userData, setUserData}) => {
+const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelectedCountry, countryList ,setSelectedKathegorie, userData, setUserData, buttons, robotMessage}) => {
     const [isActive, setIsActive] = useState(false)
     const TouchSquare = ({text, handlePress,icon}) => {
         return (
@@ -16,20 +16,6 @@ const StepThree = ({selectedLanguage, languages, name, selectedCountry, setSelec
             </TouchableOpacity>
         )
     }
-    const buttons = [
-        { "DE": "Schule", "GB": "School", "US": "School", "AU": "School", "ES": "Escuela" },
-        { "DE": "Universität", "GB": "University", "US": "College", "AU": "Uni", "ES": "Universidad" },
-        { "DE": "Ausbildung", "GB": "Apprenticeship", "US": "Apprenticeship", "AU": "Apprenticeship", "ES": "Educación" },
-        { "DE": "Sonstiges", "GB": "Other", "US": "Other", "AU": "Other", "ES": "Otro" }
-    ]
-    const robotMessage = {
-        "DE": "Gehst du zur Schule, an die Uni oder machst eine Ausbildung?",
-        "GB": "Are you going to school, university, or doing an apprenticeship?",
-        "US": "Are you in school, college, or doing an apprenticeship?",
-        "AU": "Are you at school, uni, or doing an apprenticeship?",
-        "ES": "¿Vas al colegio, a la universidad o estás haciendo una formación?",
-    }
-
           return (
               <View className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>

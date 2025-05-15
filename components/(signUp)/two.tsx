@@ -5,23 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar';
 
-const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, name }) => {
+const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, name, continueButtonText, robotMessage }) => {
     const [isActive, setIsActive] = useState(false)
-    const continueButtonText = {
-        "DE": "Weiter gehts",
-        "GB": "Let's carry on!",
-        "US": "Let's move on!",
-        "AU": "Let’s keep moving!",
-        "ES": "Vamos",
-    }
-    const robotMessage = {
-        "DE": `Freut mich, dich kennenzulernen ${name}. In welcher Sprache wollen wir uns unterhalten?`,
-        "GB": `Nice to meet you, ${name}. Which language would you like to speak?`,
-        "US": `Nice to meet you, ${name}. What language do you wanna talk in?`,
-        "AU": `G’day ${name}! Which language ya keen to chat in?`,
-        "ES": `Encantado de conocerte, ${name}. ¿En qué idioma quieres hablar?`,
-      };
-      
     return (
         <View className='h-full  w-full justify-between items-center py-5'>
             <ProgressBar percent={30} handlePress={()=> setUserData({...userData,signInProcessStep:"ONE"})}/>

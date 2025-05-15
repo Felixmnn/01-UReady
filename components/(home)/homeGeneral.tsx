@@ -11,6 +11,7 @@ import { loadUserUsage } from '@/lib/appwriteDaten';
 import { addUserUsage } from '@/lib/appwriteAdd';
 import * as Linking from 'expo-linking';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
+import { getCountryList, getEducationList, getSchoolList, getUniversityList } from '@/lib/appwritePersonalize';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
@@ -27,6 +28,18 @@ const HomeGeneral = ({setSelectedPage}) => {
     }
   }, [language])
 
+  async function getPersonalData() {
+    const res = await getCountryList();
+    const universityListID = res[0].universityListID
+    const educationListID = res[0].educationListID
+    const schoolListID = res[0].schoolListID
+    const universityList = await getUniversityList(universityListID);
+    const educationList = await getEducationList(educationListID);
+    const schoolList = await getSchoolList(schoolListID);
+    console.log(res,universityList,educationList,schoolList);
+  }
+
+  {/*Lade die Nutzerdaten*/}
   
 
 
@@ -345,6 +358,9 @@ const HomeGeneral = ({setSelectedPage}) => {
         }
       </View>
     </View>
+    <TouchableOpacity className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between' onPress={async() => await getPersonalData() }>
+        <Text className='text-white font-bold'> Load Country List</Text>
+    </TouchableOpacity>
     </ScrollView>
   )
 }

@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, Image, TouchableOpacity,ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Battery from '@/components/tokens/battery'
 import RadioactiveCharege from '@/components/tokens/radioactivecharege'
@@ -7,34 +7,68 @@ import Supercharge from '@/components/tokens/supercharge'
 import Fusioncharge from '@/components/tokens/fusioncharge'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { router } from 'expo-router'
-import Icon from 'react-native-vector-icons/FontAwesome5'
-import { addUserUsage } from '@/lib/appwriteAdd'
-import { loadUserUsage } from '@/lib/appwriteDaten'
+import images from '@/assets/shopItems/itemConfig'
+import Cardcombination from '@/components/(shop)/cardcombination'
+import TokenHeader from '@/components/(general)/tokenHeader'
+import { loadShopItems } from '@/lib/appwriteShop';
 
 const shop = () => {
-  const {user, isLoggedIn,isLoading, userUsage, setUserUsage } = useGlobalContext();
-  useEffect(() => {
-      if (!user) return;
-      async function fetchUserData() {
-        try {
-          const res = await loadUserUsage(user.$id)
-          if (res) {
-            setUserUsage({
-              ...res, 
-              lastModules: res.lastModules.map((item) => JSON.parse(item)),
-              lastSessions: res.lastSessions.map((item) => JSON.parse(item)),
-            })
-          } else {
-            const res = await addUserUsage(user.$id,userUsage)
-            setUserUsage(res);
-          }
-        } catch (error) {
-          console.error("Fehler beim Abrufen der Nutzerdaten:", error);
-        }
-      }
-      fetchUserData();
-    },[user])
+  const {user, isLoggedIn,isLoading, userUsage } = useGlobalContext();
+  const [ shopItemsA, setShopItemsA ] = useState(null);
 
+  useEffect(() => {
+    const fetchShopItems = async () => {
+      try {
+        const items = await loadShopItems();
+        
+        setShopItemsA(items);
+
+      } catch (error) {
+        console.error("Error loading shop items:", error);
+      }
+    };
+
+    fetchShopItems();
+  },[]);
+
+  const imageSource = {
+    "1CHARGE": images.charge,
+    "3CHARGE": images.charge3,
+    "10CHARGE": images.charge10,
+    "100CHIPS": images.chips,
+    "550CHIPS": images.chips2,
+    "1200CHIPS": images.chip3,
+    "SUPERCHARGE": images.supercharge,
+    "SUPERBUNDLE": images.questionary,
+    "CHARGEBUNDLE": images.bundle2,
+    "VIDEO": images.video,
+    "QUESTIONARY": images.bundle1,
+  }
+
+  const shopItems = [
+    { currency: "", price: "Free", backgroundColor: "#644f0b", textbackgroundColor: "#373225", borderColor: "#644f0b", textColor: "#bc8e00", title: "1 Charge", imageSource: images.charge },
+    { currency: "", price: "Free", backgroundColor: "#644f0b", textbackgroundColor: "#373225", borderColor: "#644f0b", textColor: "#bc8e00", title: "3 Charges", imageSource: images.charge3 },
+    { currency: "", price: "Free", backgroundColor: "#644f0b", textbackgroundColor: "#373225", borderColor: "#644f0b", textColor: "#bc8e00", title: "10 Charges", imageSource: images.charge10 },
+  ]
+  const shopItems2 = [
+    { currency: "", price: "Free", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "100 Chips", imageSource: images.chips },
+    { currency: "", price: "Free", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "550 Chips", imageSource: images.chips2 },
+    { currency: "", price: "Free", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "1200 Chips", imageSource: images.chip3 },
+  ]
+  const shopItems3 = [
+    { currency: "", price: "Free", backgroundColor: "#1f3f5d", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "Supercharge", imageSource: images.supercharge },
+    { currency: "", price: "Free", backgroundColor: "#1f3f5d", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "Supercharge 2", imageSource: images.supercharge },
+    { currency: "", price: "Free", backgroundColor: "#1f3f5d", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "Supercharge 3", imageSource: images.supercharge },   
+  ]
+  const shopItems4 = [
+    { currency: "", price: "Free", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "Fusioncharge", imageSource: images.questionary, width: 170 },
+    { currency: "", price: "Free", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "Fusioncharge 2", imageSource: images.bundle2, width: 170 },
+    ]
+  const shopItems5 = [
+    { currency: "", price: "Free", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "", imageSource: images.video, width: 120 },
+    { currency: "", price: "2 Free Charges", backgroundColor: "#294a67", textbackgroundColor: "#222534", borderColor: "#42b5e4", textColor: "#42b5e4", title: "", imageSource: images.bundle1, width: 220 },
+    ]
+  
     useEffect(() => {
       if (!isLoading && (!user || !isLoggedIn)) {
         router.replace("/"); // oder "/sign-in"
@@ -98,34 +132,28 @@ const shop = () => {
   return (
     <Tabbar content={()=> { return( 
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
-        <View className='w-full flex-row justify-between'>
-            <TouchableOpacity className='flex-row m-2 p-5' >
-              <Icon name="fire" size={20} color={"white"}/>
-              <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.streak}</Text>
-            </TouchableOpacity>
-  
-            <View className='flex-row m-2 p-5' >
-              <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
-                <Icon name="microchip" size={20} color={"white"}/>
-                <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.microchip}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
-              >
-                <Icon name="bolt" size={20} color={"white"}/>
-                <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.boostActive ? "∞" : userUsage?.energy}</Text>
-              </TouchableOpacity>
-            </View>
-  
-        </View>
-        <View className='flex-1 items-center justify-center'>
-          <Image source={require("../../assets/gift.png")} style={{
-            height: 200,
-            width: 200,
-          }}/>
-          <Text className='text-white font-bold text-2xl'>Danke fürs Mitentwickeln!</Text>
-          <Text className='text-gray-300 font-semibold text-[15px]'>🎉 Alle Features sind in der Beta gratis.</Text>
-        </View>
-        <View/>
+        <TokenHeader userUsage={userUsage}/>
+        <ScrollView className='w-full'
+          style={{
+            scrollbarWidth: 'thin', // Dünne Scrollbar
+            scrollbarColor: 'gray transparent',
+          }}
+        >
+            {
+              !shopItemsA ?
+              <View className='flex-1 items-center justify-center'>
+                <Text className='text-white font-bold text-xl'>Loading...</Text>
+              </View>
+              :
+              <View className='w-full items-center'>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "ENERGY" )} title='Recharges'/>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "CHIPS" )} title='Chips'/>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "RECHARGESBOOSTS" )} title='Chips'/>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "SPECIALOFFERS" )} title='Chips'/>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title='Chips'/>
+              </View>
+            }
+        </ScrollView>
       </View>
       
   )}} page={"Shop"} hide={false}/>

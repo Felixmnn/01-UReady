@@ -56,7 +56,7 @@ const personalize = () => {
     const [ universitySubjectList, setUniversitySubjectList ] = useState([]);
     const [ educationSubjectList, setEducationSubjectList ] = useState([]);
 
-    const textsTwo = 
+    
 
     const languages = [
         {name:"Deutsch", enum:"DEUTSCH", code:"DE"},
@@ -108,7 +108,7 @@ const personalize = () => {
         }
     }
     const textsSix = language.personalize.PageSix;
-    
+
     useEffect(() => {
         async function fetchCountryList() {
                 const response = await getCountryList();

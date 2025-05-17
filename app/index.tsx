@@ -2,20 +2,21 @@ import { Text, View, SafeAreaView, ActivityIndicator } from "react-native";
 import { router, Redirect } from "expo-router";
 import { useEffect } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
-import { loadUserData } from "@/lib/appwriteDaten";
-import { addNewUserConfig } from "@/lib/appwriteAdd";
+import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
+import { addNewUserConfig, addUserUsage } from "@/lib/appwriteAdd";
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-
+import { updateUserUsage } from "../functions/(userUsage)/updateUserUsage";
 SystemNavigationBar.navigationHide();
 
 export default function Index() {
-  const { isLoggedIn, isLoading, user, userData, setUserData } = useGlobalContext();
+  const { isLoggedIn, isLoading, user, userData, setUserData, setUserUsage } = useGlobalContext();
 
   useEffect(() => {
     if (!user) return;
     async function fetchUserData() {
       try {
         let userD = await loadUserData(user.$id);
+        
         if (userD != null) {
           setUserData(userD);
         } else {

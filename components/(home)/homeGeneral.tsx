@@ -7,9 +7,6 @@ import { router } from 'expo-router';
 import AddModule from '../(general)/(modal)/addModule';
 import AddAiModule from '../(general)/(modal)/addAiModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { loadUserUsage } from '@/lib/appwriteDaten';
-import { addUserUsage } from '@/lib/appwriteAdd';
-import * as Linking from 'expo-linking';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 import { getCountryList, getEducationList, getSchoolList, getUniversityList } from '@/lib/appwritePersonalize';
 import  languages  from '@/assets/exapleData/languageTabs.json';
@@ -18,7 +15,8 @@ import  languages  from '@/assets/exapleData/languageTabs.json';
 const { width } = Dimensions.get('window');
 
 const HomeGeneral = ({setSelectedPage}) => {
-  const { user,language } = useGlobalContext()
+  const { user,language, userUsage } = useGlobalContext()
+  
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   const texts = languages.home;
 
@@ -38,51 +36,6 @@ const HomeGeneral = ({setSelectedPage}) => {
     const schoolList = await getSchoolList(schoolListID);
     console.log(res,universityList,educationList,schoolList);
   }
-
-  {/*Lade die Nutzerdaten*/}
-  
-
-
-
-  const [ loading, setLoading ] = useState(true)
-  const [userUsage, setUserUsage] = useState({
-    streak: 0,
-    streakActive: false,
-    streakLastUpdate: new Date(),
-    energy: 5,
-    microchip: 0,
-    boostActive: true,
-    boostActivation: new Date(),
-    boostType: null,
-    lastModules: [],
-    lastSessions: [],
-  })
-
-
-  useEffect(() => {
-    if (!user) return;
-    async function fetchUserData() {
-      try {
-        const res = await loadUserUsage(user.$id)
-        if (res) {
-          setUserUsage({
-            ...res, 
-            lastModules: res.lastModules.map((item) => JSON.parse(item)),
-            lastSessions: res.lastSessions.map((item) => JSON.parse(item)),
-          })
-          setLoading(false)
-        } else {
-          const res = await addUserUsage(user.$id,userUsage)
-          setUserUsage(res);
-          setLoading(false)
-        }
-      } catch (error) {
-        console.error("Fehler beim Abrufen der Nutzerdaten:", error);
-      }
-    }
-    fetchUserData();
-  },[user])
-
   
   {/*Überschrift für die einzelnen Abteie */}
   const Header = ({title}) => {
@@ -250,13 +203,7 @@ const HomeGeneral = ({setSelectedPage}) => {
     )
   }
 
-  {/*Nutzer Aktivtäts Daten*/}
-  const [userActivity, setUserActivity] = useState({
-    streak: 0,
-    energy: 5,
-    microChips: 10000,
-  })
-  
+
   const [isVisibleNewAiModule, setIsVisibleAiModule] = useState(false)
   return (
     <ScrollView>

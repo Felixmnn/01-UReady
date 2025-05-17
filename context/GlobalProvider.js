@@ -1,6 +1,8 @@
 import { createContext,useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
-import { loadUserDataKathegory } from "@/lib/appwriteDaten";
+import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
+import { addUserUsage } from "@/lib/appwriteAdd";
 const GlobalContext = createContext();
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -14,19 +16,32 @@ const GlobalProvider = ({children}) => {
     const [ userData, setUserData ] = useState(null);
     const [ userCathegory, setUserCategory ] = useState(null);
     const [ reloadNeeded, setReloadNeeded ] = useState([]);
-    const [ userUsage, setUserUsage ] = useState({
-        streak: 0,
-        streakActive: false,
-        streakLastUpdate: new Date(),
-        energy: 5,
-        microchip: 0,
-        boostActive: true,
-        boostActivation: new Date(),
-        boostType: null,
-        lastModules: [],
-        lastSessions: [],
-    });
+    const [ userUsage, setUserUsage ] = useState(null);
 
+
+    async function fetchUserUsage() {   
+            const userU = await loadUserUsage(user.$id)
+            if (userU) {
+                const newU = await updateUserUsage(userU);
+                setUserUsage(newU);
+            } else if (!userU && userData?.signInProcessStep == "FINISHED") {
+                const res = await addUserUsage(user.$id, {
+                    streak: 0,
+                    streakActive: false,
+                    streakLastUpdate: new Date(),
+                    energy: 5,
+                    microchip: 0,
+                    boostActive: true,
+                    boostActivation: new Date(),
+                    boostType: null,
+                    lastModules: [],
+                    lastSessions: [],
+                    recharges: 0,
+                    supercharges: 0,
+                });
+                setUserUsage(res);
+                }
+            }
 
     useEffect(() => {
         try {
@@ -58,9 +73,11 @@ const GlobalProvider = ({children}) => {
             if (!userDataKathegory) return;
             const allowedLanguages = ["DEUTSCH", "ENGLISH(US)", "ENGLISH(UK)", "AUSTRALIAN", "SPANISH"];
             setNewLanguage(allowedLanguages.includes(userDataKathegory.language) ? userDataKathegory.language : "DEUTSCH");
+            if (!userUsage) await fetchUserUsage();
         }
         fetchUserData()
     },[user]);
+
 
 
 

@@ -17,8 +17,15 @@ import * as FileSystem from 'expo-file-system';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 
-const SingleModule = ({setSelectedScreen, module}) => {
+const SingleModule = ({setSelectedScreen, moduleEntry}) => {
+
+    const [module, setModule] = useState({
+        ...moduleEntry,
+        questionList: moduleEntry.questionList.map(item => JSON.parse(item))
+    });
+
     const { width, } = useWindowDimensions();
+
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     const { language } = useGlobalContext()
     useEffect(() => {
@@ -26,6 +33,9 @@ const SingleModule = ({setSelectedScreen, module}) => {
         setSelectedLanguage(language)
     }
     }, [language])
+
+
+
 
     const texts = languages.singleModule; 
    
@@ -251,6 +261,56 @@ const SingleModule = ({setSelectedScreen, module}) => {
     const [showSessionList, setShowSessionList] = useState(false)
     const [ change, setChange ] = useState(0)
     
+    function checkForDuplicates(questionList) {
+        const seen = new Set();
+        const duplicates = [];
+
+        questionList.forEach(item => {
+            if (seen.has(item.id)) {
+                duplicates.push(item);
+            } else {
+                seen.add(item.id);
+            }
+        });
+
+        return duplicates;
+    }
+
+    useEffect(() => {
+    async function updateQuestionList() {
+        let hasChanges = false;
+
+        questions.forEach((question) => {
+            const existing = module.questionList.find(item => item.id === question.$id);
+            if (!existing) {
+                module.questionList.push({
+                    id: question.$id,
+                    status: null
+                });
+                hasChanges = true;
+            } 
+        });
+
+        if (hasChanges) {
+            const res = await updateModuleData(module.$id, {
+                questionList: module.questionList.map(item => JSON.stringify(item)),
+                questions: module.questionList.length,
+                progress: calculatePercent(questions)
+            });
+        } else {
+            console.log("ℹ️ Keine Änderungen an questionList – kein Update nötig.");
+        }
+    }
+
+    updateQuestionList();
+}, [questions]);
+
+    console.log("Module: ", module)
+    console.log("Sessions: ", questions)
+
+
+
+    
 
     return (
         <View className='flex-1 rounded-[10px] items-center '>
@@ -261,7 +321,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
             <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>
                 { loading ? <Text>Skeleton View</Text> :
                 <View className='flex-1'>
-                <Header moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI} isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions} questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
+                <Header moduleID={module.$id} moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI} isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions} questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Map"} tab2={"Fragen"} bg={"bg-gray-900"} change={change}/> : null }
                 <View className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}/>
                 
@@ -269,7 +329,7 @@ const SingleModule = ({setSelectedScreen, module}) => {
                         { 
                             tab == 0 ?
                             <View className='p-4 flex-1'>
-                                <Data texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents}/>
+                                <Data texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null
                         }

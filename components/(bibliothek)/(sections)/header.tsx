@@ -6,7 +6,7 @@ import { useWindowDimensions } from 'react-native';
 import {router } from 'expo-router';
 import ModalSessionList from '../(modals)/modalSessionList';
 
-const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName}) => {
+const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName, moduleID}) => {
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
 
     
@@ -43,7 +43,7 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=> router.push({
                                                         pathname:"quiz",
-                                                        params: {questions: JSON.stringify(filteredData)}
+                                                        params: {questions: JSON.stringify(filteredData), moduleID:moduleID }
                             })}  
                             className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name="play" size={15} color="white"/>

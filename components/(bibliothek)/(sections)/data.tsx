@@ -4,10 +4,20 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import  { router } from "expo-router"
 import  Selectable  from '../selectable'
 
-const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+
+const filtered = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+const filteredData = filtered.map(item => {
+    return {
+        ...item,
+        status: module.questionList.find((question) => question.id === item.$id)?.status || null
+    };
+});
 
 
-const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+ 
+//const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+ 
 const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
 const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
 
@@ -65,10 +75,7 @@ const Status = ({status}) => {
         </View>
     )
 }
-const {width, height} = useWindowDimensions();
-
-
-    const [wrongType, setWrongType] = useState(false);
+const [wrongType, setWrongType] = useState(false);
 
 const NichtUnterstuzterDateityp = () => {
     return (
@@ -147,7 +154,7 @@ return (
                     <TouchableOpacity 
                         onPress={()=> router.push({
                             pathname:"quiz",
-                            params: {questions: JSON.stringify(filteredData)}
+                            params: {questions: JSON.stringify(filteredData), moduleID: module.$id}
                         })} 
                     
                         className='p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800'>

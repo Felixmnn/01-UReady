@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import router from 'expo-router'
+import {router} from 'expo-router'
 const TokenHeader = ({userUsage}) => {
   return (
     <View className='w-full flex-row justify-between'>

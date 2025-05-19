@@ -39,6 +39,7 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
           creationLanguage: null,
           creationEducationKathegory:"",
           copy: false,
+            questionList: [],
           });
 
     useEffect(() => {

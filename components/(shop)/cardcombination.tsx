@@ -3,7 +3,7 @@ import React from 'react'
 import Card from './card'
 import images from '@/assets/shopItems/itemConfig'
 
-const Cardcombination = ({cards,title="Title"}) => {
+const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[]}) => {
     const imageSource = {
     "1CHARGE": images.charge,
     "3CHARGE": images.charge3,
@@ -17,6 +17,8 @@ const Cardcombination = ({cards,title="Title"}) => {
     "VIDEO": images.video,
     "QUESTIONARY": images.bundle1,
   }
+
+  console.log("userUsage", cards);
 
   return (
     <View className='w-full items-center justify-center'>
@@ -45,6 +47,14 @@ const Cardcombination = ({cards,title="Title"}) => {
                     width={item.tags?.includes("1/2") ? 170 : item.tags?.includes("2/3") ? 220 : 110}
                     title={item.title}
                     imageSource={item.imageSource ? imageSource[item.imageSource] : null}
+                    isAvailable={item.isAvailable}
+                    userUsage={userUsage}
+                    kathegory={item.kathegory}
+                    purchaseLimit={item.purchaseLimit}
+                    purchases={purcharses}
+                    id={item.$id}
+                    amount={item.amount ? item.amount : 0}
+
                     
                     />
             ))

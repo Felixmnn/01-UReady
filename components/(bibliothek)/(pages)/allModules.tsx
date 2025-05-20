@@ -123,7 +123,7 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
           <FlatList
             data={modules.documents}
             renderItem={({ item,index }) => (
-              <View className='flex-1 mr-2 '>
+              <View className='flex-1 mr-2 mb-2'>
                 <Karteikarte handlePress={async ()=> {await updateUserUsageModules(
                   user.$id, {
                     name: item.name,

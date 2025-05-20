@@ -18,10 +18,8 @@ export async function updateUserUsage(userUsage) {
     userUsage.streakLastUpdate = new Date(userUsage.streakLastUpdate);
     userUsage.boostActivation = userUsage.boostActivation ? new Date(userUsage.boostActivation) : null;
 
-    console.log("Updating user usage...", userUsage);
     if (userUsage.energy < 10) {
         const div = differenceInHours(userUsage.streakLastUpdate, now);
-        console.log("Updating energy...", now, userUsage.streakLastUpdate,div);
 
         if (div > 1) {
             newUserUsage.energy += Math.floor(div / 1);

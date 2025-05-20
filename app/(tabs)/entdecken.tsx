@@ -15,6 +15,8 @@ import CountryFlag from 'react-native-country-flag';
 import { router } from 'expo-router';
 import { addNewModule } from '@/lib/appwriteAdd';
 import languages from '@/assets/exapleData/languageTabs.json';
+import { getModules } from '@/lib/appwriteQuerys';
+import ToggleSwitch from '@/components/(general)/toggleSwich';
 const entdecken = () => {
 
   const { language } = useGlobalContext()
@@ -95,6 +97,17 @@ const entdecken = () => {
     }
   ]
 
+  const [ myModules, setMyModules ] = useState([])
+  useEffect(() => {
+    if (!user) return;
+    const fetchMyModules = async () => {
+      const modulesLoaded = await getModules(user.$id);
+          if (modulesLoaded) {
+            setMyModules(modulesLoaded.documents);
+          }
+    }
+    fetchMyModules()
+  }, [user])
   const [ searchBarText, setSearchBarText ] = useState("")
   const [ focused, setFocused ] = useState(false)
   async function add(mod) {
@@ -107,6 +120,8 @@ const entdecken = () => {
               setLoading(false)
           }
       }
+      console.log("Modules", modules)
+  const [ synchronisationActive, setSynchronisationActive ] = useState(false) 
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] relative'>
@@ -235,12 +250,28 @@ const entdecken = () => {
                           item.$id.toLowerCase().includes(searchBarText.toLowerCase())
                         )}
                         renderItem={({ item, index }) => (
-                          <View className={`flex-1 mr-2  ${selectedModules.includes(item.$id) ? "" : "opacity-50"} `}>
+                          <View className={`flex-1 mr-2 mb-2 justify-center ${selectedModules.includes(item.$id) || myModules?.some((mod) => mod.name == item.name + " (Kopie)") ? "" : "opacity-50"} 
+                          `}>
+                            {myModules?.some((mod) => mod.name == item.name + " (Kopie)") && (
+                              <View className="absolute w-full h-full z-10 rounded-b-[10px] rounded-t-[5px] overflow-hidden">
+                                <View className={`absolute w-full h-full rounded-b-[10px]  ${synchronisationActive ? "bg-green-500" : "bg-black"} opacity-50`} 
+                                style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}
+                                />
+                                  <View className="flex-row items-center justify-center h-full p-1">
+                                  <Text className="text-white font-semibold text-[15px] mr-2">Synchronisation</Text>
+                                  <ToggleSwitch
+                                    isOn={synchronisationActive}
+                                    onToggle={() => setSynchronisationActive(!synchronisationActive)}
+                                  />
+                                </View>
+                              </View>
+                            )}
+                            
                             <Karteikarte
                               handlePress={()=> {
                                 if (selectedModules.includes(item.$id)){
                                     setSelectedModules(selectedModules.filter((module) => module !== item.$id))
-                                } else {
+                                } else {  
                                     setSelectedModules([...selectedModules, item.$id])
                                 }
                               }}

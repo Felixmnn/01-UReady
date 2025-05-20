@@ -2,60 +2,135 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router,useLocalSearchParams } from "expo-router"
-import { updateDocument} from "../../lib/appwriteEdit"
+import { updateDocument, updateModule} from "../../lib/appwriteEdit"
 import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import { useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import SmileyStatus from '@/components/(bibliothek)/(components)/smileyStatus';
+import { loadModule } from '@/lib/appwriteDaten';
+import { updateModuleData, updateModuleQuestionList } from '@/lib/appwriteUpdate';
 
 const quiz = () => {
     const {user, isLoggedIn,isLoading } = useGlobalContext();
-    
-    const {questions} = useLocalSearchParams()
-    const [questionsParsed, setQuestionParsed] = useState(JSON.parse(questions))
     const {width} = useWindowDimensions();
     const isVertical = width > 700;
-    
-
+    /**
+     * In case the user is not logged in, redirect to the login page
+     */
      useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
-          router.replace("/"); // oder "/sign-in"
+          router.replace("/"); 
         }
       }, [user, isLoggedIn, isLoading]);
-    
 
+    const {questions, moduleID} = useLocalSearchParams()
+    /**
+     * This is the state that holds the questions wich get passed through the params
+     */
+    const [ questionsParsed, setQuestionParsed] = useState(JSON.parse(questions))
+    const [ questionList, setQuestionList] = useState([])
+    const [ module, setModule] = useState(null)
+
+    /**
+     * This is the function that loads the questionList wich contains the status of the questions
+     */
+    useEffect(() => {
+        if (!moduleID) return;
+
+        async function fetchData() {
+            const data = await loadModule(moduleID);
+            setModule(data);
+
+            const parsedList = data.questionList
+                .map(question => JSON.parse(question))
+                .filter(parsedQuestion =>
+                    questionsParsed.some(q => q.$id === parsedQuestion.id)
+                );
+
+            setQuestionList(parsedList);
+        }
+
+        fetchData();
+    }, [moduleID]);
+
+    /**
+     * When a question state is change the questionList is updated and so is the Module
+     * 
+     */
+    useEffect(() => {
+        async function updateModuleHere() {
+        if (module) {
+            const parsedList = module.questionList.map(question => JSON.parse(question))
+            console.log("New Question list:", questionList)
+            const updatedList = parsedList.map((question) => {
+                const questionInList = questionList.find(q => q.id === question.id);
+                if (questionInList) {
+                    console.log("Question in List: ", questionInList)
+                    console.log("New Question: ", {question, status: questionInList.status})
+                    return {
+                        ...question,
+                        status: questionInList.status
+                    };
+                } else {
+                    return question;
+                }
+            });
+            console.log("Updated List: ", updatedList)
+            const updatedModule = {
+                ...module,
+                questionList: updatedList.map(question => JSON.stringify(question))
+            };
+            console.log("Updated Module: ", updatedModule)
+            const res = await updateModuleQuestionList(updatedModule.$id,updatedModule. questionList);
+            console.log("Updated Module 🔴🔴🔴: ", res);
+        }
+        }
+        updateModuleHere();
+    }, [questionList]);
+
+
+    /**
+     * This is the function that calculates the percentage of the colors in the header status bar
+     */
     const questionSegmentation = () => {
         let bad = 0
         let ok = 0
         let good = 0
         let great = 0
-        for (let i = 0; i < questionsParsed.length; i++) {
-            if (questionsParsed[i].status == "BAD") {
+        for (let i = 0; i < questionList.length; i++) {
+            if (questionList[i].status == "BAD") {
                 bad++
-            } else if (questionsParsed[i].status == "OK") {
+            } else if (questionList[i].status == "OK") {
                 ok++
-            } else if (questionsParsed[i].status == "GOOD") {
+            } else if (questionList[i].status == "GOOD") {
                 good++
-            } else if (questionsParsed[i].status == "GREAT") {
+            } else if (questionList[i].status == "GREAT") {
                 great++
             }
         }
-        bad = Math.round((bad / questionsParsed.length) * 100);
-        ok = Math.round((ok / questionsParsed.length) * 100);
-        good = Math.round((good / questionsParsed.length) * 100);
-        great = Math.round((great / questionsParsed.length) * 100);
+        bad = Math.round((bad / questionList.length) * 100);
+        ok = Math.round((ok / questionList.length) * 100);
+        good = Math.round((good / questionList.length) * 100);
+        great = Math.round((great / questionList.length) * 100);
         return [bad,ok,good,great]
     } 
 
+    /**
+     * I Guess this exists in case the user comes from a diffrent page than libary wich should not be the case
+     */
     async function tryBack() {
         try {
-            await router.back()
+            router.back()
             router.push("bibliothek")
         } catch (error) {
             console.log(error)
         }
     }
 
+    /**
+     * This is the header of the quiz page containing the status bar and the title
+     */
     const Header = () => {
         return (
             <View className='bg-gray-900 items-center justify-between p-4 rounded-t-[10px]'>
@@ -90,46 +165,12 @@ const quiz = () => {
         )
     }
     const [selectedQuestion, setSelectedQuestion] = useState(0)
-    const Status = ({status}) => {
-        let color = "blue"
-        let bgColor = "bg-blue-500"
-        let smiley = "grin"
-        if (status == "BAD") {
-            color = "red"
-            bgColor = "bg-red-700"
-            smiley = "frown"
-        } else if (status == "OK") {
-            color = "yellow"
-            bgColor = "bg-yellow-500"
-            smiley = "meh"
-        } else if (status == "GOOD") {
-            color = "green"
-            bgColor = "bg-green-500"
-            smiley = "smile"
-        }else {
-            color = "blue"
-            bgColor = "bg-blue-500"
-            smiley = "grin"
-        }
-        return (
-            <View className={`items-center justify-center rounded-full h-[20px] w-[20px] pt-[1px] ${bgColor}`}>
-                <Icon name={smiley} size={15} color={color}/>
-            </View>
-        )
-    }
+
     const Quiz = () => {
-        const navOptions = [
-            {title: "Schlecht", bg: "bg-red-900", icon: "frown", iconColor: "red", status:"BAD"},
-            {title: "Ok", bg: "bg-yellow-900", icon: "meh", iconColor: "yellow", status:"OK"},
-            {title: "Gut", bg: "bg-green-900", icon: "smile", iconColor: "green", status:"GOOD"},
-            {title: "Sehr Gut", bg: "bg-blue-900", icon: "grin", iconColor:"blue", status:"GREAT"}
-        ]
         const [selectedAnswers, setSelectedAnswers] = useState([])
         const [showAnsers , setShowAnswers] = useState(false)
-        
         async function changeVisibility () {
             setShowAnswers(true)
-
         }
 
         function correctAnswers() {
@@ -142,10 +183,22 @@ const quiz = () => {
                 return false
             }
         }
+        console.log("Selected Question: ", questionList)
         async function nextQuestion (status, change){
             setShowAnswers(false)
             
-                
+            const indexOfQuestion = questionList.findIndex((question) => question.id === questionsParsed[selectedQuestion].$id)
+            setQuestionList(prevState => {
+                const updatedList = [...prevState];
+                updatedList[indexOfQuestion] = {
+                    ...updatedList[indexOfQuestion],
+                    status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status ==  "GREAT" )  
+                    && status == "GOOD" ? "GREAT" : status
+                };
+
+                return updatedList;
+            })
+            /*
             setQuestionParsed(prevState =>
                 prevState.map((q, index) =>
                     index === selectedQuestion ? { ...q, status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status == 
@@ -153,10 +206,12 @@ const quiz = () => {
                 )
             );
             
+            */
             const updatedItem = {
                 ...questionsParsed[selectedQuestion],
-                status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status, // Status aktualisieren
+                status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status, 
             };
+            
             await updateDocument(updatedItem)
             if (change == 1){
                 if (selectedQuestion + 1  >=  questionsParsed.length){
@@ -172,6 +227,7 @@ const quiz = () => {
                     setSelectedQuestion(selectedQuestion - 1)
                 }
             }
+                
         }
 
         return (
@@ -179,7 +235,7 @@ const quiz = () => {
                 <View className='flex-1 rounded-[10px] bg-gray-900 border-gray-600 border-[1px] m-4'>	
                     <View className='w-full justify-between flex-row items-center p-4 '>
                         <View className='flex-row items-center'>
-                        {questionsParsed[selectedQuestion].status !== null ? <Status status={questionsParsed[selectedQuestion].status}/> : null}
+                        {questionsParsed[selectedQuestion].status !== null ? <SmileyStatus status={questionsParsed[selectedQuestion].status}/> : null}
                         <TouchableOpacity className='bg-gray-900 rounded-[5px] items-center justify-cneter border-gray-600 border-[1px] ml-2'>
                             
                             <Text className="m-1 text-gray-300 text-[10px] px-1">+ Tags hinzufügen</Text>

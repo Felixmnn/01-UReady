@@ -17,6 +17,17 @@ const { width } = Dimensions.get('window');
 const HomeGeneral = ({setSelectedPage}) => {
   const { user,language, userUsage } = useGlobalContext()
   
+  const [ userUsageP, setUserUsageP ] = useState(null)
+  useEffect(() => {
+    if(userUsage) {
+      setUserUsageP({
+        ...userUsage,
+        lastModules: userUsage.lastModules.map((item) => JSON.parse(item)),
+        lastSessions: userUsage.lastSessions.map((item) => JSON.parse(item)),
+      })
+    }
+  },[userUsage])
+
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   const texts = languages.home;
 
@@ -84,6 +95,7 @@ const HomeGeneral = ({setSelectedPage}) => {
       </TouchableOpacity>
     )
   }
+
 
 
 
@@ -215,18 +227,18 @@ const HomeGeneral = ({setSelectedPage}) => {
       <View className='w-full flex-row justify-between'>
           <TouchableOpacity className='flex-row m-2 p-5' >
             <Icon name="fire" size={20} color={"white"}/>
-            <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.streak}</Text>
+            <Text className='text-white font-bold text-[15px] ml-2'>{userUsageP?.streak}</Text>
           </TouchableOpacity>
 
           <View className='flex-row m-2 p-5' >
             <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
               <Icon name="microchip" size={20} color={"white"}/>
-              <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.microchip}</Text>
+              <Text className='text-white font-bold text-[15px] ml-2'>{userUsageP?.microchip}</Text>
             </TouchableOpacity>
             <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
             >
               <Icon name="bolt" size={20} color={"white"}/>
-              <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.boostActive ? "∞" : userUsage?.energy}</Text>
+              <Text className='text-white font-bold text-[15px] ml-2'>{userUsageP?.boostActive ? "∞" : userUsageP?.energy}</Text>
             </TouchableOpacity>
           </View>
 
@@ -238,7 +250,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
       }}>
           {
-            !userUsage || userUsage.lastModules.length == 0 ?
+            !userUsageP || userUsageP.lastModules.length == 0 ?
             <View>
               <Module item={{
                   name: "Getting Started",
@@ -249,7 +261,7 @@ const HomeGeneral = ({setSelectedPage}) => {
               }}/>
             </View>
             :
-            userUsage.lastModules.map((item, index) => {
+            userUsageP.lastModules.map((item, index) => {
               return (
                 <Module key={index} item={item} />
               )
@@ -263,7 +275,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
       }}>
           {
-            !userUsage || userUsage.lastModules.length == 0 ?
+            !userUsageP || userUsageP.lastModules.length == 0 ?
             <View className='flex-row'>
               <Session item={{
                   name: "Erstes Modul",
@@ -288,7 +300,7 @@ const HomeGeneral = ({setSelectedPage}) => {
               }}/>
             </View> 
             :
-            userUsage.lastSessions.map((item, index) => {
+            userUsageP.lastSessions.map((item, index) => {
               return (
                 <Session key={index} item={item} />
               )

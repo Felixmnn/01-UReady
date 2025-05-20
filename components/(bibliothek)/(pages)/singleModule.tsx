@@ -8,7 +8,7 @@ import SwichTab from '../../(tabs)/swichTab';
 import { addDocumentConfig, addDocumentToBucket, addNote, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
-import { getAllDocuments, getModuleAmout, getQuestions, getSessionNotes, getSessionQuestions } from '@/lib/appwriteQuerys';
+import { getAllDocuments, getModuleAmout, getSessionNotes, getSessionQuestions } from '@/lib/appwriteQuerys';
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import ModalNewQuestion from '../(modals)/newQuestion';
 import AiQuestion from '../(modals)/aiQuestion';
@@ -17,43 +17,45 @@ import * as FileSystem from 'expo-file-system';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 
+/**
+ * The SingleModule Component is responsible for rendering the deatils of a single module.
+ * @param setSelectedScreen - Is used to navigate on the bibliothek screen. Between the different modules.
+ * @param moduleEntry - The module entry is the currently selected module.
+ */
 const SingleModule = ({setSelectedScreen, moduleEntry}) => {
 
+    {/* Dimensions and Window Measurements */}
+    const { width, } = useWindowDimensions();
+    const tabWidth = width / 2;
+    const isVertical = width > 700;
+    const [ tab, setTab ] = useState(0)
+    const [loading, setLoading] = useState(true);
+
+
+    {/* Relevant Data - Modules $ Sessions */}
     const [module, setModule] = useState({
         ...moduleEntry,
         questionList: moduleEntry.questionList.map(item => JSON.parse(item))
     });
-
-    const { width, } = useWindowDimensions();
-
+    const [selectedSession, setSelectedSession] = useState(0)
+    const [questions, setQuestions] = useState([]);
+    const [notes, setNotes] = useState([]);
+    const [documents, setDocuments] = useState([]);
+    const parsedSessions = module.sessions.map(session => JSON.parse(session));
+    const [sessions, setSessions] = useState(parsedSessions);
+    {/* Language and Texts */}
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     const { language } = useGlobalContext()
     useEffect(() => {
-    if(language) {
-        setSelectedLanguage(language)
-    }
+        if(language) {
+            setSelectedLanguage(language)
+        }
     }, [language])
-
-
-
-
     const texts = languages.singleModule; 
-   
-
-    
-    const tabWidth = width / 2;
-    const [selectedSession, setSelectedSession] = useState(0)
-    const [ tab, setTab ] = useState(0)
-    const isVertical = width > 700;
-    const [loading, setLoading] = useState(true);
-    const [questions, setQuestions] = useState([]);
-    
-    const [notes, setNotes] = useState([]);
-    const [documents, setDocuments] = useState([]);
-
-    const parsedSessions = module.sessions.map(session => JSON.parse(session));
-    const [sessions, setSessions] = useState(parsedSessions);
-
+    /**
+     * This function updates the sessions each time the sessions change.
+     * The sessions are each stored as a JSON string in the module.
+     */
     useEffect(() => {
         async function updateModuleLocal () {
             const newModule = {
@@ -65,9 +67,10 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
     }
     updateModuleLocal()
     }, [sessions])
-
-    
-
+   /**
+    * This function gets the amount of the questions and notes from the module.
+    * It then updates the question and note count in the module
+    */
     useEffect(() => {
         if (!module) return;
         async function fetchQuestions() {
@@ -78,9 +81,12 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
         fetchQuestions()
     }
     , [module])
-
     const [ questionLoadedSessions, setQuestionLoadedSessions ] = useState([])
-      
+    /**
+     * The Function recives a Array of Questions and calcultes how many percent are null, good, bad, ok or great.
+     *
+     * @param {Array} questions - Array of question objects.
+     */
     function calculatePercent(questions) {
         let points = 0;
         if (!questions || questions.length === 0) return 100;
@@ -98,7 +104,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
         const percent = Math.round((points / questions.length) * 100);
         return percent < 0 ? 0 : percent > 100 ? 100 : percent;
     }
-    //Methode um die Fragen zu laden 
+    //This function is used to fetch the questions, notes and documents for the a new session.
     useEffect(() => { 
         async function fetchQuestions(sessionID) {
             const sessionQuestions = await getSessionQuestions(sessionID)
@@ -161,13 +167,11 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
         }
         setLoading(false) 
     }, [sessions, selectedSession])
-
-
+    /**
+     * Switches to the EditNote screen with a new empty note.
+     */
     async function SwichToEditNote() {
         setIsVisibleNewQuestion(false);
-    
-
-    
         const note = {
             notiz: "",
             sessionID: sessions[selectedSession].id,
@@ -175,7 +179,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
             title: "",
         }
         try {
-            
             const res = await addNote(note);
             router.push({
                 pathname:"editNote",
@@ -184,69 +187,72 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
         } catch (error) {
             console.log(error);
         }}
-
-
-
-
-        async function addDocument() {
-            try {
-                const res = await DocumentPicker.getDocumentAsync({ type: "*/*" });
-        
-                if (res.canceled) return;
-        
-                const file = res.assets[0];
-        
-                const doc = {
-                    title: file.name,
-                    subjectID: module.$id,
-                    sessionID: sessions[selectedSession].id,
-                    id: uuid.v4(),
-                    type: file.mimeType || "application/octet-stream",
-                    uploaded: false,
-                };
-        
-                setDocuments([...documents, doc]);
-        
-                // Step 2 - Save the config
-                const appwriteRes = await addDocumentConfig(doc);
-        
-                // Step 3 - Read the file differently based on platform
-                let fileBlob;
-        
-                if (Platform.OS === 'web') {
-                    // Web: fetch URI as Blob
-                    fileBlob = await fetch(file.uri).then(res => res.blob());
-                } else {
-                    // Native (Android/iOS): read file as base64, then convert to Blob
-                    const base64 = await FileSystem.readAsStringAsync(file.uri, {
-                        encoding: FileSystem.EncodingType.Base64,
-                    });
-                    const byteCharacters = atob(base64);
-                    const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
-                    const byteArray = new Uint8Array(byteNumbers);
-                    fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
-                }
-
-                const uploadRes = await addDocumentToBucket({
-                    fileID: doc.id,
-                    fileBlob: fileBlob,
+    /**
+     * This function loads a document from the users device and uploads it to the Appwrite bucket.
+     * Additioally, a document config is created wich contains the relevant data for the document.
+    */
+    async function addDocument() {
+        try {
+            const res = await DocumentPicker.getDocumentAsync({ type: "*/*" });
+    
+            if (res.canceled) return;
+    
+            const file = res.assets[0];
+    
+            const doc = {
+                title: file.name,
+                subjectID: module.$id,
+                sessionID: sessions[selectedSession].id,
+                id: uuid.v4(),
+                type: file.mimeType || "application/octet-stream",
+                uploaded: false,
+            };
+    
+            setDocuments([...documents, doc]);
+    
+            // Step 2 - Save the config
+            const appwriteRes = await addDocumentConfig(doc);
+    
+            // Step 3 - Read the file differently based on platform
+            let fileBlob;
+    
+            if (Platform.OS === 'web') {
+                // Web: fetch URI as Blob
+                fileBlob = await fetch(file.uri).then(res => res.blob());
+            } else {
+                // Native (Android/iOS): read file as base64, then convert to Blob
+                const base64 = await FileSystem.readAsStringAsync(file.uri, {
+                    encoding: FileSystem.EncodingType.Base64,
                 });
-                if (uploadRes) {
-                    
-                }
-                setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
-                appwriteRes.uploaded = true;
-                const final = await updateDocumentConfig(appwriteRes);
-                setDocuments(documents.map(document => document.id === doc.id ? final : document));
-                return;
-
-                
-        
-            } catch (error) {
-                console.log('Error in addDocument: 🐋🐋🐋💕', error);
+                const byteCharacters = atob(base64);
+                const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
+                const byteArray = new Uint8Array(byteNumbers);
+                fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
             }
-        }
 
+            const uploadRes = await addDocumentToBucket({
+                fileID: doc.id,
+                fileBlob: fileBlob,
+            });
+            if (uploadRes) {
+                
+            }
+            setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
+            appwriteRes.uploaded = true;
+            const final = await updateDocumentConfig(appwriteRes);
+            setDocuments(documents.map(document => document.id === doc.id ? final : document));
+            return;
+
+            
+    
+        } catch (error) {
+            console.log('Error in addDocument:', error);
+        }
+    }
+    /**
+     * This function removes a document locally and deletes it from the Appwrite bucket.
+     * @param {string} id - The ID of the document to update.
+     */
     async function deleteDocument (id){
         try {
             setDocuments(documents.filter(document => document.$id !== id));
@@ -257,25 +263,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
     }
 
     const [ isVisibleNewQuestion, setIsVisibleNewQuestion ] = useState(false)
-    const [isVisibleAI, setIsVisibleAI] = useState(false)
-    const [showSessionList, setShowSessionList] = useState(false)
+    const [ isVisibleAI, setIsVisibleAI ] = useState(false)
     const [ change, setChange ] = useState(0)
-    
-    function checkForDuplicates(questionList) {
-        const seen = new Set();
-        const duplicates = [];
 
-        questionList.forEach(item => {
-            if (seen.has(item.id)) {
-                duplicates.push(item);
-            } else {
-                seen.add(item.id);
-            }
-        });
-
-        return duplicates;
-    }
-
+    /**
+     * This function checks for each question if it is in the questionList.
+     * If not, it adds the question with the status null to ensure that there is a new state for each user.
+     * In case the question List changes it checks if the Array needs to be updated.
+     */
     useEffect(() => {
     async function updateQuestionList() {
         let hasChanges = false;
@@ -304,13 +299,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
 
     updateQuestionList();
 }, [questions]);
-
-    console.log("Module: ", module)
-    console.log("Sessions: ", questions)
-
-
-
-    
 
     return (
         <View className='flex-1 rounded-[10px] items-center '>

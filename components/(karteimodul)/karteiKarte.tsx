@@ -33,7 +33,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
     <TouchableOpacity className=' '  onPress={handlePress}
     >
       <View className={` rounded-t-[10px] border-t-[1px] border-gray-700 `} style={{height:5, backgroundColor:color}}/>
-      <View className='mb-2 p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] ' style={{borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
+      <View className=' p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] ' style={{borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
         <View className='flex-row justify-between items-start'>
           <View >
             <Text className='my-1 font-semibold text-[15px] text-gray-100'>{titel}</Text>

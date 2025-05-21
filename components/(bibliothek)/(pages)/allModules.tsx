@@ -61,6 +61,8 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
           creationEducationKathegory:"",
           copy: false,
           questionList: [],
+          synchronization: false
+
           });
 
     const [ userData, setUserData] = useState(null)

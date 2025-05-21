@@ -10,6 +10,8 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 import { getCountryList, getEducationList, getSchoolList, getUniversityList } from '@/lib/appwritePersonalize';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { returnColor } from '@/functions/returnColor';
+import TokenHeader from '../(general)/tokenHeader';
 
 
 const { width } = Dimensions.get('window');
@@ -79,6 +81,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         <View 
         className={`bg-${item.color?.toLowerCase()}-500 rounded-t-[10px]`}
         style={{
+          backgroundColor: returnColor(item.color?.toLowerCase()),
           width: "100%",
           height: 5, 
         }}
@@ -107,7 +110,7 @@ const HomeGeneral = ({setSelectedPage}) => {
     }
     router.push({
                   pathname:"quiz",
-                  params: {questions: JSON.stringify(questions)}
+                  params: {questions: JSON.stringify(questions), moduleID: session.moduleID }
               }) 
   }
 
@@ -132,6 +135,7 @@ const HomeGeneral = ({setSelectedPage}) => {
           <View className={` bg-${item.color}-500 rounded-full p-1`}
           style={{
             width: `${item.percent}%`,
+            backgroundColor: returnColor(item.color?.toLowerCase()),
 
           }}
           />
@@ -199,6 +203,8 @@ const HomeGeneral = ({setSelectedPage}) => {
             creationEducationKathegory:"",
             copy: false,
             questionList: [],
+            synchronization: false,
+
             });
   const [ isVisibleNewModule, setIsVisibleNewModule] = useState(false)
 
@@ -224,25 +230,7 @@ const HomeGeneral = ({setSelectedPage}) => {
       <AddAiModule isVisible={isVisibleNewAiModule} setIsVisible={setIsVisibleAiModule} />
 
     <View className='flex-1 p-2 rounded-[10px]'>
-      <View className='w-full flex-row justify-between'>
-          <TouchableOpacity className='flex-row m-2 p-5' >
-            <Icon name="fire" size={20} color={"white"}/>
-            <Text className='text-white font-bold text-[15px] ml-2'>{userUsageP?.streak}</Text>
-          </TouchableOpacity>
-
-          <View className='flex-row m-2 p-5' >
-            <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
-              <Icon name="microchip" size={20} color={"white"}/>
-              <Text className='text-white font-bold text-[15px] ml-2'>{userUsageP?.microchip}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className='flex-row' onPress={()=> router.push("/shop")}
-            >
-              <Icon name="bolt" size={20} color={"white"}/>
-              <Text className='text-white font-bold text-[15px] ml-2'>{userUsageP?.boostActive ? "∞" : userUsageP?.energy}</Text>
-            </TouchableOpacity>
-          </View>
-
-      </View>
+      <TokenHeader userUsage={userUsageP} />
       <Header title={texts[selectedLanguage].lastModules}/>
       <ScrollView  horizontal={true} className='flex-row'
       style={{
@@ -318,9 +306,7 @@ const HomeGeneral = ({setSelectedPage}) => {
         }
       </View>
     </View>
-    <TouchableOpacity className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between' onPress={async() => await getPersonalData() }>
-        <Text className='text-white font-bold'> Load Country List</Text>
-    </TouchableOpacity>
+    
     </ScrollView>
   )
 }

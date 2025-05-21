@@ -359,6 +359,8 @@ const entdecken = () => {
                                                   creationLanguage: null,
                                                   creationEducationKathegory:null,
                                                   copy: true,
+                                                  synchronization: false,
+
                                                   questionList: module.questionList.map(item => {
                                                     const pItem = JSON.parse(item);
                                                     const newItem = {

@@ -86,6 +86,7 @@ const gettingStarted = () => {
       creationEducationKathegory:"",
       copy: false,
       questionList: [],
+      synchronization: false
       });
     
   return (

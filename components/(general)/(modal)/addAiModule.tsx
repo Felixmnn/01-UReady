@@ -38,6 +38,8 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
           creationKlassNumber: null,
           creationLanguage: null,
           creationEducationKathegory:"",
+            synchronization: false,
+
           copy: false,
             questionList: [],
           });

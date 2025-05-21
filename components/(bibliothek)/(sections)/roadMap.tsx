@@ -6,7 +6,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageSessions } from '@/lib/appwriteUpdate';
 import { returnColor, returnColorButton, returnColorButtonShadow } from '../../../functions/returnColor';
 
-const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange}) => { 
+const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID}) => { 
   const { user } = useGlobalContext();
   function getAll(){
     let bad = 0
@@ -43,6 +43,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
           if (index > moduleSessions.length) {
             setSelected(index); setChange(0);
           } else {
+            console.log("session",session)
           setSelected(index); setTab(0);  updateUserUsageSessions(user.$id, {
             name: session.title,
             sessionID: session.id,
@@ -50,6 +51,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
             color: session.color,
             iconName: session.iconName,
             questions : session.questions,
+            moduleID: moduleID,
         })}}}
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}

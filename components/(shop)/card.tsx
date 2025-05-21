@@ -124,16 +124,21 @@ const Card = ({
          onPress={() => {
         const isTooExpensive = userUsage?.microchip < price && currency === "Chips";
         const isSoldOut = !isAvailable || purchaseLimit - purchaseAmout() === 0;
-        
+        console.log("Currency 🐋🐋🐋", currency);  
         if ( kathegory == "FREEITEM" ) {
-            setIsVisibleC(true); // Video Modal öffnen
+            setIsVisibleC(true);
         } else if (isTooExpensive) {
-            flashRed(); // Animation starten
-            //setIsVisible(true); // Modal anzeigen
+            flashRed(); 
+        } else if (currency == "Chips") {
+            setUserUsage({
+                ...userUsage,
+                energy: userUsage.energy + amount,
+                microchip: userUsage.microchip - price, 
+            })
         } else if (isSoldOut) {
-            flashRed(); // optional auch für Sold Out
+            flashRed();
         } else {
-            setIsVisibleB(true); // Kaufmodal öffnen
+            setIsVisibleB(true); 
         }
         }}
         
@@ -142,6 +147,7 @@ const Card = ({
 
         <ModalToExpensive isVisible={isVisible} setIsVisible={setIsVisible}/>
         <ModalBudyNow   isVisible={isVisibleB} 
+                        free={currency == "Free" ? true : false}
                         setIsVisible={setIsVisibleB} 
                         imageSource={imageSource} 
                         imageColor={backgroundColor}  
@@ -150,6 +156,7 @@ const Card = ({
                         price={price}
                         itemId={id}
                         amount={amount}
+                        name={title}
                         />
         <ModalVideoAdd
             isVisible={isVisibleC}
@@ -158,11 +165,11 @@ const Card = ({
             duration={30} 
             award={() => setUserUsage({
                 ...userUsage,
-                energy: userUsage.energy + 1, // Beispiel: Energie erhöhen
+                energy: userUsage.energy + 1, 
             })}
             
             />
-        <Text className='text-white font-semibold text-[13px] text-center'>
+        <Text className='text-white  font-semibold text-[13px] text-center'>
             {title}
         </Text>
         <View className='flex-1  items-center justify-center '>

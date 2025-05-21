@@ -10,7 +10,7 @@ const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[]}) => 
     "10CHARGE": images.charge10,
     "100CHIPS": images.chips,
     "550CHIPS": images.chips2,
-    "1200CHIPS": images.chip3,
+    "1200CHIPS": images.chip3, 
     "SUPERCHARGE": images.supercharge,
     "SUPERBUNDLE": images.questionary,
     "CHARGEBUNDLE": images.bundle2,

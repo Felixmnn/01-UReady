@@ -170,6 +170,8 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                                     creationLanguage: null,
                                     creationEducationKathegory:null,
                                     copy: true,
+                                    synchronization: false
+
                                 }
                                 add(mod)
                             }

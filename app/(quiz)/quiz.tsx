@@ -236,10 +236,7 @@ const quiz = () => {
                     <View className='w-full justify-between flex-row items-center p-4 '>
                         <View className='flex-row items-center'>
                         {questionsParsed[selectedQuestion].status !== null ? <SmileyStatus status={questionsParsed[selectedQuestion].status}/> : null}
-                        <TouchableOpacity className='bg-gray-900 rounded-[5px] items-center justify-cneter border-gray-600 border-[1px] ml-2'>
-                            
-                            <Text className="m-1 text-gray-300 text-[10px] px-1">+ Tags hinzufügen</Text>
-                        </TouchableOpacity>
+                        
                         </View>
                         <View className='flex-row items-center'>
                             {questionsParsed[selectedQuestion].aiGenerated ? <Image 

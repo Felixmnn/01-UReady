@@ -323,7 +323,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
                         }
                         {isVertical || tab == 1 ?
                             <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[700px]'>
-                                <RoadMap texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
+                                <RoadMap moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
                             </View>
                             : null 
                         }

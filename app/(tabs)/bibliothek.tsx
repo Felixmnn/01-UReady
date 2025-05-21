@@ -87,7 +87,12 @@ const Bibliothek = () => {
         keyExtractor={(item) => item.toString()}
       />
     );
-    
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchModules();
+        setRefreshing(false);
+      };
 
 
   return (
@@ -98,7 +103,7 @@ const Bibliothek = () => {
           <SkeletonList />
         ) : (
         <View className='flex-1 rounded-[10px] '>
-        {selected == "AllModules" ? <AllModules setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
+        {selected == "AllModules" ? <AllModules onRefresh={onRefresh} refreshing={refreshing} setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
         {selected == "SingleModule" ? <SingleModule setSelectedScreen={setSelected} moduleEntry={modules.documents[selectedModule]}  /> : null}
         {selected == "CreateQuestion" ? <CreateQuestion setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
 

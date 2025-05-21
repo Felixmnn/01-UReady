@@ -1,4 +1,4 @@
-import { View, Dimensions, Text,ScrollView, TouchableOpacity } from 'react-native'
+import { View, Dimensions, Text,ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ContinueBox from '../(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -12,11 +12,12 @@ import { getCountryList, getEducationList, getSchoolList, getUniversityList } fr
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
+import { loadUserUsage } from '@/lib/appwriteDaten';
 
 
 const { width } = Dimensions.get('window');
 
-const HomeGeneral = ({setSelectedPage}) => {
+const HomeGeneral = () => {
   const { user,language, userUsage } = useGlobalContext()
   
   const [ userUsageP, setUserUsageP ] = useState(null)
@@ -30,6 +31,8 @@ const HomeGeneral = ({setSelectedPage}) => {
     }
   },[userUsage])
 
+ 
+
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   const texts = languages.home;
 
@@ -39,16 +42,6 @@ const HomeGeneral = ({setSelectedPage}) => {
     }
   }, [language])
 
-  async function getPersonalData() {
-    const res = await getCountryList();
-    const universityListID = res[0].universityListID
-    const educationListID = res[0].educationListID
-    const schoolListID = res[0].schoolListID
-    const universityList = await getUniversityList(universityListID);
-    const educationList = await getEducationList(educationListID);
-    const schoolList = await getSchoolList(schoolListID);
-    console.log(res,universityList,educationList,schoolList);
-  }
   
   {/*Überschrift für die einzelnen Abteie */}
   const Header = ({title}) => {
@@ -224,12 +217,51 @@ const HomeGeneral = ({setSelectedPage}) => {
 
 
   const [isVisibleNewAiModule, setIsVisibleAiModule] = useState(false)
+
+
+  const [ refreshing, setRefreshing ] = useState(false)
+  const onRefresh = () => {
+    setRefreshing(true);
+    console.log("Refreshing...");
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
+  useEffect(()=> {
+    async function fetchData() {
+      const userUsage = await loadUserUsage(user.$id)
+      setUserUsageP({
+        ...userUsage,
+        lastModules: userUsage.lastModules.map((item) => JSON.parse(item)),
+        lastSessions: userUsage.lastSessions.map((item) => JSON.parse(item)),
+      })
+    }
+  },[refreshing])
+
+
   return (
-    <ScrollView>
+    <ScrollView
+        refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          // Android
+          colors={Platform.OS === 'android' ? ['#3b82f6'] : undefined} // blue-500
+          progressBackgroundColor={Platform.OS === 'android' ? '#000' : undefined} // gray-200
+          // iOS
+          tintColor={Platform.OS === 'ios' ? '#3b82f6' : undefined}
+          title={Platform.OS === 'ios' ? 'Aktualisieren...' : undefined}
+          titleColor={Platform.OS === 'ios' ? '#374151' : undefined} // gray-700
+          // Web
+          progressViewOffset={Platform.OS === 'web' ? 0 : 0}
+        />
+      }
+    >
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
       <AddAiModule isVisible={isVisibleNewAiModule} setIsVisible={setIsVisibleAiModule} />
 
-    <View className='flex-1 p-2 rounded-[10px]'>
+    <View className='flex-1 rounded-[10px]'>
       <TokenHeader userUsage={userUsageP} />
       <Header title={texts[selectedLanguage].lastModules}/>
       <ScrollView  horizontal={true} className='flex-row'
@@ -296,7 +328,7 @@ const HomeGeneral = ({setSelectedPage}) => {
           }
       </ScrollView>
       <Header title={texts[selectedLanguage].quickActions}/>
-      <View className={`${width > 700 ? "flex-row" : "flex-col"} `}>
+      <View className={`${width > 700 ? "flex-row" : ""} `}>
         {
           quickActions.map((item, index) => {
             return (

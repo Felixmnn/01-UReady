@@ -8,10 +8,11 @@ import AddModule from '@/components/(general)/(modal)/addModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import TokenHeader from '@/components/(general)/tokenHeader';
 
-const AllModules = ({setSelected, modules, setSelectedModule}) => {
+const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refreshing}) => {
     const [last7Hidden, setLast7Hidden ] = useState(true)
-    const { user,language } = useGlobalContext()
+    const { user,language, userUsage } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
       useEffect(() => {
         if(language) {
@@ -21,7 +22,7 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
       
     const texts = languages.allModules;
    
-
+      
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
     const toTight = width > 800;
@@ -98,18 +99,19 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
         fetchUserData()
     }, [user])
 
+      
+
   return (
     <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
-
-        <View className={`flex-row p-4 justify-between items-center h-[60px] rouned-[10px] `}>
-          <Text className='font-bold text-3xl text-gray-100'>
-            {texts[selectedLanguage].title}
-          </Text>
-          <TouchableOpacity onPress={()=> {setIsVisibleNewModule(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
+        <TokenHeader userUsage={userUsage}/>
+        <View className={`flex-row justify-between items-center rouned-[10px] mx-5 my-2 `}>
+          
+          <TouchableOpacity onPress={()=> {setIsVisibleNewModule(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
               <Icon name="cubes" size={15} color="white"/>
-              {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> : null}
+              <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> 
           </TouchableOpacity>
+          
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
         <View className={`flex-1  bg-gray-900 ${isVertical ? "p-4" : "p-2"} `}>
@@ -124,6 +126,8 @@ const AllModules = ({setSelected, modules, setSelectedModule}) => {
           !last7Hidden ? null :
           <FlatList
             data={modules.documents}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
             renderItem={({ item,index }) => (
               <View className='flex-1 mr-2 mb-2'>
                 <Karteikarte handlePress={async ()=> {await updateUserUsageModules(

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
-const SwichTab = ({setTab, tab1, tab2, bg, tab, change}) => {
+const SwichTab = ({setTab, tab1, tab2, tab, change}) => {
 const [activeTab, setActiveTab] = useState(0);
 const translateX = useSharedValue(0);
 
@@ -13,10 +13,11 @@ const switchTab = (index) => {
 };
 
 useEffect(() => {
-  if (change !== undefined && change !== activeTab) {
-    switchTab(!tab);
-  }
-}, [change]);
+    if (change) {
+        setActiveTab(tab1!);
+        translateX.value = withTiming(tab * 76, { duration: 300 });
+    }
+}, [tab1,tab, tab2]);
 
 const animatedIndicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],

@@ -1,5 +1,5 @@
 export function returnColor(color, moduleColor) {
-  let lowerCaseColor = color ? color.toLowerCase() : moduleColor.toLowerCase();
+  let lowerCaseColor = color ? color.toLowerCase() : moduleColor?.toLowerCase();
   
   if (lowerCaseColor === "red") {
     return "#FF4D4D";

@@ -17,9 +17,11 @@ import { addNewModule } from '@/lib/appwriteAdd';
 import languages from '@/assets/exapleData/languageTabs.json';
 import { getModules } from '@/lib/appwriteQuerys';
 import ToggleSwitch from '@/components/(general)/toggleSwich';
+import { updateModuleData } from '@/lib/appwriteUpdate';
+import TokenHeader from '@/components/(general)/tokenHeader';
 const entdecken = () => {
 
-  const { language } = useGlobalContext()
+  const { language, userUsage } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
       if(language) {
@@ -125,6 +127,8 @@ const entdecken = () => {
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] relative'>
+          <TokenHeader userUsage={userUsage}/>
+
           <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
             {
               width > 400 ?
@@ -247,21 +251,21 @@ const entdecken = () => {
                     <View className='flex-1 w-full'>
                       <FlatList
                         data={modules.filter((item) =>
-                          item.$id.toLowerCase().includes(searchBarText.toLowerCase())
+                          item.name.toLowerCase().includes(searchBarText.toLowerCase())
                         )}
                         renderItem={({ item, index }) => (
                           <View className={`flex-1 mr-2 mb-2 justify-center ${selectedModules.includes(item.$id) || myModules?.some((mod) => mod.name == item.name + " (Kopie)") ? "" : "opacity-50"} 
                           `}>
                             {myModules?.some((mod) => mod.name == item.name + " (Kopie)") && (
                               <View className="absolute w-full h-full z-10 rounded-b-[10px] rounded-t-[5px] overflow-hidden">
-                                <View className={`absolute w-full h-full rounded-b-[10px]  ${synchronisationActive ? "bg-green-500" : "bg-black"} opacity-50`} 
+                                <View className={`absolute w-full h-full rounded-b-[10px]  ${item.synchronization  ? "bg-green-500" : "bg-black"} opacity-50`} 
                                 style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}
                                 />
                                   <View className="flex-row items-center justify-center h-full p-1">
                                   <Text className="text-white font-semibold text-[15px] mr-2">Synchronisation</Text>
                                   <ToggleSwitch
-                                    isOn={synchronisationActive}
-                                    onToggle={() => setSynchronisationActive(!synchronisationActive)}
+                                    isOn={item.synchronization}
+                                    onToggle={async() => {await updateModuleData(item.$id, {synchronization: !item.synchronization})}}
                                   />
                                 </View>
                               </View>
@@ -321,7 +325,12 @@ const entdecken = () => {
           {
             selectedModules.length == 0 ? null :
           <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
-            <TouchableOpacity disabled={loading} className='flex-row items-center justify-center p-2 bg-blue-500 rounded-full' 
+            <TouchableOpacity disabled={loading} className='flex-row items-center justify-center p-2  rounded-full' 
+            style={{
+              backgroundColor: selectedModules.length > 0 ? "#3b82f6" : "#3b82f6",
+              borderWidth:2,
+              borderColor: selectedModules.length > 0 ? "#3c6dbc" : "#3b82f6",
+            }}
               onPress={async ()=> {
                   setReloadNeeded([...reloadNeeded, "Bibliothek"])
                 if (selectedModules.length > 0){
@@ -383,9 +392,10 @@ const entdecken = () => {
             >
               {
                 loading ? <ActivityIndicator size="small" color="#fff" /> :
-                <Text className='text-white  font-semibold text-[15px]'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2}</Text>
-
-
+                <View className='flex-row items-center'>
+                  <Text className='text-white  font-semibold text-[15px] mb-1'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {selectedModules.length*3}</Text>
+                  <Icon name="bolt" size={15} color="white" className="ml-2" />
+                </View>
               }
             </TouchableOpacity>
           </View>

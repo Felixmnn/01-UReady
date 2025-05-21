@@ -46,6 +46,17 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
     {/* Language and Texts */}
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     const { language } = useGlobalContext()
+
+     const [ refreshing, setRefreshing ] = useState(false)
+        const onRefresh = () => {
+            setRefreshing(true);
+
+            setTimeout(() => {
+            setRefreshing(false);
+            }, 2000);
+        };
+    
+
     useEffect(() => {
         if(language) {
             setSelectedLanguage(language)
@@ -166,7 +177,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
             fetchQuestions(sessions[selectedSession].id);
         }
         setLoading(false) 
-    }, [sessions, selectedSession])
+    }, [sessions, selectedSession, refreshing])
     /**
      * Switches to the EditNote screen with a new empty note.
      */
@@ -300,6 +311,13 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
     updateQuestionList();
 }, [questions]);
 
+   useEffect(() => {
+        setTab(1)
+        setChange(change + 1)
+   },[selectedSession])
+
+    
+
     return (
         <View className='flex-1 rounded-[10px] items-center '>
             <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
@@ -316,14 +334,15 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
                 <View className={`flex-1 ${isVertical ? "flex-row" : null}`}>
                         { 
                             tab == 0 ?
-                            <View className='p-4 flex-1'>
-                                <Data texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
+                            
+                            <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[700px]'>
+                                <RoadMap moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
                             </View>
                             : null
                         }
                         {isVertical || tab == 1 ?
-                            <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[700px]'>
-                                <RoadMap moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
+                            <View className='p-4 flex-1'>
+                                <Data refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null 
                         }

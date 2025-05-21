@@ -1,11 +1,11 @@
-import { View, Text,FlatList, ScrollView, TouchableOpacity, ActivityIndicator, useWindowDimensions, Modal, Image } from 'react-native'
+import { View, Text,FlatList, ScrollView, TouchableOpacity, ActivityIndicator, useWindowDimensions, Modal, Image, RefreshControl, Platform } from 'react-native'
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";  
 import  { router } from "expo-router"
 import  Selectable  from '../selectable'
 import SmileyStatus from '../(components)/smileyStatus';
 
-const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
 
 
     //To ensure that the question status is displayed correctly, it is loaded from the module configuration
@@ -167,43 +167,49 @@ const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument,
             <View className='flex-1'>
                 <CounterText title={texts[selectedLanguage].file} count={filteredDocuments.length}/>{
             documents ? 
-            <FlatList
-            data={filteredDocuments}
-            keyExtractor={(item, index) => `${item.$id}-${index}`}
-            className='w-full'
-            style={{
-                scrollbarWidth: 'thin', // Dünne Scrollbar
-                scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
-              }}
-            renderItem={({item}) => {
-                return (
-                    <TouchableOpacity onPress={() => {
-                    }}
-                            className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
-                        <View className='flex-row items-start justify-start'>
-                            <Icon name="file" size={40} color="white"/>
-                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : texts[selectedLanguage].unnamed}</Text>
-                        </View>
-                        <View className='flex-row items-center justify-between'>
-                        { item.uploaded ?
-                        null
-                        :
+           <View
+                className="w-full"
+                
+                >
+                {filteredDocuments.map((item, index) => (
+                    <TouchableOpacity
+                    key={`${item.$id}-${index}`}
+                    onPress={() => {}}
+                    className="w-full flex-row justify-between p-2 border-b-[1px] border-gray-600"
+                    >
+                    <View className="flex-row items-start justify-start">
+                        <Icon name="file" size={40} color="white" />
+                        <Text className="text-white mx-2 font-bold text-[14px]">
+                        {item.title ? item.title : texts[selectedLanguage].unnamed}
+                        </Text>
+                    </View>
+                    <View className="flex-row items-center justify-between">
+                        {item.uploaded ? null : (
                         <ActivityIndicator size="small" color="#1E90ff" />
-                        }
-                        {
-                            item.uploaded ?
-                            <TouchableOpacity className='mr-2' onPress={() => {deleteDocument(item.$id)}} >
-                                <Icon name="trash" size={15} color="white"/>
-                            </TouchableOpacity>
-                            :
-                            <TouchableOpacity className='ml-2' onPress={() => {deleteDocument(item.$id)}} >
-                                <Icon name="times" size={15} color="white"/>
-                            </TouchableOpacity>
-                        }
-                        </View>
+                        )}
+                        {item.uploaded ? (
+                        <TouchableOpacity
+                            className="mr-2"
+                            onPress={() => {
+                            deleteDocument(item.$id);
+                            }}
+                        >
+                            <Icon name="trash" size={15} color="white" />
+                        </TouchableOpacity>
+                        ) : (
+                        <TouchableOpacity
+                            className="ml-2"
+                            onPress={() => {
+                            deleteDocument(item.$id);
+                            }}
+                        >
+                            <Icon name="times" size={15} color="white" />
+                        </TouchableOpacity>
+                        )}
+                    </View>
                     </TouchableOpacity>
-                )}}
-            />
+                ))}
+                </View>
             :
             <AddData title={texts[selectedLanguage].fileH} subTitle={texts[selectedLanguage].fileSH} button={texts[selectedLanguage].fileBtn} />
         }
@@ -220,44 +226,47 @@ const Data = ({selected,moduleSessions,questions,notes,documents,deleteDocument,
         return (
             <View className='flex-1'>
                 <CounterText title={texts[selectedLanguage].note} count={filteredNotes.length}/>
-        {
-            notes  ? 
-            <FlatList
-            data={filteredNotes}
-            keyExtractor={(item) => item.$id}
-            className='w-full'
-            style={{
-                scrollbarWidth: 'thin', // Dünne Scrollbar
-                scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
-              }}
-            renderItem={({item}) => {
-                return (
-                    <TouchableOpacity  onPress={()=> {router.push({
-                                pathname:"editNote",
-                                params: {note: JSON.stringify(item)}
-                            }) }} 
-                            className='w-full flex-row justify-between  p-2 border-b-[1px] border-gray-600'>
-                        <View className='flex-row items-start justify-start'>
-                            <Icon name="file" size={40} color="white"/>
-                            <Text className='text-white mx-2 font-bold text-[14px]'>{item.title ? item.title : texts[selectedLanguage].unnamed}</Text>
+                {
+                    notes  ? 
+                    <View
+                    className="w-full"
+                    
+                    >
+                    {filteredNotes.map((item) => (
+                        <TouchableOpacity
+                        key={item.$id}
+                        onPress={() =>
+                            router.push({
+                            pathname: 'editNote',
+                            params: { note: JSON.stringify(item) },
+                            })
+                        }
+                        className="w-full flex-row justify-between p-2 border-b-[1px] border-gray-600"
+                        >
+                        <View className="flex-row items-start justify-start">
+                            <Icon name="file" size={40} color="white" />
+                            <Text className="text-white mx-2 font-bold text-[14px]">
+                            {item.title ? item.title : texts[selectedLanguage].unnamed}
+                            </Text>
                         </View>
                         <TouchableOpacity>
-                            <Icon name="ellipsis-h" size={15} color="white"/>
+                            <Icon name="ellipsis-h" size={15} color="white" />
                         </TouchableOpacity>
-                    </TouchableOpacity>
-                )}}
-            />
-            :
-            <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} handlePress={()=> SwichToEditNote(null)} />
+                        </TouchableOpacity>
+                    ))}
+                    </View>
+                    :
+                    <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} handlePress={()=> SwichToEditNote(null)} />
 
-        }
+                }
         { filteredNotes.length == 0  ? <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} /> : null}
     
             </View>
         )
     }
+    
 
-
+    
 
 return (
     <View className='flex-1'>
@@ -275,11 +284,25 @@ return (
                 </View>
             </ScrollView>
             :
-            <View className='flex-1'>
+            <ScrollView refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          // Android
+                          colors={Platform.OS === 'android' ? ['#3b82f6'] : undefined} // blue-500
+                          progressBackgroundColor={Platform.OS === 'android' ? '#000' : undefined} // gray-200
+                          // iOS
+                          tintColor={Platform.OS === 'ios' ? '#3b82f6' : undefined}
+                          title={Platform.OS === 'ios' ? 'Aktualisieren...' : undefined}
+                          titleColor={Platform.OS === 'ios' ? '#374151' : undefined} // gray-700
+                          // Web
+                          progressViewOffset={Platform.OS === 'web' ? 0 : 0}
+                        />
+                      } >
                 <QuestionList/>
                 <DocumentList/>
                 <NoteList/>
-        </View>}
+        </ScrollView>}
     </View>
   )
 }

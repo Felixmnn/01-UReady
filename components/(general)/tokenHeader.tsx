@@ -39,12 +39,12 @@ const TokenHeader = ({userUsage}) => {
   return (
     <View className='w-full flex-row justify-between'>
         <ModalStreak/>
-        <TouchableOpacity className='flex-row m-2 p-5'  onPress={()=> setIsVisible(true)} >
+        <TouchableOpacity className='flex-row m-2 px-5 pt-2'  onPress={()=> setIsVisible(true)} >
             <Icon name="fire" size={20} color={"white"}/>
             <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.streak}</Text>
         </TouchableOpacity>
 
-        <View className='flex-row m-2 p-5' >
+        <View className='flex-row m-2 pt-2 px-5' >
             <TouchableOpacity className='flex-row mx-5' onPress={()=> router.push("/shop")} >
             <Icon name="microchip" size={20} color={"white"}/>
             <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.microchip}</Text>

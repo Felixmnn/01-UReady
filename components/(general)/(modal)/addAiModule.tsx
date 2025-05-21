@@ -1,4 +1,4 @@
-import { View, Modal } from 'react-native'
+import { View, Modal, useWindowDimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import PageAiCreate from '@/components/(getting-started)/pageAiCreate'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -6,6 +6,7 @@ import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 
 const AddAiModule = ({isVisible, setIsVisible}) => {
     const { user } = useGlobalContext();
+    const { heigth } = useWindowDimensions();
     const [userData, setUserData] = useState(null)
  const [ newModule, setNewModule] = useState({
           name: "",
@@ -77,11 +78,14 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
 
   return (
     <Modal
-            animationType="fade"
+            animationType="slide"
             transparent={true}
             visible={isVisible}
         >
-            <View  className='absolute top-0 left-0 w-full h-full justify-center items-center '>
+            <View  className='absolute bottom-0 left-0 w-full h-full  justify-center items-center '
+            
+             
+            >
       <PageAiCreate newModule={newModule} setNewModule={setNewModule} setUserChoices={()=> {setIsVisible(false)}} userData={userData}/>
     </View>
         </Modal>

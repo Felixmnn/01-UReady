@@ -1,56 +1,65 @@
-import { View } from 'react-native'
-import React from 'react'
-import Svg, { Circle } from "react-native-svg";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import { View } from 'react-native';
+import React from 'react';
+import Svg, { Circle } from 'react-native-svg';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
+const VektorCircle = ({ color, percentage, icon, strokeColor, sizeMultiplier = 1 }) => {
+  const baseRadius = 15;
+  const baseStroke = 3;
+  const baseSize = 40;
+  const baseIconSize = 12;
 
-const VektorCircle = ({color, percentage, icon, strokeColor}) => {
-    const radius = 15; 
-    const strokeWidth = 3;
-    const center = 20; 
-    const circumference = 2 * Math.PI * radius;
-    const progress = (percentage / 100) * circumference;
+  const radius = baseRadius * sizeMultiplier;
+  const strokeWidth = baseStroke * sizeMultiplier;
+  const size = baseSize * sizeMultiplier;
+  const iconSize = baseIconSize * sizeMultiplier;
+  const center = size / 2;
 
-    const angle = (percentage / 100) * 360 - 90; 
-    const radians = (angle * Math.PI) / 180; 
+  const circumference = 2 * Math.PI * radius;
+  const progress = (percentage / 100) * circumference;
 
-    const dotX = center + radius * Math.cos(radians);
-    const dotY = center + radius * Math.sin(radians);
+  const angle = (percentage / 100) * 360 - 90;
+  const radians = (angle * Math.PI) / 180;
+
+  const dotX = center + radius * Math.cos(radians);
+  const dotY = center + radius * Math.sin(radians);
+
   return (
-    <View className="relative w-13 h-13 justify-center items-center ">
-          <Svg width="40" height="40" viewBox="0 0 40 40">
-            {/* Hintergrundkreis */}
-            <Circle
-              cx="20"
-              cy="20"
-              r={radius}
-              stroke={strokeColor}
-              strokeWidth={strokeWidth}
-              fill="none"
-              opacity={0.2}
-            />
-            {/* Fortschrittsbalken, startet bei 12 Uhr */}
-            <Circle
-              cx="20"
-              cy="20"
-              r={radius}
-              stroke={color}
-              strokeWidth={strokeWidth}
-              fill="none"
-              strokeDasharray={circumference}
-              strokeDashoffset={circumference? circumference - progress: 0}
-              strokeLinecap="round"
-              transform="rotate(-90 20 20)" // Start bei 12 Uhr
-            />
-            {/* 📌 Roter Punkt */}
-            <Circle cx={dotX} cy={dotY} r="5" fill={color} />
-          </Svg>
-          {/* Icon/Text in der Mitte */}
-          <View className="absolute top-3 left-0 right-0 flex items-center">
-            <Icon name={icon} size={16} color={color}/>
-          </View>
-        </View>
-  )
-}
+    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+      <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* Hintergrundkreis */}
+        <Circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={strokeColor}
+          strokeWidth={strokeWidth}
+          fill="none"
+          opacity={0.2}
+        />
+        {/* Fortschrittsbalken */}
+        <Circle
+          cx={center}
+          cy={center}
+          r={radius}
+          stroke={color}
+          strokeWidth={strokeWidth}
+          fill="none"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference - progress}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${center} ${center})`}
+        />
+        {/* Roter Punkt */}
+        <Circle cx={dotX} cy={dotY} r={5 * sizeMultiplier} fill={color} />
+      </Svg>
 
-export default VektorCircle
+      {/* Icon in der Mitte */}
+      <View style={{ position: 'absolute', top: size / 2 - iconSize / 2, left: 0, right: 0, alignItems: 'center' }}>
+        <Icon name={icon} size={iconSize} color={color} />
+      </View>
+    </View>
+  );
+};
+
+export default VektorCircle;

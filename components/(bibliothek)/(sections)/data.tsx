@@ -86,7 +86,11 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
      */
     const QuestionList = () => {
         return(
-        <View className='flex-1'>
+        <View className='flex-1'
+            style={{
+                minHeight: 250,
+            }}
+        >
             <CounterText title={texts[selectedLanguage].questio} count={filteredData.length}/>
         {filteredData ? 
         <FlatList
@@ -256,7 +260,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
                     ))}
                     </View>
                     :
-                    <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} handlePress={()=> SwichToEditNote(null)} />
+                    <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} handlePress={()=> SwichToEditNote()} />
 
                 }
         { filteredNotes.length == 0  ? <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} /> : null}

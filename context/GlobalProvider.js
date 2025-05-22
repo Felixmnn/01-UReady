@@ -3,6 +3,7 @@ import { checkSession } from "../lib/appwrite";
 import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
+import { updateUserUsageData } from "@/lib/appwriteUpdate";
 const GlobalContext = createContext();
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -78,6 +79,17 @@ const GlobalProvider = ({children}) => {
         fetchUserData()
     },[user]);
 
+    useEffect(() => {
+        if (!userUsage) return;
+        console.log("User Usage", userUsage);
+        async function upDateUserUsage() {
+            const res = await updateUserUsageData({
+                ...userUsage,
+                streakLastUpdate: new Date(),
+            });
+        }
+        upDateUserUsage();
+    }, [userUsage]);
 
 
 

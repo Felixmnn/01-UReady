@@ -1,12 +1,13 @@
-import { View, useWindowDimensions, TouchableOpacity,ScrollView } from 'react-native'
+import { View, useWindowDimensions, TouchableOpacity,ScrollView, Text } from 'react-native'
 import React, { useState } from 'react'
 import SessionProgress from '../sessionProgress'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageSessions } from '@/lib/appwriteUpdate';
 import { returnColor, returnColorButton, returnColorButtonShadow } from '../../../functions/returnColor';
+import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 
-const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID}) => { 
+const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID, moduleDescription}) => { 
   const { user } = useGlobalContext();
   function getAll(){
     let bad = 0
@@ -29,207 +30,85 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
   }
   const percentA = getAll()
   const {width} = useWindowDimensions()
-  
-
- 
-  const CircularButton = ({ onPress,children,index,color,session }) => {
-    const [isPressed, setIsPressed] = useState(false);
-  
     return (
-      <View className="items-center justify-center">
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={()=> {
-          if (index > moduleSessions.length) {
-            setSelected(index); setChange(0);
-          } else {
-            console.log("session",session)
-          setSelected(index); setTab(0);  updateUserUsageSessions(user.$id, {
-            name: session.title,
-            sessionID: session.id,
-            percent : session.percent,
-            color: session.color,
-            iconName: session.iconName,
-            questions : session.questions,
-            moduleID: moduleID,
-        })}}}
-        onPressIn={() => setIsPressed(true)}
-        onPressOut={() => setIsPressed(false)}
-        className="rounded-full flex items-center justify-center"
-        
-        style={{
-          transform: [{ translateY: isPressed ? 2 : 0 }], 
-          shadowColor: returnColorButtonShadow(color, currentModule.color),
-          backgroundColor: returnColorButton(color, currentModule.color),
-
-          shadowOffset: { width: 0, height: isPressed ? 2 : 6 },
-          shadowOpacity: 1,
-          shadowRadius: 2,
-          marginBottom: 5,
-          marginLeft:1,
-          width:60,
-          height:60
-        }}
-      >
-        <View className="absolute">{children}</View>
-      </TouchableOpacity>
-    </View>
-    );
-  };
-
-  const getMargins = (index, totalItems) => {
-    if (totalItems === 1 || totalItems === 2) {
-        return { marginLeft: 0, marginRight: 0, marginTop:0, marginBottom: 0 };
-    } else if (totalItems === 3){
-        if (index === 0) {
-            return { marginLeft: 0, marginRight: 0, marginTop:0 , marginBottom: 0};
-        } else if (index === 1) {
-            return { marginLeft: 0, marginRight: 100 };
-        } else {
-            return { marginLeft: 0, marginRight: 0, marginTop:0, marginBottom: 0 };
-        }
-    } else if (totalItems === 4){
-      if (index === 0) {
-        return { marginLeft: 0, marginRight: 0, marginTop:0, marginBottom: 0 };
-    } else if (index === 1) {
-        return { marginLeft: 0, marginRight: 100, marginTop:0, marginBottom: 0 };
-    } else if (index === 2) {
-      return { marginLeft: 0, marginRight: 75, marginTop:10, marginBottom: 0 };
-    }
-  } else if (totalItems === 5){
-    if (index === 0) {
-      return { marginLeft: 0, marginRight: 0, marginTop:0, marginBottom: 0 };
-  } else if (index === 1) {
-    return { marginLeft: 0, marginRight: 75, marginTop:0, marginBottom: 0 };
-  } else if (index === 2) {
-    return { marginLeft: 0, marginRight: 100, marginTop:10, marginBottom: 0 };
-  } else if (index === 3) {
-    return { marginLeft: 0, marginRight: 50, marginTop:5, marginBottom: 0 };
-  }
-  } else if (totalItems === 6){
-    if (index === 0) {
-      return { marginLeft: 0, marginRight: 0, marginTop:0 , marginBottom: 0};
-  } else if (index === 1) {
-    return { marginLeft: 0, marginRight: 75, marginTop:0, marginBottom: 0 };
-  } else if (index === 2) {
-    return { marginLeft: 0, marginRight: 100, marginTop:10, marginBottom: 0 };
-  } else if (index === 3) {
-    return { marginLeft: 0, marginRight: 50, marginTop:5, marginBottom: 0 };
-  } else if (index === 4) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 10 };
-  }
-  } else if (totalItems === 7){
-    if (index === 0) {
-      return { marginLeft: 0, marginRight: 0, marginTop:0 , marginBottom: 0};
-  } else if (index === 1) {
-    return { marginLeft: 0, marginRight: 75, marginTop:0, marginBottom: 0 };
-  } else if (index === 2) {
-    return { marginLeft: 0, marginRight: 100, marginTop:10, marginBottom: 0 };
-  } else if (index === 3) {
-    return { marginLeft: 0, marginRight: 50, marginTop:5, marginBottom: 0 };
-  } else if (index === 4) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 10 };
-  } else if (index === 5) {
-    return { marginLeft: 75, marginRight: 0, marginTop:0, marginBottom: 5 };
-  }
-  } else if (totalItems === 8){
-    if (index === 0) {
-      return { marginLeft: 0, marginRight: 0, marginTop:0 , marginBottom: 0};
-  } else if (index === 1) {
-    return { marginLeft: 0, marginRight: 75, marginTop:0, marginBottom: 0 };
-  } else if (index === 2) {
-    return { marginLeft: 0, marginRight: 100, marginTop:10, marginBottom: 0 };
-  } else if (index === 3) {
-    return { marginLeft: 0, marginRight: 50, marginTop:5, marginBottom: 0 };
-  } else if (index === 4) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 10 };
-  } else if (index === 5) {
-    return { marginLeft: 100, marginRight: 0, marginTop:0, marginBottom: 10 };
-  } else if (index === 6) {
-    return { marginLeft: 75, marginRight: 0, marginTop:0, marginBottom: 5 };
-  }
-  } else if (totalItems === 9){
-    if (index === 0) {
-      return { marginLeft: 0, marginRight: 0, marginTop:0 , marginBottom: 0};
-  } else if (index === 1) {
-    return { marginLeft: 0, marginRight: 75, marginTop:0, marginBottom: 0 };
-  } else if (index === 2) {
-    return { marginLeft: 0, marginRight: 100, marginTop:10, marginBottom: 0 };
-  } else if (index === 3) {
-    return { marginLeft: 0, marginRight: 50, marginTop:5, marginBottom: 0 };
-  } else if (index === 4) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 10 };
-  } else if (index === 5) {
-    return { marginLeft: 125, marginRight: 0, marginTop:0, marginBottom: 10 };
-  } else if (index === 6) {
-    return { marginLeft: 100, marginRight: 0, marginTop:0, marginBottom: 5 };
-  } else if (index === 7) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 10 };
-  }
-  } else {
-    if (index === 0) {
-      return { marginLeft: 0, marginRight: 0, marginTop:0 , marginBottom: 0};
-  }  else if (index % 6 === 0) {
-    return { marginLeft: 100, marginRight: 0, marginTop:0, marginBottom: 5 };
-  } else if (index % 4 === 0) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 10 };
-  } else if (index % 2 === 0) {
-    return { marginLeft: 0, marginRight: 100, marginTop:10, marginBottom: 0 };
-  } else if (index % 3 === 0) {
-    return { marginLeft: 0, marginRight: 50, marginTop:5, marginBottom: 0 };
-  }  else if (index % 5 === 0) {
-    return { marginLeft: 125, marginRight: 0, marginTop:0, marginBottom: 10 };
-  }  else if (index % 7 === 0) {
-    return { marginLeft: 50, marginRight: 0, marginTop:0, marginBottom: 0 };
-  } else if (index % 1 === 0) {
-    return { marginLeft: 0, marginRight: 75, marginTop:0, marginBottom: 0 };
-  }
-  }
-}
-
-  return (
     <ScrollView className={`${width > 700 ? "" : null} ` }  style={{
-      scrollbarWidth: 'thin', // Dünne Scrollbar
-      scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
+      scrollbarWidth: 'thin', 
+      scrollbarColor: 'gray transparent',
     }}>
       {
         moduleSessions.map((module, index) => {
-          //const percent = getAmount(index)
-          const { marginLeft, marginRight, marginTop,marginBottom } = getMargins(index, moduleSessions.length + 1);
-
             return (
 
-              <View style={{
-                marginLeft, marginRight, marginTop,marginBottom
-              }}
+              <TouchableOpacity 
               key={`${module.$id}-${index}`}
+              style={{
+                margin:5,
+                opacity: selected == index ? 1 : 0.5,
 
+              }}
+              onPress={() => setSelected(index)}
+              className='rounded-[10px]  bg-gray-800 '
               >
-                <SessionProgress 
-                selected={selected == index} 
-                setSelected={()=> {setSelected(index), setTab(1);  }}
-                first={index == 0}  
-                progressr={module.percent}
-                strokeColor={returnColor(module.color, currentModule.color)}
-                > 
-                     <CircularButton index={index} color={module.color} session={module}> 
-                        <Icon name={module.iconName} size={20} color="white"/>
-                      </CircularButton>
-                </SessionProgress>
-              </View>
+                <View className='w-full rounded-t-[10px] border-t-[1px] border-gray-700'
+                    style={{
+                      backgroundColor: returnColor(module.color, currentModule.color),
+                      height: 8,
+                    }}
+                  />
+                <View className='w-full flex-row items-center justify-start py-2 px-3'> 
+                  <VektorCircle sizeMultiplier={1.3} color={module.color} percentage={module.percent} icon={module.iconName} strokeColor={returnColor(module.color, currentModule.color)}/>
+                  <View className='justify-center'>
+                    <Text className='text-white font-bold text-[15px] px-3 '>{module.title}</Text>
+                    {
+                      selected == index && module.description.length > 0 ?
+                        <Text
+                          className="text-white font-semibold text-[12px] px-3"
+                          style={{ flexWrap: 'wrap' }}
+                        >
+                          {module.description}
+                        </Text>
+                        :
+                        null  
+                    }
+                  </View>
+                </View>
+              </TouchableOpacity>
             )
     })
     }
-    <SessionProgress  selected={selected == moduleSessions.length +1}
-                      setSelected={()=> setSelected(moduleSessions.length +1)}
-                      first={false} progress={10}
-                      progressr={percentA.bad}
-                      strokeColor={returnColor(currentModule.color)}
+    <TouchableOpacity 
+      style={{
+        margin:5,
+        opacity: selected == moduleSessions.length +1 ? 1 : 0.5,
+
+      }}
+      onPress={()=> setSelected(moduleSessions.length +1)}
+      className='rounded-[10px]  bg-gray-800 '
+      >
+        <View className='w-full rounded-t-[10px] border-t-[1px] border-gray-700'
+            style={{
+              backgroundColor: returnColor(currentModule.color),
+              height: 8,
+            }}
+          />
+        <View className='w-full flex-row items-center justify-start py-2 px-3'> 
+          <VektorCircle sizeMultiplier={1.3}  color={returnColor(currentModule.color)} percentage={percentA.bad} icon={"list-alt"} strokeColor={returnColor(currentModule.color)}/>
+          <View>
+                    <Text className='text-white font-bold text-[15px] px-3 pt-3 '>Alle Fragen</Text>
+                    {
+                      selected == moduleSessions.length +1 && moduleDescription.length > 0 ?
+                        <Text
+                          className="text-gray-200 font-semibold text-[12px] px-3"
+                          style={{ flexWrap: 'wrap', maxWidth: 250 }}
                         >
-                    <CircularButton index={moduleSessions.length +1} color={currentModule.color.toLowerCase()} >
-                        <Icon name={"file"} size={20} color="white"/>
-                    </CircularButton>
-    </SessionProgress>
+                          {moduleDescription}
+                          </Text>
+                        :
+                        null  
+                    }
+                  </View>
+        </View>
+      </TouchableOpacity>
     
     </ScrollView>
 

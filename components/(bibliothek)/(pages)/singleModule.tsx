@@ -330,7 +330,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
                         { 
                             tab == 0 ?
                             
-                            <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[700px]'>
+                            <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[500px]'>
                                 <RoadMap moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
                             </View>
                             : null
@@ -340,6 +340,18 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
                                 <Data refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null 
+                        }
+                        { 
+                            isVertical ?
+                            
+                            <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[500px]'
+                                style={{
+                                    maxWidth: 400,
+                                }}
+                            >
+                                <RoadMap moduleDescription={moduleEntry.description} moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
+                            </View>
+                            : null
                         }
                 </View>
                 </View>

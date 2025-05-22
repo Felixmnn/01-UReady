@@ -21,7 +21,7 @@ import { updateModuleData } from '@/lib/appwriteUpdate';
 import TokenHeader from '@/components/(general)/tokenHeader';
 const entdecken = () => {
 
-  const { language, userUsage } = useGlobalContext()
+  const { language, userUsage, setUserUsage } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
       if(language) {
@@ -55,7 +55,11 @@ const entdecken = () => {
   //Module entdecken
   const [ loading, setLoading ] = useState(false)
   const [ modules, setModules ] = useState([])
+  const [ myModules, setMyModules ] = useState([])
 
+  /**
+   * Option includes the meta data for the School, University, Education and Other Filters
+   */
   const options = [
     {
       name: texts[selectedLanguage].university,
@@ -99,7 +103,6 @@ const entdecken = () => {
     }
   ]
 
-  const [ myModules, setMyModules ] = useState([])
   useEffect(() => {
     if (!user) return;
     const fetchMyModules = async () => {
@@ -110,6 +113,8 @@ const entdecken = () => {
     }
     fetchMyModules()
   }, [user])
+
+
   const [ searchBarText, setSearchBarText ] = useState("")
   const [ focused, setFocused ] = useState(false)
   async function add(mod) {
@@ -123,12 +128,100 @@ const entdecken = () => {
           }
       }
       console.log("Modules", modules)
-  const [ synchronisationActive, setSynchronisationActive ] = useState(false) 
+
+
+  const CopyModulesButton = () => {
+    return (
+        <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
+          <TouchableOpacity disabled={loading  || (userUsage.energy < selectedModules.length * 3)} className='flex-row items-center justify-center p-2  rounded-full'
+          style={{
+            backgroundColor: userUsage.energy > selectedModules.length * 3 ? "#3b82f6" : "#f63b3b",
+            borderWidth:2,
+            borderColor: userUsage.energy > selectedModules.length * 3 ? "#3c6dbc" : "#bc3c3c",
+          }}
+          
+          onPress={async ()=> {
+              setReloadNeeded([...reloadNeeded, "Bibliothek"])
+              if (selectedModules.length > 0){
+                modules.map((module) => {
+                if (selectedModules.includes(module.$id)){
+                    const mod = {
+                        name: module.name + " (Kopie)",
+                        subject: module.subject,
+                        questions: module.questions,
+                        notes: module.notes,
+                        documents: module.documents,
+                        public: false,
+                        progress: 0,
+                        creator: user.$id,
+                        color: module.color,
+                        sessions: module.sessions,
+                        tags: module.tags,
+                        description: module.description,
+                        releaseDate: new Date() ,
+                        connectedModules: [],
+                        qualityScore: module.qualityScore,
+                        duration: 0,
+                        upvotes: 0,
+                        downVotes: 0,
+                        creationCountry: null,
+                        creationUniversity: null,
+                        creationUniversityProfession: null,
+                        creationRegion: null,
+                        creationUniversitySubject: [],
+                        creationSubject: [],
+                        creationEducationSubject: null,
+                        creationUniversityFaculty: [],
+                        creationSchoolForm: null,
+                        creationKlassNumber: null,
+                        creationLanguage: null,
+                        creationEducationKathegory:null,
+                        copy: true,
+                        synchronization: false,
+
+                        questionList: module.questionList.map(item => {
+                          const pItem = JSON.parse(item);
+                          const newItem = {
+                            ...pItem,
+                            status: null
+                          }
+                          return JSON.stringify(newItem)
+                        })
+                    }
+                    add(mod)
+                }})}
+                setUserUsage({
+                  ...userUsage,
+                  energy: userUsage.energy - selectedModules.length * 3
+                })
+                router.push("/bibliothek")
+              }}>
+            {
+              loading ? <ActivityIndicator size="small" color="#fff" /> :
+              userUsage.energy > selectedModules.length * 3 ?
+              <View className='flex-row items-center'>
+                <Text className='text-white  font-semibold text-[15px] mb-1'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {selectedModules.length*3}</Text>
+                <Icon name="bolt" size={15} color="white" className="ml-2" />
+              </View>
+              :
+              <Text className='text-white text-center  font-semibold text-[15px] mb-1'
+                style={{
+                  maxWidth: width < 400 ? 200 : null,
+                }}
+              >
+                Dir fehlt Energie - warte oder kaufe neue im Shop.
+              </Text>
+            }
+          </TouchableOpacity>
+        </View>
+    )}
+
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] relative'>
           <TokenHeader userUsage={userUsage}/>
 
+          {/* Head Element Containing the options (UNIVERSITY; SCHOOL; EDUCATION; OTHER) */}
           <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
             {
               width > 400 ?
@@ -160,6 +253,8 @@ const entdecken = () => {
               </TouchableOpacity>
             </View>
           </View>
+
+          {/* Text Input wich filters the Modules that include the Textinput in their names*/}
           <View className='flex-row w-full items-center'>
             <View className='flex-1    w-full bg-gray-800  rounded-[10px] ml-4 mr-2 mb-2  px-2 flex-row items-center justify-between'            >
               <View className='w-full flex-row items-center'
@@ -195,9 +290,8 @@ const entdecken = () => {
           </View>
 
           <View className="w-full flex-1" style={{ flex: 1, position: "relative", }}>
-  
-            {/* UniversityFilters liegt ganz oben */}
-          
+
+            {/* The Filtes belonging to either (UNIVERSITY; SCHOOL; EDUCATION; OTHER) */}
             <View style={{ zIndex: 10, position: "relative" }}>
               {
                 selectedKathegory == "UNIVERSITY" && (filterVisible || width > 800) ? (
@@ -233,14 +327,10 @@ const entdecken = () => {
                   /> ): null
               }
             </View>
-            <View
-                        className='w-full bg-gray-500 border-gray-500 border-t-[1px]'
-                        style={{ zIndex: 0, marginTop: 10 }}
-            
-                    />
 
+            <View className='w-full bg-gray-500 border-gray-500 border-t-[1px]' style={{ zIndex: 0, marginTop: 10 }}/>
 
-            {/* Restlicher Inhalt liegt darunter */}
+            {/* This part displays the Modules that match the Filter in case a result is found. */}
             <View
               className="flex-1 p-4 bg-gray-900 "
               style={{ zIndex: 1, position: "relative" }}
@@ -320,86 +410,12 @@ const entdecken = () => {
                 </View>
               )}
             </View>
-            
           </View>
-          {
-            selectedModules.length == 0 ? null :
-          <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
-            <TouchableOpacity disabled={loading} className='flex-row items-center justify-center p-2  rounded-full' 
-            style={{
-              backgroundColor: selectedModules.length > 0 ? "#3b82f6" : "#3b82f6",
-              borderWidth:2,
-              borderColor: selectedModules.length > 0 ? "#3c6dbc" : "#3b82f6",
-            }}
-              onPress={async ()=> {
-                  setReloadNeeded([...reloadNeeded, "Bibliothek"])
-                if (selectedModules.length > 0){
-                                      modules.map((module) => {
-                                          if (selectedModules.includes(module.$id)){
-                                              const mod = {
-                                                  name: module.name + " (Kopie)",
-                                                  subject: module.subject,
-                                                  questions: module.questions,
-                                                  notes: module.notes,
-                                                  documents: module.documents,
-                                                  public: false,
-                                                  progress: 0,
-                                                  creator: user.$id,
-                                                  color: module.color,
-                                                  sessions: module.sessions,
-                                                  tags: module.tags,
-                                                  description: module.description,
-                                                  releaseDate: new Date() ,
-                                                  connectedModules: [],
-                                                  qualityScore: module.qualityScore,
-                                                  duration: 0,
-                                                  upvotes: 0,
-                                                  downVotes: 0,
-                                                  creationCountry: null,
-                                                  creationUniversity: null,
-                                                  creationUniversityProfession: null,
-                                                  creationRegion: null,
-                                                  creationUniversitySubject: [],
-                                                  creationSubject: [],
-                                                  creationEducationSubject: null,
-                                                  creationUniversityFaculty: [],
-                                                  creationSchoolForm: null,
-                                                  creationKlassNumber: null,
-                                                  creationLanguage: null,
-                                                  creationEducationKathegory:null,
-                                                  copy: true,
-                                                  synchronization: false,
 
-                                                  questionList: module.questionList.map(item => {
-                                                    const pItem = JSON.parse(item);
-                                                    const newItem = {
-                                                      ...pItem,
-                                                      status: null
-                                                    }
-                                                    return JSON.stringify(newItem)
-                                                  })
-                                              }
-                                              add(mod)
-                                          }
-              
-                                      }
-                                      
-                                  )
-                                  } else {
-                                  }
-                                  router.push("/bibliothek")
-                              }}
-            >
-              {
-                loading ? <ActivityIndicator size="small" color="#fff" /> :
-                <View className='flex-row items-center'>
-                  <Text className='text-white  font-semibold text-[15px] mb-1'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {selectedModules.length*3}</Text>
-                  <Icon name="bolt" size={15} color="white" className="ml-2" />
-                </View>
-              }
-            </TouchableOpacity>
-          </View>
-        }
+          {/* In Case the User selects a Module the copy Button becomes Visble */}
+          {selectedModules.length == 0 ? null :
+            <CopyModulesButton/>
+          }
         </View>
       
 

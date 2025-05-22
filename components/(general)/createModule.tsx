@@ -11,6 +11,7 @@ import { addNewModule } from '@/lib/appwriteAdd';
 import { setUserDataSetup } from '@/lib/appwriteEdit';
 import ErrorPopup from './(modal)/errorPopup';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
+import { returnColorButtonShadow } from '@/functions/returnColor';
 
 const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }) => {
   // Lokale States
@@ -65,29 +66,15 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
 
   const {width} = useWindowDimensions()
   return (
-    <ScrollView className={`flex-1 bg-gray-900 p-2  shadow-lg ${width > 700 ? " rounded-[10px]" : ""}`}
+    <ScrollView className={`flex-1 bg-gray-900 p-2  shadow-lg rounded-[10px] `}
    
       style={{
         width: '100%',
-
-        shadowColor:
-          (newModule?.color === 'red' && '#DC2626') ||
-          (newModule?.color === 'blue' && '#2563EB') ||
-          (newModule?.color === 'green' && '#059669') ||
-          (newModule?.color === 'yellow' && '#CA8A04') ||
-          (newModule?.color === 'orange' && '#C2410C') ||
-          (newModule?.color === 'purple' && '#7C3AED') ||
-          (newModule?.color === 'pink' && '#DB2777') ||
-          (newModule?.color === 'emerald' && '#059669') ||
-          (newModule?.color === 'cyan' && '#0891B2') ||
-          '#1F2937',
-
-        
-        borderWidth: 1,
+        shadowColor: returnColorButtonShadow(newModule?.color) || '#1F2937',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 10,
-        elevation: 10, // Android
+        elevation: 20, // Android
       }}
       >
         <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage}/>
@@ -98,9 +85,36 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
         setIsVisible={setIsVisible}
       />
         <View className='w-full'>
-          <View className='m-2 flex-row items-center'>
-            <Icon name="arrow-left" size={20} color="white" onPress={() => setUserChoices(null)} />
-            <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Neues Modul</Text>
+          <View className='flex-row justify-between items-center'> 
+            <TouchableOpacity className='m-2 flex-row items-center' onPress={() => setUserChoices(null)}> 
+              <Icon name="arrow-left" size={20} color="white"  />
+              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Neues Modul</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
+              className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
+              >
+              {
+                newModule?.public ? (
+                  <View className='flex-row items-center justify-center'>
+                    <Text className='text-gray-300 font-semibold text-[15px] mr-1'
+                      style={{
+                        color: "#4B5563",
+                      }}
+                    >Öffentlich</Text>
+                    <Icon name="globe" size={15} color="#4B5563" />
+                  </View>
+                ) : (
+                  <View className='flex-row items-center justify-center'>
+                    <Text className='text-gray-300 font-semibold text-[15px] mr-1'
+                      style={{
+                        color: "#4B5563",
+                      }}
+                    >Privat</Text>
+                    <Icon name="lock" size={15} color="#4B5563" />
+                  </View>
+                )
+                }
+            </TouchableOpacity>
           </View>
           <View className="flex-row ">
             <View className="flex-1 justify-between">
@@ -114,17 +128,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
                 placeholderTextColor="#AAAAAA"
               />
             </View>
-            <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
-              className='h-[30px] w-[30px]'
-              >
-              {
-                newModule?.public ? (
-                  <Icon name="globe" size={20} color="#4B5563" />
-                ) : (
-                  <Icon name="lock" size={20} color="#4B5563" />
-                )
-                }
-            </TouchableOpacity>
+            
           </View>
 
           {/* Beschreibung */}
@@ -138,8 +142,10 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
             value={newModule?.description}
             placeholderTextColor={"#AAAAAA"}
             placeholder="Beschreibung für dein Modul..."
-            multiline
+            multiline={true}
             numberOfLines={4}
+            style={{ height: 90, textAlignVertical: 'top'}}
+            textAlignVertical="top"
             className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px]"
           />
         </View>

@@ -117,6 +117,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                                 maxLength={30}
                                 placeholder={session.title ? session.title : texts[selectedLanguage].placeholderSessions}
                                 placeholderTextColor={"AAAAAA"}
+                            
                                 onChangeText={(e) => setSessions(prevSessions =>
                                     prevSessions.map((session, i) =>
                                         i === index ? { ...session, title: e } : session

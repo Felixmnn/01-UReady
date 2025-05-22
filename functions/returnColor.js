@@ -71,3 +71,20 @@ export function returnColorButtonShadow(color, moduleColor) {
   }
 }
 
+export function returnShadowComponents(color){
+  const colorMap = {
+    red: '#DC2626',
+    blue: '#2563EB',
+    green: '#059669',
+    yellow: '#CA8A04',
+    orange: '#C2410C',
+    purple: '#7C3AED',
+    pink: '#DB2777',
+    emerald: '#059669',
+    cyan: '#0891B2',
+  };
+
+  return colorMap[color] || '#1F2937'; 
+};
+
+

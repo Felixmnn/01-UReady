@@ -1,4 +1,4 @@
-import { View, Modal, useWindowDimensions } from 'react-native'
+import { View, Modal, useWindowDimensions, TouchableWithoutFeedback } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import PageAiCreate from '@/components/(getting-started)/pageAiCreate'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -53,6 +53,10 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
               }
               fetchUserData()
           }, [user])
+
+      const closeModal = () => {
+    setIsVisible(false);
+  };
           
       useEffect(() => {
             if (userData == null) return ;
@@ -77,18 +81,26 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
         },[userData])
 
   return (
-    <Modal
-            animationType="slide"
-            transparent={true}
-            visible={isVisible}
-        >
-            <View  className='absolute bottom-0 left-0 w-full h-full  justify-center items-center '
-            
-             
-            >
-      <PageAiCreate newModule={newModule} setNewModule={setNewModule} setUserChoices={()=> {setIsVisible(false)}} userData={userData}/>
-    </View>
-        </Modal>
+    <Modal animationType="slide" transparent={true} visible={isVisible}>
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View
+            className="absolute top-0 left-0 w-full h-full justify-center items-center"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
+          >
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View
+                className="h-full w-full rounded-[10px] "
+                style={{
+                  maxWidth: 700,
+                  maxHeight: 800,
+                }}
+              >
+                <PageAiCreate setIsVisibleModal={setIsVisible} newModule={newModule} setNewModule={setNewModule} setUserChoices={()=> {setIsVisible(false)}} userData={userData}/>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
   )
 }
 

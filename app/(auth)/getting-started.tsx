@@ -97,7 +97,7 @@ const gettingStarted = () => {
         > 
           
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
-          : userChoices == "GENERATE" ?     <PageAiCreate  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
+          : userChoices == "GENERATE" ?     <PageAiCreate setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userData}/>
           : userChoices == "CREATE" ?       <PageCreateModule setUserChoices={setUserChoices}  newModule={newModule} setNewModule={setNewModule}/>
           : userChoices == "TEXTBASED" ?    <PageModulText newModule={newModule} setNewModule={setNewModule} userData={userData}/>

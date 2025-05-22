@@ -226,7 +226,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
     
             // Step 3 - Read the file differently based on platform
             let fileBlob;
-    
             if (Platform.OS === 'web') {
                 // Web: fetch URI as Blob
                 fileBlob = await fetch(file.uri).then(res => res.blob());
@@ -240,14 +239,10 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
                 const byteArray = new Uint8Array(byteNumbers);
                 fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
             }
-
             const uploadRes = await addDocumentToBucket({
                 fileID: doc.id,
                 fileBlob: fileBlob,
             });
-            if (uploadRes) {
-                
-            }
             setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
             appwriteRes.uploaded = true;
             const final = await updateDocumentConfig(appwriteRes);

@@ -1,13 +1,16 @@
 
-import { addNewModule } from '@/lib/appwriteAdd';
+import { addDocumentJob, addNewModule } from '@/lib/appwriteAdd';
 import { addQUestion, setUserDataSetup } from '@/lib/appwriteEdit';
 import {router} from 'expo-router';
+import uuid from 'react-native-uuid';
+import { create } from 'react-test-renderer';
 
 
 
-export async function materialToModule(user, material, userData, newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading, reloadNeeded, setReloadNeeded) {
+export async function materialToModule(user, material, userData, newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading, reloadNeeded, setReloadNeeded,setIsVisibleModal) {
   setLoading(true);
   let directQuestions = [];
+  const moduleID = uuid.v4();
 
   try {
     for (let i = 0; i < material.length; i++) {
@@ -18,7 +21,7 @@ export async function materialToModule(user, material, userData, newModule, setN
         } else if (material[i].type == "TOPIC") {
           res = await questionFromTopic(material[i].content, material[i].sessionID, "PLACEHOLDER");
         } else {
-          res = [];
+          await createDocumentJob(material[i].id, moduleID, material[i].sessionID, setSessions);
         }
 
         if (typeof res == "object" && Array.isArray(res)) {
@@ -65,12 +68,32 @@ export async function materialToModule(user, material, userData, newModule, setN
   } catch (error) {
     console.log("Allgemeiner Fehler:", error);
   } finally {
+    console.log("Sessions:", sessions);
     setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
+    if (setIsVisibleModal) {
+      setIsVisibleModal(false);
+    }
     setLoading(false);
     router.push("/bibliothek");
   }
 }
 
+export async function createDocumentJob(databucketID, moduleID, sessionID, setSessions ) {
+    const job = {
+        databucketID: databucketID,
+        subjectID: moduleID,
+        sessionID: sessionID,
+    }
+    await addDocumentJob(job)
+    setSessions((prevSessions) => {
+        const newSessions = [...prevSessions];
+        const sessionIndex = newSessions.findIndex((session) => session.id === sessionID);
+        if (sessionIndex !== -1) {
+            newSessions[sessionIndex].tags = "JOB-PENDING";
+        }
+        return newSessions;
+    })
+}
 
 
 export async function generateQuestionsFromText (text, amount, sessionID, subjectID) {

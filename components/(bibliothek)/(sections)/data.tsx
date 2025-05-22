@@ -25,7 +25,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
 
 
     /**
-     * This component ist the header for Questions, Notes and Documents
+     * Header for Question, Note and Document List + Item Counter
      * @param {title} title - The title of the item list
      * @param {count} count - The amount of items
      */
@@ -39,7 +39,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
     }
 
     /**
-     * In case one or two of the Lists (Questions, Notes, Documents) are empty, this component enables to add new items
+     * This component enables to add new items of the type Question, Note, Document
      * @param handlePRess - This function contains the function to add either a new question, note or document 
      * @param {title} button - Is the title of the touchable opacity
      * @returns 
@@ -63,7 +63,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
     }
 
     /**
-     * This Modal is display if the user tries to upload a unsupported file type - in theory
+     * Unused component to show the upload status of the file
      */
     const NichtUnterstuzterDateityp = () => {
         return (
@@ -82,7 +82,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
     }
 
     /**
-     * This is the component that displays the question Cards
+     * Question Cards - Containing: AIGENERATED, QUESTION, STATUS
      */
     const QuestionList = () => {
         return(
@@ -160,7 +160,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
     }
 
     /**
-     * This is the component wich diplays the rendered documents
+     * File Cards - Containing: FILE, UPLOAD STATUS, DELETE-FILE
      */
     const DocumentList = () => {
         return (
@@ -220,7 +220,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
     }
 
     /**
-     * This is the component which displays the rendered notes
+     * Note Cards - Containing: NOTE, EDIT-NOTE, DELETE-NOTE
      */
     const NoteList = () => {
         return (

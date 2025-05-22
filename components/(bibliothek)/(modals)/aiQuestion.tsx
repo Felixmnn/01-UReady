@@ -25,51 +25,10 @@ const texts = languages.aiQuestion;
 
 const [selectedType, setSelectedType] = useState("FILE")
 const [promt, setPromt] = useState("")
-const [topics, setTopics] = useState(["Algorythmen", "Datenstrukturen", "Java", "C++"])
 const [selectedTopic, setSelectedTopic] = useState([])
-const [settingsVisible, setSettingsVisible] = useState(false)
 const [isLoading, setIsLoading] = useState(false)
 
-async function generateItems(type) {
-    setIsLoading(true)
 
-    if (type == "TEXT") {
-        const res = await generateQuestionsFromText(promt, 10, selectedSession.id, selectedModule.$id)
-        const match = res.match(/\[.*\]/s);
-        const jsonData = JSON.parse(match[0]);
-        for (let i = 0; i < jsonData.length; i++) {
-            try {
-                jsonData[i].sessionID = selectedSession.id;
-                jsonData[i].subjectID = selectedModule.$id;
-                await addQUestion(jsonData[i])
-                setQuestions([...questions, jsonData[i]])
-
-            } catch (error) {
-                console.log(error)
-            }
-
-        }
-    } else if (type == "TOPIC") {
-        const res = await questionFromTopic(selectedTopic, selectedSession.id, selectedModule.$id)
-        const match = res.match(/\[.*\]/s);
-        const jsonData = JSON.parse(match[0]);
-        for (let i = 0; i < jsonData.length; i++) {
-            try {
-                await addQUestion(jsonData[i])
-                setQuestions([...questions, jsonData[i]])
-
-            } catch (error) {
-                console.log(error)
-            }
-
-        }
-    } else if (type == "FILE") {
-    }
-
-    setIsLoading(false)
-    setIsVisible(false);
-
-}
 const [ selectedFile, setSelectedFile ] = useState(null)
 const GenerateByFile = () => {
     

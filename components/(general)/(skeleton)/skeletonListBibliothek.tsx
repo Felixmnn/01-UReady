@@ -1,7 +1,7 @@
-import { FlatList,Animated, Dimensions, View,ScrollView } from 'react-native'
+import { FlatList,Animated, Dimensions, View } from 'react-native'
 import React, { useEffect } from 'react'
 
-const SkeletonListProfile = () => {
+const SkeletonListBibliothek = () => {
     const { width } = Dimensions.get('window');
     const SkeletonItem = ({height=50, width=50, padding=0, margingRight=0}) => {
               const opacity = new Animated.Value(0.3);
@@ -31,14 +31,17 @@ const SkeletonListProfile = () => {
               );
             };
   return (
-    <ScrollView >
-        <SkeletonItem width={width - 20} height={400} padding={10} />
-        <SkeletonItem width={width -20 } height={300} />
-        <SkeletonItem width={width -20 } height={300} />
-
-    </ScrollView>
+    <View className='w-full items-center'>
+        <SkeletonItem width={width - 20} height={30} padding={10} />
+        <SkeletonItem width={width} height={5} />
+        {
+            [1,2,3,4,5].map((item, index) => (
+                <SkeletonItem key={index} height={150} width={width - 20} />
+            ))
+        }
+    </View>
   )
 }
 
-export default SkeletonListProfile
+export default SkeletonListBibliothek
 

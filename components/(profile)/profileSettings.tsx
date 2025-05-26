@@ -16,6 +16,7 @@ import SkeletonList from '../(general)/(skeleton)/skeletonList';
 import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import SkeletonListProfile from '../(general)/(skeleton)/skeletonListProfile';
 const ProfileSettings = () => {
     const {user, language,setNewLanguage } = useGlobalContext() 
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
@@ -116,7 +117,7 @@ const ProfileSettings = () => {
     { label: "Australian", value: "AU" },
   ];
   const colorOptions = [
-    { label: texts[selectedLanguage].hell, value: "light" },
+    //{ label: texts[selectedLanguage].hell, value: "light" },
     { label: texts[selectedLanguage].dunkel, value: "dark" }
   ]
   
@@ -134,7 +135,7 @@ const ProfileSettings = () => {
 
   return (
     <View className='flex-1 items-center '>
-      { !loading ?
+      { !loading?
       <View className='flex-1 w-full items-center'>
            
         <View className={`flex-1 w-full  rounded-[10px] bg-gray-900 ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
@@ -302,7 +303,7 @@ const ProfileSettings = () => {
     </View>
     </View>
 
-    : <SkeletonList/>
+    : <SkeletonListProfile/>
     }
     </View>
   )

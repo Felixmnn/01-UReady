@@ -295,7 +295,7 @@ const HomeGeneral = () => {
         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
       }}>
           {
-            !userUsageP || userUsageP.lastModules.length == 0 ?
+            !userUsageP || userUsageP.lastSessions.length == 0 ?
             <View className='flex-row'>
               <Session item={{
                   name: "Erstes Modul",

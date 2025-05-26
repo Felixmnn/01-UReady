@@ -8,6 +8,7 @@ import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 import { getModules } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router,useLocalSearchParams } from "expo-router"
+import SkeletonListBibliothek from '@/components/(general)/(skeleton)/skeletonListBibliothek';
 
 const Bibliothek = () => {
   const {user, isLoggedIn,isLoading, reloadNeeded, setReloadNeeded } = useGlobalContext();
@@ -99,8 +100,8 @@ const Bibliothek = () => {
       <Tabbar content={()=> { return(
         
         <View className='flex-1 '>
-          {loading ? (
-          <SkeletonList />
+          {loading  ? (
+          <SkeletonListBibliothek />
         ) : (
         <View className='flex-1 rounded-[10px] '>
         {selected == "AllModules" ? <AllModules onRefresh={onRefresh} refreshing={refreshing} setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}

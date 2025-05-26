@@ -11,6 +11,8 @@ import images from '@/assets/shopItems/itemConfig'
 import Cardcombination from '@/components/(shop)/cardcombination'
 import TokenHeader from '@/components/(general)/tokenHeader'
 import { loadShopItems } from '@/lib/appwriteShop';
+import SkeletonList from '@/components/(general)/(skeleton)/skeletonList'
+import SkeletonListShop from '@/components/(general)/(skeleton)/skeletonListShop'
 
 const shop = () => {
   const {user, isLoggedIn,isLoading, userUsage } = useGlobalContext();
@@ -64,7 +66,7 @@ const shop = () => {
             {
               !shopItemsA ?
               <View className='flex-1 items-center justify-center'>
-                <Text className='text-white font-bold text-xl'>Loading...</Text>
+                <SkeletonListShop />
               </View>
               :
               <View className='w-full items-center'>

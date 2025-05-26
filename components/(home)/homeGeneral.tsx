@@ -260,9 +260,9 @@ const HomeGeneral = () => {
     >
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
       <AddAiModule isVisible={isVisibleNewAiModule} setIsVisible={setIsVisibleAiModule} />
-
-    <View className='flex-1 rounded-[10px]'>
       <TokenHeader userUsage={userUsageP} />
+
+    <View className='flex-1 rounded-[10px] p-3'>
       <Header title={texts[selectedLanguage].lastModules}/>
       <ScrollView  horizontal={true} className='flex-row'
       style={{

@@ -316,7 +316,7 @@ const quiz = () => {
                     {
                         question.answers.map((answer,index) => {
                             return (
-                                <TouchableOpacity disabled={showAnsers} onPress={()=> selectAnswer(answer) } className={`flex-row justify-between items-center flex-1 border-[1px] p-2 rounded-[10px] m-1 ${showAnsers ? (question.answerIndex.includes(index) ? "bg-green-900 border-green-600" : "bg-red-900 border-red-600") :selectedAnswers.includes(answer) ? "bg-blue-900 border-blue-600" : "bg-gray-800 border-gray-600"}`}>
+                                <TouchableOpacity key={index} disabled={showAnsers} onPress={()=> selectAnswer(answer) } className={`flex-row justify-between items-center flex-1 border-[1px] p-2 rounded-[10px] m-1 ${showAnsers ? (question.answerIndex.includes(index) ? "bg-green-900 border-green-600" : "bg-red-900 border-red-600") :selectedAnswers.includes(answer) ? "bg-blue-900 border-blue-600" : "bg-gray-800 border-gray-600"}`}>
                                     <Text className='text-white'>{answer}</Text>
                                     {
                                         showAnsers && selectedAnswers.includes(answer) ?

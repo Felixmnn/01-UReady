@@ -36,9 +36,9 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
       <View className=' p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] ' style={{borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
         <View className='flex-row justify-between items-start'>
           <View >
-            <Text className='my-1 font-semibold text-[15px] text-gray-100'>{titel}</Text>
+            <Text className='my-1 font-semibold text-[15px] text-gray-100'>{titel.length > 30 ? titel.substring(0,30) + "..." : titel}</Text>
             <Text className='my-1 text-[12px] text-gray-400'
-            style={{maxWidth: 250, height: 40}}
+            style={{maxWidth: 220, height: 50}}
             >{ studiengang ? studiengang.length > 100 ? studiengang.substring(0,100) + "..." : studiengang : null}</Text>
           </View>
           {

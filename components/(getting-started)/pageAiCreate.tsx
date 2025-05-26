@@ -77,44 +77,32 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
       setFileList((prev) => [...prev, doc]);
 
       const appwriteRes = await addDocumentConfig(doc);
-
-      let fileBlob;
-      if (Platform.OS === "web") {
-        fileBlob = await fetch(file.uri).then((res) => res.blob());
-      } else {
-        const base64 = await FileSystem.readAsStringAsync(file.uri, {
-          encoding: FileSystem.EncodingType.Base64,
+          
+        // Step 3 - Read the file differently based on platform
+        let fileBlob;
+        if (Platform.OS === 'web') {
+            // Web: fetch URI as Blob
+            fileBlob = await fetch(file.uri).then(res => res.blob());
+        } else {
+            // Native (Android/iOS): read file as base64, then convert to Blob
+            const base64 = await FileSystem.readAsStringAsync(file.uri, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+            const byteCharacters = atob(base64);
+            const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
+            const byteArray = new Uint8Array(byteNumbers);
+            fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
+        }
+        const uploadRes = await addDocumentToBucket({
+            fileID: doc.id,
+            fileBlob: fileBlob,
         });
-        const byteCharacters = atob(base64);
-        const byteNumbers = new Array(byteCharacters.length)
-          .fill()
-          .map((_, i) => byteCharacters.charCodeAt(i));
-        const byteArray = new Uint8Array(byteNumbers);
-        fileBlob = new Blob([byteArray], {
-          type: file.mimeType || "application/pdf",
-        });
+        console.log("Upload response: ", uploadRes);
+        return;
       }
-
-      await addDocumentToBucket({
-        fileID: doc.id,
-        fileBlob: fileBlob,
-      });
-
-      setFileList((prev) =>
-        prev.map((document) =>
-          document.id === doc.id ? { ...document, uploaded: true } : document
-        )
-      );
-
-      if (appwriteRes) {
-        appwriteRes.uploaded = true;
-        await updateDocumentConfig(appwriteRes);
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setErrorMessage("Error uploading file");
-    }
-  }
+     catch (error) { 
+      console.log("Error uploading file: ", error);
+    }}
 
   
   /**
@@ -238,7 +226,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
     <ScrollView className={`flex-1 bg-gray-900 p-3 shadow-lg  rounded-[10px] `}
       style={{
         width: '100%',
-        shadowColor: returnShadowComponents(newModule?.color),
+        shadowColor: returnShadowComponents(newModule?.color ? newModule.color : "black"),
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 10,

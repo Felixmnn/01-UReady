@@ -201,8 +201,8 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
                           margin: 5,
                           marginTop: 5,
 
-                          borderColor: session.color,
-                          shadowColor: session.color,
+                          borderColor: session?.color || '#1F2937',
+                          shadowColor: session?.color || '#1F2937',
                           shadowOffset: { width: 0, height: 0 },
                           shadowOpacity: 0.5,
                           shadowRadius: 6,

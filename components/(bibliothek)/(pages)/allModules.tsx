@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView,FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView,FlatList, Image } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
@@ -9,6 +9,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import TokenHeader from '@/components/(general)/tokenHeader';
+import AddAiModule from '@/components/(general)/(modal)/addAiModule';
 
 const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refreshing}) => {
     const [last7Hidden, setLast7Hidden ] = useState(true)
@@ -100,15 +101,20 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
     }, [user])
 
       
-
+    const [ isVisibleAI, setIsVisibleAI] = useState(false)
   return (
     <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
+      <AddAiModule isVisible={isVisibleAI} setIsVisible={setIsVisibleAI}  />
         <TokenHeader userUsage={userUsage}/>
-        <View className={`flex-row justify-between items-center rouned-[10px] mx-5 my-2 `}>
+        <View className={`flex-row justify-start items-center rouned-[10px] mx-5 my-2 `}>
           
           <TouchableOpacity onPress={()=> {setIsVisibleNewModule(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
               <Icon name="cubes" size={15} color="white"/>
+              <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> 
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=> {setIsVisibleAI(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
+              <Image source={require("../../../assets/bot.png")} style={{height: 16, width: 16}} />
               <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> 
           </TouchableOpacity>
           
@@ -118,7 +124,7 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
           <TouchableOpacity className='' onPress={()=> setLast7Hidden(!last7Hidden)}>
             <View className='flex-row items-center justify-between w-full mb-2'>
               <Text className='font-bold text-gray-100 text-[18px]'>{texts[selectedLanguage].last7}</Text>
-              <Icon name={last7Hidden ? "chevron-down" : "chevron-up"} size={15} color="white"/>
+              <Icon name={last7Hidden ? "chevron-down" : "chevron-up"} size={20} color="white"/>
             </View>
           </TouchableOpacity>
           

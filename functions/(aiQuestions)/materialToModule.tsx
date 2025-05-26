@@ -1,5 +1,5 @@
 
-import { addDocumentJob, addNewModule } from '@/lib/appwriteAdd';
+import { addDocumentJob, addNewModule, addNewModuleWithID } from '@/lib/appwriteAdd';
 import { addQUestion, setUserDataSetup } from '@/lib/appwriteEdit';
 import {router} from 'expo-router';
 import uuid from 'react-native-uuid';
@@ -21,7 +21,8 @@ export async function materialToModule(user, material, userData, newModule, setN
         } else if (material[i].type == "TOPIC") {
           res = await questionFromTopic(material[i].content, material[i].sessionID, "PLACEHOLDER");
         } else {
-          await createDocumentJob(material[i].id, moduleID, material[i].sessionID, setSessions);
+          const res = await createDocumentJob(material[i].id, moduleID, material[i].sessionID, setSessions);7
+          console.log("Job erstellt:", res);
         }
 
         if (typeof res == "object" && Array.isArray(res)) {
@@ -36,12 +37,12 @@ export async function materialToModule(user, material, userData, newModule, setN
     // Modul trotzdem speichern, selbst wenn Fragen fehlen
     let newModuleData;
     try {
-      newModuleData = await addNewModule({
+      newModuleData = await addNewModuleWithID({
         ...newModule,
         color: newModule.color.toUpperCase(),
         questions: questions.length,
         sessions: sessions.map((item) => JSON.stringify(item)),
-      });
+      },moduleID);
     } catch (error) {
       console.log("Fehler beim Speichern des Moduls:", error);
       // Wenn Modul-Speicherung fehlschlägt, redirect trotzdem ausführen
@@ -84,7 +85,7 @@ export async function createDocumentJob(databucketID, moduleID, sessionID, setSe
         subjectID: moduleID,
         sessionID: sessionID,
     }
-    await addDocumentJob(job)
+    const res = await addDocumentJob(job)
     setSessions((prevSessions) => {
         const newSessions = [...prevSessions];
         const sessionIndex = newSessions.findIndex((session) => session.id === sessionID);

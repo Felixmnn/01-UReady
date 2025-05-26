@@ -60,7 +60,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
                   <View className='justify-center'>
                     <Text className='text-white font-bold text-[15px] px-3 '>{module.title}</Text>
                     {
-                      selected == index && module.description.length > 0 ?
+                      selected == index && module.description?.length > 0 ?
                         <Text
                           className="text-white font-semibold text-[12px] px-3"
                           style={{ flexWrap: 'wrap' }}
@@ -96,7 +96,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
           <View>
                     <Text className='text-white font-bold text-[15px] px-3 pt-3 '>Alle Fragen</Text>
                     {
-                      selected == moduleSessions.length +1 && moduleDescription.length > 0 ?
+                      selected == moduleSessions.length +1 && moduleDescription?.length > 0 ?
                         <Text
                           className="text-gray-200 font-semibold text-[12px] px-3"
                           style={{ flexWrap: 'wrap', maxWidth: 250 }}

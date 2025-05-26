@@ -168,7 +168,11 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
      */
     const DocumentList = () => {
         return (
-            <View className='flex-1'>
+            <View className='flex-1'
+                style={{
+                    minHeight: 150,
+                }}
+            >
                 <CounterText title={texts[selectedLanguage].file} count={filteredDocuments.length}/>{
             documents ? 
            <View
@@ -228,12 +232,14 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
      */
     const NoteList = () => {
         return (
-            <View className='flex-1'>
+            <View className='flex-1'
+                
+            >
                 <CounterText title={texts[selectedLanguage].note} count={filteredNotes.length}/>
                 {
                     notes  ? 
                     <View
-                    className="w-full"
+                    className=" w-full"
                     
                     >
                     {filteredNotes.map((item) => (
@@ -263,7 +269,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
                     <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} handlePress={()=> SwichToEditNote()} />
 
                 }
-        { filteredNotes.length == 0  ? <AddData title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} /> : null}
+        { filteredNotes.length == 0  ? <AddData handlePress={SwichToEditNote} title={texts[selectedLanguage].noteH} subTitle={texts[selectedLanguage].noteSH} button={texts[selectedLanguage].noteBtn} /> : null}
     
             </View>
         )
@@ -303,9 +309,11 @@ return (
                           progressViewOffset={Platform.OS === 'web' ? 0 : 0}
                         />
                       } >
-                <QuestionList/>
-                <DocumentList/>
-                <NoteList/>
+                <View className='flex-1'>
+                    <QuestionList/>
+                    <DocumentList/>
+                    <NoteList/>
+                </View>
         </ScrollView>}
     </View>
   )

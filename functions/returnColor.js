@@ -1,77 +1,56 @@
 export function returnColor(color, moduleColor) {
-  let lowerCaseColor = color ? color.toLowerCase() : moduleColor?.toLowerCase();
-  
-  if (lowerCaseColor === "red") {
-    return "#FF4D4D";
-  } else if (lowerCaseColor === "orange") {
-    return "#FF884D";
-  } else if (lowerCaseColor === "yellow") {
-    return "#FFD700";
-  } else if (lowerCaseColor === "emerald") {
-    return "#2ECC71";
-  } else if (lowerCaseColor === "cyan") {
-    return "#17D4FC";
-  } else if (lowerCaseColor === "blue") {
-    return "#1E90FF";
-  } else if (lowerCaseColor === "purple") {
-    return "#A64DFF";
-  } else if (lowerCaseColor === "pink") {
-    return "#FF4DA6";
-  } else if (lowerCaseColor === "green") {
-    return "#4DFF4D";
+  const colorMap = {
+    red: "#FF4D4D",
+    orange: "#FF884D",
+    yellow: "#FFD700",
+    emerald: "#2ECC71",
+    cyan: "#17D4FC",
+    blue: "#1E90FF",
+    purple: "#A64DFF",
+    pink: "#FF4DA6",
+    green: "#4DFF4D"
+  };
+  if (colorMap[color]) {
+    return colorMap[color];
   }
 }
 
 export function returnColorButton(color, moduleColor) {
-  let lowerCaseColor = color ? color.toLowerCase() : moduleColor.toLowerCase();
-  
-  if (lowerCaseColor === "red") {
-    return "#FF4D4D";
-  } else if (lowerCaseColor === "orange") {
-    return "#FF884D";
-  } else if (lowerCaseColor === "yellow") {
-    return "#FFD700";
-  } else if (lowerCaseColor === "emerald") {
-    return "#2ECC71";
-  } else if (lowerCaseColor === "cyan") {
-    return "#17D4FC";
-  } else if (lowerCaseColor === "blue") {
-    return "#1E90FF";
-  } else if (lowerCaseColor === "purple") {
-    return "#A64DFF";
-  } else if (lowerCaseColor === "pink") {
-    return "#FF4DA6";
-  } else if (lowerCaseColor === "green") {
-    return "#4DFF4D";
+  const colorMap = {
+    red: "#FF4D4D",
+    orange: "#FF884D",
+    yellow: "#FFD700",
+    emerald: "#2ECC71",
+    cyan: "#17D4FC",
+    blue: "#1E90FF",
+    purple: "#A64DFF",
+    pink: "#FF4DA6",
+    green: "#4DFF4D"
+  };
+  if (colorMap[color]) {
+    return colorMap[color];
   }
 }
 
 export function returnColorButtonShadow(color, moduleColor) {
-
-  let lowerCaseColor = color ? color.toLowerCase() : moduleColor.toLowerCase();
-  
-  if (lowerCaseColor === "red") {
-    return "#800000";
-  } else if (lowerCaseColor === "orange") {
-    return "#803300";
-  } else if (lowerCaseColor === "yellow") {
-    return "#806600";
-  } else if (lowerCaseColor === "emerald") {
-    return "#006644";
-  } else if (lowerCaseColor === "cyan") {
-    return "#006666";
-  } else if (lowerCaseColor === "blue") {
-    return "#0056B3";
-  } else if (lowerCaseColor === "purple") {
-    return "#400080";
-  } else if (lowerCaseColor === "pink") {
-    return "#800040";
-  } else if (lowerCaseColor === "green") {
-    return "#004D00";
+  const colorMap = {
+    red: "#FF4D4D",
+    orange: "#FF884D",
+    yellow: "#FFD700",
+    emerald: "#2ECC71",
+    cyan: "#17D4FC",
+    blue: "#1E90FF",
+    purple: "#A64DFF",
+    pink: "#FF4DA6",
+    green: "#4DFF4D"
+  };
+  if (colorMap[color]) {
+    return colorMap[color];
   }
 }
 
 export function returnShadowComponents(color){
+
   const colorMap = {
     red: '#DC2626',
     blue: '#2563EB',

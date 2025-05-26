@@ -16,9 +16,8 @@ import SkeletonList from '../(general)/(skeleton)/skeletonList';
 import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
 import { addNewUserConfig } from '@/lib/appwriteAdd';
 import  languages  from '@/assets/exapleData/languageTabs.json';
-const ProfileSettings = ({setPage}) => {
-    const {user, setUser,setIsLoggedIn, setIsLoading } = useGlobalContext() 
-    const { language,setNewLanguage } = useGlobalContext()
+const ProfileSettings = () => {
+    const {user, language,setNewLanguage } = useGlobalContext() 
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
       useEffect(() => {
         if(language) {
@@ -56,8 +55,6 @@ const ProfileSettings = ({setPage}) => {
     },[user])
   
     const [modalVisible, setModalVisible] = useState(false);
-    const [inputTouched, setInputTouched] = useState(false);
-    const [ missingEntry, setMissingEntry ] = useState(false);
     const toggleModal = () => {
       setModalVisible(!modalVisible);
     };
@@ -141,23 +138,15 @@ const ProfileSettings = ({setPage}) => {
       <View className='flex-1 w-full items-center'>
            
         <View className={`flex-1 w-full  rounded-[10px] bg-gray-900 ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
-      {/*
-      <TouchableOpacity className='w-full rounded-t-[10px] h-[70px] bg-[#0c111d] flex-row items-center justify-start px-5 border-w-[1px] border-gray-600' onPress={()=> setPage()}>
-        <TouchableOpacity className='rounded-full p-2 ' onPress={()=> setPage()}>
-          <Icon name="arrow-left" size={20} color="white"/>
-        </TouchableOpacity>
-        <Text className='text-white text-[20px] font-semibold ml-4 mb-1'>Einstellungen</Text>
-      </TouchableOpacity>
-      */}
       <View className='mt-2'/>
-      <ScrollView
-      className='bg-gray-900'
-      style={{
-        scrollbarWidth: 'thin', // Dünne Scrollbar
-        scrollbarColor: 'gray transparent',
-        
-      }}
-      >
+        <ScrollView
+        className='bg-gray-900'
+        style={{
+          scrollbarWidth: 'thin', // Dünne Scrollbar
+          scrollbarColor: 'gray transparent',
+          
+        }}
+        >
       <InfoModule content={()=> {
                 return(
                     <View className='flex-1 items-center '>

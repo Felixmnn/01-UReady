@@ -50,8 +50,8 @@ const ModalBudyNow = ({isVisible, setIsVisible, imageSource, imageColor,kathegor
                         paddingTop: 30,
                     }}
         >
-            <View className="bg-white p-3 rounded-xl shadow-lg items-center">
-                <Text className="text-lg font-semibold mb-2 text-center">Kauf bestätigen</Text>
+            <View className="bg-gray-800 p-3 rounded-xl shadow-lg items-center">
+                <Text className="text-lg font-semibold mb-2 text-center text-gray-200">Kauf bestätigen</Text>
                 <View className='p-3'
                     style={{
                         backgroundColor: imageColor,
@@ -66,18 +66,18 @@ const ModalBudyNow = ({isVisible, setIsVisible, imageSource, imageColor,kathegor
                     }} />
                 </View>
                 
-                <Text className="mb-2 my-1">
-                Möchtest du <Text className="font-bold">{name}</Text> für{" "}
-                <Text className="font-bold">{free ? "0,00" : priceWithCommas(price)} €</Text> kaufen?
+                <Text className="mb-2 my-1 text-gray-200">
+                Möchtest du <Text className="font-bold text-gray-200">{name}</Text> für{" "}
+                <Text className="font-bold text-gray-200">{free ? "0,00" : priceWithCommas(price)} €</Text> kaufen?
                 </Text>
 
                 <View className="flex-row justify-end space-x-4 ">
                 <TouchableOpacity onPress={() => setIsVisible(false)}
                     className='bg-red-300 p-2 rounded-[10px] w-[90px]'>
-                    <Text className="text-red-500 font-medium text-center">Abbrechen</Text>
+                    <Text className="text-gray-900 font-medium text-center ">Abbrechen</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=> handleBuyNow()} className='bg-blue-500 p-2 rounded-[10px] w-[90px]'>
-                    <Text className="text-gray-900 font-medium text-center">Kaufen</Text>
+                    <Text className=" font-medium text-center text-gray-900">Kaufen</Text>
                 </TouchableOpacity>
                 </View>
             </View>

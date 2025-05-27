@@ -45,8 +45,7 @@ const Tabbar = ({content,page, hide}) => {
 
                 </View>  
                 <View className='items-center my-1'>
-                    {tabbarIcon('question', 25, 'white', 'profil',"/profil")}
-                    {tabbarIcon('share', 25, 'white', 'profil',"/profil")}
+                    {tabbarIcon('share', 25, 'white', 'share',"/profil")}
                       
                 </View >
             </View >

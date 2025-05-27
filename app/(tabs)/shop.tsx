@@ -72,7 +72,6 @@ const shop = () => {
               <View className='w-full items-center'>
                 <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "ENERGY" )} title='Recharges' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
                 <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "CHIPS" )} title='Chips' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
-                <Cardcombination cards={[shopItemsA.filter(item => item.kathegory == "RECHARGESBOOSTS" )[0]]} title='Boosts' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
                 <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title='Free Items' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
               </View> 
             }

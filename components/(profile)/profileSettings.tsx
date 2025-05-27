@@ -291,7 +291,8 @@ const ProfileSettings = () => {
               )}} hideHead = {true} infoStyles="z-20"/> 
       <InfoModule content={()=> { return(
         <View>
-          { !isVertical ? <SettingsOption title={"Hilfe"} iconName={"life-ring"}/> : null}
+          <SettingsOption title={"Hilfe"} iconName={"life-ring"} handlePress={()=> router.push("/contact") }/> 
+          <SettingsOption title={"Policys"} iconName={"shield"} handlePress={()=> router.push("/policys") }/>
           <SettingsOption title={texts[selectedLanguage].actioncode} iconName={"bolt"} item={modal()} handlePress={()=> setModalVisible(true)}/>  
           <SettingsOption title={texts[selectedLanguage].logout} iconName={"sign-out"} handlePress={ ()=>    router.push("/sign-out")}/>
           <SettingsOption title={texts[selectedLanguage].deleteAccount} iconName="trash" bottom={"true"} handlePress={ ()=>    router.push("/sign-out")}/>

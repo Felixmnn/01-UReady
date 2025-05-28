@@ -338,9 +338,10 @@ const HomeGeneral = () => {
         }
       </View>
     </View>
-    
     </ScrollView>
   )
 }
 
 export default HomeGeneral
+
+

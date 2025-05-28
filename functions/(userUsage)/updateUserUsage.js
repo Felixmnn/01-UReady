@@ -26,15 +26,30 @@ export async function updateUserUsage(userUsage) {
             if (newUserUsage.energy > 10) {
                 newUserUsage.energy = 10;
             }
-        }
-    }
-    if (userUsage.streakActive) {
-        const div = differenceInHours(userUsage.streakLastUpdate, now);
-        if (div > 24) {
-            newUserUsage.streakActive = false;
-            newUserUsage.streak = 0;
             newUserUsage.streakLastUpdate = now;
         }
+    }
+    if (userUsage.streakUpdate.length > 0) {
+        const lastDay = userUsage.streakUpdate[0];
+        if (wasYesterday(lastDay)) {
+            if (userUsage.streakActive) {
+                newUserUsage.streakUpdate = [now.toISOString(), ...userUsage.streakUpdate];
+                newUserUsage.streak += 1;
+            } else {
+                newUserUsage.streakActive = true;
+                newUserUsage.streak = 1;
+                newUserUsage.streakUpdate = [now.toISOString(), ...userUsage.streakUpdate];
+            }
+        } else if (isToday(lastDay)) {
+        } else {
+            newUserUsage.streakActive = false;
+            newUserUsage.streak = 0;
+            newUserUsage.streakUpdate = [now.toISOString(),...userUsage.streakUpdate];
+        }
+    } else {
+        newUserUsage.streakActive = false;
+        newUserUsage.streak = 0;
+        newUserUsage.streakUpdate = [now.toISOString(),...userUsage.streakUpdate];
     }
     if (userUsage.boostActive) {
         const div = differenceInHours(userUsage.boostActivation, now);
@@ -62,5 +77,24 @@ export function differenceInHours(date1, date2) {
     return Math.floor(diffInMs / (1000 * 60 * 60));
 }  
 
+function wasYesterday(date: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const compare = new Date(date);
+  compare.setHours(0, 0, 0, 0);
+    console.log("Compare Date Result", compare.getTime() === yesterday.getTime());
+  return compare.getTime() === yesterday.getTime();
+}
 
+function isToday(date: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const compare = new Date(date);
+  compare.setHours(0, 0, 0, 0);
+  
+  return compare.getTime() === today.getTime();
+}

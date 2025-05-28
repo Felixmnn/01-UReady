@@ -39,6 +39,7 @@ const GlobalProvider = ({children}) => {
                     lastSessions: [],
                     recharges: 0,
                     supercharges: 0,
+                    streakUpdate:[new Date()],
                 });
                 setUserUsage(res);
                 }

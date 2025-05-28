@@ -1,50 +1,98 @@
-# Welcome to your Expo app 👋
+# 🎓 Q-Ready – Deine smarte Lernplattform
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![Q-Ready Logo](./assets/images/favicon.png)
 
-## Get started
+> **Q-Ready** ist eine Lernerweiterung. Welche dir hilft dein Wissen zu festigen und mithilfe von Repetive learning zu erweitern. 🚀  
+> Entwickelt für Schüler, Studenten, Auszubildende und alle die ihr Wissen erweitern wollen.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 📸 App-Vorschau
 
-2. Start the app
+| Dashboard | Modulerstellung | Fragen | Quiz | 
+|----------|-----------------|------| ----- |
+| ![Dashboard](./assets/screens/dashboard.png) | ![Modul](./assets/screens/module.png) |![Fragen](./assets/screens/quiz.png) | ![Quiz](./assets/screens/quiz.png) |
 
-   ```bash
-    npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## ⚙️ Features
+Fragen
+- ✅ Eigene Module und Fragen erstellen
+- 📈 Lernstatistiken & Fortschrittsverfolgung
+- 🧠 Quiz-Modus zur Wiederholung
+- 💡 Vorschläge für neue Module basierend auf Lernzielen
+- 👥 Kontakt- & Freundschaftsfunktionen
+- 🔒 Sicheres Login (Appwrite)
+- 🌙 Dark Mode / Light Mode
+- 🧾 Premiumfunktionen über Stripe
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🧱 Tech Stack
 
-## Get a fresh project
+| Technologie     | Einsatzbereich                         |
+|----------------|------------------------------------------|
+| React Native    | Mobile App (Cross-Platform)             |
+| Expo Router     | Navigation                              |
+| Appwrite        | Authentifizierung, Datenbank, Storage   |
+| Stripe          | Zahlungsabwicklung                      |
+| OpenAI API      | Generierung von Fragen (optional)       |
 
-When you're ready, run:
+---
+
+## 🛠️ Installation
 
 ```bash
-npm run reset-project
+git clone https://github.com/deinuser/q-ready.git
+cd q-ready
+npm install
+npx expo start
 ```
+--- 
+## 🔐 .env-Konfiguration
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+```bash
+APPWRITE_ENDPOINT=https://your-appwrite-url
+APPWRITE_PROJECT=your_project_id
+OPENAI_API_KEY=sk-...
+```
+---
 
-## Learn more
+## 🚀 Deployment 
+```bash
+npx expo export
+npx expo build:android
+npx expo build:ios
+```
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## ✅ Roadmap
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- 📈 Integration von Visualisierungen und Diagrammen  
+- 🔗 Teilen von Lernmodulen mit anderen Nutzer:innen  
+- 🧩 Erweiterte Quiz-Modi (z. B. Zeitmodus, Lernkarten)
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🔐 Lizenz
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**Copyright © 2025 UReady**
+
+Diese App steht **nicht unter einer Open-Source-Lizenz**.
+
+### 💡 Du darfst:
+- ✅ Die App installieren und verwenden  
+- ✅ Screenshots für Präsentationen und Vorführungen nutzen
+
+### ❌ Du darfst nicht:
+- ❌ Den Quellcode kopieren, verändern oder verbreiten  
+- ❌ Die App als eigene Arbeit ausgeben  
+- ❌ Kommerzielle Ableger auf Basis dieses Codes entwickeln
+
+---
+
+## 📩 Kontakt
+
+**UReady App Team**  
+📧 support@uready.app  
+🌐 [www.uready.app](https://www.uready.app)

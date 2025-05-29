@@ -46,7 +46,7 @@ const ModalStreak = ({isVisible=false, setIsVisible,tage, days}) => {
       
         >
           <Image
-                     source={require("../../assets/Black Minimalist Letter R Monogram Logo (2).gif")}
+                     source={require("../../assets/Check.gif")}
                      style={{ width:50, height:50}}
                     />
         <Text className='text-white font-bold text-[18px]'>{tage ? tage : 0} Tage Streak </Text>

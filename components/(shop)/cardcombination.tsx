@@ -54,6 +54,7 @@ const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[]}) => 
                     purchases={purcharses}
                     id={item.$id}
                     amount={item.amount ? item.amount : 0}
+                    image={item.imageSource ? item.imageSource : null}
 
                     
                     />

@@ -7,6 +7,7 @@ import ModalBudyNow from './modalBudyNow'
 import { Animated } from 'react-native';
 import ModalVideoAdd from './modalVideoAdd'
 import { useGlobalContext } from '@/context/GlobalProvider'
+import ModalQuiz from './modalQuiz'
 
 
 
@@ -27,7 +28,8 @@ const Card = ({
     purcharsesLeft=0,
     purchases=[],
     id="",
-    amount=0
+    amount=0,
+    image=null
    
 
 }) => {
@@ -88,6 +90,7 @@ const Card = ({
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isVisibleB, setIsVisibleB ] = useState(false);
     const [ isVisibleC, setIsVisibleC ] = useState(false);
+    const [ isVisibleD, setIsVisibleD ] = useState(false);
 
 
     console.log("kathegorie", kathegory);
@@ -125,8 +128,11 @@ const Card = ({
         const isTooExpensive = userUsage?.microchip < price && currency === "Chips";
         const isSoldOut = !isAvailable || purchaseLimit - purchaseAmout() === 0;
         console.log("Currency 🐋🐋🐋", currency);  
-        if ( kathegory == "FREEITEM" ) {
+        console.log("isTooExpensive", image);
+        if ( kathegory == "FREEITEM" && image == "VIDEO") {
             setIsVisibleC(true);
+        } else if ( image == "QUESTIONARY") {
+            setIsVisibleD(true);
         } else if (isTooExpensive) {
             flashRed(); 
         } else if (currency == "Chips") {
@@ -161,13 +167,22 @@ const Card = ({
         <ModalVideoAdd
             isVisible={isVisibleC}
             setIsVisible={setIsVisibleC}
-            url="https://www.youtube.com/watch?v=9rx7-ec0p0A"
-            duration={30} 
-            award={() => setUserUsage({
-                ...userUsage,
-                energy: userUsage.energy + 1, 
-            })}
-            
+            onComplete={() => {
+                setUserUsage({
+                    ...userUsage,
+                    energy: userUsage.energy + 1,
+                });
+            }}
+            />
+        <ModalQuiz 
+            isVisible={isVisibleD}
+            setIsVisible={setIsVisibleD}
+            onComplete={() => {
+                setUserUsage({
+                    ...userUsage,
+                    energy: userUsage.energy + 2,
+                });
+            }}
             />
         <Text className='text-white  font-semibold text-[13px] text-center'>
             {title}

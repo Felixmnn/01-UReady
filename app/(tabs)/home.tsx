@@ -20,7 +20,6 @@ const home = () => {
 
       <View className="flex-1 rounded-[10px] bg-[#0c111d]">
       { selected == "HomeGeneral" ? <HomeGeneral setSelectedPage={setSelected}/> : null}
-      { selected == "HomeChat" ? <HomeChat setSelectedPage={setSelected}/> : null}
       </View>
   )}} page={"Home"} hide={selected == "HomeChat" ? true : false}/>
   )

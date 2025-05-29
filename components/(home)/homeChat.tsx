@@ -140,7 +140,7 @@ const HomeChat = ({setSelectedPage}) => {
             <View className='flex-row w-full justify-between rounded-[10px] bg-[#09162f] items-center p-4'>
                 <View className='flex-row items-center'>
                     <Image
-                               source={require("../../assets/Black Minimalist Letter R Monogram Logo.gif")}
+                               source={require("../../assets/Check.gif")}
                                style={{ width:50, height:50}}
                               />
                     <View className='m-2'>

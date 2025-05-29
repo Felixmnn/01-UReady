@@ -113,7 +113,7 @@ const SignIn = () => {
                 {
                   isVertical ? (
                     <View className="min-h-[300px] max-w-[300px] h-full rounded-l-[10px] bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center p-4">
-                      <Image source={require("../../assets/Black Minimalist Letter R Monogram Logo.gif")} style={{ width: 100, height: 100 }} />
+                      <Image source={require("../../assets/Check.gif")} style={{ width: 100, height: 100 }} />
                       <Text className="font-bold text-3xl max-w-[300px] text-center text-white"> Alle Tools für den Lernerfolg.</Text>
                     </View>
                   ) : null

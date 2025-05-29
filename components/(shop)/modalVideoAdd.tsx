@@ -1,80 +1,79 @@
-import { View, Modal, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
-import React, { useRef, useState, useCallback } from 'react'
-import YoutubePlayer from 'react-native-youtube-iframe'
+import { View, Text, Modal, TouchableOpacity, useWindowDimensions } from 'react-native'
+import React, {useEffect, useState} from 'react'
+import Video from "react-native-video";
 
-const extractVideoId = (url) => {
-  const regex = /(?:\?v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/
-  const match = url.match(regex)
-  return match ? match[1] : null
-}
-const {height, width} = Dimensions.get('window')
 
-const ModalVideoAdd = ({ isVisible, setIsVisible, url, duration, award }) => {
-  const [playedSeconds, setPlayedSeconds] = useState(0)
-  const playerRef = useRef(null)
+const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30}) => {
+  const [claimReward, setClaimReward] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(duration);
+  const [ videoStarted, setVideoStarted] = useState(false);
+  const { width, height } = useWindowDimensions(); // Bildschirmbreite holen
+  useEffect(() => {
+    if (timeLeft <= 0) return;
 
-  const onProgress = useCallback((e) => {
-    setPlayedSeconds(e)
-    if (e >= duration) {
-      award()
-      setIsVisible(false)
-    }
-  }, [duration])
+    const interval = setInterval(() => {
+      setTimeLeft(prev => videoStarted ? prev - 1 : prev);
+    }, 1000);
 
-  const videoId = extractVideoId(url)
-
-  if (!videoId) return null
+    return () => clearInterval(interval); 
+  }, [timeLeft, videoStarted]);
 
   return (
     <Modal
-      visible={isVisible}
-      transparent
       animationType="slide"
+      transparent={true}
+      visible={isVisible}
+      onRequestClose={() => setIsVisible(false)}
     >
-      <View style={styles.overlay}>
-        <View style={styles.modal}>
-          <YoutubePlayer
-            ref={playerRef}
-            height={height * 0.5}
-            play={true}
-            videoId={videoId}
-            onChangeState={(state) => {
-              if (state === 'ended') {
-                award()
-                setIsVisible(false)
+      <View className="flex-1 items-center justify-center bg-black bg-opacity-50">
+        <View className="bg-gray-800 rounded-lg p-4 w-11/12  "
+          style={{ height: width* 0.6, maxHeight:"90%" }} 
+        >
+          <View style={{width: '100%', height: 6, backgroundColor: '#4B5563', borderRadius: 3, alignContent: 'center', alignItems: 'start'}}>
+            <View style={{ height: 6, width: `${Math.floor((timeLeft / duration) * 100)}%`, borderRadius: 3, backgroundColor: "green"}}/>
+          </View>
+          
+          <View className='flex-1 item-center justify-center'
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}
+          >
+            <Video
+              source={{ uri: 'https://www.example.com/video.mp4' }} // Ersetze dies durch die tatsächliche Video-URL
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="contain"
+              paused={!videoStarted}
+              onEnd={() => {
+                setTimeLeft(0);
+                setVideoStarted(false);
+              }}
+            />
+          </View>
+          <TouchableOpacity
+            className="bg-blue-500 rounded-lg p-2 items-center"
+            onPress={() => {
+              if (timeLeft <= 0) {
+                onComplete();
+                setTimeLeft(duration);
+                setVideoStarted(false);
+                setIsVisible(false);
+              } else {
+                setVideoStarted(true);
               }
             }}
-            onProgress={onProgress}
-          />
-          <TouchableOpacity onPress={() => setIsVisible(false)} style={styles.closeButton}>
-            <Text style={{ color: 'white' }}>Claim Reward</Text>
+          >
+            <Text className="text-white font-semibold">{timeLeft == 0 ? "Claim Reward" : timeLeft == duration ?  "Watch Video" : `${timeLeft} Seconds Remaining`}</Text>
           </TouchableOpacity>
+          {/*
+          <TouchableOpacity
+            className="mt-4 bg-gray-300 rounded-lg p-2 items-center"
+            onPress={() => {setIsVisible(false); setTimeLeft(duration); setVideoStarted(false);}}
+          >
+            <Text className="text-gray-800 font-semibold">Close</Text>
+          </TouchableOpacity>
+          */}
         </View>
       </View>
     </Modal>
   )
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: '#000000aa',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modal: {
-    width: '70%',
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10
-  },
-  closeButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 15,
-    alignItems: 'center'
-  }
-})
 
 export default ModalVideoAdd

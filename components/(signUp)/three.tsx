@@ -4,6 +4,12 @@ import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
+/**
+ * StepThree Component
+ * This component lets the user select their country and educational category.
+ * The choices are SCHOOL, UNIVERSITY, EDUCATION, and OTHER.
+ * 
+ */
 const StepThree = ({    selectedLanguage,
                         languages, 
                         name, 

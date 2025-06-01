@@ -27,7 +27,7 @@ const Bibliothek = () => {
   const [modules,setModules] = useState(null)
   const [loading,setLoading] = useState(true)
   const fetchModules = async () => {
-    if (!user) return;
+    if (user == null) return;
     setLoading(true);
     const modulesLoaded = await getModules(user.$id);
     if (modulesLoaded) {

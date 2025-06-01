@@ -12,7 +12,7 @@ export default function Index() {
   const { isLoggedIn, isLoading, user, userData, setUserData, setUserUsage } = useGlobalContext();
 
   useEffect(() => {
-    if (!user) return;
+    if (user == null) return;
     async function fetchUserData() {
       try {
         let userD = await loadUserData(user.$id);

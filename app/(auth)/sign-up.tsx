@@ -16,7 +16,14 @@ const SingnUp = () => {
     const [ isVisible, setIsVisible] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
-    
+    function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (re.test(email)) {
+      return true;
+    } else {
+      return false;
+  }
+}
     const [ signUpForm, setSignUpForm] = useState({
           email: "",
           password: "",
@@ -64,7 +71,7 @@ const SingnUp = () => {
                   <TouchableOpacity disabled={isSubmitting} className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
                     style={{
                       width: Platform.OS === 'web' ? null : width - 60, 
-                      height: 40,
+                      height: 50,
                       backgroundColor: "#1e3a8a"
                     }}
                     onPress={handlePress}>
@@ -108,7 +115,7 @@ const SingnUp = () => {
 
       <SafeAreaView className="flex-1 p-4 items-center justify-center bg-[#0c111d] ">
             <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage} />
-            <View className="bg-gray-900 rounded-[10px] mt-2 border-gray-500 border-[1px] "
+            <View className={`rounded-[10px] mt-2 ${isVertical ? "border-gray-500 border-[1px]" : "" }  `}
                         
                         >
                           <View className={` ${isVertical ? "flex-row" : null} items-center justify-center`}>
@@ -127,12 +134,14 @@ const SingnUp = () => {
                             >
             
 
-            <Text className='text-white font-bold text-xl'>Sign Up</Text>
+            <Text className='text-white font-bold text-3xl'>Sign Up</Text>
             <TextInput
                 className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
                 style={{
                     width: Platform.OS === 'web' ? null : width - 60,
-                    height: 40
+                    height: 50,
+                    borderColor: signUpForm.username.length > 4 ? "#1e3a8a" : "gray",
+                    borderWidth: 2
                 }}
                 placeholder="Username"
                 placeholderTextColor="#fff"
@@ -143,7 +152,9 @@ const SingnUp = () => {
                 className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                 style={{
                     width: Platform.OS === 'web' ? null : width - 60, 
-                    height: 40
+                    height: 50,
+                    borderColor: isValidEmail(signUpForm.email) ? "#1e3a8a" : "gray",
+                    borderWidth: 2
                 }}
                 placeholder="E-Mail"
                 placeholderTextColor="#fff"
@@ -154,7 +165,9 @@ const SingnUp = () => {
                 className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                 style={{
                     width: Platform.OS === 'web' ? null : width - 60, 
-                    height: 40
+                    height: 50,
+                    borderColor: signUpForm.password.length > 7 ? "#1e3a8a" : "gray",
+                    borderWidth: 2
                 }}
                 placeholder="Password"
                 placeholderTextColor="#fff"
@@ -166,7 +179,9 @@ const SingnUp = () => {
                 className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                 style={{
                     width: Platform.OS === 'web' ? null : width - 60, 
-                    height: 40
+                    height: 50,
+                    borderColor: signUpForm.passwordConfirm.length > 7 && signUpForm.passwordConfirm === signUpForm.password ? "#1e3a8a" : "gray",
+                    borderWidth: 2
                 }}
                 placeholder="Password bestätigen"
                 placeholderTextColor="#fff"

@@ -3,6 +3,10 @@ import React from 'react'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar'
 
+/**
+ * StepOne Component
+ * This component is the first step in the sign-in process, asking the user for their name.
+ */
 const StepOne = ({name, setName, userData, setUserData}) => {
     const {height} = useWindowDimensions()
     return (

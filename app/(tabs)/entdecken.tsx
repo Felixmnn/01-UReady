@@ -104,7 +104,7 @@ const entdecken = () => {
   ]
 
   useEffect(() => {
-    if (!user) return;
+    if (user == null) return;
     const fetchMyModules = async () => {
       const modulesLoaded = await getModules(user.$id);
           if (modulesLoaded) {

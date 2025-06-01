@@ -25,7 +25,7 @@ const GlobalProvider = ({children}) => {
             if (userU) {
                 const newU = await updateUserUsage(userU);
                 setUserUsage(newU);
-            } else if (!userU && userData?.signInProcessStep == "FINISHED") {
+            } else if (!userU ) {
                 const res = await addUserUsage(user.$id, {
                     streak: 0,
                     streakActive: false,
@@ -40,6 +40,11 @@ const GlobalProvider = ({children}) => {
                     recharges: 0,
                     supercharges: 0,
                     streakUpdate:[new Date()],
+                    purcharses: [],
+                    watchedComercials: [],
+                    participatedQuizzes: [],
+                    streakUpdate: [new Date()],
+
                 });
                 setUserUsage(res);
                 }
@@ -69,9 +74,14 @@ const GlobalProvider = ({children}) => {
     }, [isLoading,isLoggedIn]);
 
     useEffect(() => {
-        if (!user) return;
+        if (user == null) return;
         async function fetchUserData() {
-            const userDataKathegory = await loadUserDataKathegory(user.$id);
+            let userDataKathegory;
+            try {
+                userDataKathegory = await loadUserDataKathegory(user.$id);
+            } catch (error) {
+                userDataKathegory = null;
+            }
             if (!userDataKathegory) return;
             const allowedLanguages = ["DEUTSCH", "ENGLISH(US)", "ENGLISH(UK)", "AUSTRALIAN", "SPANISH"];
             setNewLanguage(allowedLanguages.includes(userDataKathegory.language) ? userDataKathegory.language : "DEUTSCH");

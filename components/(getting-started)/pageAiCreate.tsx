@@ -10,7 +10,7 @@ import uuid from 'react-native-uuid';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { returnShadowComponents } from '@/functions/returnColor';
 import * as DocumentPicker from 'expo-document-picker';
-import { addDocumentConfig, addDocumentToBucket, updateDocumentConfig } from '@/lib/appwriteEdit';
+import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb } from '@/lib/appwriteEdit';
 import * as FileSystem from 'expo-file-system';
 
 
@@ -77,28 +77,38 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
       setFileList((prev) => [...prev, doc]);
 
       const appwriteRes = await addDocumentConfig(doc);
-          
-        // Step 3 - Read the file differently based on platform
-        let fileBlob;
-        if (Platform.OS === 'web') {
-            // Web: fetch URI as Blob
-            fileBlob = await fetch(file.uri).then(res => res.blob());
-        } else {
-            // Native (Android/iOS): read file as base64, then convert to Blob
-            const base64 = await FileSystem.readAsStringAsync(file.uri, {
-                encoding: FileSystem.EncodingType.Base64,
-            });
-            const byteCharacters = atob(base64);
-            const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
-            const byteArray = new Uint8Array(byteNumbers);
-            fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
+
+      // Step 3 - Read the file differently based on platform
+      let fileBlob;
+      let uploadRes;
+      if (Platform.OS === 'web') {
+        // ✅ Web: fetch URI as Blob
+        fileBlob = await fetch(file.uri).then(res => res.blob());
+        const data = {
+          id : doc.id,
+          file: fileBlob,
         }
-        const uploadRes = await addDocumentToBucket({
-            fileID: doc.id,
-            fileBlob: fileBlob,
-        });
-        console.log("Upload response: ", uploadRes);
-        return;
+
+        uploadRes = await addDocumentToBucketWeb(data);
+        console.log("Web upload response:", uploadRes);
+      } else {
+        // ✅ Native: pass file as { uri, name, type }
+        fileBlob = {
+          uri: file.uri,
+          name: file.name,
+          type: file.mimeType || 'application/pdf',
+          size: file.size,
+        };
+        uploadRes = await addDocumentToBucket(
+        doc.id,
+        fileBlob,
+      );
+      }
+
+      
+
+      console.log("✅ Upload response:", uploadRes);
+      return;
       }
      catch (error) { 
       console.log("Error uploading file: ", error);

@@ -5,7 +5,15 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar';
 
-const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, name, continueButtonText, robotMessage }) => {
+/**
+ * StepTwo Component
+ * This component is the second step in the sign-in process, allowing the user to select their language.
+ * @param {Object} languages - A list of all available languages with their codes and names.
+ * @param {number} selectedLanguage - The index of the currently selected language.
+ * @param {Function} setSelectedLanguage - Function to update the selected language index.
+ *  
+ */
+const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, continueButtonText, robotMessage }) => {
     const [isActive, setIsActive] = useState(false)
     return (
         <View className='h-full  w-full justify-between items-center py-5'>

@@ -5,9 +5,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image } from 'react-native';
 import SlowDeveloper from '@/components/(general)/slowDeveloper';
 import {router} from 'expo-router';
-import { signIn, createUser, loginWithGoogle } from '@/lib/appwrite';
+import { signIn, loginWithGoogle } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { addNewUserConfig } from '@/lib/appwriteAdd';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 
 
@@ -25,7 +24,15 @@ const SignIn = () => {
     });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
- 
+  function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (re.test(email)) {
+      return true;
+    } else {
+      return false;
+  }
+}
+
   const submitSignIn = async () => {
       if (form.email.length < 5) {
         setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
@@ -89,14 +96,15 @@ const SignIn = () => {
         <TouchableOpacity disabled={isSubmitting} className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
           style={{
             width: Platform.OS === 'web' ? null : width - 60, 
-            height: 40,
-            backgroundColor: "#1e3a8a"
+            height: 50,
+            backgroundColor: "#1e3a8a",
+            opacity: isValidEmail(form.email) && form.password.length > 7 ? 1 : 0.5
           }}
           onPress={handlePress}>
           {isSubmitting ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
-            <Text className="text-white">{title}</Text>)
+            <Text className="text-white font-bold text-xl">{title}</Text>)
             }
         </TouchableOpacity>
       )
@@ -106,7 +114,7 @@ const SignIn = () => {
     return (
       <SafeAreaView className="flex-1 p-4 items-center justify-center bg-[#0c111d] ">
         <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage} />
-            <View className="bg-gray-900 rounded-[10px] mt-2 border-gray-500 border-[1px] "
+            <View className={`rounded-[10px] mt-2 ${isVertical ? "border-gray-500 border-[1px]" : "" }  `}
             
             >
               <View className={` ${isVertical ? "flex-row" : null} items-center justify-center`}>
@@ -125,12 +133,14 @@ const SignIn = () => {
                 >
 
                     <View className="w-full items-center justify-center">
-                      <Text className='text-white font-bold text-xl'>Sign In</Text>
+                      <Text className='text-white font-bold text-3xl'>Sign In</Text>
                       <TextInput
-                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
+                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800  "
                         style={{
                           width: Platform.OS === 'web' ? null : width - 60,
-                          height: 40
+                          height: 50,
+                          borderColor: isValidEmail(form.email) ? "#1e3a8a" : "gray",
+                          borderWidth: 2
                         }}
                         placeholder="E-Mail"
                         placeholderTextColor="#fff"
@@ -141,7 +151,9 @@ const SignIn = () => {
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
                           width: Platform.OS === 'web' ? null : width - 60, 
-                          height: 40
+                          height: 50,
+                          borderColor: form.password.length > 7 ? "#1e3a8a" : "gray",
+                          borderWidth: 2
                         }}
                         placeholder="Passwort"
                         placeholderTextColor="#fff"
@@ -154,8 +166,11 @@ const SignIn = () => {
                       <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
                         if ( Platform.OS === "web") {
                           loginWithGoogle()}}}/>
-                      <TouchableOpacity onPress={()=> router.push("/sign-up")} className="mt-2 items-center justify-center">
-                          <Text className="text-blue-500">Registrieren</Text>
+                      <TouchableOpacity onPress={()=> router.push("/sign-up")} className="mt-2 items-center justify-center"
+                        >
+                          <Text className="text-blue-500"
+                           
+                          >Registrieren</Text>
                       </TouchableOpacity>
                       
                   </View>

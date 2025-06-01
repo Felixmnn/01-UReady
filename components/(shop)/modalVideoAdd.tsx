@@ -3,11 +3,12 @@ import React, {useEffect, useState} from 'react'
 import Video from "react-native-video";
 
 
-const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30}) => {
+const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30, commercialUrl=""}) => {
   const [claimReward, setClaimReward] = useState(false);
   const [timeLeft, setTimeLeft] = useState(duration);
   const [ videoStarted, setVideoStarted] = useState(false);
   const { width, height } = useWindowDimensions(); // Bildschirmbreite holen
+  console.log("ModalVideoAdd", commercialUrl, duration, isVisible);
   useEffect(() => {
     if (timeLeft <= 0) return;
 
@@ -37,18 +38,19 @@ const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30}) => {
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}
           >
             <Video
-              source={{ uri: 'https://www.example.com/video.mp4' }} // Ersetze dies durch die tatsächliche Video-URL
-              style={{ width: '100%', height: '100%' }}
-              resizeMode="contain"
-              paused={!videoStarted}
-              onEnd={() => {
-                setTimeLeft(0);
-                setVideoStarted(false);
-              }}
+              source={{ uri: commercialUrl }}
+              key={videoStarted.toString()} // sorgt für Remount
+              style={{  height: "95%", marginTop:10 }}
+              resizeMode="cover"
+              controls={true}
+              paused={videoStarted ? false : true} 
+              muted={true} // ← wichtig für Web
+
             />
           </View>
           <TouchableOpacity
             className="bg-blue-500 rounded-lg p-2 items-center"
+            style={{ backgroundColor: timeLeft <= 0 ? 'green' : '#3B82F6' }}
             onPress={() => {
               if (timeLeft <= 0) {
                 onComplete();
@@ -57,6 +59,8 @@ const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30}) => {
                 setIsVisible(false);
               } else {
                 setVideoStarted(true);
+                console.log("videoStarted:", videoStarted);
+
               }
             }}
           >

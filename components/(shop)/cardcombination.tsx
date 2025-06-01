@@ -3,7 +3,7 @@ import React from 'react'
 import Card from './card'
 import images from '@/assets/shopItems/itemConfig'
 
-const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[]}) => {
+const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[], amountVideos="0/0", amountQuestionarys="0/0", commercialsAvailable=[]}) => {
     const imageSource = {
     "1CHARGE": images.charge,
     "3CHARGE": images.charge3,
@@ -19,7 +19,7 @@ const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[]}) => 
   }
 
   console.log("userUsage", cards);
-
+  console.log("CommercialsAvailable", commercialsAvailable);
   return (
     <View className='w-full items-center justify-center'>
         <View className="relative w-full h-[60px] mt-1 items-center justify-center">
@@ -55,6 +55,9 @@ const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[]}) => 
                     id={item.$id}
                     amount={item.amount ? item.amount : 0}
                     image={item.imageSource ? item.imageSource : null}
+                    amountVideos={amountVideos}
+                    amountQuestionarys={amountQuestionarys}
+                    commercialsAvailable={commercialsAvailable}
 
                     
                     />

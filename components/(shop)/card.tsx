@@ -29,19 +29,19 @@ const Card = ({
     purchases=[],
     id="",
     amount=0,
-    image=null
-   
+    image=null,
+    amountVideos="0/0",
+    amountQuestionarys="0/0",
+    commercialsAvailable=[],
 
 }) => {
 
     const { setUserUsage } = useGlobalContext();
     
-    console.log("purcharses3", amount);
     function purchaseAmout() {
         
 
     const filtered = purchases.filter(p => p === id);
-        console.log("filtered", filtered);
     return filtered.length;
 }
     const bgColorAnim = useRef(new Animated.Value(0)).current;
@@ -50,7 +50,7 @@ const Card = ({
         outputRange: [backgroundColor, '#D32F2F'], // z. B. Rot als Warnfarbe
     });
     const overlayOpacity = useRef(new Animated.Value(0)).current;
-
+    console.log("User Usage 🐋🐋🐋", userUsage);
 
     const flashRed = () => {
     overlayOpacity.setValue(0); // Reset
@@ -84,16 +84,37 @@ const Card = ({
         return `${parts[0]},${parts[1]}`;
     }
 
-
-
-
     const [ isVisible, setIsVisible ] = useState(false);
     const [ isVisibleB, setIsVisibleB ] = useState(false);
     const [ isVisibleC, setIsVisibleC ] = useState(false);
     const [ isVisibleD, setIsVisibleD ] = useState(false);
 
-
-    console.log("kathegorie", kathegory);
+    
+    function amountItems({image, purchaseLimit}) {
+        if (image == "VIDEO") {
+            return amountVideos
+        } else if (image == "QUESTIONARY") {
+            return amountQuestionarys
+        } else {
+            return `${purchaseLimit- purchaseAmout()}/${purchaseLimit }`;
+        }
+    }
+    function priceItems() {
+        if ((image == "VIDEO" && amountVideos== "0/0") || (image == "QUESTIONARY" && amountQuestionarys == "0/0")){
+            return "Sold Out";
+        }
+        if (currency == "Free" && isAvailable && !(purchaseLimit- purchaseAmout() == 0)) {
+            return "Free";
+        }
+        if (currency == "Chips" && isAvailable) {
+            return price;
+        } else if (!isAvailable || purchaseLimit- purchaseAmout() == 0 ) {
+            return "Sold Out";
+        }
+        return "";
+    }
+    console.log("COmmercials Available 🐋🐋🐋", commercialsAvailable);
+    
   return (
         
     <Animated.View
@@ -167,10 +188,16 @@ const Card = ({
         <ModalVideoAdd
             isVisible={isVisibleC}
             setIsVisible={setIsVisibleC}
+            duration={commercialsAvailable.length > 0 ? commercialsAvailable[0].duration : 30}
+            commercialUrl={ commercialsAvailable.length > 0 ? commercialsAvailable[0].url : ""}
             onComplete={() => {
+                const id = commercialsAvailable.length > 0 ? commercialsAvailable[0].$id : ""
                 setUserUsage({
                     ...userUsage,
                     energy: userUsage.energy + 1,
+                    purcharses: [...userUsage.purcharses, `${id}|VIDEO|${new Date().getDate()}`],
+                    watchedComercials: userUsage.watchedComercials.length == 0 ? [ id ] : [...userUsage.watchedComercials, id],
+                    
                 });
             }}
             />
@@ -200,26 +227,18 @@ const Card = ({
             purchaseLimit == 100 ?
             null : 
         <Text className='text-white font-semibold text-[13px] text-center'>
-            {purchaseLimit- purchaseAmout()}/{purchaseLimit}
+            {amountItems({image, purchaseLimit, purcharses: purchases, amountVideos, amountQuestionarys})} 
         </Text>
         }
         <View   className='rounded-b-[10px] items-center justify-center flex-row'
                 style={{
                     height: 35,
                     backgroundColor: textbackgroundColor,
-                }}
-        >
-            
-            <Text className='text-white font-bold   text-center mr-1'
-
-                style={{
-                    color: userUsage?.microchip < price && currency == "Chips" ? "#D32F2F" : textColor ,
-                    fontSize: 20,
-
                 }}>
-                {currency == "Free" && isAvailable && !(purchaseLimit- purchaseAmout() == 0) ? "Free" : null}
-                {!isAvailable || purchaseLimit- purchaseAmout() == 0 ? "Sold Out" : null}
-                {currency == "Chips" && isAvailable ? price : null}
+            <Text className='text-white font-bold   text-center mr-1'
+                    style={{
+                        color: userUsage?.microchip < price && currency == "Chips" ? "#D32F2F" : textColor ,fontSize: 20,}}>
+                {priceItems()}
             </Text>
             <Text className='text-white font-bold text-center text-[15px]'
                 style={{ textDecorationLine: 'line-through', color: "gray" }}
@@ -229,6 +248,7 @@ const Card = ({
             {currency == "Chips" && isAvailable ? <Icon name="microchip"  size={17} color={userUsage?.microchip < price && currency == "Chips" ? "#D32F2F" : textColor} />: null}
         </View>
     </TouchableOpacity>
+
     <Animated.View
             pointerEvents="none"
             style={{

@@ -1,22 +1,21 @@
 import { View, Text, Image, TouchableOpacity,ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
-import Battery from '@/components/tokens/battery'
-import RadioactiveCharege from '@/components/tokens/radioactivecharege'
-import Supercharge from '@/components/tokens/supercharge'
-import Fusioncharge from '@/components/tokens/fusioncharge'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { router } from 'expo-router'
 import images from '@/assets/shopItems/itemConfig'
 import Cardcombination from '@/components/(shop)/cardcombination'
 import TokenHeader from '@/components/(general)/tokenHeader'
 import { loadShopItems } from '@/lib/appwriteShop';
-import SkeletonList from '@/components/(general)/(skeleton)/skeletonList'
 import SkeletonListShop from '@/components/(general)/(skeleton)/skeletonListShop'
+import { loadComercials } from '@/lib/appwriteDaten'
 
 const shop = () => {
   const {user, isLoggedIn,isLoading, userUsage } = useGlobalContext();
   const [ shopItemsA, setShopItemsA ] = useState(null);
+  const [comercials, setComercials] = useState([]);
+  
+
 
   useEffect(() => {
     const fetchShopItems = async () => {
@@ -33,24 +32,34 @@ const shop = () => {
     fetchShopItems();
   },[]);
 
-  const imageSource = {
-    "1CHARGE": images.charge,
-    "3CHARGE": images.charge3,
-    "10CHARGE": images.charge10,
-    "100CHIPS": images.chips,
-    "550CHIPS": images.chips2,
-    "1200CHIPS": images.chip3,
-    "SUPERCHARGE": images.supercharge,
-    "SUPERBUNDLE": images.questionary,
-    "CHARGEBUNDLE": images.bundle2,
-    "VIDEO": images.video,
-    "QUESTIONARY": images.bundle1,
-  }
+  useEffect(() => {
+    if (!userUsage) return;
+    async function fetchComercials(){
+      const response = await loadComercials();
+      console.log("response 🐋", response);
+      if (response) {
+        setComercials(response.length > 0 ? response : []);
+      }
+    }
+    fetchComercials();
+  }, [userUsage]);
+
     useEffect(() => {
       if (!isLoading && (!user || !isLoggedIn)) {
         router.replace("/"); // oder "/sign-in"
       }
     }, [user, isLoggedIn, isLoading]);
+
+    function calculateCommercialAmount(){
+      const amountComercials = comercials.filter(c => c.type == "VIDEO").length;
+      const commercialsAvailable = comercials.filter(c => c.type == "VIDEO" && !userUsage?.watchedComercials?.includes(c.$id));
+      const commercialsToday = userUsage?.purcharses.filter(p => p.includes("VIDEO"))
+      if (amountComercials == 0 || commercialsAvailable.length == 0) return "0/0";
+      const amoutGT3 = amountComercials > 3 ? 3 : amountComercials; 
+      if (commercialsToday.length > 0) return `${amoutGT3 - commercialsToday.length < 0 ? 0 : amoutGT3 - commercialsToday.length }/${amoutGT3}`;
+      if (amountComercials > 0) return `${amoutGT3}/${amoutGT3}`;
+      return "0/0"
+    }
 
   return (
     <Tabbar content={()=> { return( 
@@ -72,7 +81,9 @@ const shop = () => {
               <View className='w-full items-center'>
                 <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "ENERGY" )} title='Recharges' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
                 <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "CHIPS" )} title='Chips' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
-                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title='Free Items' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
+                <Cardcombination  commercialsAvailable={comercials.filter(c =>
+                                                        !userUsage?.watchedComercials.some(wC => c.$id === wC))} 
+                                  amountVideos={calculateCommercialAmount()} amountQuestionarys={"3/3"} cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title='Free Items' userUsage={userUsage} purcharses={userUsage?.purcharses} />
               </View> 
             }
         </ScrollView>

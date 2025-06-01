@@ -26,6 +26,9 @@ const personalize = () => {
 
     const { user } = useGlobalContext();
     const [userData, setUserData] = useState(null);
+
+    
+
     const [ userDataKathegory, setUserDataKathegory] = useState(null);
     const [ name, setName] = useState("");
     const [ selectedCountry, setSelectedCountry ] = useState( {name:"Deutschland",
@@ -144,6 +147,7 @@ const personalize = () => {
                 }
             } else if (selectedKathegorie === "UNIVERSITY") {
                 const res = await getUniversityList(selectedCountry.universityListID);
+                console.log("University List", res);
                 if (res) {
                     setUniversityList(res.list.map(item => JSON.parse(item)));
                 }

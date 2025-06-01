@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import AllModules from '@/components/(bibliothek)/(pages)/allModules';
 import SingleModule from '@/components/(bibliothek)/(pages)/singleModule';
-import { loadQuestions} from "../../lib/appwriteDaten"
 import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 import { getModules } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -30,7 +29,6 @@ const Bibliothek = () => {
   const fetchModules = async () => {
     if (!user) return;
     setLoading(true);
-    await loadQuestions();
     const modulesLoaded = await getModules(user.$id);
     if (modulesLoaded) {
       setModules(modulesLoaded);

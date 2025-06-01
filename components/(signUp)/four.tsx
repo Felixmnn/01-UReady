@@ -17,6 +17,7 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
         }
         return chunked;
       };
+      console.log("University Filter:", universityListDeutschland);
     const groupedData = chunkArray(schoolListDeutschland.schoolTypes, numColumns);
     const groupedDataEdu = chunkArray(ausbildungsTypen, numColumns);
     if (selectedKathegorie == "SCHOOL") {

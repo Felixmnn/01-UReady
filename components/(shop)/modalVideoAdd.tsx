@@ -8,7 +8,6 @@ const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30, commer
   const [timeLeft, setTimeLeft] = useState(duration);
   const [ videoStarted, setVideoStarted] = useState(false);
   const { width, height } = useWindowDimensions(); // Bildschirmbreite holen
-  console.log("ModalVideoAdd", commercialUrl, duration, isVisible);
   useEffect(() => {
     if (timeLeft <= 0) return;
 

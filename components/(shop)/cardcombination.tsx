@@ -18,8 +18,6 @@ const Cardcombination = ({cards,title="Title",userUsage=null,purcharses=[], amou
     "QUESTIONARY": images.bundle1,
   }
 
-  console.log("userUsage", cards);
-  console.log("CommercialsAvailable", commercialsAvailable);
   return (
     <View className='w-full items-center justify-center'>
         <View className="relative w-full h-[60px] mt-1 items-center justify-center">

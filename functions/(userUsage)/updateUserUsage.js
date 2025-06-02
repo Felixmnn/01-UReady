@@ -66,7 +66,6 @@ export async function updateUserUsage(userUsage) {
         }
     }
     } 
-    console.log("User usage updated", newUserUsage);
 
     return newUserUsage;
 }

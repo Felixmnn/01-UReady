@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, ActivityIndicator } from "react-native";
+import { Text, View, SafeAreaView, ActivityIndicator, Linking } from "react-native";
 import { router, Redirect } from "expo-router";
 import { useEffect } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";

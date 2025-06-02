@@ -57,6 +57,7 @@ const GlobalProvider = ({children}) => {
                 if(res) {
                     setIsLoggedIn(true);
                     setUser(res)
+                    console.log("Ich der GlobalProvider habe den User:");
                 } else {
                     setIsLoggedIn(false)
                     setUser(undefined)
@@ -92,7 +93,6 @@ const GlobalProvider = ({children}) => {
 
     useEffect(() => {
         if (!userUsage) return;
-        console.log("User Usage", userUsage);
         async function upDateUserUsage() {
             const res = await updateUserUsageData({
                 ...userUsage,

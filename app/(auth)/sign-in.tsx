@@ -8,9 +8,11 @@ import {router} from 'expo-router';
 import { signIn, loginWithGoogle } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
-
+import { appwriteOAuth, loginWithOAuth, startAppwriteOAuthInSystemBrowser } from '@/lib/appwriteOAuth';
 
 const SignIn = () => {
+  const { setUserData } = useGlobalContext();
+  console.log("Ich bin die Sign In Seite 🐋🐋🐋");
   const { setIsLoggedIn,setUser } = useGlobalContext();
   const [ isError, setIsError] = useState(false);
   const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
@@ -32,6 +34,7 @@ const SignIn = () => {
       return false;
   }
 }
+
 
   const submitSignIn = async () => {
       if (form.email.length < 5) {
@@ -173,6 +176,9 @@ const SignIn = () => {
                           >Registrieren</Text>
                       </TouchableOpacity>
                       
+                      <TouchableOpacity onPress={async ()=> await loginWithOAuth({setUserData,setUser})} >
+                        <Text className="text-gray-500 mt-2">Oauth</Text>
+                      </TouchableOpacity>
                   </View>
               </View>
             </View>

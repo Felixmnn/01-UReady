@@ -14,6 +14,8 @@ import { router } from 'expo-router';
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
     const {user, isLoggedIn,isLoading } = useGlobalContext();
+    console.log("Ich bin die Getting Started Seite 🐋🐋🐋");
+
       useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
           router.replace("/"); // oder "/sign-in"

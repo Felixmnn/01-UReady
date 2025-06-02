@@ -6,6 +6,8 @@ import GratisPremiumButton from '../(general)/gratisPremiumButton'
     * StepZero Component
     * This component is the first step in the sign-in process, introducing the user to the app mascot
 */
+
+
 const StepZero = ({userData, setUserData}) => {
     return (
         <View className='h-full  w-full justify-between items-center py-5'>

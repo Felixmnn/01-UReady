@@ -21,13 +21,13 @@ import {schoolListDeutschland,
         ausbildungsListDeutschland,
         LeibnizSubjects } from '@/assets/exapleData/countryList';
 import language from '@/assets/exapleData/languageTabs.json';
+import { useRoute } from '@react-navigation/native';
 
 const personalize = () => {
-
+    const route = useRoute();
+    console.log("Ich bin die Personalize Seite 🐋🐋🐋");
     const { user } = useGlobalContext();
     const [userData, setUserData] = useState(null);
-
-    
 
     const [ userDataKathegory, setUserDataKathegory] = useState(null);
     const [ name, setName] = useState("");
@@ -301,9 +301,7 @@ const personalize = () => {
             }
     }}
 
-    console.log("Uni New List", educationList);
 
-    console.log("Uni Old List", ausbildungsListDeutschland);
 
   return (
     <SafeAreaView className="flex-1 p-4  bg-gradient-to-b from-blue-900 to-[#0c111d] bg-[#0c111d] items-center justify-center">

@@ -50,7 +50,6 @@ const Card = ({
         outputRange: [backgroundColor, '#D32F2F'], // z. B. Rot als Warnfarbe
     });
     const overlayOpacity = useRef(new Animated.Value(0)).current;
-    console.log("User Usage 🐋🐋🐋", userUsage);
 
     const flashRed = () => {
     overlayOpacity.setValue(0); // Reset
@@ -113,7 +112,6 @@ const Card = ({
         }
         return "";
     }
-    console.log("COmmercials Available 🐋🐋🐋", commercialsAvailable);
     
   return (
         

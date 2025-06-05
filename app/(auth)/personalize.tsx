@@ -123,16 +123,6 @@ const personalize = () => {
     }
     , []);
 
-    function isJsonString(str) {
-    if (typeof str !== 'string') return false;
-    try {
-        JSON.parse(str);
-        return true;
-    } catch (e) {
-        return false;
-    }
-    }
-
     useEffect(() => {
         async function fetchList() {
             if (selectedKathegorie === "SCHOOL" || selectedKathegorie === "OTHER") {
@@ -208,23 +198,34 @@ const personalize = () => {
         fetchEducationSubjects();
     },[ausbildungKathegorie]);
 
-    
+    function someDelayOrRefetch() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
+}
 
     useEffect(() => {
               if (user === null ) return;
               async function fetchUserData() {
                   try {
                       let userD = await loadUserData(user.$id);
+                        console.log("User Data", userD);
                       if (!userD) {
-                         userD = await addNewUserConfig(user.$id);
+                        userD = await addNewUserConfig(user.$id);
+                        await someDelayOrRefetch(); // Warte kurz oder rufe loadUserData erneut auf
+                        userD = await loadUserData(user.$id);
                         setUserData(userD);
-                      } else {
+                        } else {
+                        console.log("Success", userD);
                         setUserData(userD);
                       }
+                      console.log("User Data", userD);
                       if (userD?.signInProcessStep == "FINISHED") {
                             try {
                                 const userDK = await loadUserDataKathegory(user.$id);
-                                
+                                console.log("User Data Kathegory", userDK);
                                 setUserDataKathegory(userDK);
                                 setUserData({
                                     birthday:userD.birthday,
@@ -241,7 +242,7 @@ const personalize = () => {
                             } catch (error) {
                                 console.log("Error loading user data kathegory", error);
                             }
-                      } else if (userD.signInProcessStep == "DONE"){
+                      } else if (userD?.signInProcessStep == "DONE"){
                             router.push("/home")
                       }
                   } catch (error) {
@@ -252,11 +253,6 @@ const personalize = () => {
           }, [user]);
     
     const saveUserData = async () => {
-        console.log("Locating toUppercase Error...");
-        console.log(selectedCountry.name.toUpperCase());
-        console.log(school?.name.toUpperCase());
-        console.log(ausbildungKathegorie?.name.DE.toUpperCase().replace(/\s+/g, ''));
-        
         const newUserData = {
             country:                            selectedCountry ? selectedCountry.name.toUpperCase() : null,
             university:                         selectedUniversity ? selectedUniversity.name : null,
@@ -305,14 +301,14 @@ const personalize = () => {
 
   return (
     <SafeAreaView className="flex-1 p-4  bg-gradient-to-b from-blue-900 to-[#0c111d] bg-[#0c111d] items-center justify-center">
-        {userData !== null && userData.signInProcessStep == "ZERO" ? <StepZero userData={userData} setUserData={setUserData}/> : null}
-        {userData !== null && userData.signInProcessStep == "ONE" ? <StepOne 
+        {userData !== null && userData?.signInProcessStep == "ZERO" ? <StepZero userData={userData} setUserData={setUserData}/> : null}
+        {userData !== null && userData?.signInProcessStep == "ONE" ? <StepOne 
                                                                                 name={name} 
                                                                                 setName={setName} 
                                                                                 userData={userData} 
                                                                                 setUserData={setUserData}
                                                                     /> : null}
-        {userData !== null && userData.signInProcessStep == "TWO" ?     <StepTwo 
+        {userData !== null && userData?.signInProcessStep == "TWO" ?     <StepTwo 
                                                                             robotMessage={textsTwo.robotMessage} 
                                                                             continueButtonText={textsTwo.continueButtonText}
                                                                             name={name} 
@@ -322,7 +318,7 @@ const personalize = () => {
                                                                             userData={userData} 
                                                                             setUserData={setUserData}
                                                                         /> : null}
-        {userData !== null && userData.signInProcessStep == "THREE" ?   <StepThree 
+        {userData !== null && userData?.signInProcessStep == "THREE" ?   <StepThree 
                                                                             robotMessage={textsThree.robotMessage} 
                                                                             buttons={textsThree.buttons} 
                                                                             userData={userData} 
@@ -335,7 +331,7 @@ const personalize = () => {
                                                                             setSelectedCountry={setSelectedCountry} 
                                                                             countryList={countryListA? countryListA : countryList}
                                                                         /> : null}
-        {userData !== null && userData.signInProcessStep == "FOUR" ?    <StepFour 
+        {userData !== null && userData?.signInProcessStep == "FOUR" ?    <StepFour 
                                                                             schoolListDeutschland={schoolList? schoolList : schoolListDeutschland} 
                                                                             universityListDeutschland={universityList? universityList :universityListDeutschland} 
                                                                             ausbildungsTypen={ausbildungsTypen? ausbildungsTypen : ausbildungsListDeutschland} 
@@ -355,7 +351,7 @@ const personalize = () => {
                                                                             userData={userData} 
                                                                             languages={languages}
                                                                         /> : null}
-        {userData !== null && userData.signInProcessStep == "FIVE" ?    <StepFive 
+        {userData !== null && userData?.signInProcessStep == "FIVE" ?    <StepFive 
                                                                             ausbildungsListDeutschland={educationList ? educationList : ausbildungsListDeutschland} 
                                                                             message={textsFive} 
                                                                             languages={languages} 
@@ -370,7 +366,7 @@ const personalize = () => {
                                                                             school={school} 
                                                                             ausbildungKathegorie={ausbildungKathegorie}
                                                                         /> : null}
-        {userData !== null && userData.signInProcessStep == "SIX" ?     <StepSix 
+        {userData !== null && userData?.signInProcessStep == "SIX" ?     <StepSix 
                                                                             LeibnizSubjects={universitySubjectList ? universitySubjectList :LeibnizSubjects} 
                                                                             schoolListDeutschland={schoolList ? schoolList :schoolListDeutschland }  
                                                                             message={textsSix} 
@@ -384,7 +380,7 @@ const personalize = () => {
                                                                             languages={languages} 
                                                                             selectedLanguage={selectedLanguage}
                                                                         /> : null}
-        {userData !== null && userData.signInProcessStep == "SEVEN" ?   <StepSeven userDataKathegory={userDataKathegory} saveUserData={saveUserData}  languages={languages} setUserData={setUserData} userData={userData} selectedField={selectedField} selectedSubjects={selectedSubjects} classNumber={classNumber}  selectedAusbildung={selectedAusbildung}  degree={degree} selectedUniversity={selectedUniversity} ausbildungKathegorie={ausbildungKathegorie} school={school} name={name} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} selectedKathegorie={selectedKathegorie} selectedRegion={selectedRegion}   /> : null}
+        {userData == null || userData?.signInProcessStep == "SEVEN" ?   <StepSeven userDataKathegory={userDataKathegory} saveUserData={saveUserData}  languages={languages} setUserData={setUserData} userData={userData} selectedField={selectedField} selectedSubjects={selectedSubjects} classNumber={classNumber}  selectedAusbildung={selectedAusbildung}  degree={degree} selectedUniversity={selectedUniversity} ausbildungKathegorie={ausbildungKathegorie} school={school} name={name} selectedCountry={selectedCountry} selectedLanguage={selectedLanguage} selectedKathegorie={selectedKathegorie} selectedRegion={selectedRegion}   /> : null}
 
     </SafeAreaView>
   )

@@ -71,7 +71,7 @@ const SignIn = () => {
         return (
           <View>
           {
-            Platform.OS === "web" ?
+            Platform.OS === "web" || true ?
           <TouchableOpacity onPress={()=>{
               if (handlePress){
                   handlePress()
@@ -168,17 +168,22 @@ const SignIn = () => {
                       <LoginButton title="Sign In" handlePress={()=> submitSignIn()} />
                       <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
                         if ( Platform.OS === "web") {
-                          loginWithGoogle()}}}/>
+                          loginWithGoogle()}
+                        else {
+                          loginWithOAuth({setUserData,setUser})
+                        }
+                          }}/>
                       <TouchableOpacity onPress={()=> router.push("/sign-up")} className="mt-2 items-center justify-center"
                         >
                           <Text className="text-blue-500"
                            
                           >Registrieren</Text>
                       </TouchableOpacity>
-                      
+                      {/*
                       <TouchableOpacity onPress={async ()=> await loginWithOAuth({setUserData,setUser})} >
                         <Text className="text-gray-500 mt-2">Oauth</Text>
                       </TouchableOpacity>
+                      */}
                   </View>
               </View>
             </View>

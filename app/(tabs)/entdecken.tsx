@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, TextInput ,Image, ActivityIndicator, FlatList, Platform} from 'react-native'
-import React from 'react'
+import React,{useRef, useState, useEffect} from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
-import { useState, useEffect } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -19,6 +18,9 @@ import { getModules } from '@/lib/appwriteQuerys';
 import ToggleSwitch from '@/components/(general)/toggleSwich';
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import TokenHeader from '@/components/(general)/tokenHeader';
+import BottomSheet, { BottomSheetFlatList, BottomSheetScrollView, BottomSheetView} from '@gorhom/bottom-sheet'
+
+
 const entdecken = () => {
 
   const { language, userUsage, setUserUsage } = useGlobalContext()
@@ -30,7 +32,9 @@ const entdecken = () => {
     }, [language])
 
     const texts = languages.endecken;
-  
+  const sheetRef = useRef<BottomSheet>(null);
+    const [ isOpen, setIsOpen ] = useState(true);
+    const snapPoints = ["40%","60%","90%"];
 
   {/*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */}
   const {user, isLoggedIn,isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
@@ -216,13 +220,10 @@ const entdecken = () => {
         </View>
     )}
 
-  return (
-      <Tabbar content={()=> { return(
-        <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] relative'>
-          <TokenHeader userUsage={userUsage}/>
 
-          {/* Head Element Containing the options (UNIVERSITY; SCHOOL; EDUCATION; OTHER) */}
-          <View className={`flex-row p-4 justify-between items-center  h-[60px] rouned-[10px] `}>
+    const EducationFiel = () => {
+      return (
+        <View className={`flex-row p-4 justify-between items-center rouned-[10px] `}>
             {
               width > 400 ?
                 <Text className='font-bold text-3xl text-gray-100'>
@@ -231,7 +232,9 @@ const entdecken = () => {
                 : null
             }
             <View className={` flex-row  items-center ${width > 400 ? "" : "justify-between w-full"}`}>
-              <View className='flex-1 justify-between flex-row items-center bg-gray-800 rounded-full px-1 ' style={{ height: 40 }}>
+              <View className='flex-1 justify-between flex-row items-center bg-gray-900 rounded-full' style={{ 
+                height: 40, paddingHorizontal: 2, paddingVertical: 2,
+              }}>
                 {
                   options.map((option, index) => (
                         <TouchableOpacity key={option.enum} className={` rounded-full ${width > 600 ? "p-3" : "p-2"} ${selectedKathegory == option.enum ? "bg-gray-500 w-[100px] items-center" : ""}`} onPress={() => {setSelectedKathegory(option.enum)}}>
@@ -248,13 +251,17 @@ const entdecken = () => {
                       ))
                 }
               </View>
-              <TouchableOpacity className='h-[35px] rounded-[10px] p-2 items-center justify-center'>
-                <CountryFlag isoCode={selectedCountry.code} style={{ width: 30, height: 18 }} />
-              </TouchableOpacity>
             </View>
           </View>
+      )
+    }
 
-          {/* Text Input wich filters the Modules that include the Textinput in their names*/}
+  return (
+      <Tabbar content={()=> { return(
+        <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] '>
+          <TokenHeader userUsage={userUsage}/>
+
+          {/* Searchbar and Filter Activation */}
           <View className='flex-row w-full items-center'>
             <View className='flex-1    w-full bg-gray-800  rounded-[10px] ml-4 mr-2 mb-2  px-2 flex-row items-center justify-between'            >
               <View className='w-full flex-row items-center'
@@ -267,9 +274,7 @@ const entdecken = () => {
                             className='ml-3 w-full ' 
                             style = {{
                               color: "white",
-                              borderColor: focused ? "#1f2937" : "#1f2937",
                               outline: 'none',
-                              borderWidth: 1,
                             }}
                             value={searchBarText}
                             onFocus={() => setFocused(true)}
@@ -283,114 +288,19 @@ const entdecken = () => {
           {
             longVertical ? 
              null :
-              <TouchableOpacity onPress={()=> setFilterVisible(!filterVisible)} className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'>
+              <TouchableOpacity onPress={()=> {setFilterVisible(!filterVisible), sheetRef.current?.snapToIndex(0);setIsOpen(true);}} className='h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center'>
                 <Icon name="filter" size={15} color="white"/> 
               </TouchableOpacity>
           }
           </View>
 
-          <View className="w-full flex-1" style={{ flex: 1, position: "relative", }}>
-
-            {/* The Filtes belonging to either (UNIVERSITY; SCHOOL; EDUCATION; OTHER) */}
-            <View style={{ zIndex: 10, position: "relative" }}>
-              {
-                selectedKathegory == "UNIVERSITY" && (filterVisible || width > 800) ? (
-                  <UniversityFilters
-                    setModules={setModules}
-                    setLoading={setLoading}
-                    country={countryList[0]}
-                    searchbarText={searchBarText}
-                  />
-                ) : selectedKathegory == "SCHOOL" && (filterVisible || width > 800)  ? (
-                  <SchoolFilters
-                    setModules={setModules}
-                    setLoading={setLoading}
-                    country={countryList[0]}
-                    searchbarText={searchBarText}
-
-                  />
-                ) : selectedKathegory == "EDUCATION" && (filterVisible || width > 800)  ? (
-                  <EudcationFilters
-                    setModules={setModules}
-                    setLoading={setLoading}
-                    country={countryList[0]}
-                    searchbarText={searchBarText}
-
-                  />
-                ) : selectedKathegory == "OTHER" && (filterVisible || width > 800)  ? (
-                  <OtherFilters
-                    setModules={setModules}
-                    setLoading={setLoading}
-                    country={countryList[0]}
-                    searchbarText={searchBarText}
-
-                  /> ): null
-              }
-            </View>
-
-            <View className='w-full bg-gray-500 border-gray-500 border-t-[1px]' style={{ zIndex: 0, marginTop: 10 }}/>
-
-            {/* This part displays the Modules that match the Filter in case a result is found. */}
-            <View
-              className="flex-1 p-4 bg-gray-900 "
-              style={{ zIndex: 1, position: "relative" }}
-            >
-              {!loading ? (
-                <View className='flex-1'>
-                  {modules.length > 0 ? (
-                    <View className='flex-1 w-full'>
-                      <FlatList
-                        data={modules.filter((item) =>
-                          item.name.toLowerCase().includes(searchBarText.toLowerCase())
-                        )}
-                        renderItem={({ item, index }) => (
-                          <View className={`flex-1 mr-2 mb-2 justify-center ${selectedModules.includes(item.$id) || myModules?.some((mod) => mod.name == item.name + " (Kopie)") ? "" : "opacity-50"} 
-                          `}>
-                            {myModules?.some((mod) => mod.name == item.name + " (Kopie)") && (
-                              <View className="absolute w-full h-full z-10 rounded-b-[10px] rounded-t-[5px] overflow-hidden">
-                                <View className={`absolute w-full h-full rounded-b-[10px]  ${item.synchronization  ? "bg-green-500" : "bg-black"} opacity-50`} 
-                                style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}
-                                />
-                                  <View className="flex-row items-center justify-center h-full p-1">
-                                  <Text className="text-white font-semibold text-[15px] mr-2">Synchronisation</Text>
-                                  <ToggleSwitch
-                                    isOn={item.synchronization}
-                                    onToggle={async() => {await updateModuleData(item.$id, {synchronization: !item.synchronization})}}
-                                  />
-                                </View>
-                              </View>
-                            )}
-                            
-                            <Karteikarte
-                              handlePress={()=> {
-                                if (selectedModules.includes(item.$id)){
-                                    setSelectedModules(selectedModules.filter((module) => module !== item.$id))
-                                } else {  
-                                    setSelectedModules([...selectedModules, item.$id])
-                                }
-                              }}
-                              farbe={item.color}
-                              percentage={null}
-                              titel={item.name}
-                              studiengang={item.description}
-                              fragenAnzahl={item.questions}
-                              notizAnzahl={item.notes}
-                              creator={item.creator}
-                              availability={item.public}
-                              icon={"clock"}
-                              publicM={item.public}
-                            />
-                          </View>
-                        )}
-                        keyExtractor={(item) => item.$id}
-                        key={numColumns}
-                        numColumns={numColumns}
-                        showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                      />
-                    </View>
-                  ) : (
-                    <View className="flex-1 items-center justify-center">
+          <View className='flex-1 w-full pl-2 justify-center '>
+            <FlatList
+              data={modules.filter((item) =>
+                item.name.toLowerCase().includes(searchBarText.toLowerCase())
+              )}
+              ListEmptyComponent={
+                <View className="flex-1 items-center justify-center">
                       <Image
                         source={require("../../assets/noResults.png")}
                         style={{ width: 200, height: 200, borderRadius: 5 }}
@@ -399,23 +309,84 @@ const entdecken = () => {
                         {texts[selectedLanguage].noResults}
                       </Text>
                     </View>
+              }
+              renderItem={({ item, index }) => (
+                <View className={`flex-1 mr-2 mb-2 justify-center ${selectedModules.includes(item.$id) || myModules?.some((mod) => mod.name == item.name + " (Kopie)") ? "" : "opacity-50"} 
+                `}>
+                  {myModules?.some((mod) => mod.name == item.name + " (Kopie)") && (
+                    <View className="absolute w-full h-full z-10 rounded-b-[10px] rounded-t-[5px] overflow-hidden">
+                      <View className={`absolute w-full h-full rounded-b-[10px]  ${item.synchronization  ? "bg-green-500" : "bg-black"} opacity-50`} 
+                      style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}
+                      />
+                        <View className="flex-row items-center justify-center h-full p-1">
+                        <Text className="text-white font-semibold text-[15px] mr-2">Synchronisation</Text>
+                        <ToggleSwitch
+                          isOn={item.synchronization}
+                          onToggle={async() => {await updateModuleData(item.$id, {synchronization: !item.synchronization})}}
+                        />
+                      </View>
+                    </View>
                   )}
-                </View>
-              ) : (
-                <View>
-                  <ActivityIndicator size="small" color="#b2e0fe" />
-                  <Text className="text-gray-300 font-bold text-[18px]">
-                     {texts[selectedLanguage].loading}
-                  </Text>
+                  
+                  <Karteikarte
+                    handlePress={()=> {
+                      if (selectedModules.includes(item.$id)){
+                          setSelectedModules(selectedModules.filter((module) => module !== item.$id))
+                      } else {  
+                          setSelectedModules([...selectedModules, item.$id])
+                      }
+                    }}
+                    farbe={item.color}
+                    percentage={null}
+                    titel={item.name}
+                    studiengang={item.description}
+                    fragenAnzahl={item.questions}
+                    notizAnzahl={item.notes}
+                    creator={item.creator}
+                    availability={item.public}
+                    icon={"clock"}
+                    publicM={item.public}
+                  />
                 </View>
               )}
-            </View>
+              keyExtractor={(item) => item.$id}
+              key={numColumns}
+              numColumns={numColumns}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+            />
           </View>
-
           {/* In Case the User selects a Module the copy Button becomes Visble */}
           {selectedModules.length == 0 ? null :
             <CopyModulesButton/>
           }
+
+          <BottomSheet
+            ref={sheetRef}
+            snapPoints={snapPoints}
+            enablePanDownToClose={true}
+            onClose={() => setIsOpen(false)}
+              backgroundStyle={{ backgroundColor: '#1F2937' }} 
+            >
+            <BottomSheetScrollView 
+              contentContainerStyle={{ backgroundColor: '#1F2937', paddingBottom: 40 }}
+              style={{ backgroundColor: '#1F2937' }}
+              showsVerticalScrollIndicator={false}
+            >
+               <EducationFiel />
+               <View>
+                {filterVisible ? 
+                  <View className='w-full'>
+                    {selectedKathegory == "UNIVERSITY" ? <UniversityFilters  setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                    {selectedKathegory == "SCHOOL" ? <SchoolFilters  setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                    {selectedKathegory == "EDUCATION" ? <EudcationFilters  setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                    {selectedKathegory == "OTHER" ? <OtherFilters  setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                  </View>
+                : null}
+               </View>
+               
+            </BottomSheetScrollView>
+        </BottomSheet>
         </View>
       
 

@@ -1,83 +1,42 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, useWindowDimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { router, useLocalSearchParams } from "expo-router";
-import { loadDocument } from '@/lib/appwriteDaten';
-import { Platform } from "react-native";
-import { WebView } from "react-native-webview"; // Für Expo Go
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
+import { View, Text, TouchableOpacity } from 'react-native'
+import React,{ useCallback, useRef, useState } from 'react'
+import BottomSheet, { BottomSheetView} from '@gorhom/bottom-sheet'
 
-const PdfViewer = () => {
-    const { item } = useLocalSearchParams();
-    const [document, setDocument] = useState(null);
-    const [fileUrl, setFileUrl] = useState(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (!item) return;
-        
-        const parsed = JSON.parse(item);
-        setDocument(parsed);
+const pdf = () => {
 
-        async function getDocument() {
-            try {
-                const url = await loadDocument(parsed.databucketID);
-                setFileUrl(url);
-            } catch (error) {
-                console.error("Fehler beim Laden der Datei:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        getDocument();
-    }, [item]);
-    const { width } = useWindowDimensions();
-    const isVertical = width < 700;
-    return (
-    <View className='flex-1 p-3 justify-center bg-gradient-to-b from-[#2b3d69] to-[#0c111d]'>
-        <View className='flex-1 rounded-[10px] bg-gray-900 border-gray-600 border-[1px] m-4'>	
-            <View className='bg-gray-900 items-center justify-between p-4 rounded-t-[10px]'>
-                <View className='flex-row items-center justify-between w-full'>
-                <View className='flex-row items-center'>
-                    <TouchableOpacity onPress={()=> router.back()}>
-                        <Icon name="arrow-left" size={20} color="white"/>
-                    </TouchableOpacity>
-                    <Text className='font-semibold text-xl ml-2 text-white'>{document != null ? document.title : null}</Text>
-                </View>
-                <GratisPremiumButton>
-                    <View className='flex-row items-center'>
-                    <Icon name="robot" size={15} color="white"/>
-                    <Text className='text-[12px] text-gray-100 font-semibold ml-2'>Fragen generieren</Text>
-                    </View>
-                </GratisPremiumButton>
-                </View>
-            </View>
+    const sheetRef = useRef<BottomSheet>(null);
+    const [ isOpen, setIsOpen ] = useState(true);
+    const snapPoints = ["90%"];
 
-            {loading ? (
-                <ActivityIndicator size="large" color="blue" style={{ marginTop: 20 }} />
-            ) : fileUrl ? (
-                Platform.OS === "web" ? (
-                    // 📌 Web: PDF mit iframe anzeigen
-                    <iframe
-                        src={fileUrl}
-                        width="100%"
-                        height="100%"
-                        style={{    border: "none",    
-                                    backgroundColor: "#121212" }}
-                    />
-                ) : (
-                    // 📌 Expo Go (React Native): PDF mit WebView anzeigen
-                    <WebView
-                        source={{ uri: fileUrl }}
-                        style={{ flex: 1,backgroundColor: "#121212" }}
-                    />
-                )
-            ) : (
-                <Text style={{ textAlign: "center", marginTop: 20 }}>Fehler beim Laden der Datei</Text>
-            )}
-        </View>
-        </View>
-    );
-};
 
-export default PdfViewer;
+
+  return (
+    <View className='flex-1 justify-center items-center bg-red-500'>
+        <TouchableOpacity
+            onPress={() => {
+                sheetRef.current?.snapToIndex(0);
+                setIsOpen(true);
+            }}
+        >
+            <Text className='text-white text-lg' >Open PDF Viewer</Text>
+        </TouchableOpacity>
+        <BottomSheet
+            ref={sheetRef}
+            snapPoints={snapPoints}
+            enablePanDownToClose={true}
+            onClose={() => setIsOpen(false)}
+              backgroundStyle={{ backgroundColor: '#0c111e' }} // hier Farbe anpassen
+
+        >
+            <BottomSheetView className='flex-1 items-center justify-center bg-black'
+                style={{ flex: 1, backgroundColor: '#0c111e' }}
+            >
+                <Text className='text-white text-lg'>PDF Viewer</Text>
+            </BottomSheetView>
+        </BottomSheet>
+    </View>
+  )
+}
+
+export default pdf

@@ -5,6 +5,7 @@ import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import  languages  from '@/assets/exapleData/languageTabs.json'
+import RenderFilters from './renderFilters'
 const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height, width } = useWindowDimensions()
 
@@ -30,6 +31,8 @@ const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
     const [ selectedFilter, setSelectedFilter] = useState(0)
   return (
     <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
+        {
+        width > 600 ?
               <View className='w-full flex-row px-4 py-1'>
             {
                 width < 450 ?
@@ -77,6 +80,26 @@ const EudcationFilters = ({country=countryList[0], setModules, setLoading}) => {
                 : null
             }
         </View> 
+
+        :
+        <View>
+            <RenderFilters
+                items={educationKathegorys}
+                selectedItems={selectedEducationKathegory}
+                setSelectedItems={setSelectedEducationKathegory}
+                title={texts[selectedLanguage].kathegory}
+                multiselect={true}
+            />
+            <RenderFilters
+                items={educationSubjects}
+                selectedItems={selectedEducationSubjects}
+                setSelectedItems={setSelectedEducationSubjects}
+                title={texts[selectedLanguage].subject}
+                multiselect={true}
+            />  
+        </View>
+        }
+
     </View>
   )
 }

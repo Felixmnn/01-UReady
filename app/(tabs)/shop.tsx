@@ -64,8 +64,9 @@ const shop = () => {
   return (
     <Tabbar content={()=> { return( 
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
+        
         <TokenHeader userUsage={userUsage}/>
-        <ScrollView className='w-full'
+        <ScrollView classNawme='w-full'
           style={{
             scrollbarWidth: 'thin', // Dünne Scrollbar
             scrollbarColor: 'gray transparent',

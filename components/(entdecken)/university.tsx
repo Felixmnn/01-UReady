@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { View, TouchableOpacity, useWindowDimensions, FlatList, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { countryList, LeibnizFaculties, LeibnizSubjects, universityListDeutschland } from '@/assets/exapleData/countryList'
 import { universityQuery } from '@/lib/appwriteQuerys'
@@ -6,6 +6,8 @@ import DropDownList from './dropDownList'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
+import { BottomSheetFlatList, BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import RenderFilters from './renderFilters'
 
 const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions();
@@ -62,8 +64,48 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
     },[selectedUniversity,selectedFacultys,selectedSubjects])
 
     const [selectedFilter, setSelectedFilter] = useState(0)
+
+    /*
+    const RenderFilters = ({ items, selectedItems, multiselect=false, setSelectedItems, title="" }) => {
+      return (
+        <View className='w-full  '>
+          <Text className='px-2 text-gray-500 font-bold text-[15px]  '>{title}</Text>
+          <BottomSheetFlatList
+            data={items}
+            horizontal
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => {
+                if (multiselect) {
+                  if (selectedItems.includes(item)) {
+                    setSelectedItems(selectedItems.filter((i) => i !== item));
+                  } else {
+                    setSelectedItems([...selectedItems, item]);
+                  }
+                } else {
+                  setSelectedItems([item]);
+                }}
+              }>
+                <View className={`px-4 py-3 mr-2    rounded-[15px] ${selectedItems.includes(item) ? 'bg-blue-500' : 'bg-gray-500'}`}>
+                  <Text className='font-bold text-[15px]'>{item}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item}
+            contentContainerStyle={{ paddingHorizontal: 10 }}
+            style={{ height: "auto", maxHeight: 60, marginVertical: 10, paddingVertical: 5, }}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      )
+    }
+      */
+
   return (
     <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
+      {
+        width > 800 ? 
+        
+      
       <View className='w-full flex-row px-4 py-1'>
         {
           width < 800 ?
@@ -117,6 +159,38 @@ const UniversityFilters = ({country=countryList[0], setModules, setLoading}) => 
           : null
         }
       </View>
+
+      :
+      <View>
+        <RenderFilters
+          items={universityList.map((item) => item.name)} 
+          selectedItems={selectedUniversity} 
+          setSelectedItems={setSelectedUniversity}
+          multiselect={false}
+          title={texts[selectedLanguage].universtity}
+          />
+        <RenderFilters
+          items={universityFacultys}
+          selectedItems={selectedFacultys}
+          setSelectedItems={setSelectedFacultys}
+          multiselect={true}
+          title={texts[selectedLanguage].fakultät}
+          />
+        <RenderFilters
+          items={abschlussziele} 
+          selectedItems={selectedAbschlussziele} 
+          setSelectedItems={setSelectedAbschlussziele}
+          multiselect={true}
+          title={texts[selectedLanguage].abschlussziel}
+          />
+        <RenderFilters
+          items={universitySubjects.map((item) => item.name)} 
+          selectedItems={selectedSubjects} 
+          setSelectedItems={setSelectedSubjects}
+          multiselect={true}
+          title={texts[selectedLanguage].subject}
+          />
+            </View>}
     </View>
   )
 }

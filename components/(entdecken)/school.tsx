@@ -6,6 +6,7 @@ import { schoolQuery } from '@/lib/appwriteQuerys'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
+import RenderFilters from './renderFilters'
 const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
     const { height,width } = useWindowDimensions()
 
@@ -64,6 +65,7 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
         const [selectedFilter, setSelectedFilter] = useState(0)
   return (
     <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
+        { width > 600 ?
           <View className='w-full flex-row px-4 py-1'>
             {
                 width < 600 ?
@@ -151,6 +153,39 @@ const SchoolFilters = ({country=countryList[0], setModules, setLoading}) => {
             }
         
         </View> 
+        :
+        <View >
+            <RenderFilters  
+                items={regions} 
+                selectedItems={selectedRegions} 
+                setSelectedItems={setSelectedRegions}
+                multiselect={true}
+                title={texts[selectedLanguage].region}
+            />
+            <RenderFilters  
+                items={scholTypes} 
+                selectedItems={selectedSchoolTypes} 
+                setSelectedItems={setSelectedSchoolTypes}
+                multiselect={true}
+                title={texts[selectedLanguage].schoolform}
+            />
+            <RenderFilters  
+                items={schoolSubjects} 
+                selectedItems={selectedSchoolSubjects} 
+                setSelectedItems={setSelectedSchoolSubjects}
+                multiselect={true}
+                title={texts[selectedLanguage].subject}
+            />
+            <RenderFilters  
+                items={schoolStages} 
+                selectedItems={selectedSchoolStages} 
+                setSelectedItems={setSelectedSchoolStages}
+                multiselect={true}
+                title={texts[selectedLanguage].class}
+            />
+        </View>
+
+        }
     </View>
   )
 }

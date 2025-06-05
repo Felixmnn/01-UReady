@@ -3,7 +3,7 @@ import { router, Redirect } from "expo-router";
 import { useEffect } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
-import { addNewUserConfig, addUserUsage } from "@/lib/appwriteAdd";
+import { addNewUserConfig } from "@/lib/appwriteAdd";
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import { updateUserUsage } from "../functions/(userUsage)/updateUserUsage";
 SystemNavigationBar.navigationHide();
@@ -22,7 +22,7 @@ export default function Index() {
         } else {
           userD = await addNewUserConfig(user.$id);
           setUserData(userD);
-          router.push("/getting-started");
+          router.push("/personalize");
         }
       } catch (error) {
         console.log(error);

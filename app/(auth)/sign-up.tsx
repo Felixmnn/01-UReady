@@ -1,14 +1,14 @@
 import { View, Text, TextInput, TouchableOpacity, Platform, ActivityIndicator, useWindowDimensions, SafeAreaView, Image } from 'react-native'
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { addNewUserConfig } from '@/lib/appwriteAdd';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import { createUser, loginWithGoogle } from '@/lib/appwrite';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
+import { loginWithOAuth } from '@/lib/appwriteOAuth';
 
 const SingnUp = () => {
-    const { setIsLoggedIn,setUser } = useGlobalContext();
+    const { setIsLoggedIn,setUser, setUserData } = useGlobalContext();
 
     const { width } = useWindowDimensions();
     const isVertical = width > 700;
@@ -55,7 +55,6 @@ const SingnUp = () => {
               setIsError(true)
               return;
             } else { 
-              const userData = await addNewUserConfig(user.data.$id);
               setUser(user.data);
               setIsLoggedIn(true);
               router.push("/personalize");
@@ -68,13 +67,17 @@ const SingnUp = () => {
 
           const LoginButton = ({title, handlePress}) => {
                 return (
-                  <TouchableOpacity disabled={isSubmitting} className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
+                  <TouchableOpacity className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
                     style={{
                       width: Platform.OS === 'web' ? null : width - 60, 
                       height: 50,
-                      backgroundColor: "#1e3a8a"
+                      backgroundColor: "#1e3a8a",
+                      opacity: isSubmitting || !signUpForm.username || !signUpForm.email || !signUpForm.password || !signUpForm.passwordConfirm || signUpForm.password !== signUpForm.passwordConfirm || signUpForm.username.length < 3 || !isValidEmail(signUpForm.email) ? 0.5 : 1
                     }}
-                    onPress={handlePress}>
+                    onPress={handlePress}
+                    disabled={isSubmitting || !signUpForm.username || !signUpForm.email || !signUpForm.password || !signUpForm.passwordConfirm || signUpForm.password !== signUpForm.passwordConfirm || signUpForm.username.length < 3 || !isValidEmail(signUpForm.email) ? true : false}
+                    >
+
                     {isSubmitting ? (
                       <ActivityIndicator size="small" color="#fff" />
                     ) : (
@@ -88,7 +91,7 @@ const SingnUp = () => {
                 return (
                   <View>
                   {
-                    Platform.OS === "web" ?
+                    Platform.OS === "web" || true ?
                   <TouchableOpacity onPress={()=>{
                       if (handlePress){
                           handlePress()
@@ -190,8 +193,13 @@ const SingnUp = () => {
                 onChangeText={(text) => setSignUpForm({ ...signUpForm, passwordConfirm: text })}
             />
             <LoginButton title="Registrieren" handlePress={() => {signUp()}} />
-            <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => { if ( Platform.OS === "web") {
-                loginWithGoogle()}}}/>
+            <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
+                                    if ( Platform.OS === "web") {
+                                      loginWithGoogle()}
+                                    else {
+                                      loginWithOAuth({setUserData,setUser})
+                                    }
+                                      }}/>
 
             <TouchableOpacity onPress={()=> router.push("/sign-in")} className="mt-2 items-center justify-center">
                 <Text className="text-blue-500">Anmelden</Text>

@@ -20,8 +20,6 @@ const { width } = Dimensions.get('window');
 const HomeGeneral = () => {
   const { user,language, userUsage } = useGlobalContext()
   const [ userUsageP, setUserUsageP ] = useState(null)
-  console.log("User Usage:", userUsage);
-    console.log("User Existiert:", user);
 
   useEffect(() => {
     if(userUsage) {

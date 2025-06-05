@@ -5,8 +5,10 @@ import DropDownList from './dropDownList'
 import { otherQuery } from '@/lib/appwriteQuerys'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
+import { withDecay } from 'react-native-reanimated'
+import RenderFilters from './renderFilters'
 const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
-    const { height } = useWindowDimensions()
+    const { height,width } = useWindowDimensions()
 
     const { user,language } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
@@ -52,6 +54,8 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
 
   return (
     <View className=' w-full' style={{ position: "relative" /* Wichtig! */ }}>
+      {
+        width > 600 ?
         <View className='flex-row' style={{  paddingHorizontal:11,zIndex: 1, position: 'relative', }}>
         <DropDownList
             title={texts[selectedLanguage].subjects}
@@ -67,8 +71,24 @@ const OtherFilters = ({country=countryList[0], setModules, setLoading}) => {
             }}
             height={height}
             />
+
         </View> 
-        
+        :<RenderFilters
+            items={otherSubjects.map((item) => item)}
+            selectedItems={selectedOtherSubjects}
+            multiselect={true}
+            setSelectedItems={(item)=> {
+                if (selectedOtherSubjects.includes(item)) {
+                    setSelectedOtherSubjects(selectedOtherSubjects.filter((type) => type !== item))
+                }
+                else {
+                    setSelectedOtherSubjects([...selectedOtherSubjects, item])
+                }
+            }}
+            title={texts[selectedLanguage].subjects}
+            height={height}
+        />
+}
     </View>
   )
 }

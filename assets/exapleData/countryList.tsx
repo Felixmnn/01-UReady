@@ -85,7 +85,15 @@ export const universityListDeutschland = [
         image:"https://th.bing.com/th?id=ODLS.5d53dd9b-63d7-41f7-ba62-89ffd0f95a6f&w=32&h=32&o=6&pid=1.2",
         slang:"LUH",
         universityListID: "f2286f9d-45af-477c-a4a6-d27ef9985f3b",
+    },{   
+        name:"Other",
+        code:"null", 
+        id:"4058177f-0cd4-4820-8f71-557c4b27dd42",
+        image:"https://cdn.pixabay.com/photo/2013/07/12/15/49/graduate-150374_960_720.png",
+        slang:"Other",
+        universityListID: "f2286f9d-45af-477c-a4a6-d27ef9985f3b",
     },
+
 ]
 
 export const ausbildungsTypen = 

@@ -1,9 +1,11 @@
-import { View, useWindowDimensions, TouchableOpacity } from 'react-native'
+import { View, useWindowDimensions, TouchableOpacity, Text, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
 import RenderFilters from './renderFilters'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import StaticFilters from './staticFilters'
 const SchoolFilters = ({country=countryList[0], setFilters}) => {
     const { height,width } = useWindowDimensions()
 
@@ -42,37 +44,41 @@ const SchoolFilters = ({country=countryList[0], setFilters}) => {
             })
     },[selectedRegions,selectedSchoolTypes,selectedSchoolSubjects,selectedSchoolStages])
 
+    
   return (
-    <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
-        <RenderFilters  
+    <ScrollView className=' w-full  ' style={{ 
+        scrollbarWidth: 'thin', 
+        scrollbarColor: 'gray transparent', }}>
+        
+        <StaticFilters
             items={regions} 
             selectedItems={selectedRegions} 
             setSelectedItems={setSelectedRegions}
             multiselect={true}
             title={texts[selectedLanguage].region}
         />
-        <RenderFilters  
-            items={scholTypes} 
-            selectedItems={selectedSchoolTypes} 
+        <StaticFilters
+            items={scholTypes}
+            selectedItems={selectedSchoolTypes}
             setSelectedItems={setSelectedSchoolTypes}
             multiselect={true}
             title={texts[selectedLanguage].schoolform}
         />
-        <RenderFilters  
+        <StaticFilters
             items={schoolSubjects} 
             selectedItems={selectedSchoolSubjects} 
             setSelectedItems={setSelectedSchoolSubjects}
             multiselect={true}
-            title={texts[selectedLanguage].subject}
+            title={texts[selectedLanguage].subject} 
         />
-        <RenderFilters  
-            items={schoolStages} 
-            selectedItems={selectedSchoolStages} 
+        <StaticFilters
+            items={schoolStages}
+            selectedItems={selectedSchoolStages}
             setSelectedItems={setSelectedSchoolStages}
             multiselect={true}
             title={texts[selectedLanguage].class}
-        />
-    </View>
+        />  
+    </ScrollView>
   )
 }
 

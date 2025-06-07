@@ -1,9 +1,11 @@
-import { View,  useWindowDimensions } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View,  useWindowDimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ausbildungsListDeutschland, ausbildungsTypen, countryList } from '@/assets/exapleData/countryList'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import  languages  from '@/assets/exapleData/languageTabs.json'
 import RenderFilters from './renderFilters'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import StaticFilters from './staticFilters'
 const EudcationFilters = ({country=countryList[0], setFilters }) => {
     const { height, width } = useWindowDimensions()
 
@@ -23,9 +25,13 @@ const EudcationFilters = ({country=countryList[0], setFilters }) => {
     const [ educationSubjects, setEducationSubjects ] = useState(ausbildungsListDeutschland[ausbildungsTypen[0].name.DE].map((subject) => subject.name))
 
     //Dynamische Filter basierend auf den User eingaben
-    const [ selectedEducationKathegory, setSelectedEducationKathegory] = useState([])
+    const [ selectedEducationKathegory, setSelectedEducationKathegory] = useState(["Bau & Handwerk"])
     const [ selectedEducationSubjects, setSelectedEducationSubjects] = useState([])
 
+    useEffect(() => {
+        if (! educationKathegorys.includes(selectedEducationKathegory[0])) return;
+        setEducationSubjects(ausbildungsListDeutschland[selectedEducationKathegory[0]].map((subject) => subject.name));
+    }, [selectedEducationKathegory])
     useEffect(() => {
         setFilters({
             creationCountry: country.name.toUpperCase(),
@@ -35,23 +41,28 @@ const EudcationFilters = ({country=countryList[0], setFilters }) => {
         })
     },[selectedEducationKathegory, selectedEducationSubjects])
 
+    
   return (
-    <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
-        <RenderFilters
-                items={educationKathegorys}
-                selectedItems={selectedEducationKathegory}
-                setSelectedItems={setSelectedEducationKathegory}
-                title={texts[selectedLanguage].kathegory}
-                multiselect={true}
-            />
-            <RenderFilters
-                items={educationSubjects}
-                selectedItems={selectedEducationSubjects}
-                setSelectedItems={setSelectedEducationSubjects}
-                title={texts[selectedLanguage].subject}
-                multiselect={true}
-            />  
-    </View>
+    <ScrollView className=' w-full  ' 
+        style={{ 
+            scrollbarWidth: 'thin', 
+            scrollbarColor: 'gray transparent', }}
+    >
+        <StaticFilters
+            items={educationKathegorys}
+            selectedItems={selectedEducationKathegory}
+            setSelectedItems={setSelectedEducationKathegory}
+            multiselect={false}
+            title={texts[selectedLanguage].kathegory}
+        />
+        <StaticFilters
+            items={educationSubjects}
+            selectedItems={selectedEducationSubjects}
+            setSelectedItems={setSelectedEducationSubjects}
+            multiselect={true}
+            title={texts[selectedLanguage].subject}
+        />
+    </ScrollView>
   )
 }
 

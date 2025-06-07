@@ -4,6 +4,8 @@ import { countryList, LeibnizFaculties, LeibnizSubjects, universityListDeutschla
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
 import RenderFilters from './renderFilters'
+import StaticFilters from './staticFilters'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const UniversityFilters = ({country=countryList[0], setFilters}) => {
   const { language } = useGlobalContext()
@@ -16,18 +18,92 @@ const UniversityFilters = ({country=countryList[0], setFilters}) => {
   const texts = languages.university;
     
     //Allgemeine Universitätsdaten
-    const abschlussziele = ["Bachelor", "Master", "Staatsexamen","Diplom","Magister","Other"]
+    const abschlussziele = ["Bachelor", "Master", "Staatsexamen","Diplom","Magister","Others"]
 
     //Dynamische Universitätsdaten basierend auf dem Land
-    const [ universityList, setUniversityList ] = useState(universityListDeutschland)
+    const [ universityList, setUniversityList ] = useState([universityListDeutschland])
     const [ universityFacultys, setUniversityFacultys ] = useState(LeibnizFaculties)
-    const [ universitySubjects, setUniversitySubjects ] = useState(LeibnizSubjects[0][abschlussziele[0]])
+    const [ universitySubjects, setUniversitySubjects ] = useState(LeibnizSubjects[0]["Bachelor"])
+    const noSubjectsList = [
+  {
+    "name": "Architektur & Stadtplanung",
+  },
+  {
+    "name": "Bildende Kunst",
+  },
+  {
+    "name": "Erziehungswissenschaften & Pädagogik",
+  },
+  {
+    "name": "Geistes- und Sozialwissenschaften",
+  },
+  {
+    "name": "Geowissenschaften & Umweltwissenschaften",
+  },
+  {
+    "name": "Geschichte & Archäologie",
+  },
+  {
+    "name": "Informatik & Technik",
+  },
+  {
+    "name": "Kunst, Design & Medien",
+  },
+  {
+    "name": "Musik & Musikpädagogik",
+  },
+  {
+    "name": "Naturwissenschaften & Mathematik",
+  },
+  {
+    "name": "Philosophie & Ethik",
+  },
+  {
+    "name": "Politikwissenschaft & Internationale Beziehungen",
+  },
+  {
+    "name": "Rechtswissenschaften (Jura)",
+  },
+  {
+    "name": "Soziologie & Sozialwissenschaften",
+  },
+  {
+    "name": "Sportwissenschaften",
+  },
+  {
+    "name": "Sprach- & Literaturwissenschaften",
+  },
+  {
+    "name": "Theologie & Religionswissenschaften",
+  },
+  {
+    "name": "Umwelt, Landwirtschaft & Nachhaltigkeit",
+  },
+  {
+    "name": "Umwelttechnik",
+  },
+  {
+    "name": "Wirtschafts- und Rechtswissenschaften",
+  }
+      ];
 
     //Dynamische Filter basierend auf den User eingaben
-    const [ selectedAbschlussziele, setSelectedAbschlussziele] = useState([])
+    const [ selectedAbschlussziele, setSelectedAbschlussziele] = useState(["Bachelor"])
     const [ selectedFacultys, setSelectedFacultys] = useState([])
     const [ selectedSubjects, setSelectedSubjects] = useState([])
     const [ selectedUniversity, setSelectedUniversity] = useState([])
+
+    useEffect(() => {
+      if (! abschlussziele.includes(selectedAbschlussziele[0] )) return;
+      setUniversitySubjects(LeibnizSubjects[0][selectedAbschlussziele[0]]);
+    }, [selectedAbschlussziele])
+    
+    useEffect(() => {
+      if (selectedUniversity.length === 0) return;
+      if (selectedUniversity[0].name == "Other"){
+        setSelectedSubjects(noSubjectsList.map((item) => item.name));
+      }
+    },[selectedUniversity])
 
     useEffect(() => {
       setFilters({
@@ -38,38 +114,54 @@ const UniversityFilters = ({country=countryList[0], setFilters}) => {
                 creationUniversitySubject: selectedSubjects
       })
     },[selectedUniversity,selectedFacultys,selectedSubjects])
-
+    console.log("University List", universityList);
+    
   return (
-    <View className=' w-full  ' style={{ position: "relative" /* Wichtig! */ }}>
-        <RenderFilters
-          items={universityList.map((item) => item.name)} 
+    <ScrollView className=' w-full  ' 
+      style={{
+        scrollBarscrollbarWidth: 'thin', 
+        scrollbarColor: 'gray transparent',
+      }}
+    >
+      <StaticFilters
+          items={universityList[0].map((item) => item.name)} 
           selectedItems={selectedUniversity} 
           setSelectedItems={setSelectedUniversity}
-          multiselect={true}
-          title={texts[selectedLanguage].universtity}
+          multiselect={false}
+          title={"Universitys"}
           />
-        <RenderFilters
-          items={universityFacultys}
+      <StaticFilters
+          items={abschlussziele}
+          selectedItems={selectedAbschlussziele}    
+          setSelectedItems={setSelectedAbschlussziele}
+          multiselect={false}
+          title={texts[selectedLanguage].abschlussziel}
+          />
+      <StaticFilters
+          items={noSubjectsList.map((item) => item.name)}
+          selectedItems={selectedSubjects}
+          setSelectedItems={setSelectedSubjects}
+          multiselect={true}
+          title={"Kathegorys"}
+          />
+      <StaticFilters
+          items={selectedUniversity[0] == "Other" ? [] : universityFacultys}
           selectedItems={selectedFacultys}
           setSelectedItems={setSelectedFacultys}
           multiselect={true}
-          title={texts[selectedLanguage].fakultät}
+          title={"Facultys"}
           />
-        <RenderFilters
-          items={abschlussziele} 
-          selectedItems={selectedAbschlussziele} 
-          setSelectedItems={setSelectedAbschlussziele}
-          multiselect={true}
-          title={texts[selectedLanguage].abschlussziel}
-          />
-        <RenderFilters
-          items={universitySubjects.map((item) => item.name)} 
-          selectedItems={selectedSubjects} 
+      
+
+      
+      <StaticFilters
+          items={selectedUniversity[0] == "Other" ? [] :  universitySubjects.filter((item) => item.type == selectedAbschlussziele[0]).map((item) => item.name)}
+          selectedItems={selectedSubjects}
           setSelectedItems={setSelectedSubjects}
           multiselect={true}
           title={texts[selectedLanguage].subject}
-          />
-    </View>
+          />    
+    </ScrollView>
   )
 }
 

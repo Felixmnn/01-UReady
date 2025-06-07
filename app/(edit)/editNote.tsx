@@ -61,7 +61,7 @@ const CreateNote = () => {
                     style={{
                         textAlignVertical: 'top', // <-- Das ist entscheidend
 
-                        scrollbarWidth: 'thin', // Dünne Scrollbar
+                        scrollbarWidth: 'thin', 
                         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
                       }}
                 />

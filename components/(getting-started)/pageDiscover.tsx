@@ -19,24 +19,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     const { width } = useWindowDimensions()
     const numColumns = Math.floor(width / 300);
     console.log("User Data", userData)
-    const testUserData = {
-        $id: "testUserId",
-        country: "Germany",  // Can be "DEUTSCHLAND"
-        educationKathegory: "UNIVERSITY", // Can be any Ausbildungskategorie
-        faculty: ["Erziehungswissenschaften & Pädagogik","Informatik & Technik"], // Can be anything based on the university
-        kategoryType: "University", // Can be UNIVERSITY, SCHOOL, EDUCATION, OTHER
-        language: "DEUTSCH", // Can be DEUTSCH, ENGLISH, SPANISH
-        region: "North Rhine-Westphalia", // Can be any region currently in Germany
-        schoolGrade: "12", // Can be "1" ... "13"
-        schoolSubjects: ["Latein", "Physik", "Chemie", "Mathematik", "Informatik"],
-        schoolType: "Gymnasium",
-        studiengang: ["Computer Science", "Mathematics"],
-        studiengangKathegory: ["Computer Science"],
-        studiengangZiel: "Bachelor of Science",
-        universtiy: "Test University",
-    }
-
-        
+    
 
     useEffect(() => {   
         if (userData == null) return;

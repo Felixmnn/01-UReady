@@ -49,8 +49,6 @@ const entdecken = () => {
   const { width } = useWindowDimensions();
   const numColumns = Math.floor(width / 300);
 
-  const longVertical = width > 900;
-  const [ tab, setTab ] = useState(0)
   const [ selectedModules, setSelectedModules] = useState([])
   
   //Allgemeine Filter
@@ -297,7 +295,7 @@ const entdecken = () => {
           })
       }
       return (
-        <View className={`flex-row p-4 justify-between items-center rouned-[10px] w-full `}>
+        <View className={`flex-row p-2 justify-between items-center rouned-[10px] w-full `}>
             
             <View className={` flex-row  items-center ${width > 400 ? "w-full" : "justify-between w-full"}`}>
               <View className='flex-1 justify-between flex-row items-center bg-gray-900 rounded-full' style={{ 
@@ -407,10 +405,10 @@ const entdecken = () => {
               showsVerticalScrollIndicator={false}>
                 <View className='w-full'>
                   <EducationFiel />
-                  {selectedKathegory == "UNIVERSITY" ? <UniversityFilters filters={filters} setFilters={setFilters} setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
-                  {selectedKathegory == "SCHOOL" ? <SchoolFilters  filters={filters} setFilters={setFilters} setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
-                  {selectedKathegory == "EDUCATION" ? <EudcationFilters filters={filters} setFilters={setFilters} setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
-                  {selectedKathegory == "OTHER" ? <OtherFilters filters={filters} setFilters={setFilters} setModules={setModules} setLoading={setLoading} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                  {selectedKathegory == "UNIVERSITY" ? <UniversityFilters filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                  {selectedKathegory == "SCHOOL" ? <SchoolFilters  filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                  {selectedKathegory == "EDUCATION" ? <EudcationFilters filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                  {selectedKathegory == "OTHER" ? <OtherFilters filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
                 </View>
             </BottomSheetScrollView>
         </BottomSheet>

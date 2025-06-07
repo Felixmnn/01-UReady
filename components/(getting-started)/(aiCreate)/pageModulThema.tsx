@@ -40,7 +40,9 @@ const PageModulThema = ({ newModule, userData, setNewModule}) => {
                         creationSchoolForm: userData.schoolType,
                         creationKlassNumber: userData.schoolGrade,
                         creationLanguage: userData.language,
-                        creationEducationKathegory:userData.educationKathegory
+                        creationEducationKathegory:userData.educationKathegory,
+                                  kategoryType: userData.kategoryType,
+
                     });
                 },[userData])
   return (

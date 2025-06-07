@@ -3,8 +3,15 @@ import React from 'react'
 import { TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-const SearchList = ({data, filter, setFilter, handlePress, selectedItems, abschlussziel="Deine Studiengang"}) => {
-  return (
+const SearchList = ({data, filter, setFilter, handlePress, selectedItems, abschlussziel="Deine Studiengang", nameComparison = true}) => {
+    function isSelected(item) {
+        if (nameComparison) {
+            return selectedItems.some((i) => i.name === item.name);
+        }
+        return selectedItems && selectedItems.includes(item);
+    }
+  
+    return (
     <View className='flex-1 w-full bg-gray-900 max-w-[600px] max-h-[700px] rounded-[10px] pb-2 '
         style={{maxWidth:600, maxHeight:700}}
         >
@@ -25,7 +32,9 @@ const SearchList = ({data, filter, setFilter, handlePress, selectedItems, abschl
                 }}
                 renderItem={({item,index}) => (
                     <TouchableOpacity key={item.name} onPress={()=> handlePress(item)} 
-                    className={`flex-row p-2 border-gray-800 border-[1px] rounded-[10px] ${selectedItems && selectedItems.includes(item) ? "bg-blue-700 " : "bg-gray-800"}  items-center justify-start m-2`}
+                    className={`flex-row p-2 border-gray-800 border-[1px] rounded-[10px] ${
+                        isSelected(item)
+                         ? "bg-blue-700 " : "bg-gray-800"}  items-center justify-start m-2`}
                     >
                         <Icon name={item.icon} size={20} color="white" />
                         <Text className='text-gray-100 font-semibold text-[15px] text-center ml-2' numberOfLines={item.name.length > 13 ? 2 : null}>

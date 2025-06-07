@@ -3,8 +3,21 @@ import React, {  useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ProgressBar from './(components)/progressBar';
 import BotTopLeft from './(components)/botTopLeft';
+import BotBottomLeft from './botBottomLeft';
 
+
+/** 
+ * Depending on the previous choice the user continues with SCHOOL, UNIVERSITY or EDUCATION
+ * 1. SCHOOL -> User picks Region and School Type
+ * 2. UNIVERSITY -> User picks University
+ * 3. EDUCATION -> User picks Education Kathegory
+ * 
+ * @param {Object} schoolListDeutschland - <{ regions, schoolStages, schoolSubTypes, schoolTypes }>
+ * @param {Array} universityListDeutschland - <{ code, name, image, fakultyListID }>
+ * @param {Array} ausbildungsTypen - <{ name, icon, id }>
+*/
 const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutschland, ausbildungsTypen, setUserData, userData, languages, setSelectedRegion ,selectedRegion, selectedKathegorie, setSchool, setAusbildungKathegorie, ausbildungKathegorie, selectedUniversity, setSelectedUniversity, message }) => {
+   
     const {width} = useWindowDimensions()
     const numColumns = width < 400 ? 2 : 3;
     const [isActive, setIsActive] = useState(false) 
@@ -17,21 +30,30 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
         }
         return chunked;
       };
-      console.log("University Filter:", universityListDeutschland);
     const groupedData = chunkArray(schoolListDeutschland.schoolTypes, numColumns);
     const groupedDataEdu = chunkArray(ausbildungsTypen, numColumns);
     if (selectedKathegorie == "SCHOOL") {
+            const [ isVisible, setIsVisible ] = useState(true)
+
     return ( 
         <ScrollView className='w-full '
             style={{
                 scrollbarWidth: 'thin', 
                 scrollbarColor: 'gray transparent',       
             }}
-        >
+        >   
+            <BotBottomLeft
+                message={selectedLanguage == null ? message.robotMessageSchool.DE : message.robotMessageSchool[languages[selectedLanguage].code]}
+                imageSource="Location"
+                spechBubbleStyle="bg-blue-500" 
+                spBCStyle="max-w-[200px]"
+                isVisible={isVisible}
+                setIsVisible={setIsVisible}
+            />
+
             <View className='w-full justify-between items-center '>
             <View className={`w-full ${Platform.OS == "android" ? "top-5" : null} `}>
                 <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                <BotTopLeft text={selectedLanguage == null ? message.robotMessageSchool.DE : message.robotMessageSchool[languages[selectedLanguage].code]}/>
             </View>
                 <View className='items-center'>
                 <View style={{ position: 'relative', zIndex: 10 }}>
@@ -135,11 +157,20 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
 
 
     } else if (selectedKathegorie == "UNIVERSITY") {
+            const [ isVisible, setIsVisible ] = useState(true)
+
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
+            <BotBottomLeft
+                message={selectedLanguage == null ? message.robotMessageUniversity.DE : message.robotMessageUniversity[languages[selectedLanguage].code]}
+                imageSource="Location"
+                spechBubbleStyle="bg-blue-500" 
+                spBCStyle="max-w-[200px]"
+                isVisible={isVisible}
+                setIsVisible={setIsVisible}
+            />
             <View className='w-full'>
                 <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                <BotTopLeft text={selectedLanguage == null ? message.robotMessageUniversity.DE : message.robotMessageUniversity[languages[selectedLanguage].code]}/>
             </View>
             <View className='flex-1 bg-gray-900 w-full  max-w-[600px] max-h-[700px] rounded-[10px] '
                 style={{maxWidth:600, maxHeight:700}}
@@ -149,7 +180,7 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
                     value={universityFilter}
                     onChangeText={(text) => setUniversityFilter(text)}
                     placeholder="Deine Universität"
-                    placeholderTextColor="#AAAAAA" // 👈 Farbe vom Placeholder
+                    placeholderTextColor="#AAAAAA" 
                 />
                 <View className='flex-1'>
                     <FlatList
@@ -160,7 +191,11 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
                             scrollbarColor: 'gray transparent'  
                         }}
                         renderItem={({item}) => (
-                            <TouchableOpacity key={item.id} onPress={()=> {setSelectedUniversity(item); setUserData({...userData,signInProcessStep:"FIVE"})}} 
+                            <TouchableOpacity key={item.id} onPress={()=> {
+                                
+                                    setSelectedUniversity(item); 
+                                    setUserData({...userData,signInProcessStep:"FIVE"})
+                            }} 
                             className='flex-row p-2 border-gray-800 border-[1px] rounded-[10px] bg-gray-800  items-center justify-start m-2'
                             >
                                 <Image
@@ -183,12 +218,21 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
 
 
     } else if ( selectedKathegorie == "EDUCATION" ) {
+            const [ isVisible, setIsVisible ] = useState(true)
+
         return (
             <ScrollView className='w-full '>
+                <BotBottomLeft
+                    message={selectedLanguage == null ? message.robotMessageEducation.DE : message.robotMessageEducation[languages[selectedLanguage].code]}
+                    imageSource="Location"
+                    spechBubbleStyle="bg-blue-500"
+                    spBCStyle="max-w-[200px]"
+                    isVisible={isVisible}
+                    setIsVisible={setIsVisible}
+                />
                 <View className='h-full  w-full justify-between items-center py-5'>
                 <View className='w-full'>
                     <ProgressBar percent={60} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
-                    <BotTopLeft text={selectedLanguage == null ? message.robotMessageEducation.DE : message.robotMessageEducation[languages[selectedLanguage].code]}/>
                 </View>
                 <View className='justify-center items-center'>
                 {groupedDataEdu.map((row, rowIndex) => (

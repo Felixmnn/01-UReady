@@ -94,7 +94,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                     transparent={true}
                     visible={isVisible}
                 >
-                    <View className="h-full w-full absolute top-0 left-0   justify-center items-center m-2 ">
+                    <View className="h-full w-full absolute top-0 left-0   justify-center items-center ">
                         <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' >
                             <View className='justify-between  flex-row'>
                                 <Text className='text-white font-bold text-[15px]'>
@@ -130,7 +130,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
 
                             <TextInput
                                 value={newTag ? newTag.description : ""}
-                                maxLength={30}
+                                maxLength={150}
                                 placeholderTextColor={"AAAAAA"}
                                 placeholder={session.description ? session.description : texts[selectedLanguage].placeholderDescription}
                                 className={`text-white  rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}

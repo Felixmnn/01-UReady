@@ -87,7 +87,9 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
           creationKlassNumber: userData.schoolGrade,
           creationLanguage: userData.language,
           creationEducationKathegory:userData.educationKathegory,
-          studiengangKathegory:userData.studiengangKathegory
+          studiengangKathegory:userData.studiengangKathegory,
+          
+          kategoryType: userData.kategoryType,
       });
   },[userData])
 

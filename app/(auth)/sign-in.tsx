@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator, Platform } from 'react-native'
+import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator, Platform, Linking } from 'react-native'
 import React, {  useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -49,6 +49,7 @@ const SignIn = () => {
           setIsSubmitting(true);
           try {
             const user = await signIn(form.email, form.password);
+            console.log("Sign In User", user)
             if (user.success === false) {
               setErrorMessage(user.error)
               setIsError(true)
@@ -164,6 +165,16 @@ const SignIn = () => {
                         value={form.password}
                         onChangeText={(value) => {setForm(prevForm => ({ ...prevForm, password: value }))}}
                     />
+                    <TouchableOpacity onPress={()=> {
+                      if (Platform.OS === "web") {
+                      router.push("/reset-password")
+                      } else {
+                        Linking.openURL('http://10.0.10.209:8081/reset-password'); // ← Hier deine echte URL einsetzen
+                      }
+
+                    }} className="mt-2 items-center justify-center">
+                        <Text className="text-white">Reset Password</Text>
+                    </TouchableOpacity>
                       
                       <LoginButton title="Sign In" handlePress={()=> submitSignIn()} />
                       <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {

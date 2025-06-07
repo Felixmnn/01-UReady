@@ -12,6 +12,7 @@ import { setUserDataSetup } from '@/lib/appwriteEdit';
 import ErrorPopup from './(modal)/errorPopup';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { returnColorButtonShadow } from '@/functions/returnColor';
+import TutorialFirstModule from '../(tutorials)/tutorialFirstModule';
 
 const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }) => {
   // Lokale States
@@ -51,7 +52,9 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
             creationKlassNumber: userData.schoolGrade,
             creationLanguage: userData.language,
             creationEducationKathegory:userData.educationKathegory,
-            studiengangKathegory:userData.studiengangKathegory
+            studiengangKathegory:userData.studiengangKathegory,
+                      kategoryType: userData.kategoryType,
+
         });
     },[userData])
   
@@ -65,9 +68,10 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
 
 
   const {width} = useWindowDimensions()
+  const [ tutorialVisible, setTutorialVisible] = useState(false);
   return (
     <ScrollView className={`flex-1 bg-gray-900 p-2  shadow-lg rounded-[10px] `}
-   
+
       style={{
         width: '100%',
         shadowColor: returnColorButtonShadow(newModule?.color) || '#1F2937',
@@ -77,6 +81,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
         elevation: 20, // Android
       }}
       >
+        
         <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage}/>
       <ModalSessionList
         sessions={sessions}

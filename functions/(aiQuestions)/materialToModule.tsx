@@ -40,7 +40,7 @@ export async function materialToModule(user, material, userData, newModule, setN
       newModuleData = await addNewModuleWithID({
         ...newModule,
         color: newModule.color.toUpperCase(),
-        questions: questions.length,
+        questions: directQuestions.length,
         sessions: sessions.map((item) => JSON.stringify(item)),
       },moduleID);
     } catch (error) {

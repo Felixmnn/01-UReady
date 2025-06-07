@@ -2,6 +2,7 @@ import { View, Text, Image, TextInput, useWindowDimensions} from 'react-native'
 import React from 'react'
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar'
+import BotCenter from './botCenter'
 
 /**
  * StepOne Component
@@ -14,12 +15,7 @@ const StepOne = ({name, setName, userData, setUserData}) => {
         style={{height:height,}}>   
             <ProgressBar percent={20} handlePress={()=> setUserData({...userData,signInProcessStep:"ZERO"})}/>
                 <View className='items-center justiy-center'>
-                    <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
-                        <Text className='font-semibold text-[15px] text-gray-100 text-center'>Wie heißt du eigentlich</Text>
-                    </View>
-                        <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
-                        <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
-                        <Image source={require('../../assets/Frage.gif')}  style={{height:150, width:150}}/>
+                    <BotCenter message='Wie darf ich dich nennen?' imageSource="Frage" spechBubbleStyle="bg-blue-500" spBCStyle="max-w-[200px]"/>
                         <TextInput
                                 className={`text-white  rounded-[10px] p-1 bg-[#0c111d] text-center p-2 my-1 mx-2 border-blue-700 border-[1px]  `} 
                                 style={{width:200, color: 'white'}}

@@ -42,7 +42,9 @@ const gettingStarted = () => {
           creationKlassNumber: userData.schoolGrade,
           creationLanguage: userData.language,
           creationEducationKathegory:userData.educationKathegory,
-          studiengangKathegory:userData.studiengangKathegory
+          studiengangKathegory:userData.studiengangKathegory,
+          kategoryType: userData.kategoryType,
+
       });
   },[userData])
 
@@ -90,7 +92,9 @@ const gettingStarted = () => {
       questionList: [],
       synchronization: false
       });
-    
+      const [ tutorialStepAI, setTutorialStepAI] = useState(0);
+      const [ tuturialStep, setTutorialStep] = useState(0);
+      console.log("UserData", userData);
   return (
         <SafeAreaView className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]    items-center justify-center"
         style={{
@@ -99,9 +103,9 @@ const gettingStarted = () => {
         > 
           
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
-          : userChoices == "GENERATE" ?     <PageAiCreate setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
+          : userChoices == "GENERATE" ?     <PageAiCreate tutorialStep={tutorialStepAI} setTutorialStep={setTutorialStepAI} setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userData}/>
-          : userChoices == "CREATE" ?       <PageCreateModule setUserChoices={setUserChoices}  newModule={newModule} setNewModule={setNewModule}/>
+          : userChoices == "CREATE" ?       <PageCreateModule tuturialStep={tuturialStep} setTutorialStep={setTutorialStep} setUserChoices={setUserChoices}  newModule={newModule} setNewModule={setNewModule}/>
           : userChoices == "TEXTBASED" ?    <PageModulText newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices == "THEMENBASED" ?  <PageModulThema newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices == "DOCUMENTBASED" ?  <PageModuleDocument  newModule={newModule} setNewModule={setNewModule} userData={userData}/>

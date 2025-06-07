@@ -2,13 +2,13 @@ import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import BotCenter from './botCenter';
 
 
 /**
- * StepThree Component
- * This component lets the user select their country and educational category.
- * The choices are SCHOOL, UNIVERSITY, EDUCATION, and OTHER.
- * 
+ * Selction of Education Category and his Country
+ * @param {Object} selectedCountry - <{ name, code, schoolistID, universityListID }> 
+ * @param {Array} countryList - <{ selctedCountry }>
  */
 const StepThree = ({    selectedLanguage,
                         languages, 
@@ -22,6 +22,8 @@ const StepThree = ({    selectedLanguage,
                         buttons, 
                         robotMessage
                     }) => {
+
+                       
     const [isActive, setIsActive] = useState(false)
     const TouchSquare = ({text, handlePress,icon}) => {
         return (
@@ -44,14 +46,12 @@ const StepThree = ({    selectedLanguage,
                     </TouchableOpacity>
                 </View>
                   <View className='items-center justiy-center'>
-                      <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
-                          <Text className='font-semibold text-[15px] text-gray-100 text-center'>{name} {
-                                selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]
-                              }</Text>
-                        </View>
-                          <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
-                          <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/> 
-                          <Image source={require('../../assets/Location.gif')}  style={{height:150, width:150}}/>
+                        <BotCenter
+                            message={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}
+                            imageSource="Location"
+                            spechBubbleStyle="bg-blue-500" 
+                            spBCStyle="max-w-[200px]"
+                        />
                         
                           <View style={{ position: 'relative', zIndex: 10 }}>
                           <TouchableOpacity onPress={() => setIsActive(!isActive)} className='flex-row w-[180px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] py-2 px-3 my-2 items-center justify-center mx-1'>

@@ -59,6 +59,7 @@ const personalize = () => {
     const [ universitySubjectList, setUniversitySubjectList ] = useState([]);
     const [ educationSubjectList, setEducationSubjectList ] = useState([]);
 
+
     
 
     const languages = [
@@ -182,7 +183,20 @@ const personalize = () => {
                             "Diplom": res["Diplom"] ? res["Diplom"].map(item => JSON.parse(item)) : [],
                             "Magister": res["Magister"] ? res["Magister"].map(item => JSON.parse(item)) : [],
                             "Others": res["Others"] ? res["Others"].map(item => JSON.parse(item)) : [],
-                        }])}}}
+                        }])}
+                    else {
+                        setUniversitySubjectList([
+                            {
+                                "Bachelor": [],
+                                "Master": [],
+                                "Staatsexamen": [],
+                                "Diplom": [],
+                                "Magister": [],
+                                "Others": [],
+                            }
+                        ]);
+                    }
+                    }}
                 fetchUniversitySubjects();
         }, [selectedUniversity]);
 
@@ -205,6 +219,14 @@ const personalize = () => {
     }, 1000);
   });
 }
+    useEffect(() => {
+        if (userData?.signInProcessStep === "SEVEN") {
+            saveUserData();
+            router.push("/getting-started")
+        } else if (userData?.signInProcessStep === "FINISHED") {
+            router.push("/getting-started");
+        }
+    }, [userData])
 
     useEffect(() => {
               if (user === null ) return;
@@ -251,7 +273,6 @@ const personalize = () => {
               }
               fetchUserData();
           }, [user]);
-    
     const saveUserData = async () => {
         const newUserData = {
             country:                            selectedCountry ? selectedCountry.name.toUpperCase() : null,

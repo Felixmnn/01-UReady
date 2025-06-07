@@ -4,30 +4,30 @@ import CountryFlag from 'react-native-country-flag';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import GratisPremiumButton from '../(general)/gratisPremiumButton'
 import ProgressBar from './(components)/progressBar';
+import BotCenter from './botCenter';
 
 /**
- * StepTwo Component
- * This component is the second step in the sign-in process, allowing the user to select their language.
- * @param {Object} languages - A list of all available languages with their codes and names.
- * @param {number} selectedLanguage - The index of the currently selected language.
- * @param {Function} setSelectedLanguage - Function to update the selected language index.
- *  
+ * Country selection
+ * The User can select theur prefered language
+ * selectedLanguage type int
+ * Languages type : Array<{ name, code, enum }>
  */
 const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, continueButtonText, robotMessage }) => {
+    console.log("Selcted Language", selectedLanguage)
+    console.log("Languages", languages)
     const [isActive, setIsActive] = useState(false)
     return (
         <View className='h-full  w-full justify-between items-center py-5'>
             <ProgressBar percent={30} handlePress={()=> setUserData({...userData,signInProcessStep:"ONE"})}/>
                 <View className='items-center justiy-center'>
-                        <View className={`w-full ${Platform.OS === "web" ? "max-w-[310px]" : "max-w-[300px]"} px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10`}
-                        >
-                            <Text className='font-semibold text-[15px] text-gray-100 text-center'>{
-                                selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]
-                                }</Text>
-                        </View>
-                            <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
-                            <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
-                            <Image source={require('../../assets/Language.gif')}  style={{height:150, width:150}}/>
+                    <BotCenter
+                        message={selectedLanguage == null ? robotMessage.DE : robotMessage[languages[selectedLanguage].code]}
+                        imageSource="Language"
+                        spechBubbleStyle="bg-blue-500" 
+                        spBCStyle="max-w-[200px]"
+                        />
+
+
                             <View>
                                 <TouchableOpacity 
                                     onPress={() => setIsActive(!isActive)} 
@@ -41,7 +41,7 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
                                 </TouchableOpacity>
 
                                     {isActive ? (
-                                    <View className='absolute top-[48px]  left-1 w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 z-10 shadow-lg'>
+                                        <View className={`${Platform.OS == "web" ? "": "absolute top-[48px]"}  left-1 w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 z-50 shadow-lg`}>
                                         {languages.map((language, index) => (
                                         <TouchableOpacity 
                                             key={index} 
@@ -56,8 +56,8 @@ const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, se
                                     ) : null}
                                 </View>
                     </View>
-            <View className='w-full max-w-[200px]'>
-                <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500 "} handlePress={()=> {
+            <View className='w-full max-w-[200px] z-0'>
+                <GratisPremiumButton aditionalStyles={"rounded-full w-full bg-blue-500 z-0 "} handlePress={()=> {
                     if (selectedLanguage == null) {
                         setSelectedLanguage(0);
                     }

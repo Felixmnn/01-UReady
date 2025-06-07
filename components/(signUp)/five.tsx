@@ -4,8 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useWindowDimensions } from 'react-native';
 import ProgressBar from './(components)/progressBar';
 import SearchList from './(components)/searchList';
+import BotBottomLeft from './botBottomLeft';
 import BotTopLeft from './(components)/botTopLeft';
-
 const StepFive = ({setDegree, message, ausbildungKathegorie,setSelectedKathegorie, ausbildungsListDeutschland, school, userData, setUserData, languages, selectedLanguage, setSelected, setSelectedAusbildung, setClass}) => {
     const { width } = useWindowDimensions();
     const numColumns = width < 400 ? 2 : 3;
@@ -28,11 +28,20 @@ const StepFive = ({setDegree, message, ausbildungKathegorie,setSelectedKathegori
         { name: "Magister", icon: "book-reader" }, 
         { name: "Others", icon: "question-circle" } 
     ];
+        const [ isVisible, setIsVisible ] = useState(true)
+    
     return (
             <View  className='h-full  w-full justify-between items-center py-5'>
+                <BotBottomLeft
+                    message={"Was ist dein Abschlussziel?"}
+                    imageSource="Waving"
+                    spechBubbleStyle="bg-blue-500" 
+                    spBCStyle="max-w-[200px]"
+                    isVisible={isVisible}
+                    setIsVisible={setIsVisible}
+                />
                 <View className='w-full'>
                     <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
-                    <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? message.robotMessageUniversity.DE : message.robotMessageUniversity[languages[selectedLanguage].code]}/>
 
                 </View>
                 <View className='justify-center items-center'>
@@ -58,16 +67,26 @@ const StepFive = ({setDegree, message, ausbildungKathegorie,setSelectedKathegori
     )
 
     } else if (setSelectedKathegorie == "EDUCATION") {
+            const [ isVisible, setIsVisible ] = useState(true)
+
         const [ausbildungsFilter, setAusbildungFilter] = useState("");
+        
         const handlePress = (item) => {
             setSelectedAusbildung(item);
              setUserData({...userData,signInProcessStep:"SEVEN"})
         }
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
+                <BotBottomLeft
+                    message={selectedLanguage == null ? message.robotMessageEducation.DE : message.robotMessageEducation[languages[selectedLanguage].code]}
+                    imageSource="Waving"
+                    spechBubbleStyle="bg-blue-500"
+                    spBCStyle="max-w-[200px]"
+                    isVisible={isVisible}
+                    setIsVisible={setIsVisible}
+                />
                 <View className='w-full'>
                 <ProgressBar percent={75} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>  
-                <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? message.robotMessageEducation.DE : message.robotMessageEducation[languages[selectedLanguage].code]}/>
                 </View>
                 <SearchList 
                     data={selectedLanguage == null ? ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase())) : ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
@@ -75,20 +94,28 @@ const StepFive = ({setDegree, message, ausbildungKathegorie,setSelectedKathegori
                     setFilter={setAusbildungFilter}
                     handlePress={handlePress}
                     selectedItems={null}
+                    nameComparison={false}
                 />
                 <View/>
             </View>
         )
-    }
-    else if (setSelectedKathegorie == "SCHOOL") {
+    } else if (setSelectedKathegorie == "SCHOOL") {
         const groupedData = chunkArray(school.klassenstufen, numColumns);    
+        const [ isVisible, setIsVisible ] = useState(true)
 
         return (
             <ScrollView className='w-full h-full'>
+                <BotBottomLeft
+                    message={selectedLanguage == null ? message.robotMessageSchool.DE : message.robotMessageSchool[languages[selectedLanguage].code]}
+                    imageSource="Waving"
+                    spechBubbleStyle="bg-blue-500"
+                    spBCStyle="max-w-[200px]"
+                    isVisible={isVisible}
+                    setIsVisible={setIsVisible}
+                />
                 <View className='h-full  w-full justify-between items-center py-5'>
                     <View className='w-full'>
                         <ProgressBar percent={65} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>
-                        <BotTopLeft source={require('../../assets/Check.gif')} text={selectedLanguage == null ? message.robotMessageSchool.DE : message.robotMessageSchool[languages[selectedLanguage].code]}/>
                     </View>
                     <View className='justify-center items-center'>
                     {groupedData.map((row, rowIndex) => (

@@ -12,9 +12,10 @@ import { returnShadowComponents } from '@/functions/returnColor';
 import * as DocumentPicker from 'expo-document-picker';
 import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb } from '@/lib/appwriteEdit';
 import * as FileSystem from 'expo-file-system';
+import TutorialFirstAIModule from '../(tutorials)/tutorialFirstAIModule';
 
 
-const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal }) => {
+const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal, tutorialStep= 10, setTutorialStep=null  }) => {
   // Lokale States
   const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
   const [questions, setQuestions] = useState([]);
@@ -230,7 +231,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
   },[sessions])
 
  
-
+  const [ tutorialVisible, setTutorialVisible ] = useState(true);
 
   return (
     <ScrollView className={`flex-1 bg-gray-900 p-3 shadow-lg  rounded-[10px] `}
@@ -249,6 +250,12 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         setSessions={setSessions}
         isVisible={isVisible}
         setIsVisible={setIsVisible}
+      />
+      <TutorialFirstAIModule
+        isVisible={tutorialVisible}
+        setIsVisible={setTutorialVisible}
+        setTutorialStep={setTutorialStep}
+        tutorialStep={tutorialStep}
       />
         <View className='w-full'>
         {/* Header */}
@@ -539,11 +546,11 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
           ) : (
             <TouchableOpacity
               className="bg-[#0c111d] flex-row p-2 m-2 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg"
-              style={{ height: 30, width: 180 }}
+              style={{ height: 30, width: 250 }}
             >
               <Icon name="book-open" size={15} color="#4B5563" />
               <Text className="text-gray-300 font-semibold text-[12px] mb-[1px] ml-1">
-                Noch keine Materialien
+                Noch keine Materialien hinzugefügt
               </Text>
             </TouchableOpacity>
           )}

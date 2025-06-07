@@ -1,9 +1,10 @@
-import { View, Text, Platform, TextInput, useWindowDimensions, TouchableOpacity } from 'react-native'
+import { View, Text, Platform, TextInput, useWindowDimensions, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { resetPassword, updatePassword } from '@/lib/appwrite';
 import { router } from 'expo-router';
+import LoginButton from '@/components/(auth)/loginButton';
 
 
 const ResetPassword = () => {
@@ -18,7 +19,7 @@ const ResetPassword = () => {
     const [ isError, setIsError] = useState(false);
     const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
     const [ mailSent, setMailSent] = useState(false);
-
+    const [ successFull, setSuccessFull] = useState(false);
 
     async function requestPasswordReset() {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,7 +45,7 @@ const ResetPassword = () => {
             return;
         } else {
             const res = await updatePassword(userId, secret, newPassword.password);
-            console.log("Die Password Update Resonse", newPassword.password)
+            console.log("Die Password Update Resonse", res)
             if (!res ) {
                 setErrorMessage(`${res}:Try again`)
                 setIsError(true)
@@ -53,11 +54,18 @@ const ResetPassword = () => {
                 return;
             } else {
                 console.log("New Password", newPassword.password)
-                router.push("/sign-in");
+                setSuccessFull(true);
             }
         }
     }
 
+    const handleAppRedirect = () => {
+        if (Platform.OS === 'web') {
+        alert('Bitte öffne die App, um dich dort anzumelden.');
+        } else {
+        Linking.openURL('exp://10.0.10.209:8081/'); 
+        }
+    };
 
     
   return (
@@ -72,6 +80,20 @@ const ResetPassword = () => {
             }}
         >
         {
+            successFull ? 
+                <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
+                    <Text className='text-white font-bold text-xl'>Passwort erfolgreich zurückgesetzt</Text>
+
+                    <TouchableOpacity onPress={handleAppRedirect}>
+                        <Text className='text-blue-500 font-bold text-lg mt-2'>Zurück zur Anmeldung: App</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => router.push('/sign-in')}>
+                        <Text className='text-blue-500 font-bold text-lg mt-2'>Zurück zur Anmeldung: Web</Text>
+                    </TouchableOpacity>
+                </View>
+
+             :
             secret && userId ? (
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px]'>
                     <Text className='text-white'>Reset Password</Text>
@@ -79,7 +101,9 @@ const ResetPassword = () => {
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
                             width: Platform.OS === 'web' ? null : width - 60, 
-                            height: 40
+                            height: 50,
+                            borderColor: newPassword.password.length > 7 ? "#1e3a8a" : "gray",
+                            borderWidth: 2
                         }}
                         placeholder="Password"
                         placeholderTextColor="#fff"
@@ -91,7 +115,9 @@ const ResetPassword = () => {
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
                             width: Platform.OS === 'web' ? null : width - 60, 
-                            height: 40
+                            height: 50,
+                            borderColor: newPassword.passwordConfirm.length > 7 ? "#1e3a8a" : "gray",
+                            borderWidth: 2
                         }}
                         placeholder="Password bestätigen"
                         placeholderTextColor="#fff"
@@ -99,27 +125,23 @@ const ResetPassword = () => {
                         value={newPassword.passwordConfirm}
                         onChangeText={(text) => setNewPassword({ ...newPassword, passwordConfirm: text })}
                     />
-                    <TouchableOpacity
-                        className="bg-blue-500 p-2 items-center rounded-full  mt-3"
-                        style={{
-                            width: Platform.OS === 'web' ? null : width - 60, 
-                        }}
-                        onPress={async() => {
-                            await resetPasswordRequest()
-                        }}
-                        >
-                        <Text className="text-white font-semibold">Passwort zurücksetzen</Text>
-                    </TouchableOpacity>
-
+                    <LoginButton
+                        title="Passwort zurücksetzen"
+                        handlePress={async () => await resetPasswordRequest()}
+                        isSubmitting={false}
+                        isReady={newPassword.password.length > 7 && newPassword.passwordConfirm.length > 7 ? true : false}
+                    />
                 </View>
             ) : (
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
                     <Text className='text-white font-bold text-xl'>Reset Password</Text>
                     <TextInput
-                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
+                        className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
-                            width: Platform.OS === 'web' ? null : width - 60,
-                            height: 40
+                            width: Platform.OS === 'web' ? null : width - 60, 
+                            height: 50,
+                            borderColor: recoveryMail.length > 7 ? "#1e3a8a" : "gray",
+                            borderWidth: 2
                         }}
                         placeholder="Password recovery E-Mail"
                         placeholderTextColor="#fff"
@@ -128,19 +150,17 @@ const ResetPassword = () => {
                     />
                     {
                         mailSent ? (
+                            <View className='items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
                                 <Text className='text-green-500 font-bold text-[15px] mt-3 '>E-Mail wurde gesendet</Text>
+                                <Text className='text-white font-bold text-[15px] mt-3 '>Bitte überprüfe dein Postfach</Text>
+                            </View>
                         ) : 
-                        <TouchableOpacity
-                            className="bg-blue-500 p-2 items-center rounded-full  mt-3"
-                            style={{
-                                width: Platform.OS === 'web' ? null : width - 60, 
-                            }}
-                            onPress={async() => {
-                                await requestPasswordReset()
-                            }}
-                        >
-                            <Text className="text-white font-semibold">Send recovery mail</Text>
-                        </TouchableOpacity>
+                        <LoginButton
+                            title="Send recovery mail"
+                            handlePress={async ()=> await requestPasswordReset()}
+                            isSubmitting={false}
+                            isReady={recoveryMail.length > 7 ? true : false}
+                        />
                     }
                     
                 </View>

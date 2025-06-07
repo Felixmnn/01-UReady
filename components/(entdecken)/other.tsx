@@ -5,6 +5,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
 import RenderFilters from './renderFilters'
 import { ScrollView } from 'react-native-gesture-handler'
+
 const OtherFilters = ({country=countryList[0], setFilters}) => {
     const { height,width } = useWindowDimensions()
 
@@ -42,7 +43,7 @@ const OtherFilters = ({country=countryList[0], setFilters}) => {
     <ScrollView className=' w-full' style={{ scrollbarWidth: 'thin', 
                         scrollbarColor: 'gray transparent',}}>
       <Text className='text-[15px] font-bold mb-2 px-2 text-gray-300'>
-        Subjects
+        {texts[selectedLanguage].subjects}
       </Text>
       <View className='flex-row flex-wrap justify-start items-center w-full px-2 py-1 ml-2'>
       {

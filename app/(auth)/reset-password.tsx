@@ -5,9 +5,20 @@ import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { resetPassword, updatePassword } from '@/lib/appwrite';
 import { router } from 'expo-router';
 import LoginButton from '@/components/(auth)/loginButton';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
 const ResetPassword = () => {
+    const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.auth;
+    useEffect(() => {
+        if(language) {
+        setSelectedLanguage(language)
+        }
+    }, [language])
+
     const [secret, setSecret] =  useState(new URLSearchParams(window.location.search).get('secret'))
     const [userId, setUserId] =  useState(new URLSearchParams(window.location.search).get('userId'))
     const { width } = useWindowDimensions();
@@ -17,14 +28,14 @@ const ResetPassword = () => {
         passwordConfirm: ""
     });
     const [ isError, setIsError] = useState(false);
-    const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
+    const [ errorMessage, setErrorMessage] = useState(texts[selectedLanguage].error);
     const [ mailSent, setMailSent] = useState(false);
     const [ successFull, setSuccessFull] = useState(false);
 
     async function requestPasswordReset() {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!re.test(recoveryMail)) {
-            setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
+            setErrorMessage(texts[selectedLanguage].pleaseValidMail)
             setIsError(true)
             return;
         } else {
@@ -36,24 +47,22 @@ const ResetPassword = () => {
 
     async function resetPasswordRequest() {
         if (newPassword.password.length < 8) {
-            setErrorMessage("Passwort muss mindestens 8 Zeichen lang sein")
+            setErrorMessage(texts[selectedLanguage].passwordLength)
             setIsError(true)
             return;
         } else if (newPassword.password !== newPassword.passwordConfirm) {
-            setErrorMessage("Passwörter stimmen nicht überein")
+            setErrorMessage(texts[selectedLanguage].passwordMatch)
             setIsError(true)
             return;
         } else {
             const res = await updatePassword(userId, secret, newPassword.password);
-            console.log("Die Password Update Resonse", res)
             if (!res ) {
-                setErrorMessage(`${res}:Try again`)
+                setErrorMessage(`${res}:${texts[selectedLanguage].tryAgain}`)
                 setIsError(true)
                 setSecret(null)
                 setUserId(null)
                 return;
             } else {
-                console.log("New Password", newPassword.password)
                 setSuccessFull(true);
             }
         }
@@ -61,7 +70,7 @@ const ResetPassword = () => {
 
     const handleAppRedirect = () => {
         if (Platform.OS === 'web') {
-        alert('Bitte öffne die App, um dich dort anzumelden.');
+        alert(texts[selectedLanguage].pleaseGoToAppToSignIn);
         } else {
         Linking.openURL('exp://10.0.10.209:8081/'); 
         }
@@ -82,21 +91,21 @@ const ResetPassword = () => {
         {
             successFull ? 
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
-                    <Text className='text-white font-bold text-xl'>Passwort erfolgreich zurückgesetzt</Text>
+                    <Text className='text-white font-bold text-xl'>{texts[selectedLanguage].successMessage}</Text>
 
                     <TouchableOpacity onPress={handleAppRedirect}>
-                        <Text className='text-blue-500 font-bold text-lg mt-2'>Zurück zur Anmeldung: App</Text>
+                        <Text className='text-blue-500 font-bold text-lg mt-2'>{texts[selectedLanguage].backToLoginApp}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => router.push('/sign-in')}>
-                        <Text className='text-blue-500 font-bold text-lg mt-2'>Zurück zur Anmeldung: Web</Text>
+                        <Text className='text-blue-500 font-bold text-lg mt-2'>{texts[selectedLanguage].backToLoginWeb}</Text>
                     </TouchableOpacity>
                 </View>
 
              :
             secret && userId ? (
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px]'>
-                    <Text className='text-white'>Reset Password</Text>
+                    <Text className='text-white'>{texts[selectedLanguage].resetPassword}</Text>
                     <TextInput
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
@@ -105,7 +114,7 @@ const ResetPassword = () => {
                             borderColor: newPassword.password.length > 7 ? "#1e3a8a" : "gray",
                             borderWidth: 2
                         }}
-                        placeholder="Password"
+                        placeholder={texts[selectedLanguage].password}
                         placeholderTextColor="#fff"
                         secureTextEntry={true}
                         value={newPassword.password}
@@ -119,14 +128,14 @@ const ResetPassword = () => {
                             borderColor: newPassword.passwordConfirm.length > 7 ? "#1e3a8a" : "gray",
                             borderWidth: 2
                         }}
-                        placeholder="Password bestätigen"
+                        placeholder={texts[selectedLanguage].confirmPassword}
                         placeholderTextColor="#fff"
                         secureTextEntry={true}
                         value={newPassword.passwordConfirm}
                         onChangeText={(text) => setNewPassword({ ...newPassword, passwordConfirm: text })}
                     />
                     <LoginButton
-                        title="Passwort zurücksetzen"
+                        title={texts[selectedLanguage].resetPassword}
                         handlePress={async () => await resetPasswordRequest()}
                         isSubmitting={false}
                         isReady={newPassword.password.length > 7 && newPassword.passwordConfirm.length > 7 ? true : false}
@@ -134,7 +143,7 @@ const ResetPassword = () => {
                 </View>
             ) : (
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
-                    <Text className='text-white font-bold text-xl'>Reset Password</Text>
+                    <Text className='text-white font-bold text-xl'>{texts[selectedLanguage].resetPassword}</Text>
                     <TextInput
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
@@ -143,7 +152,7 @@ const ResetPassword = () => {
                             borderColor: recoveryMail.length > 7 ? "#1e3a8a" : "gray",
                             borderWidth: 2
                         }}
-                        placeholder="Password recovery E-Mail"
+                        placeholder={texts[selectedLanguage].passwordRecoveryMail}
                         placeholderTextColor="#fff"
                         value={recoveryMail}
                         onChangeText={(text) => setRecoveryMail( text )}
@@ -151,12 +160,12 @@ const ResetPassword = () => {
                     {
                         mailSent ? (
                             <View className='items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
-                                <Text className='text-green-500 font-bold text-[15px] mt-3 '>E-Mail wurde gesendet</Text>
-                                <Text className='text-white font-bold text-[15px] mt-3 '>Bitte überprüfe dein Postfach</Text>
+                                <Text className='text-green-500 font-bold text-[15px] mt-3 '>{texts[selectedLanguage].mailHasBeenSent}</Text>
+                                <Text className='text-white font-bold text-[15px] mt-3 '>{texts[selectedLanguage].pleaseCheckYourPostfach}</Text>
                             </View>
                         ) : 
                         <LoginButton
-                            title="Send recovery mail"
+                            title={texts[selectedLanguage].passwordRecoveryMail}
                             handlePress={async ()=> await requestPasswordReset()}
                             isSubmitting={false}
                             isReady={recoveryMail.length > 7 ? true : false}

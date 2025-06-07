@@ -20,14 +20,6 @@ const ValidMail = () => {
     async function validateMail() {
       try {
         const response = await enterResponse(secret, userId);
-        console.log('response', response);
-
-        if (response) {
-          console.log('Mail validated successfully');
-        } else {
-          console.warn('Validation failed');
-        }
-
         window.location.href = '/profil';
       } catch (err) {
         console.error('Validation error:', err);
@@ -56,7 +48,7 @@ const ValidMail = () => {
     );
   }
 
-  return null; // Optional, da du ohnehin weiterleitest
+  return null; 
 };
 
 export default ValidMail;

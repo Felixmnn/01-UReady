@@ -303,7 +303,7 @@ const entdecken = () => {
               }}>
                 {
                   options.map((option, index) => (
-                        <TouchableOpacity key={option.enum} className={` rounded-full  ${width > 600 ? "p-3" : "p-2"} ${selectedKathegory == option.enum ? "bg-blue-500 w-[120px] items-center" : ""}`} 
+                        <TouchableOpacity key={option.enum} className={` rounded-full  ${width > 600 ? "p-2" : "p-2"} ${selectedKathegory == option.enum ? "bg-blue-500 w-[120px] items-center" : ""}`} 
                         onPress={() => {
                           setSelectedKathegory(option.enum)
                           handlePress(option)
@@ -369,7 +369,7 @@ const entdecken = () => {
             }}
             >
               <Text className='text-white font-semibold text-[10px] '>
-                {modules.length} Results
+                {modules.length} {texts[selectedLanguage].results}
               </Text>
             </View>
           <RenderResults 

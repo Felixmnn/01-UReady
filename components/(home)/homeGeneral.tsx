@@ -18,7 +18,7 @@ import { loadUserUsage } from '@/lib/appwriteDaten';
 const { width } = Dimensions.get('window');
 
 const HomeGeneral = () => {
-  const { user,language, userUsage } = useGlobalContext()
+  const { user, userUsage } = useGlobalContext()
   const [ userUsageP, setUserUsageP ] = useState(null)
 
   useEffect(() => {
@@ -32,10 +32,9 @@ const HomeGeneral = () => {
   },[userUsage])
 
  
-
+  const { language } = useGlobalContext()
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   const texts = languages.home;
-
   useEffect(() => {
     if(language) {
       setSelectedLanguage(language)
@@ -85,7 +84,7 @@ const HomeGeneral = () => {
             <VektorCircle color={item.color?.toLowerCase()} percentage={item.percent} icon={"clock"} strokeColor={item.color?.toLowerCase()}/>
 
           </View>
-          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{item.fragen} Fragen • {item.sessions} Sessions</Text>
+          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{item.fragen} {texts[selectedLanguage].questions} • {item.sessions} {texts[selectedLanguage].sessions}</Text>
           
         </View>
       </TouchableOpacity>
@@ -115,7 +114,7 @@ const HomeGeneral = () => {
         <View className='flex-row items-center justify-between'>
           <View className='items-start  '>
             <Text className='text-white font-bold text-[15px]'>{item.name}</Text>
-            <Text className='text-gray-500 font-bold text-[15px]'>{item.questions} Fragen</Text>
+            <Text className='text-gray-500 font-bold text-[15px]'>{item.questions} {texts[selectedLanguage].questions}</Text>
           </View>
           <View className='p-3'>
             <Icon name={item.icon} size={20} color={"white"}/>

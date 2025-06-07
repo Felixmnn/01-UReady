@@ -1,19 +1,32 @@
 import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ToggleSwitch from '@/components/(general)/toggleSwich';
 import FinalTextInput from '@/components/(general)/finalTextInput';
 import ModalSelectSession from './modalSelectSession';
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQuestion, setSelectedQuestion, questionActive, setQuestionActive, setAnswerActive, answerActive }) => {
-    const {width} = useWindowDimensions()
+    
+    const {width} = useWindowDimensions();
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.editQuestions;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
+
     const isVertical = width < 700;
     function addAnswer() {
         setQuestions(prevQuestions =>
             prevQuestions.map((question, i) =>
                 i === selectedQuestion - 1
-                    ? { ...question, answers: [...question.answers, "Neu Antwort"] }
+                    ? { ...question, answers: [...question.answers, texts[selectedLanguage].newAnswer] }
                     : question
             )
         );
@@ -40,7 +53,7 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                 {
                     questionActive ?
                     <View className='w-full'>
-                        <Text className='text-[15px] font-bold text-gray-400'>Frage:</Text>
+                        <Text className='text-[15px] font-bold text-gray-400'>{texts[selectedLanguage].question}</Text>
 
                         <FinalTextInput
                         value={newText}
@@ -52,12 +65,12 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                             setQuestionActive(false)
                         }
                         }
-                        placeHolder='Frage'
+                        placeHolder={texts[selectedLanguage].question}
                         />
                     </View>
                     :
                     <TouchableOpacity onPress={()=>{setQuestionActive(true)}} className='w-full'>
-                        <Text className='text-[15px] font-bold text-gray-400'>Frage:</Text>
+                        <Text className='text-[15px] font-bold text-gray-400'>{texts[selectedLanguage].question}</Text>
                         <Text className='text-gray-300 font-bold m-2'>{questions[selectedQuestion-1].question}</Text>
                     </TouchableOpacity>
                 }
@@ -106,9 +119,9 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                         <View className='flex-row justify-between'>
                         <View className='flex-row items-center'>
                             { questions[selectedQuestion-1].answerIndex.includes(index)?
-                                <Text className='text-green-300 font-bold mr-2'>Richtige Antwort</Text>
+                                <Text className='text-green-300 font-bold mr-2'>{texts[selectedLanguage].correctAnswer}</Text>
                                 :
-                                <Text className='text-red-300 font-bold mr-2'>Falsche Antwort</Text>
+                                <Text className='text-red-300 font-bold mr-2'>{texts[selectedLanguage].wrongAnswer}</Text>
                             }
                             <ToggleSwitch isOn={questions[selectedQuestion-1].answerIndex.includes(index)} onToggle={()=> {{
                                 if (!isOn){
@@ -150,7 +163,7 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                                     setAnswerActive(null)
                                 }}
                                 value={newText}
-                                placeHolder='Antwort'
+                                placeHolder={texts[selectedLanguage].answer}
                                 />
                                 
                                 :
@@ -182,11 +195,11 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                             <Icon name="plus" size={10} color="white"/>
                             { !isVertical ? 
                             <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
-                                Antwort hinzufügen
+                                {texts[selectedLanguage].addAnswer}
                             </Text>
                             :
                             <Text className='text-[12px] ml-2 text-gray-300 font-semibold '>
-                                Antwort
+                                {texts[selectedLanguage].answer}
                             </Text>
                             }
                         </TouchableOpacity>

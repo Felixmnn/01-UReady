@@ -6,7 +6,6 @@ import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 
 const AddAiModule = ({isVisible, setIsVisible}) => {
     const { user } = useGlobalContext();
-    const { heigth } = useWindowDimensions();
     const [userData, setUserData] = useState(null)
  const [ newModule, setNewModule] = useState({
           name: "",

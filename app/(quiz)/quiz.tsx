@@ -3,16 +3,25 @@ import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router,useLocalSearchParams } from "expo-router"
 import { updateDocument, updateModule} from "../../lib/appwriteEdit"
-import ModalDataUpload from '@/components/(home)/modalDataUpload';
 import { useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import SmileyStatus from '@/components/(bibliothek)/(components)/smileyStatus';
 import { loadModule } from '@/lib/appwriteDaten';
-import { updateModuleData, updateModuleQuestionList } from '@/lib/appwriteUpdate';
+import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
+import  languages  from '@/assets/exapleData/languageTabs.json';
+
 
 const quiz = () => {
     const {user, isLoggedIn,isLoading } = useGlobalContext();
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.quiz;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
     const {width} = useWindowDimensions();
     const isVertical = width > 700;
     /**
@@ -62,12 +71,9 @@ const quiz = () => {
         async function updateModuleHere() {
         if (module) {
             const parsedList = module.questionList.map(question => JSON.parse(question))
-            console.log("New Question list:", questionList)
             const updatedList = parsedList.map((question) => {
                 const questionInList = questionList.find(q => q.id === question.id);
                 if (questionInList) {
-                    console.log("Question in List: ", questionInList)
-                    console.log("New Question: ", {question, status: questionInList.status})
                     return {
                         ...question,
                         status: questionInList.status
@@ -76,14 +82,11 @@ const quiz = () => {
                     return question;
                 }
             });
-            console.log("Updated List: ", updatedList)
             const updatedModule = {
                 ...module,
                 questionList: updatedList.map(question => JSON.stringify(question))
             };
-            console.log("Updated Module: ", updatedModule)
             const res = await updateModuleQuestionList(updatedModule.$id,updatedModule. questionList);
-            console.log("Updated Module 🔴🔴🔴: ", res);
         }
         }
         updateModuleHere();
@@ -139,8 +142,7 @@ const quiz = () => {
                     <TouchableOpacity onPress={()=> tryBack()}>
                         <Icon name="arrow-left" size={20} color="white"/>
                     </TouchableOpacity>
-                    <Text className='font-semibold text-xl ml-2 text-white'>Algorythmen</Text>
-                </View>
+                    </View>
                 <View className={`flex-row items-center justify-center rounded-full border-gray-600 border-[1px] py-2 px-3 ${isVertical ? "" : "h-[35px] w-[35px]"} `}>
                     <TouchableOpacity className='items-center justify-center'>
                         <Icon name="cog" size={10} color="white"/>
@@ -149,7 +151,7 @@ const quiz = () => {
 
                     isVertical ? 
                     <Text className='text-gray-200 ml-2 text-[12px]'>
-                        Einstellungen
+                        {texts[selectedLanguage].setting}
                     </Text>
                     : null
                     }
@@ -183,7 +185,6 @@ const quiz = () => {
                 return false
             }
         }
-        console.log("Selected Question: ", questionList)
         async function nextQuestion (status, change){
             setShowAnswers(false)
             
@@ -265,10 +266,10 @@ const quiz = () => {
                                     <View>
                                     {
                                         correctAnswers() ? (
-                                            <Text className='text-green-500'>Richtig</Text>
+                                            <Text className='text-green-500'>{texts[selectedLanguage].right}</Text>
                                         ): 
                                         (
-                                            <Text className='text-red-500'>Falsch</Text>
+                                            <Text className='text-red-500'>{texts[selectedLanguage].wrong}</Text>
                                         )
                                     }
                                 </View>
@@ -284,7 +285,7 @@ const quiz = () => {
                                         <Icon name="chevron-left" size={20} color={"white"}/>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={()=> { changeVisibility()}} className='items-center justify-center p-2 bg-blue-900 rounded-[10px]'>
-                                        <Text className='text-white'>Prüfen</Text>
+                                        <Text className='text-white'>{texts[selectedLanguage].validate}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={()=> nextQuestion("OK",1)} className='h-[25px] w-[25px] items-center justify-center rounded-full bg-gray-800 border-gray-600 border-[1px]'>
                                     <Icon name="chevron-right" size={20} color={"white"}/>
@@ -335,14 +336,11 @@ const quiz = () => {
         )
     }
 
-    const [isVisibleDataUpload,setIsVisibleDataUpload] = useState(false)
   return (
     <SafeAreaView className={`flex-1 items-center justify-center bg-gradient-to-b from-[#2b3d69] to-[#0c111d] ${isVertical ? "p-3" : ""}`}>
       <View className={`flex-1  w-full bg-[#0c111d]  ${isVertical ? "rounded-[10px] border-[1px] border-gray-600" : ""}`}>
         <Header/>
         <Quiz />
-        <ModalDataUpload isVisible={isVisibleDataUpload} setIsVisible={setIsVisibleDataUpload}/>
-
       </View>
     </SafeAreaView>
   )

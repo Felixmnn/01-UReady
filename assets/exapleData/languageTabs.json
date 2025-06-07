@@ -7,7 +7,10 @@
             "quickActions":"Schnelle Aktionen",
             "learnSetKI":"Erstellen wir zusammen ein Lernset.",
             "learnSetDiscover":"Mal schauen was deine Komilitonen lernen.",
-            "learnSetCreate":"Erstelle dein eigenes Lernset."
+            "learnSetCreate":"Erstelle dein eigenes Lernset.",
+            "questions":"Fragen",
+            "sessions":"Sessions"
+
         },
         "ENGLISH(US)":{
             "lastModules":"Last Modules",
@@ -15,7 +18,9 @@
             "quickActions":"Quick Actions",
             "learnSetKI":"Let's create a learning set together.",
             "learnSetDiscover":"Let's see what your classmates are learning.",
-            "learnSetCreate":"Create your own learning set."
+            "learnSetCreate":"Create your own learning set.",
+            "questions":"Questions",
+            "sessions":"Sessions"
         },
         "ENGLISH(UK)":{
             "lastModules":"Last Modules",
@@ -23,7 +28,9 @@
             "quickActions":"Quick Actions",
             "learnSetKI":"Let's create a learning set together.",
             "learnSetDiscover":"Let's see what your classmates are learning.",
-            "learnSetCreate":"Create your own learning set."
+            "learnSetCreate":"Create your own learning set.",
+            "questions":"Questions",
+            "sessions":"Sessions"
         },
         "AUSTRALIAN":{
             "lastModules":"Last Modules",
@@ -31,7 +38,9 @@
             "quickActions":"Quick Actions",
             "learnSetKI":"Let's create a learning set together.",
             "learnSetDiscover":"Let's see what your classmates are learning.",
-            "learnSetCreate":"Create your own learning set."
+            "learnSetCreate":"Create your own learning set.",
+            "questions":"Questions",
+            "sessions":"Sessions"
         },
         "SPANISH":{
             "lastModules":"Últimos módulos",
@@ -39,7 +48,9 @@
             "quickActions":"Acciones rápidas",
             "learnSetKI":"Creemos un conjunto de aprendizaje juntos.",
             "learnSetDiscover":"Veamos qué están aprendiendo tus compañeros.",
-            "learnSetCreate":"Crea tu propio conjunto de aprendizaje."
+            "learnSetCreate":"Crea tu propio conjunto de aprendizaje.",
+            "questions":"Preguntas",
+            "sessions":"Sesiones"
         }
     },
     "singleModule":{
@@ -507,7 +518,6 @@
             "shop": "Tienda"
         }
     },
-
     "aiQuestion":{
         "DEUTSCH": {
                 "title": "Generiere Karteikarten mit AI aus...",
@@ -623,7 +633,10 @@
             "noResults": "Keine Ergebnisse gefunden",
             "loading": "Lade deine Module...",
             "copy1": "Modul Kopieren",
-            "copy2": "Module Kopieren"
+            "copy2": "Module Kopieren",
+            "results": "Ergebnisse",
+            "subjects": "Fächer",
+            "synchronization": "Synchronisierung"
         },
         "ENGLISH(US)":{
             "title": "Discover",
@@ -635,7 +648,10 @@
             "noResults": "No results found",
             "loading": "Loading your modules...",
             "copy1": "Copy Module",
-            "copy2": "Copy Modules"
+            "copy2": "Copy Modules",
+            "results": "Results",
+            "subjects": "Subjects",
+            "synchronization": "Synchronization"
         },
         "ENGLISH(UK)":{
             "title": "Discover",
@@ -647,7 +663,10 @@
             "noResults": "No results found",
             "loading": "Loading your modules...",
             "copy1": "Copy Module",
-            "copy2": "Copy Modules"
+            "copy2": "Copy Modules",
+            "results": "Results",
+            "subjects": "Subjects",
+            "synchronization": "Synchronization"
         },
         "AUSTRALIAN":{
             "title": "Discover",
@@ -659,7 +678,10 @@
             "noResults": "No results found",
             "loading": "Loading your modules...",
             "copy1": "Copy Module",
-            "copy2": "Copy Modules"
+            "copy2": "Copy Modules",
+            "results": "Results",
+            "subjects": "Subjects",
+            "synchronization": "Synchronization"
         },
         "SPANISH":{
             "title": "Descubrir",
@@ -671,11 +693,38 @@
             "noResults": "No se encontraron resultados",
             "loading": "Cargando tus módulos...",
             "copy1": "Copiar módulo",
-            "copy2": "Copiar módulos"
+            "copy2": "Copiar módulos",
+            "results": "Resultados",
+            "subjects": "Asignaturas",
+            "synchronization": "Sincronización"
         }
     },
     "shop":{
-
+        "DEUTSCH": {
+            "recharges": "Recharges",
+            "chips": "Chips",
+            "gratisItems": "Gratis Items"
+        },
+        "ENGLISH(US)": {
+            "recharges": "Recharges",
+            "chips": "Chips",
+            "gratisItems": "Free Items"
+        },
+        "ENGLISH(UK)": {
+            "recharges": "Recharges",
+            "chips": "Chips",
+            "gratisItems": "Free Items"
+        },
+        "AUSTRALIAN": {
+            "recharges": "Recharges",
+            "chips": "Chips",
+            "gratisItems": "Free Items"
+        },
+        "SPANISH": {
+            "recharges": "Recargas",
+            "chips": "Fichas",
+            "gratisItems": "Artículos gratis"
+        }
     },
     "personalize": {
         "pageThree": {
@@ -740,5 +789,568 @@
         }
 
     }
+    },
+    "about": {
+        "DEUTSCH" : {
+            "errorMessage": "Bitte fülle alle Felder aus.",
+            "successMessage": "Deine Nachricht wurde erfolgreich gesendet!",
+            "kontakt": "Kontakt",
+            "name": "Name",
+            "email": "E-Mail",
+            "nachricht": "Nachricht",
+            "backHome": "Zurück zur Startseite",
+            "send": "Senden",
+            "yourName": "Dein Name",
+            "yourEmail": "Deine E-Mail",
+            "yourMessage": "Deine Nachricht"
+        },
+        "ENGLISH(US)" : {
+            "errorMessage": "Please fill out all fields.",
+            "successMessage": "Your message has been sent successfully!",
+            "kontakt": "Contact",
+            "name": "Name",
+            "email": "Email",
+            "nachricht": "Message",
+            "backHome": "Back to Home",
+            "send": "Send",
+            "yourName": "Your Name",
+            "yourEmail": "Your Email",
+            "yourMessage": "Your Message"
+        }, 
+        "ENGLISH(UK)" : {
+            "errorMessage": "Please fill out all fields.",
+            "successMessage": "Your message has been sent successfully!",
+            "kontakt": "Contact",
+            "name": "Name",
+            "email": "Email",
+            "nachricht": "Message",
+            "backHome": "Back to Home",
+            "send": "Send",
+            "yourName": "Your Name",
+            "yourEmail": "Your Email",
+            "yourMessage": "Your Message"
+        },
+        "AUSTRALIAN" : {
+            "errorMessage": "Please fill out all fields.",
+            "successMessage": "Your message has been sent successfully!",
+            "kontakt": "Contact",
+            "name": "Name",
+            "email": "Email",
+            "nachricht": "Message",
+            "backHome": "Back to Home",
+            "send": "Send",
+            "yourName": "Your Name",
+            "yourEmail": "Your Email",
+            "yourMessage": "Your Message"
+        },
+        "SPANISH" : {
+            "errorMessage": "Por favor, completa todos los campos.",
+            "successMessage": "¡Tu mensaje ha sido enviado con éxito!",
+            "kontakt": "Contacto",
+            "name": "Nombre",
+            "email": "Correo electrónico",
+            "nachricht": "Mensaje",
+            "backHome": "Volver a la página de inicio",
+            "send": "Enviar",
+            "yourName": "Tu nombre",
+            "yourEmail": "Tu correo electrónico",
+            "yourMessage": "Tu mensaje"
+        }
+        
+       
+    },
+    "auth":{
+        "DEUTSCH":{
+            "error": "Fehler aufgetreten",
+            "pleaseValidMail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+            "passwordLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+            "passwordMatch": "Die Passwörter stimmen nicht überein.",
+            "tryAgain": "Bitte versuche es erneut.",
+            "pleaseGoToAppToSignIn": "Bitte gehe zur App, um dich anzumelden.",
+            "successMessage": "Passwort erfolgreich zurückgesetzt.",
+            "backToLoginApp": "Zurück zur Anmeldung - App",
+            "backToLoginWeb": "Zurück zur Anmeldung - Web",
+            "resetPassword": "Passwort zurücksetzen",
+            "mailHasBeenSent": "Eine E-Mail mit Anweisungen zum Zurücksetzen des Passworts wurde gesendet.",
+            "pleaseCheckYourPostfach": "Bitte überprüfe dein Postfach.",
+            "passwordRecoveryMail": "Wiederherstellungs-E-Mail",
+            "confirmPassword": "Passwort bestätigen",
+            "password": "Passwort"
+        },
+        "ENGLISH(US)":{
+            "error": "An error occurred",
+            "pleaseValidMail": "Please enter a valid email address.",
+            "passwordLength": "Password must be at least 8 characters long.",
+            "passwordMatch": "Passwords do not match.",
+            "tryAgain": "Please try again.",
+            "pleaseGoToAppToSignIn": "Please go to the app to sign in.",
+            "successMessage": "Password reset successfully.",
+            "backToLoginApp": "Back to Login - App",
+            "backToLoginWeb": "Back to Login - Web",
+            "resetPassword": "Reset Password",
+            "mailHasBeenSent": "An email with instructions to reset your password has been sent.",
+            "pleaseCheckYourPostfach": "Please check your inbox.",
+            "passwordRecoveryMail": "Recovery Email",
+            "confirmPassword": "Confirm Password",
+            "password": "Password"
+        }
+        ,
+        "ENGLISH(UK)":{
+            "error": "An error occurred",
+            "pleaseValidMail": "Please enter a valid email address.",
+            "passwordLength": "Password must be at least 8 characters long.",
+            "passwordMatch": "Passwords do not match.",
+            "tryAgain": "Please try again.",
+            "pleaseGoToAppToSignIn": "Please go to the app to sign in.",
+            "successMessage": "Password reset successfully.",
+            "backToLoginApp": "Back to Login - App",
+            "backToLoginWeb": "Back to Login - Web",
+            "resetPassword": "Reset Password",
+            "mailHasBeenSent": "An email with instructions to reset your password has been sent.",
+            "pleaseCheckYourPostfach": "Please check your inbox.",
+            "passwordRecoveryMail": "Recovery Email",
+            "confirmPassword": "Confirm Password",
+            "password": "Password"
+        },
+        "AUSTRALIAN":{
+            "error": "An error occurred",
+            "pleaseValidMail": "Please enter a valid email address.",
+            "passwordLength": "Password must be at least 8 characters long.",
+            "passwordMatch": "Passwords do not match.",
+            "tryAgain": "Please try again.",
+            "pleaseGoToAppToSignIn": "Please go to the app to sign in.",
+            "successMessage": "Password reset successfully.",
+            "backToLoginApp": "Back to Login - App",
+            "backToLoginWeb": "Back to Login - Web",
+            "resetPassword": "Reset Password",
+            "mailHasBeenSent": "An email with instructions to reset your password has been sent.",
+            "pleaseCheckYourPostfach": "Please check your inbox.",
+            "passwordRecoveryMail": "Recovery Email",
+            "confirmPassword": "Confirm Password",
+            "password": "Password"
+        },
+        "SPANISH":{
+            "error": "Ha ocurrido un error",
+            "pleaseValidMail": "Por favor, introduce una dirección de correo electrónico válida.",
+            "passwordLength": "La contraseña debe tener al menos 8 caracteres.",
+            "passwordMatch": "Las contraseñas no coinciden.",
+            "tryAgain": "Por favor, inténtalo de nuevo.",
+            "pleaseGoToAppToSignIn": "Por favor, ve a la aplicación para iniciar sesión.",
+            "successMessage": "Contraseña restablecida con éxito.",
+            "backToLoginApp": "Volver a iniciar sesión - App",
+            "backToLoginWeb": "Volver a iniciar sesión - Web",
+            "resetPassword": "Restablecer contraseña",
+            "mailHasBeenSent": "Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.",
+            "pleaseCheckYourPostfach": "Por favor, revisa tu bandeja de entrada.",
+            "passwordRecoveryMail": "Correo de recuperación",
+            "confirmPassword": "Confirmar contraseña",
+            "password": "Contraseña"
+        }
+    },
+    "signout":{
+        "DEUTSCH": {
+            "signingOut": "Abmelden..."
+        },
+        "ENGLISH(US)": {
+            "signingOut": "Signing out..."
+        },
+        "ENGLISH(UK)": {
+            "signingOut": "Signing out..."
+        },
+        "AUSTRALIAN": {
+            "signingOut": "Signing out..."
+        },
+        "SPANISH": {
+            "signingOut": "Cerrando sesión..."
+        }
+    },
+    "quiz":{
+        "DEUTSCH":{
+            "setting": "Einstellungen",
+            "validate": "prüfen",
+            "right": "Richtig",
+            "wrong": "Falsch"
+        },
+        "ENGLISH(US)":{
+            "setting": "Settings",
+            "validate": "validate",
+            "right": "Right",
+            "wrong": "Wrong"
+        },
+        "ENGLISH(UK)":{
+            "setting": "Settings",
+            "validate": "validate",
+            "right": "Right",
+            "wrong": "Wrong"
+        },
+        "AUSTRALIAN":{
+            "setting": "Settings",
+            "validate": "validate",
+            "right": "Right",
+            "wrong": "Wrong"
+        },
+        "SPANISH":{
+            "setting": "Configuración",
+            "validate": "validar",
+            "right": "Correcto",
+            "wrong": "Incorrecto"
+        }
+
+    },
+    "editQuestions":{
+        "DEUTSCH": {
+            "newAnswer": "Neue Antwort",
+            "question": "Frage",
+            "correctAnswer": "Richtige Antwort",
+            "wrongAnswer": "Falsche Antwort",
+            "addAnswer": "Antwort hinzufügen",
+            "answer": "Antwort",
+            "addQuestion": "Frage hinzufügen",
+            "saveQuestion": "Frage speichern",
+            "selectASession": "Wähle eine Sitzung",
+            "delete": "Löschen",
+            "quizFor": "Quiz Frage für ",
+            "create": "erstellen",
+            "allChangesSaved": "Alle Änderungen gespeichert",
+            "unsavedChanges": "Ungespeicherte Änderungen",
+            "missingRequirements": "Fehlende Anforderungen",
+            "selectSession": "Wähle eine Sitzung aus",
+            "ok": "OK",
+            "newCard": "Neue Karteikarte",
+            "errorNoEmptyQuestion": "Die Frage darf nicht leer sein.",
+            "errorAtLeastOneAnswer": "Es muss mindestens eine Antwort vorhanden sein.",
+            "errorOneCorrectAnswer": "Es muss mindestens eine richtige Antwort vorhanden sein.",
+            "errorMissingSession": "Bitte wähle eine Sitzung aus."
+
+        },
+        "ENGLISH(US)": {
+            "newAnswer": "New Answer",
+            "question": "Question",
+            "correctAnswer": "Correct Answer",
+            "wrongAnswer": "Wrong Answer",
+            "addAnswer": "Add Answer",
+            "answer": "Answer",
+            "addQuestion": "Add Question",
+            "saveQuestion": "Save Question",
+            "selectASession": "Select a Session",
+            "delete": "Delete",
+            "quizFor": "Quiz Question for ",
+            "create": "create",
+            "allChangesSaved": "All changes saved",
+            "unsavedChanges": "Unsaved changes",
+            "missingRequirements": "Missing requirements",
+            "selectSession": "Select a session",
+            "ok": "OK",
+            "newCard": "New Flashcard",
+            "errorNoEmptyQuestion": "The question cannot be empty.",
+            "errorAtLeastOneAnswer": "There must be at least one answer.",
+            "errorOneCorrectAnswer": "There must be at least one correct answer.",
+            "errorMissingSession": "Please select a session."
+        },
+        "ENGLISH(UK)": {
+            "newAnswer": "New Answer",
+            "question": "Question",
+            "correctAnswer": "Correct Answer",
+            "wrongAnswer": "Wrong Answer",
+            "addAnswer": "Add Answer",
+            "answer": "Answer",
+            "addQuestion": "Add Question",
+            "saveQuestion": "Save Question",
+            "selectASession": "Select a Session",
+            "delete": "Delete",
+            "quizFor": "Quiz Question for ",
+            "create": "create",
+            "allChangesSaved": "All changes saved",
+            "unsavedChanges": "Unsaved changes",
+            "missingRequirements": "Missing requirements",
+            "selectSession": "Select a session",
+            "ok": "OK",
+            "newCard": "New Flashcard",
+            "errorNoEmptyQuestion": "The question cannot be empty.",
+            "errorAtLeastOneAnswer": "There must be at least one answer.",
+            "errorOneCorrectAnswer": "There must be at least one correct answer.",
+            "errorMissingSession": "Please select a session."
+        },
+        "AUSTRALIAN": {
+            "newAnswer": "New Answer",
+            "question": "Question",
+            "correctAnswer": "Correct Answer",
+            "wrongAnswer": "Wrong Answer",
+            "addAnswer": "Add Answer",
+            "answer": "Answer",
+            "addQuestion": "Add Question",
+            "saveQuestion": "Save Question",
+            "selectASession": "Select a Session",
+            "delete": "Delete",
+            "quizFor": "Quiz Question for ",
+            "create": "create",
+            "allChangesSaved": "All changes saved",
+            "unsavedChanges": "Unsaved changes",
+            "missingRequirements": "Missing requirements",
+            "selectSession": "Select a session",
+            "ok": "OK",
+            "newCard": "New Flashcard",
+            "errorNoEmptyQuestion": "The question cannot be empty.",
+            "errorAtLeastOneAnswer": "There must be at least one answer.",
+            "errorOneCorrectAnswer": "There must be at least one correct answer.",
+            "errorMissingSession": "Please select a session."
+
+
+        },
+        "SPANISH": {
+            "newAnswer": "Nueva respuesta",
+            "question": "Pregunta",
+            "correctAnswer": "Respuesta correcta",
+            "wrongAnswer": "Respuesta incorrecta",
+            "addAnswer": "Añadir respuesta",
+            "answer": "Respuesta",
+            "addQuestion": "Añadir pregunta",
+            "saveQuestion": "Guardar pregunta",
+            "selectASession": "Selecciona una sesión",
+            "delete": "Eliminar",
+            "quizFor": "Pregunta del cuestionario para ",
+            "create": "crear",
+            "allChangesSaved": "Todos los cambios guardados",
+            "unsavedChanges": "Cambios no guardados",
+            "missingRequirements": "Requisitos faltantes",
+            "selectSession": "Selecciona una sesión",
+            "ok": "OK",
+            "newCard": "Nueva tarjeta",
+            "errorNoEmptyQuestion": "La pregunta no puede estar vacía.",
+            "errorAtLeastOneAnswer": "Debe haber al menos una respuesta.",
+            "errorOneCorrectAnswer": "Debe haber al menos una respuesta correcta.",
+            "errorMissingSession": "Por favor, selecciona una sesión."
+
+            
+        }
+
+    },
+    "createModule" : {
+        "DEUTSCH": {
+            "moduleName": "Modulname",
+            "aOriginalName": "Ein origineller Name für dein Modul",
+            "description": "Beschreibung",
+            "aOriginalDescription": "Eine Beschreibung für dein Modul",
+            "color" : "Farbe",
+            "sessions": "Sitzungen",
+            "createModule": "Modul erstellen",
+            "private": "Privat",
+            "public": "Öffentlich",
+            "newModule": "Neues Modul",
+            "errorMissingName": "Bitte gib einen Modulnamen ein.",
+            "errorMissingDescription": "Bitte gib eine Modulbeschreibung ein.",
+            "errorMissingColor": "Bitte wähle eine Farbe für dein Modul aus.",
+            "errorMissingSessions": "Bitte wähle mindestens eine Sitzung für dein Modul aus.",
+            "addAText": "Ergänze einen Text",
+            "addAFile": "Füge eine Datei hinzu",
+            "addATopic": "Füge ein Thema hinzu",
+            "aNewKathegorie": "Eine neue Katgorie...",
+            "aNewText": "Ein neuer Text ...",
+            "noMaterialAdded": "Noch keine Materialien hinzugefügt",
+            "generateModule": "Modul generieren",
+            "materials":"Materialien"
+
+        },
+        "ENGLISH(US)": {
+            "moduleName": "Module Name",
+            "aOriginalName": "An original name for your module",
+            "description": "Description",
+            "aOriginalDescription": "A description for your module",
+            "color" : "Color",
+            "sessions": "Sessions",
+            "createModule": "Create Module",
+            "private": "Private",
+            "public": "Public",
+            "newModule": "New Module",
+            "errorMissingName": "Please enter a module name.",
+            "errorMissingDescription": "Please enter a module description.",
+            "errorMissingColor": "Please select a color for your module.",
+            "errorMissingSessions": "Please select at least one session for your module.",
+            "addAText": "Add a text",
+            "addAFile": "Add a file",
+            "addATopic": "Add a topic",
+            "aNewKathegorie": "A new category...",
+            "aNewText": "A new text ...",
+            "noMaterialAdded": "No materials added yet",
+            "generateModule": "Generate Module",
+            "materials":"Materials"
+
+        },
+        "ENGLISH(UK)": {
+            "moduleName": "Module Name",
+            "aOriginalName": "An original name for your module",
+            "description": "Description",
+            "aOriginalDescription": "A description for your module",
+            "color" : "Color",
+            "sessions": "Sessions",
+            "createModule": "Create Module",
+            "private": "Private",
+            "public": "Public",
+            "newModule": "New Module",
+            "errorMissingName": "Please enter a module name.",
+            "errorMissingDescription": "Please enter a module description.",
+            "errorMissingColor": "Please select a color for your module.",
+            "errorMissingSessions": "Please select at least one session for your module.",
+            "addAText": "Add a text",
+            "addAFile": "Add a file",
+            "addATopic": "Add a topic",
+            "aNewKathegorie": "A new category...",
+            "aNewText": "A new text ...",
+            "noMaterialAdded": "No materials added yet",
+            "generateModule": "Generate Module",
+            "materials":"Materials"
+
+
+        },
+        "AUSTRALIAN": {
+            "moduleName": "Module Name",
+            "aOriginalName": "An original name for your module",
+            "description": "Description",
+            "aOriginalDescription": "A description for your module",
+            "color" : "Color",
+            "sessions": "Sessions",
+            "createModule": "Create Module",
+            "private": "Private",
+            "public": "Public",
+            "newModule": "New Module",
+            "errorMissingName": "Please enter a module name.",
+            "errorMissingDescription": "Please enter a module description.",
+            "errorMissingColor": "Please select a color for your module.",
+            "errorMissingSessions": "Please select at least one session for your module.",
+            "addAText": "Add a text",
+            "addAFile": "Add a file",
+            "addATopic": "Add a topic",
+            "aNewKathegorie": "A new category...",
+            "aNewText": "A new text ...",
+            "noMaterialAdded": "No materials added yet",
+            "generateModule": "Generate Module",
+            "materials":"Materials"
+        },
+        "SPANISH": {
+            "moduleName": "Nombre del módulo",
+            "aOriginalName": "Un nombre original para tu módulo",
+            "description": "Descripción",
+            "aOriginalDescription": "Una descripción para tu módulo",
+            "color" : "Color",
+            "sessions": "Sesiones",
+            "createModule": "Crear módulo",
+            "private": "Privado",
+            "public": "Público",
+            "newModule": "Nuevo módulo",
+            "errorMissingName": "Por favor, introduce un nombre para el módulo.",
+            "errorMissingDescription": "Por favor, introduce una descripción para el módulo.",
+            "errorMissingColor": "Por favor, selecciona un color para tu módulo.",
+            "errorMissingSessions": "Por favor, selecciona al menos una sesión para tu módulo.",
+            "addAText": "Añadir un texto",
+            "addAFile": "Añadir un archivo",
+            "addATopic": "Añadir un tema",
+            "aNewKathegorie": "Una nueva categoría...",
+            "aNewText": "Un nuevo texto ...",
+            "noMaterialAdded": "Aún no se han añadido materiales",
+            "generateModule": "Generar módulo",
+            "materials":"Materiales"
+        }
+    },
+    "streak":{
+        "DEUTSCH":{
+            "youHave": "Du hast",
+            "daysInARow": "Tage am Stück gelernt!",
+            "close": "Schließen"
+        },
+        "ENGLISH(US)": {
+            "youHave": "You have",
+            "daysInARow": "days in a row of learning!",
+            "close": "Close"
+        },
+        "ENGLISH(UK)": {
+            "youHave": "You have",
+            "daysInARow": "days in a row of learning!",
+            "close": "Close"
+        },
+        "AUSTRALIAN": {
+            "youHave": "You have",
+            "daysInARow": "days in a row of learning!",
+            "close": "Close"
+        },
+        "SPANISH": {
+            "youHave": "Tienes",
+            "daysInARow": "días seguidos aprendiendo!",
+            "close": "Cerrar"
+        }
+    },
+    "gettingStarted" :{
+        "DEUTSCH" : {
+            "setTogether": "Erstellen wir zusammen ein Lernset.",
+            "comilitones": "Mal schauen was deine Komilitonen lernen.",
+            "createSet" : "Erstelle dein eigenes Lernset",
+            "timeToStart" : "Zeit durchzustarten!",
+            "sucheLäuft": "Suche läuft...",
+            "useThisModule": "Dieses Modul verwenden",
+            "this": "Diese",
+            "moduleUse": "Module verwenden",
+            "noModulesFound": "Noch keine Molue ausgewählt",
+            "iHaveFoundSomething": "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
+            "iHaveFoundNothing": "Leider habe ich nichts gefunden aber kein Problem",
+            "waitAMoment": "Gib mir einen Moment..."
+
+
+
+        },
+        "ENGLISH(US)" : {
+            "setTogether": "Let's create a study set together.",
+            "comilitones": "Let's see what your classmates are studying.",
+            "createSet" : "Create your own study set",
+            "timeToStart" : "Time to get started!",
+            "sucheLäuft": "Searching...",
+            "useThisModule": "Use this module",
+            "this": "This",
+            "moduleUse": "module use",
+            "noModulesFound": "No modules selected yet",
+            "iHaveFoundSomething": "I found something, just click on the modules and I will add them for you",
+            "iHaveFoundNothing": "Unfortunately, I didn't find anything, but no problem",
+            "waitAMoment": "Give me a moment..."
+        },
+        "ENGLISH(UK)" : {
+            "setTogether": "Let's create a study set together.",
+            "comilitones": "Let's see what your classmates are studying.",
+            "createSet" : "Create your own study set",
+            "timeToStart" : "Time to get started!",
+            "sucheLäuft": "Searching...",
+            "useThisModule": "Use this module",
+            "this": "This",
+            "moduleUse": "module use",
+            "noModulesFound": "No modules selected yet",
+            "iHaveFoundSomething": "I found something, just click on the modules and I will add them for you",
+            "iHaveFoundNothing": "Unfortunately, I didn't find anything, but no problem",
+            "waitAMoment": "Give me a moment..."
+        },
+        "AUSTRALIAN" : {
+            "setTogether": "Let's create a study set together.",
+            "comilitones": "Let's see what your classmates are studying.",
+            "createSet" : "Create your own study set",
+            "timeToStart" : "Time to get started!",
+            "sucheLäuft": "Searching...",
+            "useThisModule": "Use this module",
+            "this": "This",
+            "moduleUse": "module use",
+            "noModulesFound": "No modules selected yet",
+            "iHaveFoundSomething": "I found something, just click on the modules and I will add them for you",
+            "iHaveFoundNothing": "Unfortunately, I didn't find anything, but no problem",
+            "waitAMoment": "Give me a moment..."
+        },
+        "SPANISH" : {
+            "setTogether": "Vamos a crear un conjunto de estudio juntos.",
+            "comilitones": "Veamos qué están estudiando tus compañeros.",
+            "createSet" : "Crea tu propio conjunto de estudio",
+            "timeToStart" : "¡Es hora de empezar!",
+            "sucheLäuft": "Buscando...",
+            "useThisModule": "Usar este módulo",
+            "this": "Este",
+            "moduleUse": "uso del módulo",
+            "noModulesFound": "Aún no se han seleccionado módulos",
+            "iHaveFoundSomething": "He encontrado algo, simplemente haz clic en los módulos y los añadiré por ti",
+            "iHaveFoundNothing": "Desafortunadamente, no encontré nada, pero no hay problema",
+            "waitAMoment": "Dame un momento..."
+        }
     }
 }

@@ -9,9 +9,20 @@ import TokenHeader from '@/components/(general)/tokenHeader'
 import { loadShopItems } from '@/lib/appwriteShop';
 import SkeletonListShop from '@/components/(general)/(skeleton)/skeletonListShop'
 import { loadComercials } from '@/lib/appwriteDaten'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+
 
 const shop = () => {
   const {user, isLoggedIn,isLoading, userUsage } = useGlobalContext();
+  const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.shop;
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+
   const [ shopItemsA, setShopItemsA ] = useState(null);
   const [comercials, setComercials] = useState([]);
   
@@ -80,11 +91,11 @@ const shop = () => {
               </View>
               :
               <View className='w-full items-center'>
-                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "ENERGY" )} title='Recharges' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
-                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "CHIPS" )} title='Chips' userUsage={userUsage} purcharses={userUsage?.purcharses}/>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "ENERGY" )} title={texts[selectedLanguage].recharges} userUsage={userUsage} purcharses={userUsage?.purcharses}/>
+                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "CHIPS" )} title={texts[selectedLanguage].chips} userUsage={userUsage} purcharses={userUsage?.purcharses}/>
                 <Cardcombination  commercialsAvailable={comercials.filter(c =>
                                                         !userUsage?.watchedComercials.some(wC => c.$id === wC))} 
-                                  amountVideos={calculateCommercialAmount()} amountQuestionarys={"3/3"} cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title='Free Items' userUsage={userUsage} purcharses={userUsage?.purcharses} />
+                                  amountVideos={calculateCommercialAmount()} amountQuestionarys={"3/3"} cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title={texts[selectedLanguage].gratisItems} userUsage={userUsage} purcharses={userUsage?.purcharses} />
               </View> 
             }
         </ScrollView>

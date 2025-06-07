@@ -11,12 +11,21 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { returnShadowComponents } from '@/functions/returnColor';
 import * as DocumentPicker from 'expo-document-picker';
 import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb } from '@/lib/appwriteEdit';
-import * as FileSystem from 'expo-file-system';
 import TutorialFirstAIModule from '../(tutorials)/tutorialFirstAIModule';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
 const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal, tutorialStep= 10, setTutorialStep=null  }) => {
   // Lokale States
+  const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.createModule;
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+
   const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
   const [questions, setQuestions] = useState([]);
   const [sessions, setSessions] = useState([]);
@@ -262,7 +271,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         <View className='flex-row justify-between items-center'> 
             <TouchableOpacity className='m-2 flex-row items-center' onPress={() => setUserChoices(null)}> 
               <Icon name="arrow-left" size={20} color="white"  />
-              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Neues Modul</Text>
+              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>{texts[selectedLanguage].newModule}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
@@ -274,7 +283,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
                       style={{
                         color: "#4B5563",
                       }}
-                    >Öffentlich</Text>
+                    >{texts[selectedLanguage].public}</Text>
                     <Icon name="globe" size={15} color="#4B5563" />
                   </View>
                 ) : (
@@ -283,7 +292,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
                       style={{
                         color: "#4B5563",
                       }}
-                    >Privat</Text>
+                    >{texts[selectedLanguage].private}</Text>
                     <Icon name="lock" size={15} color="#4B5563" />
                   </View>
                 )
@@ -292,25 +301,25 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         </View>
         {/* Title */}
         <View>
-          <SubHeader title="Modul Name" />
+          <SubHeader title={texts[selectedLanguage].moduleName} />
           <TextInput
             maxLength={50}
             onChangeText={(text) => setNewModule({ ...newModule, name: text })}
             value={newModule?.name}
-            placeholder="Ein origineller Name :)..."
+            placeholder={texts[selectedLanguage].aOriginalName}
             className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px]"
             placeholderTextColor="#AAAAAA"
           />
         </View>
         {/* Description */}
         <View className="">
-          <SubHeader title="Beschreibung" />
+          <SubHeader title={texts[selectedLanguage].description} />
           <TextInput
             maxLength={200}
             onChangeText={(text) => setNewModule({ ...newModule, description: text })}
             value={newModule?.description}
             placeholderTextColor={"#AAAAAA"}
-            placeholder="Beschreibung für dein Modul..."
+            placeholder={texts[selectedLanguage].aOriginalDescription}
             multiline={true}
             numberOfLines={4}
             style={{ height: 90, textAlignVertical: 'top'}}
@@ -320,12 +329,12 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         </View>
          {/* Choosing the Color */}
         <View className=" items-start">
-          <SubHeader title="Farbe" />
+          <SubHeader title={texts[selectedLanguage].color} />
           <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title={null} />
         </View>
         {/* Adding Material */}
         <View>
-        <SubHeader title="Sitzung" />
+        <SubHeader title={texts[selectedLanguage].sessions} />
           <View className="flex-row items-center justify-start">
             <TouchableOpacity
               onPress={() => setIsVisible(true)}
@@ -379,10 +388,10 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
           <View className="flex-row justify-between items-center">
             <Text className="text-gray-300 font-semibold text-[15px]">
               {selectedMaterialType === 'PEN'
-                ? 'Ergänze einen Text:'
+                ? texts[selectedLanguage].addAText
                 : selectedMaterialType === 'FILE'
-                ? 'Ergänze ein File:'
-                : 'Ergänze ein Thema:'}
+                ? texts[selectedLanguage].addAFile
+                : texts[selectedLanguage].addATopic}
             </Text>
             <View className="flex-row rounded-full items-center justify-center bg-[#0c111d] border-gray-800 border-[1px] shadow-lg">
               <SelectMaterialType
@@ -414,7 +423,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
                 maxLength={50}
                 onChangeText={(text) => setNewItem({ ...newitem, content: text })}
                 value={newitem.content}
-                placeholder="Eine neue Kategorie ..."
+                placeholder={texts[selectedLanguage].aNewKathegorie}
                 className="flex-1 text-white  bg-[#0c111d] p-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] ml-2"
                 placeholderTextColor={"#AAAAAA"}
                 textAlignVertical="top"
@@ -444,7 +453,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
                 value={newitem.content}
                 className="flex-1 text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] "
                 placeholderTextColor={"#AAAAAA"}
-                placeholder="Ein neuer Text ..."
+                placeholder={texts[selectedLanguage].aNewText}
                 style={{
                   height:75,
                   textAlign: 'left',
@@ -516,7 +525,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
           )}
 
         {/* Übersicht aller hinzugefügten Items */}
-        <SubHeader title="Materialien" />
+        <SubHeader title={texts[selectedLanguage].materials} />
         <View className="flex-row flex-wrap justify-start items-center">
           {items.filter(item => item.sessionID == selectedSession.id).length > 0 ? (
             items.filter(item => item.sessionID == selectedSession.id).map((item, index) => {
@@ -550,7 +559,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
             >
               <Icon name="book-open" size={15} color="#4B5563" />
               <Text className="text-gray-300 font-semibold text-[12px] mb-[1px] ml-1">
-                Noch keine Materialien hinzugefügt
+                {texts[selectedLanguage].noMaterialAdded}
               </Text>
             </TouchableOpacity>
           )}
@@ -562,23 +571,23 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         aditionalStyles="w-full rounded-[10px] mx-3 bg-blue-500"
         handlePress={async () => {
           if (newModule.name.length < 2) {
-            setErrorMessage('Bitte einen Modulnamen eingeben!');
+            setErrorMessage(texts[selectedLanguage].errorMissingName);
             setIsError(true);
             return;
           } else if (newModule.description.length < 2) {
-            setErrorMessage('Bitte eine Beschreibung eingeben!');
+            setErrorMessage(texts[selectedLanguage].errorMissingDescription);
             setIsError(true);
             return;
           } else if (newModule.color == null) {
-            setErrorMessage('Bitte eine Farbe auswählen!');
+            setErrorMessage(texts[selectedLanguage].errorMissingColor);
             setIsError(true);
             return;
           } else if (items.length < 1) {
-            setErrorMessage('Bitte eine Sitzung hinzufügen!');
+            setErrorMessage(texts[selectedLanguage].errorMissingSessions);
             setIsError(true);
             return;
           } else if (!sessions.every(session => items.some(item => item.sessionID == session.id))) {
-            setErrorMessage('Bitte eine Sitzung hinzufügen!');
+            setErrorMessage(texts[selectedLanguage].errorMissingSessions);
             setIsError(true);
             return;
           }
@@ -601,7 +610,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
           );
         }}
       >
-        {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">Modul Generieren</Text>}
+        {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">{texts[selectedLanguage].generateModule}</Text>}
           
         
       </GratisPremiumButton>

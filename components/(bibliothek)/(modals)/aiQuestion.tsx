@@ -2,9 +2,6 @@ import { View, Text, Modal, TouchableOpacity, Touchable, ActivityIndicator, Text
 import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
-import { generateQuestionsFromText } from '@/functions/(aiQuestions)/questionFromText';
-import { questionFromTopic } from '@/functions/(aiQuestions)/questionFromTopic';
-import { addQUestion } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import { materialToQuestion } from '@/functions/(aiQuestions)/materialToQuestions';
 import { useGlobalContext } from '@/context/GlobalProvider';

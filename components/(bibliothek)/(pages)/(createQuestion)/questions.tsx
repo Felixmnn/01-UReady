@@ -1,7 +1,18 @@
 import { View, Text, FlatList, TouchableOpacity, useWindowDimensions,  } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuestion,newQuestion, checkNewQuestion}) => {
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.editQuestions;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
       const {width} = useWindowDimensions()
       const isVertical = width < 700;
         return (
@@ -22,7 +33,7 @@ const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuesti
                                 {
                                     !isVertical ? 
                                     <TouchableOpacity onPress={()=> checkNewQuestion()} className={`bg-white mx-2 mt-4 mb-2 rounded-full p-2 items-center justify-center`}>
-                                        <Text className='font-semibold'>+Neue Karteikarte</Text>
+                                        <Text className='font-semibold'>+{texts[selectedLanguage].newCard}</Text>
                                     </TouchableOpacity>
                                     : null
                                 }

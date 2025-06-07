@@ -5,16 +5,13 @@ import OptionSelector from '../(tabs)/optionSelector';
 import { useWindowDimensions } from 'react-native';
 import SettingsOption from '../(tabs)/settingsOption';
 import { useState } from 'react';
-import CustomTextInput from '../(general)/customTextInput';
 import CustomButton from '../(general)/customButton';
 import {  updateUserEmail, updateUserName, validateEmail } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import CustomTextInput1 from '../(general)/customTextInput1';
 import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
-import SkeletonList from '../(general)/(skeleton)/skeletonList';
 import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
-import { addNewUserConfig } from '@/lib/appwriteAdd';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import SkeletonListProfile from '../(general)/(skeleton)/skeletonListProfile';
 const ProfileSettings = () => {
@@ -89,7 +86,7 @@ const ProfileSettings = () => {
             }}
             >
               <Text className='text-white font-bold text-[15px] my-3'>{texts[selectedLanguage].actioncodeText}</Text>
-              <CustomTextInput text={text} setText={setText}  isFocused={isFocused} setFocused={setFocused} firstFocus={firstFocus} setFirstFocus={setFirstFocus}/>
+              <CustomTextInput1 text={text} setText={setText}  isFocused={isFocused} setFocused={setFocused} firstFocus={firstFocus} setFirstFocus={setFirstFocus}/>
               <View className='flex-1 flex-row items-center justify-center'>
                 <CustomButton title="Abbrechen" handlePress={toggleModal} containerStyles={"w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"}/>
                 <CustomButton title="Ok" handlePress={toggleModal} containerStyles={!isFocused && firstFocus && text == "" ? "w-[50%] bg-gray-700 mx-1 border-gray-700" :"w-[50%] bg-blue-500 mx-1"} textStyles={"text-gray-300"} disabled={!isFocused && firstFocus && text == ""}/>

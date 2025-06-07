@@ -3,23 +3,20 @@ import React, {  useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image } from 'react-native';
-import SlowDeveloper from '@/components/(general)/slowDeveloper';
 import {router} from 'expo-router';
 import { signIn, loginWithGoogle } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
-import { appwriteOAuth, loginWithOAuth, startAppwriteOAuthInSystemBrowser } from '@/lib/appwriteOAuth';
+import { loginWithOAuth } from '@/lib/appwriteOAuth';
 
 const SignIn = () => {
   const { setUserData } = useGlobalContext();
-  console.log("Ich bin die Sign In Seite 🐋🐋🐋");
   const { setIsLoggedIn,setUser } = useGlobalContext();
   const [ isError, setIsError] = useState(false);
   const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
   const { width } = useWindowDimensions();
   const isVertical = width > 700;
   const [isVisible, setIsVisible] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(3)
   const [form, setForm] = useState({
         email: "",
         password: "",
@@ -199,7 +196,6 @@ const SignIn = () => {
               </View>
             </View>
           </View>
-        <SlowDeveloper isVisible={isVisible} setIsVisible={setIsVisible}/>
       </SafeAreaView>
     );
   

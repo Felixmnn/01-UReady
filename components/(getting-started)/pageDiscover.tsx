@@ -10,15 +10,25 @@ import { setUserDataSetup } from '@/lib/appwriteEdit'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ContinueBox from '../(signUp)/(components)/continueBox'
 import { recommendationSearch, searchDocuments } from '@/lib/appwriteQuerySerach'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import BotCenter from '../(signUp)/botCenter'
 
-const PageDiscover = ({userChoices, setUserChoices, userData}) => {
+
+const PageDiscover = ({ setUserChoices, userData}) => {
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.gettingStarted;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
     const [ loading, setLoading] = useState(true)
     const { user } = useGlobalContext()
     const [ matchingModules, setMatchingModules] = useState([])
     const [ selectedModules, setSelectedModules] = useState([])
     const { width } = useWindowDimensions()
     const numColumns = Math.floor(width / 300);
-    console.log("User Data", userData)
     
 
     useEffect(() => {   
@@ -83,14 +93,13 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                 setUserChoices(null)
             }}/>
         </View>
-        <View className=' items-center justiy-center '>
-            <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
-                <Text className='font-semibold text-[15px] text-gray-100 text-center'>{loading ? "Gib mir einen Moment..." : matchingModules.length > 0  ? "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu" : "Leider habe ich nichts gefunden aber kein Problem"}</Text>
-            </View>
-            <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
-            <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
-            <Image source={require('../../assets/Search.gif')}  style={{height:150, width:150}}/>
-        </View>
+        
+        <BotCenter
+            message={loading ? texts[selectedLanguage].waitAMoment : matchingModules.length > 0  ? texts[selectedLanguage].iHaveFoundSomething : texts[selectedLanguage].iHaveFoundNothing}
+            imageSource='Search'
+            spechBubbleStyle={""}
+            spBCStyle={""}
+            />
         { loading || matchingModules.length > 0 ?
         <View className="flex-1    rounded-[10px] ml-2  justify-center z-10   "
             >
@@ -107,7 +116,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                 <View className='w-full flex-row items-center justify-center '>
                     
                     <ActivityIndicator size="small" color="#20c1e1" />
-                    <Text className='text-gray-100 font-semibold text-[15px] m-2'>Suche läuft...</Text>
+                    <Text className='text-gray-100 font-semibold text-[15px] m-2'>{texts[selectedLanguage].sucheLäuft}</Text>
                     
                 </View>
                 :
@@ -148,7 +157,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         }}
         >
                             <ContinueBox
-                                text={"Erstellen wir zusammen ein Lernset."}
+                                text={texts[selectedLanguage].setTogether}
                                 colorBorder={"#7a5af8"}
                                 colorBG={"#372292"}
                                 iconName={"bot"}
@@ -157,7 +166,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                                 selected={true}
                                 />
                             <ContinueBox
-                                text="Erstelle dein eigenes Lernset."
+                                text={texts[selectedLanguage].createSet}
                                 colorBorder={"#4f9c19"}
                                 colorBG={"#2b5314"}
                                 iconName={"cubes"}
@@ -227,7 +236,7 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
                 
                 >   
                 {
-                    selectedModules.length > 0 ? selectedModules.length == 1 ? "Dieses Modul verwenden" : `Diese ${selectedModules.length} Module verwenden` : "Noch keine Module ausgewählt"
+                    selectedModules.length > 0 ? selectedModules.length == 1 ? texts[selectedLanguage].useThisModule : `${texts[selectedLanguage].this} ${selectedModules.length} ${texts[selectedLanguage].moduleUse}` : texts[selectedLanguage].noModulesFound
                 }
                 </Text>
             </GratisPremiumButton>

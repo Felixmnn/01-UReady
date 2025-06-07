@@ -1,28 +1,40 @@
 import { View, Text, Image, Dimensions } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ContinueBox from '../(signUp)/(components)/continueBox';
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import BotCenter from '../(signUp)/botCenter';
+
 
 
 const PageOptions = ({ userChoices, setUserChoices }) => {
+  const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.gettingStarted;
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
   const { width } = Dimensions.get('window');
 
   const options = [
     {
-      text: 'Erstellen wir zusammen ein Lernset.',
+      text: texts[selectedLanguage].setTogether,
       colorBorder: '#7a5af8',
       colorBG: '#372292',
       iconName: 'bot',
       handlePress: () => setUserChoices('GENERATE'),
     },
     {
-      text: 'Mal schauen was deine Komilitonen lernen.',
+      text: texts[selectedLanguage].comilitones,
       colorBorder: '#20c1e1',
       colorBG: '#0d2d3a',
       iconName: 'search',
       handlePress: () => setUserChoices('DISCOVER'),
     },
     {
-      text: 'Erstelle dein eigenes Lernset.',
+      text: texts[selectedLanguage].createSet,
       colorBorder: '#4f9c19',
       colorBG: '#2b5314',
       iconName: 'cubes',
@@ -44,7 +56,7 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
       >
         <View className="w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10">
           <Text className="font-semibold text-[15px] text-gray-100 text-center">
-            Zeit durchzustarten
+            {texts[selectedLanguage].timeToStart}
           </Text>
         </View>
         <View className="absolute  rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1" 
@@ -88,18 +100,16 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
       </View>
       :
         <View className='w-full flex-1 items-center justify-center'>
-          <View className='items-center justiy-center'>
-              <View className='w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10'>
-                  <Text className='font-semibold text-[15px] text-gray-100 text-center'>Zeit durchzustarten</Text>
-              </View>
-              <View className='absoloute top-[-9] rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1 '/>
-              <View className='rounded-full p-1 bg-gray-900 border-gray-800 border-[1px]'/>
-              <Image source={require('../../assets/Done.gif')}  style={{height:150, width:150}}/>
-          </View>
+          <BotCenter
+            message={texts[selectedLanguage].timeToStart}
+            imageSource={'Done'}
+            spechBubbleStyle={""}
+            spBCStyle={""}
+          />
           <View className="flex-row">
-              <ContinueBox text={"Erstellen wir zusammen ein Lernset."} colorBorder={"#7a5af8"} colorBG={"#372292"} iconName={"bot"} handlePress={()=> setUserChoices("GENERATE")} selected={true}/>
-              <ContinueBox text={"Mal schauen was deine Komilitonen lernen."} colorBorder={"#20c1e1"} colorBG={"#0d2d3a"} iconName={"search"} handlePress={()=> setUserChoices("DISCOVER")} selected={true}/>
-              <ContinueBox text={"Erstelle dein eigenes Lernset."} colorBorder={"#4f9c19"} colorBG={"#2b5314"} iconName={"cubes"} handlePress={()=> setUserChoices("CREATE")} selected={true}/>
+              <ContinueBox text={texts[selectedLanguage].setTogether} colorBorder={"#7a5af8"} colorBG={"#372292"} iconName={"bot"} handlePress={()=> setUserChoices("GENERATE")} selected={true}/>
+              <ContinueBox text={texts[selectedLanguage].comilitones} colorBorder={"#20c1e1"} colorBG={"#0d2d3a"} iconName={"search"} handlePress={()=> setUserChoices("DISCOVER")} selected={true}/>
+              <ContinueBox text={texts[selectedLanguage].createSet} colorBorder={"#4f9c19"} colorBG={"#2b5314"} iconName={"cubes"} handlePress={()=> setUserChoices("CREATE")} selected={true}/>
           </View>
         </View>
   }

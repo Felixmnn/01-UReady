@@ -12,10 +12,19 @@ import { setUserDataSetup } from '@/lib/appwriteEdit';
 import ErrorPopup from './(modal)/errorPopup';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { returnColorButtonShadow } from '@/functions/returnColor';
-import TutorialFirstModule from '../(tutorials)/tutorialFirstModule';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }) => {
   // Lokale States
+  const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.createModule;
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+
   const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
   const [sessions, setSessions] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -93,7 +102,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
           <View className='flex-row justify-between items-center'> 
             <TouchableOpacity className='m-2 flex-row items-center' onPress={() => setUserChoices(null)}> 
               <Icon name="arrow-left" size={20} color="white"  />
-              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>Neues Modul</Text>
+              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>{texts[selectedLanguage].newModule}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
@@ -105,7 +114,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
                       style={{
                         color: "#4B5563",
                       }}
-                    >Öffentlich</Text>
+                    >{texts[selectedLanguage].public}</Text>
                     <Icon name="globe" size={15} color="#4B5563" />
                   </View>
                 ) : (
@@ -114,7 +123,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
                       style={{
                         color: "#4B5563",
                       }}
-                    >Privat</Text>
+                    >{texts[selectedLanguage].private}</Text>
                     <Icon name="lock" size={15} color="#4B5563" />
                   </View>
                 )
@@ -123,12 +132,12 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
           </View>
           <View className="flex-row ">
             <View className="flex-1 justify-between">
-              <Text className="text-gray-300 font-semibold text-[15px]">Modul Name</Text>
+              <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].moduleName}</Text>
               <TextInput
                 maxLength={50}
                 onChangeText={(text) => setNewModule({ ...newModule, name: text })}
                 value={newModule?.name}
-                placeholder="Ein origineller Name :)..."
+                placeholder={texts[selectedLanguage].aOriginalName}
                 className="text-white w-full bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] rounded-[10px]"
                 placeholderTextColor="#AAAAAA"
               />
@@ -139,14 +148,14 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
           {/* Beschreibung */}
         <View className="">
           <View className="flex-row justify-between items-center pr-2">
-            <Text className="text-gray-300 font-semibold text-[15px]">Beschreibung</Text>
+            <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].description}</Text>
           </View>
           <TextInput
             maxLength={200}
             onChangeText={(text) => setNewModule({ ...newModule, description: text })}
             value={newModule?.description}
             placeholderTextColor={"#AAAAAA"}
-            placeholder="Beschreibung für dein Modul..."
+            placeholder={texts[selectedLanguage].aOriginalDescription}
             multiline={true}
             numberOfLines={4}
             style={{ height: 90, textAlignVertical: 'top'}}
@@ -158,7 +167,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
          {/* Farbe */}
          <View className=" items-start">
           <View className="w-full flex-row justify-between items-center pr-2">
-            <Text className="text-gray-300 font-semibold text-[15px]">Farbe</Text>
+            <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].color}</Text>
           </View>
           <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title={null} />
         </View>
@@ -168,7 +177,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
           <View className="flex-1 justify-between my-2">
             <View className="flex-row justify-between items-center pr-2">
               <Text className="text-gray-300 font-semibold text-[15px]">
-                Sitzungen
+                {texts[selectedLanguage].sessions}
               </Text>
               
             </View>
@@ -233,19 +242,19 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
             aditionalStyles="w-full rounded-[10px] mx-3 bg-blue-500"
             handlePress={async () => {
               if (newModule.name.length < 2) {
-                setErrorMessage('Bitte einen Modulnamen eingeben!');
+                setErrorMessage(texts[selectedLanguage].errorMissingName);
                 setIsError(true);
                 return;
               } else if (newModule.description.length < 2) {
-                setErrorMessage('Bitte eine Beschreibung eingeben!');
+                setErrorMessage(texts[selectedLanguage].errorMissingDescription);
                 setIsError(true);
                 return;
               } else if (newModule.color == null) {
-                setErrorMessage('Bitte eine Farbe auswählen!');
+                setErrorMessage(texts[selectedLanguage].errorMissingColor);
                 setIsError(true);
                 return;
               } else if (sessions.length === 0) {
-                setErrorMessage('Bitte eine Sitzung hinzufügen!');
+                setErrorMessage(texts[selectedLanguage].errorMissingSessions);
                 setIsError(true);
                 return;
               
@@ -260,7 +269,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
             }
             }}
           >
-            {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">Modul erstellsen</Text>}
+            {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">{texts[selectedLanguage].createModule}</Text>}
               
             
           </GratisPremiumButton>

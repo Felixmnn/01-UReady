@@ -45,7 +45,6 @@ export default function RootLayout() {
           <Stack.Screen name="(quiz)" options={{ headerShown: false }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(edit)" options={{ headerShown: false }} />
-          <Stack.Screen name="(renderDocuments)" options={{ headerShown: false }} />
           <Stack.Screen name="(about)" options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>

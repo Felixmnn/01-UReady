@@ -42,11 +42,7 @@ const authLayout = () => {
                     headerShown: false 
                   }}
                 />
-                <Stack.Screen name="redirectApp"
-                options={{ 
-                    headerShown: false 
-                  }}
-                />
+                
             </Stack>
         </>
     </View>

@@ -33,6 +33,8 @@ const BotCenter = ({message="", imageSource="Waving", spechBubbleStyle, spBCStyl
         'Frage':require('../../assets/Frage.gif'),
         'Language': require('../../assets/Language.gif'),
         'Location': require('../../assets/Location.gif'),
+        'Search': require('../../assets/Search.gif'),
+        'Done': require('../../assets/Done.gif'),
     }
 
   return (

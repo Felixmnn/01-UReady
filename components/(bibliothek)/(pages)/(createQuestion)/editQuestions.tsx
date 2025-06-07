@@ -1,20 +1,24 @@
 import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import EditeOldQuestion from './EditeOldQuestion';
 import EditNewQuestion from './EditNewQuestion';
 import { removeQuestion } from '@/lib/appwriteEdit';
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionActive,questions,selectedQuestion,setSelectedQuestion, answerActive, setAnswerActive, newQuestion, setNewQuestion}) => {    
-    const [isVisible, setIsVisible] = useState(false)
+    const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.editQuestions;
+    useEffect(() => {
+        if(language) {
+        setSelectedLanguage(language)
+        }
+    }, [language])
     const [showEllipse, setShowEllipse] = useState(false)
-    function addTags(tags){
-        setQuestions(prevQuestions =>
-            prevQuestions.map((question, i) =>
-                i === selectedQuestion-1 ? { ...question, tags: [...question.tags, ...tags] } : question
-            )
-        )
-    }
+    
 
     async function removeQuestions (){
         await removeQuestion(questions[selectedQuestion-1].$id)
@@ -51,7 +55,7 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                                             status:null
                                         }) :removeQuestions()}} className='flex-row items-center justify-center px-2 py-1 m-1 rounded-[5px] '>
                                         <Icon name="trash" size={15} color="red"/>
-                                        <Text className=' font-bold text-[12px] ml-2 text-red-500'>Löschen</Text>
+                                        <Text className=' font-bold text-[12px] ml-2 text-red-500'>{texts[selectedLanguage].delete}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>

@@ -30,7 +30,7 @@ const RenderResults = ({modules, texts, selectedLanguage, selectedModules, myMod
                       style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}
                       />
                         <View className="flex-row items-center justify-center h-full p-1">
-                        <Text className="text-white font-semibold text-[15px] mr-2">Synchronisation</Text>
+                        <Text className="text-white font-semibold text-[15px] mr-2">{texts[selectedLanguage].synchronization}</Text>
                         <ToggleSwitch
                           isOn={item.synchronization}
                           onToggle={async() => {await updateModuleData(item.$id, {synchronization: !item.synchronization})}}

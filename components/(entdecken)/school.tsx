@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
-import RenderFilters from './renderFilters'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import StaticFilters from './staticFilters'
 const SchoolFilters = ({country=countryList[0], setFilters}) => {
     const { height,width } = useWindowDimensions()

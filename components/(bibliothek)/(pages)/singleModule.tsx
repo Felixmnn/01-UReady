@@ -320,7 +320,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
 
             {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50'></View> : null }
             <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>
-                { loading ? <Text>Skeleton View</Text> :
+                { loading ? <Text>...</Text> :
                 <View className='flex-1'>
                 <Header moduleID={module.$id} moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI} isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions} questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Map"} tab2={"Fragen"} bg={"bg-gray-900"} change={change}/> : null }

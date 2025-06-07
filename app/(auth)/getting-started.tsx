@@ -3,18 +3,14 @@ import PageOptions from '@/components/(getting-started)/pageOptions';
 import PageAiCreate from '@/components/(getting-started)/pageAiCreate';
 import PageDiscover from '@/components/(getting-started)/pageDiscover';
 import PageCreateModule from '@/components/(getting-started)/pageCreateModule';
-import PageModulText from '@/components/(getting-started)/(aiCreate)/pageModulText';
-import PageModulThema from '@/components/(getting-started)/(aiCreate)/pageModulThema';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
-import PageModuleDocument from '@/components/(getting-started)/(aiCreate)/pageModuleDocument';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
     const {user, isLoggedIn,isLoading } = useGlobalContext();
-    console.log("Ich bin die Getting Started Seite 🐋🐋🐋");
 
       useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
@@ -106,9 +102,6 @@ const gettingStarted = () => {
           : userChoices == "GENERATE" ?     <PageAiCreate tutorialStep={tutorialStepAI} setTutorialStep={setTutorialStepAI} setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userData}/>
           : userChoices == "CREATE" ?       <PageCreateModule tuturialStep={tuturialStep} setTutorialStep={setTutorialStep} setUserChoices={setUserChoices}  newModule={newModule} setNewModule={setNewModule}/>
-          : userChoices == "TEXTBASED" ?    <PageModulText newModule={newModule} setNewModule={setNewModule} userData={userData}/>
-          : userChoices == "THEMENBASED" ?  <PageModulThema newModule={newModule} setNewModule={setNewModule} userData={userData}/>
-          : userChoices == "DOCUMENTBASED" ?  <PageModuleDocument  newModule={newModule} setNewModule={setNewModule} userData={userData}/>
           : null
 }  
         </SafeAreaView>

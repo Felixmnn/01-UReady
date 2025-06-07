@@ -1,9 +1,21 @@
 import { View, Text, TouchableOpacity, Modal, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import {router} from 'expo-router'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
+
 const TokenHeader = ({userUsage}) => {
   const [isVisible, setIsVisible] = useState(false);
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.streak;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
 
   const ModalStreak = () => {
     return (
@@ -23,12 +35,12 @@ const TokenHeader = ({userUsage}) => {
                             }}/>
                     <Text className="text-red-500 text-center"
                       style={{color:"orange"}}
-                    >Du hast {userUsage?.streak} Tage am Stück gelernt!</Text>
+                    >{texts[selectedLanguage].youHave} {userUsage?.streak} {texts[selectedLanguage].daysInARow}</Text>
                     <TouchableOpacity
                         onPress={() => setIsVisible(false)}
                         className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-full"
                     >
-                        <Text className="text-white font-bold">Schließen</Text>
+                        <Text className="text-white font-bold">{texts[selectedLanguage].close}</Text>
                     </TouchableOpacity>
                 </View>
             </TouchableOpacity>

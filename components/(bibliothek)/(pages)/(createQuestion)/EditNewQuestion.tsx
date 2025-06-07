@@ -1,14 +1,27 @@
 import { View, Text,TouchableOpacity, TextInput, FlatList, useWindowDimensions } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import ToggleSwitch from '@/components/(general)/toggleSwich'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import FinalTextInput from '@/components/(general)/finalTextInput'
 import ModalSelectSession from './modalSelectSession'
 import { addQUestion } from '@/lib/appwriteEdit'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider'
 
 const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule, questions, setQuestions,subjectID }) => {
-     const [text, setText] = useState(newQuestion.question)
+     
+    
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.editQuestions;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
+
+    const [text, setText] = useState(newQuestion.question)
      const [selectedAnswer, setSelectedAnswer] = useState(null)
      const {width} = useWindowDimensions()
      const isVertical = width < 700;
@@ -46,7 +59,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                 <View className='flex-row justify-between'>
                     <View className=' flex-row items-center'>
                         <Text className={`font-bold mr-2 ${isOn ? "text-green-300" : "text-red-300"}`}>
-                            {isOn ? "Richtige Antwort" : "Falsche Antwort"}
+                            {isOn ? texts[selectedLanguage].correctAnswer : texts[selectedLanguage].wrongAnswer}
                         </Text>
                         <ToggleSwitch 
                             isOn={isOn} 
@@ -75,7 +88,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                     ) : (
                         <Text className='text-gray-300 font-bold m-2 '>
                             
-                            {newQuestion.answers[index] || "Antwort eingeben"}
+                            {newQuestion.answers[index] || texts[selectedLanguage].addAnswer}
                         </Text>
                     )}
                 </TouchableOpacity>
@@ -125,7 +138,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             { 
                                 questionActive ?
                                 <TouchableOpacity className={`w-full  p-4  justify-center`}>
-                                    <Text className='text-[15px] font-bold text-gray-400'>Frage:</Text>
+                                    <Text className='text-[15px] font-bold text-gray-400'>{texts[selectedLanguage].addAnswer}</Text>
                                     <FinalTextInput
                                         value={text}
                                         handleChangeText={(text)=> setText(text)}
@@ -139,7 +152,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                             setQuestionActive(false)
                                         }
                                         }
-                                        placeHolder='Frage'
+                                        placeHolder={texts[selectedLanguage].question}
                                         />
                                     
                                 </TouchableOpacity>
@@ -148,13 +161,13 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                     {
                                         newQuestion.question.length > 0 ?
                                         <TouchableOpacity onPress={()=>{setQuestionActive(true)}} className='w-full'>
-                                            <Text className='text-[15px] font-bold text-gray-400'>Frage:</Text>
+                                            <Text className='text-[15px] font-bold text-gray-400'>{texts[selectedLanguage].question}</Text>
                                             <Text className='text-gray-300 font-bold m-2'>{newQuestion.question}</Text>
                                         </TouchableOpacity>
                                         :
                                         <View className='w-full flex-row items-center justify-center border-[1px] border-gray-500 rounded-full px-2 py-1 m-2'>
                                             <Icon name="plus" size={15} color="white"/>
-                                            <Text className='text-white font-bold m-1 '>Frage hinzufügen</Text>
+                                            <Text className='text-white font-bold m-1 '>{texts[selectedLanguage].addQuestion}</Text>
                                         </View>
                                     }
                                     
@@ -185,7 +198,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                 <TouchableOpacity onPress={()=> {
                                     setNewQuestion(prevState => ({
                                                     ...prevState,
-                                                    answers: [...prevState.answers, "Neue Antwort"] // Neue Antwort hinzufügen
+                                                    answers: [...prevState.answers, texts[selectedLanguage].newAnswer] // Neue Antwort hinzufügen
                                                 }));
                                                 selectedAnswer == null || !(newQuestion.answers.length > 0)  ? setSelectedAnswer(0) : setSelectedAnswer(selectedAnswer + 1 );
                                         }} className='w-full flex-row items-center justify-center px-2 py-1 rounded-full border-gray-500 border-[1px] m-2 '
@@ -194,11 +207,11 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                             <Icon name="plus" size={15} color="white"/>
                                             { !isVertical ? 
                                                                 <Text className='text-white font-bold m-1 '>
-                                                                    Antwort hinzufügen
+                                                                    {texts[selectedLanguage].addAnswer}
                                                                 </Text>
                                                                 :
                                                                 <Text className='text-white font-bold m-1 '>
-                                                                    Antwort hinzufügen
+                                                                    {texts[selectedLanguage].addAnswer}
                                                                 </Text>
                                                                 }
                                 </TouchableOpacity>
@@ -207,11 +220,11 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             <View className='flex-row items-center justify-between w-full px-2 py-1'>
                                 <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                                         
-                                        <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID ? newQuestion.sessionID : "Select a Session"}</Text>
+                                        <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID ? newQuestion.sessionID : texts[selectedLanguage].selectASession}</Text>
                                         
                                 </TouchableOpacity>
                                 <TouchableOpacity className='p-2 bg-blue-500 rounded-full' onPress={()=> saveQuestion()}>
-                                    <Text className='text-white text-[12px] font-semibold'>Frage Speichern</Text>
+                                    <Text className='text-white text-[12px] font-semibold'>{texts[selectedLanguage].saveQuestion}</Text>
                                 </TouchableOpacity>
                             </View> 
                         </View>

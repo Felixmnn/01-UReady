@@ -9,9 +9,19 @@ import EditQuestions from './(createQuestion)/editQuestions';
 import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getAllQuestions } from '@/lib/appwriteQuerys';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const CreateQuestion = ({setSelected2,module, selectedModule}) => {
+    
     const {user} = useGlobalContext();
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.editQuestions;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
     const { width,height } = useWindowDimensions();
     const isVertical = width > 700;
     const [loading, setLoading] = useState(true)
@@ -65,16 +75,16 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
         let missing = []; 
     
         if (newQuestion.question.length < 1) {
-            missing.push("-Die Frage darf nicht leer sein");
+            missing.push(`-${texts[selectedLanguage].errorNoEmptyQuestion}`);
         }
         if (newQuestion.answers.length < 1) {
-            missing.push("-Es muss mindestens eine Antwort geben");
+            missing.push(`-${texts[selectedLanguage].errorAtLeastOneAnswer}`);
         }
         if (newQuestion.answerIndex.length < 1) {
-            missing.push("-Es muss mindestens eine richtige Antwort geben");
+            missing.push(`-${texts[selectedLanguage].errorOneCorrectAnswer}`);
         }
         if (newQuestion.sessionID == null) {
-            missing.push("-Es muss eine Session ausgewählt werden");
+            missing.push(`-${texts[selectedLanguage].errorMissingSession}`);
         }
     
         setMissingRequirements(missing);
@@ -165,7 +175,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
 
             </View>
         :
-            <Text className='text-white'>Stelle dir einen Skeleton view vor</Text>
+            <Text className='text-white'>...</Text>
         }
     </View>
   )

@@ -1,7 +1,18 @@
 import { View, Text, Modal,TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 const ModalSelectSession = ({modalVisible, setModalVisible, selectedQuestion, selectedModule, changeSession}) => {
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.editQuestions;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
   return (
     <Modal
               animationType="fade"
@@ -12,7 +23,7 @@ const ModalSelectSession = ({modalVisible, setModalVisible, selectedQuestion, se
                     <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' style={{ minWidth: 400 }}>
                     <View className='justify-between flex-row'>
                         <Text className='text-white font-bold text-[15px]'>
-                        Sitzung auswählen
+                        {texts[selectedLanguage].selectASession}
                         </Text>
                     </View>
                     <View className='flex-row flex-wrap m-2'>
@@ -26,7 +37,7 @@ const ModalSelectSession = ({modalVisible, setModalVisible, selectedQuestion, se
                                         
                                     >
                                         <Text className='text-white font-bold text-[12px]'>
-                                            {session}
+                                            {JSON.parse(session).title}
                                         </Text>
                                     </TouchableOpacity>
                                 )
@@ -34,7 +45,7 @@ const ModalSelectSession = ({modalVisible, setModalVisible, selectedQuestion, se
                     </View>
                     <TouchableOpacity className=' items-center justify-center m-1  p-2 rounded-[10px] bg-gray-800 border-[1px] border-gray-600' onPress={() => setModalVisible(false)}>
                         <Text className='text-white font-bold text-[12px]'>
-                        Ok
+                        {texts[selectedLanguage].ok}
                         </Text>
                     </TouchableOpacity>
                     </View>

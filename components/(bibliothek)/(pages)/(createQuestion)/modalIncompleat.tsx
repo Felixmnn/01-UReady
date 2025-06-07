@@ -1,7 +1,18 @@
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 const ModalIncompleat = ({modalVisible, setModalVisible, missingRequirements}) => {
+    const { language } = useGlobalContext()
+      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+      const texts = languages.editQuestions;
+      useEffect(() => {
+        if(language) {
+          setSelectedLanguage(language)
+        }
+      }, [language])
   return (
     <Modal
         animationType="fade"
@@ -12,7 +23,7 @@ const ModalIncompleat = ({modalVisible, setModalVisible, missingRequirements}) =
             <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' style={{ minWidth: 400 }}>
                 <View>
                     <Text className='text-white font-bold text-[15px]'>
-                    Fehlende Anforderungen:
+                    {texts[selectedLanguage].missingRequirements}:
                     </Text>
                     <View className='m-2'>
                         {missingRequirements.map((item, index) => {

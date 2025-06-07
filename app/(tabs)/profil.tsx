@@ -4,9 +4,7 @@ import { router } from 'expo-router';
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider'
-import General from '@/components/(profile)/general'
 import ProfileSettings from '@/components/(profile)/profileSettings'
-import PersonalInfo from '@/components/(profile)/personalInfo'
 import SkeletonListProfile from '@/components/(general)/(skeleton)/skeletonListProfile'
 
 const profil = () => {

@@ -9,7 +9,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { setUserDataSetup } from '@/lib/appwriteEdit'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ContinueBox from '../(signUp)/(components)/continueBox'
-import { searchDocuments } from '@/lib/appwriteQuerySerach'
+import { recommendationSearch, searchDocuments } from '@/lib/appwriteQuerySerach'
 
 const PageDiscover = ({userChoices, setUserChoices, userData}) => {
     const [ loading, setLoading] = useState(true)
@@ -35,21 +35,47 @@ const PageDiscover = ({userChoices, setUserChoices, userData}) => {
         studiengangZiel: "Bachelor of Science",
         universtiy: "Test University",
     }
-        
+
         
 
     useEffect(() => {   
         if (userData == null) return;
         async function fetchModules() {
-            
-            //const modules = await getSepcificModules(userData)
-            const modules = await searchDocuments(
-                    {
-                        creationUniversityFaculty: ["Erziehungswissenschaften & Pädagogik","Informatik & Technik"],
-                        creationCountry: "DEUTSCHLAND",
-                    }
-
-            )
+            let modules = []
+            if (userData.kategoryType == "UNIVERSITY") {
+                modules = await recommendationSearch({
+                kategoryType: userData.kategoryType,
+                studiengangKathegory: userData.studiengangKathegory,
+                creationUniversityFaculty: userData.faculty,
+                creationUniversity: userData.university,
+                creationUniversityProfession: userData.studiengangZiel,
+                creationUniversitySubject: userData.studiengang,
+                creationCountry: userData.country,
+            })
+            } else if (userData.kategoryType == "SCHOOL") {
+                modules = await recommendationSearch({
+                    kategoryType: userData.kategoryType,
+                    creationCountry: userData.country,
+                    creationSubject: userData.schoolSubjects,
+                    creationRegion: userData.region,
+                    creationSchoolForm: userData.schoolType,
+                    creationLanguage: userData.language,
+                    creationKlassNumber: userData.schoolGrade,
+                })
+            } else if (userData.kategoryType == "EDUCATION") {
+                modules = await recommendationSearch({
+                    kategoryType: userData.kategoryType,
+                    creationCountry: userData.country,
+                    creationEducationKathegory: userData.educationKathegory,
+                    creationEducationSubject: userData.educationKathegory,
+                })
+            } else if (userData.kategoryType == "OTHER") {
+                modules = await recommendationSearch({
+                    creationCountry: userData.country,
+                    creationLanguage: userData.language,
+                    creationSubject: userData.schoolSubjects,
+                })
+            }
             modules.length > 0 ? setMatchingModules(modules) : setMatchingModules([])
             setLoading(false)
         }

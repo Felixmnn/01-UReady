@@ -1,4 +1,4 @@
-import { View, Dimensions, Text,ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native'
+import { View, Dimensions, Text,ScrollView, TouchableOpacity, RefreshControl, Platform, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ContinueBox from '../(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
@@ -13,6 +13,7 @@ import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
 import { loadUserUsage } from '@/lib/appwriteDaten';
+import ModalStreak from './modalStreak';
 
 
 const { width } = Dimensions.get('window');

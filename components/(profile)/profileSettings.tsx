@@ -14,14 +14,17 @@ import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { setColorMode, setLanguage } from '@/lib/appwriteEdit';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import SkeletonListProfile from '../(general)/(skeleton)/skeletonListProfile';
+import { TextInput } from 'react-native-gesture-handler';
+import { useActionCode } from '@/lib/appwriteShop';
 const ProfileSettings = () => {
-    const {user, language,setNewLanguage } = useGlobalContext() 
+    const {user, language,setNewLanguage, userUsage, setUserUsage } = useGlobalContext() 
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
       useEffect(() => {
         if(language) {
           setSelectedLanguage(language)
         }
       }, [language])
+
 
 
     const [userData, setUserData] = useState(null)
@@ -50,10 +53,7 @@ const ProfileSettings = () => {
     },[user])
   
     const [modalVisible, setModalVisible] = useState(false);
-    const toggleModal = () => {
-      setModalVisible(!modalVisible);
-    };
-
+    
     const personalInput = (value, title,onChange,text=false) => {
       return (
         <TouchableOpacity className="flex-1 w-full mt-2">
@@ -71,13 +71,54 @@ const ProfileSettings = () => {
       )
     } 
     
+    const [ actioncode, setActionCode ] = useState("")
+    async function toggleModal(code) {
+      const res = await useActionCode(actioncode);
+      console.log("Action Code", res);
+      console.log(userUsage)
+
+      if (res && res != null) {
+        setUserUsage((prev) => {
+          if (prev.purcharses.length != 0 && prev.purcharses.includes(actioncode)) {
+            setIsError(true);
+            setErrorMessage("You already used this action code :(");
+            setModalVisible(!modalVisible);
+            return prev; // keine Änderung
+          }
+
+          // Aktionen ausführen
+          let updated = { ...prev };
+
+          if (res.item.includes("10ENERGY")) {
+            updated.energy += 10;
+          } else if (res.item.includes("100CHIPS")) {
+            updated.chips += 100;
+          }
+          if (updated.purcharses.length == 0) {
+            updated.purcharses = [actioncode];
+          } else {
+          updated.purcharses = [...updated.purcharses, actioncode];
+          }
+          setSuccessMessage("Successfully applied action code");
+          setIsSccess(true);
+
+          return updated;
+        });
+      } else {
+        setErrorMessage(actioncode + " is not a valid action code :(");
+        setIsError(true);
+      }
+
+      setModalVisible(!modalVisible);
+    }
+
     const modal = () => {
       return (
       <Modal
           animationType="fade"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={toggleModal}
+          onRequestClose={()=> setModalVisible(false)}
         >
           <View className='flex-1 items-center justify-center p-2' >
             <View className='w-full max-w-[300px] items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600'
@@ -86,9 +127,14 @@ const ProfileSettings = () => {
             }}
             >
               <Text className='text-white font-bold text-[15px] my-3'>{texts[selectedLanguage].actioncodeText}</Text>
-              <CustomTextInput1 text={text} setText={setText}  isFocused={isFocused} setFocused={setFocused} firstFocus={firstFocus} setFirstFocus={setFirstFocus}/>
+              <TextInput
+                className='w-full bg-gray-700 text-gray-300 p-2 rounded-[10px] border border-gray-500'
+                placeholderTextColor="#808080"
+                value={actioncode}
+                onChangeText={(text) => setActionCode(text)}
+              />
               <View className='flex-1 flex-row items-center justify-center'>
-                <CustomButton title="Abbrechen" handlePress={toggleModal} containerStyles={"w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"}/>
+                <CustomButton title="Abbrechen" handlePress={() => setModalVisible(false)} containerStyles={"w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"}/>
                 <CustomButton title="Ok" handlePress={toggleModal} containerStyles={!isFocused && firstFocus && text == "" ? "w-[50%] bg-gray-700 mx-1 border-gray-700" :"w-[50%] bg-blue-500 mx-1"} textStyles={"text-gray-300"} disabled={!isFocused && firstFocus && text == ""}/>
               </View>
             </View>
@@ -96,6 +142,39 @@ const ProfileSettings = () => {
         </Modal>
       )
     }
+    const [ isError, setIsError ] = useState(false)
+    const [ isSuccess, setIsSccess ] = useState(false)
+    const [ errorMessage, setErrorMessage ] = useState("");
+    const [ successMessage, setSuccessMessage ] = useState("");
+    const ErrorModal = () => {
+          return (
+              <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={isError || isSuccess}
+                  onRequestClose={() => {
+                    setIsError(!isError);
+                  }}
+              >
+                  <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> {setIsError(false); setIsSccess(false)} }
+                    >
+                      <View className='red border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700'
+                        style={{
+                            backgroundColor: isSuccess ? 'green' : '#ff4d4d',
+                            borderColor: isSuccess ? 'green' : '#ff4d4d',
+                        }}
+                      >
+                          <Text className='text-white font-bold text-gray-300'>{
+                          isSuccess  ? "Successfully applied action code" 
+                          : errorMessage == "You already used this action code :(" 
+                          ? "You already used this action code :(" 
+                          : actioncode + " is not a valid action code :("}
+                          </Text>
+                      </View>
+                  </TouchableOpacity>
+              </Modal>
+          )
+      }
     
     const [isFocused, setFocused] = useState(false);
     const [firstFocus, setFirstFocus] = useState(false)
@@ -131,7 +210,7 @@ const ProfileSettings = () => {
     <View className='flex-1 items-center '>
       { !loading?
       <View className='flex-1 w-full items-center'>
-           
+          <ErrorModal/>
         <View className={`flex-1 w-full  rounded-[10px] bg-gray-900 ${isVertical ? "border-gray-500 border-[1px]" :null} `}>
       <View className='mt-2'/>
         <ScrollView
@@ -289,7 +368,7 @@ const ProfileSettings = () => {
           <SettingsOption title={"Policys"} iconName={"shield"} handlePress={()=> router.push("/policys") }/>
           <SettingsOption title={texts[selectedLanguage].actioncode} iconName={"bolt"} item={modal()} handlePress={()=> setModalVisible(true)}/>  
           <SettingsOption title={texts[selectedLanguage].logout} iconName={"sign-out"} handlePress={ ()=>    router.push("/sign-out")}/>
-          <SettingsOption title={texts[selectedLanguage].deleteAccount} iconName="trash" bottom={"true"} handlePress={ ()=>    router.push("/sign-out")}/>
+          <SettingsOption title={texts[selectedLanguage].deleteAccount} iconName="trash" bottom={"true"} handlePress={ ()=>    router.push("/delete-account")}/>
   
   
         </View>

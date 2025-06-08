@@ -42,6 +42,11 @@ const authLayout = () => {
                     headerShown: false 
                   }}
                 />
+                <Stack.Screen name="delete-account"
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
                 
             </Stack>
         </>

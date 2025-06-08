@@ -44,7 +44,7 @@ const BotCenter = ({message="", imageSource="Waving", spechBubbleStyle, spBCStyl
                                       className="bg-blue-500 p-4 rounded-lg shadow-lg"
                                       style={{
                                         maxWidth: 300,
-                                        
+                                        minWidth: 200,
                                         borderRadius: 15,
                                         position: 'relative',
                                         right: 20,

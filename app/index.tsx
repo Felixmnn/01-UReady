@@ -1,11 +1,10 @@
-import { Text, View, SafeAreaView, ActivityIndicator, Linking } from "react-native";
+import { Text, View, SafeAreaView, ActivityIndicator, Image, Animated } from "react-native";
 import { router, Redirect } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
 import { addNewUserConfig } from "@/lib/appwriteAdd";
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-import { updateUserUsage } from "../functions/(userUsage)/updateUserUsage";
 SystemNavigationBar.navigationHide();
 
 export default function Index() {
@@ -30,16 +29,42 @@ export default function Index() {
     }
     fetchUserData();
   }, [user]);
+  const [progress, setProgress] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 3000,
+      useNativeDriver: false,
+    }).start();
+  }, []);
+  const widthInterpolated = progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0%", "100%"],
+  });
 
   // Solange geladen wird oder es noch keine userData gibt, zeigen wir einen Ladescreen
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-black">
-        <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#fff" />
-          <Text className="text-white mt-4">Lädt...</Text>
-        </View>
-      </SafeAreaView>
+      <SafeAreaView className="flex-1 bg-[#0c111d]">
+      <View className="flex-1 justify-center items-center">
+        <Image
+          source={require("../assets/images/adaptive-icon.png")} // dein Icon als PNG/SVG
+          style={{ width: 200, height: 200, marginBottom: 20 }}
+          resizeMode="contain"
+        />
+        <View style={{ height: 8, width: "100%", maxWidth:300, backgroundColor: "#444", borderRadius: 4 }}>
+        <Animated.View
+          style={{
+            height: 8,
+            width: widthInterpolated,
+            backgroundColor: "#00ccff",
+            borderRadius: 4,
+          }}
+        />
+      </View>
+      </View>
+    </SafeAreaView>
     );
   }
 

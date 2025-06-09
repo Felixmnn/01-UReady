@@ -8,7 +8,7 @@ import Cardcombination from '@/components/(shop)/cardcombination'
 import TokenHeader from '@/components/(general)/tokenHeader'
 import { loadShopItems } from '@/lib/appwriteShop';
 import SkeletonListShop from '@/components/(general)/(skeleton)/skeletonListShop'
-import { loadComercials } from '@/lib/appwriteDaten'
+import { loadComercials, loadSurvey } from '@/lib/appwriteDaten'
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
@@ -47,7 +47,6 @@ const shop = () => {
     if (!userUsage) return;
     async function fetchComercials(){
       const response = await loadComercials();
-      console.log("response 🐋", response);
       if (response) {
         setComercials(response.length > 0 ? response : []);
       }
@@ -71,7 +70,7 @@ const shop = () => {
       if (amountComercials > 0) return `${amoutGT3}/${amoutGT3}`;
       return "0/0"
     }
-
+console.log("userUsage", shopItemsA);
   return (
     <Tabbar content={()=> { return( 
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
@@ -91,13 +90,18 @@ const shop = () => {
               </View>
               :
               <View className='w-full items-center'>
-                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "ENERGY" )} title={texts[selectedLanguage].recharges} userUsage={userUsage} purcharses={userUsage?.purcharses}/>
-                <Cardcombination cards={shopItemsA.filter(item => item.kathegory == "CHIPS" )} title={texts[selectedLanguage].chips} userUsage={userUsage} purcharses={userUsage?.purcharses}/>
-                <Cardcombination  commercialsAvailable={comercials.filter(c =>
-                                                        !userUsage?.watchedComercials.some(wC => c.$id === wC))} 
-                                  amountVideos={calculateCommercialAmount()} amountQuestionarys={"3/3"} cards={shopItemsA.filter(item => item.kathegory == "FREEITEM" )} title={texts[selectedLanguage].gratisItems} userUsage={userUsage} purcharses={userUsage?.purcharses} />
+              <Cardcombination  cards={shopItemsA.filter(item => item.itemType == "ENERGY" )}
+                                title={texts[selectedLanguage].recharges}
+                                />
+              <Cardcombination cards={shopItemsA.filter(item => item.itemType == "CHIPS" )}
+                                title={texts[selectedLanguage].chips}
+                                />
+              <Cardcombination  cards={shopItemsA.filter(item => item.itemType == "REWARDEDQUIZ" || item.itemType == "COMERCIAL")}
+                                title={texts[selectedLanguage].freeItems}
+                                />
               </View> 
             }
+            
         </ScrollView>
       </View>
       

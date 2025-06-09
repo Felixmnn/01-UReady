@@ -3,21 +3,7 @@ import React, {useEffect, useState} from 'react'
 import Video from "react-native-video";
 
 
-const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30, commercialUrl=""}) => {
-  const [claimReward, setClaimReward] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(duration);
-  const [ videoStarted, setVideoStarted] = useState(false);
-  const { width, height } = useWindowDimensions(); // Bildschirmbreite holen
-  useEffect(() => {
-    if (timeLeft <= 0) return;
-
-    const interval = setInterval(() => {
-      setTimeLeft(prev => videoStarted ? prev - 1 : prev);
-    }, 1000);
-
-    return () => clearInterval(interval); 
-  }, [timeLeft, videoStarted]);
-
+const ModalVideoAdd = ({isVisible= false, setIsVisible=(item)=> {}, onComplete=()=> {}}) => {
   return (
     <Modal
       animationType="slide"
@@ -26,54 +12,18 @@ const ModalVideoAdd = ({isVisible, setIsVisible, onComplete, duration=30, commer
       onRequestClose={() => setIsVisible(false)}
     >
       <View className="flex-1 items-center justify-center bg-black bg-opacity-50">
-        <View className="bg-gray-800 rounded-lg p-4 w-11/12  "
-          style={{ height: width* 0.6, maxHeight:"90%" }} 
-        >
-          <View style={{width: '100%', height: 6, backgroundColor: '#4B5563', borderRadius: 3, alignContent: 'center', alignItems: 'start'}}>
-            <View style={{ height: 6, width: `${Math.floor((timeLeft / duration) * 100)}%`, borderRadius: 3, backgroundColor: "green"}}/>
-          </View>
-          
-          <View className='flex-1 item-center justify-center'
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 20 }}
-          >
-            <Video
-              source={{ uri: commercialUrl }}
-              key={videoStarted.toString()} // sorgt für Remount
-              style={{  height: "95%", marginTop:10 }}
-              resizeMode="cover"
-              controls={true}
-              paused={videoStarted ? false : true} 
-              muted={true} // ← wichtig für Web
-
-            />
-          </View>
+        <View className="bg-gray-800 rounded-lg p-4 w-11/12 items-center justify-center">
+         
           <TouchableOpacity
-            className="bg-blue-500 rounded-lg p-2 items-center"
-            style={{ backgroundColor: timeLeft <= 0 ? 'green' : '#3B82F6' }}
+            className='bg-green-500 rounded-lg p-4 w-full items-center justify-center'
             onPress={() => {
-              if (timeLeft <= 0) {
-                onComplete();
-                setTimeLeft(duration);
-                setVideoStarted(false);
-                setIsVisible(false);
-              } else {
-                setVideoStarted(true);
-                console.log("videoStarted:", videoStarted);
-
-              }
+              setIsVisible(false);
+              onComplete();
             }}
           >
-            <Text className="text-white font-semibold">{timeLeft == 0 ? "Claim Reward" : timeLeft == duration ?  "Watch Video" : `${timeLeft} Seconds Remaining`}</Text>
+            <Text className="text-white text-lg font-bold mb-4">Claim Reward</Text>
           </TouchableOpacity>
-          {/*
-          <TouchableOpacity
-            className="mt-4 bg-gray-300 rounded-lg p-2 items-center"
-            onPress={() => {setIsVisible(false); setTimeLeft(duration); setVideoStarted(false);}}
-          >
-            <Text className="text-gray-800 font-semibold">Close</Text>
-          </TouchableOpacity>
-          */}
-        </View>
+          </View>
       </View>
     </Modal>
   )

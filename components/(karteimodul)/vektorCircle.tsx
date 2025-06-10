@@ -29,8 +29,8 @@ const VektorCircle = ({ color, percentage, icon, strokeColor, sizeMultiplier = 1
       <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         {/* Hintergrundkreis */}
         <Circle
-          cx={center}
-          cy={center}
+          cx={Number.isNaN(center) ? 0 : center}
+          cy={Number.isNaN(center) ? 0 : center}
           r={radius}
           stroke={strokeColor}
           strokeWidth={strokeWidth}
@@ -39,19 +39,19 @@ const VektorCircle = ({ color, percentage, icon, strokeColor, sizeMultiplier = 1
         />
         {/* Fortschrittsbalken */}
         <Circle
-          cx={center}
-          cy={center}
+          cx={Number.isNaN(center) ? 0 : center}
+          cy={Number.isNaN(center) ? 0 : center}
           r={radius}
           stroke={color}
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
-          strokeDashoffset={circumference - progress}
+          strokeDashoffset={ Number.isNaN(circumference - progress)  ? 0 : circumference - progress}
           strokeLinecap="round"
           transform={`rotate(-90 ${center} ${center})`}
         />
         {/* Roter Punkt */}
-        <Circle cx={dotX} cy={dotY} r={5 * sizeMultiplier} fill={color} />
+        <Circle cx={Number.isNaN(dotX) ? 0 : dotX} cy={Number.isNaN(dotY) ? 0 : dotY} r={5 * sizeMultiplier} fill={color} />
       </Svg>
 
       {/* Icon in der Mitte */}

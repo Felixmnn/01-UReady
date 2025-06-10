@@ -32,10 +32,10 @@ const ContinueBox = ({colorBorder, colorBG, iconName, handlePress, text,selected
                     
                       <Image 
                       source={require('../../../assets/bot.png')} 
+                      tintColor={colorBorder}
                       style={{
                         height: 40, 
                         width: 40, 
-                        tintColor: colorBorder 
                       }} 
                     />
                     : 

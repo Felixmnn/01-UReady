@@ -84,7 +84,6 @@ function wasYesterday(date: Date) {
   yesterday.setDate(today.getDate() - 1);
   const compare = new Date(date);
   compare.setHours(0, 0, 0, 0);
-    console.log("Compare Date Result", compare.getTime() === yesterday.getTime());
   return compare.getTime() === yesterday.getTime();
 }
 

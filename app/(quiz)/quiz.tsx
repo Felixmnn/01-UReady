@@ -241,11 +241,12 @@ const quiz = () => {
                         </View>
                         <View className='flex-row items-center'>
                             {questionsParsed[selectedQuestion].aiGenerated ? <Image 
-                                                                source={require('../../assets/bot.png')} 
+                                                                source={require('../../assets/bot.png')}
+                                                                tintColor={"#fff"}
+ 
                                                                 style={{
                                                                   height: 20, 
                                                                   width: 20, 
-                                                                  tintColor: "#fff" 
                                                                 }} 
                                                               /> : null}
                             <TouchableOpacity className='items-center justify-center ml-2'>

@@ -5,7 +5,7 @@ import RoadMap from '../(sections)/roadMap';
 import Data from '../(sections)/data';
 import Header from '../(sections)/header';
 import SwichTab from '../../(tabs)/swichTab';
-import { addDocumentConfig, addDocumentToBucket, addNote, removeDocumentConfig, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
+import { addDocumentConfig, addDocumentToBucket, addNote, removeDocumentConfig, removeQuestion, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
 import { getAllDocuments, getModuleAmout, getSessionNotes, getSessionQuestions } from '@/lib/appwriteQuerys';
@@ -30,7 +30,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     const isVertical = width > 700;
     const [ tab, setTab ] = useState(0)
     const [loading, setLoading] = useState(true);
-    console.log("Modules in SingleModule:", modules);
 
     {/* Relevant Data - Modules $ Sessions */}
     const [module, setModule] = useState({
@@ -209,7 +208,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
             if (res.canceled) return;
     
             const file = res.assets[0];
-    
+            console.log("Selected file:", file);
             const doc = {
                 title: file.name,
                 subjectID: module.$id,
@@ -242,6 +241,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
             const uploadRes = await addDocumentToBucket({
                 fileID: doc.id,
                 fileBlob: fileBlob,
+                name: file.name,
             });
             setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
             appwriteRes.uploaded = true;
@@ -259,10 +259,21 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
      * This function removes a document locally and deletes it from the Appwrite bucket.
      * @param {string} id - The ID of the document to update.
      */
-    async function deleteDocument (id){
+    async function deleteDocument (id, type="document"){
         try {
+            if (type === "document") {
             setDocuments(documents.filter(document => document.$id !== id));
             removeDocumentConfig(id);
+            } else if (type == "question") {
+                setQuestions(questions.filter(question => question.$id !== id));
+                module.questionList = module.questionList.filter(item => item.id !== id);
+                const res = await updateModuleData(module.$id, {
+                    questionList: module.questionList.map(item => JSON.stringify(item)),
+                    questions: module.questionList.length,
+                    progress: calculatePercent(questions)
+                });
+                await removeQuestion(id);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -298,9 +309,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 questions: module.questionList.length,
                 progress: calculatePercent(questions)
             });
-        } else {
-            console.log("ℹ️ Keine Änderungen an questionList – kein Update nötig.");
-        }
+        } 
     }
 
     updateQuestionList();
@@ -312,7 +321,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
    },[selectedSession])
 
     
-    console.log("Module Entry in SingleModule:", questions, module.$id);
 
     return (
         <View className='flex-1 rounded-[10px] items-center '>
@@ -348,7 +356,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                         }
                         {isVertical || tab == 1 ?
                             <View className='p-4 flex-1'>
-                                <Data refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
+                                <Data setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null 
                         }

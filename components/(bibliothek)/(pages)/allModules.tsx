@@ -164,7 +164,6 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
       )
 
     }
-    console.log("Modules in AllModules:", modules);
   return (
     <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
       <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />

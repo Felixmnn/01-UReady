@@ -2,7 +2,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { addContact } from '@/lib/appwriteAdd';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
@@ -68,6 +68,7 @@ const Contact = () => {
     }
   };
   return (
+    <SafeAreaView>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-[#0c111d] p-6">
         <View className="w-full flex-row items-center justify-between p-4  mb-4">
             <TouchableOpacity onPress={() => router.push("/profil")}>
@@ -138,6 +139,7 @@ const Contact = () => {
     </View>
         </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

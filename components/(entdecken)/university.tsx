@@ -114,7 +114,6 @@ const UniversityFilters = ({country=countryList[0], setFilters}) => {
                 creationUniversitySubject: selectedSubjects
       })
     },[selectedUniversity,selectedFacultys,selectedSubjects])
-    console.log("University List", universityList);
     
   return (
     <ScrollView className=' w-full  ' 

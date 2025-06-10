@@ -70,7 +70,6 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         !file.name.toLowerCase().endsWith(".pdf")
       ) {
         setErrorMessage("Only supported file type: PDF");
-        console.log("Unsupported file type");
         setIsError(true);
         return;
       }

@@ -9,11 +9,11 @@ const Selectable = ({icon, bgColor, iconColor, empfolen, title, handlePress,text
                     {
                         icon === "robot" ?
                         <Image
+                            tintColor={iconColor}
                             source={require('../../assets/bot.png')} 
                             style={{
                             height: 30, 
                             width: 30, 
-                            tintColor: iconColor 
                             }} 
                         />
                         : 

@@ -25,7 +25,6 @@ import { useRoute } from '@react-navigation/native';
 
 const personalize = () => {
     const route = useRoute();
-    console.log("Ich bin die Personalize Seite 🐋🐋🐋");
     const { user } = useGlobalContext();
     const [userData, setUserData] = useState(null);
 
@@ -138,15 +137,12 @@ const personalize = () => {
                 }
             } else if (selectedKathegorie === "UNIVERSITY") {
                 const res = await getUniversityList(selectedCountry.universityListID);
-                console.log("University List", res);
                 if (res) {
                     setUniversityList(res.list.map(item => JSON.parse(item)));
                 }
             } else if (selectedKathegorie === "EDUCATION") {
                 const res = await getEducationList(selectedCountry.educationListID);
                 const res2 = await getEducationSubjects(selectedCountry.educationSubjectListID);
-                console.log("School List", res);
-                console.log("Education List", res2);
                 if (res && res2) {
                     setEducationList(
                         {
@@ -170,9 +166,7 @@ const personalize = () => {
     useEffect(() => {
         async function fetchUniversitySubjects() {
             if (selectedUniversity) {
-                console.log("Selected University", selectedUniversity);
                 const res = await getUniversitySubjects(selectedUniversity?.fakultyListID);
-                console.log("Uni List", res);
                 if (res) {
                     setUniversitySubjectList(
                         [
@@ -233,7 +227,6 @@ const personalize = () => {
               async function fetchUserData() {
                   try {
                       let userD = await loadUserData(user.$id);
-                        console.log("User Data", userD);
                       if (!userD) {
                         userD = await addNewUserConfig(user.$id);
                         await someDelayOrRefetch(); // Warte kurz oder rufe loadUserData erneut auf
@@ -243,11 +236,9 @@ const personalize = () => {
                         console.log("Success", userD);
                         setUserData(userD);
                       }
-                      console.log("User Data", userD);
                       if (userD?.signInProcessStep == "FINISHED") {
                             try {
                                 const userDK = await loadUserDataKathegory(user.$id);
-                                console.log("User Data Kathegory", userDK);
                                 setUserDataKathegory(userDK);
                                 setUserData({
                                     birthday:userD.birthday,

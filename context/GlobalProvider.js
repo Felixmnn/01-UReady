@@ -57,7 +57,6 @@ const GlobalProvider = ({children}) => {
                 if(res) {
                     setIsLoggedIn(true);
                     setUser(res)
-                    console.log("Ich der GlobalProvider habe den User:");
                 } else {
                     setIsLoggedIn(false)
                     setUser(undefined)

@@ -5,9 +5,20 @@ import  { router } from "expo-router"
 import  Selectable  from '../selectable'
 import SmileyStatus from '../(components)/smileyStatus';
 
-const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+    const [optionsVisible, setOptionsVisible] = useState([]);
+        function handleOptionsVisibility(id) {
+            if (optionsVisible.includes(id)) {
+                setOptionsVisible(optionsVisible.filter(item => item !== id));
+            } else {
+                if (optionsVisible.length > 0) {
+                    setOptionsVisible([]);
+                } else {
+                setOptionsVisible([...optionsVisible, id]);
+                }
+            }
+        }
 
-    console.log("Module:", module);
     //To ensure that the question status is displayed correctly, it is loaded from the module configuration
     //and added to the question object
     const filtered = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
@@ -113,10 +124,10 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
                             >
                                 <Image 
                                     source={require('../../../assets/bot.png')} 
+                                    tintColor={"#fff"}
                                     style={{
                                         height: 50, 
                                         width: 50, 
-                                        tintColor: "#fff" 
                                     }}
                                 />
                                 <Text className='text-white text-center'>{texts[selectedLanguage].pendingAI}</Text>
@@ -140,17 +151,43 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
                             
                             <Image 
                                 source={require('../../../assets/bot.png')} 
+                                tintColor={"#fff"}
                                 style={{
                                 height: 20, 
                                 width: 20, 
-                                tintColor: "#fff" 
                                 }} 
                             />
                         </View>
                         <Text className='text-white'>{item.question}</Text>
                         <View className='border-b-[1px] border-gray-600 my-4 w-full'/>
-                        <View className='w-full items-end pr-2'> 
-                            <Icon name="ellipsis-h" size={15} color="white"/>
+                        <View className='w-full flex-row justify-between items-center'>
+                            {
+                                optionsVisible.includes(item.$id) ?
+                                <View className='flex-row items-center justify-between'>
+                                    <View className='mr-5'>
+                                    <Icon name="edit" size={15} color="white"  onPress={() => {
+                                        setSelectedScreen("CreateQuestion");
+                                        handleOptionsVisibility(item.$id);
+                                    }}/>
+                                    </View>
+                                    <Icon name="trash" size={15} color="red"  onPress={async() => {
+                                        await deleteDocument(item.$id, "question");
+                                        handleOptionsVisibility(item.$id);
+                                    }}/>
+                                </View>
+                                : null
+                            }
+                            <View className={` items-end pr-2 ${optionsVisible.includes(item.$id) ? "w-[50%]" : "w-full"}`}
+                            
+                            > 
+                                <TouchableOpacity className='p-2'
+                                onPress={() => {
+                                    handleOptionsVisibility(item.$id);
+                                }}
+                                >
+                                    <Icon name="ellipsis-h" size={15} color="white"/>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 )
@@ -259,7 +296,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
                             {item.title ? item.title : texts[selectedLanguage].unnamed}
                             </Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity >
                             <Icon name="ellipsis-h" size={15} color="white" />
                         </TouchableOpacity>
                         </TouchableOpacity>
@@ -276,6 +313,7 @@ const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,do
     }
     
 
+    
     
 
 return (

@@ -190,7 +190,6 @@ const Card = ({
     const [ isVisibleB, setIsVisibleB ] = useState(false);
     const [ isVisibleC, setIsVisibleC ] = useState(false);
     const [ isVisibleD, setIsVisibleD ] = useState(false);
-    console.log("User Usage Participated Quizzes", userUsage?.participatedQuizzes);
   return (
         
     <Animated.View
@@ -325,7 +324,6 @@ const Card = ({
         </View>
     </TouchableOpacity>
     <Animated.View
-            pointerEvents="none"
             style={{
                 position: 'absolute',
                 top: 0,
@@ -335,6 +333,7 @@ const Card = ({
                 backgroundColor: '#D32F2F',
                 borderRadius: 10,
                 opacity: overlayOpacity,
+                pointerEvents: 'none'
             }}
             />
     </Animated.View>

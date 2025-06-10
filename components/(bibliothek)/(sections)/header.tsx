@@ -14,7 +14,6 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
 
 }) => {
     const { width } = useWindowDimensions(); 
-    console.log("Modules in Header:", modules);
     const [ deleteModuleVisible, setDeleteModuleVisible ] = useState(false);
     const isVertical = width > 700;
     const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)

@@ -90,7 +90,6 @@ const gettingStarted = () => {
       });
       const [ tutorialStepAI, setTutorialStepAI] = useState(0);
       const [ tuturialStep, setTutorialStep] = useState(0);
-      console.log("UserData", userData);
   return (
         <SafeAreaView className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]    items-center justify-center"
         style={{

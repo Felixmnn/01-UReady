@@ -16,13 +16,12 @@ const GratisPremiumButton = ({children, aditionalStyles, handlePress, active}) =
       style={{
         transform: [{ translateY: isPressed ? 2 : 0 }],
         shadowColor: "#1e3a8a",
-        shadowOffset: { width: 0, height: isPressed ? 2 : 6 },
         shadowOpacity: 1,
         shadowRadius: 4,
         marginBottom: 5,
       }}
     >
-        <View className={`flex-1 items-center rounded-full justify-center bg-gradient-to-b from-blue-300 to-blue-500 px-2 ${aditionalStyles}`}>
+        <View className={`flex-1 items-center rounded-full justify-center bg-gradient-to-b from-blue-500 to-blue-900 px-2 ${aditionalStyles}`}>
             {
                 children ? children :<Text className='text-[12px] text-gray-100 font-semibold'>...</Text>
 

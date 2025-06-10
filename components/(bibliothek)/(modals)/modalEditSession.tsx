@@ -116,7 +116,8 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                                 value={newTag ? newTag.name : null}
                                 maxLength={30}
                                 placeholder={session.title ? session.title : texts[selectedLanguage].placeholderSessions}
-                                placeholderTextColor={"AAAAAA"}
+                                placeholderTextColor={"#fff"}
+                                
                             
                                 onChangeText={(e) => setSessions(prevSessions =>
                                     prevSessions.map((session, i) =>
@@ -131,7 +132,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                             <TextInput
                                 value={newTag ? newTag.description : ""}
                                 maxLength={150}
-                                placeholderTextColor={"AAAAAA"}
+                                placeholderTextColor={"#fff"}
                                 placeholder={session.description ? session.description : texts[selectedLanguage].placeholderDescription}
                                 className={`text-white  rounded-[10px] p-1  p-2 my-2 mx-2 border-blue-700 border-[1px] shadow-lg bg-[#0c111d] ${on ? 'border-blue-500' : 'border-gray-700'}`}
                                 style={{

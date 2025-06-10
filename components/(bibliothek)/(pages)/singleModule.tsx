@@ -1,4 +1,4 @@
-import { View, Text, Platform } from 'react-native'
+import { View, Text, Platform, Modal, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import RoadMap from '../(sections)/roadMap';
@@ -16,6 +16,8 @@ import { router } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
+import { useFocusEffect } from '@react-navigation/native';
+import { loadModule } from '@/lib/appwriteDaten';
 
 /**
  * The SingleModule Component is responsible for rendering the deatils of a single module.
@@ -23,7 +25,6 @@ import languages  from '@/assets/exapleData/languageTabs.json';
  * @param moduleEntry - The module entry is the currently selected module.
  */
 const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => {
-
     {/* Dimensions and Window Measurements */}
     const { width, } = useWindowDimensions();
     const tabWidth = width / 2;
@@ -47,20 +48,48 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     const { language } = useGlobalContext()
 
      const [ refreshing, setRefreshing ] = useState(false)
-        const onRefresh = () => {
+        async function onRefresh () {
             setRefreshing(true);
-
+            await checkForUpdates()
             setTimeout(() => {
             setRefreshing(false);
             }, 2000);
         };
     
-
     useEffect(() => {
         if(language) {
             setSelectedLanguage(language)
         }
     }, [language])
+    const [isError, setIsError] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [ errorMessage, setErrorMessage ] = useState("Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.");
+    const ErrorModal = ({isError, setIsError, success=false, successMessage=null}) => {
+               return (
+                   <Modal
+                       animationType="slide"
+                       transparent={true}
+                       visible={isError || success}
+                       onRequestClose={() => {
+                         setIsError(!isError);
+                       }}
+                   >
+                       <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> {setIsError(false); setSuccess(false)} }
+                         >
+                           <View className={` border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700
+                             ${success ? 'bg-green-900' : 'bg-red-900'}`}
+                             style={{
+                                 borderColor: success ? 'green' : '#ff4d4d',
+                             }}
+                           >
+                               <Text className='text-white font-bold'>{successMessage ? successMessage : errorMessage}</Text>
+                           </View>
+                       </TouchableOpacity>
+                   </Modal>
+               )
+           }
+
     const texts = languages.singleModule; 
     /**
      * This function updates the sessions each time the sessions change.
@@ -114,6 +143,44 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         const percent = Math.round((points / questions.length) * 100);
         return percent < 0 ? 0 : percent > 100 ? 100 : percent;
     }
+    async function checkForUpdates() {
+                const moduledata = await loadModule(module.$id);
+                const questions = await getSessionQuestions(sessions[selectedSession].id);
+                const notes = await getSessionNotes(sessions[selectedSession].id);
+                const documents = await getAllDocuments(sessions[selectedSession].id);
+                if (moduledata) {
+                    setModule(moduledata);
+                }
+                if (questions) {
+                    setQuestions(questions);
+                }
+                if (notes) {
+                    setNotes(notes);
+                }
+                if (documents) {
+                    setDocuments(documents);
+                }
+                const percent = calculatePercent(questions);
+                setSessions((prevSessions) => {
+                    return prevSessions.map((session) => {
+                        if (session.id === sessions[selectedSession].id) {
+                            return {
+                                ...session,
+                                percent: percent,
+                                questions: questions.length,
+                            };
+                        }
+                        return session;
+                    });
+                }
+                );
+            }
+    useFocusEffect(
+        React.useCallback(() => {
+            
+            checkForUpdates();
+        },[]))
+
     //This function is used to fetch the questions, notes and documents for the a new session.
     useEffect(() => { 
         async function fetchQuestions(sessionID) {
@@ -147,10 +214,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
             
             const notes = await getSessionNotes(sessionID);
             const documents = await getAllDocuments(sessionID);
-
-            if (questions) {
-                setQuestions((prevQuestions) => [...prevQuestions, ...sessionQuestions]);  
+            const existingIds = questions.map(q => q.$id);
+            const newQuestions = sessionQuestions.filter(q => !existingIds.includes(q.$id));
+            if (newQuestions.length > 0) {
+                setQuestions((prevQuestions) => [...prevQuestions, ...newQuestions]);
+            } else {
+                setQuestions(sessionQuestions);
             }
+           
            
             
             if (notes) {
@@ -204,11 +275,15 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     async function addDocument() {
         try {
             const res = await DocumentPicker.getDocumentAsync({ type: "*/*" });
-
+             
             if (res.canceled) return;
     
             const file = res.assets[0];
-
+            if (file.mimeType !== 'application/pdf') {
+                setIsError(true);
+                setErrorMessage("Bitte nur PDF-Dateien hochladen.");
+            return;
+            }
             const doc = {
                 title: file.name,
                 subjectID: module.$id,
@@ -347,12 +422,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         setChange(change + 1)
    },[selectedSession])
 
-    
+    console.log("Questions:", questions);
 
     return (
         <View className='flex-1 rounded-[10px] items-center '>
+            <ErrorModal isError={isError} setIsError={setIsError} success={success} successMessage={successMessage} />
+
             <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
-            <AiQuestion uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
+            <AiQuestion setErrorMessage={setErrorMessage} setIsError={setIsError} uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
 
             {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50'></View> : null }
             <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>

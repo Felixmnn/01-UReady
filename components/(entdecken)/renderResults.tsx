@@ -4,6 +4,8 @@ import ToggleSwitch from '../(general)/toggleSwich'
 import Karteikarte from '../(karteimodul)/karteiKarte'
 
 const RenderResults = ({modules, texts, selectedLanguage, selectedModules, myModules, updateModuleData, setSelectedModules, numColumns, searchBarText}) => {
+  console.log("❌Modules", modules.filter((m) => m.public).length, modules.length)
+
   return (
     <View  className='flex-1 w-full pl-2 justify-center '>
             <FlatList

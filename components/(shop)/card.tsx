@@ -22,7 +22,6 @@ const Card = ({
     useEffect(() => {
         async function fetchQuizzes() {
             const response = await loadSurvey();
-            console.log("Quizzes ✅✅✅", response);
             if (response) {
                 setQuizzes(response.length > 0 ? response : []);
             }
@@ -77,7 +76,6 @@ const Card = ({
     function amountItems(){
         if (shopItem?.itemType === "REWARDEDQUIZ") {
             const amountOfUnsolvedQuizzes = quizzes.length
-            console.log("Amount of unsolved quizzes", amountOfUnsolvedQuizzes);
             if (amountOfUnsolvedQuizzes <= 0) {
                 return "0/0";
             } else {

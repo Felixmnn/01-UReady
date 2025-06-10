@@ -70,7 +70,6 @@ const shop = () => {
       if (amountComercials > 0) return `${amoutGT3}/${amoutGT3}`;
       return "0/0"
     }
-console.log("userUsage", shopItemsA);
   return (
     <Tabbar content={()=> { return( 
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>

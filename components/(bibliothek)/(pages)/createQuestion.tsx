@@ -114,7 +114,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
             })
         }
     }
-        
+        console.log("QUestions", questions)
   return (
     <View className='flex-1 items-center '>
         <ModalIncompleat modalVisible={reqModalVisible} setModalVisible={setReqModalVisible} missingRequirements={missingRequirements}/>

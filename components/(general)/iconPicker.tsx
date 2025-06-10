@@ -3,16 +3,31 @@ import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 const IconPicker = ({selectedIcon, setSelectedIcon, title,indexItem, selectedColor  }) => {
     const icons = [
-        null,
-        "book",
-        "chalkboard-teacher",
-        "graduation-cap",
-        "laptop",
-        "user-graduate",
-        "book-open",
-        "brain",
-        "pizza-slice",
-      ];
+  null,
+  "book",
+  "chalkboard-teacher",
+  "graduation-cap",
+  "laptop",
+  "user-graduate",
+  "book-open",
+  "brain",
+  "pizza-slice",
+  "pen",
+  "pencil-alt",
+  "clipboard-list",
+  "file-alt",
+  "calendar-alt",
+  "clock",
+  "microscope",
+  "atom",
+  "language",
+  "users",
+  "question-circle",
+  "lightbulb",
+  "headphones",
+  "video",
+];
+
   return (
     <View style={{
       height: 80,

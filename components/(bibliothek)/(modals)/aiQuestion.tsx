@@ -8,8 +8,8 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { addDocumentJob } from '@/lib/appwriteAdd';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
-const AiQuestion = ({isVisible, setIsVisible, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
-const { language } = useGlobalContext()
+const AiQuestion = ({isVisible, setIsVisible,setErrorMessage, setIsError, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
+const { userUsage, setUserUsage,language } = useGlobalContext()
  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
     if(language) {
@@ -45,9 +45,9 @@ const GenerateByFile = () => {
                             return (
                                 <TouchableOpacity onPress={()=> setSelectedFile(item)} key={index} className='flex-row items-center justify-between bg-gray-800 rounded-[10px] p-2 mt-2'
                                     style={{
-                                        borderColor: selectedFile?.title == item.title ? "#7a5af8" : "#0c111d",
-                                        borderWidth: selectedFile?.title == item.title ? 2 : 1,
-                                        backgroundColor: selectedFile?.title == item.title ? 'rgba(59, 51, 134, 0.59)' : "#0c111d",
+                                        borderColor: selectedFile?.$id == item.$id ? "#2196f3" : "#0c111d",
+                                        borderWidth: selectedFile?.$id == item.$id ? 2 : 1,
+                                        backgroundColor: selectedFile?.$id == item.$id ? 'rgba(33, 150, 243, 0.5)' : "#0c111d",
                                     }}
                                 >
                                     <View className='flex-row items-center'>
@@ -68,17 +68,21 @@ const GenerateByFile = () => {
                     </View>
                 }   
             </View>
-            { false ?
+            { selectedFile == null ?
             <TouchableOpacity disabled={true} className={`flex-row items-center justify-center bg-gray-700 rounded-full p-2 mt-2 opacity-50`}>
                 <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].sumDocument}</Text>
             </TouchableOpacity>
             :
-            <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={()=> {createDocumentJob()}} >
+            <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={()=> createDocumentJob()} >
                 {
                     isLoading ?
                      <ActivityIndicator size="small" color="#00ff00" />
                      :
-                     <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].sumDocument}</Text> 
+                     <View className='flex-row items-center'>
+                        <Text className='text-white  font-semibold text-[15px] mb-1'>Karteikarten für 3</Text>
+                        <Icon name="bolt" size={15} color="white" className="ml-2" />
+                        <Text className='text-white ml-2 font-bold mb-1'>generieren.</Text>
+                    </View>
 
                 }
             </GratisPremiumButton>
@@ -87,7 +91,13 @@ const GenerateByFile = () => {
     )
 }
 
-async function createDocumentJob(document) {
+async function createDocumentJob() {
+    if (userUsage.energy < 3) {
+        setErrorMessage("You don't have enough energy to summarize this document. Please wait until your energy is recharged or buy some in the shop.")
+        setIsError(true)
+        return
+    } 
+        
     const job = {
         databucketID: selectedFile.databucketID,
         subjectID: selectedModule.$id,
@@ -101,6 +111,10 @@ async function createDocumentJob(document) {
             newSessions[sessionIndex].tags = "JOB-PENDING";
         }
         return newSessions;
+    })
+    setUserUsage({
+        ...userUsage,
+        energy: userUsage.energy - 3
     })
     setIsVisible(false)
 }
@@ -138,7 +152,7 @@ return (
         >
             <View className='w-full h-full  max-w-[400px] bg-[#0c111d] border-gray-700 rounded-xl'
 
-                style={{ borderWidth: 2, maxHeight: 350 }}>
+                style={{ borderWidth: 2, maxHeight: 400 }}>
                 <TouchableOpacity  onPress={() => setIsVisible(false)} 
                     className=' p-4  flex-row justify-between '>
                     <Text className='text-gray-300 font-bold mr-2 '>{texts[selectedLanguage].title}</Text>
@@ -186,14 +200,15 @@ return (
                             <TextInput
                             multiline
                             numberOfLines={5}
-                            maxLength={5000}
+                            maxLength={2000}
                             onChangeText={(text) => setNewItem({ ...newitem, content: text })}
                             value={newitem.content}
                             className="flex-1 text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] "
                             style={{
-                                height:112,
+                                height:76,
                                 textAlign: 'left',
                                 justifyContent: 'start',
+                                textAlignVertical: 'top',   
                             }}
                             />
                             
@@ -210,9 +225,10 @@ return (
                                         return (
                                           <TouchableOpacity
                                             key={index}
-                                            className="bg-[#0c111d] flex-row p-2 m-1 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg"
+                                            className="bg-[#0c111d] flex-row px-2 m-1 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg"
                                             style={{ height: 30 }}
                                             onPress={() => {
+                                                
                                               setNewItem({ ...newitem, content: item.content, type: item.type, uri: item.uri, sessionID:item.sessionID, id:item.id });
                                             }}
                                           >
@@ -243,6 +259,11 @@ return (
                                     </TouchableOpacity>
                                     :
                                     <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={async ()=> {
+                                        if (userUsage.energy < items.length * 1) {
+                                            setErrorMessage("You don't have enough energy to generate these cards. Please wait until your energy is recharged or buy some in the shop.")
+                                            setIsError(true)
+                                            return
+                                        }
                                         const res = await materialToQuestion(
                                             items.filter(item => item.sessionID == selectedSession.id), 
                                             selectedSession.id, 
@@ -251,6 +272,10 @@ return (
                                             questions, 
                                             setIsLoading, 
                                         )
+                                        setUserUsage({
+                                        ...userUsage,
+                                        energy: userUsage.energy - items.length * 1
+                                        })
                                         setQuestions([...questions, ...res])
                                         setItems([])
                                         setIsVisible(false)
@@ -259,7 +284,11 @@ return (
                                             isLoading ?
                                             <ActivityIndicator size="small" color="#00ff00" />
                                             :
-                                            <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].generateCards}</Text> 
+                                            <View className='flex-row items-center'>
+                                                            <Text className='text-white  font-semibold text-[15px] mb-1'>Karteikarten für {items.length*1}</Text>
+                                                            <Icon name="bolt" size={15} color="white" className="ml-2" />
+                                                            <Text className='text-white ml-2 font-bold mb-1'>generieren.</Text>
+                                            </View>
 
                                         }
                                     </GratisPremiumButton>
@@ -291,14 +320,17 @@ return (
                             <TextInput
                             multiline
                             numberOfLines={5}
-                            maxLength={5000}
+                            maxLength={2000}
                             onChangeText={(text) => setNewItem({ ...newitem, content: text })}
                             value={newitem.content}
+                            
                             className="flex-1 text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] "
                             style={{
-                                height:112,
+                                height:76,
                                 textAlign: 'left',
                                 justifyContent: 'start',
+                                textAlignVertical: 'top',      
+
                             }}
                             />
                             
@@ -348,6 +380,11 @@ return (
                                     </TouchableOpacity>
                                     :
                                     <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={async ()=> {
+                                        if (userUsage.energy < items.length * 1) {
+                                            setErrorMessage("You don't have enough energy to generate these cards. Please wait until your energy is recharged or buy some in the shop.")
+                                            setIsError(true)
+                                            return
+                                        }
                                         const res = await materialToQuestion(
                                             items.filter(item => item.sessionID == selectedSession.id), 
                                             selectedSession.id, 
@@ -356,6 +393,10 @@ return (
                                             questions, 
                                             setIsLoading, 
                                         )
+                                        setUserUsage({
+                                        ...userUsage,
+                                        energy: userUsage.energy - items.length * 1
+                                        })
                                         setQuestions([...questions, ...res])
                                         setItems([])
                                         setIsVisible(false)
@@ -364,8 +405,11 @@ return (
                                             isLoading ?
                                             <ActivityIndicator size="small" color="#00ff00" />
                                             :
-                                            <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].generateCards}</Text> 
-
+                                            <View className='flex-row items-center'>
+                                                            <Text className='text-white  font-semibold text-[15px] mb-1'>Karteikarten für {items.length*1}</Text>
+                                                            <Icon name="bolt" size={15} color="white" className="ml-2" />
+                                                            <Text className='text-white ml-2 font-bold mb-1'>generieren.</Text>
+                                            </View>
                                         }
                                     </GratisPremiumButton>
                                     }

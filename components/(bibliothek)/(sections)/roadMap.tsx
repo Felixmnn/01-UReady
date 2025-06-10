@@ -9,6 +9,7 @@ import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 
 const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID, moduleDescription}) => { 
   const { user } = useGlobalContext();
+  console.log("currentModule", currentModule)
   function getAll(){
     let bad = 0
     let ok = 0

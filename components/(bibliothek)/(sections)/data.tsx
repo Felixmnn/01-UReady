@@ -5,7 +5,8 @@ import  { router } from "expo-router"
 import  Selectable  from '../selectable'
 import SmileyStatus from '../(components)/smileyStatus';
 
-const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+    
     const [optionsVisible, setOptionsVisible] = useState([]);
         function handleOptionsVisibility(id) {
             if (optionsVisible.includes(id)) {
@@ -220,7 +221,7 @@ const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,
                     <TouchableOpacity
                     key={`${item.$id}-${index}`}
                     onPress={() => {}}
-                    className="w-full flex-row justify-between p-2 border-b-[1px] border-gray-600"
+                    className={`w-full flex-row justify-between p-2 ${filteredDocuments.length -1  == index ? null : "border-b-[1px] border-gray-600"}`}
                     >
                     <View className="flex-row items-start justify-start">
                         <Icon name="file" size={40} color="white" />
@@ -279,7 +280,7 @@ const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,
                     className=" w-full"
                     
                     >
-                    {filteredNotes.map((item) => (
+                    {filteredNotes.map((item,index) => (
                         <TouchableOpacity
                         key={item.$id}
                         onPress={() =>
@@ -288,7 +289,7 @@ const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,
                             params: { note: JSON.stringify(item) },
                             })
                         }
-                        className="w-full flex-row justify-between p-2 border-b-[1px] border-gray-600"
+                        className={`w-full flex-row justify-between p-2 ${filteredNotes.length -1  == index ? null : "border-b-[1px] border-gray-600"} `}
                         >
                         <View className="flex-row items-start justify-start">
                             <Icon name="file" size={40} color="white" />
@@ -296,9 +297,7 @@ const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,
                             {item.title ? item.title : texts[selectedLanguage].unnamed}
                             </Text>
                         </View>
-                        <TouchableOpacity >
-                            <Icon name="ellipsis-h" size={15} color="white" />
-                        </TouchableOpacity>
+                        
                         </TouchableOpacity>
                     ))}
                     </View>

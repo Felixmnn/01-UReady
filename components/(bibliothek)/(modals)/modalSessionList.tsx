@@ -1,4 +1,4 @@
-import { View, Text, Modal, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, useWindowDimensions, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ModalEditSession from './modalEditSession';
@@ -36,8 +36,11 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
             
             visible={isVisible}
         >
-            <TouchableOpacity onPress={() => setIsVisible(false)} className='absolute top-0 left-0 w-full h-full justify-center items-center p-2 ' style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }} >
-                <View className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl ${width < 400 ? "w-full" : " w-[400px]"}`}>
+            
+            <TouchableOpacity onPress={() => setIsVisible(false)} className='absolute top-0 left-0 w-full h-full justify-center items-center p-2 h-[90%]' style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }} >
+                
+                <View className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl ${width < 400 ? "w-full" : " w-[400px]"} `}>
+                    <ScrollView className=' h-[90%] w-full'>
                     <View className='flex-row items-center justify-between'>
                         <Text className='text-white text-xl mb-2 font-semibold'>{texts[selectedLanguage].title}</Text>
                         <TouchableOpacity>
@@ -119,6 +122,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
                     }} className='flex-row items-center justify-center p-2 border-gray-600 bg-gray-900 border-[1px] rounded-xl mt-2'>
                         <Text className='text-white'>{texts[selectedLanguage].addSession}</Text>
                     </TouchableOpacity>
+                    </ScrollView>
                 </View>
             </TouchableOpacity>
             {selectedSession && (

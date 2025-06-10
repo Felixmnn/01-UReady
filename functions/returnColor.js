@@ -1,4 +1,5 @@
 export function returnColor(color, moduleColor) {
+  const colorLow = color.toLowerCase();
   const colorMap = {
     red: "#FF4D4D",
     orange: "#FF884D",
@@ -10,8 +11,8 @@ export function returnColor(color, moduleColor) {
     pink: "#FF4DA6",
     green: "#4DFF4D"
   };
-  if (colorMap[color]) {
-    return colorMap[color];
+  if (colorMap[colorLow]) {
+    return colorMap[colorLow];
   }
 }
 

@@ -186,7 +186,6 @@ const entdecken = () => {
           setLoading(true)
           try {
               const res = await addNewModule(mod)
-              console.log("Added Module", res)
               if (res){
                 setModules((prev) => [...prev, res])
               }
@@ -324,7 +323,6 @@ const entdecken = () => {
 
 
     
-
   return (
       <Tabbar content={()=> { return(
         <View className='flex-1  w-full bg-[#0c111d] rounded-[10px] '>
@@ -369,11 +367,11 @@ const entdecken = () => {
             }}
             >
               <Text className='text-white font-semibold text-[10px] '>
-                {modules.length} {texts[selectedLanguage].results}
+                {modules.filter(m => m.public == true).length} {texts[selectedLanguage].results}
               </Text>
             </View>
           <RenderResults 
-            modules={modules}
+            modules={modules.filter(m => m.public == true)}
             texts={texts}
             selectedLanguage={selectedLanguage}
             selectedModules={selectedModules}

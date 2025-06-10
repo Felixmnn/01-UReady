@@ -79,13 +79,7 @@ const Bibliothek = () => {
       );
     };
     
-     const SkeletonList = () => (
-      <FlatList
-        data={[1, 2, 3, 4, 5]}
-        renderItem={() => <SkeletonItem />}
-        keyExtractor={(item) => item.toString()}
-      />
-    );
+    
     const [refreshing, setRefreshing] = useState(false);
     const onRefresh = async () => {
         setRefreshing(true);
@@ -93,6 +87,8 @@ const Bibliothek = () => {
         setRefreshing(false);
       };
 
+    
+    
 
   return (
       <Tabbar content={()=> { return(

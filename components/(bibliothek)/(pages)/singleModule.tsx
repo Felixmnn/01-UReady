@@ -22,7 +22,7 @@ import languages  from '@/assets/exapleData/languageTabs.json';
  * @param setSelectedScreen - Is used to navigate on the bibliothek screen. Between the different modules.
  * @param moduleEntry - The module entry is the currently selected module.
  */
-const SingleModule = ({setSelectedScreen, moduleEntry}) => {
+const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => {
 
     {/* Dimensions and Window Measurements */}
     const { width, } = useWindowDimensions();
@@ -30,7 +30,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
     const isVertical = width > 700;
     const [ tab, setTab ] = useState(0)
     const [loading, setLoading] = useState(true);
-
+    console.log("Modules in SingleModule:", modules);
 
     {/* Relevant Data - Modules $ Sessions */}
     const [module, setModule] = useState({
@@ -322,7 +322,17 @@ const SingleModule = ({setSelectedScreen, moduleEntry}) => {
             <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>
                 { loading ? <Text>...</Text> :
                 <View className='flex-1'>
-                <Header moduleID={module.$id} moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI} isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions} questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen} selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}/>
+                <Header 
+                    moduleID={module.$id}
+                    moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI}
+                    isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions}
+                    questions={questions} setQuestions={setQuestions} addDocument={addDocument} setSelectedScreen={setSelectedScreen}
+                    selectedModule={module} selected={selectedSession} sessions={sessions}  setSessions={setSessions}
+                    modules={modules}
+                    setModules={setModules}
+                    setSelectedModule={setSelectedScreen}
+                    
+                    />
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Map"} tab2={"Fragen"} bg={"bg-gray-900"} change={change}/> : null }
                 <View className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}/>
                 

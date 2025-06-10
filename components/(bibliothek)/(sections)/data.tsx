@@ -7,7 +7,7 @@ import SmileyStatus from '../(components)/smileyStatus';
 
 const Data = ({onRefresh, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
 
-
+    console.log("Module:", module);
     //To ensure that the question status is displayed correctly, it is loaded from the module configuration
     //and added to the question object
     const filtered = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)

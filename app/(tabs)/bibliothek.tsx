@@ -103,7 +103,7 @@ const Bibliothek = () => {
         ) : (
         <View className='flex-1 rounded-[10px] '>
         {selected == "AllModules" ? <AllModules onRefresh={onRefresh} refreshing={refreshing} setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
-        {selected == "SingleModule" ? <SingleModule setSelectedScreen={setSelected} moduleEntry={modules.documents[selectedModule]}  /> : null}
+        {selected == "SingleModule" ? <SingleModule setSelectedScreen={setSelected} moduleEntry={modules.documents[selectedModule]} modules={modules} setModules={setModules} /> : null}
         {selected == "CreateQuestion" ? <CreateQuestion setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
 
         </View>

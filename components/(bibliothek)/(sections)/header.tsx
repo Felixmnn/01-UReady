@@ -5,17 +5,32 @@ import { useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 import {router } from 'expo-router';
 import ModalSessionList from '../(modals)/modalSessionList';
+import DeleteModule from '../(modals)/deleteModule';
 
-const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName, moduleID}) => {
+const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName, moduleID,
+                    modules,
+                    setModules,
+                    setSelectedModule
+
+}) => {
     const { width } = useWindowDimensions(); 
-
-    
+    console.log("Modules in Header:", modules);
+    const [ deleteModuleVisible, setDeleteModuleVisible ] = useState(false);
     const isVertical = width > 700;
     const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
     const [showSessionList, setShowSessionList] = useState(false)
   return (
     <View className={`${!isVertical ? "bg-[#0c111d]" : null}`}>
         <ModalSessionList isVisible={showSessionList} setIsVisible={setShowSessionList} sessions={sessions} setSessions={setSessions} />
+        <DeleteModule
+            moduleID={moduleID} 
+            moduleName={moduleName} 
+            isVisible={deleteModuleVisible} 
+            setIsVisible={setDeleteModuleVisible} 
+            modules={modules}
+            setModules={setModules}
+            setSelectedModule={setSelectedModule}
+        />
         <View className='flex-row w-full justify-between p-4 items-center'>
                     <TouchableOpacity onPress={()=> setSelectedScreen("AllModules")} >
                         <Icon name="arrow-left" size={20} color="white"/>
@@ -25,7 +40,7 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
                             <Icon name="globe" size={15} color="white"/>
                             <Text className='text-white ml-2'>{texts[selectedLanguage].share}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=> setDeleteModuleVisible(true)} className='px-2' >
                             <Icon name="ellipsis-v" size={15} color="white"/>
                         </TouchableOpacity>
                     </View>

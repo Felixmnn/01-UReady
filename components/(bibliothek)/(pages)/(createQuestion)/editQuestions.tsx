@@ -21,9 +21,26 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
     
 
     async function removeQuestions (){
+        if (selectedQuestion == 0) {
+            setNewQuestion({
+                question: "",
+                answers: [],
+                answerIndex: [],
+                tags: [],
+                public: false,
+                sessionID:null,
+                aiGenerated: false,
+                subjectID: selectedModule.$id,
+                status:null
+            })
+            setShowEllipse(false);
+            return;
+        } else {
         await removeQuestion(questions[selectedQuestion-1].$id)
         questions.splice(selectedQuestion-1, 1);
         setSelectedQuestion(0);
+        setShowEllipse(false);
+        }
 
     }
         return (
@@ -40,20 +57,9 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                         </TouchableOpacity>
                         {
                             showEllipse ?
-                            <View className='absolute top-5 right-0 bg-gray-700 border-gray-500 border-[1px] p-2 rounded-[5px] z-100'>
+                            <View className=' bg-gray-700 border-gray-500 border-[1px] p-2 rounded-[5px] z-100'>
                                 <View className='flex-row items-center justify-center'>
-                                    <TouchableOpacity onPress={()=> {selectedQuestion == 0 ? 
-                                        setNewQuestion({
-                                            question: "",
-                                            answers: [],
-                                            answerIndex: [],
-                                            tags: [],
-                                            public: false,
-                                            sessionID:null,
-                                            aiGenerated: false,
-                                            subjectID: selectedModule.$id,
-                                            status:null
-                                        }) :removeQuestions()}} className='flex-row items-center justify-center px-2 py-1 m-1 rounded-[5px] '>
+                                    <TouchableOpacity onPress={()=> removeQuestions()} className='flex-row items-center justify-center px-2 py-1 m-1 rounded-[5px] '>
                                         <Icon name="trash" size={15} color="red"/>
                                         <Text className=' font-bold text-[12px] ml-2 text-red-500'>{texts[selectedLanguage].delete}</Text>
                                     </TouchableOpacity>

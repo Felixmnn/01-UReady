@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity, TextInput, FlatList, useWindowDimensions } from 'react-native'
+import { View, Text,TouchableOpacity, TextInput, FlatList, useWindowDimensions, ScrollView, Modal } from 'react-native'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import ToggleSwitch from '@/components/(general)/toggleSwich'
@@ -8,6 +8,7 @@ import ModalSelectSession from './modalSelectSession'
 import { addQUestion } from '@/lib/appwriteEdit'
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useGlobalContext } from '@/context/GlobalProvider'
+import  RenderNewAnswers  from './(sharedComponents)/renderAnswers'
 
 const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule, questions, setQuestions,subjectID }) => {
      
@@ -25,6 +26,35 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
      const [selectedAnswer, setSelectedAnswer] = useState(null)
      const {width} = useWindowDimensions()
      const isVertical = width < 700;
+    const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(null);
+
+      const ErrorModal = ({isError, setIsError, success=false, successMessage=null}) => {
+           return (
+               <Modal
+                   animationType="slide"
+                   transparent={true}
+                   visible={isError || success}
+                   onRequestClose={() => {
+                     setIsError(!isError);
+                   }}
+               >
+                   <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> {setIsError(false); setSuccess(false)} }
+                     >
+                       <View className={` border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700
+                         ${success ? 'bg-green-900' : 'bg-red-900'}`}
+                         style={{
+                             borderColor: success ? 'green' : '#ff4d4d',
+                         }}
+                       >
+                           <Text className='text-white font-bold'>{successMessage ? successMessage : errorMessage}</Text>
+                       </View>
+                   </TouchableOpacity>
+               </Modal>
+           )
+       }
         
         function toggleIndex(index) {
             setNewQuestion(prevState => ({
@@ -33,82 +63,36 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                     ? prevState.answerIndex.filter(idx => idx !== index) // Entfernt den Index
                     : [...prevState.answerIndex, index] // Fügt den Index hinzu
             }));
-        }    
-    const RenderNewAnswers = ({ index }) => {
-        const [isOn, setIsOn] = useState(newQuestion.answerIndex.includes(index));
-        const [newText, setNewText] = useState(newQuestion.answers[selectedAnswer]);
-
-        function saveChange( ) {
-            setNewQuestion(prevState => ({
-                ...prevState,
-                answers: prevState.answers.map((ans, i) =>
-                    i === selectedAnswer ? newText : ans
-                )
-            }));
-        }
-        function removeAnswer() {
-            setNewQuestion(prevState => ({
-                ...prevState,
-                answers: prevState.answers.filter((_, i) => i !== index)
-            }));
-        }
-
-        
-        return (
-            <View className={`my-1 w-full rounded-[10px] p-2 ${isOn ? "bg-green-900" : "bg-red-900"}`} >
-                <View className='flex-row justify-between'>
-                    <View className=' flex-row items-center'>
-                        <Text className={`font-bold mr-2 ${isOn ? "text-green-300" : "text-red-300"}`}>
-                            {isOn ? texts[selectedLanguage].correctAnswer : texts[selectedLanguage].wrongAnswer}
-                        </Text>
-                        <ToggleSwitch 
-                            isOn={isOn} 
-                            onToggle={() => {
-                                toggleIndex(index);
-                                setIsOn(!isOn);
-                            }}
-                        />
-                    </View>
-                    {!isOn && (
-                        <TouchableOpacity onPress={()=>removeAnswer()} >
-                            <Icon name="times" size={20} color="white" />
-                        </TouchableOpacity>
-                    )}
-                </View>
-                
-                <TouchableOpacity onPress={() => setSelectedAnswer(index)}>
-                    {selectedAnswer === index ? (
-                        <TextInput
-                            value={newText}
-                            style={{ borderColor: "transparent", borderWidth: 0 }}
-                            className='text-white w-full rounded-[10px] p-1'
-                            onBlur={saveChange}
-                            onChangeText={setNewText}
-                        />
-                    ) : (
-                        <Text className='text-gray-300 font-bold m-2 '>
-                            
-                            {newQuestion.answers[index] || texts[selectedLanguage].addAnswer}
-                        </Text>
-                    )}
-                </TouchableOpacity>
-            </View>
-        );
-    };
+        }  
+      
 
     async function saveQuestion() {
         if (newQuestion.question.length < 1) {
+            setIsError(true);
+            setErrorMessage("A Question needs a question");
             return;
         } else if (newQuestion.answers.length < 1) {
+            setIsError(true);
+            setErrorMessage("A Question needs at least one answer");
             return;
         } else if (newQuestion.answerIndex.length < 1) {
+            setIsError(true);
+            setErrorMessage("A Question needs at least one correct answer");
             return;
         } else if (!newQuestion.sessionID) {
+            setIsError(true);
+            setErrorMessage("You need to select a session for the question");
             return;
         } 
         
-        addQUestion({...newQuestion, sessionID: JSON.parse(newQuestion.sessionID).id})
+        addQUestion({...newQuestion, 
+                        sessionID: JSON.parse(newQuestion.sessionID).id,
+                        subjectID: subjectID,
+                    })
         setQuestions(prevState => [newQuestion, ...prevState])
+
+        setSuccess(true);
+        setSuccessMessage("Question saved successfully!");
 
         setNewQuestion({
             question: "",
@@ -131,14 +115,18 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                     sessionID: sessionID
                 }));
             }
+            console.log("❌", JSON.parse(newQuestion.sessionID))
   return (
-    <View className='flex-1  items-center justify-center'>
+    <ScrollView className='flex-1  '>
+                <ErrorModal isError={isError} setIsError={setIsError} success={success} successMessage={successMessage} />
+
         <ModalSelectSession changeSession={changeSession} modalVisible= {modalVisible} setModalVisible={setModalVisible} selectedQuestion={newQuestion} selectedModule={selectedModule}/>
 
                             { 
                                 questionActive ?
                                 <TouchableOpacity className={`w-full  p-4  justify-center`}>
                                     <Text className='text-[15px] font-bold text-gray-400'>{texts[selectedLanguage].addAnswer}</Text>
+                                    <View className='flex-row items-center'>
                                     <FinalTextInput
                                         value={text}
                                         handleChangeText={(text)=> setText(text)}
@@ -154,6 +142,13 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                         }
                                         placeHolder={texts[selectedLanguage].question}
                                         />
+                                    <TouchableOpacity className='p-2 bg-blue-500 rounded-[10px]' onPress={() => {
+                                        setQuestionActive(false)
+                                    }}>
+                                        <Icon name="check" size={20} color="white" onPress={()=> setQuestionActive(false)} />
+                                    </TouchableOpacity>
+                                    </View>
+                                    
                                     
                                 </TouchableOpacity>
                                 :
@@ -177,17 +172,23 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             {
                                 newQuestion.answers.length > 0 ?
                                 <View className='w-full flex-1 items-center justify-center '>
-                                    <FlatList
-                                        data={newQuestion.answers}
-                                        keyExtractor={(index)=> index.toString()}
-                                        style={{ width: '100%' }} // Setzt die Breite auf 100%
-    
-                                        renderItem={({ item,index }) => {
-                                            return (
-                                               <RenderNewAnswers index={index}/>
-                                            );
-                                        }}
-                                    />
+                                    <View style={{ width: '100%' }}>
+                                        {newQuestion.answers.map((item, index) => 
+                                        (
+                                                <RenderNewAnswers
+                                                    key={index}
+                                                    index={index} 
+                                                    newQuestion={newQuestion} 
+                                                    selectedAnswer={selectedAnswer} 
+                                                    setNewQuestion={setNewQuestion} 
+                                                    toggleIndex={toggleIndex}  
+                                                    texts={texts} 
+                                                    selectedLanguage={selectedLanguage}
+                                                    setSelectedAnswer={setSelectedAnswer}
+                                                    content={item}
+                                                />
+                                        ))}
+                                    </View>
                                 </View>
                                 :
                                 null
@@ -220,14 +221,14 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             <View className='flex-row items-center justify-between w-full px-2 py-1'>
                                 <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                                         
-                                        <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID ? newQuestion.sessionID : texts[selectedLanguage].selectASession}</Text>
+                                        <Text className='text-gray-400 text-[12px] font-semibold'>{newQuestion.sessionID != null ? JSON.parse(newQuestion.sessionID).title.length > 15 ? JSON.parse(newQuestion.sessionID).title.substring(0, 15) + "..." : JSON.parse(newQuestion.sessionID).title : texts[selectedLanguage].selectASession}</Text>
                                         
                                 </TouchableOpacity>
                                 <TouchableOpacity className='p-2 bg-blue-500 rounded-full' onPress={()=> saveQuestion()}>
                                     <Text className='text-white text-[12px] font-semibold'>{texts[selectedLanguage].saveQuestion}</Text>
                                 </TouchableOpacity>
                             </View> 
-                        </View>
+                        </ScrollView>
   )
 }
 

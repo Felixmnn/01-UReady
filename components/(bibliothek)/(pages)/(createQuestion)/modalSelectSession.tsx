@@ -20,7 +20,7 @@ const ModalSelectSession = ({modalVisible, setModalVisible, selectedQuestion, se
               visible={modalVisible}
             >
                 <TouchableOpacity className="absolute top-0 left-0 w-full h-full justify-center items-center " onPress={() => setModalVisible(false)}>
-                    <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3' style={{ minWidth: 400 }}>
+                    <View className='rounded-xl bg-gray-900 border-[1px] border-gray-800 p-3 ' style={{ width:"90%", maxWidth: 400 }}>
                     <View className='justify-between flex-row'>
                         <Text className='text-white font-bold text-[15px]'>
                         {texts[selectedLanguage].selectASession}

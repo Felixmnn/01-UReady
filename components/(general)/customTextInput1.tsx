@@ -19,6 +19,7 @@ const CustomTextInput1 = ({ value, inputStyles, placeholderSize,multiline, numbe
         >
             <TextInput
                 className={`p-3 rounded-[10px] w-full ${focused ? "border-blue-500 border-w-[1px]" : "border-gray-500 "} ${inputStyles}`}
+                placeholderTextColor={"white"}
                 style={{
                     color: "gray",
                     fontWeight: placeholderBold ? placeholderBold : 'bold',
@@ -27,6 +28,7 @@ const CustomTextInput1 = ({ value, inputStyles, placeholderSize,multiline, numbe
                     borderColor: focused ? "blue" : "gray",
                     borderWidth: 1,
                     scrollbarWidth: 'thin', // Dünne Scrollbar
+
                     scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
                  
                 }}

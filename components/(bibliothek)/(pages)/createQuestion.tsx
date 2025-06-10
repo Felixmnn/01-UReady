@@ -8,12 +8,13 @@ import Questions from './(createQuestion)/questions';
 import EditQuestions from './(createQuestion)/editQuestions';
 import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { getAllQuestions } from '@/lib/appwriteQuerys';
+import { getAllQuestions, getAllQuestionsByIds } from '@/lib/appwriteQuerys';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     
     const {user} = useGlobalContext();
+
     const { language } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
       const texts = languages.editQuestions;
@@ -43,12 +44,18 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     useEffect(() => { 
         async function fetchQuestions() {
             if (module == null) return;
+            const allIds = module.documents[selectedModule].questionList.map((i) => JSON.parse(i).id);
+            const allQuestions = await getAllQuestionsByIds(allIds)
+            setQuestions(allQuestions ? allQuestions : [])
+            /*
             const questions = await getAllQuestions(module.documents[selectedModule].$id)
+            console.log("All Questions",questions, module.documents[selectedModule].questionList)
             if (questions) {
                 const questionArray = questions.documents
                 const filteredQuestions = questionArray.filter((question) => question.subjectID == module.documents[selectedModule].$id);
                 setQuestions(filteredQuestions.reverse())  
             }  
+                */
         }
         fetchQuestions()
         
@@ -146,7 +153,6 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
                     </View>
                     :
                     <View className='flex-1   justify-between'>
-                        <ScrollView>
                         <EditQuestions
                             setQuestions={setQuestions} 
                             questionActive={questionActive}
@@ -161,7 +167,6 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
                             selectedModule={module.documents[selectedModule]}
                             
                         />
-                        </ScrollView>
                         <Questions   
                             screenHeight={height} 
                             questions={questions} 

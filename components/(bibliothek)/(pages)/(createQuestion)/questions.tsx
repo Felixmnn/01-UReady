@@ -4,6 +4,12 @@ import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useGlobalContext } from '@/context/GlobalProvider';
 
 
+/**
+ * Navigation component for the new and existing questions.
+ * @param questions - Array of questions to display.
+ * @param selectedQuestion - Index of the current question if new the -1 is used.
+ * @returns The JSX for the questions navigation.
+ */
 const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuestion,newQuestion, checkNewQuestion}) => {
     const { language } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
@@ -30,13 +36,13 @@ const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuesti
                     ListHeaderComponent={()=> {
                         return (
                             <View>
-                                {
+                                {/*
                                     !isVertical ? 
                                     <TouchableOpacity onPress={()=> checkNewQuestion()} className={`bg-white mx-2 mt-4 mb-2 rounded-full p-2 items-center justify-center`}>
                                         <Text className='font-semibold'>+{texts[selectedLanguage].newCard}</Text>
                                     </TouchableOpacity>
                                     : null
-                                }
+                               */ }
                                 
 
                                <TouchableOpacity onPress={()=> setSelectedQuestion(0)} className={`${isVertical ? "ml-2 mr-1" : "mx-3" } my-2 w-[180px] h-[100px] bg-gray-800 rounded-[10px] ${selectedQuestion  == 0   ? "border-blue-700" : "border-gray-500"} border-[1px] p-1 items-center justify-center`}>

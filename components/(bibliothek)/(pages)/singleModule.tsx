@@ -312,6 +312,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
    },[selectedSession])
 
     
+    console.log("Module Entry in SingleModule:", questions, module.$id);
 
     return (
         <View className='flex-1 rounded-[10px] items-center '>

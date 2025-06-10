@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { View, Text, TouchableOpacity, useWindowDimensions, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -205,7 +205,9 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=> setModalVisible(!modalVisible)} className='flex-row items-center justify-center px-1 py-1 rounded-full border-gray-500 border-[1px] w-[170px]'>
                             
-                            <Text className='text-gray-400 text-[12px] font-semibold'>{questions[selectedQuestion-1].sessionID}</Text>
+                            <Text className='text-gray-400 text-[12px] font-semibold'>{
+                            selectedModule.sessions.map(i => JSON.parse(i) ).filter(i => i.id == questions[selectedQuestion -1].sessionID)[0]?.title || texts[selectedLanguage].selectSession
+                            }</Text>
                             
                         </TouchableOpacity>
                     </View>  
@@ -222,12 +224,12 @@ const EditeOldQuestion = ({selectedModule, setQuestions, questions, selectedQues
             );
         }
   return (
-    <View className='w-full flex-1 justify-center items-center'>
+    <ScrollView className='w-full '>
         <ModalSelectSession changeSession={changeSession} modalVisible= {modalVisible} setModalVisible={setModalVisible} selectedQuestion={questions[selectedQuestion-1]} selectedModule={selectedModule}/>
         <EditQuestion/>
             <View className='border-t-[1px] border-gray-500 w-full my-2'/>
         <EditAnswers/>
-    </View>
+    </ScrollView>
   )
 }
 

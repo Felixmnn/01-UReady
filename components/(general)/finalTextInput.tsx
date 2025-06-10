@@ -10,6 +10,7 @@ const FinalTextInput = ({handleChangeText, onBlur, containerStyles, aditionalSyl
         value={value}
         placeholder={placeHolder}
         onBlur={onBlur}
+        placeholderTextColor={"white"}
     />
   )
 }

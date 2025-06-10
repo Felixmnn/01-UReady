@@ -5,7 +5,7 @@ import RoadMap from '../(sections)/roadMap';
 import Data from '../(sections)/data';
 import Header from '../(sections)/header';
 import SwichTab from '../../(tabs)/swichTab';
-import { addDocumentConfig, addDocumentToBucket, addNote, removeDocumentConfig, removeQuestion, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
+import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb, addNote, removeDocumentConfig, removeQuestion, updateDocumentConfig, updateModule } from '@/lib/appwriteEdit';
 import uuid from 'react-native-uuid';
 import * as DocumentPicker from 'expo-document-picker';
 import { getAllDocuments, getModuleAmout, getSessionNotes, getSessionQuestions } from '@/lib/appwriteQuerys';
@@ -204,11 +204,11 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     async function addDocument() {
         try {
             const res = await DocumentPicker.getDocumentAsync({ type: "*/*" });
-    
+
             if (res.canceled) return;
     
             const file = res.assets[0];
-            console.log("Selected file:", file);
+
             const doc = {
                 title: file.name,
                 subjectID: module.$id,
@@ -222,14 +222,22 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     
             // Step 2 - Save the config
             const appwriteRes = await addDocumentConfig(doc);
-    
+
             // Step 3 - Read the file differently based on platform
             let fileBlob;
+            let uploadRes;
             if (Platform.OS === 'web') {
-                // Web: fetch URI as Blob
                 fileBlob = await fetch(file.uri).then(res => res.blob());
+                const data = {
+                id : doc.id,
+                file: fileBlob,
+                }
+                uploadRes = await addDocumentToBucketWeb(data);
+                
+                console.log("✅File read as Blob for web:", uploadRes);
             } else {
-                // Native (Android/iOS): read file as base64, then convert to Blob
+                console.log("Starting the Data Upload for Mobile");
+                /*
                 const base64 = await FileSystem.readAsStringAsync(file.uri, {
                     encoding: FileSystem.EncodingType.Base64,
                 });
@@ -237,20 +245,39 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
                 const byteArray = new Uint8Array(byteNumbers);
                 fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
+                console.log("File read as Blob for mobile:", fileBlob);
+                */
+               fileBlob = {
+                         uri: file.uri,
+                         name: file.name,
+                         type: file.mimeType || 'application/pdf',
+                         size: file.size,
+                };
+                uploadRes = await addDocumentToBucket(
+                    doc.id,
+                    fileBlob,
+                );
+                console.log("✅File read as Blob for mobile:", uploadRes);
             }
+            /*
             const uploadRes = await addDocumentToBucket({
                 fileID: doc.id,
                 fileBlob: fileBlob,
                 name: file.name,
             });
-            setDocuments(documents.map(document => document.id === doc.id ? {...document, uploaded: true} : document));
+            */
+            console.log("File uploaded to Appwrite bucket:", uploadRes);
+
+            setDocuments(prevDocs => prevDocs.map(document =>
+            document.id === doc.id ? { ...document, uploaded: true } : document
+            ));
+
+            console.log("Document updated with upload status:", {...doc, uploaded: true});
             appwriteRes.uploaded = true;
             const final = await updateDocumentConfig(appwriteRes);
-            setDocuments(documents.map(document => document.id === doc.id ? final : document));
-            return;
+            console.log("Final document config after update:", final);
+            //setDocuments(documents.map(document => document.id === doc.id ? final : document));
 
-            
-    
         } catch (error) {
             console.log('Error in addDocument:', error);
         }

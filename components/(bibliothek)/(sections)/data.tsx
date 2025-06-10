@@ -97,9 +97,9 @@ const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,
      */
     const QuestionList = () => {
         return(
-        <View className='flex-1'
+        <View className='w-full'
             style={{
-                minHeight: 250,
+                maxHeight: 250,
             }}
         >
             <CounterText title={texts[selectedLanguage].questio} count={filteredData.length}/>
@@ -205,7 +205,7 @@ const Data = ({onRefresh,setSelectedScreen, refreshing, selected,moduleSessions,
      */
     const DocumentList = () => {
         return (
-            <View className='flex-1'
+            <View className='w-full'
                 style={{
                     minHeight: 150,
                 }}

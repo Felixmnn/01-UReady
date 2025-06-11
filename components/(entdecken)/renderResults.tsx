@@ -55,7 +55,9 @@ const RenderResults = ({modules, texts, selectedLanguage, selectedModules, myMod
                     creator={item.creator}
                     icon={"clock"}
                     publicM={item.public}
-                  />
+                    reportVisible={true}
+                    moduleID={item.$id}
+                                      />
                 </View>
               )}
               keyExtractor={(item) => item.$id}

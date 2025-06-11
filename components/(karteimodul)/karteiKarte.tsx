@@ -1,13 +1,69 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import VektorCircle from './vektorCircle'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
-const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator,handlePress, percentage, publicM}) => {
+import { reportModule } from '@/lib/appwriteAdd';
+const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator,handlePress, percentage, publicM, reportVisible=false, moduleID=""}) => {
   // Studiengang ist jetz Beschreibung
 
   const { user,language } = useGlobalContext()
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const ReportModal = () => {
+    const [reason, setReason] = useState("");
+     const handleSubmit = async () => {
+        await reportModule({
+          moduleID: moduleID,
+          moduleCreator: creator,
+          personThatReported: user.$id,
+          message: reason,
+        });
+        console.log("Report submitted with reason:", reason);
+        setModalVisible(false);
+      };
+    return (
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black/50 px-4">
+          <View className="w-full bg-gray-800 rounded-2xl p-5">
+            <Text className="text-lg text-white font-bold mb-4">{titel} melden</Text>
+
+            <Text className="text-sm mb-2 text-gray-300">Grund der Meldung:</Text>
+            <TextInput
+              className="border border-gray-300 rounded-xl p-3 text-sm min-h-[80px] text-white"
+              multiline
+              placeholder="Beschreibe den Grund für die Meldung..."
+              placeholderTextColor="#888"
+              value={reason}
+              maxLength={200}
+              onChangeText={setReason}
+              
+            />
+
+            {/* Buttons */}
+            <View className="flex-row justify-end mt-4 space-x-3">
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text className="text-gray-500">Abbrechen</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleSubmit}
+                className="bg-red-500 px-4 py-2 rounded-lg"
+              >
+                <Text className="text-white font-semibold">Absenden</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
+
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
       if(language) {
@@ -32,6 +88,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
     return(
     <TouchableOpacity className=' '  onPress={handlePress}
     >
+      <ReportModal/>
       <View className={` rounded-t-[10px] border-t-[1px] border-gray-700 `} style={{height:5, backgroundColor:color}}/>
       <View className=' p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] ' style={{borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
         <View className='flex-row justify-between items-start'>
@@ -68,6 +125,11 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
             <TouchableOpacity className='mr-1'>
               <Icon name="ellipsis-h" size={18} color="white"/>
             </TouchableOpacity>
+            {reportVisible ?
+            <TouchableOpacity className='ml-2' onPress={() => setModalVisible(true)}>
+              <Icon name="exclamation-triangle" size={18} color="white"/>
+            </TouchableOpacity>
+            : null}
           </View>
         </View>
       </View>

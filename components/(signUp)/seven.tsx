@@ -37,9 +37,9 @@ const StepSeven = () => {
   
 
   return (
-      <View className='h-full w-full justify-between items-center py-5'>
+      <View className='h-full w-full justify-center items-center py-5 flex-row'>
         <ActivityIndicator size="large" color="#fff" />
-        <Text className='text-white'>Lädt...</Text>
+        <Text className='text-white'>...</Text>
       </View>
     ) 
  

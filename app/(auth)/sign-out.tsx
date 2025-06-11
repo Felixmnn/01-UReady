@@ -30,7 +30,9 @@ const SignOut = () => {
         console.error('Sign out failed', err);
       } finally {
         setIsLoading(false);
-        await Updates.reloadAsync();
+        if (!__DEV__) {
+          await Updates.reloadAsync();
+        }
       }
     };
 

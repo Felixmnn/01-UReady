@@ -12,6 +12,7 @@ const NumericQuestion = ({
   userAnswers = {},
   setUserAnswers = () => {},
   questionId = "",
+  texts
 }) => {
   const [inputValue, setInputValue] = useState(
     userAnswers[questionId]?.toString() ?? ""
@@ -29,12 +30,12 @@ const NumericQuestion = ({
     const numeric = parseFloat(text);
 
     if (isNaN(numeric)) {
-      setError("Please enter a valid number.");
+      setError(texts.pleaseEnterValidNumber);
       return;
     }
 
     if (numeric < minValue || numeric > maxValue) {
-      setError(`Number must be between ${minValue} and ${maxValue}.`);
+      setError(`${texts.numberMustBeBetween} ${minValue}${texts.and}${maxValue}${texts.be}`);
       return;
     }
 
@@ -71,7 +72,7 @@ const NumericQuestion = ({
         <Text className="text-sm text-red-500 mt-2">{error}</Text>
       )}
       <Text className="text-sm text-gray-500 mt-2">
-        Step: {step} {unit}, Range: {minValue} - {maxValue} {unit}
+        {texts.step}: {step} {unit}, {texts.range}: {minValue} - {maxValue} {unit}
       </Text>
     </View>
   );

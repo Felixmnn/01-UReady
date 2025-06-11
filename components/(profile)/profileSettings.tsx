@@ -134,8 +134,8 @@ const ProfileSettings = () => {
                 onChangeText={(text) => setActionCode(text)}
               />
               <View className='flex-1 flex-row items-center justify-center'>
-                <CustomButton title="Abbrechen" handlePress={() => setModalVisible(false)} containerStyles={"w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"}/>
-                <CustomButton title="Ok" handlePress={toggleModal} containerStyles={!isFocused && firstFocus && text == "" ? "w-[50%] bg-gray-700 mx-1 border-gray-700" :"w-[50%] bg-blue-500 mx-1"} textStyles={"text-gray-300"} disabled={!isFocused && firstFocus && text == ""}/>
+                <CustomButton title={texts[selectedLanguage].cancel} handlePress={() => setModalVisible(false)} containerStyles={"w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"}/>
+                <CustomButton title={texts[selectedLanguage].ok} handlePress={toggleModal} containerStyles={!isFocused && firstFocus && text == "" ? "w-[50%] bg-gray-700 mx-1 border-gray-700" :"w-[50%] bg-blue-500 mx-1"} textStyles={"text-gray-300"} disabled={!isFocused && firstFocus && text == ""}/>
               </View>
             </View>
           </View>
@@ -364,8 +364,8 @@ const ProfileSettings = () => {
               )}} hideHead = {true} infoStyles="z-20"/> 
       <InfoModule content={()=> { return(
         <View>
-          <SettingsOption title={"Hilfe"} iconName={"life-ring"} handlePress={()=> router.push("/contact") }/> 
-          <SettingsOption title={"Policys"} iconName={"shield"} handlePress={()=> router.push("/policys") }/>
+          <SettingsOption title={texts[selectedLanguage].help} iconName={"life-ring"} handlePress={()=> router.push("/contact") }/> 
+          <SettingsOption title={texts[selectedLanguage].policys} iconName={"shield"} handlePress={()=> router.push("/policys") }/>
           <SettingsOption title={texts[selectedLanguage].actioncode} iconName={"bolt"} item={modal()} handlePress={()=> setModalVisible(true)}/>  
           <SettingsOption title={texts[selectedLanguage].logout} iconName={"sign-out"} handlePress={ ()=>    router.push("/sign-out")}/>
           <SettingsOption title={texts[selectedLanguage].deleteAccount} iconName="trash" bottom={"true"} handlePress={ ()=>    router.push("/delete-account")}/>

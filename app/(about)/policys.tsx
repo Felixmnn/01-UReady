@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, LayoutAnimation, Platform, UIManager, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { router } from 'expo-router';
+import { useGlobalContext } from '@/context/GlobalProvider';
+
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
 
-const sections = [
+const allSections =  {
+"DEUTSCH":[
   {
     title: "Allgemeine Informationen",
     icon: "info",
@@ -175,17 +178,316 @@ const sections = [
       },
     ],
   },
-];
+],
+"ENGLISH": [
+  {
+    "title": "General Information",
+    "icon": "info",
+    "subsections": [
+      {
+        "title": "Provider",
+        "content": "Q-Ready\n[Company Address]\ncontact.qready@gmail.com"
+      },
+      {
+        "title": "Purpose of the App",
+        "content": "Manual and AI-based quiz creation. Public modules can also be copied."
+      },
+      {
+        "title": "Features & Usage",
+        "content": "Free: Manual quiz creation, energy system, copying of modules.\n\nPaid: Buy chips to recharge energy."
+      }
+    ]
+  },
+  {
+    "title": "Usage & Rights",
+    "icon": "shield",
+    "subsections": [
+      {
+        "title": "Who do the Terms apply to?",
+        "content": "To all registered users of the app."
+      },
+      {
+        "title": "Registration",
+        "content": "Via email provider. Providing an educational background is optional and used to personalize modules."
+      },
+      {
+        "title": "Usage Rights",
+        "content": "Private modules are only visible to the user.\nPublic modules can be copied."
+      },
+      {
+        "title": "Prohibited Usage",
+        "content": "No reverse engineering, automated creation, or copying of UI elements."
+      }
+    ]
+  },
+  {
+    "title": "Pricing & Purchases",
+    "icon": "credit-card",
+    "subsections": [
+      {
+        "title": "Costs",
+        "content": "The app is generally free. Optional in-app purchases (chips) are available."
+      },
+      {
+        "title": "Payments",
+        "content": "Payment via Google Pay and Apple Pay. Chips can be exchanged for energy."
+      },
+      {
+        "title": "Withdrawal",
+        "content": "No right of return for used energy. No subscription model is used."
+      },
+      {
+        "title": "Payment Default",
+        "content": "In case of payment issues, the account may be suspended until resolved."
+      }
+    ]
+  },
+  {
+    "title": "Availability & Support",
+    "icon": "wifi",
+    "subsections": [
+      {
+        "title": "Provision",
+        "content": "No guaranteed minimum availability, but the aim is permanent availability."
+      },
+      {
+        "title": "Support & Updates",
+        "content": "Support via email or contact form. Regular updates are planned."
+      },
+      {
+        "title": "Liability",
+        "content": "No liability for data loss or app crashes. An export function is available for data backup."
+      }
+    ]
+  },
+  {
+    "title": "Data Protection",
+    "icon": "lock",
+    "subsections": [
+      {
+        "title": "Collected Data",
+        "content": "Registration data, learning behavior, used features, last login, country of origin, language, etc."
+      },
+      {
+        "title": "Purposes of Use",
+        "content": "Personalization, functionality, and further development of the platform."
+      },
+      {
+        "title": "User Rights",
+        "content": "Account deletion possible. Data export available."
+      }
+    ]
+  },
+  {
+    "title": "Legal",
+    "icon": "gavel",
+    "subsections": [
+      {
+        "title": "Applicable Law",
+        "content": "German law applies. Jurisdiction is the company's registered office."
+      },
+      {
+        "title": "Changes to the Terms",
+        "content": "Changes will be announced via the app or email."
+      },
+      {
+        "title": "Severability Clause",
+        "content": "If individual provisions are invalid, the remainder of the terms shall remain valid."
+      }
+    ]
+  },
+  {
+    "title": "Multilingualism",
+    "icon": "globe",
+    "subsections": [
+      {
+        "title": "Legally Binding Language",
+        "content": "In case of doubt, the German version prevails."
+      },
+      {
+        "title": "Language Notifications",
+        "content": "Changes to the terms are shown in all supported app languages."
+      }
+    ]
+  },
+  {
+    "title": "Special Features",
+    "icon": "star",
+    "subsections": [
+      {
+        "title": "Community Features",
+        "content": "Modules can be created, copied, and reported."
+      },
+      {
+        "title": "AI Features",
+        "content": "AI is used only when explicitly selected by the user (e.g., 'Create with AI')."
+      }
+    ]
+  }
+],
+"SPANISH": [
+  {
+    "title": "Información general",
+    "icon": "info",
+    "subsections": [
+      {
+        "title": "Proveedor",
+        "content": "Q-Ready\n[Dirección de la empresa]\ncontact.qready@gmail.com"
+      },
+      {
+        "title": "Objeto de la aplicación",
+        "content": "Creación de cuestionarios manuales y con inteligencia artificial. También se pueden copiar módulos públicos."
+      },
+      {
+        "title": "Funciones y uso",
+        "content": "Gratis: Creación manual, sistema de energía, copiar módulos.\n\nDe pago: Comprar fichas para recargar energía."
+      }
+    ]
+  },
+  {
+    "title": "Uso y derechos",
+    "icon": "shield",
+    "subsections": [
+      {
+        "title": "¿A quién se aplican los Términos?",
+        "content": "A todos los usuarios registrados de la aplicación."
+      },
+      {
+        "title": "Registro",
+        "content": "A través de un proveedor de correo electrónico. Indicar el ámbito educativo es opcional y se utiliza para personalizar los módulos."
+      },
+      {
+        "title": "Derechos de uso",
+        "content": "Los módulos privados solo son visibles para el usuario.\nLos módulos públicos pueden ser copiados."
+      },
+      {
+        "title": "Uso prohibido",
+        "content": "Prohibido realizar ingeniería inversa, creación automatizada o copiar elementos de la interfaz."
+      }
+    ]
+  },
+  {
+    "title": "Precios y compras",
+    "icon": "credit-card",
+    "subsections": [
+      {
+        "title": "Costos",
+        "content": "La aplicación es gratuita en general. Existen compras opcionales dentro de la app (fichas)."
+      },
+      {
+        "title": "Pagos",
+        "content": "Pago mediante Google Pay y Apple Pay. Las fichas pueden canjearse por energía."
+      },
+      {
+        "title": "Desistimiento",
+        "content": "No hay derecho a devolución para la energía ya consumida. No se utiliza modelo de suscripción."
+      },
+      {
+        "title": "Mora de pago",
+        "content": "En caso de problemas de pago, la cuenta puede ser suspendida hasta que se resuelva."
+      }
+    ]
+  },
+  {
+    "title": "Disponibilidad y soporte",
+    "icon": "wifi",
+    "subsections": [
+      {
+        "title": "Disponibilidad",
+        "content": "No se garantiza una disponibilidad mínima, pero se busca ofrecer un servicio permanente."
+      },
+      {
+        "title": "Soporte y actualizaciones",
+        "content": "Soporte por correo electrónico o formulario de contacto. Se planean actualizaciones periódicas."
+      },
+      {
+        "title": "Responsabilidad",
+        "content": "No se asume responsabilidad por pérdida de datos o fallos de la aplicación. Se ofrece función de exportación para respaldo de datos."
+      }
+    ]
+  },
+  {
+    "title": "Protección de datos",
+    "icon": "lock",
+    "subsections": [
+      {
+        "title": "Datos recogidos",
+        "content": "Datos de registro, comportamiento de aprendizaje, funciones utilizadas, último acceso, país de origen, idioma, etc."
+      },
+      {
+        "title": "Fines de uso",
+        "content": "Personalización, funcionamiento y desarrollo de la plataforma."
+      },
+      {
+        "title": "Derechos del usuario",
+        "content": "Es posible eliminar la cuenta. Disponible exportación de datos."
+      }
+    ]
+  },
+  {
+    "title": "Aspectos legales",
+    "icon": "gavel",
+    "subsections": [
+      {
+        "title": "Legislación aplicable",
+        "content": "Se aplica la legislación alemana. El fuero corresponde al domicilio social de la empresa."
+      },
+      {
+        "title": "Cambios en los Términos",
+        "content": "Los cambios se notificarán a través de la aplicación o por correo electrónico."
+      },
+      {
+        "title": "Cláusula de salvedad",
+        "content": "Si alguna cláusula resulta inválida, el resto de los Términos seguirá siendo válido."
+      }
+    ]
+  },
+  {
+    "title": "Multilingüismo",
+    "icon": "globe",
+    "subsections": [
+      {
+        "title": "Idioma legalmente vinculante",
+        "content": "En caso de duda, prevalece la versión en alemán."
+      },
+      {
+        "title": "Notificaciones por idioma",
+        "content": "Los cambios en los Términos se mostrarán en todos los idiomas compatibles de la app."
+      }
+    ]
+  },
+  {
+    "title": "Características especiales",
+    "icon": "star",
+    "subsections": [
+      {
+        "title": "Funciones comunitarias",
+        "content": "Los módulos pueden crearse, copiarse y denunciarse."
+      },
+      {
+        "title": "Funciones de IA",
+        "content": "La IA se utiliza solo cuando el usuario la selecciona explícitamente (por ejemplo, 'Crear con IA')."
+      }
+    ]
+  }
+]
+
+
+
+
+}
 
 
 const Policys = () => {
+  const { language } = useGlobalContext()  
+  const correctLanguage = language ? language == "ENGLISCH(US)" || language == "ENGLISCH(UK)" || language == "AUSTRALIAN" ? "ENGLISH" :  language.toUpperCase() : "DEUTSCH";
+  const sections = allSections[correctLanguage] || allSections["DEUTSCH"];
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [expandedSubIndex, setExpandedSubIndex] = useState<{ [key: number]: number | null }>({});
 
   const toggleSection = (index: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpandedIndex(expandedIndex === index ? null : index);
-    // Wenn ein Hauptabschnitt geschlossen wird, alle Unterabschnitte schließen
     if (expandedIndex === index) {
       setExpandedSubIndex((prev) => ({ ...prev, [index]: null }));
     }
@@ -221,7 +523,7 @@ const Policys = () => {
             color: '#fff',
           }}
         >
-          Richtlinien & Informationen
+          {correctLanguage == "DEUTSCH" ? "Richtlinien & Informationen" : correctLanguage == "SPANISH" ? "Políticas e Información" : "Policies & Information" }
         </Text>
         <View style={{ width: 20 }} />
       </View>

@@ -4,17 +4,22 @@ import { router } from 'expo-router';
 import { deletingAccount } from '@/lib/appwrite';
 import * as Updates from 'expo-updates';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
 const DeleteAccount = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { user } = useGlobalContext();
 
+  const { user, language } = useGlobalContext();
+  const texts = language ? languages.deleteAccount[language] : languages.deleteAccount['DEUTSCH'];
   async function handleDelete () {
     const res = await deletingAccount(); 
     console.log(res);
     setModalVisible(false);
-    await Updates.reloadAsync();
+    if (!__DEV__) {
+      await Updates.reloadAsync();
+    }
+    
     
   };
 
@@ -24,30 +29,30 @@ const DeleteAccount = () => {
         className="bg-red-500 px-4 py-2 rounded-xl"
         onPress={() => setModalVisible(true)}
       >
-        <Text className="text-white font-semibold">Account löschen</Text>
+        <Text className="text-white font-semibold">{texts.deleteAccount}</Text>
       </TouchableOpacity>
 
       <Modal transparent visible={modalVisible} animationType="fade">
         <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
           <View className="bg-[#8B0000] p-6 rounded-lg w-80">
             <Text className="text-lg text-xl font-bold mb-4 text-white">
-              Account löschen
+              {texts.deleteAccount}
             </Text>
             <Text className="mb-6 font-bold text-white">
-              Bist du sicher, dass du deinen Account dauerhaft löschen möchtest?
+              {texts.areYouSure}
             </Text>
             <View className="flex-row justify-between space-x-4">
               <TouchableOpacity
-                onPress={() => router.push('/profil')}
+                onPress={() => {router.push('/profil'); setModalVisible(false)}}
                 className="px-4 py-2 rounded bg-gray-300"
               >
-                <Text>Abbrechen</Text>
+                <Text>{texts.cancel}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleDelete}
                 className="px-4 py-2 rounded bg-red-600"
               >
-                <Text className="text-white">Löschen</Text>
+                <Text className="text-white">{texts.delete}</Text>
               </TouchableOpacity>
             </View>
           </View>

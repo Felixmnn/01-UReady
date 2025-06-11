@@ -20,9 +20,13 @@ const Tabbar = ({content,page, hide}) => {
     
     const isVertical = width > 700; // Prüfen, ob Breite über 700px ist
 
-    const tabbarIcon = (name, size, color, pageName, route) => {
+    const tabbarIcon = (name, size, color, pageName, route, disabled=false) => {
         return <TouchableOpacity 
+                disabled={disabled}
                 onPress={() => router.push(route)}
+                style={{
+                  opacity: disabled ? 0.5 : 1,
+                }}
                 className={`m-2 items-center ${pageName === page.toLowerCase() ? 'w-[80px] bg-gray-800 border border-gray-600 border-[1px]' : ""} rounded-md p-2 `}>
                     <Icon name={name} size={size} color={color}/>
                     <Text className='text-white text-[12px] '>{texts[selectedLanguage][pageName]}</Text>
@@ -45,7 +49,7 @@ const Tabbar = ({content,page, hide}) => {
 
                 </View>  
                 <View className='items-center my-1'>
-                    {tabbarIcon('share', 25, 'white', 'share',"/profil")}
+                    {tabbarIcon('share', 25, 'white', 'share',"/profil", true)}
                       
                 </View >
             </View >

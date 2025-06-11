@@ -31,12 +31,12 @@ const SkeletonListBibliothek = () => {
               );
             };
   return (
-    <View className='w-full items-center'>
-        <SkeletonItem width={width - 20} height={30} padding={10} />
-        <SkeletonItem width={width} height={5} />
+    <View className='w-full items-center '>
+        <SkeletonItem width={width > 800 ? width - 120 : width - 20} height={30} padding={10} />
+        <SkeletonItem width={width > 800 ? width - 100 : width } height={5} />
         {
             [1,2,3,4,5].map((item, index) => (
-                <SkeletonItem key={index} height={150} width={width - 20} />
+                <SkeletonItem key={index} height={150} width={width > 800 ? width - 120 : width - 20} />
             ))
         }
     </View>

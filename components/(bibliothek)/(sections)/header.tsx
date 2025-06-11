@@ -29,13 +29,14 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
             modules={modules}
             setModules={setModules}
             setSelectedModule={setSelectedModule}
+            texts={texts[selectedLanguage] || texts["DEUTSCH"]}
         />
         <View className='flex-row w-full justify-between p-4 items-center'>
                     <TouchableOpacity onPress={()=> setSelectedScreen("AllModules")} >
                         <Icon name="arrow-left" size={20} color="white"/>
                     </TouchableOpacity>
                     <View className='flex-row items-center mx-2'>
-                        <TouchableOpacity className='flex-row bg-gray-800 rounded-full px-2 py-1 border-[1px] border-gray-600 items-center mr-2'>
+                        <TouchableOpacity disabled={true} className='flex-row bg-gray-800 rounded-full px-2 py-1 border-[1px] border-gray-600 items-center mr-2 opacity-50'>
                             <Icon name="globe" size={15} color="white"/>
                             <Text className='text-white ml-2'>{texts[selectedLanguage].share}</Text>
                         </TouchableOpacity>

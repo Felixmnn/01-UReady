@@ -2,14 +2,13 @@ import { View, Text, TouchableOpacity, Image, Modal } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'   
 import images from '@/assets/shopItems/itemConfig'
-import ModalToExpensive from './modalToExpensive'
 import ModalBudyNow from './modalBudyNow'
 import { Animated } from 'react-native';
 import ModalVideoAdd from './modalVideoAdd'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import ModalQuiz from './modalQuiz'
-import shop from '@/app/(tabs)/shop'
 import { loadSurvey } from '@/lib/appwriteDaten'
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
 
@@ -17,8 +16,18 @@ const Card = ({
     shopItem=null,
 }) => {
 
-    const { setUserUsage, userUsage } = useGlobalContext();
+    const { setUserUsage, userUsage,  } = useGlobalContext();
     const [ quizzes , setQuizzes ] = useState([]);
+    const { language } = useGlobalContext()
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.shop[selectedLanguage] || languages.shop["DEUTSCH"];
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+
+        
     useEffect(() => {
         async function fetchQuizzes() {
             const response = await loadSurvey();
@@ -133,35 +142,35 @@ const Card = ({
         return 150;
     }
     function styleColors(area: string): string {
-    const theme = shopItem?.design || "BASIC"; // Default theme is BASIC
+    const theme = shopItem?.design || "BASIC"; 
 
     if (area === "background") {
-        if (theme === "BASIC") return "#294a67";         // Tiefes Blau
-        if (theme === "GOLD") return "#644f0b";           // Dunkles Goldbraun
-        return "#f4c542";                                 // Helles Gold (Default)
+        if (theme === "BASIC") return "#294a67";         
+        if (theme === "GOLD") return "#644f0b";           
+        return "#f4c542";                                 
     }
 
     if (area === "text") {
-        if (theme === "BASIC") return "#ffffff";          // Weiß auf dunklem Blau
-        if (theme === "GOLD") return "#fff5cc";           // Hellgelb auf Dunkelgold
-        return "#000000";                                 // Schwarz (Default)
+        if (theme === "BASIC") return "#ffffff";
+        if (theme === "GOLD") return "#fff5cc";           
+        return "#000000";                                 
     }
 
     if (area === "border") {
-        if (theme === "BASIC") return "#1a3347";          // Dunklerer Blauton
-        if (theme === "GOLD") return "#a67800";           // Gesättigtes Gold
-        return "#bc8e00";                                 // Fallback-Gold
+        if (theme === "BASIC") return "#1a3347";
+        if (theme === "GOLD") return "#a67800";
+        return "#bc8e00";                                 
     }
 
     if (area === "shadow") {
-        if (theme === "BASIC") return "#0d1b26";          // Blauschwarz
-        if (theme === "GOLD") return "#d4af37";           // Goldschatten
+        if (theme === "BASIC") return "#0d1b26";          
+        if (theme === "GOLD") return "#d4af37";
         return "#bc8e00";
     }
 
     if (area === "button") {
-        if (theme === "BASIC") return "#3a6b8a";          // Mittelblau
-        if (theme === "GOLD") return "#d4af37";           // Reines Gold
+        if (theme === "BASIC") return "#3a6b8a";
+        if (theme === "GOLD") return "#d4af37";           
         return "#ffffff";
     }
 
@@ -173,7 +182,7 @@ const Card = ({
 
     if (area === "buttonBorder") {
         if (theme === "BASIC") return "#ffffff";
-        if (theme === "GOLD") return "#f2c744";           // Goldrand
+        if (theme === "GOLD") return "#f2c744";
         return "#bc8e00";
     }
 
@@ -183,8 +192,7 @@ const Card = ({
     function tooExpensive() {
         return userUsage?.microchip < shopItem?.price && shopItem?.currency === "CHIPS";
     }
-
-    const [ isVisible, setIsVisible ] = useState(false);
+    console.log("shopItem", shopItem);
     const [ isVisibleB, setIsVisibleB ] = useState(false);
     const [ isVisibleC, setIsVisibleC ] = useState(false);
     const [ isVisibleD, setIsVisibleD ] = useState(false);
@@ -238,7 +246,6 @@ const Card = ({
                 setIsVisibleB(true); 
             }}}>   
 
-        <ModalToExpensive isVisible={isVisible} setIsVisible={setIsVisible}/>
         
         <ModalBudyNow   isVisible={isVisibleB} 
                         free={shopItem?.currency == "FREE" || shopItem?.isFree ? true : false}
@@ -250,7 +257,8 @@ const Card = ({
                         price={shopItem?.price || 0}
                         itemId={shopItem?.$id || ""}
                         amount={shopItem?.itemAmount[0] || 1}
-                        name={shopItem?.title || ""}
+                        name={shopItem?.itemName || ""}
+                        texts={texts}
                         />
                         
         <ModalVideoAdd
@@ -267,6 +275,7 @@ const Card = ({
             />
         <ModalQuiz 
             isVisible={isVisibleD}
+            texts={texts}
             setIsVisible={setIsVisibleD}
             onComplete={() => {
                 

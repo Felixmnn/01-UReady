@@ -13,6 +13,7 @@ const SliderQuestion = ({
   userAnswers = {},
   setUserAnswers = () => {},
   questionId = "",
+  texts
 }) => {
   const [value, setValue] = useState(userAnswers[questionId] || defaultValue);
 
@@ -65,7 +66,7 @@ const SliderQuestion = ({
       </View>
 
       <Text className="text-sm text-center text-gray-400 mt-2">
-        Selected: {value} {unit}
+        {texts.selected}: {value} {unit}
       </Text>
     </View>
   );

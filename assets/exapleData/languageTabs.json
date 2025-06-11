@@ -79,7 +79,11 @@
             "dokUpload": "Dokument hochladen",
             "crtQuestio": "Frage erstellen",
             "crtNote": "Notiz erstellen",
-            "pendingAI": "AI Quiz wird generiert"
+            "pendingAI": "AI Quiz wird generiert",
+            "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
+            "cannotBeUndone": "Dies kann nicht rückgängig gemacht werden.",
+            "cancel": "Abbrechen",
+            "delete": "Löschen"
 
         },
         "ENGLISH(US)":{
@@ -107,7 +111,11 @@
             "dokUpload": "Upload Document",
             "crtQuestio": "Create Question",
             "crtNote": "Create Note",
-            "pendingAI": "AI Quiz is generating"
+            "pendingAI": "AI Quiz is generating",
+            "areYousureDelete": "Are you sure you want to delete this module?",
+            "cannotBeUndone": "This cannot be undone.",
+            "cancel": "Cancel",
+            "delete": "Delete"
 
         },
         "ENGLISH(UK)":{
@@ -135,7 +143,11 @@
             "dokUpload": "Upload Document",
             "crtQuestio": "Create Question",
             "crtNote": "Create Note",
-            "pendingAI": "AI Quiz is generating"
+            "pendingAI": "AI Quiz is generating",
+            "areYousureDelete": "Are you sure you want to delete this module?",
+            "cannotBeUndone": "This cannot be undone.",
+            "cancel": "Cancel",
+            "delete": "Delete"
 
         },
         "AUSTRALIAN":{
@@ -163,7 +175,11 @@
             "dokUpload": "Upload Document",
             "crtQuestio": "Create Question",
             "crtNote": "Create Note",
-            "pendingAI": "AI Quiz is generating"
+            "pendingAI": "AI Quiz is generating",
+            "areYousureDelete": "Are you sure you want to delete this module?",
+            "cannotBeUndone": "This cannot be undone.",
+            "cancel": "Cancel",
+            "delete": "Delete"
 
         },
         "SPANISH":{
@@ -191,7 +207,11 @@
             "dokUpload": "Subir documento",
             "crtQuestio": "Crear pregunta",
             "crtNote": "Crear nota",
-            "pendingAI": "El cuestionario AI se está generando"
+            "pendingAI": "El cuestionario AI se está generando",
+            "areYousureDelete": "¿Estás seguro de que deseas eliminar este módulo?",
+            "cannotBeUndone": "Esto no se puede deshacer.",
+            "cancel": "Cancelar",
+            "delete": "Eliminar"
 
         } 
     },
@@ -367,7 +387,10 @@
         "educationKathegory": "Ausbildungskathegorie",
         "educationSubject": "Ausbildungfach",
         "hell": "Hell",
-        "dunkel": "Dunkel"
+        "dunkel": "Dunkel",
+        "policys": "Datenschutzrichtlinien",
+        "cancel": "Abbrechen",
+        "ok": "OK"
 
     },
       "ENGLISH(US)": {
@@ -392,7 +415,12 @@
         "colorMode": "Display mode",
         "language": "Language",
         "hell": "Light",
-        "dunkel": "Dark"
+        "dunkel": "Dark",
+        "educationKathegory": "Education category",
+        "educationSubject": "Education subject",
+        "policys": "Privacy policies",
+        "cancel": "Cancel",
+        "ok": "OK"
     } ,
     "ENGLISH(UK)": {
         "vorname": "First name",
@@ -416,7 +444,12 @@
         "colorMode": "Display mode",
         "language": "Language",
         "hell": "Light",
-        "dunkel": "Dark"
+        "dunkel": "Dark",
+        "educationKathegory": "Education category",
+        "educationSubject": "Education subject",
+        "policys": "Privacy policies",
+        "cancel": "Cancel",
+        "ok": "OK"
 
     },
     "AUSTRALIAN": {
@@ -441,7 +474,12 @@
         "colorMode": "Display mode",
         "language": "Language",
         "hell": "Light",
-        "dunkel": "Dark"
+        "dunkel": "Dark",
+        "educationKathegory": "Education category",
+        "educationSubject": "Education subject",
+        "policys": "Privacy policies",
+        "cancel": "Cancel",
+        "ok": "OK"
 
 
     },
@@ -467,7 +505,12 @@
         "colorMode": "Modo de visualización",
         "language": "Idioma",
         "hell": "Claro",
-        "dunkel": "Oscuro"
+        "dunkel": "Oscuro",
+        "educationKathegory": "Categoría de educación",
+        "educationSubject": "Asignatura de educación",
+        "policys": "Políticas de privacidad",
+        "cancel": "Cancelar",
+        "ok": "OK"
 
     }
     },
@@ -599,27 +642,32 @@
         "DEUTSCH":{
             "title": "Bibliothek",
             "last7": "Letzte 7 Tage",
-            "erstelleModul": "Modul erstellen"
+            "erstelleModul": "Modul erstellen",
+            "last30": "Letzte 30 Tage"
         },
         "ENGLISH(US)":{
             "title": "Library",
             "last7": "Last 7 Days",
-            "erstelleModul": "Create Module"
+            "erstelleModul": "Create Module",
+            "last30": "Last 30 Days"
         },
         "ENGLISH(UK)":{
             "title": "Library",
             "last7": "Last 7 Days",
-            "erstelleModul": "Create Module"
+            "erstelleModul": "Create Module",
+            "last30": "Last 30 Days"
         },
         "AUSTRALIAN":{
             "title": "Library",
             "last7": "Last 7 Days",
-            "erstelleModul": "Create Module"
+            "erstelleModul": "Create Module",
+            "last30": "Last 30 Days"
         },
         "SPANISH":{
             "title": "Biblioteca",
             "last7": "Últimos 7 días",
-            "erstelleModul": "Crear módulo"
+            "erstelleModul": "Crear módulo",
+            "last30": "Últimos 30 días"
         }
     },
     "endecken":{
@@ -636,7 +684,12 @@
             "copy2": "Module Kopieren",
             "results": "Ergebnisse",
             "subjects": "Fächer",
-            "synchronization": "Synchronisierung"
+            "synchronization": "Synchronisierung",
+            "report" : " melden!",
+            "reasonForReport" : "Grund für die Meldung",
+            "reportText" : "Bitte beschreibe den Grund für die Meldung des Moduls.",
+            "cancel": "Abbrechen",
+            "send": "Absenden"
         },
         "ENGLISH(US)":{
             "title": "Discover",
@@ -651,7 +704,12 @@
             "copy2": "Copy Modules",
             "results": "Results",
             "subjects": "Subjects",
-            "synchronization": "Synchronization"
+            "synchronization": "Synchronization",
+            "report" : " report!",
+            "reasonForReport" : "Reason for report",
+            "reportText" : "Please describe the reason for reporting the module.",
+            "cancel": "Cancel",
+            "send": "Send"
         },
         "ENGLISH(UK)":{
             "title": "Discover",
@@ -666,7 +724,12 @@
             "copy2": "Copy Modules",
             "results": "Results",
             "subjects": "Subjects",
-            "synchronization": "Synchronization"
+            "synchronization": "Synchronization",
+            "report" : " report!",
+            "reasonForReport" : "Reason for report",
+            "reportText" : "Please describe the reason for reporting the module.",
+            "cancel": "Cancel",
+            "send": "Send"
         },
         "AUSTRALIAN":{
             "title": "Discover",
@@ -681,7 +744,12 @@
             "copy2": "Copy Modules",
             "results": "Results",
             "subjects": "Subjects",
-            "synchronization": "Synchronization"
+            "synchronization": "Synchronization",
+            "report" : " report!",
+            "reasonForReport" : "Reason for report",
+            "reportText" : "Please describe the reason for reporting the module.",
+            "cancel": "Cancel",
+            "send": "Send"
         },
         "SPANISH":{
             "title": "Descubrir",
@@ -696,34 +764,163 @@
             "copy2": "Copiar módulos",
             "results": "Resultados",
             "subjects": "Asignaturas",
-            "synchronization": "Sincronización"
+            "synchronization": "Sincronización",
+            "report" : "reportar!",
+            "reasonForReport" : "Razón para reportar",
+            "reportText" : "Por favor, describe el motivo de la denuncia del módulo.",
+            "cancel": "Cancelar",
+            "send": "Enviar"
+
         }
     },
     "shop":{
         "DEUTSCH": {
             "recharges": "Recharges",
             "chips": "Chips",
-            "gratisItems": "Gratis Items"
+            "gratisItems": "Gratis Items",
+            "validdatePurchase" : "Kauf bestätigen",
+            "doYouWant": "Möchtest du ",
+            "für": " für ",
+            "kaufen": " kaufen?",
+            "cancel": "Abbrechen",
+            "buy": "Kaufen",
+            "back": "Zurück",
+            "finish": "Abschließen",
+            "continue": "Weiter",
+            "choseUpTo": "Wähle bis zu ",
+            "answers": " Antworten",
+            "choseOne": "Wähle eine Antwort",
+            "answerMustBe": "Antwort muss mindestens ",
+            "charactersLong": " Zeichen lang sein.",
+            "mustMatchFormat": "Antwort muss dem Format entsprechen: ",
+            "placeHolder": "Gib deine Antwort hier ein...",
+            "selected": "Ausgewählt",
+            "pleaseEnterValidNumber": "Bitte gib eine gültige Nummer ein.",
+            "numberMustBeBetween": "Die Nummer muss zwischen ",
+            "and": " und ",
+            "be": " sein.",
+            "step": "Schritt",
+            "range": "Bereich"
+            
+
+
         },
         "ENGLISH(US)": {
             "recharges": "Recharges",
             "chips": "Chips",
-            "gratisItems": "Free Items"
+            "gratisItems": "Free Items",
+            "validdatePurchase" : "Confirm Purchase",
+            "doYouWant": "Do you want to buy ",
+            "für": " for ",
+            "kaufen": "?",
+            "cancel": "Cancel",
+            "buy": "Buy",
+            "back": "Back",
+            "finish": "Finish",
+            "continue": "Continue",
+            "choseUpTo": "Choose up to ",
+            "answers": " answers",
+            "choseOne": "Choose one answer",
+            "answerMustBe": "Answer must be at least ",
+            "charactersLong": " characters long.",
+            "mustMatchFormat": "Answer must match the format: ",
+            "placeHolder": "Enter your answer here...",
+            "selected": "Selected",
+            "pleaseEnterValidNumber": "Please enter a valid number.",
+            "numberMustBeBetween": "The number must be between ",
+            "and": " and ",
+            "be": ".",
+            "step": "Step",
+            "range": "Range"
+
+            
         },
         "ENGLISH(UK)": {
             "recharges": "Recharges",
             "chips": "Chips",
-            "gratisItems": "Free Items"
+            "gratisItems": "Free Items",
+            "validdatePurchase" : "Confirm Purchase",
+            "doYouWant": "Do you want to buy ",
+            "für": " for ",
+            "kaufen": "?",
+            "cancel": "Cancel",
+            "buy": "Buy",
+            "back": "Back",
+            "finish": "Finish",
+            "continue": "Continue",
+            "choseUpTo": "Choose up to ",
+            "answers": " answers",
+            "choseOne": "Choose one answer",
+            "answerMustBe": "Answer must be at least ",
+            "charactersLong": " characters long.",
+            "mustMatchFormat": "Answer must match the format: ",
+            "placeHolder": "Enter your answer here...",
+            "selected": "Selected",
+            "pleaseEnterValidNumber": "Please enter a valid number.",
+            "numberMustBeBetween": "The number must be between ",
+            "and": " and ",
+            "be": ".",
+            "step": "Step",
+            "range": "Range"
+
         },
         "AUSTRALIAN": {
             "recharges": "Recharges",
             "chips": "Chips",
-            "gratisItems": "Free Items"
+            "gratisItems": "Free Items",
+            "validdatePurchase" : "Confirm Purchase",
+            "doYouWant": "Do you want to buy ",
+            "für": " for ",
+            "kuafen": "?",
+            "cancel": "Cancel",
+            "buy": "Buy",
+
+            "back": "Back",
+            "finish": "Finish",
+            "continue": "Continue",
+            "choseUpTo": "Choose up to ",
+            "answers": " answers",
+            "choseOne": "Choose one answer",
+            "answerMustBe": "Answer must be at least ",
+            "charactersLong": " characters long.",
+            "mustMatchFormat": "Answer must match the format: ",
+            "placeHolder": "Enter your answer here...",
+            "selected": "Selected",
+            "pleaseEnterValidNumber": "Please enter a valid number.",
+            "numberMustBeBetween": "The number must be between ",
+            "and": " and ",
+            "be": ".",
+            "step": "Step",
+            "range": "Range"
         },
         "SPANISH": {
             "recharges": "Recargas",
             "chips": "Fichas",
-            "gratisItems": "Artículos gratis"
+            "gratisItems": "Artículos gratis",
+            "validdatePurchase" : "Confirmar compra",
+            "doYouWant": "¿Quieres comprar ",
+            "für": " por ",
+            "kaufen": "?",
+            "cancel": "Cancelar",
+            "buy": "Comprar",
+            "back": "Atrás",
+            "finish": "Finalizar",
+            "continue": "Continuar",
+            "choseUpTo": "Elige hasta ",
+            "answers": " respuestas",
+            "choseOne": "Elige una respuesta",
+            "answerMustBe": "La respuesta debe tener al menos ",
+            "charactersLong": " caracteres de longitud.",
+            "mustMatchFormat": "La respuesta debe coincidir con el formato: ",
+            "placeHolder": "Introduce tu respuesta aquí...",
+            "selected": "Seleccionado",
+            "pleaseEnterValidNumber": "Por favor, introduce un número válido.",
+            "numberMustBeBetween": "El número debe estar entre ",
+            "and": " y ",
+            "be": ".",
+            "step": "Paso",
+            "range": "Rango"
+
         }
     },
     "personalize": {
@@ -1351,6 +1548,147 @@
             "iHaveFoundSomething": "He encontrado algo, simplemente haz clic en los módulos y los añadiré por ti",
             "iHaveFoundNothing": "Desafortunadamente, no encontré nada, pero no hay problema",
             "waitAMoment": "Dame un momento..."
+        }
+    },
+    "tutorialFirstModule": {
+        "DEUTSCH": {
+            "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!",
+            "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
+            "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
+            "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
+            "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
+            "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
+            "youCanCreate": "Diiesen kannst du anhand von Themen, Texten oder Dateien erstellen.",
+            "chooseSession": "Wäähle dafür einfach eine Session aus und ergänze den gewünschten Inhalt",
+            "thatIsAll": "Daas ist alles, was du für dein erstes Modul brauchst.",
+            "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
+        },
+        "ENGLISH(US)": {
+            "letUsCreate": "Leet's create your first module together!",
+            "firstInfo": "Fiirst, we need some basic information about your module.",
+            "forExample": "Foor example: Name, description, and a color for better organization.",
+            "nextSession": "Neext, you can add your first session.",
+            "aSession": "A  session is a single event, like a lecture or class.",
+            "thenContent": "Thhen, we just need the content for your module.",
+            "youCanCreate": "Yoou can create this using topics, texts, or files.",
+            "chooseSession": "Juust select a session and add the desired content.",
+            "thatIsAll": "Thhat's all you need for your first module.",
+            "nowYouCanCreate": "Noow you can create your module – it will be generated automatically."
+        },
+        "ENGLISH(UK)": {
+            "letUsCreate": "Leet's create your first module together!",
+            "firstInfo": "Fiirst, we need some basic information about your module.",
+            "forExample": "Foor example: Name, description, and a colour for better organisation.",
+            "nextSession": "Neext, you can add your first session.",
+            "aSession": "A  session is a single event, like a lecture or class.",
+            "thenContent": "Thhen, we just need the content for your module.",
+            "youCanCreate": "Yoou can create this using topics, texts, or files.",
+            "chooseSession": "Juust select a session and add the desired content.",
+            "thatIsAll": "Thhat's all you need for your first module.",
+            "nowYouCanCreate": "Noow you can create your module – it will be generated automatically."
+        },
+        "AUSTRALIAN": {
+            "letUsCreate": "Leet's create your first module together!",
+            "firstInfo": "Fiirst, we need some basic information about your module.",
+            "forExample": "Foor example: Name, description, and a colour for better organisation.",
+            "nextSession": "Neext, you can add your first session.",        
+            "aSession": "A  session is a single event, like a lecture or class.",
+            "thenContent": "Thhen, we just need the content for your module.",
+            "youCanCreate": "Yoou can create this using topics, texts, or files.",
+            "chooseSession": "Juust select a session and add the desired content.",
+            "thatIsAll": "Thhat's all you need for your first module.",
+            "nowYouCanCreate": "Noow you can create your module – it will be generated automatically."
+        },
+        "SPANISH": {
+            "letUsCreate": "¡VVamos a crear tu primer módulo juntos!",
+            "firstInfo": "Prrimero, necesitamos información básica sobre tu módulo.",
+            "forExample": "Poor ejemplo: Nombre, descripción y un color para una mejor organización.",
+            "nextSession": "A  continuación, puedes añadir tu primera sesión.",
+            "aSession": "Unna sesión es un evento único, como una conferencia o clase.",
+            "thenContent": "Luuego, solo necesitamos el contenido para tu módulo.",
+            "youCanCreate": "Puuedes crear esto utilizando temas, textos o archivos.",
+            "chooseSession": "Siimplemente selecciona una sesión y añade el contenido deseado.",
+            "thatIsAll": "Esso es todo lo que necesitas para tu primer módulo.",
+            "nowYouCanCreate": "Ahhora puedes crear tu módulo: se generará automáticamente."
+        }
+    },
+    "tutorialModule": {
+        "DEUTSCH":{
+            "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!",
+            "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
+            "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
+            "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
+            "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
+            "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
+            "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
+        },
+        "ENGLISH(US)": {
+            "letUsCreate": "Leet's create your first module together!",
+            "firstInfo": "Fiirst, we need some basic information about your module.",
+            "forExample": "Foor example: Name, description, and a color for better organization.",
+            "nextSession": "Neext, you can add your first session.",
+            "aSession": "A  session is a single event, like a lecture or class.",
+            "thenContent": "Thhen, we just need the content for your module.",
+            "nowYouCanCreate": "Noow you can create your module – it will be generated automatically."
+        },
+        "ENGLISH(UK)": {
+            "letUsCreate": "Leet's create your first module together!",
+            "firstInfo": "Fiirst, we need some basic information about your module.",
+            "forExample": "Foor example: Name, description, and a colour for better organisation.",
+            "nextSession": "Neext, you can add your first session.",
+            "aSession": "A  session is a single event, like a lecture or class.",
+            "thenContent": "Thhen, we just need the content for your module.",
+            "nowYouCanCreate": "Noow you can create your module – it will be generated automatically."
+        },
+        "AUSTRALIAN": {
+            "letUsCreate": "Leet's create your first module together!",
+            "firstInfo": "Fiirst, we need some basic information about your module.",
+            "forExample": "Foor example: Name, description, and a colour for better organisation.",
+            "nextSession": "Neext, you can add your first session.",    
+            "aSession": "A  session is a single event, like a lecture or class.",
+            "thenContent": "Thhen, we just need the content for your module.",
+            "nowYouCanCreate": "Noow you can create your module – it will be generated automatically."
+        },
+        "SPANISH": {
+            "letUsCreate": "¡VVamos a crear tu primer módulo juntos!",
+            "firstInfo": "Prrimero, necesitamos información básica sobre tu módulo.",
+            "forExample": "Poor ejemplo: Nombre, descripción y un color para una mejor organización.",
+            "nextSession": "A  continuación, puedes añadir tu primera sesión.",
+            "aSession": "Unna sesión es un evento único, como una conferencia o clase.",
+            "thenContent": "Luuego, solo necesitamos el contenido para tu módulo.",
+            "nowYouCanCreate": "Ahhora puedes crear tu módulo: se generará automáticamente."
+        }
+    },
+    "deleteAccount":{
+        "DEUTSCH":{
+            "deleteAccount": "Account löschen",
+            "areYouSure": "Bist du sicher, dass du deinen Account dauerhaft löschen möchtest?",
+            "cancel": "Abbrechen",
+            "delete": "Löschen"
+        },
+        "ENGLISH(US)": {
+            "deleteAccount": "Delete Account",
+            "areYouSure": "Are you sure you want to permanently delete your account?",
+            "cancel": "Cancel",
+            "delete": "Delete"
+        },
+        "ENGLISH(UK)": {
+            "deleteAccount": "Delete Account",
+            "areYouSure": "Are you sure you want to permanently delete your account?",
+            "cancel": "Cancel",
+            "delete": "Delete"
+        },
+        "AUSTRALIAN": {
+            "deleteAccount": "Delete Account",
+            "areYouSure": "Are you sure you want to permanently delete your account?",
+            "cancel": "Cancel",
+            "delete": "Delete"
+        },
+        "SPANISH": {
+            "deleteAccount": "Eliminar cuenta",
+            "areYouSure": "¿Estás seguro de que quieres eliminar tu cuenta permanentemente?",
+            "cancel": "Cancelar",
+            "delete": "Eliminar"
         }
     }
 }

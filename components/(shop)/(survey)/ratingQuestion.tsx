@@ -11,6 +11,7 @@ const RatingQuestion = ({
   userAnswers = {},
   setUserAnswers = () => {},
   questionId = '',
+  texts
 }) => {
   const [rating, setRating] = useState(userAnswers[questionId] || defaultRating);
 
@@ -66,7 +67,7 @@ const RatingQuestion = ({
       )}
 
       <Text className="text-sm text-gray-500 mt-4 text-center">
-        Selected: {rating} {unit}
+        {texts.selected}: {rating} {unit}
       </Text>
     </View>
   );

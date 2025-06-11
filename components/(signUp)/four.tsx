@@ -2,7 +2,6 @@ import { View, Text, TouchableOpacity, FlatList, useWindowDimensions,ScrollView,
 import React, {  useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ProgressBar from './(components)/progressBar';
-import BotTopLeft from './(components)/botTopLeft';
 import BotBottomLeft from './botBottomLeft';
 
 

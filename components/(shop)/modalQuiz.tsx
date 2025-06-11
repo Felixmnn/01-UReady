@@ -7,7 +7,7 @@ import SliderQuestion from './(survey)/sliderQuestion';
 import TextQuestion from './(survey)/textQuestion';
 import Questions from '../(bibliothek)/(pages)/(createQuestion)/questions';
 
-const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
+const ModalQuiz = ({isVisible, setIsVisible, onComplete, texts}) => {
   const { width } = useWindowDimensions();
   const exampleSurvey = {
     title: "Survey Example",  //Title
@@ -248,6 +248,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                 {
                   exampleQuestions[selectedQuestion].type === "single-choice"
                   ? <ChoiceQuestion 
+                      texts={texts}
                       multiselect={false} 
                       question={exampleQuestions[selectedQuestion].question} 
                       answers={exampleQuestions[selectedQuestion].answers} 
@@ -260,6 +261,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                     />
                   : exampleQuestions[selectedQuestion].type === "multiple-choice"
                   ? <ChoiceQuestion 
+                      texts={texts}
                       multiselect={true} 
                       question={exampleQuestions[selectedQuestion].question} 
                       answers={exampleQuestions[selectedQuestion].answers} 
@@ -273,6 +275,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                     />
                   : exampleQuestions[selectedQuestion].type === "user-input"
                   ? <TextQuestion
+                      texts={texts}
                       question={exampleQuestions[selectedQuestion].question} 
                       placeHolder={exampleQuestions[selectedQuestion].placeHolder}
                       textinputMaxLength={exampleQuestions[selectedQuestion].textinputMaxLength}
@@ -285,6 +288,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                     />
                   : exampleQuestions[selectedQuestion].type === "rating"
                   ? <RatingQuestion 
+                      texts={texts}
                       question={exampleQuestions[selectedQuestion].question} 
                       scaleMin={exampleQuestions[selectedQuestion].scaleMin}
                       scaleMax={exampleQuestions[selectedQuestion].scaleMax}
@@ -298,6 +302,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                     />
                   : exampleQuestions[selectedQuestion].type === "slider"
                   ? <SliderQuestion  
+                      texts={texts}
                       question={exampleQuestions[selectedQuestion].question} 
                       scaleMin={exampleQuestions[selectedQuestion].scaleMin}
                       scaleMax={exampleQuestions[selectedQuestion].scaleMax}
@@ -313,6 +318,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                     />
                   : exampleQuestions[selectedQuestion].type === "yes-no"
                   ? <ChoiceQuestion  
+                      texts={texts}
                       multiselect={false} 
                       question={exampleQuestions[selectedQuestion].question} 
                       answers={exampleQuestions[selectedQuestion].answers} 
@@ -325,6 +331,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                     />
                   : exampleQuestions[selectedQuestion].type === "number-input"
                   ? <NumericQuestion 
+                      texts={texts}
                       question={exampleQuestions[selectedQuestion].question} 
                       placeHolder={exampleQuestions[selectedQuestion].placeHolder}
                       textinputMaxLength={exampleQuestions[selectedQuestion].textinputMaxLength}
@@ -352,7 +359,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                   disabled={selectedQuestion === 0}
                   className='bg-gray-700 px-4 py-2 rounded-lg'
                 >
-                  <Text className='text-white font-bold'>Zurück</Text>
+                  <Text className='text-white font-bold'>{texts.back}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   onPress={() => {
@@ -366,7 +373,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete}) => {
                   }}
                   className='bg-blue-500 px-4 py-2 rounded-lg'
                 >
-                  <Text className='text-white font-bold'>{selectedQuestion === exampleQuestions.length - 1 ? "Abschließen" : "Weiter"}</Text>
+                  <Text className='text-white font-bold'>{selectedQuestion === exampleQuestions.length - 1 ? texts.finish : texts.continue}</Text>
                 </TouchableOpacity>
             </View>
             </View>

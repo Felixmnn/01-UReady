@@ -143,19 +143,7 @@ const quiz = () => {
                         <Icon name="arrow-left" size={20} color="white"/>
                     </TouchableOpacity>
                     </View>
-                <View className={`flex-row items-center justify-center rounded-full border-gray-600 border-[1px] py-2 px-3 ${isVertical ? "" : "h-[35px] w-[35px]"} `}>
-                    <TouchableOpacity className='items-center justify-center'>
-                        <Icon name="cog" size={10} color="white"/>
-                    </TouchableOpacity>
-                    {
-
-                    isVertical ? 
-                    <Text className='text-gray-200 ml-2 text-[12px]'>
-                        {texts[selectedLanguage].setting}
-                    </Text>
-                    : null
-                    }
-                </View>
+                
                 </View>
                 <View className='rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row'>
                     <View style={{ width: `${questionSegmentation()[0]}%` }} className="h-[5px] bg-red-700 rounded-l-full" />

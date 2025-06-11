@@ -39,7 +39,7 @@ const SkeletonListShop = () => {
                     <View className='flex-row'>
                         {
                         [1,2,3].map((item, index) => (
-                            <SkeletonItem key={index} height={120} width={width/3 - 10} margingRight={10}/>
+                            <SkeletonItem key={index} height={120} width={width/3 - 10 > 150 ? 150 : width/3 - 10} margingRight={10}/>
                         ))}
                     </View>
                </View> 

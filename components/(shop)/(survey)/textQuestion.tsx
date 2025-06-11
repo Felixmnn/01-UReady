@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 const TextQuestion = ({
   question = "",
-  placeholder = "Type your answer here...",
+  placeholder ,
   maxLength = 500,
   minLength = 1,
   required = false,
@@ -11,6 +11,7 @@ const TextQuestion = ({
   userAnswers = {},
   setUserAnswers = () => {},
   questionId = "",
+  texts
 }) => {
   const [input, setInput] = useState(userAnswers[questionId] || "")
   const [error, setError] = useState(null)
@@ -20,9 +21,9 @@ const TextQuestion = ({
 
     // Sofortige Validierung
     if (required && text.length < minLength) {
-      setError(`Answer must be at least ${minLength} characters.`)
+      setError(`${texts.answerMustBe}${minLength}${texts.charactersLong}`)
     } else if (validationRegex && !new RegExp(validationRegex).test(text)) {
-      setError("Answer must match required format.")
+      setError(texts.mustMatchFormat)
     } else {
       setError(null)
     }
@@ -39,7 +40,7 @@ const TextQuestion = ({
       <Text className='text-lg font-bold mb-2 text-gray-100'>{question}</Text>
       <View className='bg-gray-200 p-2 rounded-lg'>
         <TextInput
-          placeholder={placeholder}
+          placeholder={texts.placeHolder}
           value={input}
           onChangeText={handleInputChange}
           maxLength={maxLength}

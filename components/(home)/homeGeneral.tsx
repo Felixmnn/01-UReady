@@ -144,7 +144,7 @@ const HomeGeneral = () => {
   }
 
   {/* Schnelle Aktionen für den Nutzer */}
-  const [quickActions, setQuickActions] = useState([
+  let quickActions = [
     {
       text: texts[selectedLanguage].learnSetKI,
       colorBorder: '#7a5af8',
@@ -167,7 +167,7 @@ const HomeGeneral = () => {
       handlePress: () => setIsVisibleNewModule(true),
       
     },
-  ])
+  ]
   
 
   const [ newModule, setNewModule] = useState({
@@ -305,7 +305,7 @@ const HomeGeneral = () => {
       }}>
           {
             !userUsageP || userUsageP.lastSessions.length == 0 ?
-            <View className='flex-row'>
+            <View  className='flex-row'>
               <Session item={{
                   name: "Erstes Modul",
                   percent : 100,
@@ -337,7 +337,7 @@ const HomeGeneral = () => {
           }
       </ScrollView>
       <Header title={texts[selectedLanguage].quickActions}/>
-      <View key={width} className={`${width > 700 ? "flex-row" : ""} `}>
+      <View key={selectedLanguage} className={`${width > 700 ? "flex-row" : ""} `}>
         {
           quickActions.map((item, index) => {
             return (

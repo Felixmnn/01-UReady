@@ -11,6 +11,7 @@ const ChoiceQuestion = ({
   userAnswers = {},
   setUserAnswers = () => {},
   questionId = "",
+  texts 
 }) => {
   const [selected, setSelected] = useState(userAnswers[questionId] || [])
 
@@ -61,8 +62,8 @@ const ChoiceQuestion = ({
 
       <Text className='text-sm text-gray-500 mt-2'>
         {multiselect
-          ? `Select up to ${maxSelection} answers.`
-          : 'Select one answer.'}
+          ? `${texts.choseUpTo}${maxSelection}${texts.answers}`
+          : texts.choseOne}
       </Text>
     </View>
   )

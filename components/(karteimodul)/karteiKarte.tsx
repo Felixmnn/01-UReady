@@ -11,6 +11,16 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
   const { user,language } = useGlobalContext()
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
+    const texts = languages.karteikarte;
+    const reportTexts = languages.endecken[selectedLanguage] || languages.endecken["DEUTSCH"];
+
+    
   const ReportModal = () => {
     const [reason, setReason] = useState("");
      const handleSubmit = async () => {
@@ -23,6 +33,8 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
         console.log("Report submitted with reason:", reason);
         setModalVisible(false);
       };
+    
+
     return (
       <Modal
         visible={modalVisible}
@@ -32,13 +44,13 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
       >
         <View className="flex-1 justify-center items-center bg-black/50 px-4">
           <View className="w-full bg-gray-800 rounded-2xl p-5">
-            <Text className="text-lg text-white font-bold mb-4">{titel} melden</Text>
+            <Text className="text-lg text-white font-bold mb-4">{titel}{reportTexts.report}</Text>
 
-            <Text className="text-sm mb-2 text-gray-300">Grund der Meldung:</Text>
+            <Text className="text-sm mb-2 text-gray-300">{reportTexts.reasonForReport}</Text>
             <TextInput
               className="border border-gray-300 rounded-xl p-3 text-sm min-h-[80px] text-white"
               multiline
-              placeholder="Beschreibe den Grund für die Meldung..."
+              placeholder={reportTexts.reportText}
               placeholderTextColor="#888"
               value={reason}
               maxLength={200}
@@ -49,13 +61,13 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
             {/* Buttons */}
             <View className="flex-row justify-end mt-4 space-x-3">
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text className="text-gray-500">Abbrechen</Text>
+                <Text className="text-gray-500">{reportTexts.cancel}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleSubmit}
                 className="bg-red-500 px-4 py-2 rounded-lg"
               >
-                <Text className="text-white font-semibold">Absenden</Text>
+                <Text className="text-white font-semibold">{reportTexts.send}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -64,13 +76,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
     )
   }
 
-    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    useEffect(() => {
-      if(language) {
-        setSelectedLanguage(language)
-      }
-    }, [language])
-    const texts = languages.karteikarte;
+    
   
     const color = 
       farbe === "RED" ? "#DC2626" :

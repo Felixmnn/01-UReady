@@ -32,9 +32,9 @@ const SkeletonListProfile = () => {
             };
   return (
     <ScrollView >
-        <SkeletonItem width={width - 20} height={400} padding={10} />
-        <SkeletonItem width={width -20 } height={300} />
-        <SkeletonItem width={width -20 } height={300} />
+        <SkeletonItem width={width > 800 ? width - 120 : width - 20} height={400} padding={10} />
+        <SkeletonItem width={width > 800 ? width - 120 : width - 20} height={300} />
+        <SkeletonItem width={width > 800 ? width - 120 : width - 20} height={300} />
 
     </ScrollView>
   )

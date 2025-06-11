@@ -5,7 +5,6 @@ import { useWindowDimensions } from 'react-native';
 import ProgressBar from './(components)/progressBar';
 import SearchList from './(components)/searchList';
 import BotBottomLeft from './botBottomLeft';
-import BotTopLeft from './(components)/botTopLeft';
 const StepFive = ({setDegree, message, ausbildungKathegorie,setSelectedKathegorie, ausbildungsListDeutschland, school, userData, setUserData, languages, selectedLanguage, setSelected, setSelectedAusbildung, setClass}) => {
     const { width } = useWindowDimensions();
     const numColumns = width < 400 ? 2 : 3;

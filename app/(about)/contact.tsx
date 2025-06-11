@@ -68,7 +68,7 @@ const Contact = () => {
     }
   };
   return (
-    <SafeAreaView>
+    <SafeAreaView className='flex-1'>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-[#0c111d] p-6">
         <View className="w-full flex-row items-center justify-between p-4  mb-4">
             <TouchableOpacity onPress={() => router.push("/profil")}>

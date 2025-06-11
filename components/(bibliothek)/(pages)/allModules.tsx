@@ -202,11 +202,11 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
         <View className={`flex-1  bg-gray-900 ${isVertical ? "p-4" : "p-2"} `}>
           <ModuleList
             items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 0, 7))}
-            header={"Letzte 7 Tage"}
+            header={texts[selectedLanguage].last7}
           />
         <ModuleList
           items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30))}
-          header={"Letzte 30 Tage"}
+          header={texts[selectedLanguage].last30}
         />
         
         

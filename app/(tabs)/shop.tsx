@@ -91,6 +91,7 @@ const shop = () => {
               <View className='w-full items-center'>
               <Cardcombination  cards={shopItemsA.filter(item => item.itemType == "ENERGY" )}
                                 title={texts[selectedLanguage].recharges}
+                                
                                 />
               <Cardcombination cards={shopItemsA.filter(item => item.itemType == "CHIPS" )}
                                 title={texts[selectedLanguage].chips}

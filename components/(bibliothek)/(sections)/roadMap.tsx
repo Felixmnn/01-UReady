@@ -38,6 +38,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
     }}>
       {
         moduleSessions.map((module, index) => {
+          console.log("Module", module)
             return (
 
               <TouchableOpacity 
@@ -69,7 +70,7 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
                     }}
                   />
                 <View className='w-full flex-row items-center justify-start py-2 px-3'> 
-                  <VektorCircle sizeMultiplier={1.3} color={module.color} percentage={module.percent} icon={module.iconName} strokeColor={returnColor(module.color, currentModule.color)}/>
+                  <VektorCircle sizeMultiplier={1.3} color={returnColor(module.color == null ? "blue" : module.color , currentModule.color)} percentage={module.percent} icon={module.iconName} strokeColor={returnColor(module.color == null ? "blue" : module.color , currentModule.color)}/>
                   <View className='justify-center'>
                     <Text className='text-white font-bold text-[15px] px-3 '>{module.title}</Text>
                     {

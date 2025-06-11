@@ -10,6 +10,8 @@ import { updateUserUsageModules } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import TokenHeader from '@/components/(general)/tokenHeader';
 import AddAiModule from '@/components/(general)/(modal)/addAiModule';
+import AddAiBottomSheet from '@/components/(general)/(modal)/addAiBttomSheet';
+import AddModuleBottomSheet from '@/components/(general)/(modal)/addModuleBottomSheet';
 
 const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refreshing}) => {
     const [last7Hidden, setLast7Hidden ] = useState(true)
@@ -183,8 +185,6 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
     }
   return (
     <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
-      <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
-      <AddAiModule isVisible={isVisibleAI} setIsVisible={setIsVisibleAI}  />
         <TokenHeader userUsage={userUsage}/>
         <View className={`flex-row justify-start items-center rouned-[10px] mx-5 my-2 `}>
           
@@ -213,6 +213,12 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
         
 
         </View>
+        { isVisibleAI ?
+        <AddAiBottomSheet isVisibleAiModule={isVisibleAI} setIsVisibleAiModule={setIsVisibleAI}/>
+        : null}
+        { isVisibleNewModule ?
+        <AddModuleBottomSheet isVisibleAiModule={isVisibleNewModule} setIsVisibleAiModule={setIsVisibleNewModule}/>
+        : null}
       </View>
   )
 }

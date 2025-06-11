@@ -1,5 +1,5 @@
-import { View, Dimensions, Text,ScrollView, TouchableOpacity, RefreshControl, Platform, Modal } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Dimensions, Text,ScrollView, TouchableOpacity, RefreshControl, Platform, Modal, SafeAreaView } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import ContinueBox from '../(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import VektorCircle from '../(karteimodul)/vektorCircle';
@@ -12,6 +12,10 @@ import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
 import { loadUserUsage } from '@/lib/appwriteDaten';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import AddAiBttomSheet from '../(general)/(modal)/addAiBttomSheet';
+import AddAiBottomSheet from '../(general)/(modal)/addAiBttomSheet';
+import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
 
 
 const { width } = Dimensions.get('window');
@@ -164,6 +168,7 @@ const HomeGeneral = () => {
       
     },
   ])
+  
 
   const [ newModule, setNewModule] = useState({
             name: "",
@@ -243,7 +248,11 @@ const HomeGeneral = () => {
   console.log("User Usage", userUsage)
 
   return (
+    <SafeAreaView className='h-full w-full  '>
     <ScrollView
+       style={{
+          height: '100%',
+       }}
         refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -260,8 +269,6 @@ const HomeGeneral = () => {
         />
       }
     >
-      <AddModule isVisible={isVisibleNewModule} setIsVisible={setIsVisibleNewModule} newModule={newModule} setNewModule={setNewModule} />
-      <AddAiModule isVisible={isVisibleNewAiModule} setIsVisible={setIsVisibleAiModule} />
       <TokenHeader userUsage={userUsageP} />
 
     <View className='flex-1 rounded-[10px] p-3'>
@@ -273,7 +280,7 @@ const HomeGeneral = () => {
       }}>
           {
             !userUsageP || userUsageP.lastModules.length == 0 ?
-            <View>
+            <View className='flex-1'>
               <Module item={{
                   name: "Getting Started",
                   percent : 100,
@@ -330,7 +337,7 @@ const HomeGeneral = () => {
           }
       </ScrollView>
       <Header title={texts[selectedLanguage].quickActions}/>
-      <View className={`${width > 700 ? "flex-row" : ""} `}>
+      <View key={width} className={`${width > 700 ? "flex-row" : ""} `}>
         {
           quickActions.map((item, index) => {
             return (
@@ -340,7 +347,15 @@ const HomeGeneral = () => {
         }
       </View>
     </View>
+      
     </ScrollView>
+    { isVisibleNewAiModule ?
+        <AddAiBottomSheet isVisibleAiModule={isVisibleNewAiModule} setIsVisibleAiModule={setIsVisibleAiModule}/>
+        : null}
+      { isVisibleNewModule ?
+        <AddModuleBottomSheet isVisibleAiModule={isVisibleNewModule} setIsVisibleAiModule={setIsVisibleNewModule}/>
+        : null}
+    </SafeAreaView>
   )
 }
 

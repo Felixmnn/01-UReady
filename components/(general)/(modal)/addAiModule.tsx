@@ -5,8 +5,8 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 
 const AddAiModule = ({isVisible, setIsVisible}) => {
-    const { user } = useGlobalContext();
-    const [userData, setUserData] = useState(null)
+  const { user } = useGlobalContext();
+  const [userData, setUserData] = useState(null)
  const [ newModule, setNewModule] = useState({
           name: "",
           subject: "",
@@ -83,7 +83,12 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
-        <TouchableWithoutFeedback onPress={closeModal}>
+        <TouchableWithoutFeedback onPress={closeModal}
+          style={{
+            marginTop: 50,
+            paddingTop:50
+          }}
+        >
           <View
             className="absolute top-0 left-0 w-full h-full justify-center items-center"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
@@ -93,7 +98,8 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
                 className="h-full w-full rounded-[10px] "
                 style={{
                   maxWidth: 700,
-                  maxHeight: 800,
+                  maxHeight: 800,marginTop: 50,
+            paddingTop:50
                 }}
               >
                 <PageAiCreate setIsVisibleModal={setIsVisible} newModule={newModule} setNewModule={setNewModule} setUserChoices={()=> {setIsVisible(false)}} userData={userData}/>

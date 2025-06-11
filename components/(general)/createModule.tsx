@@ -14,7 +14,7 @@ import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { returnColorButtonShadow } from '@/functions/returnColor';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
-const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }) => {
+const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,goBackVisible=true }) => {
   // Lokale States
   const { language } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
@@ -79,14 +79,11 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
   const {width} = useWindowDimensions()
   const [ tutorialVisible, setTutorialVisible] = useState(false);
   return (
-    <ScrollView className={`flex-1 bg-gray-900 p-2  shadow-lg rounded-[10px] `}
+    <ScrollView className={`flex-1 bg-gray-900 p-2   rounded-[10px] `}
 
       style={{
         width: '100%',
-        shadowColor: returnColorButtonShadow(newModule?.color) || '#1F2937',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 10,
+        
         elevation: 20, // Android
       }}
       >
@@ -100,10 +97,12 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
       />
         <View className='w-full'>
           <View className='flex-row justify-between items-center'> 
+            {goBackVisible ?
             <TouchableOpacity className='m-2 flex-row items-center' onPress={() => setUserChoices(null)}> 
               <Icon name="arrow-left" size={20} color="white"  />
               <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>{texts[selectedLanguage].newModule}</Text>
             </TouchableOpacity>
+            : <Text  className='text-gray-100 font-bold text-xl font-bold'>{texts[selectedLanguage].newModule}</Text>}
             <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
               >
@@ -269,7 +268,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null }
             }
             }}
           >
-            {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">{texts[selectedLanguage].createModule}</Text>}
+            {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].createModule}</Text>}
               
             
           </GratisPremiumButton>

@@ -10,14 +10,14 @@ import uuid from 'react-native-uuid';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { returnShadowComponents } from '@/functions/returnColor';
 import * as DocumentPicker from 'expo-document-picker';
-import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb } from '@/lib/appwriteEdit';
+import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb, setUserData } from '@/lib/appwriteEdit';
 import TutorialFirstAIModule from '../(tutorials)/tutorialFirstAIModule';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
-const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal, tutorialStep= 10, setTutorialStep=null  }) => {
+const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal, tutorialStep= 10, setTutorialStep=null, goBackVisible=true, calculatePrice=false  }) => {
   // Lokale States
-  const { language } = useGlobalContext()
+  const { language, setUserUsage, userUsage } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     const texts = languages.createModule;
     useEffect(() => {
@@ -241,14 +241,27 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
  
   const [ tutorialVisible, setTutorialVisible ] = useState(true);
 
+  function calculateTotalPrice() {
+    let totalPrice = 0;
+    items.forEach(item => {
+      if (item.type === 'PEN') {
+        totalPrice += 1}
+      else if (item.type === 'TOPIC') {
+        totalPrice += 1}
+      else if (item.type === 'FILE') {
+        totalPrice += 3}
+
+    }
+    );
+    console.log("💵Total Price: ", totalPrice);
+    return totalPrice
+  }
+
+  calculateTotalPrice()
   return (
-    <ScrollView className={`flex-1 bg-gray-900 p-3 shadow-lg  rounded-[10px] `}
+    <ScrollView className={`flex-1 bg-gray-900 p-3   rounded-[10px] `}
       style={{
         width: '100%',
-        shadowColor: returnShadowComponents(newModule?.color ? newModule.color : "black"),
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 10,
         elevation: 20,
       }}
       >
@@ -268,10 +281,14 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         <View className='w-full'>
         {/* Header */}
         <View className='flex-row justify-between items-center'> 
+          {goBackVisible ?
             <TouchableOpacity className='m-2 flex-row items-center' onPress={() => setUserChoices(null)}> 
               <Icon name="arrow-left" size={20} color="white"  />
               <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>{texts[selectedLanguage].newModule}</Text>
             </TouchableOpacity>
+            :      <Text  className='text-gray-100 font-bold text-xl font-bold'>AI Modul</Text>
+
+            }
             <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
               >
@@ -589,7 +606,11 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
             setErrorMessage(texts[selectedLanguage].errorMissingSessions);
             setIsError(true);
             return;
-          }
+          } else if ((calculateTotalPrice() > userData.energy && calculatePrice) ) {
+            setErrorMessage("You don't have enough energy to generate this module. Please buy more energy or reduce the number of items.");
+            setIsError(true);
+            return;
+          } 
 
           await materialToModule(
             user,
@@ -607,10 +628,24 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
             setIsVisibleModal ? setIsVisibleModal : null,
             
           );
+          setUserData({
+            ...userData,
+            energy: userData.energy - calculateTotalPrice(),
+          });
         }}
       >
-        {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-700 font-semibold text-[15px]">{texts[selectedLanguage].generateModule}</Text>}
-          
+        { loading ? <ActivityIndicator size="small" color="#4B5563" /> : 
+        !calculatePrice ? <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].generateModule}</Text>
+        :
+        <View className='flex-row items-center'>
+                        <Text className='text-white  font-semibold text-[15px] '>Modul für {calculateTotalPrice()}</Text>
+                        <Icon name="bolt" size={15} color="white" className="mx-1 mt-1" />
+                        <Text className='text-white  font-semibold text-[15px]  mb-[1px]'>generieren</Text>
+
+        </View>
+      
+      }
+        
         
       </GratisPremiumButton>
         </View>

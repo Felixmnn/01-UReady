@@ -1,8 +1,7 @@
 import { View, Text, FlatList, Image } from 'react-native'
 import React from 'react'
-import ToggleSwitch from '../(general)/toggleSwich'
 import Karteikarte from '../(karteimodul)/karteiKarte'
-
+import Icon from 'react-native-vector-icons/FontAwesome5'
 const RenderResults = ({modules, texts, selectedLanguage, selectedModules, myModules, updateModuleData, setSelectedModules, numColumns, searchBarText}) => {
   console.log("❌Modules", modules.filter((m) => m.public).length, modules.length)
 
@@ -24,19 +23,17 @@ const RenderResults = ({modules, texts, selectedLanguage, selectedModules, myMod
                     </View>
               }
               renderItem={({ item, index }) => (
-                <View className={`flex-1 mr-2 mb-2 justify-center ${selectedModules.includes(item.$id) || myModules?.some((mod) => mod.name == item.name + " (Kopie)") ? "" : "opacity-50"} 
+                <View className={`flex-1 mr-2 mb-2 justify-center 
+                  ${selectedModules.includes(item.$id) || myModules?.some((mod) => mod.name == item.name + " (Kopie)") ? "" : "opacity-50"} 
                 `}>
                   {myModules?.some((mod) => mod.name == item.name + " (Kopie)") && (
                     <View className="absolute w-full h-full z-10 rounded-b-[10px] rounded-t-[5px] overflow-hidden">
-                      <View className={`absolute w-full h-full rounded-b-[10px]  ${item.synchronization  ? "bg-green-500" : "bg-black"} opacity-50`} 
+                      <View className={`absolute w-full h-full rounded-b-[10px]  bg-blue-500 opacity-20`} 
                       style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}
                       />
-                        <View className="flex-row items-center justify-center h-full p-1">
-                        <Text className="text-white font-semibold text-[15px] mr-2">{texts[selectedLanguage].synchronization}</Text>
-                        <ToggleSwitch
-                          isOn={item.synchronization}
-                          onToggle={async() => {await updateModuleData(item.$id, {synchronization: !item.synchronization})}}
-                        />
+                        <View className="flex-row items-start justify-end h-full px-4 py-5">
+                        <Text className="text-gray-300 font-semibold text-[15px] mr-2">Kopiert</Text>
+                        <Icon name="copy" size={20} color="white" />
                       </View>
                     </View>
                   )}

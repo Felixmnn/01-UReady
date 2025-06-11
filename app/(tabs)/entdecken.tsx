@@ -6,19 +6,16 @@ import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import {countryList,} from '@/assets/exapleData/countryList';
 import UniversityFilters from '@/components/(entdecken)/university';
-import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import SchoolFilters from '@/components/(entdecken)/school';
 import EudcationFilters from '@/components/(entdecken)/education';
 import OtherFilters from '@/components/(entdecken)/other';
-import CountryFlag from 'react-native-country-flag';
 import { router } from 'expo-router';
 import { addNewModule } from '@/lib/appwriteAdd';
 import languages from '@/assets/exapleData/languageTabs.json';
 import { getModules } from '@/lib/appwriteQuerys';
-import ToggleSwitch from '@/components/(general)/toggleSwich';
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import TokenHeader from '@/components/(general)/tokenHeader';
-import BottomSheet, { BottomSheetFlatList, BottomSheetScrollView, BottomSheetView} from '@gorhom/bottom-sheet'
+import BottomSheet, {  BottomSheetScrollView, BottomSheetView} from '@gorhom/bottom-sheet'
 import RenderResults from '@/components/(entdecken)/renderResults';
 import { searchDocuments } from '@/lib/appwriteQuerySerach';
 
@@ -198,9 +195,25 @@ const entdecken = () => {
       }
 
   const CopyModulesButton = () => {
+    function calculateEnergyCost() {
+      let price = 0;
+      selectedModules.forEach((moduleId) => {
+        const module = modules.find((m) => m.$id === moduleId);
+        if (module) {
+          const mprice =  1 + (Math.floor((module.questions)/20 * 1)); // Assuming each question costs 3 energy
+          if (mprice > 10){
+            price += 10; // Cap the price at 10 energy
+          } else {
+            price += mprice; // Add the price of the module
+          }
+        }
+      });
+      return price;
+    }
+      
     return (
         <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
-          <TouchableOpacity disabled={loading  || (userUsage.energy < selectedModules.length * 3)} className='flex-row items-center justify-center p-2  rounded-full'
+          <TouchableOpacity disabled={loading  || (userUsage.energy < calculateEnergyCost())} className='flex-row items-center justify-center p-2  rounded-full'
           style={{
             backgroundColor: userUsage.energy > selectedModules.length * 3 ? "#3b82f6" : "#f63b3b",
             borderWidth:2,
@@ -259,7 +272,7 @@ const entdecken = () => {
                 }})}
                 setUserUsage({
                   ...userUsage,
-                  energy: userUsage.energy - selectedModules.length * 3
+                  energy: userUsage.energy - calculateEnergyCost()
                 })
                setSelectedModules([])
                 router.push("/bibliothek")
@@ -268,7 +281,7 @@ const entdecken = () => {
               loading ? <ActivityIndicator size="small" color="#fff" /> :
               userUsage.energy > selectedModules.length * 3 ?
               <View className='flex-row items-center'>
-                <Text className='text-white  font-semibold text-[15px] mb-1'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {selectedModules.length*3}</Text>
+                <Text className='text-white  font-semibold text-[15px] mb-1'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {calculateEnergyCost()}</Text>
                 <Icon name="bolt" size={15} color="white" className="ml-2" />
               </View>
               :

@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 // 👇 NEU HINZUFÜGEN
@@ -24,15 +24,25 @@ export default function RootLayout() {
   }, []);
 
   if (!isConnected) {
-    return (
-      <View className="flex-1 justify-center items-center px-6 bg-white bg-[#0c111e]">
-        <Icon name="error" size={48} color="red" className="mb-4" />
-        <Text className="text-base text-gray-700 dark:text-gray-300 text-center">
-          Network Error Occured...
-        </Text>
-      </View>
-    );
-  }
+  return (
+    <View className="flex-1 justify-center items-center px-6 bg-[#0c111e]">
+              <StatusBar backgroundColor="#0c111e" style="light" />
+
+      <Icon name="wifi-off" size={64} color="red" style={{ marginBottom: 20 }} />
+      
+      <Text className="text-lg font-semibold text-gray-100 text-center mb-2">
+        Keine Internetverbindung
+      </Text>
+
+      <Text className="text-sm text-gray-400 text-center mb-6">
+        Bitte überprüfe deine Verbindung und versuche es erneut.
+      </Text>
+
+      
+    </View>
+  );
+}
+
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

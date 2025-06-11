@@ -10,6 +10,7 @@ const RootLayout = () => {
     return (
         <View className="flex-1">
          <Tabs
+            initialRouteName="home"
             screenOptions={({ route }) => ({
               tabBarStyle: { 
                 display: isVertical ? 'none' : 'flex',

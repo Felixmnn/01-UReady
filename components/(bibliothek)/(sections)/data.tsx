@@ -23,13 +23,20 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
     //To ensure that the question status is displayed correctly, it is loaded from the module configuration
     //and added to the question object
     const filtered = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+    const questionListWithParsedItems = module.questionList.map((i) => {
+        let pI = i;
+        try {
+            pI = JSON.parse(i);
+        } catch (e) {
+        }
+        return pI;
+    })
     const filteredData = filtered.map(item => {
         return {
             ...item,
-            status: module.questionList.find((question) => question.id === item.$id)?.status || null
+            status: questionListWithParsedItems.find((question) => question.id === item.$id)?.status || null
         };
     });
-
     //Filter the notes and documents based on the selected session 
     const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
     const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
@@ -96,6 +103,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
     /**
      * Question Cards - Containing: AIGENERATED, QUESTION, STATUS
      */
+    console.log("👍filtered Data", filteredData)
     const QuestionList = () => {
         return(
         <View className='w-full'

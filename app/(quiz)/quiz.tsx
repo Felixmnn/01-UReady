@@ -185,6 +185,7 @@ const quiz = () => {
                 return false
             }
         }
+        console.log("Question List", questionList)
         async function nextQuestion (status, change){
             setShowAnswers(false)
             

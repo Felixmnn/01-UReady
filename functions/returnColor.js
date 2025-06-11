@@ -1,5 +1,5 @@
 export function returnColor(color, moduleColor) {
-  const colorLow = color.toLowerCase();
+  const colorLow = color?.toLowerCase() || "BLUE";
   const colorMap = {
     red: "#FF4D4D",
     orange: "#FF884D",

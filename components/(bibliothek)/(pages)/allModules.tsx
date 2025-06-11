@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView,FlatList, Image } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView,FlatList, Image, RefreshControl, Platform } from 'react-native'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
@@ -140,6 +140,21 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
           data={items}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              // Android
+              colors={Platform.OS === 'android' ? ['#3b82f6'] : undefined}
+              progressBackgroundColor={Platform.OS === 'android' ? '#000' : undefined}
+              // iOS
+              tintColor={Platform.OS === 'ios' ? '#3b82f6' : undefined}
+              title={Platform.OS === 'ios' ? 'Aktualisieren...' : undefined}
+              titleColor={Platform.OS === 'ios' ? '#374151' : undefined}
+              // Web
+              progressViewOffset={Platform.OS === 'web' ? 0 : 0}
+            />
+          }
           renderItem={({ item,index }) => (
             <View className='flex-1 mr-2 mb-2'>
               <Karteikarte handlePress={async ()=> {await updateUserUsageModules(

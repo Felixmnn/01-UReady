@@ -8,12 +8,10 @@ import AddModule from '../(general)/(modal)/addModule';
 import AddAiModule from '../(general)/(modal)/addAiModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
-import { getCountryList, getEducationList, getSchoolList, getUniversityList } from '@/lib/appwritePersonalize';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
 import { loadUserUsage } from '@/lib/appwriteDaten';
-import ModalStreak from './modalStreak';
 
 
 const { width } = Dimensions.get('window');
@@ -96,13 +94,17 @@ const HomeGeneral = () => {
 
 
   async function startQuiz(session) {
+    console.log("Start Quiz for session: ", session)
     const questions = await getSessionQuestions(session.sessionID)
+    console.log(" ✅ Questions ✅ ", questions)
+    
     if (!questions || questions.length == 0) {
       router.push("/bibliothek")
       return;
     }
+    
     router.push({
-                  pathname:"quiz",
+                  pathname:"/quiz",
                   params: {questions: JSON.stringify(questions), moduleID: session.moduleID }
               }) 
   }
@@ -128,7 +130,7 @@ const HomeGeneral = () => {
           <View className={` bg-${item.color}-500 rounded-full p-1`}
           style={{
             width: `${item.percent}%`,
-            backgroundColor: returnColor(item.color?.toLowerCase()),
+            backgroundColor: returnColor(item.color?.toLowerCase() || "blue"),
 
           }}
           />
@@ -238,7 +240,7 @@ const HomeGeneral = () => {
       })
     }
   },[refreshing])
-
+  console.log("User Usage", userUsage)
 
   return (
     <ScrollView

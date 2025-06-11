@@ -9,6 +9,7 @@ import { addQUestion } from '@/lib/appwriteEdit'
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useGlobalContext } from '@/context/GlobalProvider'
 import  RenderNewAnswers  from './(sharedComponents)/renderAnswers'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule, questions, setQuestions,subjectID }) => {
      
@@ -115,9 +116,12 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                     sessionID: sessionID
                 }));
             }
-            console.log("❌", JSON.parse(newQuestion.sessionID))
   return (
-    <ScrollView className='flex-1  '>
+    <View className='flex-1 '>
+    <ScrollView className='flex-1 '
+    
+
+  >
                 <ErrorModal isError={isError} setIsError={setIsError} success={success} successMessage={successMessage} />
 
         <ModalSelectSession changeSession={changeSession} modalVisible= {modalVisible} setModalVisible={setModalVisible} selectedQuestion={newQuestion} selectedModule={selectedModule}/>
@@ -142,7 +146,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                         }
                                         placeHolder={texts[selectedLanguage].question}
                                         />
-                                    <TouchableOpacity className='p-2 bg-blue-500 rounded-[10px]' onPress={() => {
+                                    <TouchableOpacity className='p-2 rounded-[10px]' onPress={() => {
                                         setQuestionActive(false)
                                     }}>
                                         <Icon name="check" size={20} color="white" onPress={()=> setQuestionActive(false)} />
@@ -168,10 +172,13 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                     
                                 </TouchableOpacity>
                             }
-                            <View className='border-t-[1px] border-gray-500 w-full my-2'/>
+                            <View className='flex-1 border-t-[1px] border-gray-500 w-full my-2'/>
                             {
                                 newQuestion.answers.length > 0 ?
-                                <View className='w-full flex-1 items-center justify-center '>
+                                <View className='w-full flex-1 bg-green-500 items-center justify-center '
+                                    
+                                
+                                >
                                     <View style={{ width: '100%' }}>
                                         {newQuestion.answers.map((item, index) => 
                                         (
@@ -195,7 +202,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             }
                             
 
-                            <View className='flex-1 p-1 w-full  justify-center items-center flex-row'>
+                            <View className='flex-1 p-1 mt-10 w-full  justify-center items-center flex-row'>
                                 <TouchableOpacity onPress={()=> {
                                     setNewQuestion(prevState => ({
                                                     ...prevState,
@@ -229,6 +236,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                 </TouchableOpacity>
                             </View> 
                         </ScrollView>
+                        </View>
   )
 }
 

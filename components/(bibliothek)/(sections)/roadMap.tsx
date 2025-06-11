@@ -8,7 +8,7 @@ import { returnColor, returnColorButton, returnColorButtonShadow } from '../../.
 import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 
 const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID, moduleDescription}) => { 
-  const { user } = useGlobalContext();
+  const { user, userUsage } = useGlobalContext();
   console.log("currentModule", currentModule)
   function getAll(){
     let bad = 0
@@ -47,7 +47,19 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
                 opacity: selected == index ? 1 : 0.5,
 
               }}
-              onPress={() => setSelected(index)}
+              onPress={() => {
+                console.log("🔴Module Sessions🔴", moduleSessions)
+                setSelected(index);
+                updateUserUsageSessions(userUsage.$id, {
+                  name: moduleSessions[index].title,
+                  sessionID: moduleSessions[index].id,
+                  percent: moduleSessions[index].percent,
+                  color: moduleSessions[index].color,
+                  iconName: moduleSessions[index].iconName,
+                  questions: moduleSessions[index].questions,
+                } )
+                
+              }}
               className='rounded-[10px]  bg-gray-800 '
               >
                 <View className='w-full rounded-t-[10px] border-t-[1px] border-gray-700'

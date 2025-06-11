@@ -31,12 +31,34 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     const isVertical = width > 700;
     const [ tab, setTab ] = useState(0)
     const [loading, setLoading] = useState(true);
+    function reverseToManyStringifyActions(array) {
+        return array.map(item => {
+            try {
+                let result = item;
+                while (typeof result === "string") {
+                    try {
+                    result = JSON.parse(result);
+                    } catch (e) {
+                    break;
+                    }
+                }
+                return result;
+            } catch (error) {
+                console.error("Error parsing item:", item, error);
+                return item; // Return the original item if parsing fails
+            }
+        });
+        
+
+    }
+
 
     {/* Relevant Data - Modules $ Sessions */}
     const [module, setModule] = useState({
         ...moduleEntry,
-        questionList: moduleEntry.questionList.map(item => JSON.parse(item))
+        questionList: reverseToManyStringifyActions(moduleEntry.questionList)
     });
+    
     const [selectedSession, setSelectedSession] = useState(0)
     const [questions, setQuestions] = useState([]);
     const [notes, setNotes] = useState([]);
@@ -106,20 +128,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     }
     updateModuleLocal()
     }, [sessions])
-   /**
-    * This function gets the amount of the questions and notes from the module.
-    * It then updates the question and note count in the module
-    */
-    useEffect(() => {
-        if (!module) return;
-        async function fetchQuestions() {
-            const res = await getModuleAmout(module.$id)
-            const resToRes = await updateModuleData(module.$id,{"questions":res?.questions,"notes":res?.notes})
-        }
-    
-        fetchQuestions()
-    }
-    , [module])
+   
     const [ questionLoadedSessions, setQuestionLoadedSessions ] = useState([])
     /**
      * The Function recives a Array of Questions and calcultes how many percent are null, good, bad, ok or great.
@@ -309,19 +318,8 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 }
                 uploadRes = await addDocumentToBucketWeb(data);
                 
-                console.log("✅File read as Blob for web:", uploadRes);
             } else {
-                console.log("Starting the Data Upload for Mobile");
-                /*
-                const base64 = await FileSystem.readAsStringAsync(file.uri, {
-                    encoding: FileSystem.EncodingType.Base64,
-                });
-                const byteCharacters = atob(base64);
-                const byteNumbers = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
-                const byteArray = new Uint8Array(byteNumbers);
-                fileBlob = new Blob([byteArray], { type: file.mimeType || 'application/octet-stream' });
-                console.log("File read as Blob for mobile:", fileBlob);
-                */
+                
                fileBlob = {
                          uri: file.uri,
                          name: file.name,
@@ -332,26 +330,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                     doc.id,
                     fileBlob,
                 );
-                console.log("✅File read as Blob for mobile:", uploadRes);
             }
-            /*
-            const uploadRes = await addDocumentToBucket({
-                fileID: doc.id,
-                fileBlob: fileBlob,
-                name: file.name,
-            });
-            */
-            console.log("File uploaded to Appwrite bucket:", uploadRes);
-
+           
             setDocuments(prevDocs => prevDocs.map(document =>
             document.id === doc.id ? { ...document, uploaded: true } : document
             ));
 
-            console.log("Document updated with upload status:", {...doc, uploaded: true});
             appwriteRes.uploaded = true;
             const final = await updateDocumentConfig(appwriteRes);
-            console.log("Final document config after update:", final);
-            //setDocuments(documents.map(document => document.id === doc.id ? final : document));
 
         } catch (error) {
             console.log('Error in addDocument:', error);
@@ -384,7 +370,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     const [ isVisibleNewQuestion, setIsVisibleNewQuestion ] = useState(false)
     const [ isVisibleAI, setIsVisibleAI ] = useState(false)
     const [ change, setChange ] = useState(0)
-
+    
     /**
      * This function checks for each question if it is in the questionList.
      * If not, it adds the question with the status null to ensure that there is a new state for each user.
@@ -393,22 +379,21 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     useEffect(() => {
     async function updateQuestionList() {
         let hasChanges = false;
+        const parsedQuestions = reverseToManyStringifyActions(module.questionList);
+        const noDuplicates = parsedQuestions.filter((item, index, self) =>
+            index === self.findIndex((t) => (
+                t.id === item.id
+            ))
+        );
 
-        questions.forEach((question) => {
-            const existing = module.questionList.find(item => item.id === question.$id);
-            if (!existing) {
-                module.questionList.push({
-                    id: question.$id,
-                    status: null
-                });
-                hasChanges = true;
-            } 
-        });
+        
+        
 
-        if (hasChanges) {
+
+        if (noDuplicates.length !== module.questionList.length || module.questions !== noDuplicates.length) {
             const res = await updateModuleData(module.$id, {
-                questionList: module.questionList.map(item => JSON.stringify(item)),
-                questions: module.questionList.length,
+                questionList: noDuplicates.map(item => JSON.stringify(item)),
+                questions: noDuplicates.length,
                 progress: calculatePercent(questions)
             });
         } 
@@ -422,7 +407,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         setChange(change + 1)
    },[selectedSession])
 
-    console.log("Questions:", questions);
 
     return (
         <View className='flex-1 rounded-[10px] items-center '>

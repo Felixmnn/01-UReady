@@ -480,7 +480,7 @@ const allSections =  {
 
 const Policys = () => {
   const { language } = useGlobalContext()  
-  const correctLanguage = language ? language == "ENGLISCH(US)" || language == "ENGLISCH(UK)" || language == "AUSTRALIAN" ? "ENGLISH" :  language.toUpperCase() : "DEUTSCH";
+  const correctLanguage = language ? language == "SPANISH" ? "SPANISH" :  "ENGLISH" : "DEUTSCH";
   const sections = allSections[correctLanguage] || allSections["DEUTSCH"];
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [expandedSubIndex, setExpandedSubIndex] = useState<{ [key: number]: number | null }>({});
@@ -511,8 +511,8 @@ const Policys = () => {
       }}
 
     >
-      <View className="w-full flex-row items-center justify-between p-4 mb-4">
-        <TouchableOpacity onPress={() => router.push("/profil")}>
+      <View className="w-full flex-row items-center justify-between pt-4 mb-4">
+        <TouchableOpacity className='mr-2' onPress={() => router.push("/profil")}>
           <Icon name="arrow-left" size={20} color="#fff" />
         </TouchableOpacity>
         <Text

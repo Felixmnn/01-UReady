@@ -1,6 +1,7 @@
 
 import { addDocumentJob, addNewModule, addNewModuleWithID } from '@/lib/appwriteAdd';
 import { addQUestion, setUserDataSetup } from '@/lib/appwriteEdit';
+import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
 import {router} from 'expo-router';
 import uuid from 'react-native-uuid';
 import { create } from 'react-test-renderer';
@@ -10,6 +11,7 @@ import { create } from 'react-test-renderer';
 export async function materialToModule(user, material, userData, newModule, setNewModule, questions, setQuestions, sessions, setSessions, setLoading, reloadNeeded, setReloadNeeded,setIsVisibleModal) {
   setLoading(true);
   let directQuestions = [];
+  let questionConfig = [];
   const moduleID = uuid.v4();
 
   try {
@@ -35,7 +37,17 @@ export async function materialToModule(user, material, userData, newModule, setN
 
 
     // Modul trotzdem speichern, selbst wenn Fragen fehlen
+
     let newModuleData;
+    console.log("💵💵Module QUestions ", directQuestions, "ModuleID", moduleID);
+      /*
+    questionConfig = directQuestions.map((question) => ({
+      [...questionConfig, {
+        id: directQuestions.id,
+        status: null
+      }]
+    }))
+      */
     try {
       newModuleData = await addNewModuleWithID({
         ...newModule,
@@ -47,22 +59,33 @@ export async function materialToModule(user, material, userData, newModule, setN
       console.log("Fehler beim Speichern des Moduls:", error);
       // Wenn Modul-Speicherung fehlschlägt, redirect trotzdem ausführen
     }
-
+    let savedQuestions = [];
     // Fragen speichern
     if (newModuleData && newModuleData.$id) {
       for (let i = 0; i < directQuestions.length; i++) {
         try {
           const question = { ...directQuestions[i], subjectID: newModuleData.$id };
           const savedQuestion = await addQUestion(question);
+          console.log("Gespeicherte Frage:", savedQuestion);
+          savedQuestions.push({
+            id: savedQuestion.$id,
+            status: null
+          })
         } catch (error) {
           console.log("Fehler beim Speichern einer Frage:", error);
         }
       }
     }
-
+    console.log("🔴Gespeicherte Fragen:", savedQuestions);
+    
+    console.log("❤️Gespeicherte Fragen nach JSON.stringify:", savedQuestions);
+    //Update Module
+    const res = await updateModuleQuestionList(newModuleData.$id, savedQuestions.map((item) => JSON.stringify(item)));
+    console.log("💕Module aktualisiert:", res);
     // Benutzer-Daten aktualisieren
     try {
       const resp = await setUserDataSetup(user.$id);
+
     } catch (error) {
       console.log("Fehler beim Aktualisieren der Benutzerdaten:", error);
     }

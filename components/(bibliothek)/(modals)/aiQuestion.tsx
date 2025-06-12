@@ -8,7 +8,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { addDocumentJob } from '@/lib/appwriteAdd';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
-const AiQuestion = ({isVisible, setIsVisible,setErrorMessage, setIsError, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
+const AiQuestion = ({isVisible,module, setIsVisible,setErrorMessage, setIsError, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
 const { userUsage, setUserUsage,language } = useGlobalContext()
  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
@@ -18,6 +18,7 @@ const { userUsage, setUserUsage,language } = useGlobalContext()
     }, [language])
 
 const texts = languages.aiQuestion;
+console.log("MODULE", module)
 
 
 const [selectedType, setSelectedType] = useState("FILE")
@@ -271,6 +272,7 @@ return (
                                             setQuestions, 
                                             questions, 
                                             setIsLoading, 
+                                            module
                                         )
                                         setUserUsage({
                                         ...userUsage,
@@ -392,6 +394,7 @@ return (
                                             setQuestions, 
                                             questions, 
                                             setIsLoading, 
+                                            module
                                         )
                                         setUserUsage({
                                         ...userUsage,

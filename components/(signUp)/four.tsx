@@ -184,7 +184,7 @@ const StepFour = ({selectedLanguage,schoolListDeutschland, universityListDeutsch
                 <View className='flex-1'>
                     <FlatList
                         data={universityListDeutschland.filter((item) => item.name.toLowerCase().includes(universityFilter.toLowerCase()))}
-                        keyExtractor={(item => item.id)}
+                        keyExtractor={((item,index) => index.toString())}
                         style={{
                             scrollbarWidth: 'thin', 
                             scrollbarColor: 'gray transparent'  

@@ -72,7 +72,9 @@ const ResetPassword = () => {
         if (Platform.OS === 'web') {
         alert(texts[selectedLanguage].pleaseGoToAppToSignIn);
         } else {
-        Linking.openURL('exp://10.0.10.209:8081/'); 
+        //Linking.openURL('exp://10.0.10.209:8081/');  --> In dev mode, use the correct URL for your app
+        Linking.openURL('node-ready:///'); // Replace with your app's URL
+
         }
     };
 

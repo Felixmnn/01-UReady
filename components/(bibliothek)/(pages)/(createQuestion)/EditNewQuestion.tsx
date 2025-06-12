@@ -175,7 +175,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                             <View className='flex-1 border-t-[1px] border-gray-500 w-full my-2'/>
                             {
                                 newQuestion.answers.length > 0 ?
-                                <View className='w-full flex-1 bg-green-500 items-center justify-center '
+                                <View className='w-full flex-1  items-center justify-center '
                                     
                                 
                                 >

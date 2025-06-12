@@ -553,7 +553,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
               return (
                 <TouchableOpacity
                   key={index}
-                  className="bg-[#0c111d] flex-row p-2 m-1 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg"
+                  className="bg-[#0c111d] flex-row px-2  m-1 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg"
                   style={{ height: 30 }}
                   onPress={() => {
                     setNewItem({ ...newitem, content: item.content, type: item.type, uri: item.uri, sessionID:item.sessionID, id:item.id });

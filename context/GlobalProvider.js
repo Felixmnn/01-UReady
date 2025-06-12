@@ -30,9 +30,9 @@ const GlobalProvider = ({children}) => {
                     streak: 0,
                     streakActive: false,
                     streakLastUpdate: new Date(),
-                    energy: 5,
+                    energy: 30,
                     microchip: 0,
-                    boostActive: true,
+                    boostActive: false,
                     boostActivation: new Date(),
                     boostType: null,
                     lastModules: [],
@@ -89,6 +89,24 @@ const GlobalProvider = ({children}) => {
         }
         fetchUserData()
     },[user]);
+
+    useEffect(() => {
+        if (!user) return;
+        async function fetchUserCategory() {
+            try {
+                const userU = await loadUserUsage(user.$id);
+                if (!userU) {
+                    await fetchUserUsage();
+                }
+                setUserUsage(userU);
+            } catch (error) {
+                const userU = await fetchUserUsage()
+                setUserUsage(userU);
+            }
+        }
+        fetchUserCategory();
+    }
+    , [user]);
 
     useEffect(() => {
         if (!userUsage) return;

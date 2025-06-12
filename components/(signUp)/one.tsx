@@ -15,7 +15,7 @@ const StepOne = ({name, setName, userData, setUserData}) => {
         style={{height:height,}}>   
             <ProgressBar percent={20} handlePress={()=> setUserData({...userData,signInProcessStep:"ZERO"})}/>
                 <View className='items-center justiy-center'>
-                    <BotCenter message='Wie darf ich dich nennen?' imageSource="Frage" spechBubbleStyle="bg-blue-500" spBCStyle="max-w-[200px]"/>
+                    <BotCenter message='Wiie darf ich dich nennen?' imageSource="Frage" spechBubbleStyle="bg-blue-500" spBCStyle="max-w-[200px]"/>
                         <TextInput
                                 className={`text-white  rounded-[10px] p-1 bg-[#0c111d] text-center p-2 my-1 mx-2 border-blue-700 border-[1px]  `} 
                                 style={{width:200, color: 'white'}}

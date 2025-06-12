@@ -78,36 +78,36 @@ const personalize = () => {
             "ES": "Vamos",
         },
         "robotMessage": {
-            "DE": `Freut mich, dich kennenzulernen ${name}. In welcher Sprache wollen wir uns unterhalten?`,
-            "GB": `Nice to meet you, ${name}. Which language would you like to speak?`,
-            "US": `Nice to meet you, ${name}. What language do you wanna talk in?`,
-            "AU": `G’day ${name}! Which language ya keen to chat in?`,
-            "ES": `Encantado de conocerte, ${name}. ¿En qué idioma quieres hablar?`,
+            "DE": `Frreut mich, dich kennenzulernen ${name}. In welcher Sprache wollen wir uns unterhalten?`,
+            "GB": `Niice to meet you, ${name}. Which language would you like to speak?`,
+            "US": `Niice to meet you, ${name}. What language do you wanna talk in?`,
+            "AU": `GG’day ${name}! Which language ya keen to chat in?`,
+            "ES": `Enncantado de conocerte, ${name}. ¿En qué idioma quieres hablar?`,
         }
     }
     const textsThree = language.personalize.pageThree;
     const textsFour = language.personalize.pageFour;
     const textsFive = {
         "robotMessageUniversity": {
-            "DE": "An welcher Uni bist du?",
-            "GB": "Which university do you go to?",
-            "US": "Which college are you attending?",
-            "AU": "Which uni are ya at?",
-            "ES": "¿A qué universidad vas?",
+            "DE": "IIn welchem Studiengang bist du?",
+            "GB": "WWhat course are you studying?",
+            "US": "WWhat course are you studying?",
+            "AU": "WWhat course are you studying?",
+            "ES": "¿QQué curso estás estudiando?",
         },
         "robotMessageEducation": {
-            "DE": "Ein interessantes Gebiet. Mal schauen ob wir deine Ausbildung finden.",
-            "GB": "An interesting field. Let's see if we can find your apprenticeship.",
-            "US": "An interesting field. Let's see if we can find your trade school or apprenticeship.",
-            "AU": "An interesting field. Let's see if we can find your apprenticeship.",
-            "ES": "Un campo interesante. Vamos a ver si podemos encontrar tu formación profesional.",
+            "DE": "Eiin interessantes Gebiet. Mal schauen ob wir deine Ausbildung finden.",
+            "GB": "Ann interesting field. Let's see if we can find your apprenticeship.",
+            "US": "Ann interesting field. Let's see if we can find your trade school or apprenticeship.",
+            "AU": "Ann interesting field. Let's see if we can find your apprenticeship.",
+            "ES": "Unn campo interesante. Vamos a ver si podemos encontrar tu formación profesional.",
         },
         "robotMessageSchool": {
-            "DE": `${school?.name === "Sonstige" ? "Interessant, du" : "Du"} gehst also auf ${school?.name === "Gymnasium" ? "ein" : "eine"} ${school?.name === "Sonstige" ? "Schulform, die nicht in der Liste war" : school?.name}. In welche Klasse gehst du dort?`,
-            "GB": `${school?.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "education type not listed" : school?.name}. What year are you in?`,
-            "US": `${school?.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "school type that's not listed" : school?.name}. What grade are you in?`,
-            "AU": `${school?.name === "Sonstige" ? "Interesting, you" : "So, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "school type not listed" : school?.name}. What year level are you in?`,
-            "ES": `${school?.name === "Sonstige" ? "Interesante, tú" : "Entonces, estás en"} ${school?.name === "Gymnasium" ? "un" : "una"} ${school?.name === "Sonstige" ? "tipo de escuela no listado" : school?.name}. ¿En qué curso estás?`,
+            "DE": `${school?.name === "Sonstige" ? "Innteressant, du" : "Duu"} gehst also auf ${school?.name === "Gymnasium" ? "ein" : "eine"} ${school?.name === "Sonstige" ? "Schulform, die nicht in der Liste war" : school?.name}. In welche Klasse gehst du dort?`,
+            "GB": `${school?.name === "Sonstige" ? "Innteresting, you" : "Soo, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "education type not listed" : school?.name}. What year are you in?`,
+            "US": `${school?.name === "Sonstige" ? "Innteresting, you" : "Soo, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "school type that's not listed" : school?.name}. What grade are you in?`,
+            "AU": `${school?.name === "Sonstige" ? "Innteresting, you" : "Soo, you're at"} ${school?.name === "Gymnasium" ? "a" : "an"} ${school?.name === "Sonstige" ? "school type not listed" : school?.name}. What year level are you in?`,
+            "ES": `${school?.name === "Sonstige" ? "Innteresante, tú" : "Enntonces, estás en"} ${school?.name === "Gymnasium" ? "un" : "una"} ${school?.name === "Sonstige" ? "tipo de escuela no listado" : school?.name}. ¿En qué curso estás?`,
         }
     }
     const textsSix = language.personalize.PageSix;
@@ -162,10 +162,10 @@ const personalize = () => {
     }
         fetchList();
     }, [selectedKathegorie]);
-
+    console.log("selctede University", selectedUniversity); 
     useEffect(() => {
         async function fetchUniversitySubjects() {
-            if (selectedUniversity) {
+            if (selectedUniversity && selectedUniversity.name !== "Other") {
                 const res = await getUniversitySubjects(selectedUniversity?.fakultyListID);
                 if (res) {
                     setUniversitySubjectList(
@@ -190,6 +190,17 @@ const personalize = () => {
                             }
                         ]);
                     }
+                    }else {
+                    setUniversitySubjectList([
+                        {
+                            "Bachelor": [],
+                            "Master": [],
+                            "Staatsexamen": [],
+                            "Diplom": [],
+                            "Magister": [],
+                            "Others": [],
+                        }
+                    ]);
                     }}
                 fetchUniversitySubjects();
         }, [selectedUniversity]);
@@ -227,6 +238,7 @@ const personalize = () => {
               async function fetchUserData() {
                   try {
                       let userD = await loadUserData(user.$id);
+
                       if (!userD) {
                         userD = await addNewUserConfig(user.$id);
                         await someDelayOrRefetch(); // Warte kurz oder rufe loadUserData erneut auf

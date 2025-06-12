@@ -5,7 +5,7 @@ import  { router } from "expo-router"
 import  Selectable  from '../selectable'
 import SmileyStatus from '../(components)/smileyStatus';
 
-const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleNewQuestion, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
     
     const [optionsVisible, setOptionsVisible] = useState([]);
         function handleOptionsVisibility(id) {
@@ -106,9 +106,10 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
     console.log("👍filtered Data", filteredData)
     const QuestionList = () => {
         return(
-        <View className='w-full'
+
+        <View className='w-full '
             style={{
-                maxHeight: 250,
+                maxHeight: filteredData.length > 0 ?  250 : 120,
             }}
         >
             <CounterText title={texts[selectedLanguage].questio} count={filteredData.length}/>
@@ -122,7 +123,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
               }}
             ListHeaderComponent={() => {
                 return (
-                    <View className='h-full p-1'>
+                    <View className='h-full p-1 '>
                         {
                           moduleSessions[selected]?.tags == "JOB-PENDING" ?
                             <View className='flex-1  items-center justify-center p-2 bg-gray-800 rounded-[10px] border-[1px] border-gray-500 border-dashed'
@@ -203,7 +204,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
             }}
             horizontal={true}
         /> : null}
-        {filteredData.length == 0 && !(moduleSessions[selected]?.tags == "JOB-PENDING")  ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> addDocument()}/> : null}
+        {filteredData.length == 0 && !(moduleSessions[selected]?.tags == "JOB-PENDING")  ? <AddData title={texts[selectedLanguage].questioH} subTitle={texts[selectedLanguage].questioSH} button={texts[selectedLanguage].questioBtn}  handlePress={()=> setIsVisibleNewQuestion(true)}/> : null}
 
         </View>
         )
@@ -216,7 +217,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
         return (
             <View className='w-full'
                 style={{
-                    minHeight: 150,
+                    minHeight: 130,
                 }}
             >
                 <CounterText title={texts[selectedLanguage].file} count={filteredDocuments.length}/>{

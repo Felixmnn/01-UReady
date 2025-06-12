@@ -69,7 +69,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                     creationSubject: userData.schoolSubjects,
                 })
             }
-            modules.length > 0 ? setMatchingModules(modules) : setMatchingModules([])
+            setMatchingModules(modules)
             setLoading(false)
         }
         fetchModules()
@@ -123,26 +123,37 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                 <View className={`${matchingModules.length > 0 ? "" : " items-center  justify-center"}`}>
                         <View className='flex-1 '>
                             <View className='flex-row flex-wrap justify-start items-center'>
-                            <FlatList
-                                data={matchingModules}
-                                renderItem={({ item,index }) => (
-                                    <View className={`flex-1 mr-2  ${selectedModules.includes(item.name) ? "" : "opacity-50"} `}>
-                                    <Karteikarte handlePress={()=> {
-                                                    if (selectedModules.includes(item.name)){
-                                                        setSelectedModules(selectedModules.filter((module) => module !== item.name))
-                                                    } else {
-                                                        setSelectedModules([...selectedModules, item.name])
-                                                    }
-                                                }}
-                                                farbe={item.color} studiengang={item.description} percentage={item.progress} titel={item.name}  fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={user.$id} availability={item.public} icon={"clock"} publicM={item.public} />
+                            <View className="flex flex-row flex-wrap">
+                                {matchingModules.map((item, index) => (
+                                    <View
+                                    key={item.$id}
+                                    className={`flex-1 mr-2 mb-2 ${selectedModules.includes(item.name) ? "" : "opacity-50"}`}
+                                    style={{ width: `${100 / numColumns}%`, minWidth: 300 }}
+                                    >
+                                    <Karteikarte
+                                        handlePress={() => {
+                                        if (selectedModules.includes(item.name)) {
+                                            setSelectedModules(selectedModules.filter((module) => module !== item.name));
+                                        } else {
+                                            setSelectedModules([...selectedModules, item.name]);
+                                        }
+                                        }}
+                                         farbe={item.color}
+                                            percentage={null}
+                                            titel={item.name}
+                                            studiengang={item.description}
+                                            fragenAnzahl={item.questions}
+                                            notizAnzahl={item.notes}
+                                            creator={item.creator}
+                                            icon={"clock"}
+                                            publicM={item.public}
+                                            reportVisible={true}
+                                            moduleID={item.$id}
+
+                                    />
                                     </View>
-                                )}
-                                keyExtractor={(item) => item.$id}
-                                key={numColumns}
-                                numColumns={numColumns}
-                                showsHorizontalScrollIndicator={false}
-                                showsVerticalScrollIndicator={false}
-                                />
+                                ))}
+                                </View>
                             </View>
                         </ View>
                 </View>
@@ -178,9 +189,9 @@ const PageDiscover = ({ setUserChoices, userData}) => {
 }
         <View className='items-center justify-center m-2'>
             {selectedModules.length > 0 ?
-            <GratisPremiumButton
-                aditionalStyles={"w-full max-w-[300px] rounded-[10px] bg-blue-500  "}
-                handlePress={async ()=> {
+            <TouchableOpacity
+                className={"w-full max-w-[300px] rounded-full bg-blue-500 h-10 w-[100px] items-center justify-center"} 
+                onPress={async ()=> {
                     if (selectedModules.length > 0){
                         matchingModules.map((module) => {
                             if (selectedModules.includes(module.name)){
@@ -232,14 +243,14 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                     
                 }}
             >
-                <Text className='text-gray-700 font-semibold text-[15px] '
+                <Text className='text-gray-300 font-semibold text-[15px]'
                 
                 >   
                 {
                     selectedModules.length > 0 ? selectedModules.length == 1 ? texts[selectedLanguage].useThisModule : `${texts[selectedLanguage].this} ${selectedModules.length} ${texts[selectedLanguage].moduleUse}` : texts[selectedLanguage].noModulesFound
                 }
                 </Text>
-            </GratisPremiumButton>
+            </TouchableOpacity>
             : null}
         </View>
     </SafeAreaView>

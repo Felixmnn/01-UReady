@@ -129,56 +129,47 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
     const ModuleList = ({items=[], header="Letzte 7 Tage" }) => {
       const [ isVisible, setIsVisible] = useState(false);
       return (
-        <View>
+        <View className={`flex-1 mb-4`}>
         <TouchableOpacity className='' onPress={()=> setIsVisible(!isVisible)}>
           <View className='flex-row items-center justify-between w-full mb-2'>
             <Text className='font-bold text-gray-100 text-[18px]'>{header}</Text>
             <Icon name={isVisible ? "chevron-down" : "chevron-up"} size={20} color="white"/>
           </View>
         </TouchableOpacity>
-        {
-          isVisible ? null :
-        <FlatList
-          data={items}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              // Android
-              colors={Platform.OS === 'android' ? ['#3b82f6'] : undefined}
-              progressBackgroundColor={Platform.OS === 'android' ? '#000' : undefined}
-              // iOS
-              tintColor={Platform.OS === 'ios' ? '#3b82f6' : undefined}
-              title={Platform.OS === 'ios' ? 'Aktualisieren...' : undefined}
-              titleColor={Platform.OS === 'ios' ? '#374151' : undefined}
-              // Web
-              progressViewOffset={Platform.OS === 'web' ? 0 : 0}
-            />
-          }
-          renderItem={({ item,index }) => (
-            <View className='flex-1 mr-2 mb-2'>
-              <Karteikarte handlePress={async ()=> {await updateUserUsageModules(
-                user.$id, {
-                  name: item.name,
-                  percent : item.progress,
-                  color: item.color,
-                  fragen : item.questions,
-                  sessions : item.sessions.length,
-                  sessionID: item.$id
-                }
-              );setSelected("SingleModule"); setSelectedModule(index); }} farbe={item.color} percentage={item.progress} titel={item.name} studiengang={item.description} fragenAnzahl={item.questions} notizAnzahl={item.notes} creator={item.creator} availability={item.public} icon={"clock"} publicM={item.public} />
-            </View>
-          )}
-          keyExtractor={(item) => item.$id}
-          key={numColumns}
-          numColumns={numColumns}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
+          {!isVisible && (
+          <View className={`flex-1 flex-row flex-wrap`}
           
-        />
-    }
+          >
+            {items.map((item, index) => (
+              <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
+                <Karteikarte
+                  handlePress={async () => {
+                    await updateUserUsageModules(user.$id, {
+                      name: item.name,
+                      percent: item.progress,
+                      color: item.color,
+                      fragen: item.questions,
+                      sessions: item.sessions.length,
+                      sessionID: item.$id
+                    });
+                    setSelected("SingleModule");
+                    setSelectedModule(index);
+                  }}
+                  farbe={item.color}
+                  percentage={item.progress}
+                  titel={item.name}
+                  studiengang={item.description}
+                  fragenAnzahl={item.questions}
+                  notizAnzahl={item.notes}
+                  creator={item.creator}
+                  availability={item.public}
+                  icon={"clock"}
+                  publicM={item.public}
+                />
+              </View>
+            ))}
+          </View>
+        )}
         </View>
       )
 
@@ -199,20 +190,42 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
           
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
-        <View className={`flex-1  bg-gray-900 ${isVertical ? "p-4" : "p-2"} `}>
+        <ScrollView
+          className={`flex-1 bg-gray-900 ${isVertical ? "p-4" : "p-2"}`}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={Platform.OS === 'android' ? ['#3b82f6'] : undefined}
+              progressBackgroundColor={Platform.OS === 'android' ? '#000' : undefined}
+              tintColor={Platform.OS === 'ios' ? '#3b82f6' : undefined}
+              title={Platform.OS === 'ios' ? 'Aktualisieren...' : undefined}
+              titleColor={Platform.OS === 'ios' ? '#374151' : undefined}
+            />
+          }
+        >
+          <View style={{flexGrow:1.5}}>
           <ModuleList
             items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 0, 7))}
             header={texts[selectedLanguage].last7}
           />
+          </View>
+          { modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30)).length > 0 ? (
         <ModuleList
           items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30))}
           header={texts[selectedLanguage].last30}
         />
-        
+        ):null}
+        { modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 30, 365)).length > 0 ? (
+        <ModuleList
+          items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 30, 365))}
+          header={"365"}
+        />
+        ):null}
         
         
 
-        </View>
+        </ScrollView>
         { isVisibleAI ?
         <AddAiBottomSheet isVisibleAiModule={isVisibleAI} setIsVisibleAiModule={setIsVisibleAI}/>
         : null}

@@ -37,6 +37,7 @@ const entdecken = () => {
 
   {/*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */}
   const {user, isLoggedIn,isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
+  const [ rel, setRel ] = useState(false);
     useEffect(() => {
       if (!isLoading && (!user || !isLoggedIn)) {
         router.replace("/"); // oder "/sign-in"
@@ -164,7 +165,6 @@ const entdecken = () => {
       },
     }
   ]
-
   useEffect(() => {
     if (user == null) return;
     const fetchMyModules = async () => {
@@ -174,7 +174,7 @@ const entdecken = () => {
           }
     }
     fetchMyModules()
-  }, [user])
+  }, [user, rel  ])
 
   const [ searchBarText, setSearchBarText ] = useState("")
   const [ focused, setFocused ] = useState(false)
@@ -274,7 +274,9 @@ const entdecken = () => {
                   ...userUsage,
                   energy: userUsage.energy - calculateEnergyCost()
                 })
+              setRel(!rel)
                setSelectedModules([])
+               setMyModules([])
                 router.push("/bibliothek")
               }}>
             {

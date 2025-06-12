@@ -50,24 +50,18 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
       {/* Überschrift */}
       { width < 700 ?
       <View className='flex-1 w-full' >
+        
       <View className="items-center justify-center "
       style={{
         marginTop: 50,}}
       >
-        <View className="w-full max-w-[300px] px-5 h-[75px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] items-center justify-center z-10">
-          <Text className="font-semibold text-[15px] text-gray-100 text-center">
-            {texts[selectedLanguage].timeToStart}
-          </Text>
-        </View>
-        <View className="absolute  rounded-full p-2 bg-gray-900 border-gray-800 border-[1px] ml-3 mb-1" 
-        style={{
-          top: 65
-
-        }}
+        <BotCenter
+          message={texts[selectedLanguage].timeToStart}
+          imageSource="Waving"
+          spechBubbleStyle="bg-blue-500"
+          spBCStyle="max-w-[200px]"
         />
-        <View className="rounded-full p-1 bg-gray-900 border-gray-800 border-[1px] mt-3" />
-        <Image source={require('../../assets/Done.gif')} style={{ height: 150, width: 150 }} />
-      </View>
+        </View>
 
       {/* Carousel */}
       {
@@ -100,12 +94,9 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
       </View>
       :
         <View className='w-full flex-1 items-center justify-center'>
-          <BotCenter
-            message={texts[selectedLanguage].timeToStart}
-            imageSource={'Done'}
-            spechBubbleStyle={""}
-            spBCStyle={""}
-          />
+          
+          <BotCenter message={texts[selectedLanguage].timeToStart} imageSource="Frage" spechBubbleStyle="bg-blue-500" spBCStyle="max-w-[200px]"/>
+
           <View className="flex-row">
               <ContinueBox text={texts[selectedLanguage].setTogether} colorBorder={"#7a5af8"} colorBG={"#372292"} iconName={"bot"} handlePress={()=> setUserChoices("GENERATE")} selected={true}/>
               <ContinueBox text={texts[selectedLanguage].comilitones} colorBorder={"#20c1e1"} colorBG={"#0d2d3a"} iconName={"search"} handlePress={()=> setUserChoices("DISCOVER")} selected={true}/>

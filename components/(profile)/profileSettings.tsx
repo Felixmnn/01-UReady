@@ -38,7 +38,7 @@ const ProfileSettings = () => {
       if (user === null || user === undefined) return ;
       async function fetchUserData() {
         let userData = await loadUserData(user.$id);
-        setSelectedColorMode(userData.darkmode ? texts[selectedLanguage].dunkel : texts[selectedLanguage].hell)
+        setSelectedColorMode(userData.darkmode ? texts[selectedLanguage].dunkel : texts[selectedLanguage].darkmode)
         setUserData(userData)
         const userDataKathegory = await loadUserDataKathegory(user.$id);
         setSelectedLanguage(  userDataKathegory.language === "DEUTSCH" ||

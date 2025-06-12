@@ -87,37 +87,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     const [success, setSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState(null);
     const [ errorMessage, setErrorMessage ] = useState("Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.");
-    const ErrorModal = ({isError, setIsError, success=false, successMessage=null}) => {
-               return (
-                   <Modal
-                       animationType="slide"
-                       transparent={true}
-                       visible={isError || success}
-                       onRequestClose={() => {
-                         setIsError(!isError);
-                       }}
-                   >
-                       <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> {setIsError(false); setSuccess(false)} }
-                         >
-                           <View className={` border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700
-                             ${success ? 'bg-green-900' : 'bg-red-900'}`}
-                             style={{
-                                 borderColor: success ? 'green' : '#ff4d4d',
-                             }}
-                           >
-                               <Text className='text-white font-bold'>{successMessage ? successMessage : errorMessage}</Text>
-                           </View>
-                       </TouchableOpacity>
-                   </Modal>
-               )
-           }
-
+    
     const texts = languages.singleModule; 
     /**
      * This function updates the sessions each time the sessions change.
      * The sessions are each stored as a JSON string in the module.
      */
     useEffect(() => {
+        if (!module) return;
         async function updateModuleLocal () {
             const newModule = {
                 ...module,
@@ -279,7 +256,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         }}
     /**
      * This function loads a document from the users device and uploads it to the Appwrite bucket.
-     * Additioally, a document config is created wich contains the relevant data for the document.
+     * Additioally, a document config is created wich contaiMons the relevant data for the document.
     */
     async function addDocument() {
         try {
@@ -407,14 +384,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         setChange(change + 1)
    },[selectedSession])
 
+   console.log("selectedSession", selectedSession, "sessions", sessions, "module", module)
 
+   
     return (
         <View className='flex-1 rounded-[10px] items-center '>
-            <ErrorModal isError={isError} setIsError={setIsError} success={success} successMessage={successMessage} />
-
+           
             <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
-            <AiQuestion setErrorMessage={setErrorMessage} setIsError={setIsError} uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
-
+            <AiQuestion module={module} setErrorMessage={setErrorMessage} setIsError={setIsError} uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
             {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50'></View> : null }
             <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>
                 { loading ? <Text>...</Text> :
@@ -428,6 +405,8 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                     modules={modules}
                     setModules={setModules}
                     setSelectedModule={setSelectedScreen}
+                    setIsError={setIsError}
+                    setErrorMessage={setErrorMessage}
                     
                     />
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Map"} tab2={"Fragen"} bg={"bg-gray-900"} change={change}/> : null }
@@ -444,7 +423,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                         }
                         {isVertical || tab == 1 ?
                             <View className='p-4 flex-1'>
-                                <Data setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
+                                <Data setIsVisibleNewQuestion={setIsVisibleNewQuestion} setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null 
                         }

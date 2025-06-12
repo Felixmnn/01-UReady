@@ -32,7 +32,7 @@ const StepFive = ({setDegree, message, ausbildungKathegorie,setSelectedKathegori
     return (
             <View  className='h-full  w-full justify-between items-center py-5'>
                 <BotBottomLeft
-                    message={"Was ist dein Abschlussziel?"}
+                    message={selectedLanguage == null ? message.robotMessageUniversity.DE : message.robotMessageUniversity[languages[selectedLanguage].code]}
                     imageSource="Waving"
                     spechBubbleStyle="bg-blue-500" 
                     spBCStyle="max-w-[200px]"

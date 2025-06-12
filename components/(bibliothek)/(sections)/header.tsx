@@ -10,7 +10,9 @@ import DeleteModule from '../(modals)/deleteModule';
 const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName, moduleID,
                     modules,
                     setModules,
-                    setSelectedModule
+                    setSelectedModule,
+                    setErrorMessage,
+                    setIsError
 
 }) => {
     const { width } = useWindowDimensions(); 
@@ -58,10 +60,21 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
                             <Icon name="plus" size={15} color="white"/>
                             {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].addMaterial}</Text> : null}
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> router.push({
-                                                        pathname:"quiz",
-                                                        params: {questions: JSON.stringify(filteredData), moduleID:moduleID }
-                            })}  
+                        <TouchableOpacity 
+                        disabled={questions.length == 0}
+                        onPress={()=> {
+                            if (questions.length == 0) {
+                                setErrorMessage("texts[selectedLanguage].youNeedQuestionsToStartAQuiz");
+                                setIsError(true);
+                            } else {
+                            router.push({
+                                pathname:"quiz",
+                                params: {questions: JSON.stringify(filteredData), moduleID:moduleID }
+                            })
+                        }
+                        }
+                         }  
+                         style={{opacity: questions.length == 0 ? 0.5 : 1, paddingLeft: 5}}
                             className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name="play" size={15} color="white"/>
                             {isVertical ? <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].learnNow}</Text> : null}

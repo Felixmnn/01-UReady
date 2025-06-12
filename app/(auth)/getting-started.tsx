@@ -7,10 +7,18 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
-    const {user, isLoggedIn,isLoading } = useGlobalContext();
+    const {user, isLoggedIn,isLoading,language } = useGlobalContext();
+    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
+    const texts = languages.gettingStarted[selectedLanguage] || languages.gettingStarted["DEUTSCH"];
+    useEffect(() => {
+      if(language) {
+        setSelectedLanguage(language)
+      }
+    }, [language])
 
       useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
@@ -59,7 +67,7 @@ const gettingStarted = () => {
       questions: 0,
       notes: 0,
       documents: 0,
-      public: false,
+      public: true,
       progress: 0,
       creator: "",
       color: null,

@@ -8,7 +8,7 @@ import { returnColor, returnColorButton, returnColorButtonShadow } from '../../.
 import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 
 const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID, moduleDescription}) => { 
-  const { user, userUsage } = useGlobalContext();
+  const { user, userUsage, language } = useGlobalContext();
   console.log("currentModule", currentModule)
   function getAll(){
     let bad = 0
@@ -30,6 +30,8 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
 
   }
   const percentA = getAll()
+    console.log("PercentA", percentA)
+
   const {width} = useWindowDimensions()
     return (
     <ScrollView className={`${width > 700 ? "" : null} ` }  style={{
@@ -65,19 +67,21 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
               >
                 <View className='w-full rounded-t-[10px] border-t-[1px] border-gray-700'
                     style={{
-                      backgroundColor: returnColor(module.color, currentModule.color),
+                      backgroundColor: returnColor(module.color ? module.color :"blue", currentModule.color),
                       height: 8,
                     }}
                   />
                 <View className='w-full flex-row items-center justify-start py-2 px-3'> 
                   <VektorCircle sizeMultiplier={1.3} color={returnColor(module.color == null ? "blue" : module.color , currentModule.color)} percentage={module.percent} icon={module.iconName} strokeColor={returnColor(module.color == null ? "blue" : module.color , currentModule.color)}/>
-                  <View className='justify-center'>
+                  <View className='justify-center '>
                     <Text className='text-white font-bold text-[15px] px-3 '>{module.title}</Text>
                     {
                       selected == index && module.description?.length > 0 ?
                         <Text
                           className="text-white font-semibold text-[12px] px-3"
-                          style={{ flexWrap: 'wrap' }}
+                          style={{ flexWrap: 'wrap',
+                            maxWidth: 250
+                           }}
                         >
                           {module.description}
                         </Text>
@@ -106,9 +110,9 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
             }}
           />
         <View className='w-full flex-row items-center justify-start py-2 px-3'> 
-          <VektorCircle sizeMultiplier={1.3}  color={returnColor(currentModule.color)} percentage={percentA.bad} icon={"list-alt"} strokeColor={returnColor(currentModule.color)}/>
-          <View>
-                    <Text className='text-white font-bold text-[15px] px-3 pt-3 '>Alle Fragen</Text>
+          <VektorCircle sizeMultiplier={1.3}  color={returnColor(currentModule.color)} percentage={Number.isNaN(percentA.bad) ? 0 : percentA.bad  } icon={"list-alt"} strokeColor={returnColor(currentModule.color)}/>
+          <View >
+                    <Text className='text-white font-bold text-[15px] px-3 pt-3 '>{language == "DEUTSCH" ? "Alle Fragen" : language == "SPANISH" ? "Todas las preguntas" : "All Questions"}</Text>
                     {
                       selected == moduleSessions.length +1 && moduleDescription?.length > 0 ?
                         <Text

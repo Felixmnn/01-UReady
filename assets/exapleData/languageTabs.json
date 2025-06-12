@@ -83,7 +83,8 @@
             "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
             "cannotBeUndone": "Dies kann nicht rückgängig gemacht werden.",
             "cancel": "Abbrechen",
-            "delete": "Löschen"
+            "delete": "Löschen",
+            "youNeedQuestionsToStartAQuiz": "Du benötigst mindestens eine Frage, um ein Quiz zu starten."
 
         },
         "ENGLISH(US)":{
@@ -115,7 +116,8 @@
             "areYousureDelete": "Are you sure you want to delete this module?",
             "cannotBeUndone": "This cannot be undone.",
             "cancel": "Cancel",
-            "delete": "Delete"
+            "delete": "Delete",
+            "youNeedQuestionsToStartAQuiz": "You need at least one question to start a quiz."
 
         },
         "ENGLISH(UK)":{
@@ -147,7 +149,8 @@
             "areYousureDelete": "Are you sure you want to delete this module?",
             "cannotBeUndone": "This cannot be undone.",
             "cancel": "Cancel",
-            "delete": "Delete"
+            "delete": "Delete",
+            "youNeedQuestionsToStartAQuiz": "You need at least one question to start a quiz."
 
         },
         "AUSTRALIAN":{
@@ -179,7 +182,8 @@
             "areYousureDelete": "Are you sure you want to delete this module?",
             "cannotBeUndone": "This cannot be undone.",
             "cancel": "Cancel",
-            "delete": "Delete"
+            "delete": "Delete",
+            "youNeedQuestionsToStartAQuiz": "You need at least one question to start a quiz."
 
         },
         "SPANISH":{
@@ -211,7 +215,8 @@
             "areYousureDelete": "¿Estás seguro de que deseas eliminar este módulo?",
             "cannotBeUndone": "Esto no se puede deshacer.",
             "cancel": "Cancelar",
-            "delete": "Eliminar"
+            "delete": "Eliminar",
+            "youNeedQuestionsToStartAQuiz": "Necesitas al menos una pregunta para comenzar un cuestionario."
 
         } 
     },
@@ -932,43 +937,43 @@
             { "DE": "Sonstiges", "GB": "Other", "US": "Other", "AU": "Other", "ES": "Otro" }
         ],
         "robotMessage": {
-            "DE": "Gehst du zur Schule, an die Uni oder machst eine Ausbildung?",
-            "GB": "Are you going to school, university, or doing an apprenticeship?",
-            "US": "Are you in school, college, or doing an apprenticeship?",
-            "AU": "Are you at school, uni, or doing an apprenticeship?",
-            "ES": "¿Vas al colegio, a la universidad o estás haciendo una formación?"
+            "DE": "Geehst du zur Schule, an die Uni oder machst eine Ausbildung?",
+            "GB": "Arre you going to school, university, or doing an apprenticeship?",
+            "US": "Arre you in school, college, or doing an apprenticeship?",
+            "AU": "Arre you at school, uni, or doing an apprenticeship?",
+            "ES": "¿VVas al colegio, a la universidad o estás haciendo una formación?"
         }
         },
         "pageFour": {
             "robotMessageUniversity": {
-                "DE": "Perfekt! An welcher Uni bist du?",
-                "GB": "Perfect! Which university are you at?",
-                "US": "Perfect! What college are you at?",
-                "AU": "Perfect! Which uni ya at?",
-                "ES": "¡Perfecto! ¿En qué universidad estás?"
+                "DE": "Peerfekt! An welcher Uni bist du?",
+                "GB": "Peerfect! Which university are you at?",
+                "US": "Peerfect! What college are you at?",
+                "AU": "Peerfect! Which uni ya at?",
+                "ES": "¡PPerfecto! ¿En qué universidad estás?"
             },
             "robotMessageSchool": {
-                "DE": "An welcher Schule bist du?",
-                "GB": "Which school do you go to?",
-                "US": "Which school are you attending?",
-                "AU": "Which school are you at?",
-                "ES": "¿A qué escuela vas?"
+                "DE": "Ann welcher Schule bist du?",
+                "GB": "Whhich school do you go to?",
+                "US": "Whhich school are you attending?",
+                "AU": "Whhich school are you at?",
+                "ES": "¿AA qué escuela vas?"
             },
             "robotMessageEducation": {
-                "DE": "Perfekt! In welchem Bereich machst du deine Ausbildung?",
-                "GB": "Perfect! In which field are you doing your apprenticeship?",
-                "US": "Perfect! What field is your trade school or apprenticeship in?",
-                "AU": "Perfect! What field’s your apprenticeship in?",
-                "ES": "¡Perfecto! ¿En qué área estás haciendo tu formación profesional?"
+                "DE": "Peerfekt! In welchem Bereich machst du deine Ausbildung?",
+                "GB": "Peerfect! In which field are you doing your apprenticeship?",
+                "US": "Peerfect! What field is your trade school or apprenticeship in?",
+                "AU": "Peerfect! What field’s your apprenticeship in?",
+                "ES": "¡PPerfecto! ¿En qué área estás haciendo tu formación profesional?"
             }
         },
         "PageSix": {
             "robotMessageSchool": {
-                "DE":"Nur noch eins: Welche Fächer darf ich für dich eintragen?",
-                "GB": "Just one more thing: Which subjects should I add for you?",
-                "US": "Just one more thing: Which subjects would you like me to add for you?",
-                "AU": "Just one more thing: Which subjects do you want me to add for you?",
-                "ES": "Solo una cosa más: ¿Qué asignaturas quieres que añada para ti?"
+                "DE":"Nuur noch eins: Welche Fächer darf ich für dich eintragen?",
+                "GB": "Juust one more thing: Which subjects should I add for you?",
+                "US": "Juust one more thing: Which subjects would you like me to add for you?",
+                "AU": "Juust one more thing: Which subjects do you want me to add for you?",
+                "ES": "Soolo una cosa más: ¿Qué asignaturas quieres que añada para ti?"
             },
             "continueMessage": {
                 "DE":"Los geht’s!“",
@@ -978,11 +983,11 @@
                 "ES":"¡Vamos!"
             },
             "robotMessageUniversity": {
-                "DE":"Fast geschafft! Was genau studierst du?",
-                "GB":"Just one last thing before we finish! What’s your program or field of study?",
-                "US":"Almost there! What’s your major or area of study?",
-                "AU":"You're almost done! What’s your course or field of study?",
-                "ES":"¡Casi terminado! ¿En qué programa o área estás estudiando?"
+                "DE":"Faast geschafft! Was genau studierst du?",
+                "GB":"Juust one last thing before we finish! What’s your program or field of study?",
+                "US":"Allmost there! What’s your major or area of study?",
+                "AU":"Yoou're almost done! What’s your course or field of study?",
+                "ES":"¡CCasi terminado! ¿En qué programa o área estás estudiando?"
         }
 
     }
@@ -1480,15 +1485,15 @@
             "setTogether": "Erstellen wir zusammen ein Lernset.",
             "comilitones": "Mal schauen was deine Komilitonen lernen.",
             "createSet" : "Erstelle dein eigenes Lernset",
-            "timeToStart" : "Zeit durchzustarten!",
+            "timeToStart" : "Zeeit durchzustarten!",
             "sucheLäuft": "Suche läuft...",
             "useThisModule": "Dieses Modul verwenden",
             "this": "Diese",
             "moduleUse": "Module verwenden",
             "noModulesFound": "Noch keine Molue ausgewählt",
-            "iHaveFoundSomething": "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
-            "iHaveFoundNothing": "Leider habe ich nichts gefunden aber kein Problem",
-            "waitAMoment": "Gib mir einen Moment..."
+            "iHaveFoundSomething": "Icch habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
+            "iHaveFoundNothing": "Leeider habe ich nichts gefunden aber kein Problem",
+            "waitAMoment": "Giib mir einen Moment..."
 
 
 
@@ -1497,62 +1502,62 @@
             "setTogether": "Let's create a study set together.",
             "comilitones": "Let's see what your classmates are studying.",
             "createSet" : "Create your own study set",
-            "timeToStart" : "Time to get started!",
+            "timeToStart" : "TTime to get started!",
             "sucheLäuft": "Searching...",
             "useThisModule": "Use this module",
             "this": "This",
             "moduleUse": "module use",
             "noModulesFound": "No modules selected yet",
-            "iHaveFoundSomething": "I found something, just click on the modules and I will add them for you",
-            "iHaveFoundNothing": "Unfortunately, I didn't find anything, but no problem",
-            "waitAMoment": "Give me a moment..."
+            "iHaveFoundSomething": "I  found something, just click on the modules and I will add them for you",
+            "iHaveFoundNothing": "Unnfortunately, I didn't find anything, but no problem",
+            "waitAMoment": "Giive me a moment..."
         },
         "ENGLISH(UK)" : {
             "setTogether": "Let's create a study set together.",
             "comilitones": "Let's see what your classmates are studying.",
             "createSet" : "Create your own study set",
-            "timeToStart" : "Time to get started!",
+            "timeToStart" : "TTime to get started!",
             "sucheLäuft": "Searching...",
             "useThisModule": "Use this module",
             "this": "This",
             "moduleUse": "module use",
             "noModulesFound": "No modules selected yet",
-            "iHaveFoundSomething": "I found something, just click on the modules and I will add them for you",
-            "iHaveFoundNothing": "Unfortunately, I didn't find anything, but no problem",
-            "waitAMoment": "Give me a moment..."
+            "iHaveFoundSomething": "I  found something, just click on the modules and I will add them for you",
+            "iHaveFoundNothing": "Unnfortunately, I didn't find anything, but no problem",
+            "waitAMoment": "Giive me a moment..."
         },
         "AUSTRALIAN" : {
             "setTogether": "Let's create a study set together.",
             "comilitones": "Let's see what your classmates are studying.",
             "createSet" : "Create your own study set",
-            "timeToStart" : "Time to get started!",
+            "timeToStart" : "TTime to get started!",
             "sucheLäuft": "Searching...",
             "useThisModule": "Use this module",
             "this": "This",
             "moduleUse": "module use",
             "noModulesFound": "No modules selected yet",
-            "iHaveFoundSomething": "I found something, just click on the modules and I will add them for you",
-            "iHaveFoundNothing": "Unfortunately, I didn't find anything, but no problem",
+            "iHaveFoundSomething": "I  found something, just click on the modules and I will add them for you",
+            "iHaveFoundNothing": "Unnfortunately, I didn't find anything, but no problem",
             "waitAMoment": "Give me a moment..."
         },
         "SPANISH" : {
             "setTogether": "Vamos a crear un conjunto de estudio juntos.",
             "comilitones": "Veamos qué están estudiando tus compañeros.",
             "createSet" : "Crea tu propio conjunto de estudio",
-            "timeToStart" : "¡Es hora de empezar!",
+            "timeToStart" : "¡EEs hora de empezar!",
             "sucheLäuft": "Buscando...",
             "useThisModule": "Usar este módulo",
             "this": "Este",
             "moduleUse": "uso del módulo",
             "noModulesFound": "Aún no se han seleccionado módulos",
-            "iHaveFoundSomething": "He encontrado algo, simplemente haz clic en los módulos y los añadiré por ti",
-            "iHaveFoundNothing": "Desafortunadamente, no encontré nada, pero no hay problema",
-            "waitAMoment": "Dame un momento..."
+            "iHaveFoundSomething": "Hee encontrado algo, simplemente haz clic en los módulos y los añadiré por ti",
+            "iHaveFoundNothing": "Deesafortunadamente, no encontré nada, pero no hay problema",
+            "waitAMoment": "Daame un momento..."
         }
     },
     "tutorialFirstModule": {
         "DEUTSCH": {
-            "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!",
+            "letUsCreate": "Laass uns gemeinsam dein erstes Modul erstellen!",
             "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
             "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
             "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
@@ -1691,4 +1696,5 @@
             "delete": "Eliminar"
         }
     }
+    
 }

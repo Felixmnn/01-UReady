@@ -132,6 +132,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     async function checkForUpdates() {
                 const moduledata = await loadModule(module.$id);
                 const questions = await getSessionQuestions(sessions[selectedSession].id);
+
                 const notes = await getSessionNotes(sessions[selectedSession].id);
                 const documents = await getAllDocuments(sessions[selectedSession].id);
                 if (moduledata) {
@@ -171,6 +172,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     useEffect(() => { 
         async function fetchQuestions(sessionID) {
             const sessionQuestions = await getSessionQuestions(sessionID)
+            console.log("🔷🔷🔷sessionQuestions", sessionQuestions)
             setQuestionLoadedSessions([...questionLoadedSessions,sessionID])
 
             
@@ -234,6 +236,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         }
         setLoading(false) 
     }, [sessions, selectedSession, refreshing])
+    console.log("🐋🐋 Questions: " , questions)
     /**
      * Switches to the EditNote screen with a new empty note.
      */

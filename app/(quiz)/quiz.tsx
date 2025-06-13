@@ -50,14 +50,18 @@ const quiz = () => {
         async function fetchData() {
             const data = await loadModule(moduleID);
             setModule(data);
-
+            console.log("Module Data", data)
+            setQuestionList(data.questionList.map(question => JSON.parse(question)));
+            /*
             const parsedList = data.questionList
                 .map(question => JSON.parse(question))
                 .filter(parsedQuestion =>
                     questionsParsed.some(q => q.$id === parsedQuestion.id)
                 );
+            console.log("Parsed List", parsedList)
 
             setQuestionList(parsedList);
+            */
         }
 
         fetchData();
@@ -92,7 +96,8 @@ const quiz = () => {
         updateModuleHere();
     }, [questionList]);
 
-
+console.log("QUestion List", questionList)
+console.log("Module", module)   
     /**
      * This is the function that calculates the percentage of the colors in the header status bar
      */
@@ -116,6 +121,8 @@ const quiz = () => {
         ok = Math.round((ok / questionList.length) * 100);
         good = Math.round((good / questionList.length) * 100);
         great = Math.round((great / questionList.length) * 100);
+
+        console.log("Bad",bad, "Ok", ok, "Good", good, "Great", great)
         return [bad,ok,good,great]
     } 
 
@@ -174,10 +181,22 @@ const quiz = () => {
             }
         }
         console.log("Question List", questionList)
+
         async function nextQuestion (status, change){
             setShowAnswers(false)
             
             const indexOfQuestion = questionList.findIndex((question) => question.id === questionsParsed[selectedQuestion].$id)
+            console.log("Compared Question", questionsParsed[selectedQuestion], "Index of Question", indexOfQuestion)
+            if (indexOfQuestion === -1) {
+                setQuestionList([...questionList, {
+                    id: questionsParsed[selectedQuestion].$id,
+                    status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status ==  "GREAT" )
+                    && status == "GOOD" ? "GREAT" : status
+                }])
+                console.error("Question not found in questionList");
+                return;
+            }
+            
             setQuestionList(prevState => {
                 const updatedList = [...prevState];
                 updatedList[indexOfQuestion] = {

@@ -12,7 +12,17 @@ import languages from '@/assets/exapleData/languageTabs.json';
 import { useStripe } from '@stripe/stripe-react-native'
 import { ActivityIndicator } from 'react-native'
 import { stripeFunction } from '@/lib/appwrite'
+import mobileAds from 'react-native-google-mobile-ads';
 
+
+
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+
+const adUnitId = __DEV__ ? TestIds.REWARDED : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
+const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+  keywords: ['fashion', 'clothing'],
+});
 const Shop = () => {
   const { user, isLoggedIn, isLoading, userUsage } = useGlobalContext();
   const { language } = useGlobalContext()
@@ -22,6 +32,42 @@ const Shop = () => {
   const [comercials, setComercials] = useState([]);
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loadingPayment, setLoadingPayment] = useState(false);
+
+  useEffect(() => {
+  mobileAds()
+    .initialize()
+    .then(() => {
+      console.log("✅ Mobile Ads SDK initialized");
+    });
+}, []);
+
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+      const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+        setLoaded(true);
+      });
+      const unsubscribeEarned = rewarded.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD,
+        reward => {
+          console.log('User earned reward of ', reward);
+        },
+      );
+
+      // Start loading the rewarded ad straight away
+      rewarded.load();
+
+      // Unsubscribe from events on unmount
+      return () => {
+        unsubscribeLoaded();
+        unsubscribeEarned();
+      };
+    }, []);
+
+    
+
+
+
+//____________________________________________________________________
 
   useEffect(() => {
     if(language) {
@@ -82,12 +128,10 @@ const Shop = () => {
     return null;
   }
 }
-
-
   const initializePaymentSheet = async () => {
   setLoadingPayment(true);
   const paymentData = await fetchPaymentSheetParams();
-
+  
   if (!paymentData) {
     alert("Fehler beim Abrufen der Zahlungsdaten.");
     setLoadingPayment(false);
@@ -106,11 +150,8 @@ const Shop = () => {
     applePay:{
       merchantCountryCode:"US"
     },
-    googlePay:{
-      merchantCountryCode:"US",
-      testEnv:true
-    }
-  });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gi
+    
+  });
 
   if (initError) {
     alert("Fehler beim Initialisieren: " + initError.message);
@@ -129,10 +170,22 @@ const Shop = () => {
 };
 
 
+  
   return (
     <Tabbar content={() => (
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
         <TokenHeader userUsage={userUsage} />
+        <View style={{ width: 320, height: 100, backgroundColor: 'yellow', alignItems: 'center' }}>
+          <Button
+            title="Show Rewarded Ad"
+            onPress={() => {
+              rewarded.show();
+            }}
+            
+          />
+        </View>
+    
+
         <ScrollView style={{ scrollbarWidth: 'thin', scrollbarColor: 'gray transparent' }} className='w-full'>
           {
             !shopItemsA ? (

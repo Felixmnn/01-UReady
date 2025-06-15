@@ -11,7 +11,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 // 👇 NEU HINZUFÜGEN
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { StripeProvider } from '@stripe/stripe-react-native';
+import * as Linking from "expo-linking"
 export default function RootLayout() {
   const [isConnected, setIsConnected] = useState(true);
 
@@ -46,6 +47,11 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+    <StripeProvider
+      publishableKey="pk_test_51RTSKq4hlfGTCc9pXUlwIWJFGlI1x28xjrupHBBSiyCmHrv6D8gwa3FGSA4N3BPW6cDW0PyK3PCqDJEVHcg6TSVZ00qnrxNgyj"
+      merchantIdentifier="merchant.com.qready" 
+      urlScheme={Linking.createURL("/")?.split(":")[0]} // optional, für redirect flows
+    >
       <GlobalProvider>
         <StatusBar backgroundColor="#0c111e" style="light" />
         <Stack>
@@ -58,6 +64,7 @@ export default function RootLayout() {
           <Stack.Screen name="(about)" options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>
+      </StripeProvider>
     </GestureHandlerRootView>
   );
 }

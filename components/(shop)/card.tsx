@@ -192,7 +192,6 @@ const Card = ({
     function tooExpensive() {
         return userUsage?.microchip < shopItem?.price && shopItem?.currency === "CHIPS";
     }
-    console.log("shopItem", shopItem);
     const [ isVisibleB, setIsVisibleB ] = useState(false);
     const [ isVisibleC, setIsVisibleC ] = useState(false);
     const [ isVisibleD, setIsVisibleD ] = useState(false);

@@ -5,6 +5,7 @@ import { useGlobalContext } from "../context/GlobalProvider";
 import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
 import { addNewUserConfig } from "@/lib/appwriteAdd";
 import SystemNavigationBar from 'react-native-system-navigation-bar';
+
 SystemNavigationBar.navigationHide();
 
 export default function Index() {

@@ -1,7 +1,6 @@
-import { View, Text,TouchableOpacity, TextInput, FlatList, useWindowDimensions, ScrollView, Modal } from 'react-native'
+import { View, Text,TouchableOpacity, useWindowDimensions, ScrollView, Modal } from 'react-native'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import ToggleSwitch from '@/components/(general)/toggleSwich'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import FinalTextInput from '@/components/(general)/finalTextInput'
 import ModalSelectSession from './modalSelectSession'
@@ -9,11 +8,10 @@ import { addQUestion } from '@/lib/appwriteEdit'
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useGlobalContext } from '@/context/GlobalProvider'
 import  RenderNewAnswers  from './(sharedComponents)/renderAnswers'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { updateModuleQuestionList } from '@/lib/appwriteUpdate'
 
 const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerActive, questionActive,setQuestionActive, selectedModule, questions, setQuestions,subjectID }) => {
      
-    
     const { language } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
       const texts = languages.editQuestions;
@@ -44,8 +42,8 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                >
                    <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> {setIsError(false); setSuccess(false)} }
                      >
-                       <View className={` border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700
-                         ${success ? 'bg-green-900' : 'bg-red-900'}`}
+                       <View className={` border-red-600 border-[1px] rounded-[10px] p-5 
+                         ${success || successMessage ? 'bg-green-900' : 'bg-red-900'}`}
                          style={{
                              borderColor: success ? 'green' : '#ff4d4d',
                          }}
@@ -84,12 +82,19 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
             setIsError(true);
             setErrorMessage("You need to select a session for the question");
             return;
-        } 
+        }  
         
-        addQUestion({...newQuestion, 
+        
+        const response = await addQUestion({...newQuestion, 
                         sessionID: JSON.parse(newQuestion.sessionID).id,
                         subjectID: subjectID,
                     })
+        const resParsed = JSON.stringify({
+            id: response.$id,
+            status:null
+        })
+        const mergedQuestions = selectedModule.questionList.length > 0 ? [...selectedModule.questionList, resParsed] : [resParsed];
+        const res = await updateModuleQuestionList(selectedModule.$id, mergedQuestions);
         setQuestions(prevState => [newQuestion, ...prevState])
 
         setSuccess(true);
@@ -100,12 +105,13 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
             answers: [],
             answerIndex: [],
             tags: [],
-            public: false,
+            "public": false,
             sessionID:null,
             aiGenerated: false,
             subjectID: subjectID,
             status:null
         })
+
     }
 
 
@@ -179,7 +185,7 @@ const EditNewQuestion = ({newQuestion, setNewQuestion, answerActive, setAnswerAc
                                     
                                 
                                 >
-                                    <View style={{ width: '100%' }}>
+                                    <View style={{ width: '100%', height: newQuestion.answers.length * 100 }}>
                                         {newQuestion.answers.map((item, index) => 
                                         (
                                                 <RenderNewAnswers

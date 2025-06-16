@@ -27,7 +27,7 @@ const AddAiBottomSheet = ({isVisibleAiModule=false, setIsVisibleAiModule}) => {
             questions: 0,
             notes: 0,
             documents: 0,
-            public: true,
+            "public": true,
             progress: 0,
             creator: "",
             color: null,

@@ -48,7 +48,20 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
     return target <= minAgo && target >= maxAgo;
 }
 
+function calculatePercent(questions){
+  const parsedQuestions = questions.map(q => JSON.parse(q));
+  let sum = 0;
+    for (let i = 0; i < parsedQuestions.length; i++) {
+      if (parsedQuestions[i].status =="BAD") sum -= 1;
+      if (parsedQuestions[i].status =="OK") sum += 0;
+      if (parsedQuestions[i].status =="GOOD") sum += 1;
+      if (parsedQuestions[i].status =="GREAT") sum += 2;
 
+  }    
+  
+  return Math.floor((sum / (questions.length * 2)) * 100);
+
+}
 
 
     const [ newModule, setNewModule] = useState({
@@ -57,7 +70,7 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
           questions: 0,
           notes: 0,
           documents: 0,
-          public: false,
+          "public": false,
           progress: 0,
           creator: "",
           color: null,
@@ -142,11 +155,12 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
           >
             {items.map((item, index) => (
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
+
                 <Karteikarte
                   handlePress={async () => {
                     await updateUserUsageModules(user.$id, {
                       name: item.name,
-                      percent: item.progress,
+                      percent: Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0,
                       color: item.color,
                       fragen: item.questions,
                       sessions: item.sessions.length,
@@ -156,7 +170,7 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
                     setSelectedModule(index);
                   }}
                   farbe={item.color}
-                  percentage={item.progress}
+                  percentage={Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0}
                   titel={item.name}
                   studiengang={item.description}
                   fragenAnzahl={item.questions}

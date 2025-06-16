@@ -22,7 +22,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
 
     //To ensure that the question status is displayed correctly, it is loaded from the module configuration
     //and added to the question object
-    const filtered = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+    const filtered = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected]?.id)
     const questionListWithParsedItems = module.questionList.map((i) => {
         let pI = i;
         try {
@@ -34,12 +34,12 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
     const filteredData = filtered.map(item => {
         return {
             ...item,
-            status: questionListWithParsedItems.find((question) => question.id === item.$id)?.status || null
+            status: questionListWithParsedItems.find((question) => question?.id === item.$id)?.status || null
         };
     });
     //Filter the notes and documents based on the selected session 
-    const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected].id)
-    const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected].id)
+    const filteredNotes = (selected > moduleSessions.length) ? notes : notes.filter((item) => item.sessionID == moduleSessions[selected]?.id)
+    const filteredDocuments = (selected > moduleSessions.length) ? documents : documents.filter((item) => item.sessionID == moduleSessions[selected]?.id)
     const [wrongType, setWrongType] = useState(false);
 
 
@@ -99,17 +99,16 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
             </Modal>
         )
     }
-
     /**
      * Question Cards - Containing: AIGENERATED, QUESTION, STATUS
      */
-    console.log("👍filtered Data", filteredData)
     const QuestionList = () => {
         return(
 
         <View className='w-full '
             style={{
                 maxHeight: filteredData.length > 0 ?  250 : 120,
+                minHeight: moduleSessions[selected]?.tags == "JOB-PENDING" ? 180 : null,
             }}
         >
             <CounterText title={texts[selectedLanguage].questio} count={filteredData.length}/>
@@ -123,7 +122,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
               }}
             ListHeaderComponent={() => {
                 return (
-                    <View className='h-full p-1 '>
+                    <View className='h-full p-1  '>
                         {
                           moduleSessions[selected]?.tags == "JOB-PENDING" ?
                             <View className='flex-1  items-center justify-center p-2 bg-gray-800 rounded-[10px] border-[1px] border-gray-500 border-dashed'
@@ -168,7 +167,7 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
                                 }} 
                             />
                         </View>
-                        <Text className='text-white'>{item.question}</Text>
+                        <Text className='text-white'>{item.question.length < 150 ? item.question.slice(0,80) + "..." : item.question } </Text>
                         <View className='border-b-[1px] border-gray-600 my-4 w-full'/>
                         <View className='w-full flex-row justify-between items-center'>
                             {

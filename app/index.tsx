@@ -24,7 +24,9 @@ export default function Index() {
           router.push("/personalize");
         }
       } catch (error) {
-        console.log(error);
+        if (__DEV__) {
+          console.log(error);
+        }
       }
     }
     fetchUserData();

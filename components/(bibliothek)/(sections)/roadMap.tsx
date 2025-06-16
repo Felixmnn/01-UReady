@@ -7,9 +7,21 @@ import { updateUserUsageSessions } from '@/lib/appwriteUpdate';
 import { returnColor, returnColorButton, returnColorButtonShadow } from '../../../functions/returnColor';
 import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 
-const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument, setTab, currentModule, change, setChange, moduleID, moduleDescription}) => { 
-  const { user, userUsage, language } = useGlobalContext();
-  console.log("currentModule", currentModule)
+const RoadMap = ({  moduleSessions,
+                    selected, 
+                    setSelected, 
+                    questions,   
+                    currentModule, 
+                    moduleDescription
+                  }) => { 
+  const { userUsage, language } = useGlobalContext();
+  const percentA = getAll()
+  const {width} = useWindowDimensions()
+
+  /**
+   * Returns the percentage of each status of the questions
+   * @returns an object with the percentage of each status of the questions
+   */
   function getAll(){
     let bad = 0
     let ok = 0
@@ -29,10 +41,6 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
     return {bad:Math.floor(bad/questions.length*100),ok:Math.floor(bad/questions.length*100),good:Math.floor(bad/questions.length*100),great:Math.floor(bad/questions.length*100)}
 
   }
-  const percentA = getAll()
-    console.log("PercentA", percentA)
-
-  const {width} = useWindowDimensions()
     return (
     <ScrollView className={`${width > 700 ? "" : null} ` }  style={{
       scrollbarWidth: 'thin', 
@@ -40,7 +48,6 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
     }}>
       {
         moduleSessions.map((module, index) => {
-          console.log("Module", module)
             return (
 
               <TouchableOpacity 
@@ -51,7 +58,6 @@ const RoadMap = ({moduleSessions, selected, setSelected, questions, addDocument,
 
               }}
               onPress={() => {
-                console.log("🔴Module Sessions🔴", moduleSessions)
                 setSelected(index);
                 updateUserUsageSessions(userUsage.$id, {
                   name: moduleSessions[index].title,

@@ -4,16 +4,12 @@ import ContinueBox from '../(signUp)/(components)/continueBox';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import VektorCircle from '../(karteimodul)/vektorCircle';
 import { router } from 'expo-router';
-import AddModule from '../(general)/(modal)/addModule';
-import AddAiModule from '../(general)/(modal)/addAiModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
 import { loadUserUsage } from '@/lib/appwriteDaten';
-import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import AddAiBttomSheet from '../(general)/(modal)/addAiBttomSheet';
 import AddAiBottomSheet from '../(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
 
@@ -98,9 +94,7 @@ const HomeGeneral = () => {
 
 
   async function startQuiz(session) {
-    console.log("Start Quiz for session: ", session)
     const questions = await getSessionQuestions(session.sessionID)
-    console.log(" ✅ Questions ✅ ", questions)
     
     if (!questions || questions.length == 0) {
       router.push("/bibliothek")
@@ -170,42 +164,7 @@ const HomeGeneral = () => {
   ]
   
 
-  const [ newModule, setNewModule] = useState({
-            name: "",
-            subject: "",
-            questions: 0,
-            notes: 0,
-            documents: 0,
-            public: false,
-            progress: 0,
-            creator: "",
-            color: null,
-            sessions: [],
-            tags: [],
-            description: "",
-            releaseDate: null,
-            connectedModules: [],
-            qualityScore: 0,
-            duration: 0,
-            upvotes: 0,
-            downVotes: 0,
-            creationCountry: null,
-            creationUniversity: null,
-            creationUniversityProfession: null,
-            creationRegion: null,
-            creationUniversitySubject: [],
-            creationSubject: [],
-            creationEducationSubject: "",
-            creationUniversityFaculty: [],
-            creationSchoolForm: null,
-            creationKlassNumber: null,
-            creationLanguage: null,
-            creationEducationKathegory:"",
-            copy: false,
-            questionList: [],
-            synchronization: false,
-
-            });
+  
   const [ isVisibleNewModule, setIsVisibleNewModule] = useState(false)
 
   const QuickAction = ({item}) => {
@@ -229,7 +188,6 @@ const HomeGeneral = () => {
   const [ refreshing, setRefreshing ] = useState(false)
   const onRefresh = () => {
     setRefreshing(true);
-    console.log("Refreshing...");
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -245,7 +203,6 @@ const HomeGeneral = () => {
       })
     }
   },[refreshing])
-  console.log("User Usage", userUsage)
 
   return (
     <SafeAreaView className='h-full w-full  '>
@@ -270,6 +227,7 @@ const HomeGeneral = () => {
       }
     >
       <TokenHeader userUsage={userUsageP} />
+      
 
     <View className='flex-1 rounded-[10px] p-3'>
       <Header title={texts[selectedLanguage].lastModules}/>

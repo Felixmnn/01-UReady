@@ -7,7 +7,17 @@ import {router } from 'expo-router';
 import ModalSessionList from '../(modals)/modalSessionList';
 import DeleteModule from '../(modals)/deleteModule';
 
-const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions, moduleSessions, setIsVisibleNewQuestion, texts, selectedLanguage, moduleName, moduleID,
+const Header = ({   setSelectedScreen, 
+                    selected, 
+                    sessions, 
+                    setSessions, 
+                    questions, 
+                    moduleSessions, 
+                    setIsVisibleNewQuestion, 
+                    texts, 
+                    selectedLanguage, 
+                    moduleName, 
+                    moduleID,
                     modules,
                     setModules,
                     setSelectedModule,
@@ -18,7 +28,12 @@ const Header = ({  setSelectedScreen, selected, sessions, setSessions, questions
     const { width } = useWindowDimensions(); 
     const [ deleteModuleVisible, setDeleteModuleVisible ] = useState(false);
     const isVertical = width > 700;
-    const filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+    let filteredData = [];
+    if (selected !> moduleSessions.length) {
+     filteredData = (selected > moduleSessions.length) ? questions : questions.filter((item) => item.sessionID == moduleSessions[selected].id)
+    } else {
+        filteredData = questions;
+    }
     const [showSessionList, setShowSessionList] = useState(false)
   return (
     <View className={`${!isVertical ? "bg-[#0c111d]" : null}`}>

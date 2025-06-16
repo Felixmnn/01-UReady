@@ -2,9 +2,14 @@ import { View, Text, FlatList, Image } from 'react-native'
 import React from 'react'
 import Karteikarte from '../(karteimodul)/karteiKarte'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-const RenderResults = ({modules, texts, selectedLanguage, selectedModules, myModules, updateModuleData, setSelectedModules, numColumns, searchBarText}) => {
-  console.log("❌Modules", modules.filter((m) => m.public).length, modules.length)
-
+const RenderResults = ({modules,
+                        texts, 
+                        selectedLanguage, 
+                        selectedModules, 
+                        myModules, 
+                        setSelectedModules, 
+                        numColumns, 
+                        searchBarText}) => {
   return (
     <View  className='flex-1 w-full pl-2 justify-center '>
             <FlatList

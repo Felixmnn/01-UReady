@@ -7,11 +7,10 @@ import GratisPremiumButton from '../(general)/gratisPremiumButton';
 import ModalSessionList from '../(bibliothek)/(modals)/modalSessionList';
 import { router } from 'expo-router'; 
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { addNewModule } from '@/lib/appwriteAdd';
+import { adddModule } from '@/lib/appwriteAdd';
 import { setUserDataSetup } from '@/lib/appwriteEdit';
 import ErrorPopup from './(modal)/errorPopup';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
-import { returnColorButtonShadow } from '@/functions/returnColor';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 
 const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,goBackVisible=true }) => {
@@ -103,7 +102,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
               <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>{texts[selectedLanguage].newModule}</Text>
             </TouchableOpacity>
             : <Text  className='text-gray-100 font-bold text-xl font-bold'>{texts[selectedLanguage].newModule}</Text>}
-            <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
+            <TouchableOpacity onPress={() => setNewModule({ ...newModule, "public":newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
               >
               {
@@ -259,13 +258,11 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
               
               }
 
-            const res = await addNewModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
+            const res = await adddModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
             setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
             const resp = await setUserDataSetup(user.$id)
             router.push("/bibliothek")
-            if ( isModal) {
-              isModal(false)
-            }
+            
             }}
           >
             {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].createModule}</Text>}

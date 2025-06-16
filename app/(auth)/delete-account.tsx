@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { router } from 'expo-router';
 import { deletingAccount } from '@/lib/appwrite';
 import * as Updates from 'expo-updates';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { deleteAllModules, deleteUserData, deleteUserDataKathegory, deleteUserUsage } from '@/lib/appwriteDelete';
 
 
 const DeleteAccount = () => {
@@ -12,13 +13,32 @@ const DeleteAccount = () => {
 
   const { user, language } = useGlobalContext();
   const texts = language ? languages.deleteAccount[language] : languages.deleteAccount['DEUTSCH'];
+  useEffect(() => {
+    if (!user) {
+      console.error("No user is logged in.");
+      router.push('/sign-in');
+    }},[])
+  async function deleteModules() {
+    await deleteAllModules(user.$id);
+    return true;
+  }
+  async function deleteData(){
+    await deleteUserData(user.$id);
+    await deleteUserUsage(user.$id);
+    await deleteUserDataKathegory(user.$id);
+    return true;
+  }
+
   async function handleDelete () {
-    const res = await deletingAccount(); 
-    console.log(res);
-    setModalVisible(false);
-    if (!__DEV__) {
-      await Updates.reloadAsync();
+    if (!user) {
+      console.error("No user is logged in.");
+      router.push('/sign-in');
     }
+    await deleteModules();
+    await deleteData();
+    const res = await deletingAccount(); 
+    setModalVisible(false);
+    await Updates.reloadAsync();
     
     
   };

@@ -31,11 +31,9 @@ const ModalStreak = ({isVisible=false, setIsVisible,tage, days}) => {
         visible={isVisible}
     >
       <TouchableOpacity className="absolute top-0 left-0 w-full h-full justify-center items-center " onPress={()=> setIsVisible(false)}
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // Dunkler Hintergrund
-      }}
+      
         >
-        <View className="bg-gray-900 border-gray-700 border-[1px] p-3 rounded-xl items-center"
+        <View className="bg-gray-900 bg-whie border-gray-700 border-[1px] p-3 rounded-xl items-center"
        style={{
         shadowRadius: 10, // Größe des Glows
         shadowOpacity: 0.9, // Sichtbarkeit des Glows

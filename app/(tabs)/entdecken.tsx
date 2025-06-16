@@ -10,7 +10,7 @@ import SchoolFilters from '@/components/(entdecken)/school';
 import EudcationFilters from '@/components/(entdecken)/education';
 import OtherFilters from '@/components/(entdecken)/other';
 import { router } from 'expo-router';
-import { addNewModule } from '@/lib/appwriteAdd';
+import { adddModule } from '@/lib/appwriteAdd';
 import languages from '@/assets/exapleData/languageTabs.json';
 import { getModules } from '@/lib/appwriteQuerys';
 import { updateModuleData } from '@/lib/appwriteUpdate';
@@ -51,7 +51,7 @@ const entdecken = () => {
   
   //Allgemeine Filter
   const [ selectedCountry, setSelectedCountry] = useState(countryList[0])
-  const [ filterVisible, setFilterVisible] = useState(false)
+  const [ filterVisible, setFilterVisible] = useState(true)
   const [ selectedKathegory, setSelectedKathegory ] = useState("UNIVERSITY")
 
 
@@ -182,14 +182,16 @@ const entdecken = () => {
   async function add(mod) {
           setLoading(true)
           try {
-              const res = await addNewModule(mod)
+              const res = await adddModule(mod)
               if (res){
                 setModules((prev) => [...prev, res])
               }
               setLoading(false)
 
           } catch (error) {
+            if (__DEV__) {
               console.log("Error", error)
+            }
               setLoading(false)
           }
       }
@@ -228,10 +230,10 @@ const entdecken = () => {
                     const mod = {
                         name: module.name + " (Kopie)",
                         subject: module.subject,
-                        questions: module.questions,
+                        questions: module.questionList.length,
                         notes: module.notes,
                         documents: module.documents,
-                        public: false,
+                        "public": false,
                         progress: 0,
                         creator: user.$id,
                         color: module.color,
@@ -241,32 +243,9 @@ const entdecken = () => {
                         releaseDate: new Date() ,
                         connectedModules: [],
                         qualityScore: module.qualityScore,
-                        duration: 0,
-                        upvotes: 0,
-                        downVotes: 0,
-                        creationCountry: null,
-                        creationUniversity: null,
-                        creationUniversityProfession: null,
-                        creationRegion: null,
-                        creationUniversitySubject: [],
-                        creationSubject: [],
-                        creationEducationSubject: null,
-                        creationUniversityFaculty: [],
-                        creationSchoolForm: null,
-                        creationKlassNumber: null,
-                        creationLanguage: null,
-                        creationEducationKathegory:null,
                         copy: true,
                         synchronization: false,
-
-                        questionList: module.questionList.map(item => {
-                          const pItem = JSON.parse(item);
-                          const newItem = {
-                            ...pItem,
-                            status: null
-                          }
-                          return JSON.stringify(newItem)
-                        })
+                        questionList: module.questionList
                     }
                     add(mod)
                 }})}

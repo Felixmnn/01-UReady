@@ -36,6 +36,8 @@ export async function addDocument (sessionID, subjectID){
         return;
                     
     } catch (error) {
+        if (__DEV__) {
         console.log(error);
+        }
     }
 }

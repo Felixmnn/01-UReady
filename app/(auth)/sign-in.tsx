@@ -1,5 +1,5 @@
 import { View, Text,TouchableOpacity, SafeAreaView,TextInput, ActivityIndicator, Platform, Linking } from 'react-native'
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image } from 'react-native';
@@ -8,9 +8,10 @@ import { signIn, loginWithGoogle } from '@/lib/appwrite';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { loginWithOAuth } from '@/lib/appwriteOAuth';
+import { loadUserData } from '@/lib/appwriteDaten';
 
 const SignIn = () => {
-  const { setUserData } = useGlobalContext();
+  const { setUserData,user } = useGlobalContext();
   const { setIsLoggedIn,setUser } = useGlobalContext();
   const [ isError, setIsError] = useState(false);
   const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
@@ -31,6 +32,23 @@ const SignIn = () => {
       return false;
   }
 }
+  useEffect(() => {
+        if (!user) return;
+        async function fetchUserDataKathegory(){
+
+          const res = await loadUserData(user.$id);
+          if (res && res.signInProcessStep == "DONE") {
+            router.push("/home")
+          } else if (res && res.signInProcessStep == "FINISHED") {
+            router.push("/getting-started");
+          } else if (res && res.signInProcessStep == "ZERO") {
+            router.push("/personalize");
+          }
+
+        }
+        fetchUserDataKathegory();
+        },[user])
+
 
 
   const submitSignIn = async () => {
@@ -42,11 +60,10 @@ const SignIn = () => {
         setErrorMessage("Bitte ein gültiges Passwort eingeben")
         setIsError(true)
         return;
-      } else {
+      }  else {
           setIsSubmitting(true);
           try {
             const user = await signIn(form.email, form.password);
-            console.log("Sign In User", user)
             if (user.success === false) {
               setErrorMessage(user.error)
               setIsError(true)
@@ -174,6 +191,7 @@ const SignIn = () => {
                     </TouchableOpacity>
                       
                       <LoginButton title="Sign In" handlePress={()=> submitSignIn()} />
+                      
                       <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
                         if ( Platform.OS === "web") {
                           loginWithGoogle()}
@@ -192,6 +210,7 @@ const SignIn = () => {
                         <Text className="text-gray-500 mt-2">Oauth</Text>
                       </TouchableOpacity>
                       */}
+                      
                   </View>
               </View>
             </View>

@@ -65,7 +65,7 @@
             "questioBtn": "Frage erstellen",
             "file": "Dateien",
             "fileH": "Datei hinzufügen",
-            "fileSH": "Lade deine erste Datei hoch",
+            "fileSH": "Lade deine erste Datei hoch (nur PDF)",
             "fileBtn": "Dokument hochladen",
             "note": "Notizen",
             "noteH": "Notiz hinzufügen",
@@ -98,7 +98,7 @@
             "questioBtn": "Create Question",
             "file": "Files",
             "fileH": "Add File",
-            "fileSH": "Upload your first file",
+            "fileSH": "Upload your first file (only PDF)",
             "fileBtn": "Upload Document",
             "note": "Notes",
             "noteH": "Add Note",
@@ -131,7 +131,7 @@
             "questioBtn": "Create Question",
             "file": "Files",
             "fileH": "Add File",
-            "fileSH": "Upload your first file",
+            "fileSH": "Upload your first file (only PDF)",
             "fileBtn": "Upload Document",
             "note": "Notes",
             "noteH": "Add Note",
@@ -164,7 +164,7 @@
             "questioBtn": "Create Question",
             "file": "Files",
             "fileH": "Add File",
-            "fileSH": "Upload your first file",
+            "fileSH": "Upload your first file (only PDF)",
             "fileBtn": "Upload Document",
             "note": "Notes",
             "noteH": "Add Note",
@@ -197,7 +197,7 @@
             "questioBtn": "Crear pregunta",
             "file": "Archivos",
             "fileH": "Agregar archivo",
-            "fileSH": "Sube tu primer archivo",
+            "fileSH": "Sube tu primer archivo (solo PDF)",
             "fileBtn": "Subir documento",
             "note": "Notas",
             "noteH": "Agregar nota",
@@ -580,7 +580,8 @@
                 "yourTopics": "Deine Themen:",
                 "yourTexts": "Deine Texte:",
                 "noMaterials": "Noch keine Materialien",
-                "generateCardsDisabled": "Karten generieren"
+                "generateCardsDisabled": "Karten generieren",
+                "notEnoughEnergy": "Du hast nicht genug Energie. Bitte warte bis deine Energie wieder aufgefüllt ist."
             },
         "ENGLISH(US)": {
             "title": "Generate flashcards with AI from...",
@@ -595,7 +596,8 @@
             "yourTexts": "Your texts:",
             "noMaterials": "No materials yet",
             "generateCardsDisabled": "Generate cards",
-            "sumDocument": "Summarize document"
+            "sumDocument": "Summarize document",
+            "notEnoughEnergy": "You don't have enough energy. Please wait until your energy is refilled."
         },
         "ENGLISH(UK)": {
             "title": "Generate flashcards with AI from...",
@@ -610,7 +612,8 @@
             "yourTexts": "Your texts:",
             "noMaterials": "No materials yet",
             "generateCardsDisabled": "Generate cards",
-            "sumDocument": "Summarize document"
+            "sumDocument": "Summarize document",
+            "notEnoughEnergy": "You don't have enough energy. Please wait until your energy is refilled."
         },
         "AUSTRALIAN": {
             "title": "Generate flashcards with AI from...",
@@ -625,7 +628,8 @@
             "yourTexts": "Your texts:",
             "noMaterials": "No materials yet",
             "generateCardsDisabled": "Generate cards",
-            "sumDocument": "Summarize document"
+            "sumDocument": "Summarize document",
+            "notEnoughEnergy": "You don't have enough energy. Please wait until your energy is refilled."
         },
         "SPANISH": {
             "title": "Generar tarjetas con AI a partir de...",
@@ -640,7 +644,8 @@
             "yourTexts": "Tus textos:",
             "noMaterials": "Aún no hay materiales",
             "generateCardsDisabled": "Generar tarjetas",
-            "sumDocument": "Resumir documento"
+            "sumDocument": "Resumir documento",
+            "notEnoughEnergy": "No tienes suficiente energía. Por favor, espera hasta que tu energía se recargue."
         }
         },
     "allModules":{
@@ -1667,31 +1672,31 @@
     "deleteAccount":{
         "DEUTSCH":{
             "deleteAccount": "Account löschen",
-            "areYouSure": "Bist du sicher, dass du deinen Account dauerhaft löschen möchtest?",
+            "areYouSure": "Bist du sicher, dass du deinen Account dauerhaft löschen möchtest? \n\nAlle deine persönlichen Daten werden unwiderruflich gelöscht. Bereits geteilte Inhalte (z. B. kopierte Module) bleiben anonym erhalten.",
             "cancel": "Abbrechen",
             "delete": "Löschen"
         },
         "ENGLISH(US)": {
             "deleteAccount": "Delete Account",
-            "areYouSure": "Are you sure you want to permanently delete your account?",
+            "areYouSure": "Are you sure you want to permanently delete your account? \n\nAll your personal data will be irreversibly deleted. Shared content (e.g., copied modules) will remain anonymous.",
             "cancel": "Cancel",
             "delete": "Delete"
         },
         "ENGLISH(UK)": {
             "deleteAccount": "Delete Account",
-            "areYouSure": "Are you sure you want to permanently delete your account?",
+            "areYouSure": "Are you sure you want to permanently delete your account? \n\nAll your personal data will be irreversibly deleted. Shared content (e.g., copied modules) will remain anonymous.",
             "cancel": "Cancel",
             "delete": "Delete"
         },
         "AUSTRALIAN": {
             "deleteAccount": "Delete Account",
-            "areYouSure": "Are you sure you want to permanently delete your account?",
+            "areYouSure": "Are you sure you want to permanently delete your account? \n\nAll your personal data will be irreversibly deleted. Shared content (e.g., copied modules) will remain anonymous.",
             "cancel": "Cancel",
             "delete": "Delete"
         },
         "SPANISH": {
             "deleteAccount": "Eliminar cuenta",
-            "areYouSure": "¿Estás seguro de que quieres eliminar tu cuenta permanentemente?",
+            "areYouSure": "¿Estás seguro de que quieres eliminar tu cuenta permanentemente? \n\nTodos tus datos personales serán eliminados de forma irreversible. El contenido compartido (por ejemplo, módulos copiados) permanecerá anónimo.",
             "cancel": "Cancelar",
             "delete": "Eliminar"
         }

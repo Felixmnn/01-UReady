@@ -74,8 +74,6 @@ const ProfileSettings = () => {
     const [ actioncode, setActionCode ] = useState("")
     async function toggleModal(code) {
       const res = await useActionCode(actioncode);
-      console.log("Action Code", res);
-      console.log(userUsage)
 
       if (res && res != null) {
         setUserUsage((prev) => {

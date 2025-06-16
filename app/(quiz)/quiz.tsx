@@ -10,6 +10,7 @@ import SmileyStatus from '@/components/(bibliothek)/(components)/smileyStatus';
 import { loadModule } from '@/lib/appwriteDaten';
 import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { parse } from '@babel/core';
 
 
 const quiz = () => {
@@ -50,18 +51,12 @@ const quiz = () => {
         async function fetchData() {
             const data = await loadModule(moduleID);
             setModule(data);
-            console.log("Module Data", data)
-            setQuestionList(data.questionList.map(question => JSON.parse(question)));
-            /*
-            const parsedList = data.questionList
-                .map(question => JSON.parse(question))
-                .filter(parsedQuestion =>
-                    questionsParsed.some(q => q.$id === parsedQuestion.id)
-                );
-            console.log("Parsed List", parsedList)
 
-            setQuestionList(parsedList);
-            */
+            const filteredQuestions = data.questionList.filter(question => {
+            return questionsParsed.some(q => q.$id === JSON.parse(question).id);
+            });
+            setQuestionList(filteredQuestions.map(question => JSON.parse(question)));
+           
         }
 
         fetchData();
@@ -96,8 +91,7 @@ const quiz = () => {
         updateModuleHere();
     }, [questionList]);
 
-console.log("QUestion List", questionList)
-console.log("Module", module)   
+
     /**
      * This is the function that calculates the percentage of the colors in the header status bar
      */
@@ -122,7 +116,6 @@ console.log("Module", module)
         good = Math.round((good / questionList.length) * 100);
         great = Math.round((great / questionList.length) * 100);
 
-        console.log("Bad",bad, "Ok", ok, "Good", good, "Great", great)
         return [bad,ok,good,great]
     } 
 
@@ -134,7 +127,9 @@ console.log("Module", module)
             router.back()
             router.push("bibliothek")
         } catch (error) {
-            console.log(error)
+            if (__DEV__) {
+                console.log(error)
+            }
         }
     }
 
@@ -180,65 +175,62 @@ console.log("Module", module)
                 return false
             }
         }
-        console.log("Question List", questionList)
 
-        async function nextQuestion (status, change){
-            setShowAnswers(false)
-            
-            const indexOfQuestion = questionList.findIndex((question) => question.id === questionsParsed[selectedQuestion].$id)
-            console.log("Compared Question", questionsParsed[selectedQuestion], "Index of Question", indexOfQuestion)
-            if (indexOfQuestion === -1) {
-                setQuestionList([...questionList, {
-                    id: questionsParsed[selectedQuestion].$id,
-                    status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status ==  "GREAT" )
-                    && status == "GOOD" ? "GREAT" : status
-                }])
-                console.error("Question not found in questionList");
-                return;
+        async function nextQuestion(status, change) {
+    setShowAnswers(false);
+
+    const currentQuestionId = questionsParsed[selectedQuestion].$id;
+    const currentStatus = questionList.find(q => q.id === currentQuestionId)?.status || null;
+
+    // Neue Statuslogik
+    let newStatus = status;
+    if ((currentStatus === "GOOD" || currentStatus === "GREAT") && status === "GOOD") {
+        newStatus = "GREAT";
+    }
+
+    const indexOfQuestion = questionList.findIndex(q => q.id === currentQuestionId);
+
+    if (indexOfQuestion === -1) {
+        setQuestionList(prev => [
+            ...prev,
+            {
+                id: currentQuestionId,
+                status: newStatus,
             }
-            
-            setQuestionList(prevState => {
-                const updatedList = [...prevState];
-                updatedList[indexOfQuestion] = {
-                    ...updatedList[indexOfQuestion],
-                    status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status ==  "GREAT" )  
-                    && status == "GOOD" ? "GREAT" : status
-                };
-
-                return updatedList;
-            })
-            /*
-            setQuestionParsed(prevState =>
-                prevState.map((q, index) =>
-                    index === selectedQuestion ? { ...q, status: (questionsParsed[selectedQuestion].status == "GOOD" || questionsParsed[selectedQuestion].status == 
-                        "GREAT" )  && status == "GOOD" ? "GREAT" : status } : q
-                )
-            );
-            
-            */
-            const updatedItem = {
-                ...questionsParsed[selectedQuestion],
-                status: questionsParsed[selectedQuestion].status == "GOOD" && status == "GOOD" ? "GREAT" : status, 
+        ]);
+    } else {
+        setQuestionList(prev => {
+            const updated = [...prev];
+            updated[indexOfQuestion] = {
+                ...updated[indexOfQuestion],
+                status: newStatus,
             };
-            
-            await updateDocument(updatedItem)
-            if (change == 1){
-                if (selectedQuestion + 1  >=  questionsParsed.length){
-                    setSelectedQuestion(0)
-                    
-                } else {
-                    setSelectedQuestion(selectedQuestion + 1 )
-                }
-            } else {
-                if (selectedQuestion == 0){
-                    setSelectedQuestion(questionsParsed.length -1)
-                } else {
-                    setSelectedQuestion(selectedQuestion - 1)
-                }
-            }
-                
-        }
+            return updated;
+        });
+    }
 
+    // Update parsed list (falls benötigt)
+    setQuestionParsed(prev =>
+        prev.map((q, i) =>
+            i === selectedQuestion ? { ...q, status: newStatus } : q
+        )
+    );
+
+    // Persistiere Änderung im Backend
+    await updateDocument({
+        ...questionsParsed[selectedQuestion],
+        status: newStatus
+    });
+
+    // Frage wechseln
+    if (change === 1) {
+        setSelectedQuestion((selectedQuestion + 1) % questionsParsed.length);
+    } else {
+        setSelectedQuestion(
+            selectedQuestion === 0 ? questionsParsed.length - 1 : selectedQuestion - 1
+        );
+    }
+}
         return (
             <View className='flex-1 justify-end'>
                 <View className='flex-1 rounded-[10px] bg-gray-900 border-gray-600 border-[1px] m-4'>	
@@ -257,9 +249,7 @@ console.log("Module", module)
                                                                   width: 20, 
                                                                 }} 
                                                               /> : null}
-                            <TouchableOpacity className='items-center justify-center ml-2'>
-                                <Icon name="ellipsis-v" size={15} color="white"/>
-                            </TouchableOpacity>
+                            
                         </View>
                     </View>
                     <RenderQuestion showAnsers={showAnsers} question={questionsParsed[selectedQuestion]} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} />

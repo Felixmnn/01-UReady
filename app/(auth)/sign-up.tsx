@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Platform, ActivityIndicator, useWindowDimensions, SafeAreaView, Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Platform, ActivityIndicator, useWindowDimensions, SafeAreaView, Image, Modal } from 'react-native'
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { createUser, loginWithGoogle } from '@/lib/appwrite';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { loginWithOAuth } from '@/lib/appwriteOAuth';
+import Policys from '../(about)/policys';
 
 const SingnUp = () => {
     const { setIsLoggedIn,setUser, setUserData } = useGlobalContext();
@@ -15,7 +16,34 @@ const SingnUp = () => {
     const [ isError, setIsError] = useState(false);
     const [ isVisible, setIsVisible] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [ policysVisible, setPolicysVisible ] = useState(false);
+      const [ consetGiven, setConsetGiven] = useState(false)
+    
     const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
+
+    const PolicyModal = () => {
+      return (
+        <Modal
+          transparent={true}
+          visible={policysVisible}
+          animationType="slide"
+          onRequestClose={() => setPolicysVisible(false)}
+        >
+          <View className="flex-1 bg-black bg-opacity-50 items-center justify-center">
+            <View className="bg-gray-900 rounded-lg p-4 w-11/12 max-w-md">
+        <Policys/>
+            <TouchableOpacity
+              className="mt-4 bg-blue-500 p-2 rounded-lg"
+              onPress={() => setPolicysVisible(false)}
+            >
+              <Text className="text-white text-center">Schließen</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
+        </Modal>
+      )
+    }
+
     function isValidEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (re.test(email)) {
@@ -45,6 +73,10 @@ const SingnUp = () => {
             return;
           }  else if (signUpForm.password !== signUpForm.passwordConfirm) {
             setErrorMessage("Passwörter stimmen nicht überein")
+            setIsError(true)
+            return;
+          } else if (!consetGiven) {
+            setErrorMessage("Bitte den AGB zustimmen")
             setIsError(true)
             return;
           } else {
@@ -93,6 +125,11 @@ const SingnUp = () => {
                   {
                     Platform.OS === "web" || true ?
                   <TouchableOpacity onPress={()=>{
+                    if (!consetGiven) {
+                      setErrorMessage("Bitte den AGB zustimmen")
+                      setIsError(true)
+                      return;
+                    }
                       if (handlePress){
                           handlePress()
                       } else {
@@ -117,6 +154,7 @@ const SingnUp = () => {
   return (
 
       <SafeAreaView className="flex-1 p-4 items-center justify-center bg-[#0c111d] ">
+            <PolicyModal />
             <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage} />
             <View className={`rounded-[10px] mt-2 ${isVertical ? "border-gray-500 border-[1px]" : "" }  `}
                         
@@ -192,6 +230,23 @@ const SingnUp = () => {
                 value={signUpForm.passwordConfirm}
                 onChangeText={(text) => setSignUpForm({ ...signUpForm, passwordConfirm: text })}
             />
+            <View className="flex-row items-center space-x-2 mt-2 mb-2">
+                <TouchableOpacity
+                  onPress={() => setConsetGiven(!consetGiven)}
+                  className={`w-5 h-5 rounded border-[1px] ${consetGiven ? 'bg-blue-600 border-blue-600' : 'border-gray-400'} justify-center items-center`}
+                >
+                  {consetGiven && (
+                    <Icon name="check" size={12} color="#fff" />
+                  )}
+                </TouchableOpacity>
+                <Text className="text-gray-300 text-sm">
+                  Ich stimme den{' '}
+                  <Text className="text-blue-400 underline" onPress={() => setPolicysVisible(true)}>
+                    AGB
+                  </Text>{' '}
+                  zu.
+                </Text>
+              </View>
             <LoginButton title="Registrieren" handlePress={() => {signUp()}} />
             <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
                                     if ( Platform.OS === "web") {

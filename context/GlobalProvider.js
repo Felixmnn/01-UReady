@@ -63,13 +63,17 @@ const GlobalProvider = ({children}) => {
                 }
             } )
             .catch ((error) => {
+                if (__DEV__) {
                 console.log(error);
+                }
             })
             .finally(() => {
                 setIsLoading(false);
             });
         } catch (error){
+            if (__DEV__) {
             console.log(error)
+            }
         }
     }, [isLoading,isLoggedIn]);
 

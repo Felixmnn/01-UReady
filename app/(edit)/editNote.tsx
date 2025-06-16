@@ -58,11 +58,13 @@ const CreateNote = () => {
                         setUngespeichert(true)
                     }}
                     onBlur={() => saveChanges()}
+                    maxLength={50}
                 />
                 <TextInput
                     className='flex-1 bg-gray-800 m-2 border-gray-700 border-[1px] rounded-[10px] p-2 text-white '
                     multiline={true}
                     value={noteData.notiz}
+                    maxLength={2000}
                                         placeholderTextColor={"white"}
                     placeholder='Noch keine Notiz'
                     onChangeText={(text) => {

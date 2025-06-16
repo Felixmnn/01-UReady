@@ -15,9 +15,7 @@ const SessionProgress = ({
   const radius = (size - strokeWidth) / 2; // Berechnung des Radius
   const circumference = 2 * Math.PI * radius; // Umfang des Kreises
   const progressOffsetRed = circumference - (progressr * 2 ); // Fortschrittsberechnung
-  
-  console.log(progressr)
-  return (
+    return (
     <View className="items-center ">
     <View className={`my-1 relative flex items-center justify-center  rounded-full ${selected ? "opacity-100" : "opacity-30"} ${className}`} style={{ width: size, height: size }}>
       <Svg width={size} height={size}>

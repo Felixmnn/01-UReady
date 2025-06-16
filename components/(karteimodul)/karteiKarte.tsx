@@ -30,7 +30,6 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
           personThatReported: user.$id,
           message: reason,
         });
-        console.log("Report submitted with reason:", reason);
         setModalVisible(false);
       };
     
@@ -120,7 +119,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
             <Text className='text-gray-300 text-[12px] ml-1'>{creator == "YOU" ? "Von Dir" : creator.length > 10 ? creator.substring(0, 10) + "..." : creator  }</Text>
           </View>
           <View className='flex-row justify-between'>
-            <TouchableOpacity className='mr-4'>
+            <TouchableOpacity className=''>
               {
                 !publicM ?
                 <Icon name="lock" size={18} color="white"/>
@@ -128,9 +127,7 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
                 <Icon name="globe" size={18} color="white"/>
               }            
               </TouchableOpacity>
-            <TouchableOpacity className='mr-1'>
-              <Icon name="ellipsis-h" size={18} color="white"/>
-            </TouchableOpacity>
+            
             {reportVisible ?
             <TouchableOpacity className='ml-2' onPress={() => setModalVisible(true)}>
               <Icon name="exclamation-triangle" size={18} color="white"/>

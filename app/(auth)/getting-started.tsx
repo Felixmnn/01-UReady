@@ -4,7 +4,7 @@ import PageAiCreate from '@/components/(getting-started)/pageAiCreate';
 import PageDiscover from '@/components/(getting-started)/pageDiscover';
 import PageCreateModule from '@/components/(getting-started)/pageCreateModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { loadUserDataKathegory } from '@/lib/appwriteDaten';
+import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import  languages  from '@/assets/exapleData/languageTabs.json';
@@ -12,13 +12,25 @@ import  languages  from '@/assets/exapleData/languageTabs.json';
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
     const {user, isLoggedIn,isLoading,language } = useGlobalContext();
-    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    const texts = languages.gettingStarted[selectedLanguage] || languages.gettingStarted["DEUTSCH"];
+    const [ selectedLanguage, setSelectedLanguage ] = useState(language ? language : "DEUTSCH");
+    const [texts, setTexts] =  useState(languages.gettingStarted[selectedLanguage] || languages.gettingStarted["DEUTSCH"]);
     useEffect(() => {
       if(language) {
         setSelectedLanguage(language)
+        setTexts(languages.gettingStarted[language] || languages.gettingStarted["DEUTSCH"]);
       }
     }, [language])
+
+    useEffect(() => {
+      if (!user) return;
+      async function fetchUserDataKathegory(){
+        const res = await loadUserData(user.$id);
+        if (res && res.signInProcessStep == "DONE") {
+          router.push("/home")
+        }
+      }
+      fetchUserDataKathegory();
+      },[user])
 
       useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
@@ -26,31 +38,31 @@ const gettingStarted = () => {
         }
       }, [user, isLoggedIn, isLoading]);
       
-    const [ userData, setUserData] = useState(null)
+    const [ userDataP, setUserData] = useState(null)
 
     useEffect(() => {
-      if (userData == null) return ;
+      if (userDataP == null) return ;
       setNewModule({
           ...newModule, 
           releaseDate: new Date(),
-          creator:userData.$id,
-          creationCountry: userData.country,
-          creationUniversity: userData.university,
-          creationUniversityProfession: userData.studiengangZiel,
-          creationRegion: userData.region,
-          creationUniversitySubject: userData.studiengang,
-          creationSubject: userData.schoolSubjects,
-          creationEducationSubject: userData.educationSubject,
-          creationUniversityFaculty: userData.faculty,
-          creationSchoolForm: userData.schoolType,
-          creationKlassNumber: userData.schoolGrade,
-          creationLanguage: userData.language,
-          creationEducationKathegory:userData.educationKathegory,
-          studiengangKathegory:userData.studiengangKathegory,
-          kategoryType: userData.kategoryType,
+          creator:userDataP.$id,
+          creationCountry: userDataP.country,
+          creationUniversity: userDataP.university,
+          creationUniversityProfession: userDataP.studiengangZiel,
+          creationRegion: userDataP.region,
+          creationUniversitySubject: userDataP.studiengang,
+          creationSubject: userDataP.schoolSubjects,
+          creationEducationSubject: userDataP.educationSubject,
+          creationUniversityFaculty: userDataP.faculty,
+          creationSchoolForm: userDataP.schoolType,
+          creationKlassNumber: userDataP.schoolGrade,
+          creationLanguage: userDataP.language,
+          creationEducationKathegory:userDataP.educationKathegory,
+          studiengangKathegory:userDataP.studiengangKathegory,
+          kategoryType: userDataP.kategoryType,
 
       });
-  },[userData])
+  },[userDataP])
 
     useEffect(() => {
         if (user == null) return;
@@ -67,7 +79,7 @@ const gettingStarted = () => {
       questions: 0,
       notes: 0,
       documents: 0,
-      public: true,
+      "public": true,
       progress: 0,
       creator: "",
       color: null,
@@ -106,8 +118,8 @@ const gettingStarted = () => {
         > 
           
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
-          : userChoices == "GENERATE" ?     <PageAiCreate tutorialStep={tutorialStepAI} setTutorialStep={setTutorialStepAI} setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userData}/>
-          : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userData}/>
+          : userChoices == "GENERATE" ?     <PageAiCreate tutorialStep={tutorialStepAI} setTutorialStep={setTutorialStepAI} setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userDataP}/>
+          : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userDataP}/>
           : userChoices == "CREATE" ?       <PageCreateModule tuturialStep={tuturialStep} setTutorialStep={setTutorialStep} setUserChoices={setUserChoices}  newModule={newModule} setNewModule={setNewModule}/>
           : null
 }  

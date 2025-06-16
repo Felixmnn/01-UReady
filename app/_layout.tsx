@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-// 👇 NEU HINZUFÜGEN
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {

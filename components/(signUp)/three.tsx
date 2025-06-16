@@ -37,6 +37,7 @@ const StepThree = ({    selectedLanguage,
     }
           return (
               <View className='h-full  w-full justify-between items-center py-5'>
+                
                 <View className='w-full'>
                     <View className='bg-gray-900 w-full rounded-[10px] ' style={{height:6}}>
                         <View className={`bg-blue-500 h-full w-[${40}%] rounded-full`} style={{width:`${40}%`}}/>

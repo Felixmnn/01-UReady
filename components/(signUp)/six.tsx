@@ -141,7 +141,6 @@ const StepSix = ({selectedKathegorie,LeibnizSubjects, schoolListDeutschland, mes
         };
     }
     const handleItemPress = (item) => {
-      console.log("Item", item)
         if (selectedSubjects.includes(item)) {
             setSelectedSubjects(selectedSubjects.filter((subject) => subject !== item))
         }
@@ -189,7 +188,6 @@ const StepSix = ({selectedKathegorie,LeibnizSubjects, schoolListDeutschland, mes
             };
             
         const handleItemPress = (item) => {
-          console.log("Item", item)
                 if (selectedField.some((i) => i.name === item.name)) {
                     setSelectedField(selectedField.filter((subject) => subject.name != item.name));
                 }

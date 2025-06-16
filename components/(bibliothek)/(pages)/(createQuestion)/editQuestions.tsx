@@ -27,7 +27,7 @@ const EditQuestions = ({selectedModule,setQuestions,questionActive,setQuestionAc
                 answers: [],
                 answerIndex: [],
                 tags: [],
-                public: false,
+                "public": false,
                 sessionID:null,
                 aiGenerated: false,
                 subjectID: selectedModule.$id,

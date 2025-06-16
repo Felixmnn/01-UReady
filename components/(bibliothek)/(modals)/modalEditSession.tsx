@@ -7,7 +7,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 
 const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, setSessions }) => {
 
-    const { user,language } = useGlobalContext()
+    const { language } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
         if(language) {
@@ -70,7 +70,6 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                 i === index ? { ...session, color: newColor } : session
             )
         );
-        console.log("Die neue Sessions", sessions);
         setSelectedColor(newColor);
     }
 

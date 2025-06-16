@@ -12,7 +12,7 @@ const quizLayout = () => {
                     headerShown: false 
                   }}
                 />
-            </Stack>
+            </Stack> 
         </>
     </View>
   )

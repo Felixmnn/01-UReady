@@ -21,7 +21,6 @@ const Questions = ({screenHeight, questions, setSelectedQuestion, selectedQuesti
       }, [language])
       const {width} = useWindowDimensions()
       const isVertical = width < 700;
-      console.log("Questions", questions, selectedQuestion, newQuestion)
         return (
             <View className={` border-r-[1px] border-gray-500`} 
             style={{height: !isVertical ? screenHeight-100 : null}}

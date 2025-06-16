@@ -13,7 +13,7 @@ const AddAiModule = ({isVisible, setIsVisible}) => {
           questions: 0,
           notes: 0,
           documents: 0,
-          public: false,
+          "public": false,
           progress: 0,
           creator: "",
           color: null,

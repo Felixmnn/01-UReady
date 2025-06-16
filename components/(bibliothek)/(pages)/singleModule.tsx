@@ -13,7 +13,6 @@ import { updateModuleData } from '@/lib/appwriteUpdate';
 import ModalNewQuestion from '../(modals)/newQuestion';
 import AiQuestion from '../(modals)/aiQuestion';
 import { router } from 'expo-router';
-import * as FileSystem from 'expo-file-system';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 import { useFocusEffect } from '@react-navigation/native';
@@ -31,6 +30,9 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     const isVertical = width > 700;
     const [ tab, setTab ] = useState(0)
     const [loading, setLoading] = useState(true);
+
+
+    
     function reverseToManyStringifyActions(array) {
         return array.map(item => {
             try {
@@ -51,14 +53,11 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         
 
     }
-
-
     {/* Relevant Data - Modules $ Sessions */}
     const [module, setModule] = useState({
         ...moduleEntry,
         questionList: reverseToManyStringifyActions(moduleEntry.questionList)
-    });
-    
+    }); 
     const [selectedSession, setSelectedSession] = useState(0)
     const [questions, setQuestions] = useState([]);
     const [notes, setNotes] = useState([]);
@@ -84,11 +83,14 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         }
     }, [language])
     const [isError, setIsError] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(null);
     const [ errorMessage, setErrorMessage ] = useState("Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.");
     
     const texts = languages.singleModule; 
+
+
+    //____________________________________________________________Ende der Variablen____________________________________________________________
+
+
     /**
      * This function updates the sessions each time the sessions change.
      * The sessions are each stored as a JSON string in the module.
@@ -113,6 +115,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
      * @param {Array} questions - Array of question objects.
      */
     function calculatePercent(questions) {
+
         let points = 0;
         if (!questions || questions.length === 0) return 100;
         for (let i = 0; i < questions.length; i++) {
@@ -129,24 +132,68 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         const percent = Math.round((points / questions.length) * 100);
         return percent < 0 ? 0 : percent > 100 ? 100 : percent;
     }
+
+    //_____________________________________________________________When Selected Session Changes_____________________________________________________________
+    /**
+     * This function is called when the Page is reopened or the module is changed.
+     */
+    async function updateSessionData(sessionID="", percent=0, amountQuestions=0) {
+         sessions.forEach((session) => {
+                if (
+                    session.id === sessionID &&
+                    (session.percent !== percent || session.questions !== amountQuestions)
+                ) {
+                    setSessions((prevSessions) => {
+                        const updatedSessions = [...prevSessions];
+                        const index = updatedSessions.findIndex((s) => s.id === sessionID);
+            
+                        if (index !== -1) {
+                            updatedSessions[index] = {
+                                ...updatedSessions[index],
+                                percent: percent,
+                                questions: amountQuestions,
+                            };
+                        }
+            
+                        return updatedSessions;
+                    });
+                }
+            });
+    }
+
+    async function fetchQuestions(sessionID) {
+            const sessionQuestions = await getSessionQuestions(sessionID)
+            setQuestionLoadedSessions([...questionLoadedSessions,sessionID])
+            const percent = calculatePercent(sessionQuestions);
+            await updateSessionData(sessionID, percent, sessionQuestions.length);
+           
+            const notes = await getSessionNotes(sessionID);
+            const documents = await getAllDocuments(sessionID);
+            const existingIds = questions.map(q => q.$id);
+            const newQuestions = sessionQuestions.filter(q => !existingIds.includes(q.$id));
+            if (newQuestions.length > 0) {
+  setQuestions((prevQuestions) => {
+    const combined = [...prevQuestions, ...newQuestions];
+    const unique = combined.filter(
+      (item, index, arr) => arr.findIndex((q) => q.$id === item.$id) === index
+    );
+    return unique;
+  });
+}
+            //else {setQuestions(sessionQuestions);}
+            if (notes) {setNotes(notes)}
+            if (documents) {setDocuments(documents)}   
+        }
     async function checkForUpdates() {
                 const moduledata = await loadModule(module.$id);
-                const questions = await getSessionQuestions(sessions[selectedSession].id);
+                if (moduledata) {setModule(moduledata);}
 
+                const questions = await getSessionQuestions(sessions[selectedSession].id);
                 const notes = await getSessionNotes(sessions[selectedSession].id);
                 const documents = await getAllDocuments(sessions[selectedSession].id);
-                if (moduledata) {
-                    setModule(moduledata);
-                }
-                if (questions) {
-                    setQuestions(questions);
-                }
-                if (notes) {
-                    setNotes(notes);
-                }
-                if (documents) {
-                    setDocuments(documents);
-                }
+                if (questions) {setQuestions(questions);}
+                if (notes) {setNotes(notes)}
+                if (documents) {setDocuments(documents);}
                 const percent = calculatePercent(questions);
                 setSessions((prevSessions) => {
                     return prevSessions.map((session) => {
@@ -162,67 +209,10 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 }
                 );
             }
-    useFocusEffect(
-        React.useCallback(() => {
-            
-            checkForUpdates();
-        },[]))
-
-    //This function is used to fetch the questions, notes and documents for the a new session.
+    
+    //This effect causes Quetions rende
     useEffect(() => { 
-        async function fetchQuestions(sessionID) {
-            const sessionQuestions = await getSessionQuestions(sessionID)
-            console.log("🔷🔷🔷sessionQuestions", sessionQuestions)
-            setQuestionLoadedSessions([...questionLoadedSessions,sessionID])
-
-            
-            const percent = calculatePercent(sessionQuestions);
-            sessions.forEach((session) => {
-                
-                if (
-                    session.id === sessionID &&
-                    (session.percent !== percent || session.questions !== sessionQuestions.length)
-                ) {
-                    setSessions((prevSessions) => {
-                        const updatedSessions = [...prevSessions];
-                        const index = updatedSessions.findIndex((s) => s.id === sessionID);
-            
-                        if (index !== -1) {
-                            updatedSessions[index] = {
-                                ...updatedSessions[index],
-                                percent: percent,
-                                questions: sessionQuestions.length,
-                            };
-                        }
-            
-                        return updatedSessions;
-                    });
-                }
-            });
-            
-            const notes = await getSessionNotes(sessionID);
-            const documents = await getAllDocuments(sessionID);
-            const existingIds = questions.map(q => q.$id);
-            const newQuestions = sessionQuestions.filter(q => !existingIds.includes(q.$id));
-            if (newQuestions.length > 0) {
-                setQuestions((prevQuestions) => [...prevQuestions, ...newQuestions]);
-            } else {
-                setQuestions(sessionQuestions);
-            }
-           
-           
-            
-            if (notes) {
-                setNotes(notes)  
-            }
-            
-            if (documents) {
-                
-                setDocuments(documents)
-            }
-                
-        }
-        if ( sessions == undefined || selectedSession > sessions.length || questionLoadedSessions.includes(sessions[selectedSession].id) ) {
+        if ( sessions == undefined || selectedSession > sessions.length  ) {
             if (selectedSession > sessions.length) {
                 for (let i = 0; i < sessions.length; i++) {
                     if (!questionLoadedSessions.includes(sessions[i].id)) {
@@ -232,11 +222,19 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 }
             }
         } else {
-            fetchQuestions(sessions[selectedSession].id);
+            if (sessions[selectedSession]) fetchQuestions(sessions[selectedSession].id ); 
         }
         setLoading(false) 
     }, [sessions, selectedSession, refreshing])
-    console.log("🐋🐋 Questions: " , questions)
+
+
+
+    //_____________________________________________________________General Functions_____________________________________________________________
+    
+    useFocusEffect(
+        React.useCallback(() => {
+            checkForUpdates();
+        },[]))
     /**
      * Switches to the EditNote screen with a new empty note.
      */
@@ -244,7 +242,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         setIsVisibleNewQuestion(false);
         const note = {
             notiz: "",
-            sessionID: sessions[selectedSession].id,
+            sessionID: sessions[selectedSession] ? sessions[selectedSession].id : "",
             subjectID: module.$id,
             title: "",
         }
@@ -255,7 +253,9 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 params: {note: JSON.stringify(res)}
             })
         } catch (error) {
+            if (__DEV__) {
             console.log(error);
+            }
         }}
     /**
      * This function loads a document from the users device and uploads it to the Appwrite bucket.
@@ -282,7 +282,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 uploaded: false,
             };
     
-            setDocuments([...documents, doc]);
     
             // Step 2 - Save the config
             const appwriteRes = await addDocumentConfig(doc);
@@ -312,40 +311,48 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 );
             }
            
-            setDocuments(prevDocs => prevDocs.map(document =>
-            document.id === doc.id ? { ...document, uploaded: true } : document
-            ));
+            
 
             appwriteRes.uploaded = true;
             const final = await updateDocumentConfig(appwriteRes);
-
+            setDocuments(prevDocuments => [...prevDocuments, final])
+            setIsVisibleNewQuestion(false);
         } catch (error) {
+            if (__DEV__) {
             console.log('Error in addDocument:', error);
+            }
+        } finally {
+            setIsVisibleNewQuestion(false);
         }
     }
     /**
      * This function removes a document locally and deletes it from the Appwrite bucket.
      * @param {string} id - The ID of the document to update.
      */
-    async function deleteDocument (id, type="document"){
-        try {
-            if (type === "document") {
-            setDocuments(documents.filter(document => document.$id !== id));
-            removeDocumentConfig(id);
-            } else if (type == "question") {
-                setQuestions(questions.filter(question => question.$id !== id));
-                module.questionList = module.questionList.filter(item => item.id !== id);
-                const res = await updateModuleData(module.$id, {
-                    questionList: module.questionList.map(item => JSON.stringify(item)),
-                    questions: module.questionList.length,
-                    progress: calculatePercent(questions)
-                });
-                await removeQuestion(id);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    async function deleteDocument(id, type = "document") {
+  try {
+    if (type === "document") {
+      setDocuments(documents.filter(document => document.$id !== id));
+      removeDocumentConfig(id);
+    } else if (type === "question") {
+      const updatedQuestions = questions.filter(q => q.$id !== id);
+      setQuestions(updatedQuestions);
+        const parsedList = reverseToManyStringifyActions(module.questionList);
+      const updatedQuestionList = parsedList.filter(q => q.id !== id);
+      const res = await updateModuleData(module.$id, {
+        questionList: updatedQuestionList.map(item => JSON.stringify(item)),
+        questions: updatedQuestionList.length,
+        progress: calculatePercent(updatedQuestions), // <- Hier ist der Fix
+      });
+
+      await removeQuestion(id);
     }
+  } catch (error) {
+    if (__DEV__) {
+    console.log("❌ Fehler beim Löschen:", error);
+    }
+  }
+}
 
     const [ isVisibleNewQuestion, setIsVisibleNewQuestion ] = useState(false)
     const [ isVisibleAI, setIsVisibleAI ] = useState(false)
@@ -386,15 +393,15 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         setTab(1)
         setChange(change + 1)
    },[selectedSession])
-
-   console.log("selectedSession", selectedSession, "sessions", sessions, "module", module)
-
-   
     return (
         <View className='flex-1 rounded-[10px] items-center '>
            
             <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
-            <AiQuestion module={module} setErrorMessage={setErrorMessage} setIsError={setIsError} uploadDocument={addDocument} sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions} selectedSession={sessions[selectedSession]} isVisible={isVisibleAI} setIsVisible={setIsVisibleAI} selectedModule={module} />
+            <AiQuestion setQuestionLoadedSessions={setQuestionLoadedSessions}
+             module={module} setErrorMessage={setErrorMessage} setIsError={setIsError} uploadDocument={addDocument}
+            sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions}
+               selectedSession={sessions[selectedSession]} isVisible={isVisibleAI}
+                setIsVisible={setIsVisibleAI} selectedModule={module} />
             {isVertical ? <View className=' h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50'></View> : null }
             <View className='flex-1 rounded-[10px] w-full bg-gray-900  border-gray-700 '>
                 { loading ? <Text>...</Text> :

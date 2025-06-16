@@ -1,5 +1,5 @@
 import { View, Text, Modal, TouchableOpacity, Touchable, ActivityIndicator, TextInput,ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 import uuid from 'react-native-uuid';
@@ -7,8 +7,9 @@ import { materialToQuestion } from '@/functions/(aiQuestions)/materialToQuestion
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { addDocumentJob } from '@/lib/appwriteAdd';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { Animated } from 'react-native';
 
-const AiQuestion = ({isVisible,module, setIsVisible,setErrorMessage, setIsError, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
+const AiQuestion = ({isVisible, setQuestionLoadedSessions,module, setIsVisible,setErrorMessage, setIsError, setSelected ,selectedModule , selectedSession, setQuestions, questions, documents, sessions, setSessions, uploadDocument}) => {
 const { userUsage, setUserUsage,language } = useGlobalContext()
  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     useEffect(() => {
@@ -18,7 +19,6 @@ const { userUsage, setUserUsage,language } = useGlobalContext()
     }, [language])
 
 const texts = languages.aiQuestion;
-console.log("MODULE", module)
 
 
 const [selectedType, setSelectedType] = useState("FILE")
@@ -28,6 +28,61 @@ const [isLoading, setIsLoading] = useState(false)
 
 
 const [ selectedFile, setSelectedFile ] = useState(null)
+
+const overlayOpacity = useRef(new Animated.Value(0)).current;
+const [flashing, setFlashing] = useState(false);
+const flashRed = () => {
+  setFlashing(true);
+  overlayOpacity.setValue(0);
+  Animated.sequence([
+    Animated.timing(overlayOpacity, {
+      toValue: 0.3,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0.3,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0.3,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0.3,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+    Animated.timing(overlayOpacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }),
+  ]).start(() => {
+    // ⏳ Animation fertig
+    setFlashing(false);
+  });
+};
+
+
+
 const GenerateByFile = () => {
     
     return (
@@ -74,40 +129,88 @@ const GenerateByFile = () => {
                 <Text className='text-gray-300 ml-2 font-bold'>{texts[selectedLanguage].sumDocument}</Text>
             </TouchableOpacity>
             :
-            <GratisPremiumButton aditionalStyles={"w-full bg-blue-500"} handlePress={()=> createDocumentJob()} >
-                {
-                    isLoading ?
-                     <ActivityIndicator size="small" color="#00ff00" />
-                     :
-                     <View className='flex-row items-center'>
-                        <Text className='text-white  font-semibold text-[15px] mb-1'>Karteikarten für 3</Text>
-                        <Icon name="bolt" size={15} color="white" className="ml-2" />
-                        <Text className='text-white ml-2 font-bold mb-1'>generieren.</Text>
-                    </View>
+            <View className="w-full relative justify-center "
+            style={{
+                maxHeight: 50
+            }}
+            >
+            {/* Dein Button */}
+            <GratisPremiumButton
+                aditionalStyles={"w-full relative bg-blue-500"}
+                handlePress={() => {
+                if (userUsage.energy < 3 ) {
 
+                    flashRed();
+                    
+                    return;
                 }
+                createDocumentJob();
+                }}
+            >
+                {isLoading ? (
+                <ActivityIndicator size="small" color="#00ff00" />
+                ) : (
+                <View className="flex-row relative items-center">
+                    <Text className="text-white font-semibold text-[15px] mb-1">
+                    Karteikarten für 3
+                    </Text>
+                    <Icon name="bolt" size={15} color="white" className="ml-2" />
+                    <Text className="text-white ml-2 font-bold mb-1">generieren.</Text>
+                </View>
+                )}
             </GratisPremiumButton>
+            {
+            flashing ?
+            <>
+            <Animated.View
+            className=' absolute  w-full bg-red-500 rounded-full'
+            style={{
+                height: 30,
+                opacity: overlayOpacity,
+                bottom: 35,
+                backgroundColor: "rgba(255, 0, 0, 0.5)",
+                borderRadius: 15
+
+                
+
+            }} 
+        
+            />
+            <Text className='absolute text-red-900 font-bold text-center w-full top-6'>
+                {texts[selectedLanguage].notEnoughEnergy}
+            </Text>
+            </>
+            : null
+        }
+
+            {/* 🔴 Overlay über dem Button */}
+           
+            </View>
             }
         </View>
     )
 }
-
 async function createDocumentJob() {
-    if (userUsage.energy < 3) {
+    if (userUsage.energy < 3 ) {
         setErrorMessage("You don't have enough energy to summarize this document. Please wait until your energy is recharged or buy some in the shop.")
         setIsError(true)
         return
     } 
-        
     const job = {
         databucketID: selectedFile.databucketID,
         subjectID: selectedModule.$id,
-        sessionID: selectedSession.id,
+        sessionID: selectedSession ? selectedSession.id : sessions[0].id,
+    }
+    if ( !job.databucketID || !job.subjectID || !job.sessionID) {
+        setErrorMessage("Please select a file, module and session to create a job.")
+        setIsError(true)
+        return
     }
     await addDocumentJob(job)
     setSessions((prevSessions) => {
         const newSessions = [...prevSessions];
-        const sessionIndex = newSessions.findIndex((session) => session.id === selectedSession.id);
+        const targetSessionId = selectedSession ? selectedSession.id : sessions[0].id;
+        const sessionIndex = sessions.findIndex((session) => session.id === targetSessionId);
         if (sessionIndex !== -1) {
             newSessions[sessionIndex].tags = "JOB-PENDING";
         }
@@ -132,7 +235,7 @@ const [newitem, setNewItem] = useState({
     id:null
   });
 const addItem = () => {
-    setItems([...items, {...newitem, id: uuid.v4(), sessionID:selectedSession.id}]);
+    setItems([...items, {...newitem, id: uuid.v4(), sessionID:selectedSession ? selectedSession.id : sessions[0].id}]);
     setNewItem({ ...newitem, content: '' });
 };
 const handleDeleteItem = (itemId) => {
@@ -217,7 +320,7 @@ return (
                         <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].yourTopics}</Text>
                                   <View className="flex-row flex-wrap justify-start items-center mb-2">
                                     {items.length > 0 ? (
-                                      items.filter(item => item.sessionID == selectedSession.id).map((item, index) => {
+                                      items.filter(item => item.sessionID == selectedSession ? selectedSession.id : sessions[0].id).map((item, index) => {
                                         const iconMap = {
                                           TOPIC: 'layer-group',
                                           PEN: 'pen',
@@ -266,19 +369,21 @@ return (
                                             return
                                         }
                                         const res = await materialToQuestion(
-                                            items.filter(item => item.sessionID == selectedSession.id), 
-                                            selectedSession.id, 
+                                            items.filter(item => item.sessionID == selectedSession ? selectedSession.id : sessions[0].id), 
+                                            selectedSession ? selectedSession.id : sessions[0].id, 
                                             selectedModule.$id, 
                                             setQuestions, 
                                             questions, 
                                             setIsLoading, 
-                                            module
+                                            module,
+                                            
                                         )
                                         setUserUsage({
                                         ...userUsage,
                                         energy: userUsage.energy - items.length * 1
                                         })
                                         setQuestions([...questions, ...res])
+                                        setQuestionLoadedSessions([])
                                         setItems([])
                                         setIsVisible(false)
                                     }}>
@@ -340,7 +445,7 @@ return (
                         <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].yourTexts}</Text>
                                   <View className="flex-row flex-wrap justify-start items-center mb-2">
                                     {items.length > 0 ? (
-                                      items.filter(item => item.sessionID == selectedSession.id).map((item, index) => {
+                                      items.filter(item => item.sessionID == selectedSession ? selectedSession.id : sessions[0].id).map((item, index) => {
                                         const iconMap = {
                                           TOPIC: 'layer-group',
                                           PEN: 'pen',
@@ -388,8 +493,8 @@ return (
                                             return
                                         }
                                         const res = await materialToQuestion(
-                                            items.filter(item => item.sessionID == selectedSession.id), 
-                                            selectedSession.id, 
+                                            items.filter(item => item.sessionID == selectedSession ? selectedSession.id : sessions[0].id), 
+                                            selectedSession ? selectedSession.id : sessions[0].id, 
                                             selectedModule.$id, 
                                             setQuestions, 
                                             questions, 

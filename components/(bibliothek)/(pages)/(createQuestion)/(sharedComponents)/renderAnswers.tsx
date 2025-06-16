@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 const RenderNewAnswers = ({ index, newQuestion, selectedAnswer, setNewQuestion,toggleIndex,  texts, selectedLanguage,setSelectedAnswer, content }) => {
         const [isOn, setIsOn] = useState(newQuestion.answerIndex.includes(index));
         const [newText, setNewText] = useState(content);
-        console.log("Content", content)
         function saveChange( ) {
             setNewQuestion(prevState => ({
                 ...prevState,

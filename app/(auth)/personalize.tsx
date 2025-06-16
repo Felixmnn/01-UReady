@@ -162,7 +162,6 @@ const personalize = () => {
     }
         fetchList();
     }, [selectedKathegorie]);
-    console.log("selctede University", selectedUniversity); 
     useEffect(() => {
         async function fetchUniversitySubjects() {
             if (selectedUniversity && selectedUniversity.name !== "Other") {
@@ -245,7 +244,6 @@ const personalize = () => {
                         userD = await loadUserData(user.$id);
                         setUserData(userD);
                         } else {
-                        console.log("Success", userD);
                         setUserData(userD);
                       }
                       if (userD?.signInProcessStep == "FINISHED") {
@@ -265,13 +263,17 @@ const personalize = () => {
                                     signInProcessStep:"SEVEN",
                                 })
                             } catch (error) {
+                                if (__DEV__) {
                                 console.log("Error loading user data kathegory", error);
+                                }
                             }
                       } else if (userD?.signInProcessStep == "DONE"){
                             router.push("/home")
                       }
                   } catch (error) {
+                    if (__DEV__) {
                       console.log(error);
+                    }
                   } 
               }
               fetchUserData();

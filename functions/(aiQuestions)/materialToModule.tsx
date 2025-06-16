@@ -24,7 +24,6 @@ export async function materialToModule(user, material, userData, newModule, setN
           res = await questionFromTopic(material[i].content, material[i].sessionID, "PLACEHOLDER");
         } else {
           const res = await createDocumentJob(material[i].id, moduleID, material[i].sessionID, setSessions);7
-          console.log("Job erstellt:", res);
         }
 
         if (typeof res == "object" && Array.isArray(res)) {
@@ -39,7 +38,6 @@ export async function materialToModule(user, material, userData, newModule, setN
     // Modul trotzdem speichern, selbst wenn Fragen fehlen
 
     let newModuleData;
-    console.log("💵💵Module QUestions ", directQuestions, "ModuleID", moduleID);
       /*
     questionConfig = directQuestions.map((question) => ({
       [...questionConfig, {
@@ -56,7 +54,9 @@ export async function materialToModule(user, material, userData, newModule, setN
         sessions: sessions.map((item) => JSON.stringify(item)),
       },moduleID);
     } catch (error) {
+      if (__DEV__) {
       console.log("Fehler beim Speichern des Moduls:", error);
+      }
       // Wenn Modul-Speicherung fehlschlägt, redirect trotzdem ausführen
     }
     let savedQuestions = [];
@@ -66,33 +66,34 @@ export async function materialToModule(user, material, userData, newModule, setN
         try {
           const question = { ...directQuestions[i], subjectID: newModuleData.$id };
           const savedQuestion = await addQUestion(question);
-          console.log("Gespeicherte Frage:", savedQuestion);
           savedQuestions.push({
             id: savedQuestion.$id,
             status: null
           })
         } catch (error) {
+          if (__DEV__) {
           console.log("Fehler beim Speichern einer Frage:", error);
+          }
         }
       }
     }
-    console.log("🔴Gespeicherte Fragen:", savedQuestions);
     
-    console.log("❤️Gespeicherte Fragen nach JSON.stringify:", savedQuestions);
     //Update Module
     const res = await updateModuleQuestionList(newModuleData.$id, savedQuestions.map((item) => JSON.stringify(item)));
-    console.log("💕Module aktualisiert:", res);
     // Benutzer-Daten aktualisieren
     try {
       const resp = await setUserDataSetup(user.$id);
 
     } catch (error) {
+      if (__DEV__) {
       console.log("Fehler beim Aktualisieren der Benutzerdaten:", error);
+      }
     }
   } catch (error) {
+    if (__DEV__) {
     console.log("Allgemeiner Fehler:", error);
+    }
   } finally {
-    console.log("Sessions:", sessions);
     setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
     if (setIsVisibleModal) {
       setIsVisibleModal(false);

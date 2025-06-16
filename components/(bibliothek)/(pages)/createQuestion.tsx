@@ -10,6 +10,7 @@ import ModalIncompleat from './(createQuestion)/modalIncompleat';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { getAllQuestions, getAllQuestionsByIds } from '@/lib/appwriteQuerys';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
 
 const CreateQuestion = ({setSelected2,module, selectedModule}) => {
     
@@ -35,7 +36,7 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
         answers: [],
         answerIndex: [],
         tags: [],
-        public: false,
+        "public": false,
         sessionID:null,
         aiGenerated: false,
         subjectID: module.documents[selectedModule].$id,
@@ -49,7 +50,6 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
             setQuestions(allQuestions ? allQuestions : [])
             /*
             const questions = await getAllQuestions(module.documents[selectedModule].$id)
-            console.log("All Questions",questions, module.documents[selectedModule].questionList)
             if (questions) {
                 const questionArray = questions.documents
                 const filteredQuestions = questionArray.filter((question) => question.subjectID == module.documents[selectedModule].$id);
@@ -99,14 +99,20 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
         if (missing.length > 0) {
             setReqModalVisible(true);
         } else {
-            await addQUestion(newQuestion)
+            const response = await addQUestion(newQuestion)
+            const resParsed = JSON.stringify({
+                id: response.$id,
+                status:null
+            })
+            const mergedQuestions = module.questionList.length > 0 ? [...module.questionList, resParsed] : [resParsed];
+            const res = await updateModuleQuestionList(module.$id, mergedQuestions);
             setQuestions([newQuestion, ...questions])
             setNewQuestion({
                 question: "",
                 answers: [],
                 answerIndex: [],
                 tags: [],
-                public: false,
+                "public": false,
                 sessionID:null,
                 aiGenerated: false,
                 subjectID: module.documents[selectedModule].$id,
@@ -114,7 +120,6 @@ const CreateQuestion = ({setSelected2,module, selectedModule}) => {
             })
         }
     }
-        console.log("QUestions", questions)
   return (
     <View className='flex-1 items-center '>
         <ModalIncompleat modalVisible={reqModalVisible} setModalVisible={setReqModalVisible} missingRequirements={missingRequirements}/>

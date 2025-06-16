@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, LayoutAnimation, Platform, UIManager, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, LayoutAnimation, Platform, UIManager, ScrollView, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { router } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import CountryFlag from 'react-native-country-flag';
 
 
 if (Platform.OS === 'android') {
@@ -479,8 +480,8 @@ const allSections =  {
 
 
 const Policys = () => {
-  const { language } = useGlobalContext()  
-  const correctLanguage = language ? language == "SPANISH" ? "SPANISH" :  "ENGLISH" : "DEUTSCH";
+  const { language, user } = useGlobalContext()  
+  const [correctLanguage, setCorrectLanguage] = useState( language ? language == "SPANISH" ? "SPANISH" :  "ENGLISH" : "DEUTSCH");
   const sections = allSections[correctLanguage] || allSections["DEUTSCH"];
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [expandedSubIndex, setExpandedSubIndex] = useState<{ [key: number]: number | null }>({});
@@ -502,6 +503,7 @@ const Policys = () => {
   };
 
   return (
+    <SafeAreaView className='h-full w-full'>
     <ScrollView
       contentContainerStyle={{
         padding: 16,
@@ -512,12 +514,14 @@ const Policys = () => {
 
     >
       <View className="w-full flex-row items-center justify-between pt-4 mb-4">
-        <TouchableOpacity className='mr-2' onPress={() => router.push("/profil")}>
+        { !user ? null :
+        <TouchableOpacity className='mr-2' onPress={() => router.push("/profil")} >
           <Icon name="arrow-left" size={20} color="#fff" />
         </TouchableOpacity>
+        }
         <Text
           style={{
-            fontSize: 28,
+            fontSize: 24,
             fontWeight: 'bold',
             textAlign: 'center',
             color: '#fff',
@@ -525,7 +529,20 @@ const Policys = () => {
         >
           {correctLanguage == "DEUTSCH" ? "Richtlinien & Informationen" : correctLanguage == "SPANISH" ? "Políticas e Información" : "Policies & Information" }
         </Text>
-        <View style={{ width: 20 }} />
+        <View >
+           {
+            user ? null :
+            <TouchableOpacity onPress={() => {
+              setCorrectLanguage(correctLanguage === "DEUTSCH" ? "ENGLISH" : correctLanguage === "ENGLISH" ? "SPANISH" : "DEUTSCH");
+            }}>
+              <CountryFlag
+                isoCode={correctLanguage == "DEUTSCH" ? "DE" : correctLanguage == "SPANISH" ? "ES" : "GB"}
+                size={20}
+                style={{ borderRadius: 5, marginLeft: 10 }}
+              />
+            </TouchableOpacity>
+           }
+        </View>
       </View>
       <View style={{ width: '100%', maxWidth: 700, height: '100%' }}>
         {sections.map((section, index) => (
@@ -607,6 +624,7 @@ const Policys = () => {
         ))}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

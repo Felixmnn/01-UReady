@@ -69,7 +69,8 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                     creationSubject: userData.schoolSubjects,
                 })
             }
-            setMatchingModules(modules)
+            const filteredModules = modules.filter((module) => module.public ) || []
+            setMatchingModules(filteredModules)
             setLoading(false)
         }
         fetchModules()
@@ -82,7 +83,9 @@ const PageDiscover = ({ setUserChoices, userData}) => {
             setLoading(false)
             setUserChoices(null)
         } catch (error) {
-            console.log("Error", error)
+            if (__DEV__) {
+                console.log("Error", error)
+            }
             setLoading(false)
         }
     }
@@ -201,7 +204,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                                     questions: module.questions,
                                     notes: module.notes,
                                     documents: module.documents,
-                                    public: false,
+                                    "public": false,
                                     progress: 0,
                                     creator: user.$id,
                                     color: module.color,

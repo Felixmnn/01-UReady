@@ -221,9 +221,7 @@ const ModalQuiz = ({isVisible, setIsVisible, onComplete, texts}) => {
     "Q7": null
   }); 
 
-  useEffect(() => {
-    console.log(answers)
-  },[answers])
+  
   return (
     <Modal
           animationType="slide"

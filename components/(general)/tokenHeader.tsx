@@ -24,7 +24,7 @@ const TokenHeader = ({userUsage}) => {
             transparent={true}
             visible={isVisible}
             >
-           <TouchableOpacity onPress={()=> setIsVisible(false)} className="flex-1 items-center justify-center bg-black bg-opacity-50">
+           <TouchableOpacity onPress={()=> setIsVisible(false)} className="flex-1 items-center justify-center ">
                 <View className="bg-gray-800 p-5 rounded-xl shadow-lg items-center">
                     <Image source={require('@/assets/streak.gif')} 
                             style={{

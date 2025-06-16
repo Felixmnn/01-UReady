@@ -50,9 +50,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
   const tempModuleID = uuid.v4();
   const tempSessionID = uuid.v4();  
  
-  useEffect(() => {
-    console.log("FileList: ", fileList);
-  },[fileList])
+
 
   /**
    * File Upload Funktion
@@ -99,7 +97,6 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
         }
 
         uploadRes = await addDocumentToBucketWeb(data);
-        console.log("Web upload response:", uploadRes);
       } else {
         // ✅ Native: pass file as { uri, name, type }
         fileBlob = {
@@ -116,11 +113,12 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
 
       
 
-      console.log("✅ Upload response:", uploadRes);
       return;
       }
      catch (error) { 
+      if (__DEV__) {
       console.log("Error uploading file: ", error);
+      }
     }}
 
   
@@ -253,7 +251,6 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
 
     }
     );
-    console.log("💵Total Price: ", totalPrice);
     return totalPrice
   }
 
@@ -289,7 +286,7 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
             :      <Text  className='text-gray-100 font-bold text-xl font-bold'>AI Modul</Text>
 
             }
-            <TouchableOpacity onPress={() => setNewModule({ ...newModule, public:newModule?.public ? false : true })}
+            <TouchableOpacity onPress={() => setNewModule({ ...newModule, "public":newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
               >
               {
@@ -493,7 +490,6 @@ const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIs
               >
                 {
                   fileList.map((file, index) => {
-                    console.log("File: ", file);
                     return (
                     <TouchableOpacity key={index}
                                       className="bg-[#0c111d] flex-row p-2 m-1 border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg"

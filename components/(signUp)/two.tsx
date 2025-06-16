@@ -13,8 +13,6 @@ import BotCenter from './botCenter';
  * Languages type : Array<{ name, code, enum }>
  */
 const StepTwo = ({selectedLanguage, setSelectedLanguage, languages, userData, setUserData, continueButtonText, robotMessage }) => {
-    console.log("Selcted Language", selectedLanguage)
-    console.log("Languages", languages)
     const [isActive, setIsActive] = useState(false)
     return (
         <View className='h-full  w-full justify-between items-center py-5'>

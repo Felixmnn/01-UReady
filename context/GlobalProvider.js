@@ -119,6 +119,7 @@ const GlobalProvider = ({children}) => {
                 ...userUsage,
                 streakLastUpdate: new Date(),
             });
+            console.log("Res", res)
         }
         upDateUserUsage();
     }, [userUsage]);

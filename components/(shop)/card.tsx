@@ -9,9 +9,14 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import ModalQuiz from './modalQuiz'
 import { loadSurvey } from '@/lib/appwriteDaten'
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import mobileAds from 'react-native-google-mobile-ads';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 
+const adUnitId = __DEV__ ? TestIds.REWARDED : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
-
+const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+  keywords: ['fashion', 'clothing'],
+});
 const Card = ({
     shopItem=null,
 }) => {
@@ -29,12 +34,57 @@ const Card = ({
 
         
     useEffect(() => {
+      mobileAds()
+        .initialize()
+        .then(() => {
+        });
+    }, []);
+    
+      const [loaded, setLoaded] = useState(false);
+      useEffect(() => {
+          const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+            setLoaded(true);
+          });
+          const unsubscribeEarned = rewarded.addAdEventListener(
+            RewardedAdEventType.EARNED_REWARD,
+            reward => {
+            setUserUsage({
+                    ...userUsage,
+                    watchedComercials: userUsage.watchedComercials.length > 0 ? [...userUsage.watchedComercials, new Date().toISOString()] : [new Date().toISOString()],
+                    purcharses: userUsage.purcharses.length > 0 ? [...userUsage.purcharses, shopItem?.$id] : [shopItem?.$id],
+                    energy: userUsage.energy + 1,
+                });
+            
+                setLoaded(false);
+                  rewarded.load();
+
+            },
+          );
+    
+          // Start loading the rewarded ad straight away
+          rewarded.load();
+    
+          // Unsubscribe from events on unmount
+          return () => {
+            unsubscribeLoaded();
+            unsubscribeEarned();
+          };
+        }, []);
+    useEffect(() => {
+        if (!userUsage) return;
         async function fetchQuizzes() {
             const response = await loadSurvey();
-            if (response) {
-                setQuizzes(response.length > 0 ? response : []);
+            
+            const filteredResponse = response.documents.filter(i => !userUsage.participatedQuizzes.includes(i.$id)
+            );
+            console.log(userUsage.participatedQuizzes)
+
+            if (filteredResponse.length > 0) {
+            setQuizzes(filteredResponse);
+            } else {
+            setQuizzes([]); 
             }
-        }
+        } 
         fetchQuizzes();
     }
     , []);
@@ -88,7 +138,7 @@ const Card = ({
             if (amountOfUnsolvedQuizzes <= 0) {
                 return "0/0";
             } else {
-                return `${amountOfUnsolvedQuizzes}/${quizzes.length > 3 ? amountOfUnsolvedQuizzes < 3 ? amountOfUnsolvedQuizzes : 3 : quizzes.length}`;
+                return `${quizzes.length }/${quizzes.length > 3 ? quizzes.length < 3 ? quizzes.length : quizzes.length : quizzes.length}`;
             }
         }
         if (shopItem?.maxPurchaseAmount > 5) {
@@ -99,7 +149,10 @@ const Card = ({
         }
     }
     function priceItem(){
-        if (shopItem?.currency === "FREE" || shopItem?.isFree) {
+        if (shopItem?.itemType == "REWARDEDQUIZ" && quizzes.length <= 0 ){
+            return "Keine Quizze"
+        }
+        else if( shopItem?.currency === "FREE" || shopItem?.isFree ){
             return "Gratis";
         } else if (shopItem?.currency === "CHIPS") {
             return shopItem?.price
@@ -219,16 +272,19 @@ const Card = ({
         shadowRadius: 6,
         elevation: 5, 
         height: 160,
-        opacity: isAvailable() ? 1 : 0.5,
+        opacity: isAvailable() && !(shopItem?.itemType == "COMERCIAL" && !loaded ) ? 1 : 0.5,
         }}
 
-        disabled={!isAvailable()}
+        disabled={!isAvailable() || (!loaded && shopItem?.itemType == "COMERCIAL")}
          onPress={() => {
             const isTooExpensive = tooExpensive();
 
             const isSoldOut = !isAvailable() || shopItem?.purchaseLimit - purchaseAmout() === 0;
             if ( shopItem?.itemType == "COMERCIAL" && !(purchaseAmout() <=0) ) {
-                setIsVisibleC(true);
+                rewarded.show();
+            
+            }else if (shopItem?.itemType == "REWARDEDQUIZ" && quizzes.length <= 0 ){
+                flashRed()
             } else if ( shopItem?.itemType == "REWARDEDQUIZ") {
                 setIsVisibleD(true);
             } else if (isTooExpensive || purchaseAmout() <=0 ) {
@@ -264,6 +320,7 @@ const Card = ({
             isVisible={isVisibleC}
             setIsVisible={setIsVisibleC}
             onComplete={() => {
+                
                 setUserUsage({
                     ...userUsage,
                     watchedComercials: userUsage.watchedComercials.length > 0 ? [...userUsage.watchedComercials, new Date().toISOString()] : [new Date().toISOString()],
@@ -273,17 +330,21 @@ const Card = ({
             }}
             />
         <ModalQuiz 
-            isVisible={isVisibleD}
+            isVisible={isVisibleD && quizzes.length > 0}
             texts={texts}
             setIsVisible={setIsVisibleD}
+            quiz={quizzes.length > 0 ? quizzes[0] : null}
             onComplete={() => {
                 
                 setUserUsage({
                     ...userUsage,
                     energy: userUsage.energy + 2,
-                    participatedQuizzes: userUsage.participatedQuizzes.length > 0 ?  [...userUsage.participatedQuizzes, new Date().toISOString()] : [new Date().toISOString()],
+                    participatedQuizzes: userUsage.participatedQuizzes.length > 0  ?  
+                    [...userUsage.participatedQuizzes, quizzes.length > 0 ? quizzes[0].$id : "PLACEHOLDER"] : [quizzes.length > 0 ? quizzes[0].$id : "PLACEHOLDER"],
                     purcharses: userUsage.purcharses.length > 0 ? [...userUsage.purcharses, shopItem?.$id] : [shopItem?.$id],
                 });
+                console.log("QUIZQUizzes sliced", userUsage.participatedQuizzes)
+                setQuizzes(prev => prev.slice(1));
             }}
             />
         <Text className='text-white  font-semibold text-[13px] text-center'>

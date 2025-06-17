@@ -7,10 +7,8 @@ import Cardcombination from '@/components/(shop)/cardcombination'
 import TokenHeader from '@/components/(general)/tokenHeader'
 import { loadShopItems } from '@/lib/appwriteShop';
 import SkeletonListShop from '@/components/(general)/(skeleton)/skeletonListShop'
-import { loadComercials } from '@/lib/appwriteDaten'
 import languages from '@/assets/exapleData/languageTabs.json';
 import { useStripe } from '@stripe/stripe-react-native'
-import { ActivityIndicator } from 'react-native'
 import { stripeFunction } from '@/lib/appwrite'
 import mobileAds from 'react-native-google-mobile-ads';
 
@@ -29,7 +27,6 @@ const Shop = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("DEUTSCH")
   const texts = languages.shop;
   const [shopItemsA, setShopItemsA] = useState(null);
-  const [comercials, setComercials] = useState([]);
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loadingPayment, setLoadingPayment] = useState(false);
 
@@ -87,16 +84,7 @@ const Shop = () => {
     fetchShopItems();
   },[]);
 
-  useEffect(() => {
-    if (!userUsage) return;
-    async function fetchComercials(){
-      const response = await loadComercials();
-      if (response) {
-        setComercials(response.length > 0 ? response : []);
-      }
-    }
-    fetchComercials();
-  }, [userUsage]);
+ 
 
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
@@ -116,7 +104,7 @@ const Shop = () => {
     console.log(data.paymentIntentClientSecret);
     console.log("PaymentSheet Params erhalten:", data);
 
-    // Je nach Appwrite Function Response anpassen
+    // Je nach Appwrite Function Respons anpassen
     const paymentIntent = data.paymentIntentClientSecret
     const ephemeralKey = data.customerEphemeralKeySecret
     const customer = data.customer
@@ -175,15 +163,6 @@ const Shop = () => {
     <Tabbar content={() => (
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
         <TokenHeader userUsage={userUsage} />
-        <View style={{ width: 320, height: 100, backgroundColor: 'yellow', alignItems: 'center' }}>
-          <Button
-            title="Show Rewarded Ad"
-            onPress={() => {
-              rewarded.show();
-            }}
-            
-          />
-        </View>
     
 
         <ScrollView style={{ scrollbarWidth: 'thin', scrollbarColor: 'gray transparent' }} className='w-full'>
@@ -200,14 +179,14 @@ const Shop = () => {
               </View>
             )
           }
-          {/* Stripe Payment Button unten in der ScrollView */}
+          {/* Stripe Payment Button unten in der ScrollView 
           <View style={{ marginVertical: 20, alignItems: 'center' }}>
             {loadingPayment ? (
               <ActivityIndicator size="large" color="#fff" />
             ) : (
               <Button title="Jetzt Bezahlen 2" onPress={initializePaymentSheet} />
             )}
-          </View>
+          </View>*/}
         </ScrollView>
       </View>
     )} page={"Shop"} hide={false} />

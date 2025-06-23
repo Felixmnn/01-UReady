@@ -12,6 +12,7 @@ const editLayout = () => {
                     headerShown: false 
                   }}
                 />
+                
             </Stack>
         </>
     </View>

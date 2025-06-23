@@ -17,6 +17,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 import { useFocusEffect } from '@react-navigation/native';
 import { loadModule } from '@/lib/appwriteDaten';
+import ChangeQuestions from './(createQuestion)/changeQuestions';
 
 /**
  * The SingleModule Component is responsible for rendering the deatils of a single module.
@@ -393,10 +394,48 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         setTab(1)
         setChange(change + 1)
    },[selectedSession])
+
+   const [ questionToEdit, setQuestionToEdit ] = useState({
+        $id: undefined,
+        question: "",
+        questionUrl: "",
+        questionLatex: "",
+        answers: [],
+        answerIndex: [],
+        tags: [],
+        "public": false,
+        sessionID: null,
+        aiGenerated: false,
+        subjectID: moduleEntry.$id,
+        status: null,
+        hint: "",
+        explaination: ""
+
+    });
+
+    const [ isVisibleEditQuestion, setIsVisibleEditQuestion ] = useState({state:false, status: 0});
+    const [ questionActive, setQuestionActive ] = useState(0);
+    const [ answerActive, setAnswerActive ] = useState(0);
+    const [ newQuestion, setNewQuestion ] = useState({
+        $id: undefined,
+        question: "",
+        questionUrl: "",
+        questionLatex: "",
+        answers: [],
+        answerIndex: [],
+        tags: [],
+        "public": false,
+        sessionID: null,
+        aiGenerated: false,
+        subjectID: module.$id,
+        status: null
+
+   });
+   console.log("Module", module);
     return (
         <View className='flex-1 rounded-[10px] items-center '>
            
-            <ModalNewQuestion documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
+            <ModalNewQuestion setQuestionToEdit={setQuestionToEdit} setIsVisibleEditQuestion={setIsVisibleEditQuestion} isVisibleEditQuestion={isVisibleEditQuestion} documents={documents} texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} addDocument={addDocument} sessions={sessions} selected={selectedSession} module={module} isVisible={isVisibleNewQuestion} setIsVisible={setIsVisibleNewQuestion} setSelected={setSelectedScreen} selectAi={()=> {setIsVisibleNewQuestion(false); setIsVisibleAI(true) } } /> 
             <AiQuestion setQuestionLoadedSessions={setQuestionLoadedSessions}
              module={module} setErrorMessage={setErrorMessage} setIsError={setIsError} uploadDocument={addDocument}
             sessions={sessions} setSessions={setSessions} documents={documents} questions={questions} setQuestions={setQuestions}
@@ -407,6 +446,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 { loading ? <Text>...</Text> :
                 <View className='flex-1'>
                 <Header 
+                    setIsVisibleEditQuestion={setIsVisibleEditQuestion}
                     moduleID={module.$id}
                     moduleName={module.name} texts={texts} selectedLanguage={selectedLanguage} isVisibleAI={isVisibleAI} setIsVisibleAI={setIsVisibleAI}
                     isVisibleNewQuestion={isVisibleNewQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} moduleSessions={sessions}
@@ -427,13 +467,13 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                             tab == 0 ?
                             
                             <View className='h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[500px]'>
-                                <RoadMap moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
+                                <RoadMap  moduleID={moduleEntry.$id} texts={texts} selectedLanguage={selectedLanguage} change={change} setChange={setChange} setTab={setTab} moduleSessions={sessions} selected={selectedSession} setSelected={setSelectedSession} questions={questions} currentModule={module}/> 
                             </View>
                             : null
                         }
                         {isVertical || tab == 1 ?
                             <View className='p-4 flex-1'>
-                                <Data setIsVisibleNewQuestion={setIsVisibleNewQuestion} setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
+                                <Data setQuestionToEdit={setQuestionToEdit} isVisibleEditQuestion={isVisibleEditQuestion} setIsVisibleEditQuestion={setIsVisibleEditQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null 
                         }
@@ -452,7 +492,19 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 </View>
                 </View>
                 }   
-            </View>       
+            </View> 
+            { isVisibleEditQuestion.state ?
+            <ChangeQuestions
+                question={questionToEdit}
+                questions={questions}
+                setQuestions={setQuestions}
+                module={module}
+                setModule={setModule}
+                selectedSession={sessions[selectedSession]}
+                isVisibleEditQuestion={isVisibleEditQuestion}
+                setIsVisibleEditQuestion={setIsVisibleEditQuestion}
+
+            />      : null}
         </View>
     )
 }

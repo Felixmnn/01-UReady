@@ -22,7 +22,7 @@ const Header = ({   setSelectedScreen,
                     setModules,
                     setSelectedModule,
                     setErrorMessage,
-                    setIsError
+                    setIsError,
 
 }) => {
     const { width } = useWindowDimensions(); 

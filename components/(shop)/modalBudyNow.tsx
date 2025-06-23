@@ -1,10 +1,11 @@
 import { View, Text, Modal, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import StripeComponent from './stripeComponent.web';
 
 const ModalBudyNow = ({isVisible, setIsVisible, imageSource, imageColor,kathegory, price,purcharses=[], itemId,amount=0, name, free=false, texts}) => {
     const { userUsage, setUserUsage } = useGlobalContext();
-
+    
     function priceWithCommas(priceInCents) {
         const euros = (priceInCents / 100).toFixed(2); 
         const parts = euros.split('.');
@@ -81,6 +82,7 @@ const ModalBudyNow = ({isVisible, setIsVisible, imageSource, imageColor,kathegor
                 </TouchableOpacity>
                 </View>
             </View>
+            <StripeComponent/>
         </TouchableOpacity>
     </Modal>
   )

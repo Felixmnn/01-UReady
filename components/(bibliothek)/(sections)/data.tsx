@@ -5,7 +5,7 @@ import  { router } from "expo-router"
 import  Selectable  from '../selectable'
 import SmileyStatus from '../(components)/smileyStatus';
 
-const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleNewQuestion, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
+const Data = ({setIsVisibleEditQuestion, isVisibleEditQuestion, setQuestionToEdit, onRefresh, setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleNewQuestion, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
     
     const [optionsVisible, setOptionsVisible] = useState([]);
         function handleOptionsVisibility(id) {
@@ -175,8 +175,16 @@ const Data = ({onRefresh, setSelectedScreen, refreshing, selected,moduleSessions
                                 <View className='flex-row items-center justify-between'>
                                     <View className='mr-5'>
                                     <Icon name="edit" size={15} color="white"  onPress={() => {
+                                        console.log("Edit Question", item);
+                                        setQuestionToEdit(item);
+                                        setIsVisibleEditQuestion({
+                                            state: true,
+                                            status: isVisibleEditQuestion.status + 1
+                                        });
+                                        /*
                                         setSelectedScreen("CreateQuestion");
                                         handleOptionsVisibility(item.$id);
+                                        */
                                     }}/>
                                     </View>
                                     <Icon name="trash" size={15} color="red"  onPress={async() => {

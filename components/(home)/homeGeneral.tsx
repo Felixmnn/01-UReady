@@ -12,6 +12,7 @@ import TokenHeader from '../(general)/tokenHeader';
 import { loadUserUsage } from '@/lib/appwriteDaten';
 import AddAiBottomSheet from '../(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
+import { TEST_ID } from 'react-native-gifted-chat';
 
 
 const { width } = Dimensions.get('window');
@@ -206,6 +207,7 @@ const HomeGeneral = () => {
 
   return (
     <SafeAreaView className='h-full w-full  '>
+      
     <ScrollView
        style={{
           height: '100%',

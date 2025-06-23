@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, FlatList, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router,useLocalSearchParams } from "expo-router"
@@ -11,6 +11,7 @@ import { loadModule } from '@/lib/appwriteDaten';
 import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { parse } from '@babel/core';
+import { BlockMath } from 'react-katex';
 
 
 const quiz = () => {
@@ -23,7 +24,7 @@ const quiz = () => {
           setSelectedLanguage(language)
         }
       }, [language])
-    const {width} = useWindowDimensions();
+    const {width, height} = useWindowDimensions();
     const isVertical = width > 700;
     /**
      * In case the user is not logged in, redirect to the login page
@@ -298,7 +299,18 @@ const quiz = () => {
             </View>
         )
     }
-
+    function maybeParseJSON(value) {
+        try {
+            return JSON.parse(value);
+        } catch (e) {
+            return {
+                title: value,
+                latex: "",
+                image: ""
+            }; 
+        }
+    }
+    const numColumns =  width > 900 ? 2 : 1;
     const RenderQuestion = ({question,selectedAnswers, setSelectedAnswers, showAnsers }) => {
         
         function selectAnswer(answer) {
@@ -310,28 +322,108 @@ const quiz = () => {
         }
 
         return (
-            <View className='flex-1'>
-                <Text className='text-white p-4 text-xl font-bold'>{question.question}</Text>
-                <View className={`flex-1  p-4 ${isVertical ? "flex-row" : "flex-col"} `}>
-                    {
-                        question.answers.map((answer,index) => {
-                            return (
-                                <TouchableOpacity key={index} disabled={showAnsers} onPress={()=> selectAnswer(answer) } className={`flex-row justify-between items-center flex-1 border-[1px] p-2 rounded-[10px] m-1 ${showAnsers ? (question.answerIndex.includes(index) ? "bg-green-900 border-green-600" : "bg-red-900 border-red-600") :selectedAnswers.includes(answer) ? "bg-blue-900 border-blue-600" : "bg-gray-800 border-gray-600"}`}>
-                                    <Text className='text-white'>{answer}</Text>
-                                    {
-                                        showAnsers && selectedAnswers.includes(answer) ?
-                                        (
-                                            question.answerIndex.includes(index) ? <Icon name="check" size={15} color="green"/> : <Icon name="times" size={15} color="red"/>  
-                                        )
-                                        
-                                        : null 
-                                    }
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
+            <ScrollView className='flex-1'>
+                <Text className='text-white text-center px-4 px-2 text-xl font-bold mb-2'>{question.question}</Text>
+                {
+                    question.questionLatex.length > 0 ?
+                    <View className=' w-full  items-center rounded-lg  overflow-hidden '>
+                        <BlockMath
+                                math={question.questionLatex}
+                                    className="text-white"
+                                
+                                style={{ color:"white", text:"white", fontSize: 20 }}
+                        />
+                    </View>
+                    : question.questionUrl.length > 0  ?
+                    <View className='w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4'>
+                        <Image
+                            source={{ uri: question.questionUrl }}
+                            style={{
+                                width: 200,             // feste Breite
+                                aspectRatio: 1.5,       // Breite / Höhe → z.B. 3:2
+                                borderRadius: 10,
+                                resizeMode: 'contain',
+                            }}
+                            resizeMode="cover"
+                            
+                        />
+                        
+                    </View>
+                    : null
+                }
+                <View className='flex-1  px-2 '>
+                <View className="flex flex-row flex-wrap justify-center">
+                    {question.answers.map((item, index) => {
+                        const parsedItem = maybeParseJSON(item);
+                        const dataType = parsedItem.latex?.length > 0
+                        ? "latex"
+                        : parsedItem.image?.length > 0
+                        ? "image"
+                        : "text";
+
+                        const isCorrect = question.answerIndex.includes(index);
+                        const isSelected = selectedAnswers.includes(parsedItem.title);
+
+                        return (
+                        <TouchableOpacity
+                            key={index}
+                            disabled={showAnsers}
+                            onPress={() => selectAnswer(parsedItem.title)}
+                            className={`${width > 900 ? "w-[48%] mr-2 mt-2" : "w-full"} items-center justify-center border-[1px] p-2 rounded-[10px] mb-2 
+                            ${showAnsers
+                                ? isCorrect
+                                ? "bg-green-900 border-green-600"
+                                : "bg-red-900 border-red-600"
+                                : isSelected
+                                ? "bg-blue-900 border-blue-600"
+                                : "bg-gray-800 border-gray-600"
+                            }`}
+                            style={{
+                                maxHeight: 150
+                            }}
+                        >
+                            <View className="flex-1 items-center justify-center">
+                            {dataType === "latex" ? (
+                                <View className="w-full rounded-lg overflow-hidden">
+                                <BlockMath
+                                    math={parsedItem.latex}
+                                    className="text-white"
+                                    style={{ color: "white", fontSize: 20 }}
+                                />
+                                </View>
+                            ) : dataType === "image" ? (
+                                <View className="w-full rounded-lg overflow-hidden min-h-10 items-center">
+                                <Image
+                                    source={{ uri: parsedItem.image }}
+                                    style={{
+                                    width: 200,
+                                    aspectRatio: 1.5,
+                                    borderRadius: 10,
+                                    }}
+                                    resizeMode="cover"
+                                />
+                                </View>
+                            ) : (
+                                <Text className="text-white text-center font-bold text-[18px]">
+                                {parsedItem.title}
+                                </Text>
+                            )}
+
+                            {showAnsers && isSelected && (
+                                isCorrect ? (
+                                <Icon name="check" size={15} color="green" />
+                                ) : (
+                                <Icon name="times" size={15} color="red" />
+                                )
+                            )}
+                            </View>
+                        </TouchableOpacity>
+                        );
+                    })}
+                    </View>
                 </View>
-                 </View>
+                
+                 </ScrollView>
         )
     }
 

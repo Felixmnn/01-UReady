@@ -93,7 +93,9 @@ const ChangeQuestions = ({
         };
         return (
             <View className='w-full px-4 py-2 '>
-
+                <Text className='text-white'>
+                    {dataType}
+                </Text>
                 {
                     detailsHidden ?
                     <TouchableOpacity className={`w-full items-center justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg`} onPress={() => setDetailsHidden(false)}>
@@ -126,7 +128,7 @@ const ChangeQuestions = ({
                                 onLoad={() => setImageValid(true)}
                             />
                             :
-                            <Text className='text-red-500 mt-2'>Ungültige Bild-URL</Text>
+                            <Text className='text-red-500 mt-2'>Ungültige Bild-URL {urlImage}</Text>
                             }
                         </View>
                         : null
@@ -259,10 +261,10 @@ const ChangeQuestions = ({
                         }
                         <TouchableOpacity onPress={()=> {
                             if (typeOfQuestion){
+                                setImageValid(isImageUrl(urlImage));
                                 setQuestionToEdit({
                                     ...questionToEdit,
                                     question: text,
-                                    dataType: dataType,
                                     questionLatex: latex,
                                     questionUrl: urlImage,
                                 })
@@ -392,8 +394,8 @@ const ChangeQuestions = ({
                         typeOfQuestion={true}
                         title={questionToEdit.question}
                         dataTmp={questionToEdit.questionLatex == null  || questionToEdit.questionLatex.length == 0 ? questionToEdit.questionUrl == null || questionToEdit.questionUrl.length == 0? "text" : "image" : "latex" }   
-                        latexTmp={questionToEdit.questionUrl}
-                        imageTmp={questionToEdit.questionLatex}
+                        latexTmp={questionToEdit.questionLatex}
+                        imageTmp={questionToEdit.questionUrl}
                         correctAnswerTmp={false}
                         questionToEdit={questionToEdit}
                         setQuestionToEdit={setQuestionToEdit}

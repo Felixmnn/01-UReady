@@ -4,14 +4,17 @@ import GlobalProvider from "./../context/GlobalProvider";
 import "./../global.css";
 import { StatusBar } from "expo-status-bar";
 
+
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
+  /*
   const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
@@ -41,6 +44,9 @@ export default function RootLayout() {
     </View>
   );
 }
+  */
+    //
+  //      <GlobalProvider>
 
 
   return (
@@ -60,3 +66,7 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+/*
+  
+*/

@@ -11,28 +11,37 @@ export default function Index() {
   const { isLoggedIn, isLoading, user, userData, setUserData, setUserUsage } = useGlobalContext();
 
   useEffect(() => {
-    if (user == null) return;
-    async function fetchUserData() {
-      try {
-        let userD = await loadUserData(user.$id);
-        
-        if (userD != null) {
-          setUserData(userD);
-        } else {
-          userD = await addNewUserConfig(user.$id);
-          setUserData(userD);
-          router.push("/personalize");
-        }
-      } catch (error) {
-        if (__DEV__) {
-          console.log(error);
-        }
+  let isMounted = true;
+  if (user == null) return;
+
+  async function fetchUserData() {
+    try {
+      let userD = await loadUserData(user.$id);
+      if (!isMounted) return; // Nur setzen, wenn noch mounted
+
+      if (userD != null) {
+        setUserData(userD);
+      } else {
+        userD = await addNewUserConfig(user.$id);
+        if (!isMounted) return;
+        setUserData(userD);
+        router.push("/personalize");
+      }
+    } catch (error) {
+      if (__DEV__) {
+        console.log(error);
       }
     }
-    fetchUserData();
-  }, [user]);
-  const [progress, setProgress] = useState(new Animated.Value(0));
+  }
+  fetchUserData();
 
+  return () => {
+    isMounted = false;
+  };
+}, [user]);
+  //const [progress, setProgress] = useState(new Animated.Value(0));
+
+  /*
   useEffect(() => {
     Animated.timing(progress, {
       toValue: 1,
@@ -44,6 +53,7 @@ export default function Index() {
     inputRange: [0, 1],
     outputRange: ["0%", "100%"],
   });
+  */
 
   // Solange geladen wird oder es noch keine userData gibt, zeigen wir einen Ladescreen
   if (isLoading) {
@@ -55,6 +65,7 @@ export default function Index() {
           style={{ width: 200, height: 200, marginBottom: 20 }}
           resizeMode="contain"
         />
+        {/*
         <View style={{ height: 8, width: "100%", maxWidth:300, backgroundColor: "#444", borderRadius: 4 }}>
         <Animated.View
           style={{
@@ -65,6 +76,7 @@ export default function Index() {
           }}
         />
       </View>
+      */}
       </View>
     </SafeAreaView>
     );

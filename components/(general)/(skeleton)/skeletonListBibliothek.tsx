@@ -7,13 +7,19 @@ const SkeletonListBibliothek = () => {
               const opacity = new Animated.Value(0.3);
             
               useEffect(() => {
-                Animated.loop(
-                  Animated.sequence([
-                    Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
-                    Animated.timing(opacity, { toValue: 0.3, duration: 800, useNativeDriver: true }),
-                  ])
-                ).start();
-              }, []);
+  const animation = Animated.loop(
+    Animated.sequence([
+      Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
+      Animated.timing(opacity, { toValue: 0.3, duration: 800, useNativeDriver: true }),
+    ])
+  );
+
+  animation.start();
+
+  return () => {
+    animation.stop(); // <— Wichtig! Stoppt den Leak
+  };
+}, []);
             
               return (
                 <Animated.View

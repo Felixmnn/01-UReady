@@ -9,10 +9,8 @@ import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
-import { loadUserUsage } from '@/lib/appwriteDaten';
 import AddAiBottomSheet from '../(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
-import { TEST_ID } from 'react-native-gifted-chat';
 
 
 const { width } = Dimensions.get('window');
@@ -20,8 +18,10 @@ const { width } = Dimensions.get('window');
 const HomeGeneral = () => {
   const { user, userUsage } = useGlobalContext()
   const [ userUsageP, setUserUsageP ] = useState(null)
-
+  let count = 0
   useEffect(() => {
+    console.log(count, "Getting Called userUsage", userUsage)
+    count++
     if(userUsage) {
       setUserUsageP({
         ...userUsage,
@@ -36,6 +36,8 @@ const HomeGeneral = () => {
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   const texts = languages.home;
   useEffect(() => {
+    console.log(count, "Getting Called language", language)
+    count++
     if(language) {
       setSelectedLanguage(language)
     }
@@ -194,16 +196,7 @@ const HomeGeneral = () => {
     }, 2000);
   };
 
-  useEffect(()=> {
-    async function fetchData() {
-      const userUsage = await loadUserUsage(user.$id)
-      setUserUsageP({
-        ...userUsage,
-        lastModules: userUsage.lastModules.map((item) => JSON.parse(item)),
-        lastSessions: userUsage.lastSessions.map((item) => JSON.parse(item)),
-      })
-    }
-  },[refreshing])
+ 
 
   return (
     <SafeAreaView className='h-full w-full  '>

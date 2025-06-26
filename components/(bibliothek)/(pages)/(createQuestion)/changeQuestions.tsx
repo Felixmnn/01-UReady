@@ -93,9 +93,7 @@ const ChangeQuestions = ({
         };
         return (
             <View className='w-full px-4 py-2 '>
-                <Text className='text-white'>
-                    {dataType}
-                </Text>
+               
                 {
                     detailsHidden ?
                     <TouchableOpacity className={`w-full items-center justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg`} onPress={() => setDetailsHidden(false)}>

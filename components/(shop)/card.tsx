@@ -29,15 +29,24 @@ const Card = ({
 
         
     useEffect(() => {
+        if (!userUsage) return;
         async function fetchQuizzes() {
             const response = await loadSurvey();
-            if (response) {
-                setQuizzes(response.length > 0 ? response : []);
+            console.log("Quizzes", response.documents)
+            const filteredResponse = response.documents.filter(i => !userUsage.participatedQuizzes.includes(i.$id));
+
+            if (filteredResponse.length > 0) {
+                console.log("Filtered Quizzes", filteredResponse)
+            setQuizzes(filteredResponse);
+            } else {
+            setQuizzes([]); 
+            console.log("No more quizzes available");
             }
-        }
+        } 
         fetchQuizzes();
     }
-    , []);
+    , [userUsage]);
+
     const purchases = userUsage?.purcharses || [];
     function purchaseAmout() {
         const filtered = purchases.filter(p => p === shopItem?.$id);
@@ -225,10 +234,12 @@ const Card = ({
         disabled={!isAvailable()}
          onPress={() => {
             const isTooExpensive = tooExpensive();
-
+            console.log("Quizzes", quizzes)
             const isSoldOut = !isAvailable() || shopItem?.purchaseLimit - purchaseAmout() === 0;
             if ( shopItem?.itemType == "COMERCIAL" && !(purchaseAmout() <=0) ) {
                 setIsVisibleC(true);
+            } else if (shopItem?.itemType == "REWARDEDQUIZ" && quizzes?.length <= 0 ){
+                flashRed()
             } else if ( shopItem?.itemType == "REWARDEDQUIZ") {
                 setIsVisibleD(true);
             } else if (isTooExpensive || purchaseAmout() <=0 ) {
@@ -243,7 +254,7 @@ const Card = ({
                 flashRed();
             } else {
                 setIsVisibleB(true); 
-            }}}>   
+            }}}>  
 
         
         <ModalBudyNow   isVisible={isVisibleB} 
@@ -273,17 +284,21 @@ const Card = ({
             }}
             />
         <ModalQuiz 
-            isVisible={isVisibleD}
+            isVisible={isVisibleD && quizzes.length > 0}
             texts={texts}
             setIsVisible={setIsVisibleD}
+            quiz={quizzes?.length > 0 ? quizzes[0] : null}
             onComplete={() => {
                 
                 setUserUsage({
                     ...userUsage,
                     energy: userUsage.energy + 2,
-                    participatedQuizzes: userUsage.participatedQuizzes.length > 0 ?  [...userUsage.participatedQuizzes, new Date().toISOString()] : [new Date().toISOString()],
+                    participatedQuizzes: userUsage.participatedQuizzes.length > 0  ?  
+                    [...userUsage.participatedQuizzes, quizzes.length > 0 ? quizzes[0].$id : "PLACEHOLDER"] : [quizzes.length > 0 ? quizzes[0].$id : "PLACEHOLDER"],
                     purcharses: userUsage.purcharses.length > 0 ? [...userUsage.purcharses, shopItem?.$id] : [shopItem?.$id],
                 });
+                console.log("QUIZQUizzes sliced", userUsage.participatedQuizzes)
+                setQuizzes(prev => prev.slice(1));
             }}
             />
         <Text className='text-white  font-semibold text-[13px] text-center'>

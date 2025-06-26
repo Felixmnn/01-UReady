@@ -36,10 +36,12 @@ const quiz = () => {
       }, [user, isLoggedIn, isLoading]);
 
     const {questions, moduleID} = useLocalSearchParams()
+    console.log("The Parsed Questions:", questions);
     /**
      * This is the state that holds the questions wich get passed through the params
      */
     const [ questionsParsed, setQuestionParsed] = useState(JSON.parse(questions))
+
     const [ questionList, setQuestionList] = useState([])
     const [ module, setModule] = useState(null)
 
@@ -56,6 +58,7 @@ const quiz = () => {
             const filteredQuestions = data.questionList.filter(question => {
             return questionsParsed.some(q => q.$id === JSON.parse(question).id);
             });
+            console.log("Filtered Questions:", filteredQuestions);
             setQuestionList(filteredQuestions.map(question => JSON.parse(question)));
            
         }
@@ -92,7 +95,8 @@ const quiz = () => {
         updateModuleHere();
     }, [questionList]);
 
-
+    console.log("Question List:", questionList);
+    console.log("Question at 0:", questionsParsed[0]);
     /**
      * This is the function that calculates the percentage of the colors in the header status bar
      */
@@ -325,7 +329,7 @@ const quiz = () => {
             <ScrollView className='flex-1'>
                 <Text className='text-white text-center px-4 px-2 text-xl font-bold mb-2'>{question.question}</Text>
                 {
-                    question.questionLatex.length > 0 ?
+                    question.questionLatex?.length > 0 ?
                     <View className=' w-full  items-center rounded-lg  overflow-hidden '>
                         <BlockMath
                                 math={question.questionLatex}
@@ -334,7 +338,7 @@ const quiz = () => {
                                 style={{ color:"white", text:"white", fontSize: 20 }}
                         />
                     </View>
-                    : question.questionUrl.length > 0  ?
+                    : question.questionUrl?.length > 0  ?
                     <View className='w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4'>
                         <Image
                             source={{ uri: question.questionUrl }}

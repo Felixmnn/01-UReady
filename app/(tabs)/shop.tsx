@@ -70,10 +70,26 @@ const shop = () => {
       if (amountComercials > 0) return `${amoutGT3}/${amoutGT3}`;
       return "0/0"
     }
+
+
+
+    
   return (
     <Tabbar content={()=> { return( 
+
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
         
+
+        <View className='w-full bg-blue-500 border-2 border-blue600 rounded-t-[10px] items-center justify-start p-2 flex-row'>
+          <Text className='font-bold text-white text-lg mr-3'>
+             Hinweis
+          </Text>
+          <Text className='text-white text-xs'> 
+            {
+            'Da die App noch in der Entwicklung ist sind alle Features gratis nutzbar. Wenn ihr also keine Energie mehr habt, könnt ihr diese im Profil über den Aktionscode "BESTENUTZER" aufladen.'
+            }
+          </Text>
+        </View>
         <TokenHeader userUsage={userUsage}/>
         <ScrollView classNawme='w-full'
           style={{

@@ -91,6 +91,8 @@ const ProfileSettings = () => {
             updated.energy += 10;
           } else if (res.item.includes("100CHIPS")) {
             updated.chips += 100;
+          } else if (res.item.includes("100ENERGY")) {
+            updated.energy += 200;
           }
           if (updated.purcharses.length == 0) {
             updated.purcharses = [actioncode];

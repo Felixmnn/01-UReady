@@ -1,4 +1,4 @@
-import { View, Text, Modal, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Image, Platform } from 'react-native'
 import React from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import StripeComponent from './stripeComponent.web';
@@ -73,16 +73,21 @@ const ModalBudyNow = ({isVisible, setIsVisible, imageSource, imageColor,kathegor
                     
                 </View>
                 <View className="flex-row justify-end space-x-4 ">
-                <TouchableOpacity onPress={() => setIsVisible(false)}
-                    className='bg-red-300 p-2 rounded-[10px] w-[90px]'>
+                <TouchableOpacity  onPress={() => setIsVisible(false)}
+                    className='bg-red-300 p-2 rounded-[10px] w-[90px] items-center justify-center'>
                     <Text className="text-gray-900 font-medium text-center ">{texts.cancel}</Text>
                 </TouchableOpacity>
+                {
+                    Platform.OS === 'web' ?
+                                <StripeComponent/>
+                            :
+                
                 <TouchableOpacity onPress={()=> handleBuyNow()} className='bg-blue-500 p-2 rounded-[10px] w-[90px]'>
                     <Text className=" font-medium text-center text-gray-900">{texts.buy}</Text>
                 </TouchableOpacity>
+}
                 </View>
             </View>
-            <StripeComponent/>
         </TouchableOpacity>
     </Modal>
   )

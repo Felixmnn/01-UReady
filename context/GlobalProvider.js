@@ -25,7 +25,6 @@ const GlobalProvider = ({ children }) => {
   
   useEffect(() => {
   let isMounted = true;
-  console.log("GlobalProvider: Initializing session check...");
 
   const initSession = async () => {
     try {
@@ -57,7 +56,6 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   
   useEffect(() => {
-    console.log("GlobalProvider: Fetching user data...");
     if (!user) return;
 
     const fetchUserInfo = async () => {
@@ -82,7 +80,6 @@ const GlobalProvider = ({ children }) => {
   // 3. UserUsage laden/erstellen/aktualisieren
   // -------------------------------
   const ensureUserUsage = async () => {
-    console.log("GlobalProvider: Ensuring user usage data...");
     try {
       let usage = await loadUserUsage(user.$id);
       if (!usage) {
@@ -117,7 +114,6 @@ const GlobalProvider = ({ children }) => {
   // 4. userUsage automatische Aktualisierung bei Änderung
   // -------------------------------
   useEffect(() => {
-    console.log("GlobalProvider: Updating user usage data...");
     if (!userUsage) return;
 
     const updateUsage = async () => {

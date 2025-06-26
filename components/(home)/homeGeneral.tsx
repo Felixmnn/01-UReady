@@ -98,7 +98,7 @@ const HomeGeneral = () => {
 
   async function startQuiz(session) {
     const questions = await getSessionQuestions(session.sessionID)
-    
+    console.log("Questions for session", session.sessionID, ":", questions)
     if (!questions || questions.length == 0) {
       router.push("/bibliothek")
       return;

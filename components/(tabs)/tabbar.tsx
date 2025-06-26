@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { Children, useEffect, useState } from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -53,14 +53,21 @@ const Tabbar = ({content,page, hide}) => {
                       
                 </View >
             </View >
-            <View className={`flex-1 rounded-[10px]  ${hide ? null : "bg-gradient-to-b from-[#001450] to-[#0c111e] border border-gray-700 border-w-[1px]"}`}>
-                {content()}
-            </View>
-        </View>
+            <View className={`flex-1 ${isVertical ? "flex-row" : "flex-col"}`}>
+              <View className={`flex-1  rounded-[10px]  ${hide ? null : "bg-gradient-to-b from-[#001450] to-[#0c111e] border border-gray-700 border-w-[1px]"}`}>
+                    {content()}
+                  
+              </View>
+              
+              </View>
+          </View>
+        
+
             :
             <SafeAreaView className='flex-1 bg-gradient-to-b from-[#001450] to-[#0c111e] itmes-center justify-between'>
              {content()}
             </SafeAreaView>
+
         }
         
     </View>

@@ -56,7 +56,7 @@ const RatingQuestion = ({
               style={{
                 width: 40,
                 fontSize: 10,
-                color: '#9CA3AF', // gray-400
+                color: 'white', // gray-400
                 textAlign: 'center',
               }}
             >
@@ -66,7 +66,7 @@ const RatingQuestion = ({
         </View>
       )}
 
-      <Text className="text-sm text-gray-500 mt-4 text-center">
+      <Text className="text-sm text-white mt-4 text-center">
         {texts.selected}: {rating} {unit}
       </Text>
     </View>

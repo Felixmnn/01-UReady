@@ -132,21 +132,45 @@ export async function generateQuestionsFromText (text, amount, sessionID, subjec
     const body = JSON.stringify({
       model: 'gpt-4o-mini', 
       messages: [{ role: 'user', content: `
-        Ertelle auf basis dieses Textes ${text} ${amount} Fragen:
-        Die Fragen sollen dabei als stringifyed JSON Array zurückgegeben werden.
-        Es soll immer 4 Antorten geben die anzahl der richtigen Antworten soll dabei >= 1 sein.
-        Die Struktur der Fragen soll dabei wie folgt aussehen:
-        {
-            "question": "DIE FRAGE",
-            "answers": "EINE ANTWORT","NOCH EINE ANTWORT", "UND NOCH EINE ANTWORT",...
-            "answerIndex": [0,1,2,...],
-            "public": false,
-            "aiGenerated": true,
-            "status": null,
-            "tags": [],
-            "sessionID": ${sessionID},
-            "subjectID": ${subjectID}
-        }
+        Erstelle basierend auf den folgenden Themen jeweils zwischen 3 und 10 Multiple-Choice-Fragen: ${text}.  
+Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
+Der Nutuzer soll die Fragen isoliert beantworten können, ohne den Kontext anderer Fragen oder Materialien die nicht in der Frage enthalten sind, zu benötigen.
+WICHTIG: Keine Fragen mit externen Materialien oder Texten, die nicht in der Frage enthalten sind. !
+
+Die Ausgabe soll ausschließlich ein gültiges, parsebares JSON-Array von Objekten sein.  
+
+Jede Frage muss folgende Struktur haben (bitte exakt einhalten):
+Hinweis die wenn du eine Latex formel oder tabelle einbindest müssen diese von Kartex (React Native) renderbar sein
+{
+  "sessionID": "${sessionID}",
+  "subjectID": "${subjectID}",
+  "status": null,
+  "tags": [],
+  "public": true,
+  "aiGenerated": true,
+  "question": "Die Frage als String.",
+  "questionLatex": "", //Wenn die Materialien elemnte enthält die sich gut für eine Latex Formel eignen oder sich die Frage gut durch eine Latex Formel ergänzen lässt bitte nutzen 
+  "questionSVG": "",   // Bitte Leer lassen, da SVGs nicht unterstützt werden
+  "questionUrl": "",   // Bitte Leer lassen, da URLs nicht unterstützt werden
+  "hint": "",          // Wenn die Frage einen Hinweis benötigt, ansonsten leer lassen
+  "explanation": "",   // Wenn die Frage eine Erklärung benötigt, ansonsten leer lassen
+  "answers": [
+    "{\"title\":\"Antwort A\",\"latex\":\"\",\"image\":null}", //Die Latex Formeln müssen von der React Native Kartex renderbar sein
+    "{\"title\":\"Antwort B\",\"latex\":\"\",\"image\":null}",
+    "{\"title\":\"Antwort C\",\"latex\":\"\",\"image\":null}",
+    "{\"title\":\"Antwort D\",\"latex\":\"\",\"image\":null}"
+  ],
+  "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0)
+}
+
+Wichtige Regeln:
+- Die Anzahl der Antwortoptionen ist immer 4.
+- Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
+- Der index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.
+- Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
+- Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
+-Die Latex Formeln müssen von der React Native Kartex renderbar sein 
+
         `}],
     });
     try {
@@ -188,22 +212,44 @@ export async function generateQuestionsFromText (text, amount, sessionID, subjec
     const body = JSON.stringify({
       model: 'gpt-4o-mini', 
       messages: [{ role: 'user', content: `
-        Ertelle auf basis dieser Themen jeweils ${topics} 3-10 Fragen:
-        Die Fragen sollen dabei als stringifyed JSON Array zurückgegeben werden.
-        Es soll immer 4 Antorten geben die anzahl der richtigen Antworten soll dabei >= 1 sein.
-        Die Struktur der Fragen soll dabei wie folgt aussehen:
-        Es ist wichtig, dass deine Antwort nur eine gültiges JSON-Array ist.
-        {
-            "question": "DIE FRAGE",
-            "answers": "EINE ANTWORT","NOCH EINE ANTWORT", "UND NOCH EINE ANTWORT",...
-            "answerIndex": [0,1,2,...],
-            "public": false,
-            "aiGenerated": true,
-            "status": null,
-            "tags": [],
-            "sessionID": ${sessionID},
-            "subjectID": ${subjectID}
-        }
+        Erstelle basierend auf den folgenden Themen jeweils zwischen 3 und 10 Multiple-Choice-Fragen: ${topics}.  
+Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
+Der Nutuzer soll die Fragen isoliert beantworten können, ohne den Kontext anderer Fragen zu benötigen. 
+
+Die Ausgabe soll ausschließlich ein gültiges, parsebares JSON-Array von Objekten sein.  
+
+Jede Frage muss folgende Struktur haben (bitte exakt einhalten):
+Hinweis die wenn du eine Latex formel oder tabelle einbindest müssen diese von Kartex (React Native) renderbar sein
+{
+  "sessionID": "${sessionID}",
+  "subjectID": "${subjectID}",
+  "status": null,
+  "tags": [],
+  "public": true,
+  "aiGenerated": true,
+  "question": "Die Frage als String.",
+  "questionLatex": "", //Wenn topics elemnte enthält die sich gut für eine Latex Formel eignen oder sich die Frage gut durch eine Latex Formel ergänzen lässt
+  "questionSVG": "",   // Bitte Leer lassen, da SVGs nicht unterstützt werden
+  "questionUrl": "",   // Bitte Leer lassen, da URLs nicht unterstützt werden
+  "hint": "",          // Wenn die Frage einen Hinweis benötigt, ansonsten leer lassen
+  "explanation": "",   // Wenn die Frage eine Erklärung benötigt, ansonsten leer lassen
+  "answers": [
+    "{\"title\":\"Antwort A\",\"latex\":\"\",\"image\":null}",
+    "{\"title\":\"Antwort B\",\"latex\":\"\",\"image\":null}",
+    "{\"title\":\"Antwort C\",\"latex\":\"\",\"image\":null}",
+    "{\"title\":\"Antwort D\",\"latex\":\"\",\"image\":null}"
+  ],
+  "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0)
+}
+
+Wichtige Regeln:
+- Die Anzahl der Antwortoptionen ist immer 4.
+- Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
+- Der index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.
+- Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
+- Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
+-Die Latex Formeln müssen von der React Native Kartex renderbar sein 
+
         `}],
     });
 

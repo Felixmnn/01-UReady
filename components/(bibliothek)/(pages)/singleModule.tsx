@@ -473,7 +473,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                         }
                         {isVertical || tab == 1 ?
                             <View className='p-4 flex-1'>
-                                <Data setQuestionToEdit={setQuestionToEdit} isVisibleEditQuestion={isVisibleEditQuestion} setIsVisibleEditQuestion={setIsVisibleEditQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
+                                <Data  setQuestionToEdit={setQuestionToEdit} isVisibleEditQuestion={isVisibleEditQuestion} setIsVisibleEditQuestion={setIsVisibleEditQuestion} setIsVisibleNewQuestion={setIsVisibleNewQuestion} setSelectedScreen={setSelectedScreen} refreshing={refreshing} onRefresh={onRefresh}  texts={texts} selectedLanguage={selectedLanguage} SwichToEditNote={SwichToEditNote} setSelected={setSelectedScreen} setIsVisibleAI={setIsVisibleAI} addDocument={addDocument} deleteDocument={deleteDocument} moduleSessions={sessions} selected={selectedSession} questions={questions} notes={notes} documents={documents} module={module}/>
                             </View>
                             : null 
                         }

@@ -40,7 +40,7 @@ const ChoiceQuestion = ({
   }
 
   
-
+  console.log(selected, 'selected answers')
   return (
     <View className='flex-1 p-4' style={{ maxHeight: 600 }}>
       <Text className='text-lg font-bold mb-2 text-gray-100'>{question}</Text>

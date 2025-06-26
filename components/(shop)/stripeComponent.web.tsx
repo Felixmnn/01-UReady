@@ -5,18 +5,35 @@ import { stripeFunctionWeb } from '@/lib/appwriteShop';
 
 const stripePromise = loadStripe('pk_test_51RTSKq4hlfGTCc9pXUlwIWJFGlI1x28xjrupHBBSiyCmHrv6D8gwa3FGSA4N3BPW6cDW0PyK3PCqDJEVHcg6TSVZ00qnrxNgyj');
 
-const StripeComponent = ({ price = 999 }: { price?: number }) => {
+const StripeComponent = ({ 
+  price = 999,
+  productUD= '',
+  userID = "",
+  currency = 'EUR',
+
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
     setLoading(true);
     try {
         console.log("Starte handleClick");
-        const resString = await stripeFunctionWeb({ price: 999 });
-        const res = JSON.parse(resString?.responseBody);
+        const res = await stripeFunctionWeb({ 
+          price: price,
+          successUrl: 'http://localhost:8081/shop',
+          failureUrl: 'http://localhost:8081/shop',
+          productID: productUD,
+          userID: userID,
+          currency: currency,
+
+         });
+
         console.log("Response von stripeFunctionWeb:", res);
-        if (res && res.url) {
-        window.location.href = res.url;
+        console.log("Response Headers:", res.responseHeaders);
+        console.log("Response Headers:", res.responseHeaders[0]);
+        
+        if (res) {
+        window.location.href = res.responseHeaders[0].value; 
         }
       const data = JSON.parse(res.responseBody);
         console.log(data.customer);                    

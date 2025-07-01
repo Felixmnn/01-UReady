@@ -20,8 +20,8 @@ const StripeComponent = ({
         console.log("Starte handleClick");
         const res = await stripeFunctionWeb({ 
           price: price,
-          successUrl: 'http://localhost:8081/shop',
-          failureUrl: 'http://localhost:8081/shop',
+          successUrl: 'https://qready-app.com/shop',
+          failureUrl: 'https://qready-app.com/shop',
           productID: productUD,
           userID: userID,
           currency: currency,

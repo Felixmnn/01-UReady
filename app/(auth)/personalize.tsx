@@ -298,15 +298,15 @@ const personalize = () => {
         try {
             await addUserDatakathegory(user.$id,newUserData);
             const updatedUserData = {
-                    birthday:userData.birthday,
-                    city:userData.city,
-                    country:userData.country,
-                    darkmode:userData.darkmode,
-                    language:userData.language,
-                    profilePicture:userData.profilePicture,
-                    subscription:userData.subscription,
-                    uid:userData.uid,
-                    university:userData.university,
+                    birthday:userData?.birthday,
+                    city:userData?.city,
+                    country:userData?.country,
+                    darkmode:userData?.darkmode,
+                    language:userData?.language,
+                    profilePicture:userData?.profilePicture,
+                    subscription:userData?.subscription,
+                    uid:userData?.uid,
+                    university:userData?.university,
                     signInProcessStep:"FINISHED",
                     
             }

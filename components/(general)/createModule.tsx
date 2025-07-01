@@ -61,7 +61,8 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
             creationLanguage: userData.language,
             creationEducationKathegory:userData.educationKathegory,
             studiengangKathegory:userData.studiengangKathegory,
-                      kategoryType: userData.kategoryType,
+            kategoryType: userData.kategoryType,
+            color: "blue"
 
         });
     },[userData])
@@ -239,6 +240,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
           <GratisPremiumButton
             aditionalStyles="w-full rounded-[10px] mx-3 bg-blue-500"
             handlePress={async () => {
+              /*
               if (newModule.name.length < 2) {
                 setErrorMessage(texts[selectedLanguage].errorMissingName);
                 setIsError(true);
@@ -257,7 +259,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
                 return;
               
               }
-
+              */
             const res = await adddModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
             setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
             const resp = await setUserDataSetup(user.$id)

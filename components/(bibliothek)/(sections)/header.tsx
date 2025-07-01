@@ -17,6 +17,7 @@ const Header = ({   setSelectedScreen,
                     texts, 
                     selectedLanguage, 
                     moduleName, 
+                    moduleDescription,
                     moduleID,
                     modules,
                     setModules,
@@ -47,6 +48,7 @@ const Header = ({   setSelectedScreen,
             setModules={setModules}
             setSelectedModule={setSelectedModule}
             texts={texts[selectedLanguage] || texts["DEUTSCH"]}
+            description={moduleDescription}
         />
         <View className='flex-row w-full justify-between p-4 items-center'>
                     <TouchableOpacity onPress={()=> setSelectedScreen("AllModules")} >

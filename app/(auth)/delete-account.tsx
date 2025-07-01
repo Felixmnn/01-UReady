@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { deletingAccount } from '@/lib/appwrite';
 import * as Updates from 'expo-updates';
@@ -38,8 +38,11 @@ const DeleteAccount = () => {
     await deleteData();
     const res = await deletingAccount(); 
     setModalVisible(false);
+    if ( Platform.OS === 'web') {
+      router.push('/sign-in');
+    } else {
     await Updates.reloadAsync();
-    
+    }
     
   };
 

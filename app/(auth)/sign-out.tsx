@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
@@ -30,7 +30,11 @@ const SignOut = () => {
         console.error('Sign out failed', err);
       } finally {
         setIsLoading(false);
+        if (Platform.OS === 'web') {
+          router.push('/sign-in'); 
+        } else {
           await Updates.reloadAsync();
+        }
       }
     };
 

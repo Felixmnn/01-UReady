@@ -159,6 +159,7 @@ const quiz = () => {
                     <View style={{ width: `${questionSegmentation()[3]}%` }} className="h-[5px] bg-blue-500 rounded-r-full" />
                 </View>
             </View>
+            
         )
     }
     const [selectedQuestion, setSelectedQuestion] = useState(0)
@@ -172,8 +173,11 @@ const quiz = () => {
 
         function correctAnswers() {
             const correctAnswers = questionsParsed[selectedQuestion].answers.filter((answer,index) => questionsParsed[selectedQuestion].answerIndex.includes(index))
+            
             correctAnswers.sort() 
-            selectedAnswers.sort()      
+            selectedAnswers.sort()    
+            console.log("Selected Answers:", selectedAnswers)
+            console.log("Correct Answers:", correctAnswers)
             if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
                 return true
             } else { 

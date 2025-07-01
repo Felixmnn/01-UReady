@@ -18,6 +18,7 @@ import TokenHeader from '@/components/(general)/tokenHeader';
 import BottomSheet, {  BottomSheetScrollView, BottomSheetView} from '@gorhom/bottom-sheet'
 import RenderResults from '@/components/(entdecken)/renderResults';
 import { searchDocuments } from '@/lib/appwriteQuerySerach';
+import { loadAllModules } from '@/lib/appwriteDaten';
 
 
 const entdecken = () => {
@@ -29,6 +30,19 @@ const entdecken = () => {
       setSelectedLanguage(language)
     }
   }, [language])
+
+  useEffect(() => {
+    async function fetchAllModules(){
+      const modules = await loadAllModules();
+      console.log("Filterd Modules",modules.filter(m => m.public == true && m.questions > 0 && m.name.includes("Kopie") == false))
+      if (modules) {
+        setModules(modules.filter(m => m.public == true && m.questions > 0 && m.name.includes("Kopie") == false));
+      } else {
+        setModules([]);
+      }
+    }
+    fetchAllModules();
+  },[])
 
   const texts = languages.endecken;
   const sheetRef = useRef<BottomSheet>(null);
@@ -51,7 +65,7 @@ const entdecken = () => {
   
   //Allgemeine Filter
   const [ selectedCountry, setSelectedCountry] = useState(countryList[0])
-  const [ filterVisible, setFilterVisible] = useState(true)
+  const [ filterVisible, setFilterVisible] = useState(false)
   const [ selectedKathegory, setSelectedKathegory ] = useState("UNIVERSITY")
 
 
@@ -196,7 +210,7 @@ const entdecken = () => {
           }
       }
 
-  const CopyModulesButton = () => {
+  const CopyModulesButton = ({topButton=false}) => {
     function calculateEnergyCost() {
       let price = 0;
       selectedModules.forEach((moduleId) => {
@@ -214,12 +228,12 @@ const entdecken = () => {
     }
       
     return (
-        <View className={`${Platform.OS == "web" ? "absolute bottom-0" : null} w-full  rounded-full p-2`} >
-          <TouchableOpacity disabled={loading  || (userUsage.energy < calculateEnergyCost())} className='flex-row items-center justify-center p-2  rounded-full'
+        <View className={`${Platform.OS == "web" ? "" : null} w-full  rounded-full  ${topButton ? "" : "p-2"}`} >
+          <TouchableOpacity disabled={loading  || (userUsage.energy < calculateEnergyCost())} className={`${topButton ? "px-2" : "p-2"} flex-row items-center justify-center rounded-full`}
           style={{
             backgroundColor: userUsage.energy > selectedModules.length * 3 ? "#3b82f6" : "#f63b3b",
-            borderWidth:2,
-            borderColor: userUsage.energy > selectedModules.length * 3 ? "#3c6dbc" : "#bc3c3c",
+            borderWidth: topButton ? 1 : 2,
+            borderColor:  userUsage.energy > selectedModules.length * 3 ? "#3c6dbc" : "#bc3c3c",
           }}
           
           onPress={async ()=> {
@@ -262,8 +276,8 @@ const entdecken = () => {
               loading ? <ActivityIndicator size="small" color="#fff" /> :
               userUsage.energy > selectedModules.length * 3 ?
               <View className='flex-row items-center'>
-                <Text className='text-white  font-semibold text-[15px] mb-1'>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {calculateEnergyCost()}</Text>
-                <Icon name="bolt" size={15} color="white" className="ml-2" />
+                <Text className={`${topButton ? "text-[12px]" : "text-[15px] mb-1"} font-semibold  text-white  `}>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {calculateEnergyCost()}</Text>
+                <Icon name="bolt" size={topButton ?10 :15} color="white" className="ml-2" />
               </View>
               :
               <Text className='text-white text-center  font-semibold text-[15px] mb-1'
@@ -350,6 +364,7 @@ const entdecken = () => {
                 <Icon name="filter" size={15} color="white"/> 
               </TouchableOpacity>
           </View>
+          <View className='w-full flex-row items-center justify-between mb-2'>
             <View className=' bg-gray-500 rounded-full items-center justify-center'
             style={{
               width: 80,
@@ -362,8 +377,22 @@ const entdecken = () => {
             >
               <Text className='text-white font-semibold text-[10px] '>
                 {modules.filter(m => m.public == true).length} {texts[selectedLanguage].results}
+
               </Text>
             </View>
+            <View
+
+              className='flex-row items-center justify-between mr-4'>
+              {
+                selectedModules.length > 0 ?
+                <CopyModulesButton topButton={true}/>
+                :
+                <Text className='px-3 py-[1px] bg-blue-500 rounded-full text-white font-semibold text-[10px]'>
+                  Wähle ein Modul aus, um es zu kopieren.
+                </Text>
+              }
+            </View>
+          </View>
           <RenderResults 
             modules={modules.filter(m => m.public == true)}
             texts={texts}

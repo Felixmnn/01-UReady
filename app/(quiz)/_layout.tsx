@@ -12,6 +12,11 @@ const quizLayout = () => {
                     headerShown: false 
                   }}
                 />
+                <Stack.Screen name="renderQuestions"  
+                options={{ 
+                    headerShown: false 
+                  }}
+                />
             </Stack> 
         </>
     </View>

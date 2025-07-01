@@ -200,7 +200,9 @@ const HomeGeneral = () => {
 
   return (
     <SafeAreaView className='h-full w-full  '>
-      
+      <TouchableOpacity className='p-5 bg-red-500 z-50' onPress={() => router.push("/renderQuestions")}>
+        <Icon name='cog' size={25} color='white' />
+      </TouchableOpacity>
     <ScrollView
        style={{
           height: '100%',

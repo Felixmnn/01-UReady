@@ -8,7 +8,7 @@ import SmileyStatus from '../(components)/smileyStatus';
 const Data = ({setIsVisibleEditQuestion, isVisibleEditQuestion, setQuestionToEdit, onRefresh, setSelectedScreen, refreshing, selected,moduleSessions,questions,notes,documents,deleteDocument,module, addDocument, setIsVisibleNewQuestion, setIsVisibleAI, setSelected, SwichToEditNote, texts, selectedLanguage}) => {
     
     const [optionsVisible, setOptionsVisible] = useState([]);
-        function handleOptionsVisibility(id) {
+        function handleOptionsVisibility(id="") {
             if (optionsVisible.includes(id)) {
                 setOptionsVisible(optionsVisible.filter(item => item !== id));
             } else {

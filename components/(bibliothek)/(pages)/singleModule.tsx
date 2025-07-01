@@ -457,6 +457,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                     setSelectedModule={setSelectedScreen}
                     setIsError={setIsError}
                     setErrorMessage={setErrorMessage}
+                    moduleDescription={module.description}
                     
                     />
                 {!isVertical ? <SwichTab tabWidth={tabWidth} setTab={setTab} tab={tab} tab1={"Map"} tab2={"Fragen"} bg={"bg-gray-900"} change={change}/> : null }

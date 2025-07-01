@@ -142,7 +142,7 @@ function calculatePercent(questions){
     const ModuleList = ({items=[], header="Letzte 7 Tage" }) => {
       const [ isVisible, setIsVisible] = useState(false);
       return (
-        <View className={`flex-1 mb-4`}>
+        <View className={` mb-4`}>
         <TouchableOpacity className='' onPress={()=> setIsVisible(!isVisible)}>
           <View className='flex-row items-center justify-between w-full mb-2'>
             <Text className='font-bold text-gray-100 text-[18px]'>{header}</Text>

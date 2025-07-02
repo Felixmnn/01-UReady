@@ -183,7 +183,7 @@ const SignIn = () => {
                       if (Platform.OS === "web") {
                       router.push("/reset-password")
                       } else {
-                        Linking.openURL('http://10.0.10.209:8081/reset-password'); // ← Hier deine echte URL einsetzen
+                        Linking.openURL('https://qready-app.com/reset-password'); // ← Hier deine echte URL einsetzen
                       }
 
                     }} className="mt-2 items-center justify-center">

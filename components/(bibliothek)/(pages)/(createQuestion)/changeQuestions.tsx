@@ -434,7 +434,16 @@ const ChangeQuestions = ({
                                 Neue Antwort hinzufügen
                             </Text>
                         </TouchableOpacity>
-
+                        <TextInput
+                            className='w-full bg-gray-900 text-white rounded-lg p-2 mt-2'
+                            placeholder='Gebe hier eine Antwort ein...'
+                            value={questionToEdit.explaination}
+                            
+                            placeholderTextColor="#9CA3AF"
+                            multiline
+                            numberOfLines={2}
+                            style={{ minHeight: 40, maxHeight: 40, textAlignVertical: 'top' }}
+                        />
                     
                 </View>
 

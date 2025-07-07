@@ -26,7 +26,9 @@ export async function questionFromTopic (topics, sessionID, subjectID) {
             "status": null,
             "tags": [],
             "sessionID": ${sessionID},
-            "subjectID": ${subjectID}
+            "subjectID": ${subjectID},
+            "explaination": "Unter einer Guten Frage versteht man eine Frage die zeigt dass der Beantwortende diese verstanden hat" // Eine kurze Erklärung zur Frage sodass der Nutzer nach dem Quiz versteht warum die Antwort richtig oder falsch ist. Mindestens 2 Sätze lang.
+
         }
         `}],
     });

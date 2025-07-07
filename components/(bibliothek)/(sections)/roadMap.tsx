@@ -41,6 +41,36 @@ const RoadMap = ({  moduleSessions,
     return {bad:Math.floor(bad/questions.length*100),ok:Math.floor(bad/questions.length*100),good:Math.floor(bad/questions.length*100),great:Math.floor(bad/questions.length*100)}
 
   }
+  function returnBackgroundColor(color) {
+  if (color == null) {
+    return "#2C3E50"; // Dunkles Blau-Grau (Fallback)
+  }
+
+  switch (color) {
+    case "red":
+      return "#8B0000"; // Dunkles Rot
+    case "blue":
+      return "#003366"; // Dunkles Blau
+    case "green":
+      return "#1E3D32"; // Dunkles, entsättigtes Grün
+    case "yellow":
+      return "#7F6A00"; // Gedämpftes Dunkelgelb (Senfgelb)
+    case "orange":
+      return "#8B4000"; // Dunkles Orangebraun
+    case "purple":
+      return "#4B3869"; // Gedämpftes Dunkellila
+    case "pink":
+      return "#70394E"; // Altrosa/Dunkelpink
+    case "cyan":
+      return "#1A4D5C"; // Dunkles, entsättigtes Cyanblau
+    default:
+      return "#2C3E50"; // fallback
+  }
+}
+console.log("SlectedSession", selected, moduleSessions[selected], "ModuleSessions", moduleSessions)
+
+
+
     return (
     <ScrollView className={`${width > 700 ? "" : null} ` }  style={{
       scrollbarWidth: 'thin', 
@@ -53,8 +83,10 @@ const RoadMap = ({  moduleSessions,
               <TouchableOpacity 
               key={`${module.$id}-${index}`}
               style={{
-                margin:5,
                 opacity: selected == index ? 1 : 0.5,
+                marginHorizontal: selected == index ? 2  : 10,
+                marginVertical: 5,
+                backgroundColor: selected == index ? returnBackgroundColor(module.color ? module.color : "blue") : "#1F2937",
 
               }}
               onPress={() => {
@@ -69,9 +101,9 @@ const RoadMap = ({  moduleSessions,
                 } )
                 
               }}
-              className='rounded-[10px]  bg-gray-800 '
+              className={`rounded-[10px] items-center  `}
               >
-                <View className='w-full rounded-t-[10px] border-t-[1px] border-gray-700'
+                <View className={`w-full rounded-t-[10px] border-t-[1px] border-gray-700`}
                     style={{
                       backgroundColor: returnColor(module.color ? module.color :"blue", currentModule.color),
                       height: 8,

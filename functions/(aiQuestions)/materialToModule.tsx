@@ -160,7 +160,9 @@ Hinweis die wenn du eine Latex formel oder tabelle einbindest müssen diese von 
     "{\"title\":\"Antwort C\",\"latex\":\"\",\"image\":null}",
     "{\"title\":\"Antwort D\",\"latex\":\"\",\"image\":null}"
   ],
-  "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0)
+  "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0),
+  "explaination": "Unter einer Guten Frage versteht man eine Frage die zeigt dass der Beantwortende diese verstanden hat" // Eine kurze Erklärung zur Frage sodass der Nutzer nach dem Quiz versteht warum die Antwort richtig oder falsch ist. Mindestens 2 Sätze lang.
+
 }
 
 Wichtige Regeln:
@@ -239,7 +241,9 @@ Hinweis die wenn du eine Latex formel oder tabelle einbindest müssen diese von 
     "{\"title\":\"Antwort C\",\"latex\":\"\",\"image\":null}",
     "{\"title\":\"Antwort D\",\"latex\":\"\",\"image\":null}"
   ],
-  "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0)
+  "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0),
+  "explaination": "Unter einer Guten Frage versteht man eine Frage die zeigt dass der Beantwortende diese verstanden hat" // Eine kurze Erklärung zur Frage sodass der Nutzer nach dem Quiz versteht warum die Antwort richtig oder falsch ist. Mindestens 2 Sätze lang.
+
 }
 
 Wichtige Regeln:

@@ -36,6 +36,7 @@ const Header = ({   setSelectedScreen,
         filteredData = questions;
     }
     const [showSessionList, setShowSessionList] = useState(false)
+    
   return (
     <View className={`${!isVertical ? "bg-[#0c111d]" : null}`}>
         <ModalSessionList isVisible={showSessionList} setIsVisible={setShowSessionList} sessions={sessions} setSessions={setSessions} />
@@ -51,23 +52,24 @@ const Header = ({   setSelectedScreen,
             description={moduleDescription}
         />
         <View className='flex-row w-full justify-between p-4 items-center'>
+            <View className='flex-row items-center gap-2'>
                     <TouchableOpacity onPress={()=> setSelectedScreen("AllModules")} >
                         <Icon name="arrow-left" size={20} color="white"/>
                     </TouchableOpacity>
-                    <View className='flex-row items-center mx-2'>
-                        <TouchableOpacity disabled={true} className='flex-row bg-gray-800 rounded-full px-2 py-1 border-[1px] border-gray-600 items-center mr-2 opacity-50'>
-                            <Icon name="globe" size={15} color="white"/>
-                            <Text className='text-white ml-2'>{texts[selectedLanguage].share}</Text>
-                        </TouchableOpacity>
+                    <Text className='font-bold text-white text-[15px]'>
+                        {
+                            moduleName
+                        }
+                    </Text>
+            </View>
                         <TouchableOpacity onPress={()=> setDeleteModuleVisible(true)} className='px-2' >
                             <Icon name="ellipsis-v" size={15} color="white"/>
                         </TouchableOpacity>
-                    </View>
                 </View>
                 <View className='w-full  flex-row px-4 justify-between items-center'>
                     <Text className='text-gray-200 font-bold text-2xl '
                     style={{maxWidth: isVertical ? "70%" : "50%"}}
-                    >{moduleName}</Text>
+                    >{ selected > sessions.length ? "All Questions" : sessions[selected].title}</Text>
                     <View className='flex-row items-center'>
                     <TouchableOpacity onPress={()=> setShowSessionList(true)} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}>
                             <Icon name={"layer-group"} color={"white"} size={15 }/>
@@ -84,9 +86,16 @@ const Header = ({   setSelectedScreen,
                                 setErrorMessage("texts[selectedLanguage].youNeedQuestionsToStartAQuiz");
                                 setIsError(true);
                             } else {
+                            let qs = [];
+                            if (selected > moduleSessions.length) {
+                                qs = questions;
+                            } else {
+                                qs = questions.filter((item) => item.sessionID == moduleSessions[selected].id);
+                            }
                             router.push({
                                 pathname:"quiz",
-                                params: {questions: JSON.stringify(filteredData), moduleID:moduleID }
+                                params: {questions: JSON.stringify(filteredData)
+                                    , moduleID:moduleID }
                             })
                         }
                         }

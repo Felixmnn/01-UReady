@@ -18,6 +18,7 @@ import languages  from '@/assets/exapleData/languageTabs.json';
 import { useFocusEffect } from '@react-navigation/native';
 import { loadModule } from '@/lib/appwriteDaten';
 import ChangeQuestions from './(createQuestion)/changeQuestions';
+import StartQuizBottomSheet from '@/components/(general)/(modal)/startQuizBottomSheet';
 
 /**
  * The SingleModule Component is responsible for rendering the deatils of a single module.
@@ -494,6 +495,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 </View>
                 }   
             </View> 
+
             { isVisibleEditQuestion.state ?
             <ChangeQuestions
                 question={questionToEdit}

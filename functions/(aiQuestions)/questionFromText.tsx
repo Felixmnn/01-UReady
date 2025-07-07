@@ -25,24 +25,27 @@ export async function generateQuestionsFromText (text, amount, sessionID, subjec
                 "status": null,
                 "tags": [],
                 "sessionID": ${sessionID},
-                "subjectID": ${subjectID}
+                "subjectID": ${subjectID},
+            "explaination": "" //Mindestens 2 Sätze lang. Wichtig ist, das die Erklärung nicht nur die richtige Antwort in anderer Form wiedergibt, sondern eine Erklärung ist, die dem Nutzer hilft die Frage zu verstehen und zu lernen. WICHTIG DIE ERKLÄRUNG IST NICHT OPTIONAL
             }
             `}],
         });
-    
+        
+        
         try {
           const res = await fetch(url, {
             method: 'POST',
             headers: headers,
             body: body,
           });
-    
+          
           if (!res.ok) {
             throw new Error(`Fehler: ${res.status}`); 
           }
+          console.log("Response from OpenAI:", res);
     
           const data = await res.json();
-    
+          
           // Überprüfe, ob die Antwort `choices` enthält und greife auf den Text zu
           if (data && data.choices && data.choices.length > 0) {
             const response = (data.choices[0].message.content.trim());  // Antworte mit dem Text

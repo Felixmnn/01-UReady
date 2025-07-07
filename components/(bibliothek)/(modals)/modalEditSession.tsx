@@ -113,7 +113,7 @@ const ModalEditSession = ({ isVisible, setIsVisible, session, sessions, index, s
                                     height: 40,	
                                 }}
                                 value={newTag ? newTag.name : null}
-                                maxLength={30}
+                                maxLength={50}
                                 placeholder={session.title ? session.title : texts[selectedLanguage].placeholderSessions}
                                 placeholderTextColor={"#fff"}
                                 

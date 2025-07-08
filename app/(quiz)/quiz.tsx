@@ -416,16 +416,16 @@ const quiz = () => {
         }
 
         return (
-            <ScrollView className='flex-1'>
+            <ScrollView className='flex-1 w-full'>
                 <Text className='text-white text-center px-4 px-2 text-xl font-bold mb-2'>{question.question}</Text>
                 {
                     question.questionLatex?.length > 0 ?
-                        <ScrollView horizontal={true} className=" ">
-                              <View style={{ paddingVertical: 0, marginBottom: -300}} className='items-center  px-2'>
+                        <ScrollView horizontal={true} className="w-full items-center justify-start  ">
+                              <View style={{width:"100%", marginLeft:5 }} className=''>
                             <BlockMath
                             math={question.questionLatex}
                             className="text-white"
-                            style={{ color: 'white', fontSize: 16 }}
+                            style={{ color: 'white', fontSize: 16 ,   }}
                             />
                             </View>
                         </ScrollView>

@@ -10,7 +10,6 @@ import SmileyStatus from '@/components/(bibliothek)/(components)/smileyStatus';
 import { loadModule } from '@/lib/appwriteDaten';
 import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
-import { parse } from '@babel/core';
 import { BlockMath } from 'react-katex';
 import QuizNavigation from '@/components/(quiz)/quizNavigation';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -54,8 +53,8 @@ const quiz = () => {
      * This is the state that holds the questions wich get passed through the params
      */
 
-    const [ questionsParsed, setQuestionParsed] = useState(randomizeArray(JSON.parse(questions)))
-    console.log("Parsed Questions:", questionsParsed[0]);
+    const [ questionsParsed, setQuestionParsed] = useState(randomizeArray(JSON.parse(questions)));
+    console.log("Parsed Questions:", questionsParsed);
     const [ showSoloution, setShowSolution] = useState(false)
     const [ questionList, setQuestionList] = useState([])
     const [ module, setModule] = useState(null)
@@ -214,25 +213,37 @@ const quiz = () => {
         }
 
     function correctAnswers() {
-            const correctAnswers = questionsParsed[selectedQuestion].answers.filter((answer,index) => questionsParsed[selectedQuestion].answerIndex.includes(index))
-           
-
-
-            if (correctAnswers.length !== selectedAnswers.length) {
-                return false; // Anzahl der Antworten stimmt nicht überein
+           const correctAnswers = questionsParsed[selectedQuestion].answers.filter((answer,index) => questionsParsed[selectedQuestion].answerIndex.includes(index))
+           const correctAnswersToString = correctAnswers.map(answer => {
+            try {
+                const pAnswer = JSON.parse(answer);
+                return JSON.stringify(pAnswer);
+            } 
+            catch (e) {
+                return JSON.stringify({   
+                    title: answer,
+                    latex: "",
+                    image: ""
+                });   
             }
-            for (let i = 0; i < correctAnswers.length; i++) {
-                if (!selectedAnswers.some(item => correctAnswers[i].title === item.title && correctAnswers[i].latex === item.latex && correctAnswers[i].image === item.image)) {
+           });
+           const selectedAnswersToString = selectedAnswers.map(answer => typeof answer == "string" ? answer :JSON.stringify(maybeParseJSON(answer)));
+            console.log("Selected Answers:", selectedAnswersToString);
+            console.log("Correct Answers:", correctAnswersToString);
+            if (selectedAnswersToString.length !== correctAnswersToString.length) {
+                return false; 
+            }
+           console.log("Selected Answers:", selectedAnswersToString);
+              console.log("Correct Answers:", correctAnswersToString);
+            for (let i = 0; i < correctAnswersToString.length; i++) {
+                if (!selectedAnswersToString.includes(correctAnswersToString[i])) {
                     return false; // Eine Antwort stimmt nicht überein
                 }
             }
+           
+            return true; // Alle Antworten stimmen überein
     
              
-            if (JSON.stringify(correctAnswers) === JSON.stringify(selectedAnswers)) {
-                return true
-            } else { 
-                return false
-            }
         }
 
         async function nextQuestion(status, change) {
@@ -322,8 +333,8 @@ const quiz = () => {
                         {
                             showAnsers ? (
 
-                                <View className='flex-row justify-between items-center w-full bg-gray-800 p-4 rounded-b-[10px] '>
-                                <View>
+                                <View className={`${true ? "justify-start" : "justify-between flex-row"}  items-center w-full bg-gray-800 p-4 rounded-b-[10px] `}>
+                                <View className='w-full justify-start'>
                                     {
                                         correctAnswers() ? (
                                             <View
@@ -347,7 +358,7 @@ const quiz = () => {
                                         )
                                     }
                                 </View>
-                                <View className='flex-row items-center gap-2'>
+                                <View className={`${true ? "w-full mt-2" : ""} justify-start flex-row items-center gap-2`}>
                                     {
 
                                     questionsParsed[selectedQuestion].explaination?.length > 0  ?
@@ -409,14 +420,15 @@ const quiz = () => {
                 <Text className='text-white text-center px-4 px-2 text-xl font-bold mb-2'>{question.question}</Text>
                 {
                     question.questionLatex?.length > 0 ?
-                    <View className=' w-full  items-center rounded-lg  overflow-hidden '>
-                        <BlockMath
-                                math={question.questionLatex}
-                                    className="text-white"
-                                
-                                style={{ color:"white", text:"white", fontSize: 20 }}
-                        />
-                    </View>
+                        <ScrollView horizontal={true} className=" ">
+                              <View style={{ paddingVertical: 0, marginBottom: -300}} className='items-center  px-2'>
+                            <BlockMath
+                            math={question.questionLatex}
+                            className="text-white"
+                            style={{ color: 'white', fontSize: 16 }}
+                            />
+                            </View>
+                        </ScrollView>
                     : question.questionUrl?.length > 0  ?
                     <View className='w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4'>
                         <Image
@@ -473,7 +485,7 @@ const quiz = () => {
                                 <BlockMath
                                     math={parsedItem.latex}
                                     className="text-white"
-                                    style={{ color: "white", fontSize: 20 }}
+                                    style={{ color: "white", fontSize: 10 }}
                                 />
                                 </View>
                             ) : dataType === "image" ? (

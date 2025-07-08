@@ -5,7 +5,15 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 import { reportModule } from '@/lib/appwriteAdd';
-const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, creator,handlePress, percentage, publicM, reportVisible=false, moduleID=""}) => {
+const Karteikarte = ({titel,
+                      studiengang, 
+                      fragenAnzahl,
+                      notizAnzahl , 
+                      farbe, 
+                      creator,
+                      handlePress, 
+                      percentage, 
+                      publicM, reportVisible=false, moduleID=""}) => {
   // Studiengang ist jetz Beschreibung
 
   const { user,language } = useGlobalContext()
@@ -97,10 +105,10 @@ const Karteikarte = ({titel, studiengang, fragenAnzahl,notizAnzahl , farbe, crea
       <View className={` rounded-t-[10px] border-t-[1px] border-gray-700 `} style={{height:5, backgroundColor:color}}/>
       <View className=' p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] ' style={{borderBottomRightRadius:10, borderBottomLeftRadius:10}}>
         <View className='flex-row justify-between items-start'>
-          <View >
+          <View className='flex-1' >
             <Text className='my-1 font-semibold text-[15px] text-gray-100'>{titel.length > 30 ? titel.substring(0,30) + "..." : titel}</Text>
             <Text className='my-1 text-[12px] text-gray-400'
-            style={{maxWidth: 220, height: 50}}
+            style={{ height: 50}}
             >{ studiengang ? studiengang.length > 100 ? studiengang.substring(0,100) + "..." : studiengang : null}</Text>
           </View>
           {

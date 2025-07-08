@@ -300,6 +300,7 @@ const HomeGeneral = () => {
         }
       </View>
     </View>
+    
       
     </ScrollView>
     { isVisibleNewAiModule ?

@@ -112,13 +112,13 @@ console.log("SlectedSession", selected, moduleSessions[selected], "ModuleSession
                 <View className='w-full flex-row items-center justify-start py-2 px-3'> 
                   <VektorCircle sizeMultiplier={1.3} color={returnColor(module.color == null ? "blue" : module.color , currentModule.color)} percentage={module.percent} icon={module.iconName} strokeColor={returnColor(module.color == null ? "blue" : module.color , currentModule.color)}/>
                   <View className='justify-center '>
-                    <Text className='text-white font-bold text-[15px] px-3 '>{module.title}</Text>
+                    <Text className='text-white font-bold text-[15px] px-3 max-w-[220px] '>{module.title}</Text>
                     {
                       selected == index && module.description?.length > 0 ?
                         <Text
                           className="text-white font-semibold text-[12px] px-3"
                           style={{ flexWrap: 'wrap',
-                            maxWidth: 250
+                            maxWidth: 220
                            }}
                         >
                           {module.description}
@@ -155,7 +155,7 @@ console.log("SlectedSession", selected, moduleSessions[selected], "ModuleSession
                       selected == moduleSessions.length +1 && moduleDescription?.length > 0 ?
                         <Text
                           className="text-gray-200 font-semibold text-[12px] px-3"
-                          style={{ flexWrap: 'wrap', maxWidth: 250 }}
+                          style={{ flexWrap: 'wrap', maxWidth: 220 }}
                         >
                           {moduleDescription}
                           </Text>

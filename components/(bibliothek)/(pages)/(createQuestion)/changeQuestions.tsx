@@ -308,7 +308,7 @@ const ChangeQuestions = ({
          }} 
         >
         <BottomSheetScrollView
-        contentContainerStyle={{ backgroundColor: '#111827', paddingBottom: 40 }}
+        contentContainerStyle={{ backgroundColor: '#212837', paddingBottom: 40 }}
         style={{ backgroundColor: '#111827' }}
         className={"bg-gray-900 "}
         showsVerticalScrollIndicator={false}>

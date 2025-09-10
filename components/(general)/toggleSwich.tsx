@@ -1,7 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Animated, TouchableOpacity } from "react-native";
 
-const ToggleSwitch = ({ onToggle, isOn = false }) => {
+const ToggleSwitch = ({
+    onToggle, 
+    isOn = false 
+}:{
+    onToggle?: (newValue: boolean) => void,
+    isOn?: boolean
+}) => {
     const [toggled, setToggled] = useState(isOn);
     const translateX = useRef(new Animated.Value(isOn ? 14 : 0)).current; // Halbe Verschiebung (24 → 14)
 

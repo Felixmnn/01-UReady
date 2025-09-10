@@ -1,7 +1,19 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
-const IconPicker = ({selectedIcon, setSelectedIcon, title,indexItem, selectedColor  }) => {
+const IconPicker = ({
+  selectedIcon, 
+  setSelectedIcon, 
+  title,
+  indexItem, 
+  selectedColor  
+}:{
+  selectedIcon: string | null,
+  setSelectedIcon: (newIcon:string, index:number)=>void,
+  title: string,
+  indexItem: number,
+  selectedColor: string | null
+}) => {
     const icons = [
   null,
   "book",
@@ -44,14 +56,14 @@ const IconPicker = ({selectedIcon, setSelectedIcon, title,indexItem, selectedCol
 
                           <FlatList
                           data={icons}
-                          keyExtractor={(item) => item}
+                          keyExtractor={(item, index) => item ?? `icon-null-${index}`}
                           horizontal={true}
                           renderItem={({ item,index }) => {
                           return (
                             <TouchableOpacity
                               key={index}
                               className={`p-1 m-1 rounded-full items-center justify-center`}
-                              onPress={() => setSelectedIcon(item,indexItem)}
+                              onPress={() => setSelectedIcon(item ?? '', indexItem)}
                             >
                               <View className={`items-center justify-center rounded-full border-gray-500 border-[1px] `} 
                               style={{

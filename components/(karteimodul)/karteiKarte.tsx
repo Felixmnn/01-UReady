@@ -5,28 +5,38 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 import { reportModule } from '@/lib/appwriteAdd';
-const Karteikarte = ({titel,
-                      studiengang, 
-                      fragenAnzahl,
-                      notizAnzahl , 
-                      farbe, 
-                      creator,
-                      handlePress, 
-                      percentage, 
-                      publicM, reportVisible=false, moduleID=""}) => {
+import { useTranslation } from 'react-i18next';
+const Karteikarte = ({
+    titel,
+    studiengang, 
+    fragenAnzahl,
+    notizAnzahl , 
+    farbe, 
+    creator,
+    handlePress, 
+    percentage, 
+    publicM, 
+    reportVisible=false, 
+    moduleID=""
+    }:{
+    titel: string,
+    studiengang: string | null,
+    fragenAnzahl: number,
+    notizAnzahl: number,
+    farbe: string,
+    creator: string,
+    handlePress: () => void,
+    percentage: number | null,
+    publicM: boolean,
+    reportVisible?: boolean,
+    moduleID?: string
+    }) => {
   // Studiengang ist jetz Beschreibung
-
-  const { user,language } = useGlobalContext()
+  const { t } = useTranslation();
+  const { user } = useGlobalContext()
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    useEffect(() => {
-      if(language) {
-        setSelectedLanguage(language)
-      }
-    }, [language])
-    const texts = languages.karteikarte;
-    const reportTexts = languages.endecken[selectedLanguage] || languages.endecken["DEUTSCH"];
+
 
     
   const ReportModal = () => {
@@ -51,30 +61,28 @@ const Karteikarte = ({titel,
       >
         <View className="flex-1 justify-center items-center bg-black/50 px-4">
           <View className="w-full bg-gray-800 rounded-2xl p-5">
-            <Text className="text-lg text-white font-bold mb-4">{titel}{reportTexts.report}</Text>
-
-            <Text className="text-sm mb-2 text-gray-300">{reportTexts.reasonForReport}</Text>
+            <Text className="text-lg text-white font-bold mb-4">{titel}{t("entdecken.report")}</Text>
+            <Text className="text-sm mb-2 text-gray-300">{t("entdecken.reasonForReport")}</Text>
             <TextInput
               className="border border-gray-300 rounded-xl p-3 text-sm min-h-[80px] text-white"
               multiline
-              placeholder={reportTexts.reportText}
+              placeholder={t("entdecken.reportText")}
               placeholderTextColor="#888"
               value={reason}
               maxLength={200}
               onChangeText={setReason}
-              
             />
 
             {/* Buttons */}
             <View className="flex-row justify-end mt-4 space-x-3">
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text className="text-gray-500">{reportTexts.cancel}</Text>
+                <Text className="text-gray-500">{t("entdecken.cancel")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleSubmit}
                 className="bg-red-500 px-4 py-2 rounded-lg"
               >
-                <Text className="text-white font-semibold">{reportTexts.send}</Text>
+                <Text className="text-white font-semibold">{t("entdecken.send")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -118,13 +126,15 @@ const Karteikarte = ({titel,
           }
         </View>
         <View className='flex-row'>
-          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>{fragenAnzahl} {texts[selectedLanguage].questio} • {notizAnzahl} {texts[selectedLanguage].notes}</Text>
+          <Text className='my-1 text-gray-300 font-semibold text-[14px]'>
+            {fragenAnzahl} {t("karteikarte.questio")} • {notizAnzahl} {t("karteikarte.notes")}
+          </Text>
         </View>
         <View className='border-t-[1px] border-gray-700 my-2'/>
         <View className='flex-row justify-between items-center'>
           <View className='py-[2px] px-2 border-[1px] border-gray-700 rounded-full flex-row items-center'>
             <Icon name="user" size={10} color="white"/>
-            <Text className='text-gray-300 text-[12px] ml-1'>{creator == "YOU" ? "Von Dir" : creator.length > 10 ? creator.substring(0, 10) + "..." : creator  }</Text>
+            <Text className='text-gray-300 text-[12px] ml-1'>{creator == "YOU" ? t("karteikarte.fromYou") : creator.length > 10 ? creator.substring(0, 10) + "..." : creator  }</Text>
           </View>
           <View className='flex-row justify-between'>
             <TouchableOpacity className=''>

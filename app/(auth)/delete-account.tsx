@@ -4,20 +4,23 @@ import { router } from 'expo-router';
 import { deletingAccount } from '@/lib/appwrite';
 import * as Updates from 'expo-updates';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import  languages  from '@/assets/exapleData/languageTabs.json';
 import { deleteAllModules, deleteUserData, deleteUserDataKathegory, deleteUserUsage } from '@/lib/appwriteDelete';
+import CustomButton from '@/components/(general)/customButton';
+import { useTranslation } from 'react-i18next';
 
 
 const DeleteAccount = () => {
+  const { t } = useTranslation();
+  
   const [modalVisible, setModalVisible] = useState(false);
+  const { user } = useGlobalContext();
 
-  const { user, language } = useGlobalContext();
-  const texts = language ? languages.deleteAccount[language] : languages.deleteAccount['DEUTSCH'];
   useEffect(() => {
     if (!user) {
       console.error("No user is logged in.");
       router.push('/sign-in');
     }},[])
+
   async function deleteModules() {
     await deleteAllModules(user.$id);
     return true;
@@ -28,7 +31,6 @@ const DeleteAccount = () => {
     await deleteUserDataKathegory(user.$id);
     return true;
   }
-
   async function handleDelete () {
     if (!user) {
       console.error("No user is logged in.");
@@ -47,35 +49,41 @@ const DeleteAccount = () => {
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-[#0c111d] "    >
-      <TouchableOpacity
-        className="bg-red-500 px-4 py-2 rounded-xl"
-        onPress={() => setModalVisible(true)}
-      >
-        <Text className="text-white font-semibold">{texts.deleteAccount}</Text>
-      </TouchableOpacity>
-
+    <View className="flex-1 items-center justify-center bg-[#0c111d] p-2 ">
+      <CustomButton 
+        title={t("deleteAccount.title")}
+        handlePress={() => setModalVisible(true)}
+        containerStyles='rounded-lg bg-red-600 mb-10 w-full'
+      />
+      <CustomButton
+        title={t("deleteAccount.backToProfile")}
+        handlePress={() => router.push('/profil')}
+        containerStyles='rounded-lg bg-gray-600 w-full'
+      />
       <Modal transparent visible={modalVisible} animationType="fade">
         <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
           <View className="bg-[#8B0000] p-6 rounded-lg w-80">
             <Text className="text-lg text-xl font-bold mb-4 text-white">
-              {texts.deleteAccount}
+              {t("deleteAccount.header")}
             </Text>
             <Text className="mb-6 font-bold text-white">
-              {texts.areYouSure}
+              {t("deleteAccount.message")}
             </Text>
             <View className="flex-row justify-between space-x-4">
               <TouchableOpacity
                 onPress={() => {router.push('/profil'); setModalVisible(false)}}
                 className="px-4 py-2 rounded bg-gray-300"
               >
-                <Text>{texts.cancel}</Text>
+                <Text>{t("deleteAccount.cancel")}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleDelete}
                 className="px-4 py-2 rounded bg-red-600"
               >
-                <Text className="text-white">{texts.delete}</Text>
+                <Text className="text-white">{t("deleteAccount.deleteAccount")}
+
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

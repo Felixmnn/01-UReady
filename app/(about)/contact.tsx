@@ -1,59 +1,28 @@
-import { useGlobalContext } from '@/context/GlobalProvider';
 import { addContact } from '@/lib/appwriteAdd';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import  languages  from '@/assets/exapleData/languageTabs.json';
+import Icon from 'react-native-vector-icons/FontAwesome5';import { useTranslation } from 'react-i18next';
+import ErrorModal from '@/components/(general)/(modal)/errorModal';
+import CustomButton from '@/components/(general)/customButton';
 
 const Contact = () => {
-  const { language } = useGlobalContext()
-  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-  const texts = languages.about;
-  useEffect(() => {
-    if(language) {
-      setSelectedLanguage(language)
-    }
-  }, [language])
-
+  const { t } = useTranslation();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
   const [isError, setIsError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [success, setSuccess] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const ErrorModal = ({isError, setIsError, success=false, successMessage=null}) => {
-      return (
-          <Modal
-              animationType="slide"
-              transparent={true}
-              visible={isError || success}
-              onRequestClose={() => {
-                setIsError(!isError);
-              }}
-          >
-              <TouchableOpacity className='flex-1 justify-start pt-5 items-center' onPress={()=> {setIsError(false); setSuccess(false)} }
-                >
-                  <View className='red border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700'
-                    style={{
-                        backgroundColor: success ? 'green' : '#ff4d4d',
-                        borderColor: success ? 'green' : '#ff4d4d',
-                    }}
-                  >
-                      <Text className='text-white'>{successMessage ? successMessage : errorMessage}</Text>
-                  </View>
-              </TouchableOpacity>
-          </Modal>
-      )
-  }
-
-   async function handleSubmit() {
+  async function handleSubmit() {
+    const sucess = t('contact.successMessage');
+    const fail = t('contact.errorMessage');
     if (!name || !email || !message) {
-        setErrorMessage(texts[selectedLanguage].errorMessage);
+        setErrorMessage(fail);
         setIsError(true);
 
     } else {
@@ -63,81 +32,85 @@ const Contact = () => {
             email:email, 
             message:message
         }) 
-        setSuccessMessage(texts[selectedLanguage].successMessage);
+        setSuccessMessage(sucess);
         setSuccess(true);
     }
   };
+
   return (
     <SafeAreaView className='flex-1'>
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-[#0c111d] p-6">
-        <View className="w-full flex-row items-center justify-between p-4  mb-4">
-            <TouchableOpacity onPress={() => router.push("/profil")}>
-                <Icon name="arrow-left" size={20} color="#fff" />
-            </TouchableOpacity>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', textAlign: 'center', color: '#fff' }}>
-            {texts[selectedLanguage].kontakt}
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="bg-[#0c111d] p-2 py-6">
+      <View className="w-full flex-row items-center justify-between p-2  mb-4">
+          <TouchableOpacity onPress={() => router.push("/profil")}>
+              <Icon name="arrow-left" size={20} color="#fff" />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 28, fontWeight: 'bold', textAlign: 'center', color: '#fff' }}>
+          {t('contact.contact')}
 
-            </Text>
-            <View style={{width:20}}/>
-        </View>
+          </Text>
+          <View style={{width:20}}/>
+      </View>
 
-        <ErrorModal isError={isError} setIsError={setIsError} success={success} successMessage={successMessage} />
-        <View className="flex-1 items-center justify-start">
+      <ErrorModal isError={isError} 
+                  setIsError={setIsError} 
+                  success={success} 
+                  successMessage={successMessage}  
+                  setSuccess={setSuccess}
+                  errorMessage={errorMessage}
+                  />
+      <View className="flex-1 items-center justify-start">
         <View className="w-full" style={{ maxWidth: 700 }}>
+        <Text className="text-base mb-1 text-white">{t('contact.name')}</Text>
+        <TextInput
+          className="border border-blue-300 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
+          placeholder={t('contact.yourName')}
+          maxLength={100}
+          placeholderTextColor={'#888'}
+          value={name}
+          onChangeText={setName}
+        />
+        <Text className="text-base mb-1 text-white">{t('contact.email')}</Text>
+        <TextInput
+          className="border border-blue-300 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
+          placeholder= {t('contact.yourEmail')}
+          maxLength={100}
+          placeholderTextColor={'#888'}
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
 
-      <Text className="text-base mb-1 text-white">{texts[selectedLanguage].name}</Text>
-      <TextInput
-        className="border border-blue-300 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
-        placeholder={texts[selectedLanguage].yourName}
-        maxLength={100}
-        placeholderTextColor={'#888'}
-        value={name}
-        onChangeText={setName}
-      />
+        <Text className="text-base mb-1 text-white">{t('contact.message')}</Text>
+        <TextInput
+          className="border border-blue-300 rounded-xl p-3 mb-6 bg-gray-800 h-32 text-start text-gray-200"
+          placeholder={t('contact.yourMessage')}
+          placeholderTextColor={'#888'}
+          multiline
+          maxLength={500}
+          textAlignVertical="top"
+          numberOfLines={5}
+          value={message}
+          onChangeText={setMessage}
+        />
 
-      <Text className="text-base mb-1 text-white">{texts[selectedLanguage].email}</Text>
-      <TextInput
-        className="border border-blue-300 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
-        placeholder= {texts[selectedLanguage].yourEmail}
-        maxLength={100}
-        placeholderTextColor={'#888'}
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-
-      <Text className="text-base mb-1 text-white">{texts[selectedLanguage].nachricht}</Text>
-      <TextInput
-        className="border border-blue-300 rounded-xl p-3 mb-6 bg-gray-800 h-32 text-start text-gray-200"
-        placeholder= {texts[selectedLanguage].yourMessage}
-        placeholderTextColor={'#888'}
-        multiline
-        maxLength={500}
-        textAlignVertical="top"
-        numberOfLines={5}
-        value={message}
-        onChangeText={setMessage}
-      />
-
-    {
-        success || successMessage != null ?
-        <TouchableOpacity
-          className="bg-green-500 p-3 rounded-xl w-full"
-          onPress={() => router.push('/home')}
-        >
-            <Text className="text-white text-center text-lg font-semibold">{texts[selectedLanguage].backHome}</Text>
-        </TouchableOpacity>
+      {
+        successMessage ?
+        <CustomButton 
+          title={t('contact.backToHome')}
+          handlePress={() => router.push('/home')}
+          containerStyles='bg-green-700 border-green-800 rounded-lg'
+        />
+        
         :
-        <TouchableOpacity
-            className="bg-blue-600 py-3 rounded-xl"
-            onPress={handleSubmit}
-        >
-            <Text className="text-white text-center text-lg font-semibold">{texts[selectedLanguage].send}</Text>
-      </TouchableOpacity>
-    }
+        <CustomButton
+            title={t('contact.send')}
+            handlePress={handleSubmit}
+            containerStyles='bg-blue-700 border-blue-800 rounded-lg'
+            />
+      }
       
-    </View>
-        </View>
+      </View>
+      </View>
     </ScrollView>
     </SafeAreaView>
   );

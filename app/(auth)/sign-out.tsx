@@ -5,8 +5,10 @@ import { router } from 'expo-router';
 import { signOut } from '@/lib/appwrite';
 import languages from '@/assets/exapleData/languageTabs.json';
 import * as Updates from 'expo-updates';
+import { useTranslation } from 'react-i18next';
 
 const SignOut = () => {
+  const { t } = useTranslation();
   const { setUser, setIsLoggedIn, setIsLoading, language } = useGlobalContext();
   const [selectedLanguage, setSelectedLanguage] = useState('DEUTSCH');
   const texts = languages.signout;
@@ -45,7 +47,7 @@ const SignOut = () => {
     <View className="flex-1 items-center justify-center bg-gray-900">
       <ActivityIndicator size="large" color="#fff" />
       <Text className="text-gray-100 font-semibold text-[15px] mt-2">
-        {texts[selectedLanguage]?.signingOut || 'Signing out...'}
+        { t("signOut.signingOut") }
       </Text>
     </View>
   );

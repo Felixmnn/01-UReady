@@ -2,7 +2,6 @@ import { View } from 'react-native'
 import React, {  useEffect, useState } from 'react'
 import { router } from 'expo-router';
 import Tabbar from '@/components/(tabs)/tabbar'
-import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider'
 import ProfileSettings from '@/components/(profile)/profileSettings'
 import SkeletonListProfile from '@/components/(general)/(skeleton)/skeletonListProfile'
@@ -15,7 +14,6 @@ const profil = () => {
     }
   }, [user, isLoggedIn, isLoading]);
   
-  const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const [page,setPage] = useState("profil-settings")
 
   
@@ -24,7 +22,7 @@ const profil = () => {
       <Tabbar content={()=> { return(
         user ? 
         <View className='flex-1 '>
-          { page == "profil-settings" ? <ProfileSettings setPage={()=> setPage("profil")}/> : null}
+          { page == "profil-settings" ? <ProfileSettings /> : null}
         </View>
         :
         <View className='flex-1 bg-[#0c111d] rounded-[10px] p-2 border-gray-500 border-[1px]'>

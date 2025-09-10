@@ -1,7 +1,19 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const InfoModule = ({content, header, additional,hideHead,infoStyles}) => {
+const InfoModule = ({
+  content, 
+  header, 
+  additional,
+  hideHead,
+  infoStyles
+}:{
+  content: ()=> React.ReactNode,
+  header: string,
+  additional?: string,
+  hideHead?: boolean,
+  infoStyles?: string
+}) => {
   return (
     <View className={`mx-3  ${infoStyles}`}>
           {

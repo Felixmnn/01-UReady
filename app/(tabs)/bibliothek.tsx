@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import AllModules from '@/components/(bibliothek)/(pages)/allModules';
 import SingleModule from '@/components/(bibliothek)/(pages)/singleModule';
-import CreateQuestion from '@/components/(bibliothek)/(pages)/createQuestion';
 import { getModules } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router,useLocalSearchParams } from "expo-router"
@@ -11,11 +10,11 @@ import SkeletonListBibliothek from '@/components/(general)/(skeleton)/skeletonLi
 
 const Bibliothek = () => {
   const {user, isLoggedIn,isLoading, reloadNeeded, setReloadNeeded } = useGlobalContext();
-  const [selectedModule, setSelectedModule] = useState(null)
+  const [selectedModule, setSelectedModule] = useState<string>("")
 
   const { selectedModuleIndex } = useLocalSearchParams()
   useEffect(() => {
-    if (selectedModuleIndex) {
+    if (typeof selectedModuleIndex == "string") {
       setSelectedModule(selectedModuleIndex)
       setSelected("SingleModule")
     }
@@ -24,7 +23,7 @@ const Bibliothek = () => {
 
 
   const [selected, setSelected] = useState("AllModules")
-  const [modules,setModules] = useState(null)
+  const [modules,setModules] = useState<any | null>(null)
   const [loading,setLoading] = useState(true)
   const fetchModules = async () => {
     if (user == null) return;
@@ -77,8 +76,6 @@ const Bibliothek = () => {
         <View className='flex-1 rounded-[10px] '>
         {selected == "AllModules" ? <AllModules onRefresh={onRefresh} refreshing={refreshing} setSelected={setSelected} modules={modules} setSelectedModule={setSelectedModule}/> : null}
         {selected == "SingleModule" ? <SingleModule setSelectedScreen={setSelected} moduleEntry={modules.documents[selectedModule]} modules={modules} setModules={setModules} /> : null}
-        {selected == "CreateQuestion" ? <CreateQuestion setSelected2={setSelected} module={modules} selectedModule={selectedModule} /> : null}
-
         </View>
         )
         }

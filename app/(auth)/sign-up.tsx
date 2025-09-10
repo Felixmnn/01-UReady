@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity, Platform, ActivityIndicator, useWindowDimensions, SafeAreaView, Image, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useTransition } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
@@ -7,8 +7,10 @@ import { createUser, loginWithGoogle } from '@/lib/appwrite';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { loginWithOAuth } from '@/lib/appwriteOAuth';
 import Policys from '../(about)/policys';
+import { useTranslation } from 'react-i18next';
 
 const SingnUp = () => {
+    const { t } = useTranslation();
     const { setIsLoggedIn,setUser, setUserData } = useGlobalContext();
 
     const { width } = useWindowDimensions();
@@ -19,7 +21,7 @@ const SingnUp = () => {
     const [ policysVisible, setPolicysVisible ] = useState(false);
       const [ consetGiven, setConsetGiven] = useState(false)
     
-    const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
+    const [ errorMessage, setErrorMessage] = useState(t("signUp.error"));
 
     const PolicyModal = () => {
       return (
@@ -31,12 +33,12 @@ const SingnUp = () => {
         >
           <View className="flex-1 bg-black bg-opacity-50 items-center justify-center">
             <View className="bg-gray-900 rounded-lg p-4 w-11/12 max-w-md">
-        <Policys/>
+            <Policys/>
             <TouchableOpacity
               className="mt-4 bg-blue-500 p-2 rounded-lg"
               onPress={() => setPolicysVisible(false)}
             >
-              <Text className="text-white text-center">Schließen</Text>
+              <Text className="text-white text-center">{t("signUp.close")}</Text>
             </TouchableOpacity>
           </View>
           </View>
@@ -44,7 +46,7 @@ const SingnUp = () => {
       )
     }
 
-    function isValidEmail(email) {
+    function isValidEmail(email:string) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (re.test(email)) {
       return true;
@@ -58,25 +60,26 @@ const SingnUp = () => {
           passwordConfirm: "",
           username: ""
         });
+        
     async function signUp() { 
           if (signUpForm.username.length < 3) {
-            setErrorMessage("Bitte einen Benutzernamen eingeben")
+            setErrorMessage(t("signUp.validUsername"))
             setIsError(true)
             return;
           } else if (signUpForm.email.length < 5) {
-            setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
+            setErrorMessage(t("signUp.validEmail"))
             setIsError(true)
             return;
           } else if (signUpForm.password.length < 8) {
-            setErrorMessage("Passwort muss mindestens 8 Zeichen lang sein")
+            setErrorMessage(t("signUp.validPassword"))
             setIsError(true)
             return;
           }  else if (signUpForm.password !== signUpForm.passwordConfirm) {
-            setErrorMessage("Passwörter stimmen nicht überein")
+            setErrorMessage(t("signUp.passwordMatch"))
             setIsError(true)
             return;
           } else if (!consetGiven) {
-            setErrorMessage("Bitte den AGB zustimmen")
+            setErrorMessage(t("signUp.acceptAGB"))
             setIsError(true)
             return;
           } else {
@@ -92,12 +95,15 @@ const SingnUp = () => {
               router.push("/personalize");
             }
             
-          } catch (error) {
-            setErrorMessage(error.message)
-            setIsError(true)
+          }catch (error) {
+            setErrorMessage((error as Error).message);
+            setIsError(true);
           } }}
 
-          const LoginButton = ({title, handlePress}) => {
+          const LoginButton = ({title, handlePress}:{
+            title: string,
+            handlePress: () => void
+          }) => {
                 return (
                   <TouchableOpacity className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
                     style={{
@@ -119,7 +125,10 @@ const SingnUp = () => {
                 )
               }
 
-        const LogInOption = ({iconName, title, bgColor, handlePress}) => {
+        const LogInOption = ({iconName, handlePress}:{
+                iconName: string,
+                handlePress?: ()=> void
+        }) => {
                 return (
                   <View>
                   {
@@ -164,7 +173,7 @@ const SingnUp = () => {
                               isVertical ? (
                                 <View className="min-h-[300px] max-w-[300px] h-full rounded-l-[10px] bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center p-4">
                                   <Image source={require("../../assets/Check.gif")} style={{ width: 100, height: 100 }} />
-                                  <Text className="font-bold text-3xl max-w-[300px] text-center text-white"> Alle Tools für den Lernerfolg.</Text>
+                                  <Text className="font-bold text-3xl max-w-[300px] text-center text-white">{t("signUp.toolsForSuccess")}</Text>
                                 </View>
                               ) : null
                             }
@@ -174,8 +183,7 @@ const SingnUp = () => {
                             }}
                             >
             
-
-            <Text className='text-white font-bold text-3xl'>Sign Up</Text>
+            <Text className='text-white font-bold text-3xl'>{t("signUp.title")}</Text>
             <TextInput
                 className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
                 style={{
@@ -184,7 +192,7 @@ const SingnUp = () => {
                     borderColor: signUpForm.username.length > 4 ? "#1e3a8a" : "gray",
                     borderWidth: 2
                 }}
-                placeholder="Username"
+                placeholder={t("signUp.username")}
                 placeholderTextColor="#fff"
                 value={signUpForm.username}
                 onChangeText={(text) => setSignUpForm({ ...signUpForm, username: text })}
@@ -197,7 +205,7 @@ const SingnUp = () => {
                     borderColor: isValidEmail(signUpForm.email) ? "#1e3a8a" : "gray",
                     borderWidth: 2
                 }}
-                placeholder="E-Mail"
+                placeholder={t("signUp.email")}
                 placeholderTextColor="#fff"
                 value={signUpForm.email}
                 onChangeText={(text) => setSignUpForm({ ...signUpForm, email: text })}
@@ -210,7 +218,7 @@ const SingnUp = () => {
                     borderColor: signUpForm.password.length > 7 ? "#1e3a8a" : "gray",
                     borderWidth: 2
                 }}
-                placeholder="Password"
+                placeholder={t("signUp.password")}
                 placeholderTextColor="#fff"
                 secureTextEntry={true}
                 value={signUpForm.password}
@@ -224,31 +232,33 @@ const SingnUp = () => {
                     borderColor: signUpForm.passwordConfirm.length > 7 && signUpForm.passwordConfirm === signUpForm.password ? "#1e3a8a" : "gray",
                     borderWidth: 2
                 }}
-                placeholder="Password bestätigen"
+                placeholder={t("signUp.passwordConfirm")}
                 placeholderTextColor="#fff"
                 secureTextEntry={true}
                 value={signUpForm.passwordConfirm}
                 onChangeText={(text) => setSignUpForm({ ...signUpForm, passwordConfirm: text })}
             />
-            <View className="flex-row items-center space-x-2 mt-2 mb-2">
+            <View className="flex-row w-full items-center justify-center space-x-2 mt-2 mb-2">
                 <TouchableOpacity
                   onPress={() => setConsetGiven(!consetGiven)}
-                  className={`w-5 h-5 rounded border-[1px] ${consetGiven ? 'bg-blue-600 border-blue-600' : 'border-gray-400'} justify-center items-center`}
+                  className={`w-5 h-5 mr-2 rounded border-[1px] ${consetGiven ? 'bg-blue-600 border-blue-600' : 'border-gray-400'} justify-center items-center`}
                 >
                   {consetGiven && (
                     <Icon name="check" size={12} color="#fff" />
                   )}
                 </TouchableOpacity>
                 <Text className="text-gray-300 text-sm">
-                  Ich stimme den{' '}
+                  {t("signUp.acceptText")} 
                   <Text className="text-blue-400 underline" onPress={() => setPolicysVisible(true)}>
-                    AGB
+                    {t("signUp.agb")}
                   </Text>{' '}
-                  zu.
+                  {t("signUp.acceptText2")}
                 </Text>
               </View>
-            <LoginButton title="Registrieren" handlePress={() => {signUp()}} />
-            <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
+            <LoginButton title={t("signUp.register")}
+              handlePress={() => {signUp()}} />
+            <LogInOption iconName="google"
+               handlePress={() => {
                                     if ( Platform.OS === "web") {
                                       loginWithGoogle()}
                                     else {
@@ -257,7 +267,7 @@ const SingnUp = () => {
                                       }}/>
 
             <TouchableOpacity onPress={()=> router.push("/sign-in")} className="mt-2 items-center justify-center">
-                <Text className="text-blue-500">Anmelden</Text>
+                <Text className="text-blue-500">{t("signUp.login")}</Text>
             </TouchableOpacity>
             
             </ View>

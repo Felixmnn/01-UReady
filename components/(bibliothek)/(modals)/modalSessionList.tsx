@@ -5,10 +5,16 @@ import ModalEditSession from './modalEditSession';
 import uuid from 'react-native-uuid';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useTranslation } from 'react-i18next';
 
-const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) => {
+const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }:{
+    isVisible: boolean,
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>,
+    sessions: any[],
+    setSessions: React.Dispatch<React.SetStateAction<any[]>>
+}) => {
     const { width } = useWindowDimensions();
-
+    const { t } = useTranslation();
     const { user,language } = useGlobalContext()
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   useEffect(() => {
@@ -20,10 +26,10 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
    
 
     const [isVisibleEdit, setIsVisibleEdit] = useState(false);
-    const [selectedSession, setSelectedSession] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [selectedSession, setSelectedSession] = useState<string | null>(null);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-    const handleEditSession = (session, index) => {
+    const handleEditSession = (session:string, index:number) => {
         setSelectedSession(session);
         setSelectedIndex(index);
         setIsVisibleEdit(true);
@@ -42,7 +48,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
                 <View className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl ${width < 400 ? "w-full" : " w-[400px]"} `}>
                     <ScrollView className=' h-[90%] w-full'>
                     <View className='flex-row items-center justify-between'>
-                        <Text className='text-white text-xl mb-2 font-semibold'>{texts[selectedLanguage].title}</Text>
+                        <Text className='text-white text-xl mb-2 font-semibold'>{t("sessionList.title")}</Text>
                         <TouchableOpacity>
                             <Icon name="times" size={20} color="white" onPress={() => setIsVisible(false)}  />
                         </TouchableOpacity>
@@ -120,7 +126,7 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }) =>
                             generating: false,
                         }])
                     }} className='flex-row items-center justify-center p-2 border-gray-600 bg-gray-900 border-[1px] rounded-xl mt-2'>
-                        <Text className='text-white'>{texts[selectedLanguage].addSession}</Text>
+                        <Text className='text-white'>{t("sessionList.addSession")}</Text>
                     </TouchableOpacity>
                     </ScrollView>
                 </View>

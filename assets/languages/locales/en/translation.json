@@ -1,0 +1,423 @@
+{
+  "contact": {
+    "name": "Name",
+    "yourName": "Dein Name",
+    "email": "E-Mail",
+    "yourEmail": "Deine E-Mail",
+    "message": "Nachricht",
+    "yourMessage": "Deine Nachricht",
+    "send": "Senden",
+    "contact": "Kontakt",
+    "backToHome": "Zurück zur Startseite",
+    "successMessage": "Nachricht gesendet wurde gesendet :)",
+    "errorMessage": "Bitte fülle alle Felder aus."
+  },
+  "info": {
+    "title": "AGB",
+    "policys":{
+    "usageRights": {
+      "title": "Nutzung & Rechte",
+      "icon": "shield-alt",
+      "subsections": {
+        "applicableFor": {
+          "title": "Für wen gelten die AGB?",
+          "content": "Für alle registrierten Nutzer:innen der App."
+        },
+        "registration": {
+          "title": "Registrierung",
+          "content": "Erfolgt per E-Mail-Anbieter. Angabe des Bildungsbereichs optional, dient zur Modulpersonalisierung."
+        },
+        "usageRights": {
+          "title": "Nutzungsrechte",
+          "content": "Private Module sind nur für den Nutzer sichtbar.\nÖffentliche Module können kopiert werden."
+        },
+        "prohibitedUsage": {
+          "title": "Verbotene Nutzung",
+          "content": "Kein Reverse Engineering, automatisierte Erstellung oder Kopieren von UI-Elementen."
+        }
+      }
+    },
+    "pricing": {
+      "title": "Preise & Käufe",
+      "icon": "credit-card",
+      "subsections": {
+        "costs": {
+          "title": "Kosten",
+          "content": "Die App ist grundsätzlich kostenlos. Es gibt optionale In-App-Käufe (Chips)."
+        },
+        "payments": {
+          "title": "Zahlungen",
+          "content": "Zahlung über Google Pay und Apple Pay. Chips können gegen Energie getauscht werden."
+        },
+        "cancellation": {
+          "title": "Widerruf",
+          "content": "Kein Rückgaberecht für bereits verbrauchte Energie. Kein Abo-Modell im Einsatz."
+        },
+        "latePayment": {
+          "title": "Zahlungsverzug",
+          "content": "Bei Zahlungsproblemen kann der Account bis zur Klärung gesperrt werden."
+        }
+      }
+    },
+    "availability": {
+      "title": "Verfügbarkeit & Support",
+      "icon": "wifi",
+      "subsections": {
+        "provision": {
+          "title": "Bereitstellung",
+          "content": "Keine garantierte Mindestverfügbarkeit. Ziel ist jedoch dauerhafte Verfügbarkeit."
+        },
+        "support": {
+          "title": "Support & Updates",
+          "content": "Support via Mail oder Kontaktformular. Regelmäßige Updates geplant."
+        },
+        "liability": {
+          "title": "Haftung",
+          "content": "Keine Haftung für Datenverlust oder App-Abstürze. Exportfunktion für Datensicherung vorhanden."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Datenschutz",
+      "icon": "lock",
+      "subsections": {
+        "collectedData": {
+          "title": "Erhobene Daten",
+          "content": "Registrierungsdaten, Lernverhalten, genutzte Features, letzte Anmeldung, Herkunftsland, Sprache etc."
+        },
+        "purpose": {
+          "title": "Verwendungszwecke",
+          "content": "Personalisierung, Funktionsgewährleistung und Weiterentwicklung der Plattform."
+        },
+        "userRights": {
+          "title": "Rechte der Nutzer:innen",
+          "content": "Accountlöschung möglich. Datenexport verfügbar."
+        }
+      }
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "icon": "gavel",
+      "subsections": {
+        "applicableLaw": {
+          "title": "Geltendes Recht",
+          "content": "Es gilt deutsches Recht. Gerichtsstand ist der Sitz des Unternehmens."
+        },
+        "termsChanges": {
+          "title": "AGB-Änderungen",
+          "content": "Änderungen werden per App oder E-Mail bekanntgegeben."
+        },
+        "severability": {
+          "title": "Salvatorische Klausel",
+          "content": "Sollten einzelne Bestimmungen unwirksam sein, bleibt der Rest der AGB gültig."
+        }
+      }
+    },
+    "multilingual": {
+      "title": "Mehrsprachigkeit",
+      "icon": "globe",
+      "subsections": {
+        "legalLanguage": {
+          "title": "Rechtlich gültige Sprache",
+          "content": "Im Zweifel gilt die deutsche Fassung."
+        },
+        "languageNotifications": {
+          "title": "Sprachliche Benachrichtigungen",
+          "content": "AGB-Änderungen werden in allen unterstützten App-Sprachen angezeigt."
+        }
+      }
+    },
+    "special": {
+      "title": "Besonderheiten",
+      "icon": "star",
+      "subsections": {
+        "communityFeatures": {
+          "title": "Community-Funktionen",
+          "content": "Module können kopiert, erstellt und gemeldet werden."
+        },
+        "aiFeatures": {
+          "title": "KI-Funktionen",
+          "content": "KI wird verwendet, wenn der Nutzer dies explizit auswählt (z. B. 'Mit KI erstellen')."
+        }
+      }
+    }}
+  
+  },
+  "deleteAccount": {
+    "title": "Account löschen",
+    "backToProfile": "Zurück zum Profil",
+    "deleteAccount": "Account löschen",
+    "cancel" : "Abbrechen",
+    "header": "Account löschen?",
+    "message": "Möchtest du wirklich deinen Account löschen? Alle deine Daten gehen dabei verloren und können nicht wiederhergestellt werden.",
+  }, "personalizeZero":{
+    "intro": "Heey, ich bin Copa – lass uns deine App personalisieren!",
+    "letsGo": "Los geht's"
+  }, "personalizeOne":{
+    "name": "Dein Vorname",
+    "greeting": "Wiie darf ich dich nennen?",
+    "continue": "Weiter gehts"
+  }, "personalizeTwo":{
+    "continue": "Weiter gehts",
+    "niceToMeetYou": "Frreut mich, dich kennenzulernen {{name}}! In welcher Sprache möchtest du die App nutzen?" 
+  }, "personalizeThree":{
+    "school": "Schule",
+    "university": "Universität",
+    "education": "Ausbildung",
+    "other": "Sonstiges",
+    "whereDoYouStudy": "Geehst du zur Schule, Uni oder machst eine Ausbildung?"
+  }, 
+  "personalizeFour":{
+   "whichSchool": "Weelche Schule besuchst du?",
+    "wichEducation": "Weelche Ausbildung machst du?",
+    "whichUniversity": "Weelche Uni besuchst du?",
+    "yourUniversity": "Deine Uni",
+    "noUniversityFound": "Keine Uni gefunden",
+    "noUniversityAvailable": "Keine Unis verfügbar"
+  }, "personalizeFive":{
+    "whatDegree": "Weelchen Abschluss strebst du an?",
+    "interestingArea": "Eiin interessantes Gebiet!",
+    "yourEducation": "Deine Ausbildung",
+    "noEducationFound": "Keine Ausbildung gefunden",
+    "noEducationAvailable": "Keine Ausbildung verfügbar",
+    "yourSchoolLevel": "Inn welcher Klasse bist du?"
+  }, "personalizeSix":{
+    "subjectList": [
+        {"icon": "book-open", "name": "Deutsch"}, 
+        {"icon": "language", "name": "Englisch"}, 
+        {"icon": "flag", "name": "Französisch"}, 
+        {"icon": "flag",  "name": "Spanisch"}, 
+        {"icon": "scroll", "name": "Latein"}, 
+        {"icon": "square-root-alt", "name": "Griechisch"}, 
+        {"icon": "square-root-alt",  "name": "Mathe"}, 
+        {"icon": "atom", "name": "Physik"}, 
+        {"icon": "flask",  "name": "Chemie"}, 
+        {"icon": "leaf",  "name": "Biologie"}, 
+        {"icon": "landmark", "name": "Geschichte"}, 
+        {"icon": "balance-scale", "name": "Politik"}, 
+        {"icon": "globe",  "name": "Erdkunde"}, 
+        {"icon": "paint-brush", "name": "Kunst"}, 
+        {"icon": "futbol",  "name": "Sport"}, 
+        {"icon": "music", "name": "Musik"}, 
+        {"icon": "cross",  "name": "Religion"}, 
+        {"icon": "handshake",  "name": "Ethik"}, 
+        {"icon": "laptop-code","name": "Informatik"}, 
+        {"icon": "chart-line", "name": "Wirtschaft"}, 
+        {"icon": "cogs",  "name": "Technik"}, 
+        {"icon": "users", "name": "Sozialkunde"}, 
+        {"icon": "lightbulb", "name": "Philosophie"}, 
+        {"icon": "child", "name": "Pädagogik"}, 
+        {"icon": "theater-masks",  "name": "Darstellendes Spiel"}, 
+        {"icon": "brain",  "name": "Psychologie"}, 
+        {"icon": "ellipsis-h", "name": "Other"}
+    ],
+    "whatSubjects": "Weelche Fächer hast du?",
+    "yourSubjects": "Deine Fächer",
+    "letsGo": "Los gehts",
+    "universitySubjects": [
+  { "name": "Betriebswirtschaftslehre", "icon": "briefcase" },
+  { "name": "Volkswirtschaftslehre", "icon": "chart-line" },
+  { "name": "Informatik", "icon": "laptop-code" },
+  { "name": "Wirtschaftsinformatik", "icon": "network-wired" },
+  { "name": "Maschinenbau", "icon": "cogs" },
+  { "name": "Elektrotechnik", "icon": "bolt" },
+  { "name": "Bauingenieurwesen", "icon": "hard-hat" },
+  { "name": "Architektur", "icon": "drafting-compass" },
+  { "name": "Medizin", "icon": "user-md" },
+  { "name": "Zahnmedizin", "icon": "tooth" },
+  { "name": "Pharmazie", "icon": "pills" },
+  { "name": "Pflegewissenschaft", "icon": "procedures" },
+  { "name": "Psychologie", "icon": "brain" },
+  { "name": "Soziologie", "icon": "users" },
+  { "name": "Politikwissenschaft", "icon": "landmark" },
+  { "name": "Rechtswissenschaften", "icon": "gavel" },
+  { "name": "Lehramt Grundschule", "icon": "chalkboard-teacher" },
+  { "name": "Lehramt Gymnasium", "icon": "chalkboard" },
+  { "name": "Biologie", "icon": "dna" },
+  { "name": "Chemie", "icon": "flask" },
+  { "name": "Physik", "icon": "atom" },
+  { "name": "Mathematik", "icon": "square-root-alt" },
+  { "name": "Geowissenschaften", "icon": "globe-europe" },
+  { "name": "Umweltingenieurwesen", "icon": "leaf" },
+  { "name": "Agrarwissenschaften", "icon": "tractor" },
+  { "name": "Forstwissenschaften", "icon": "tree" },
+  { "name": "Medienwissenschaften", "icon": "photo-video" },
+  { "name": "Journalismus", "icon": "newspaper" },
+  { "name": "Kommunikationswissenschaft", "icon": "comments" },
+  { "name": "Design", "icon": "paint-brush" },
+  { "name": "Innenarchitektur", "icon": "couch" },
+  { "name": "Musik", "icon": "music" },
+  { "name": "Theaterwissenschaft", "icon": "theater-masks" },
+  { "name": "Filmwissenschaft", "icon": "film" },
+  { "name": "Kunstgeschichte", "icon": "palette" },
+  { "name": "Geschichte", "icon": "book-open" },
+  { "name": "Philosophie", "icon": "lightbulb" },
+  { "name": "Religionswissenschaft", "icon": "cross" },
+  { "name": "Sportwissenschaft", "icon": "football-ball" },
+  { "name": "Ernährungswissenschaften", "icon": "carrot" },
+  { "name": "Soziale Arbeit", "icon": "hands-helping" },
+  { "name": "Pädagogik", "icon": "child" },
+  { "name": "Erziehungswissenschaft", "icon": "user-graduate" },
+  { "name": "Logistik", "icon": "truck" },
+  { "name": "Tourismusmanagement", "icon": "plane-departure" },
+  { "name": "Hotelmanagement", "icon": "hotel" },
+  { "name": "International Business", "icon": "globe" },
+  { "name": "Gesundheitsmanagement", "icon": "heartbeat" },
+  { "name": "Data Science", "icon": "database" },
+  { "name": "Künstliche Intelligenz", "icon": "robot" },
+  { "name": "Cybersecurity", "icon": "shield-alt" },
+  { "name": "Sonstiges", "icon": "ellipsis-h" }
+    ], "almostDone": "Faast geschafft! Was genau studierst du?",
+    "yourEducation": "Deine Ausbildung"
+  },"passwordReset":{
+     "error": "Fehler aufgetreten",
+      "pleaseValidMail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "passwordLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "passwordMatch": "Die Passwörter stimmen nicht überein.",
+      "tryAgain": "Bitte versuche es erneut.",
+      "pleaseGoToAppToSignIn": "Bitte gehe zur App, um dich anzumelden.",
+      "successMessage": "Passwort erfolgreich zurückgesetzt.",
+      "backToLoginApp": "Zurück zur Anmeldung - App",
+      "backToLoginWeb": "Zurück zur Anmeldung - Web",
+      "resetPassword": "Passwort zurücksetzen",
+      "mailHasBeenSent": "Eine E-Mail mit Anweisungen zum Zurücksetzen des Passworts wurde gesendet.",
+      "pleaseCheckYourPostfach": "Bitte überprüfe dein Postfach.",
+      "passwordRecoveryMail": "Wiederherstellungs-E-Mail",
+      "confirmPassword": "Passwort bestätigen",
+      "password": "Passwort"
+  },"signIn":{
+    "error": "Ein Fehler ist aufgetreten.",
+    "validEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "validPassword": "Bitte gib ein gültiges Passwort ein (mindestens 8 Zeichen).",
+    "toolsForSuccess": "Tools für deinen Erfolg",
+    "title": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "resetPassword": "Passwort vergessen?",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "register": "Noch keinen Account? Jetzt registrieren"
+  }, "signOut":{
+    "signingOut": "Du wirst abgemeldet..."
+  },"signUp": {
+    "error": "Ein Fehler ist aufgetreten.",
+    "validUsername": "Bitte gib einen gültigen Benutzernamen ein (mindestens 3 Zeichen).",
+    "validEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+    "validPassword": "Bitte gib ein gültiges Passwort ein (mindestens 8 Zeichen).",
+    "passwordMatch": "Die Passwörter stimmen nicht überein.",
+    "acceptAGB": "Bitte akzeptiere die AGB.",
+    "toolsForSuccess": "Tools für deinen Erfolg",
+    "title": "Registrieren",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort bestätigen",
+    "acceptText": "Ich akzeptiere die ",
+    "agb": "AGB",
+    "acceptText2": " und Datenschutzbestimmungen.",
+    "register": "Registrieren",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "login": "Bereits registriert? Jetzt anmelden",
+    "close": "Schließen"
+  }, "validMail":{
+    "validating": "E-Mail wird bestätigt...",
+    "validationFailed": "Ein Fehler ist aufgetreten."
+  }, "editNote": {
+    "header": "Notiz bearbeiten",
+    "noTitle": "Noch keine Überschrift",
+    "noNote": "Noch keine Notiz",
+    "save": "Änderungen speichern",
+    "delete": "Löschen"
+  },"quiz":{
+    "right": "Richtig!",
+    "wrong": "Leider Falsch",
+    "showExplanation": "Erklärung anzeigen",
+    "next": "Weiter",
+    "checkAnswer": "Antwort Prüfen"
+  },"quizNavigation": {
+    "explanation": "Erklärung",
+    "next": "Weiter"
+  },"entdecken":{
+    "title": "Entdecken",
+    "university":"Universität",
+    "school":"Schule",
+    "education":"Ausbildung",
+    "other":"Sonstiges",
+    "searchText": "Suche nach Modulen",
+    "noResults": "Keine Ergebnisse gefunden",
+    "loading": "Lade deine Module...",
+    "copy1": "Modul Kopieren",
+    "copy2": "Module Kopieren",
+    "results": "Ergebnisse",
+    "subjects": "Fächer",
+    "synchronization": "Synchronisierung",
+    "report" : " melden!",
+    "reasonForReport" : "Grund für die Meldung",
+    "reportText" : "Bitte beschreibe den Grund für die Meldung des Moduls.",
+    "cancel": "Abbrechen",
+    "send": "Absenden",
+    "for": "für",
+    "noEnergy": "Du hast keine Energie mehr übrig.",
+    "selectToCopy": "Wähle ein Modul aus"
+  }, "index":{
+    "loading": "Lade deine Daten..."
+  }, "deleteModule":{
+    "saveChanges": "Änderungen speichern",
+    "changesSaved": "Änderungen gespeichert",
+    "moduleName": "Modulname",
+    "typeModuleName": "Modulnamen eingeben",
+    "moduleDescription": "Beschreibung",
+    "typeModuleDescription": "Modulbeschreibung eingeben",
+    "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
+    "cannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
+  }, "editSession":{
+    "title": "Session bearbeiten",
+    "name": "Session Name",
+    "descriotion": "Session Beschreibung",
+    "icons": "Session Icons",
+    "placeholderSessions": "Sessions",
+    "placeholderDescription": "Beschreibung"
+  }, "sessionList":{
+    "title": "Session-Liste",
+    "addSession": "Neue Session hinzufügen"
+  
+  },"karteikarte": {
+    "questio": "Fragen",
+    "notes": "Notizen",
+    "fromYou": "von dir"
+  },"tokenHeader":{
+    "youHave": "Du hast",
+    "daysInARow": "Tage in Folge gelernt",
+    "close": "Schließen"
+  },"tutorialFirstModule":{
+   "letUsCreate": "Laass uns gemeinsam dein erstes Modul erstellen!",
+    "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
+    "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
+    "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
+    "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
+    "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
+    "youCanCreate": "Diiesen kannst du anhand von Themen, Texten oder Dateien erstellen.",
+    "chooseSession": "Wäähle dafür einfach eine Session aus und ergänze den gewünschten Inhalt",
+    "thatIsAll": "Daas ist alles, was du für dein erstes Modul brauchst.",
+    "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
+
+  },"tutorialModule": {
+     "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!",
+            "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
+            "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
+            "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
+            "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
+            "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
+            "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
+  },"tabbar":{
+     "home": "Startseite",
+            "bibliothek": "Bibliothek",
+            "entdecken": "Entdecken",
+            "profil": "Profil",
+            "help": "Hilfe",
+            "share": "Teilen",
+            "shop": "Shop"
+  }
+}
+

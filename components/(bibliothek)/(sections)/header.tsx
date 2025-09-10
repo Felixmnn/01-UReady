@@ -90,7 +90,7 @@ const Header = ({   setSelectedScreen,
                             if (selected > moduleSessions.length) {
                                 qs = questions;
                             } else {
-                                qs = questions.filter((item) => item.sessionID == moduleSessions[selected].id);
+                                qs = questions.filter((item:any) => item.sessionID == moduleSessions[selected].id);
                             }
                             router.push({
                                 pathname:"quiz",

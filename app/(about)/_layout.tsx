@@ -5,7 +5,7 @@ import { Stack } from 'expo-router'
 const aboutLayout = () => {
   return (
     <View className='flex-1'>
-        <>
+        <> 
             <Stack>
                 <Stack.Screen name="contact"  
                 options={{ 

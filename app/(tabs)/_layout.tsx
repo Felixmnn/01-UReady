@@ -1,84 +1,75 @@
 import { Tabs } from "expo-router";
-import { useWindowDimensions } from "react-native";
-import { View } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Platform, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import * as NavigationBar from "expo-navigation-bar";
+import { useEffect } from "react";
 
 const RootLayout = () => {
-    const { width } = useWindowDimensions(); // Bildschirmbreite holen
-    const isVertical = width > 700; // Prüfen, ob Breite über 700px ist
+  const { width } = useWindowDimensions();
+  const isVertical = width > 700;
+  const insets = useSafeAreaInsets();
 
-    return (
-        <View className="flex-1">
-         <Tabs
-            initialRouteName="home"
-            screenOptions={({ route }) => ({
-              tabBarStyle: { 
-                display: isVertical ? 'none' : 'flex',
-                backgroundColor: '#0c111d',
-                height: 50,      // höher als 50
-                paddingTop: 5,
-                paddingBottom: 5, // zusätzlicher Innenabstand
-                borderTopWidth: 0, // Linie entfernen
-                borderTopColor: '#6b7280'
-              },
-                              tabBarShowLabel: false, 
-                tabBarIcon: ({ color, size, focused }) => {
-                    let iconName;
-                    let iconSize = focused ? 35 : 24; // Größere Icons für aktive Tabs
+  useEffect(() => {
+    NavigationBar.setVisibilityAsync("hidden");
+  }, []);
 
+  // Basis-Höhe der Tabbar (ohne SafeArea)
+  const baseHeight = 60;
+  // Gesamt-Höhe inkl. SafeArea
+  const tabBarHeight = baseHeight + insets.bottom;
+  // Icon-Größe dynamisch: kleiner, wenn insets groß sind
+  const iconSize = insets.bottom > 20 ? 24 : 28;
 
-                    if (route.name === 'home') {
-                        iconName = 'home';
-                    } else if (route.name === 'bibliothek') {
-                        iconName = 'book';
-                    } else if (route.name === 'entdecken') {
-                        iconName = 'search';
-                    } else if (route.name === 'profil') {
-                        iconName = 'user';
-                    } else if (route.name === 'shop') {
-                      iconName = 'store';
-                  }
+  return (
+    <Tabs
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: Platform.select({
+          ios: {
+            position: "absolute",
+            backgroundColor: "#1e1e1e",
+            borderTopWidth: 0,
+            height: tabBarHeight,
+            paddingBottom: insets.bottom,
+          },
+          default: {
+            display: isVertical ? "none" : "flex",
+            backgroundColor: "#1e1e1e",
+            borderTopWidth: 0,
+            paddingTop: 10,
+            height: tabBarHeight,
+            paddingBottom: insets.bottom,
+          },
+        }),
+        tabBarActiveTintColor: "#ffffff",
+        tabBarInactiveTintColor: "#b6b5b5ff",
+        tabBarIcon: ({ color, size }) => {
+          let iconName: string | undefined;
+          if (route.name === "home") iconName = "home";
+          else if (route.name === "bibliothek") iconName = "book";
+          else if (route.name === "shop") iconName = "store";
+          else if (route.name === "entdecken") iconName = "search";
+          else if (route.name === "profil") iconName = "user";
 
-                    return <View style={{
-                      height: iconSize + 17, // Höhe des Containers
-                      width: iconSize + 17, // Breite des Containers
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: 5, // Innenabstand für den Container
-                    }}><Icon name={iconName} size={iconSize} color={color} /></View>;
-                },
-                tabBarActiveTintColor: '#FFFFFF',
-                tabBarInactiveTintColor: '#A1A1AA',
-            })}
-        >
-          <Tabs.Screen name="shop" 
-          options={{
-            headerShown: false,
-             }}
-        />
-          <Tabs.Screen name="bibliothek" 
-          options={{
-            headerShown: false,
-             }}
-        />
-        <Tabs.Screen name="home" 
-            options={{
-                headerShown: false,
-            }}
-          />
-          <Tabs.Screen name="entdecken" 
-          options={{
-            headerShown: false,
-            }}
-        />
-          <Tabs.Screen name="profil" 
-            options={{
-                headerShown: false,
-            }}  
-        />
-          
-        </Tabs>
-      </View>
-    )
-}
-export default RootLayout
+          return (
+            <Icon
+              name={iconName!}
+              size={size ?? iconSize}
+              color={color}
+            />
+          );
+        },
+      })}
+    >
+      <Tabs.Screen name="shop" options={{ headerShown: false }} />
+      <Tabs.Screen name="bibliothek" options={{ headerShown: false }} />
+      <Tabs.Screen name="home" options={{ headerShown: false }} />
+      <Tabs.Screen name="entdecken" options={{ headerShown: false }} />
+      <Tabs.Screen name="profil" options={{ headerShown: false }} />
+    </Tabs>
+  );
+};
+
+export default RootLayout;

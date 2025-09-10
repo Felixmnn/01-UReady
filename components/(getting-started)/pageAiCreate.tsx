@@ -13,9 +13,21 @@ import * as DocumentPicker from 'expo-document-picker';
 import { addDocumentConfig, addDocumentToBucket, addDocumentToBucketWeb, setUserData } from '@/lib/appwriteEdit';
 import TutorialFirstAIModule from '../(tutorials)/tutorialFirstAIModule';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { ModuleProps, userData } from '@/types/moduleTypes';
 
-
-const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal, tutorialStep= 10, setTutorialStep=null, goBackVisible=true, calculatePrice=false  }) => {
+const PageAiCreate = ({ newModule, userData, setNewModule, setUserChoices, setIsVisibleModal, tutorialStep= 10, setTutorialStep=null, goBackVisible=true, calculatePrice=false  }
+  :{
+    newModule: ModuleProps,
+    userData: userData | undefined,
+    setNewModule: any,
+    setUserChoices: any,
+    setIsVisibleModal: any,
+    tutorialStep?: number,
+    setTutorialStep?: any,
+    goBackVisible?: boolean,
+    calculatePrice?: boolean,
+  }
+) => {
   // Lokale States
   const { language, setUserUsage, userUsage } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")

@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+
 /**
      * This component displays the smiley of a Question card
      * @param status - The status can be NULL, BAD, OK, GOOD or GREAT 

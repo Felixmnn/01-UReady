@@ -11,7 +11,7 @@ const quizLayout = () => {
                 options={{ 
                     headerShown: false 
                   }}
-                />
+                /> 
                
                 
             </Stack> 

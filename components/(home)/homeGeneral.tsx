@@ -11,6 +11,8 @@ import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
 import AddAiBottomSheet from '../(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
+import { WebView } from 'react-native-webview';
+import CustomButton from '../(general)/customButton';
 
 
 const { width } = Dimensions.get('window');
@@ -165,7 +167,8 @@ const HomeGeneral = () => {
       
     },
   ]
-  
+
+
 
   
   const [ isVisibleNewModule, setIsVisibleNewModule] = useState(false)
@@ -300,8 +303,11 @@ const HomeGeneral = () => {
         }
       </View>
     </View>
-    
-      
+
+      <CustomButton
+            title='Go Back'
+            handlePress={() =>router.push("/reset-password")}
+            />
     </ScrollView>
     { isVisibleNewAiModule ?
         <AddAiBottomSheet isVisibleAiModule={isVisibleNewAiModule} setIsVisibleAiModule={setIsVisibleAiModule}/>

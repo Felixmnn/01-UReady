@@ -17,8 +17,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 import { useFocusEffect } from '@react-navigation/native';
 import { loadModule } from '@/lib/appwriteDaten';
-import ChangeQuestions from './(createQuestion)/changeQuestions';
-import StartQuizBottomSheet from '@/components/(general)/(modal)/startQuizBottomSheet';
+import ChangeQuestions from './(createQuestion)/deprecated/changeQuestions';
 
 /**
  * The SingleModule Component is responsible for rendering the deatils of a single module.

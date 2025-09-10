@@ -5,7 +5,7 @@ const SkeletonListProfile = () => {
     const { width } = Dimensions.get('window');
     const SkeletonItem = ({height=50, width=50, padding=0, margingRight=0}) => {
               const opacity = new Animated.Value(0.3);
-            
+             
               useEffect(() => {
   const animation = Animated.loop(
     Animated.sequence([

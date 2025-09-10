@@ -7,9 +7,11 @@ import { router } from 'expo-router';
 import LoginButton from '@/components/(auth)/loginButton';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useTranslation } from 'react-i18next';
 
 
 const ResetPassword = () => {
+    const { t } = useTranslation();
     const { language } = useGlobalContext()
     const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
     const texts = languages.auth;
@@ -28,14 +30,14 @@ const ResetPassword = () => {
         passwordConfirm: ""
     });
     const [ isError, setIsError] = useState(false);
-    const [ errorMessage, setErrorMessage] = useState(texts[selectedLanguage].error);
+    const [ errorMessage, setErrorMessage] = useState(t("passwordReset.error"));
     const [ mailSent, setMailSent] = useState(false);
     const [ successFull, setSuccessFull] = useState(false);
 
     async function requestPasswordReset() {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!re.test(recoveryMail)) {
-            setErrorMessage(texts[selectedLanguage].pleaseValidMail)
+            setErrorMessage(t("passwordReset.pleaseValidMail"))
             setIsError(true)
             return;
         } else {
@@ -47,17 +49,17 @@ const ResetPassword = () => {
 
     async function resetPasswordRequest() {
         if (newPassword.password.length < 8) {
-            setErrorMessage(texts[selectedLanguage].passwordLength)
+            setErrorMessage(t("passwordReset.passwordLength"))
             setIsError(true)
             return;
         } else if (newPassword.password !== newPassword.passwordConfirm) {
-            setErrorMessage(texts[selectedLanguage].passwordMatch)
+            setErrorMessage(t("passwordReset.passwordMatch"))
             setIsError(true)
             return;
         } else {
             const res = await updatePassword(userId, secret, newPassword.password);
             if (!res ) {
-                setErrorMessage(`${res}:${texts[selectedLanguage].tryAgain}`)
+                setErrorMessage(`${res}:${t("passwordReset.tryAgain")}`)
                 setIsError(true)
                 setSecret(null)
                 setUserId(null)
@@ -70,7 +72,7 @@ const ResetPassword = () => {
 
     const handleAppRedirect = () => {
         if (Platform.OS === 'web') {
-        alert(texts[selectedLanguage].pleaseGoToAppToSignIn);
+        alert(t("passwordReset.pleaseGoToAppToSignIn"));
         } else {
         //Linking.openURL('exp://10.0.10.209:8081/');  --> In dev mode, use the correct URL for your app
         Linking.openURL('node-ready:///'); // Replace with your app's URL
@@ -93,21 +95,21 @@ const ResetPassword = () => {
         {
             successFull ? 
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
-                    <Text className='text-white font-bold text-xl'>{texts[selectedLanguage].successMessage}</Text>
+                    <Text className='text-white font-bold text-xl'>{t("passwordReset.successMessage")}</Text>
 
                     <TouchableOpacity onPress={handleAppRedirect}>
-                        <Text className='text-blue-500 font-bold text-lg mt-2'>{texts[selectedLanguage].backToLoginApp}</Text>
+                        <Text className='text-blue-500 font-bold text-lg mt-2'>{t("passwordReset.backToLoginApp")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => router.push('/sign-in')}>
-                        <Text className='text-blue-500 font-bold text-lg mt-2'>{texts[selectedLanguage].backToLoginWeb}</Text>
+                        <Text className='text-blue-500 font-bold text-lg mt-2'>{t("passwordReset.backToLoginWeb")}</Text>
                     </TouchableOpacity>
                 </View>
 
              :
             secret && userId ? (
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px]'>
-                    <Text className='text-white'>{texts[selectedLanguage].resetPassword}</Text>
+                    <Text className='text-white'>{t("passwordReset.resetPassword")}</Text>
                     <TextInput
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
@@ -116,7 +118,7 @@ const ResetPassword = () => {
                             borderColor: newPassword.password.length > 7 ? "#1e3a8a" : "gray",
                             borderWidth: 2
                         }}
-                        placeholder={texts[selectedLanguage].password}
+                        placeholder={t("passwordReset.password")}
                         placeholderTextColor="#fff"
                         secureTextEntry={true}
                         value={newPassword.password}
@@ -130,14 +132,14 @@ const ResetPassword = () => {
                             borderColor: newPassword.passwordConfirm.length > 7 ? "#1e3a8a" : "gray",
                             borderWidth: 2
                         }}
-                        placeholder={texts[selectedLanguage].confirmPassword}
+                        placeholder={t("passwordReset.confirmPassword")}
                         placeholderTextColor="#fff"
                         secureTextEntry={true}
                         value={newPassword.passwordConfirm}
                         onChangeText={(text) => setNewPassword({ ...newPassword, passwordConfirm: text })}
                     />
                     <LoginButton
-                        title={texts[selectedLanguage].resetPassword}
+                        title={t("passwordReset.resetPassword")}
                         handlePress={async () => await resetPasswordRequest()}
                         isSubmitting={false}
                         isReady={newPassword.password.length > 7 && newPassword.passwordConfirm.length > 7 ? true : false}
@@ -145,7 +147,7 @@ const ResetPassword = () => {
                 </View>
             ) : (
                 <View className='flex-1 items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
-                    <Text className='text-white font-bold text-xl'>{texts[selectedLanguage].resetPassword}</Text>
+                    <Text className='text-white font-bold text-xl'>{t("passwordReset.resetPassword")}</Text>
                     <TextInput
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
                         style={{
@@ -154,7 +156,7 @@ const ResetPassword = () => {
                             borderColor: recoveryMail.length > 7 ? "#1e3a8a" : "gray",
                             borderWidth: 2
                         }}
-                        placeholder={texts[selectedLanguage].passwordRecoveryMail}
+                        placeholder={t("passwordReset.passwordRecoveryMail")}
                         placeholderTextColor="#fff"
                         value={recoveryMail}
                         onChangeText={(text) => setRecoveryMail( text )}
@@ -162,12 +164,12 @@ const ResetPassword = () => {
                     {
                         mailSent ? (
                             <View className='items-center justify-center bg-[#0c111d] rounded-[10px] m-2'>
-                                <Text className='text-green-500 font-bold text-[15px] mt-3 '>{texts[selectedLanguage].mailHasBeenSent}</Text>
-                                <Text className='text-white font-bold text-[15px] mt-3 '>{texts[selectedLanguage].pleaseCheckYourPostfach}</Text>
-                            </View>
+                                  <Text className='text-green-500 font-bold text-[15px] mt-3 '>{t("passwordReset.mailHasBeenSent")}</Text>
+                                <Text className='text-white font-bold text-[15px] mt-3 '>{t("passwordReset.pleaseCheckYourPostfach")}</Text>
+                           </View>
                         ) : 
                         <LoginButton
-                            title={texts[selectedLanguage].passwordRecoveryMail}
+                            title={t("passwordReset.passwordRecoveryMail")}
                             handlePress={async ()=> await requestPasswordReset()}
                             isSubmitting={false}
                             isReady={recoveryMail.length > 7 ? true : false}

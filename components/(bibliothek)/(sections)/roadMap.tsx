@@ -1,10 +1,8 @@
 import { View, useWindowDimensions, TouchableOpacity,ScrollView, Text } from 'react-native'
-import React, { useState } from 'react'
-import SessionProgress from '../sessionProgress'
-import Icon from "react-native-vector-icons/FontAwesome5";
+import React from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageSessions } from '@/lib/appwriteUpdate';
-import { returnColor, returnColorButton, returnColorButtonShadow } from '../../../functions/returnColor';
+import { returnColor } from '../../../functions/returnColor';
 import VektorCircle from '@/components/(karteimodul)/vektorCircle';
 
 const RoadMap = ({  moduleSessions,
@@ -72,10 +70,7 @@ console.log("SlectedSession", selected, moduleSessions[selected], "ModuleSession
 
 
     return (
-    <ScrollView className={`${width > 700 ? "" : null} ` }  style={{
-      scrollbarWidth: 'thin', 
-      scrollbarColor: 'gray transparent',
-    }}>
+    <ScrollView className={`${width > 700 ? "" : null} ` }  >
       {
         moduleSessions.map((module, index) => {
             return (

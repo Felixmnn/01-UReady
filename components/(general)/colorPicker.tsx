@@ -1,7 +1,15 @@
 import { View, TouchableOpacity,FlatList } from 'react-native'
 import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
-const ColorPicker = ({selectedColor, changeColor, title,indexItem}) => {
+const ColorPicker = ({
+  selectedColor, 
+  changeColor, 
+  indexItem
+}:{
+  selectedColor: string | null,
+  changeColor: (newColor:string, index:number)=>void,
+  indexItem: number
+}) => {
     const colorOptions = [
         null,
         "red",
@@ -19,7 +27,7 @@ const ColorPicker = ({selectedColor, changeColor, title,indexItem}) => {
                       <View className='flex-row  items-center justify-center border-gray-800 bg-[#0c111d] border-[1px] p-2 rounded-[10px] m-2 shadow-lg'>
                           <FlatList
                             data={colorOptions}
-                            keyExtractor={(item) => item}
+                            keyExtractor={(item, index) => (item !== null ? item : `null-${index}`)}
                             horizontal={true}
                             renderItem={({ item,index }) => {
                             
@@ -29,11 +37,11 @@ const ColorPicker = ({selectedColor, changeColor, title,indexItem}) => {
                               key={index}
                               className={`p-1 m-1 rounded-full items-center justify-center`}
                               onPress={() => {
-                                changeColor(item,indexItem);
-                            }}
+                                changeColor(item ?? '', indexItem);
+                              }}
                               style={{
                                 backgroundColor:
-                                  selectedColor !== item ? null :
+                                  selectedColor !== item ? undefined :
                                   item === "red" ? "rgba(220, 38, 38, 0.4)" :
                                   item === "blue" ? "rgba(37, 99, 235, 0.4)" :
                                   item === "green" ? "rgba(5, 150, 105, 0.4)" :

@@ -4,11 +4,16 @@ import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
 import { addNewUserConfig } from "@/lib/appwriteAdd";
-import SystemNavigationBar from 'react-native-system-navigation-bar';
-SystemNavigationBar.navigationHide();
+import * as NavigationBar from 'expo-navigation-bar';
+import { useTranslation } from "react-i18next";
+
 
 export default function Index() {
   const { isLoggedIn, isLoading, user, userData, setUserData, setUserUsage } = useGlobalContext();
+  const { t } = useTranslation();
+  useEffect(() => {
+     NavigationBar.setVisibilityAsync('hidden');
+  }, []);
 
   useEffect(() => {
   let isMounted = true;
@@ -39,21 +44,7 @@ export default function Index() {
     isMounted = false;
   };
 }, [user]);
-  //const [progress, setProgress] = useState(new Animated.Value(0));
 
-  /*
-  useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: false,
-    }).start();
-  }, []);
-  const widthInterpolated = progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0%", "100%"],
-  });
-  */
 
   // Solange geladen wird oder es noch keine userData gibt, zeigen wir einen Ladescreen
   if (isLoading) {
@@ -65,18 +56,6 @@ export default function Index() {
           style={{ width: 200, height: 200, marginBottom: 20 }}
           resizeMode="contain"
         />
-        {/*
-        <View style={{ height: 8, width: "100%", maxWidth:300, backgroundColor: "#444", borderRadius: 4 }}>
-        <Animated.View
-          style={{
-            height: 8,
-            width: widthInterpolated,
-            backgroundColor: "#00ccff",
-            borderRadius: 4,
-          }}
-        />
-      </View>
-      */}
       </View>
     </SafeAreaView>
     );
@@ -104,7 +83,7 @@ export default function Index() {
   return (
     <SafeAreaView className="flex-1 bg-black">
       <View className="flex-1 justify-center items-center">
-        <Text className="text-white">Bitte warten, wir verarbeiten deine Daten...</Text>
+        <Text className="text-white">{t("index.loading")}</Text>
       </View>
     </SafeAreaView>
   );

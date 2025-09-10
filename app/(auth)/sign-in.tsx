@@ -9,12 +9,14 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { loginWithOAuth } from '@/lib/appwriteOAuth';
 import { loadUserData } from '@/lib/appwriteDaten';
+import { useTranslation } from 'react-i18next';
 
 const SignIn = () => {
-  const { setUserData,user } = useGlobalContext();
-  const { setIsLoggedIn,setUser } = useGlobalContext();
+  const { t } = useTranslation();
+  const { setUserData, user } = useGlobalContext();
+  const { setIsLoggedIn, setUser } = useGlobalContext();
   const [ isError, setIsError] = useState(false);
-  const [ errorMessage, setErrorMessage] = useState("Fehler aufgetreten");
+  const [ errorMessage, setErrorMessage] = useState(t("signIn.error"));
   const { width } = useWindowDimensions();
   const isVertical = width > 700;
   const [isVisible, setIsVisible] = useState(false)
@@ -24,7 +26,7 @@ const SignIn = () => {
     });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  function isValidEmail(email) {
+  function isValidEmail(email:string) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (re.test(email)) {
       return true;
@@ -53,11 +55,11 @@ const SignIn = () => {
 
   const submitSignIn = async () => {
       if (form.email.length < 5) {
-        setErrorMessage("Bitte eine gültige E-Mail Adresse eingeben")
+        setErrorMessage(t("signIn.validEmail"))
         setIsError(true)
         return;
-      } else if (form.password.length > 8) {
-        setErrorMessage("Bitte ein gültiges Passwort eingeben")
+      } else if (form.password.length < 8) {
+        setErrorMessage(t("signIn.validPassword"))
         setIsError(true)
         return;
       }  else {
@@ -75,14 +77,19 @@ const SignIn = () => {
               return;
             }
           } catch (error) {
-            setErrorMessage(error.message)
-            setIsError(true)
+            setErrorMessage((error as Error).message);
+            setIsError(true);
           } finally {
             setIsSubmitting(false);
           
         }}
       };
-  const LogInOption = ({iconName, title, bgColor, handlePress}) => {
+  const LogInOption = ({iconName, title, bgColor, handlePress}:{
+    iconName: string,
+    title: string,
+    bgColor: string,
+    handlePress?: ()=> void
+  }) => {
         return (
           <View>
           {
@@ -109,7 +116,10 @@ const SignIn = () => {
         )
       }
 
-    const LoginButton = ({title, handlePress}) => {
+    const LoginButton = ({title, handlePress}:{
+      title: string,
+      handlePress: ()=> void,
+    }) => {
       return (
         <TouchableOpacity disabled={isSubmitting} className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
           style={{
@@ -140,7 +150,7 @@ const SignIn = () => {
                   isVertical ? (
                     <View className="min-h-[300px] max-w-[300px] h-full rounded-l-[10px] bg-gradient-to-b from-blue-900 to-[#0c111d] items-center justify-center p-4">
                       <Image source={require("../../assets/Check.gif")} style={{ width: 100, height: 100 }} />
-                      <Text className="font-bold text-3xl max-w-[300px] text-center text-white"> Alle Tools für den Lernerfolg.</Text>
+                      <Text className="font-bold text-3xl max-w-[300px] text-center text-white">{t("signIn.toolsForSuccess")}</Text>
                     </View>
                   ) : null
                 }
@@ -151,7 +161,7 @@ const SignIn = () => {
                 >
 
                     <View className="w-full items-center justify-center">
-                      <Text className='text-white font-bold text-3xl'>Sign In</Text>
+                      <Text className='text-white font-bold text-3xl'>{t("signIn.title")}</Text>
                       <TextInput
                         className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800  "
                         style={{
@@ -160,7 +170,7 @@ const SignIn = () => {
                           borderColor: isValidEmail(form.email) ? "#1e3a8a" : "gray",
                           borderWidth: 2
                         }}
-                        placeholder="E-Mail"
+                        placeholder={t("signIn.email")}
                         placeholderTextColor="#fff"
                         value={form.email}
                         onChangeText={(value) =>{ setForm(prevForm => ({ ...prevForm, email: value })) }}
@@ -173,7 +183,7 @@ const SignIn = () => {
                           borderColor: form.password.length > 7 ? "#1e3a8a" : "gray",
                           borderWidth: 2
                         }}
-                        placeholder="Passwort"
+                        placeholder={t("signIn.password")}
                         placeholderTextColor="#fff"
                         secureTextEntry={true}
                         value={form.password}
@@ -183,16 +193,16 @@ const SignIn = () => {
                       if (Platform.OS === "web") {
                       router.push("/reset-password")
                       } else {
-                        Linking.openURL('https://qready-app.com/reset-password'); // ← Hier deine echte URL einsetzen
+                        Linking.openURL('https://qready-app.com/reset-password');
                       }
 
                     }} className="mt-2 items-center justify-center">
-                        <Text className="text-white">Reset Password</Text>
+                        <Text className="text-white">{t("signIn.resetPassword")}</Text>
                     </TouchableOpacity>
                       
-                      <LoginButton title="Sign In" handlePress={()=> submitSignIn()} />
+                      <LoginButton title={t("signIn.title")} handlePress={()=> submitSignIn()} />
                       
-                      <LogInOption iconName="google" title="Weiter mit Google" bgColor="bg-[#4285F4]" handlePress={() => {
+                      <LogInOption iconName="google" title={t("signIn.continueWithGoogle")} bgColor="bg-[#4285F4]" handlePress={() => {
                         if ( Platform.OS === "web") {
                           loginWithGoogle()}
                         else {
@@ -203,13 +213,8 @@ const SignIn = () => {
                         >
                           <Text className="text-blue-500"
                            
-                          >Registrieren</Text>
+                          >{t("signIn.register")}</Text>
                       </TouchableOpacity>
-                      {/*
-                      <TouchableOpacity onPress={async ()=> await loginWithOAuth({setUserData,setUser})} >
-                        <Text className="text-gray-500 mt-2">Oauth</Text>
-                      </TouchableOpacity>
-                      */}
                       
                   </View>
               </View>

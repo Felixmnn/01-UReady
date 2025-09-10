@@ -2,8 +2,15 @@ import React from 'react';
 import CreateModule from '../(general)/createModule';
 import { View } from 'react-native';
 import TutorialFirstModule from '../(tutorials)/tutorialFirstModule';
+import { ModuleProps, userData } from '@/types/moduleTypes';
 
-const PageCreateModule = ({ setUserChoices, newModule, setNewModule, setTutorialStep = null, tuturialStep= 10}) => {  
+const PageCreateModule = ({ setUserChoices, newModule, setNewModule, setTutorialStep, tuturialStep= 10}:{
+  setUserChoices: React.Dispatch<React.SetStateAction<null>>,
+  newModule: ModuleProps,
+  setNewModule: React.Dispatch<React.SetStateAction<ModuleProps>>,
+  setTutorialStep?: React.Dispatch<React.SetStateAction<number>>,
+  tuturialStep?: number
+}) => {  
     const [ isVisible, setIsVisible ] = React.useState(true);
   return (
     <View className="flex-1 w-full">

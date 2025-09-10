@@ -25,7 +25,7 @@ const authLayout = () => {
                 <Stack.Screen name="getting-started"
                 options={{ 
                     headerShown: false 
-                  }}
+                  }} 
                 />
                  <Stack.Screen name="sign-out"
                 options={{ 

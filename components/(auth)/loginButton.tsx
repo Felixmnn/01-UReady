@@ -1,7 +1,12 @@
-import { View, Text, TouchableOpacity, Platform, useWindowDimensions, ActivityIndicator } from 'react-native'
+import {  Text, TouchableOpacity, Platform, useWindowDimensions, ActivityIndicator } from 'react-native'
 import React from 'react'
 
-const LoginButton = ({title, handlePress, isSubmitting, isReady = true}) => {
+const LoginButton = ({title, handlePress, isSubmitting, isReady = true}:{
+    title: string,
+    handlePress: ()=> void,
+    isSubmitting: boolean,
+    isReady?: boolean
+}) => {
     const { width } = useWindowDimensions();
       return (
         <TouchableOpacity disabled={isSubmitting} className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"

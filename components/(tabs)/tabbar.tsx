@@ -1,35 +1,42 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { Children, useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
 import { useWindowDimensions } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGlobalContext } from '@/context/GlobalProvider';
-import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useTranslation } from 'react-i18next';
 
-const Tabbar = ({content,page, hide}) => {
-    const { width } = useWindowDimensions(); // Bildschirmbreite holen
-    const { user,language } = useGlobalContext()
-      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-      useEffect(() => {
-        if(language) {
-          setSelectedLanguage(language)
-        }
-      }, [language])
-      const texts = languages.tabbar;
+const Tabbar = ({
+  content,
+  page, 
+  hide
+}:{
+  content: () => React.JSX.Element,
+  page: string,
+  hide?: boolean
+}) => {
+  const { t } = useTranslation();
+  const { width } = useWindowDimensions(); // Bildschirmbreite holen
+      
     
     const isVertical = width > 700; // Prüfen, ob Breite über 700px ist
 
-    const tabbarIcon = (name, size, color, pageName, route, disabled=false) => {
+    const tabbarIcon = (
+        name:string,
+        size:number, 
+        color :string, 
+        pageName :string, 
+        route :string, 
+        disabled=false) => {
         return <TouchableOpacity 
                 disabled={disabled}
-                onPress={() => router.push(route)}
+                onPress={() => router.push(route as any)}
                 style={{
                   opacity: disabled ? 0.5 : 1,
                 }}
                 className={`m-2 items-center ${pageName === page.toLowerCase() ? 'w-[80px] bg-gray-800 border border-gray-600 border-[1px]' : ""} rounded-md p-2 `}>
                     <Icon name={name} size={size} color={color}/>
-                    <Text className='text-white text-[12px] '>{texts[selectedLanguage][pageName]}</Text>
+                    <Text className='text-white text-[12px] '>{t(`tabbar.${pageName}`)}</Text>
                 </TouchableOpacity>
         }
 
@@ -64,7 +71,10 @@ const Tabbar = ({content,page, hide}) => {
         
 
             :
-            <SafeAreaView className='flex-1 bg-gradient-to-b from-[#001450] to-[#0c111e] itmes-center justify-between'>
+            <SafeAreaView 
+            edges={['top', 'left', 'right']} // ⬅️ 'bottom' entfernt
+
+            className='flex-1 bg-gradient-to-b from-[#001450] to-[#0c111e] itmes-center justify-between'>
              {content()}
             </SafeAreaView>
 

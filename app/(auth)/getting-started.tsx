@@ -7,19 +7,50 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import  languages  from '@/assets/exapleData/languageTabs.json';
+import { ModuleProps, userData } from '@/types/moduleTypes';
+
+
 
 const gettingStarted = () => {
     const [userChoices, setUserChoices] = useState(null);
     const {user, isLoggedIn,isLoading,language } = useGlobalContext();
-    const [ selectedLanguage, setSelectedLanguage ] = useState(language ? language : "DEUTSCH");
-    const [texts, setTexts] =  useState(languages.gettingStarted[selectedLanguage] || languages.gettingStarted["DEUTSCH"]);
-    useEffect(() => {
-      if(language) {
-        setSelectedLanguage(language)
-        setTexts(languages.gettingStarted[language] || languages.gettingStarted["DEUTSCH"]);
-      }
-    }, [language])
+    const [ newModule, setNewModule] = useState<ModuleProps>({
+          name: "",
+          subject: "",
+          questions: 0,
+          notes: 0,
+          documents: 0,
+          "public": true,
+          progress: 0,
+          creator: "",
+          color: null,
+          sessions: [],
+          tags: [],
+          description: "",
+          releaseDate: null,
+          connectedModules: [],
+          qualityScore: 0,
+          duration: 0,
+          upvotes: 0,
+          downVotes: 0,
+          creationCountry: null,
+          creationUniversity: null,
+          creationUniversityProfession: null,
+          creationRegion: null,
+          creationUniversitySubject: [],
+          creationSubject: [],
+          creationEducationSubject: "",
+          creationUniversityFaculty: [],
+          creationSchoolForm: null,
+          creationKlassNumber: null,
+          creationLanguage: null,
+          creationEducationKathegory:"",
+          studiengangKathegory: "",
+          kategoryType: "",
+          copy: false,
+          questionList: [],
+          synchronization: false
+          }); 
 
     useEffect(() => {
       if (!user) return;
@@ -32,13 +63,13 @@ const gettingStarted = () => {
       fetchUserDataKathegory();
       },[user])
 
-      useEffect(() => {
+    useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
-          router.replace("/"); // oder "/sign-in"
+          router.replace("/"); 
         }
-      }, [user, isLoggedIn, isLoading]);
+    }, [user, isLoggedIn, isLoading]);
       
-    const [ userDataP, setUserData] = useState(null)
+    const [ userDataP, setUserData] = useState<userData>()
 
     useEffect(() => {
       if (userDataP == null) return ;
@@ -64,50 +95,40 @@ const gettingStarted = () => {
       });
   },[userDataP])
 
-    useEffect(() => {
+   useEffect(() => {
         if (user == null) return;
         async function fetchUserData() {
            const res = await loadUserDataKathegory(user.$id);
-           setUserData(res);
+            if (res) {
+              // Map or cast the Document to userData type
+              const mappedUserData: userData = {
+                $id: res.$id,
+                country: res.country,
+                university: res.university,
+                studiengangZiel: res.studiengangZiel,
+                region: res.region,
+                studiengang: res.studiengang,
+                schoolSubjects: res.schoolSubjects,
+                educationSubject: res.educationSubject,
+                faculty: res.faculty,
+                schoolType: res.schoolType,
+                schoolGrade: res.schoolGrade,
+                language: res.language,
+                educationKathegory: res.educationKathegory,
+                studiengangKathegory: res.studiengangKathegory,
+                kategoryType: res.kategoryType,
+                tutorialCompleted: res.tutorialCompleted ?? false,
+                signInProcessStep: res.signInProcessStep ?? "",
+                createdAt: res.createdAt ?? "",
+                updatedAt: res.updatedAt ?? ""
+              };
+              setUserData(mappedUserData);
+            }
         }
         fetchUserData()
     }, [user])
 
-    const [ newModule, setNewModule] = useState({
-      name: "",
-      subject: "",
-      questions: 0,
-      notes: 0,
-      documents: 0,
-      "public": true,
-      progress: 0,
-      creator: "",
-      color: null,
-      sessions: [],
-      tags: [],
-      description: "",
-      releaseDate: null,
-      connectedModules: [],
-      qualityScore: 0,
-      duration: 0,
-      upvotes: 0,
-      downVotes: 0,
-      creationCountry: null,
-      creationUniversity: null,
-      creationUniversityProfession: null,
-      creationRegion: null,
-      creationUniversitySubject: [],
-      creationSubject: [],
-      creationEducationSubject: "",
-      creationUniversityFaculty: [],
-      creationSchoolForm: null,
-      creationKlassNumber: null,
-      creationLanguage: null,
-      creationEducationKathegory:"",
-      copy: false,
-      questionList: [],
-      synchronization: false
-      });
+    
       const [ tutorialStepAI, setTutorialStepAI] = useState(0);
       const [ tuturialStep, setTutorialStep] = useState(0);
   return (
@@ -119,7 +140,7 @@ const gettingStarted = () => {
           
           { userChoices == null ?           <PageOptions userChoices={userChoices} setUserChoices={setUserChoices}/>
           : userChoices == "GENERATE" ?     <PageAiCreate tutorialStep={tutorialStepAI} setTutorialStep={setTutorialStepAI} setIsVisibleModal={null}  setUserChoices={setUserChoices} newModule={newModule} setNewModule={setNewModule} userData={userDataP}/>
-          : userChoices  == "DISCOVER" ?    <PageDiscover userChoices={userChoices} setUserChoices={setUserChoices} userData={userDataP}/>
+          : userChoices  == "DISCOVER" ?    <PageDiscover  setUserChoices={setUserChoices} userData={userDataP}/>
           : userChoices == "CREATE" ?       <PageCreateModule tuturialStep={tuturialStep} setTutorialStep={setTutorialStep} setUserChoices={setUserChoices}  newModule={newModule} setNewModule={setNewModule}/>
           : null
 }  

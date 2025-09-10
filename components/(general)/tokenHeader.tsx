@@ -4,9 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import {router} from 'expo-router'
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { useTranslation } from 'react-i18next';
 
 
-const TokenHeader = ({userUsage}) => {
+const TokenHeader = ({userUsage}:{
+    userUsage: {streak: number, energy: number, microchip: number, boostActive: boolean}
+}) => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
     const { language } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
@@ -35,12 +39,12 @@ const TokenHeader = ({userUsage}) => {
                             }}/>
                     <Text className="text-red-500 text-center"
                       style={{color:"orange"}}
-                    >{texts[selectedLanguage].youHave} {userUsage?.streak} {texts[selectedLanguage].daysInARow}</Text>
+                    >{t("tokenHeader.youHave")} {userUsage?.streak} {t("tokenHeader.daysInARow")}</Text>
                     <TouchableOpacity
                         onPress={() => setIsVisible(false)}
                         className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-full"
                     >
-                        <Text className="text-white font-bold">{texts[selectedLanguage].close}</Text>
+                        <Text className="text-white font-bold">{t("tokenHeader.close")}</Text>
                     </TouchableOpacity>
                 </View>
             </TouchableOpacity>
@@ -50,6 +54,7 @@ const TokenHeader = ({userUsage}) => {
 
   return (
     <View className='w-full flex-row justify-between'>
+      <View className='w-full flex-row justify-between'>
         <ModalStreak/>
         <TouchableOpacity className='flex-row m-2 px-5 pt-2'  onPress={()=> setIsVisible(true)} >
             <Icon name="fire" size={20} color={"white"}/>
@@ -67,7 +72,10 @@ const TokenHeader = ({userUsage}) => {
             <Text className='text-white font-bold text-[15px] ml-2'>{userUsage?.boostActive ? "∞" : userUsage?.energy}</Text>
             </TouchableOpacity>
         </View>
-
+      </View>
+      <View>
+        
+      </View>
     </View>
   )
 }

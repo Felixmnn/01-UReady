@@ -1,0 +1,27 @@
+{
+  "login": {
+    "setPasswordTitle": "Neues Passwort festlegen",
+    "enterPasswordTitle": "Passwort eingeben",
+    "passwordPlaceholder": "Passwort",
+    "savePassword": "Passwort speichern",
+    "login": "Anmelden",
+    "biometricPrompt": "Mit Fingerabdruck oder Gesicht anmelden",
+    "biometricFallback": "Passwort verwenden",
+    "toastPasswordSavedTitle": "Passwort gespeichert",
+    "toastPasswordSavedMessage": "Dein Passwort wurde erfolgreich gesetzt.",
+    "toastWrongPasswordTitle": "Falsches Passwort",
+    "toastWrongPasswordMessage": "Das eingegebene Passwort ist falsch.",
+    "acceptAGB": "AGB akzeptieren",
+  "viewAGB": "AGB anzeigen",
+    "AGB": [
+    "AGB – Mein Tagebuch",
+    "Nutzung: Die App ist ausschließlich für private Tagebuchaufzeichnungen bestimmt. Kommerzielle Nutzung ist nicht gestattet.",
+    "Daten: Alle Inhalte werden lokal auf deinem Gerät gespeichert. ...",
+    "Haftung: Der Entwickler haftet nicht für Datenverlust, Schäden oder sonstige Nachteile, außer im Fall von grober Fahrlässigkeit oder Vorsatz.",
+    "Änderungen: Funktionen der App können jederzeit angepasst oder entfernt. Mögliche Auswirkungen auf deine Daten werden nach bestem Wissen kommuniziert.",
+    "Rechte: Alle Rechte an der App verbleiben beim Entwickler. Deine Tagebuchinhalte gehören dir und können exportiert oder gesichert werden. Kopieren oder Weitergeben der App selbst ist nicht erlaubt.",
+    "Beendigung: Durch Löschen der App werden alle lokal gespeicherten Daten entfernt. Sorge selbst für Backups, wenn du Inhalte behalten möchtest.",
+    "Kontakt & Impressum: Bei Fragen oder rechtlichen Anliegen schreibe an: contact.oneminutediary@gmail.com"
+  ]
+  }
+}

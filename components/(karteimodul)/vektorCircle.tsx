@@ -3,7 +3,19 @@ import React from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const VektorCircle = ({ color, percentage, icon, strokeColor, sizeMultiplier = 1 }) => {
+const VektorCircle = ({ 
+  color, 
+  percentage, 
+  icon, 
+  strokeColor, 
+  sizeMultiplier = 1
+ }:{
+  color: string,
+  percentage: number,
+  icon: string,
+  strokeColor: string,
+  sizeMultiplier?: number
+ }) => {
   const baseRadius = 15;
   const baseStroke = 3;
   const baseSize = 40;

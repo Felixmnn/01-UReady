@@ -1,9 +1,18 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 
-const GratisPremiumButton = ({children, aditionalStyles, handlePress, active}) => {
+const GratisPremiumButton = ({
+  children, 
+  aditionalStyles, 
+  handlePress, 
+  active
+}:{
+  children?: React.ReactNode,
+  aditionalStyles?: string,
+  handlePress?: ()=>void,
+  active?: boolean
+}) => {
     const [isPressed, setIsPressed] = useState(false)
-    const [isVisible, setIsVisible] = useState(false)
   return (
     
     <TouchableOpacity

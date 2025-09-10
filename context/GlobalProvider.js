@@ -4,11 +4,16 @@ import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
+import * as NavigationBar from 'expo-navigation-bar';
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
+   useEffect(() => {
+       NavigationBar.setVisibilityAsync('hidden');
+    }, []);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

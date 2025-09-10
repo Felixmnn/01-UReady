@@ -1,8 +1,24 @@
-import { View, Text, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState,useRef } from 'react';
-import Icon from "react-native-vector-icons/FontAwesome";
-const OptionSelector = ({title, options, selectedOption, containerStyles, marginChanges, hideTitle, width,selectedValue, setSelectedValue, onChangeItem}) => {
+import Icon from "react-native-vector-icons/FontAwesome5";
+const OptionSelector = ({
+  title, 
+  options, 
+  marginChanges, 
+  hideTitle, 
+  selectedValue, 
+  setSelectedValue, 
+  onChangeItem
+}:{
+  title: string,
+  options: { label: string; value: string }[],
+  marginChanges?: string,
+  hideTitle?: boolean,
+  selectedValue: string | null,
+  setSelectedValue: React.Dispatch<React.SetStateAction<string | null>>,
+  onChangeItem: (value: string) => Promise<void>
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const buttonRef = useRef(null);
 

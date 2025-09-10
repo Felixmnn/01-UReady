@@ -3,50 +3,19 @@ import GlobalProvider from "./../context/GlobalProvider";
 
 import "./../global.css";
 import { StatusBar } from "expo-status-bar";
-
-
-import NetInfo from "@react-native-community/netinfo";
-import { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import * as NavigationBar from 'expo-navigation-bar';
+import "../assets/languages/i18n/index"; 
 
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useEffect } from "react";
 
 export default function RootLayout() {
-  /*
-  const [isConnected, setIsConnected] = useState(true);
+   useEffect(() => {
+    
+     NavigationBar.setVisibilityAsync('hidden');
 
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => unsubscribe();
   }, []);
-
-  if (!isConnected) {
-  return (
-    <View className="flex-1 justify-center items-center px-6 bg-[#0c111e]">
-              <StatusBar backgroundColor="#0c111e" style="light" />
-
-      <Icon name="wifi-off" size={64} color="red" style={{ marginBottom: 20 }} />
-      
-      <Text className="text-lg font-semibold text-gray-100 text-center mb-2">
-        Keine Internetverbindung
-      </Text>
-
-      <Text className="text-sm text-gray-400 text-center mb-6">
-        Bitte überprüfe deine Verbindung und versuche es erneut.
-      </Text>
-
-      
-    </View>
-  );
-}
-  */
-    //
-  //      <GlobalProvider>
 
 
   return (

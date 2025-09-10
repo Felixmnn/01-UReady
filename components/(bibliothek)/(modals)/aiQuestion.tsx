@@ -240,7 +240,7 @@ const addItem = () => {
 };
 const handleDeleteItem = (itemId) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-  };
+  }; 
 
 return (
     <View className='' >
@@ -400,7 +400,7 @@ return (
                                         }
                                     </GratisPremiumButton>
                                     }
-                    </View>
+                        </View>
                         :
                         <View className='flex-1 p-4 justify-between'>
                         <View className="flex-row items-start ">

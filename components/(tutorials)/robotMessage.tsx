@@ -1,9 +1,14 @@
 import { View, Text, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-const RobotWihtMessage = ({message}) => {
+const RobotWihtMessage = ({message}:{
+  message: string
+}) => {
 
-    const TypewriterText = ({ text, speed = 50 }) => {
+    const TypewriterText = ({ text, speed = 50 }:{
+      text: string,
+      speed?: number
+    }) => {
       const [displayedText, setDisplayedText] = useState('');
     
       useEffect(() => {

@@ -1,7 +1,14 @@
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ErrorPopup = ({isError=false, setIsError, errorMessage="Error Ocurred"}) => {
+const ErrorPopup = ({
+    isError=false, 
+    setIsError, 
+    errorMessage="Error Ocurred"}:{
+    isError: boolean,
+    setIsError: React.Dispatch<React.SetStateAction<boolean>>,
+    errorMessage: string
+    }) => {
   return (
     <Modal
         animationType="fade"

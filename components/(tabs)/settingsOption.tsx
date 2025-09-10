@@ -1,8 +1,19 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
-const SettingsOption = ({iconName, title, handlePress,bottom, item}) => {
+const SettingsOption = ({
+  iconName,
+  title,
+  handlePress,
+  bottom, 
+  item}:{
+  iconName: string,
+  title: string,
+  handlePress: ()=>void,
+  bottom?: boolean,
+  item?: React.ReactNode
+  }) => {
   return (
     <TouchableOpacity className={`flex-row items-center justify-between p-4 ${bottom ? null : "border-b border-gray-600"}`} onPress={handlePress}>
         <View className='flex-row items-center'>

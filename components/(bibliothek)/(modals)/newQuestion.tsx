@@ -3,7 +3,31 @@ import React from 'react'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import  Selectable  from '../selectable'
 
-const ModalNewQuestion = ({isVisible,setQuestionToEdit ,isVisibleEditQuestion , setIsVisibleEditQuestion , ModalNewQuestion, setIsVisible, setSelected, selectAi, module, selected,sessions, addDocument, SwichToEditNote,texts, selectedLanguage, documents}) => {
+const ModalNewQuestion = ({
+    isVisible,
+    setQuestionToEdit ,
+    isVisibleEditQuestion , 
+    setIsVisibleEditQuestion , 
+    setIsVisible,
+     selectAi, 
+     module, 
+     addDocument, 
+     SwichToEditNote,
+     texts, 
+     selectedLanguage,
+    }:{
+    isVisible: boolean,
+    setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>,
+    isVisibleEditQuestion: {state: boolean, status: number},
+    setIsVisibleEditQuestion: React.Dispatch<React.SetStateAction<{state: boolean, status: number}>>,
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>,
+    selectAi: () => void,
+    module: any,
+    addDocument: () => void,
+    SwichToEditNote: (noteID: string | null) => void,
+    texts: { [key: string]: { [key: string]: string } },
+    selectedLanguage: string
+    }) => {
     
   return (
     <View >

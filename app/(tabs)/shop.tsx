@@ -1,123 +1,54 @@
-import { View, Text, Image, TouchableOpacity,ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, Image,ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { router } from 'expo-router'
 import images from '@/assets/shopItems/itemConfig'
-import Cardcombination from '@/components/(shop)/cardcombination'
 import TokenHeader from '@/components/(general)/tokenHeader'
-import { loadShopItems } from '@/lib/appwriteShop';
-import SkeletonListShop from '@/components/(general)/(skeleton)/skeletonListShop'
-import { loadComercials, loadSurvey } from '@/lib/appwriteDaten'
-import  languages  from '@/assets/exapleData/languageTabs.json';
 
 
 const shop = () => {
   const {user, isLoggedIn,isLoading, userUsage } = useGlobalContext();
-  const { language } = useGlobalContext()
-    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    const texts = languages.shop;
-    useEffect(() => {
-      if(language) {
-        setSelectedLanguage(language)
-      }
-    }, [language])
-
-  const [ shopItemsA, setShopItemsA ] = useState(null);
-  const [comercials, setComercials] = useState([]);
-  
-
-
-  useEffect(() => {
-    const fetchShopItems = async () => {
-      try {
-        const items = await loadShopItems();
-        
-        setShopItemsA(items);
-
-      } catch (error) {
-        console.error("Error loading shop items:", error);
-      }
-    };
-
-    fetchShopItems();
-  },[]);
-
-  useEffect(() => {
-    if (!userUsage) return;
-    async function fetchComercials(){
-      const response = await loadComercials();
-      if (response) {
-        setComercials(response.length > 0 ? response : []);
-      }
-    }
-    fetchComercials();
-  }, [userUsage]);
-
+   
     useEffect(() => {
       if (!isLoading && (!user || !isLoggedIn)) {
         router.replace("/"); // oder "/sign-in"
       }
     }, [user, isLoggedIn, isLoading]);
 
-    function calculateCommercialAmount(){
-      const amountComercials = comercials.filter(c => c.type == "VIDEO").length;
-      const commercialsAvailable = comercials.filter(c => c.type == "VIDEO" && !userUsage?.watchedComercials?.includes(c.$id));
-      const commercialsToday = userUsage?.purcharses.filter(p => p.includes("VIDEO"))
-      if (amountComercials == 0 || commercialsAvailable.length == 0) return "0/0";
-      const amoutGT3 = amountComercials > 3 ? 3 : amountComercials; 
-      if (commercialsToday.length > 0) return `${amoutGT3 - commercialsToday.length < 0 ? 0 : amoutGT3 - commercialsToday.length }/${amoutGT3}`;
-      if (amountComercials > 0) return `${amoutGT3}/${amoutGT3}`;
-      return "0/0"
-    }
-
+   
 
 
     
   return (
     <Tabbar content={()=> { return( 
-
       <View className='flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]'>
-        
-
-        <View className='w-full bg-blue-500 border-2 border-blue600 rounded-t-[10px] items-center justify-start p-2 flex-row'>
-          <Text className='font-bold text-white text-lg mr-3'>
-             Hinweis
-          </Text>
-          <Text className='text-white text-xs'> 
-            {
-            'Da die App noch in der Entwicklung ist sind alle Features gratis nutzbar. Wenn ihr also keine Energie mehr habt, könnt ihr diese im Profil über den Aktionscode "BESTENUTZER" aufladen.'
-            }
-          </Text>
-        </View>
         <TokenHeader userUsage={userUsage}/>
-        <ScrollView classNawme='w-full'
-          style={{
-            scrollbarWidth: 'thin', // Dünne Scrollbar
-            scrollbarColor: 'gray transparent',
-          }}
-        >
-          
-            {
-              !shopItemsA ?
-              <View className='flex-1 items-center justify-center'>
-                <SkeletonListShop />
-              </View>
-              :
-              <View className='w-full items-center'>
-              <Cardcombination  cards={shopItemsA.filter(item => item.itemType == "ENERGY" )}
-                                title={texts[selectedLanguage].recharges}
-                                
-                                />
-              <Cardcombination cards={shopItemsA.filter(item => item.itemType == "CHIPS" )}
-                                title={texts[selectedLanguage].chips}
-                                />
-              <Cardcombination  cards={shopItemsA.filter(item => item.itemType == "REWARDEDQUIZ" || item.itemType == "COMERCIAL")}
-                                title={texts[selectedLanguage].freeItems}
-                                />
-              </View> 
-            }
-            
+        <ScrollView className='w-full'>
+          <View className="relative w-full h-[60px] mt-1 items-center justify-center">
+            <Image source={images.head} style={{
+              width: 350,
+              resizeMode: 'contain',
+              marginTop: 5,
+            }} />
+            <Text className="absolute text-white text-2xl font-bold pt-2"
+              style={{
+                color: "#bc8e00",
+              }}
+            >{"Buy Energy"}</Text>
+          </View>
+          <View className="relative w-full h-[60px] mt-1 items-center justify-center">
+              <Image source={images.head} style={{
+                width: 350,
+                resizeMode: 'contain',
+                marginTop: 5,
+              }} />
+              <Text className="absolute text-white text-2xl font-bold pt-2"
+                style={{
+                  color: "#bc8e00",
+                }}
+              >{"Watch Ad for Energy"}</Text>
+          </View>
         </ScrollView>
       </View>
       

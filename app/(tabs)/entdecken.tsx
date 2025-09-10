@@ -19,10 +19,11 @@ import BottomSheet, {  BottomSheetScrollView, BottomSheetView} from '@gorhom/bot
 import RenderResults from '@/components/(entdecken)/renderResults';
 import { searchDocuments } from '@/lib/appwriteQuerySerach';
 import { loadAllModules } from '@/lib/appwriteDaten';
+import { useTranslation } from 'react-i18next';
 
 
 const entdecken = () => {
-
+  const {t} = useTranslation();
   const { language, userUsage, setUserUsage, userData } = useGlobalContext()
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   useEffect(() => {
@@ -34,7 +35,6 @@ const entdecken = () => {
   useEffect(() => {
     async function fetchAllModules(){
       const modules = await loadAllModules();
-      console.log("Filterd Modules",modules.filter(m => m.public == true && m.questions > 0 && m.name.includes("Kopie") == false))
       if (modules) {
         setModules(modules.filter(m => m.public == true && m.questions > 0 && m.name.includes("Kopie") == false));
       } else {
@@ -61,7 +61,7 @@ const entdecken = () => {
   const { width } = useWindowDimensions();
   const numColumns = Math.floor(width / 300);
 
-  const [ selectedModules, setSelectedModules] = useState([])
+  const [ selectedModules, setSelectedModules] = useState<string[]>([])
   
   //Allgemeine Filter
   const [ selectedCountry, setSelectedCountry] = useState(countryList[0])
@@ -71,13 +71,13 @@ const entdecken = () => {
 
   //Module entdecken
   const [ loading, setLoading ] = useState(false)
-  const [ modules, setModules ] = useState([])
-  const [ myModules, setMyModules ] = useState([])
+  const [ modules, setModules ] = useState<any | undefined>([])
+  const [ myModules, setMyModules ] = useState<any>([])
 
   //____ The filter Part _____________________________________________________________
     const [ filters, setFilters ] = useState({})
 
-    async function fetchModules(filters) {
+    async function fetchModules(filters: any) {
       const keys = Object.keys(filters);
       if (keys.length > 1) {
         const modules = await searchDocuments(filters);
@@ -139,7 +139,7 @@ const entdecken = () => {
    */
   const options = [
     {
-      name: texts[selectedLanguage].university,
+      name: t("entdecken.university"),
       enum: "UNIVERSITY",
       icon: "university",
       color: "#7a5af8",
@@ -149,7 +149,7 @@ const entdecken = () => {
       },
     },
     {
-      name: texts[selectedLanguage].school,
+      name: t("entdecken.school"),
       enum: "SCHOOL",
       icon: "school",
       color: "#20c1e1",
@@ -159,7 +159,7 @@ const entdecken = () => {
       },
     },
     {
-      name: texts[selectedLanguage].education,
+      name: t("entdecken.education"),
       enum: "EDUCATION",
       icon: "tools",
       color: "#4f9c19",
@@ -169,7 +169,7 @@ const entdecken = () => {
       },
     },
     {
-      name: texts[selectedLanguage].other,
+      name: t("entdecken.other"),
       enum: "OTHER",
       icon: "ellipsis-h",
       color: "#f39c12",
@@ -193,12 +193,12 @@ const entdecken = () => {
   const [ searchBarText, setSearchBarText ] = useState("")
   const [ focused, setFocused ] = useState(false)
 
-  async function add(mod) {
+  async function add(mod:any) {
           setLoading(true)
           try {
               const res = await adddModule(mod)
               if (res){
-                setModules((prev) => [...prev, res])
+                setModules((prev:any) => [...prev, res])
               }
               setLoading(false)
 
@@ -214,7 +214,7 @@ const entdecken = () => {
     function calculateEnergyCost() {
       let price = 0;
       selectedModules.forEach((moduleId) => {
-        const module = modules.find((m) => m.$id === moduleId);
+        const module = modules.find((m:any) => m.$id === moduleId);
         if (module) {
           const mprice =  1 + (Math.floor((module.questions)/20 * 1)); // Assuming each question costs 3 energy
           if (mprice > 10){
@@ -239,7 +239,7 @@ const entdecken = () => {
           onPress={async ()=> {
               setReloadNeeded([...reloadNeeded, "Bibliothek"])
               if (selectedModules.length > 0){
-                modules.map((module) => {
+                modules.map((module:any) => {
                 if (selectedModules.includes(module.$id)){
                     const mod = {
                         name: module.name + " (Kopie)",
@@ -276,7 +276,7 @@ const entdecken = () => {
               loading ? <ActivityIndicator size="small" color="#fff" /> :
               userUsage.energy > selectedModules.length * 3 ?
               <View className='flex-row items-center'>
-                <Text className={`${topButton ? "text-[12px]" : "text-[15px] mb-1"} font-semibold  text-white  `}>{selectedModules.length == 1 ? texts[selectedLanguage].copy1 : texts[selectedLanguage].copy2} für {calculateEnergyCost()}</Text>
+                <Text className={`${topButton ? "text-[12px]" : "text-[15px] mb-1"} font-semibold  text-white  `}>{selectedModules.length == 1 ? t("entdecken.copy1") : t("entdecken.copy2")} {t("entdecken.for")} {calculateEnergyCost()}</Text>
                 <Icon name="bolt" size={topButton ?10 :15} color="white" className="ml-2" />
               </View>
               :
@@ -285,21 +285,36 @@ const entdecken = () => {
                   maxWidth: width < 400 ? 200 : null,
                 }}
               >
-                Dir fehlt Energie - warte oder kaufe neue im Shop.
+                {t("entdecken.noEnergy")}
               </Text>
             }
           </TouchableOpacity>
         </View>
     )}
+
     /**
      * This Component lets the User Pick SCHOOL, UNIVERSITY, EDUCATION or OTHER 
      */
     const EducationFiel = () => {
-      function handlePress(option) {
+      interface Option {
+        name: string;
+        enum: string;
+        icon: string;
+        color: string;
+        handlePress: () => void;
+      }
+
+      interface Filters {
+        kategoryType?: string;
+        creationCountry?: string;
+        [key: string]: any;
+      }
+
+      function handlePress(option: Option) {
           setFilters({
-            kategoryType: option.enum,
-            creationCountry : userData?.country || "DEUTSCHLAND"
-          })
+        kategoryType: option.enum,
+        creationCountry : userData?.country || "DEUTSCHLAND"
+          } as Filters)
       }
       return (
         <View className={`flex-row p-2 justify-between items-center rouned-[10px] w-full `}>
@@ -354,7 +369,7 @@ const entdecken = () => {
                             value={searchBarText}
                             onFocus={() => setFocused(true)}
                             onBlur={() => setFocused(false)}
-                            placeholder={texts[selectedLanguage].searchText}
+                            placeholder={t("entdecken.searchText")}
                             onChangeText={(text) => setSearchBarText(text)}
                             placeholderTextColor={"#797d83"} 
                             />
@@ -376,8 +391,7 @@ const entdecken = () => {
             }}
             >
               <Text className='text-white font-semibold text-[10px] '>
-                {modules.filter(m => m.public == true).length} {texts[selectedLanguage].results}
-
+                {modules.filter((m:any) => m.public == true).length} {t("entdecken.results")}
               </Text>
             </View>
             <View
@@ -388,23 +402,20 @@ const entdecken = () => {
                 <CopyModulesButton topButton={true}/>
                 :
                 <Text className='px-3 py-[1px] bg-blue-500 rounded-full text-white font-semibold text-[10px]'>
-                  Wähle ein Modul aus, um es zu kopieren.
+                  {t("entdecken.selectToCopy")}
                 </Text>
               }
             </View>
           </View>
           <RenderResults 
-            modules={modules.filter(m => m.public == true)}
+            modules={modules.filter((m:any) => m.public == true)}
             texts={texts}
             selectedLanguage={selectedLanguage}
             selectedModules={selectedModules}
             myModules={myModules}
-            updateModuleData={updateModuleData}
             setSelectedModules={setSelectedModules}
             numColumns={numColumns}
             searchBarText={searchBarText}
-            setModules={setModules}
-            setLoading={setLoading}
           />
 
           {/* In Case the User selects a Module the copy Button becomes Visble */}
@@ -426,10 +437,10 @@ const entdecken = () => {
               showsVerticalScrollIndicator={false}>
                 <View className='w-full'>
                   <EducationFiel />
-                  {selectedKathegory == "UNIVERSITY" ? <UniversityFilters filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
-                  {selectedKathegory == "SCHOOL" ? <SchoolFilters  filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
-                  {selectedKathegory == "EDUCATION" ? <EudcationFilters filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
-                  {selectedKathegory == "OTHER" ? <OtherFilters filters={filters} setFilters={setFilters} country={countryList[0]} searchbarText={searchBarText} /> : null}
+                  {selectedKathegory == "UNIVERSITY" ? <UniversityFilters  setFilters={setFilters} country={countryList[0]}  /> : null}
+                  {selectedKathegory == "SCHOOL" ? <SchoolFilters  setFilters={setFilters} country={countryList[0]} /> : null}
+                  {selectedKathegory == "EDUCATION" ? <EudcationFilters setFilters={setFilters} country={countryList[0]}  /> : null}
+                  {selectedKathegory == "OTHER" ? <OtherFilters  setFilters={setFilters} country={countryList[0]}  /> : null}
                 </View>
             </BottomSheetScrollView>
         </BottomSheet>
@@ -437,7 +448,7 @@ const entdecken = () => {
         </View>
       
 
-    )}} page={"Entdecken"} />
+    )}} page={"Entdecken"} hide={false} />
   )
 }
 

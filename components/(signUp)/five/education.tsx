@@ -4,6 +4,7 @@ import BotBottomLeft from '../botBottomLeft';
 import { useTranslation } from 'react-i18next';
 import ProgressBar from '../(components)/progressBar';
 import SearchList from '../(components)/searchList';
+import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 
 type Item = {
     id: string;
@@ -19,28 +20,33 @@ const Education = ({
     userData,
     ausbildungsListDeutschland,
     ausbildungKathegorie,
-    setSelectedAusbildung
+    setSelectedAusbildung,
+    saveUserData    ,
+    subjectSelection,
+    selectedSubjects
 }:{
     selectedLanguage: number | null,
     setUserData: (data: any) => void,
     userData: any,
     ausbildungsListDeutschland: any,
     ausbildungKathegorie: {id: string, name: {[key: string]: string}},
-    setSelectedAusbildung: React.Dispatch<React.SetStateAction<any>>
+    setSelectedAusbildung: React.Dispatch<React.SetStateAction<any>>,
+    saveUserData: () => Promise<void>,
+    subjectSelection: (item: { name: string; icon: string}) => void,
+    selectedSubjects: { name: string; icon: string }[],
 
 }) => {
-    console.log(ausbildungsListDeutschland)
     const { t } = useTranslation();
   const [ isVisible, setIsVisible ] = useState(true)
     const [ausbildungsFilter, setAusbildungFilter] = useState("");
 
     const handlePress = (item:Item) => {
-        setSelectedAusbildung(item);
-            setUserData({...userData,signInProcessStep:"SEVEN"})
+        saveUserData();
     }
+  
     
     return (
-        <View className='h-full  w-full justify-between items-center py-5'>
+        <View className='h-full  w-full justify-between py-5'>
             <BotBottomLeft
                 message={t("personalizeFive.interestingArea")}
                 imageSource="Waving"
@@ -56,14 +62,21 @@ const Education = ({
                 data={selectedLanguage == null ? ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item:Item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase())) : ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item:Item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
                 filter={ausbildungsFilter}
                 setFilter={setAusbildungFilter}
-                handlePress={handlePress}
+                handlePress={subjectSelection}
                 nameComparison={false}
-                selectedItems={[]}
+                selectedItems={selectedSubjects}
+
                 noResultsText={t("personalizeFive.noEducationFound")}
                 abschlussziel={t("personalizeFive.yourEducation")}
 
             />
+            
             <View/>
+            <GratisPremiumButton active={true} aditionalStyles={"rounded-full w-full bg-blue-500 rounded-lg  "} handlePress={()=> {
+                        saveUserData()} }>
+                    <Text className='text-gray-100 font-semibold text-[15px]'>{ t("personalizeSix.letsGo")}
+                    </Text>
+                </GratisPremiumButton>  
         </View>
     )
 }

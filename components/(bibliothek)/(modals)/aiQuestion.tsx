@@ -250,7 +250,7 @@ return (
         animationType="fade"
         transparent={true}
         visible={isVisible}
-    >
+    > 
         <View className="h-full w-full absolute top-0 left-0   justify-center items-center p-2  "
         style={{ backgroundColor: 'rgba(17, 24, 39,0.7)' }}
         >

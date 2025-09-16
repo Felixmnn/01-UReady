@@ -1,4 +1,5 @@
 export type ModuleProps = {
+    $id?: string;
     name: string;
     subject: string;
     questions: number;
@@ -7,12 +8,12 @@ export type ModuleProps = {
     public: boolean;
     progress: number;
     creator: string;
-    color: string | null;
-    sessions: Array<any>;
-    tags: Array<string>;
+    color: string | null | undefined;
+    sessions: string[];
+    tags: string[];
     description: string;
     releaseDate: Date | null;
-    connectedModules: Array<string>;
+    connectedModules: string[];
     qualityScore: number;
     duration: number;
     upvotes: number;
@@ -21,10 +22,10 @@ export type ModuleProps = {
     creationUniversity: string | null;
     creationUniversityProfession: string | null;
     creationRegion: string | null;
-    creationUniversitySubject: Array<string>;
-    creationSubject: Array<string>;
+    creationUniversitySubject: string[];
+    creationSubject: string[];
     creationEducationSubject: string | null;
-    creationUniversityFaculty: Array<string>;
+    creationUniversityFaculty: string[];
     creationSchoolForm: string | null;
     creationKlassNumber: number | null;
     creationLanguage: string | null;
@@ -32,7 +33,7 @@ export type ModuleProps = {
     studiengangKathegory: string;
     kategoryType: string;
     copy: boolean;
-    questionList: Array<any>;
+    questionList: string[];
     synchronization: boolean;
 
 };
@@ -43,10 +44,10 @@ export type userData = {
   university: string | null;
   studiengangZiel: string | null;
   region: string | null;
-  studiengang: Array<string>;
-  schoolSubjects: Array<string>;
+  studiengang: string[];
+  schoolSubjects: string[];
   educationSubject: string | null;
-  faculty: Array<string>;
+  faculty: string[];
   schoolType: string | null;
   schoolGrade: number | null;
   language: string | null;
@@ -60,18 +61,32 @@ export type userData = {
 }
 
 export type UserData = {
+    $id?: string;
    country: string | null;
    university: string | null;
-   faculty: Array<string>;
-   studiengang: Array<string>;
+   faculty: string[];
+   studiengang: string[];
     region: string | null;
     studiengangZiel: string | null;
     schoolType: string | null;
     kategoryType: string | null;
-    schoolSubjects: Array<string>;
+    schoolSubjects: string[];
     schoolGrade: number | null;
     educationSubject: string | null;
     educationKathegory: string;
     language: string | null;
     studiengangKathegory: string;
+}
+
+export type Session = {
+    title: string;
+    percent: number;
+    color: string;
+    iconName: string;
+    questions: number;
+    description: string;
+    tags: string[];
+    id: string;
+    generating: boolean;
+
 }

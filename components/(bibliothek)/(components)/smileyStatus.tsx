@@ -6,7 +6,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
      * This component displays the smiley of a Question card
      * @param status - The status can be NULL, BAD, OK, GOOD or GREAT 
 */
-const SmileyStatus = ({status=null}) => {
+const SmileyStatus = ({status}:{
+    status: "BAD" | "OK" | "GOOD" | "GREAT" | null
+}) => {
     let color = "blue"
     let bgColor = "bg-blue-500"
     let smiley = "grin"

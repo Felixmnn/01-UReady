@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import TouchSquare from './(components)/touchSquare';
 import ProgressBar from './(components)/progressBar';
 import { userData } from '@/types/moduleTypes';
+import { router } from 'expo-router';
 
 /**
  * Selction of Education Category and his Country
@@ -18,12 +19,14 @@ const StepThree = ({
                         setSelectedKathegorie, 
                         userData, 
                         setUserData, 
+                        editing
                     }:{
                         selectedCountry: {id: string, name: string, code: string},
                         setSelectedCountry: React.Dispatch<React.SetStateAction<{ name: string; code: string; id: string; schoolListID: string; universityListID: string; educationListID: string; educationSubjectListID: string; }>>;                        countryList: Array<{id: string, name: string, code: string}>,
                         setSelectedKathegorie: React.Dispatch<React.SetStateAction<string>>,
                         userData: userData,
-                        setUserData: React.Dispatch<React.SetStateAction<any>>
+                        setUserData: React.Dispatch<React.SetStateAction<any>>,
+                        editing?: boolean
                     }) => {
 
     const  { t } = useTranslation();
@@ -43,7 +46,13 @@ const StepThree = ({
               <View className='h-full  w-full justify-between items-center py-5'>
                 <ProgressBar
                     percent={40}
-                    handlePress={()=> setUserData({...userData,signInProcessStep:"TWO"})}
+                    handlePress={()=> {
+                        if (editing) {
+                            router.replace("/profil");
+                            return;
+                        }
+                        setUserData({...userData,signInProcessStep:"TWO"})
+                    }}
                 />
                   <View className='items-center justiy-center'>
                         <BotCenter

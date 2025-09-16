@@ -1,25 +1,15 @@
 import { View, Text, Platform, TextInput, useWindowDimensions, TouchableOpacity, Linking } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
 import { resetPassword, updatePassword } from '@/lib/appwrite';
 import { router } from 'expo-router';
 import LoginButton from '@/components/(auth)/loginButton';
-import { useGlobalContext } from '@/context/GlobalProvider';
-import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useTranslation } from 'react-i18next';
 
 
 const ResetPassword = () => {
     const { t } = useTranslation();
-    const { language } = useGlobalContext()
-    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    const texts = languages.auth;
-    useEffect(() => {
-        if(language) {
-        setSelectedLanguage(language)
-        }
-    }, [language])
 
     const [secret, setSecret] =  useState(new URLSearchParams(window.location.search).get('secret'))
     const [userId, setUserId] =  useState(new URLSearchParams(window.location.search).get('userId'))

@@ -1,30 +1,33 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { tryBack } from '@/functions/(quiz)/helper'
 import { router } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 const Navigation = ({
     deatilsVisible,
     removeQuestion,
     questionsParsed,
-    selectedQuestion,
-    setQuestionList,
-    setQuestionParsed,
-    setSelectedQuestion,
     setDetailsVisible,
+    percent,
+    type,
+    timeLimit,
+    startTime,
+    setQuestionsForQuiz
 }:{
     deatilsVisible: boolean,
-    removeQuestion: (id: string) => Promise<void>,
+    removeQuestion: () => Promise<void>,
     questionsParsed: any[],
-    selectedQuestion: number,
-    setQuestionList: React.Dispatch<React.SetStateAction<any[]>>,
-    setQuestionParsed: React.Dispatch<React.SetStateAction<any[]>>,
-    setSelectedQuestion: React.Dispatch<React.SetStateAction<number>>,
     setDetailsVisible: React.Dispatch<React.SetStateAction<boolean>>,
-
+    percent: number,
+    type: "infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" | "normal"
+    timeLimit?: number,
+    startTime?: number
+    setQuestionsForQuiz: () => void
 
 }) => {
+    const { t } = useTranslation();
     //Function that returns the percentage of each status
     const questionSegmentation = ({questionList}:
     {questionList: any[]}
@@ -52,30 +55,47 @@ const Navigation = ({
         return [bad,ok,good,great]
     } 
 
+    const [remainingPercent, setPercent] = React.useState(100);
+    useEffect(() => {
+        if (!timeLimit) return;
+        const start = Date.now()
+
+        const interval = setInterval(() => {
+        const elapsed = (Date.now() - start) / 1000
+        const remaining = Math.max(0, timeLimit - elapsed)
+        const progress = (remaining / timeLimit) * 100
+        console.log('Remaining Time:', remaining, 'seconds')
+        setPercent(progress)
+
+        if (remaining <= 0) {
+            clearInterval(interval)
+            setQuestionsForQuiz()
+
+            console.log('Zeit abgelaufen')
+        }
+        }, 100) // alle 100ms updaten
+        
+        // Cleanup bei Unmount, verhindert Memory Leaks
+        return () => clearInterval(interval)
+    }, [timeLimit, startTime])
+
 
 
   return (
     <View className='bg-gray-900 items-center justify-between p-4 rounded-t-[10px]'>
         <View className='flex-row items-center justify-between w-full'>
         <View className='flex-row items-center justify-between w-full'>
+            
             <TouchableOpacity onPress={()=> tryBack(router)}>
                 <Icon name="arrow-left" size={20} color="white"/>
             </TouchableOpacity>
+            
             {
+                 percent == 100 && type != "infinite" ? <View/> :
                 deatilsVisible ? 
                 <View className="flex-row items-center gap-2">
                     <TouchableOpacity>
-                        <Icon name="trash-alt" size={15} color="white" onPress={async ()=> {
-                            await removeQuestion(questionsParsed[selectedQuestion].$id)
-                            setQuestionList(prev => prev.filter((item, index) => index !== selectedQuestion));
-                            setQuestionParsed(prev => prev.filter((item, index) => index !== selectedQuestion));
-                            if (selectedQuestion > 0) {
-                                setSelectedQuestion(selectedQuestion - 1);
-                            } else if (questionsParsed.length > 1) {
-                                setSelectedQuestion(0);
-                            }
-
-                        }}/>
+                        <Icon name="trash-alt" size={15} color="white" onPress={async ()=> {removeQuestion()}}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=> setDetailsVisible(!deatilsVisible)}>
                         <Icon name="ellipsis-v" size={15} color="white"/>   
@@ -91,12 +111,39 @@ const Navigation = ({
             </View>
         
         </View>
+        { 
+        type == "limitedTime" && remainingPercent > 0  ?
         <View className='rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row'>
+        <View
+            key={remainingPercent}
+            style={{ width: `${remainingPercent}%` }} // <-- Das ist entscheidend!
+            className="h-[5px] bg-blue-500 rounded-full"
+        />
+        </View> :
+        type == "limitedTime" ?
+        <Text className="text-2xl font-bold text-gray-300 text-center">
+                  🎉 Ergebnisse
+                </Text>
+
+        :
+        type == "infinite" ? 
+        
+        <View className='rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row'>
+            
             <View style={{ width: `${questionSegmentation({questionList: questionsParsed})[0]}%` }} className="h-[5px] bg-red-700 rounded-l-full" />
             <View style={{ width: `${questionSegmentation({questionList: questionsParsed})[1]}%` }} className="h-[5px] bg-yellow-500" />
             <View style={{ width: `${questionSegmentation({questionList: questionsParsed})[2]}%` }} className="h-[5px] bg-green-500" />
             <View style={{ width: `${questionSegmentation({questionList: questionsParsed})[3]}%` }} className="h-[5px] bg-blue-500 rounded-r-full" />
         </View>
+        :  percent == 100  ?
+        <Text className="text-2xl font-bold text-gray-300 text-center">
+                  🎉 Ergebnisse
+                </Text>:
+
+                <View className='rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row'>
+                    <View style={{ width: `${percent}%` }} className="h-[5px] bg-blue-500 rounded-full" />
+                </View>
+        }
     </View>
     
 )

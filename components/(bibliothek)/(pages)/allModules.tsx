@@ -4,19 +4,14 @@ import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react'
 import { loadUserDataKathegory} from "../../../lib/appwriteDaten"
-import AddModule from '@/components/(general)/(modal)/addModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { updateUserUsageModules } from '@/lib/appwriteUpdate';
+import { updateUserUsageModules, updateUserUsageSessions } from '@/lib/appwriteUpdate';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import TokenHeader from '@/components/(general)/tokenHeader';
-import AddAiModule from '@/components/(general)/(modal)/addAiModule';
 import AddAiBottomSheet from '@/components/(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '@/components/(general)/(modal)/addModuleBottomSheet';
 
 const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refreshing}) => {
-    const [last7Hidden, setLast7Hidden ] = useState(true)
-    const [ last30Hidden, setLast30Hidden ] = useState(true)
-    const [ lastYearHidden, setLastYearHidden ] = useState(true)
 
     
 
@@ -33,8 +28,6 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
       
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
-    const toTight = width > 800;
-    const longVertical = width > 900;
     const [isVisibleNewModule, setIsVisibleNewModule] = useState(false);
     const numColumns = Math.floor(width / 300);
 
@@ -64,77 +57,6 @@ function calculatePercent(questions){
 }
 
 
-    const [ newModule, setNewModule] = useState({
-          name: "",
-          subject: "",
-          questions: 0,
-          notes: 0,
-          documents: 0,
-          "public": false,
-          progress: 0,
-          creator: "",
-          color: null,
-          sessions: [],
-          tags: [],
-          description: "",
-          releaseDate: null,
-          connectedModules: [],
-          qualityScore: 0,
-          duration: 0,
-          upvotes: 0,
-          downVotes: 0,
-          creationCountry: null,
-          creationUniversity: null,
-          creationUniversityProfession: null,
-          creationRegion: null,
-          creationUniversitySubject: [],
-          creationSubject: [],
-          creationEducationSubject: "",
-          creationUniversityFaculty: [],
-          creationSchoolForm: null,
-          creationKlassNumber: null,
-          creationLanguage: null,
-          creationEducationKathegory:"",
-          copy: false,
-          questionList: [],
-          synchronization: false
-
-          });
-
-    const [ userData, setUserData] = useState(null)
-
-    useEffect(() => {
-      if (userData == null) return ;
-      setNewModule({
-          ...newModule, 
-          releaseDate: new Date(),
-          creator:userData.$id,
-          creationCountry: userData.country,
-          creationUniversity: userData.university,
-          creationUniversityProfession: userData.studiengangZiel,
-          creationRegion: userData.region,
-          creationUniversitySubject: userData.studiengang,
-          creationSubject: userData.schoolSubjects,
-          creationEducationSubject: userData.educationSubject,
-          creationUniversityFaculty: userData.faculty,
-          creationSchoolForm: userData.schoolType,
-          creationKlassNumber: userData.schoolGrade,
-          creationLanguage: userData.language,
-          creationEducationKathegory:userData.educationKathegory,
-          studiengangKathegory:userData.studiengangKathegory,
-          
-          kategoryType: userData.kategoryType,
-      });
-  },[userData])
-
-    useEffect(() => {
-        if (user == null) return;
-        async function fetchUserData() {
-           const res = await loadUserDataKathegory(user.$id);
-           setUserData(res);
-        }
-        fetchUserData()
-    }, [user])
 
       
     const [ isVisibleAI, setIsVisibleAI] = useState(false)
@@ -155,10 +77,16 @@ function calculatePercent(questions){
           >
             {items.map((item, index) => (
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
-
+                <Text>
+                  {
+                    JSON.stringify(item)
+                  }
+                </Text>
                 <Karteikarte
                   handlePress={async () => {
+                    console.log("Module selected:", item);
                     await updateUserUsageModules(user.$id, {
+
                       name: item.name,
                       percent: Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0,
                       color: item.color,
@@ -167,6 +95,17 @@ function calculatePercent(questions){
                       sessionID: item.$id
                     });
                     setSelected("SingleModule");
+                    const moduleSessions = item.sessions.map(s => JSON.parse(s));
+                    updateUserUsageSessions(userUsage.$id, {
+                                      name: moduleSessions[0].title,
+                                      sessionID: moduleSessions[0].id,
+                                      percent: moduleSessions[0].percent,
+                                      color: moduleSessions[0].color,
+                                      iconName: moduleSessions[0].iconName,
+                                      questions: moduleSessions[0].questions,
+                                      moduleID: item.$id
+                                    } )
+                    console.log("Susccess ✅")
                     setSelectedModule(index);
                   }}
                   farbe={item.color}
@@ -220,10 +159,11 @@ function calculatePercent(questions){
         >
           <View style={{flexGrow:1.5}}>
           <ModuleList
-            items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 0, 7))}
+            items={modules.documents}
             header={texts[selectedLanguage].last7}
           />
           </View>
+          {/*
           { modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30)).length > 0 ? (
         <ModuleList
           items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30))}
@@ -235,7 +175,7 @@ function calculatePercent(questions){
           items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 30, 365))}
           header={"365"}
         />
-        ):null}
+        ):null}*/}
         
         
 

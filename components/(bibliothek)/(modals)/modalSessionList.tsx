@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ModalEditSession from './modalEditSession';
 import uuid from 'react-native-uuid';
-import { useGlobalContext } from '@/context/GlobalProvider';
-import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useTranslation } from 'react-i18next';
 
 const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }:{
@@ -15,14 +13,6 @@ const ModalSessionList = ({ isVisible, setIsVisible, sessions, setSessions }:{
 }) => {
     const { width } = useWindowDimensions();
     const { t } = useTranslation();
-    const { user,language } = useGlobalContext()
-  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-  useEffect(() => {
-    if(language) {
-      setSelectedLanguage(language)
-    }
-  }, [language])
-  const texts = languages.modalSessionList;
    
 
     const [isVisibleEdit, setIsVisibleEdit] = useState(false);

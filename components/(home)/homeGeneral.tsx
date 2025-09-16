@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import VektorCircle from '../(karteimodul)/vektorCircle';
 import { router } from 'expo-router';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
+import { getAllQuestionsBySessionId, getModules, getSessionQuestions } from '@/lib/appwriteQuerys';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { returnColor } from '@/functions/returnColor';
 import TokenHeader from '../(general)/tokenHeader';
@@ -13,6 +13,7 @@ import AddAiBottomSheet from '../(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
 import { WebView } from 'react-native-webview';
 import CustomButton from '../(general)/customButton';
+import { generateQuestions } from '@/functions/(aiQuestions)/materialToModule';
 
 
 const { width } = Dimensions.get('window');
@@ -22,7 +23,6 @@ const HomeGeneral = () => {
   const [ userUsageP, setUserUsageP ] = useState(null)
   let count = 0
   useEffect(() => {
-    console.log(count, "Getting Called userUsage", userUsage)
     count++
     if(userUsage) {
       setUserUsageP({
@@ -38,7 +38,6 @@ const HomeGeneral = () => {
   const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
   const texts = languages.home;
   useEffect(() => {
-    console.log(count, "Getting Called language", language)
     count++
     if(language) {
       setSelectedLanguage(language)
@@ -99,16 +98,31 @@ const HomeGeneral = () => {
 
 
   async function startQuiz(session) {
+    console.log("Starting quiz for session:", session);
     const questions = await getSessionQuestions(session.sessionID)
-    console.log("Questions for session", session.sessionID, ":", questions)
-    if (!questions || questions.length == 0) {
+    if (!questions || questions.length == 0 ) {
       router.push("/bibliothek")
       return;
     }
-    
+    console.log("Elements:",
+      session.sessionID,
+      "infinite", // infinite, limited, limitedTime, limitedAllCorrect
+      "multiple", // single, multiple, questionAnswer
+      null,  // How many questions should be in the quiz
+      null   ,            // Timelimit will be in seconds
+      questions[0].subjectID   //CHANGE REQUIRED LATER IN PRODUCTION
+    )
+
     router.push({
                   pathname:"/quiz",
-                  params: {questions: JSON.stringify(questions), moduleID: session.moduleID }
+                  params: {
+                    sessionID: session.sessionID,
+                    quizType : "infinite", // infinite, limited, limitedTime, limitedAllCorrect
+                    questionType : "multiple", // single, multiple, questionAnswer
+                    questionAmount : null,  // How many questions should be in the quiz
+                    timeLimit : null   ,            // Timelimit will be in seconds
+                    moduleID: questions[0].subjectID
+                }
               }) 
   }
 
@@ -116,7 +130,8 @@ const HomeGeneral = () => {
 
   const Session = ({item}) => {
     return (
-      <TouchableOpacity className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between' onPress={() => startQuiz(item)}>
+      <TouchableOpacity className='bg-gray-900 rounded-[10px] p-3 mx-2 border-gray-800 border-[1px]  items-center justify-between' 
+      onPress={() => startQuiz(item)}>
         <View className='flex-row items-center justify-between'>
           <View className='items-start  '>
             <Text className='text-white font-bold text-[15px]'>{item.name}</Text>
@@ -260,7 +275,7 @@ const HomeGeneral = () => {
         scrollbarColor: 'gray transparent', // Graue Scrollbar mit transparentem Hintergrund
       }}>
           {
-            !userUsageP || userUsageP.lastSessions.length == 0 ?
+            !userUsageP || userUsageP.lastSessions.filter((s)=> s.questions > 0).length == 0 ?
             <View  className='flex-row'>
               <Session item={{
                   name: "Erstes Modul",
@@ -285,7 +300,7 @@ const HomeGeneral = () => {
               }}/>
             </View> 
             :
-            userUsageP.lastSessions.map((item, index) => {
+            userUsageP.lastSessions.filter((s)=> s.questions > 0).map((item, index) => {
               return (
                 <Session key={index} item={item} />
               )
@@ -304,9 +319,38 @@ const HomeGeneral = () => {
       </View>
     </View>
 
+        {/*
+        My testing button
+        */}
       <CustomButton
-            title='Go Back'
-            handlePress={() =>router.push("/reset-password")}
+            title='Do Stuff :)'
+            handlePress={() => router.push(
+              {
+                pathname:"/quiz",
+                params: {
+                  sessionID: "ce9122db-03a6-4fcb-96b9-8b28adcca9a8",
+                  quizType : "questionAnswer", // infinite, limited, limitedTime, limitedAllCorrect
+                  questionType : "single", // single, multiple, questionAnswer
+                  questionAmount : 10,  // How many questions should be in the quiz
+                  timeLimit : null   ,            // Timelimit will be in seconds
+                  moduleID: "686a934a4140eb9893b9"
+                }
+              }
+            )}
+            /*
+              Potential Cases
+              1. Unendlich Fragen kein Zeitlimit
+              2. Unendlich Fragen mit Zeitlimit
+
+              3. Limitierte Fragen kein Zeitlimit
+              4. Limitierte Fragen Zeitlimit 
+
+              5. Limitierte Fragen bis alle korrekt sind kein Zeitlimit
+              6. Limitierte Fragen bis alle korrekt sind Zeitlimit
+
+
+            */
+            containerStyles='m-4 bg-blue-700'
             />
     </ScrollView>
     { isVisibleNewAiModule ?

@@ -1,43 +1,79 @@
-
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator, useWindowDimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import ColorPicker from '../(general)/colorPicker';
-import GratisPremiumButton from '../(general)/gratisPremiumButton';
-import ModalSessionList from '../(bibliothek)/(modals)/modalSessionList';
+import ColorPicker from '../colorPicker';
+import ModalSessionList from '../../(bibliothek)/(modals)/modalSessionList';
 import { router } from 'expo-router'; 
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { adddModule } from '@/lib/appwriteAdd';
 import { setUserDataSetup } from '@/lib/appwriteEdit';
-import ErrorPopup from './(modal)/errorPopup';
 import { loadUserDataKathegory } from '@/lib/appwriteDaten';
-import  languages  from '@/assets/exapleData/languageTabs.json';
+import { useTranslation } from 'react-i18next';
+import { ModuleProps, Session, UserData } from '@/types/moduleTypes';
+import CustomButton from '../customButton';
 
-const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,goBackVisible=true }) => {
+
+
+const CreateModule = ({ 
+    newModule,  
+    setNewModule, 
+    setUserChoices,
+    goBackVisible=true ,
+    sessions,
+    setSessions,
+    selectedColor,
+    setSelectedColor,
+    hideCreateButton=false,
+    selectedSession,
+    setSelectedSession
+    
+  }:{
+      newModule: ModuleProps,
+      setNewModule: React.Dispatch<React.SetStateAction<ModuleProps>>,
+      setUserChoices: React.Dispatch<React.SetStateAction<"GENERATE" | "DISCOVER" | "CREATE" | null>>,
+      goBackVisible?: boolean,
+      sessions: Session[],
+      setSessions: React.Dispatch<React.SetStateAction<Session[]>>,
+      selectedColor: string | null,
+      setSelectedColor: React.Dispatch<React.SetStateAction<string | null>>,
+      hideCreateButton?: boolean,
+      selectedSession: Session | null,
+      setSelectedSession: React.Dispatch<React.SetStateAction<Session | null>>,
+    }) => {
   // Lokale States
-  const { language } = useGlobalContext()
-    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    const texts = languages.createModule;
-    useEffect(() => {
-      if(language) {
-        setSelectedLanguage(language)
-      }
-    }, [language])
-
+  const { t } = useTranslation()
+  
   const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
-  const [sessions, setSessions] = useState([]);
-  const [selectedColor, setSelectedColor] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [loading , setLoading] = useState(false); 
-  const [selectedSession, setSelectedSession] = useState(0);
-  const [isError, setIsError] = useState(false);
-  const [ errorMessage, setErrorMessage] = useState(null);
-  const [ userData, setUserData] = useState(null)
+  const [ userData, setUserData] = useState<UserData | null>(null)
+
   useEffect(() => {
           if (user == null) return;
           async function fetchUserData() {
               const res = await loadUserDataKathegory(user.$id);
-              setUserData(res);
+              if (res) {
+                setUserData({
+                  $id: res.$id,
+                  country: res.country,
+                  university: res.university,
+                  faculty: res.faculty,
+                  studiengang: res.studiengang,
+                  studiengangZiel: res.studiengangZiel,
+                  region: res.region,
+                  schoolSubjects: res.schoolSubjects,
+                  educationSubject: res.educationSubject,
+                  schoolType: res.schoolType,
+                  schoolGrade: res.schoolGrade,
+                  language: res.language,
+                  educationKathegory: res.educationKathegory,
+                  studiengangKathegory: res.studiengangKathegory,
+                  kategoryType: res.kategoryType,
+                  // add any other UserData fields here as needed
+                });
+              } else {
+                setUserData(null);
+              }
           }
           fetchUserData()
       }, [user])
@@ -47,7 +83,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
         setNewModule({
             ...newModule, 
             releaseDate: new Date(),
-            creator:userData.$id,
+            creator: userData.$id ?? "",
             creationCountry: userData.country,
             creationUniversity: userData.university,
             creationUniversityProfession: userData.studiengangZiel,
@@ -61,34 +97,35 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
             creationLanguage: userData.language,
             creationEducationKathegory:userData.educationKathegory,
             studiengangKathegory:userData.studiengangKathegory,
-            kategoryType: userData.kategoryType,
-            color: "blue"
+            kategoryType: userData.kategoryType ?? "",
+            color: "blue",
 
         });
     },[userData])
   
   // Farbauswahl übernehmen
-  const changeColor = (color) => {
+  const changeColor = (color: string) => {
     setSelectedColor(color);
     setNewModule({ ...newModule, color: color });
   };
 
 
+  function stringifySessions(sessions: Session[]): string[] {
+  return sessions.map(item => JSON.stringify(item));
+}
+  const [ showMore, setShowMore] = useState(false)
 
-
-  const {width} = useWindowDimensions()
-  const [ tutorialVisible, setTutorialVisible] = useState(false);
   return (
     <ScrollView className={`flex-1 bg-gray-900 p-2   rounded-[10px] `}
 
+
       style={{
         width: '100%',
-        
+        padding: hideCreateButton ? 0 : 10,
         elevation: 20, // Android
       }}
       >
         
-        <ErrorPopup isError={isError} setIsError={setIsError} errorMessage={errorMessage}/>
       <ModalSessionList
         sessions={sessions}
         setSessions={setSessions}
@@ -100,9 +137,14 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
             {goBackVisible ?
             <TouchableOpacity className='m-2 flex-row items-center' onPress={() => setUserChoices(null)}> 
               <Icon name="arrow-left" size={20} color="white"  />
-              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>{texts[selectedLanguage].newModule}</Text>
+              <Text  className='text-gray-100 font-bold text-xl font-bold mx-2'>
+                {
+                  hideCreateButton ? t("createModule.aiCreate") :
+                t("createModule.newModule")
+                }
+                </Text>
             </TouchableOpacity>
-            : <Text  className='text-gray-100 font-bold text-xl font-bold'>{texts[selectedLanguage].newModule}</Text>}
+            : <Text  className='text-gray-100 font-bold text-xl font-bold'>{t("createModule.newModule")}</Text>}
             <TouchableOpacity onPress={() => setNewModule({ ...newModule, "public":newModule?.public ? false : true })}
               className='mr-2 items-center border-gray-800 border-[1px] rounded-full py-1 px-2'
               >
@@ -113,7 +155,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
                       style={{
                         color: "#4B5563",
                       }}
-                    >{texts[selectedLanguage].public}</Text>
+                    >{t("createModule.public")}</Text>
                     <Icon name="globe" size={15} color="#4B5563" />
                   </View>
                 ) : (
@@ -122,7 +164,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
                       style={{
                         color: "#4B5563",
                       }}
-                    >{texts[selectedLanguage].private}</Text>
+                    >{t("createModule.private")}</Text>
                     <Icon name="lock" size={15} color="#4B5563" />
                   </View>
                 )
@@ -131,30 +173,34 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
           </View>
           <View className="flex-row ">
             <View className="flex-1 justify-between">
-              <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].moduleName}</Text>
+              <Text className="text-gray-300 font-semibold text-[15px]">{t("createModule.moduleName")}</Text>
               <TextInput
                 maxLength={50}
                 onChangeText={(text) => setNewModule({ ...newModule, name: text })}
                 value={newModule?.name}
-                placeholder={texts[selectedLanguage].aOriginalName}
-                className="text-white w-full bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] rounded-[10px]"
+                placeholder={t("createModule.aOriginalName")}
+                className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] rounded-[10px]"
                 placeholderTextColor="#AAAAAA"
               />
             </View>
             
           </View>
 
+        { showMore && 
+
+        <View className='felx-1'>
+          
           {/* Beschreibung */}
         <View className="">
           <View className="flex-row justify-between items-center pr-2">
-            <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].description}</Text>
+            <Text className="text-gray-300 font-semibold text-[15px]">{t("createModule.description")}</Text>
           </View>
           <TextInput
             maxLength={200}
             onChangeText={(text) => setNewModule({ ...newModule, description: text })}
             value={newModule?.description}
             placeholderTextColor={"#AAAAAA"}
-            placeholder={texts[selectedLanguage].aOriginalDescription}
+            placeholder={t("createModule.aOriginalDescription")}
             multiline={true}
             numberOfLines={4}
             style={{ height: 90, textAlignVertical: 'top'}}
@@ -166,17 +212,17 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
          {/* Farbe */}
          <View className=" items-start">
           <View className="w-full flex-row justify-between items-center pr-2">
-            <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].color}</Text>
+            <Text className="text-gray-300 font-semibold text-[15px]">{t("createModule.color")}</Text>
           </View>
-          <ColorPicker selectedColor={selectedColor} changeColor={changeColor} title={null} />
+          <ColorPicker selectedColor={selectedColor} changeColor={changeColor}indexItem={0} />
         </View>
 
 {/* Sitzungen (Sessions) */}
-<View className=" flex-row justify-start">
+        <View className=" flex-row justify-start">
           <View className="flex-1 justify-between my-2">
             <View className="flex-row justify-between items-center pr-2">
               <Text className="text-gray-300 font-semibold text-[15px]">
-                {texts[selectedLanguage].sessions}
+                {t("createModule.sessions")}
               </Text>
               
             </View>
@@ -193,10 +239,8 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
                   <Icon name="layer-group" size={30} color="#4B5563" />
                 </TouchableOpacity>
                 <ScrollView
-                  
                   horizontal
                   contentContainerStyle={{ paddingRight: 20 }}
-                  style={{scrollbarWidth: 'thin', scrollbarColor: 'gray transparent' }}
                 >
                   <View className="flex-row items-center justify-start"
                     style={{ height: 80}}
@@ -206,7 +250,7 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
                     sessions.map((session, index) => (
                       <TouchableOpacity
                         key={index}
-                        onPress={() => setSelectedSession(session)}
+                        onPress={() => setSelectedSession && setSelectedSession(session)}
                         className="bg-[#0c111d]  border-[1px] rounded-[10px] items-center justify-center shadow-lg"
                         style={{
                           width: 60,
@@ -233,49 +277,46 @@ const CreateModule = ({ newModule,  setNewModule, setUserChoices, isModal=null,g
         
        
 
-          
-            
-             {/* Button zum Generieren des Moduls */}
-        <View className="mx-2 mt-2  px-2">
-          <GratisPremiumButton
-            aditionalStyles="w-full rounded-[10px] mx-3 bg-blue-500"
-            handlePress={async () => {
-              /*
-              if (newModule.name.length < 2) {
-                setErrorMessage(texts[selectedLanguage].errorMissingName);
-                setIsError(true);
-                return;
-              } else if (newModule.description.length < 2) {
-                setErrorMessage(texts[selectedLanguage].errorMissingDescription);
-                setIsError(true);
-                return;
-              } else if (newModule.color == null) {
-                setErrorMessage(texts[selectedLanguage].errorMissingColor);
-                setIsError(true);
-                return;
-              } else if (sessions.length === 0) {
-                setErrorMessage(texts[selectedLanguage].errorMissingSessions);
-                setIsError(true);
-                return;
-              
-              }
-              */
-            const res = await adddModule({...newModule, color: newModule.color.toUpperCase(), questions: 0, sessions:sessions.map(item => JSON.stringify(item)) });
-            setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
-            const resp = await setUserDataSetup(user.$id)
-            router.push("/bibliothek")
-            
-            }}
-          >
-            {loading ? <ActivityIndicator size="small" color="#4B5563" /> : <Text className="text-gray-300 font-semibold text-[15px]">{texts[selectedLanguage].createModule}</Text>}
-              
-            
-          </GratisPremiumButton>
+              </View>
             </View>
           </View>
+        }
+        <TouchableOpacity
+          className='flex-row items-center justify-start  mx-2 my-1'
+          onPress={() => setShowMore(!showMore)}
+        >
+          <Text className='text-gray-400 font-semibold text-[15px] mr-2'>
+            {showMore ? t("createModule.lessOptions") : t("createModule.moreOptions")}
+            </Text>
+        </TouchableOpacity>
+             {/* Button zum Generieren des Moduls */}
+        {!hideCreateButton &&
+        <View className="mx-2 mt-2  px-2">
+          <CustomButton
+            title={
+              newModule?.name.length < 3
+              ? t("createModule.enterAName")
+              :
+              t("createModule.createModule")}
+            handlePress={async () => {
+                        const res = await adddModule({
+                          ...newModule,
+                          color: typeof newModule.color == "string" ?  (newModule.color ).toUpperCase() : "BLUE",
+                          questions: 0,
+              sessions: sessions.length > 0 ? stringifySessions(sessions) : ([] as string[]), // <-- Type Assertion
+                        });
+                        setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
+                        const resp = await setUserDataSetup(user.$id)
+                        router.push("/bibliothek")          
+            }}
+            containerStyles="w-full rounded-[10px] bg-blue-500"
+            disabled={newModule?.name.length < 3}
+          
+          />
+            </View>
+    }
         </View>
-
-        </View>
+        
       </ScrollView>
   );
 };

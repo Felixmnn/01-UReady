@@ -46,7 +46,7 @@ export async function materialToQuestion(material, sessionID, subjectID, questio
         }
     const stringifyedQuestions = savedQuestions.map(q => JSON.stringify(q));
     const mergedQuestions = module.questionList.length > 0 ? [...module.questionList, ...stringifyedQuestions] : stringifyedQuestions;
-    const res = await updateModuleQuestionList(module.$id, mergedQuestions);
+    await updateModuleQuestionList(module.$id, mergedQuestions);
     setLoading(false);
     return directQuestions;
 }

@@ -10,15 +10,21 @@ const Question = ({
     selectedAnswers,
     setSelectedAnswers,
     width,
+    quizType
 }: {
     question: any,
     showAnsers: boolean,
     selectedAnswers: string[],
     setSelectedAnswers: React.Dispatch<React.SetStateAction<string[]>>,
     width: number,
+    quizType: "single" | "multiple" | "questionAnswer",
 }) => {
 
   function selectAnswer(answer:string) {
+    if (quizType === "single" ) {
+        setSelectedAnswers([answer])
+        return;
+    }
         if (selectedAnswers.includes(answer)) {
             setSelectedAnswers(selectedAnswers.filter((item) => item !== answer))
         } else {
@@ -26,10 +32,21 @@ const Question = ({
         }
     }
 
+    function parseIfIncludesLatex(item: string) {
+        try {
+            if (item.includes("latext")){
+                return JSON.parse(item);
+            } else {
+                return {text:item, latex: "", image: ""};
+            }
+        } catch (e) {
+            return {text:item, latex: "", image: ""};
+        }}
+
         return (
             <ScrollView className='flex-1 w-full'>
                 <Text className='text-white text-center px-4 px-2 text-xl font-bold mb-2'>{question.question}</Text>
-                {
+                { 
                     question.questionLatex?.length > 0 ?
                         <ScrollView
                         horizontal
@@ -64,24 +81,19 @@ const Question = ({
                     </View>
                     : null
                 }
-                <View className='flex-1  px-2 '>
-                <View className="flex flex-row flex-wrap justify-center">
+                <View className="flex-1 p-2">
                     {
+                        quizType === "questionAnswer" && !showAnsers ?
+                        <View/>
+                        :
                         
                     question.answers.map((item:string, index:number) => {
-                        const parsedItem = maybeParseJSON(item);
-                        const dataType = parsedItem.latex?.length > 0
-                        ? "latex"
-                        : parsedItem.image?.length > 0
-                        ? "image"
-                        : "text";
-
+                        const parsedItem = parseIfIncludesLatex(item);
                         const isCorrect = question.answerIndex.includes(index);
                         const isSelected = selectedAnswers.includes(JSON.stringify(parsedItem));
-
+                        if (!isCorrect && quizType === "questionAnswer" ) return null;
                         return <AnswerComponent
-                            key={index}
-                            dataType={dataType}
+                            key={index}                            
                             parsedItem={parsedItem} 
                             isCorrect={isCorrect}
                             isSelected={isSelected}
@@ -89,12 +101,15 @@ const Question = ({
                             selectAnswer={selectAnswer}
                             width={width}
                             index={index}
+                            text={parsedItem.text}
+                            latex={parsedItem.latex}
+                            image={parsedItem.image}
+                            questionType={quizType}
                             
                         />
                        
                     })}
                     </View>
-                </View>
                 
                  </ScrollView>
         )

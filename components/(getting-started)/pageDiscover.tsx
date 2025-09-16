@@ -7,26 +7,29 @@ import { addNewModule } from '@/lib/appwriteAdd'
 import { router } from 'expo-router'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { setUserDataSetup } from '@/lib/appwriteEdit'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import ContinueBox from '../(signUp)/(components)/continueBox'
 import { recommendationSearch, searchDocuments } from '@/lib/appwriteQuerySerach'
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import BotCenter from '../(signUp)/botCenter'
+import { userData } from '@/types/moduleTypes'
+import { module } from '@/types/appwriteTypes'
+import { useTranslation } from 'react-i18next'
 
 
-const PageDiscover = ({ setUserChoices, userData}) => {
-    const { language } = useGlobalContext()
-      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-      const texts = languages.gettingStarted;
-      useEffect(() => {
-        if(language) {
-          setSelectedLanguage(language)
-        }
-      }, [language])
+const PageDiscover = ({ 
+    setUserChoices, 
+    userData
+}:{
+    setUserChoices: (value: string | null) => void,
+    userData: userData
+
+}) => {
+    const { t } = useTranslation();
     const [ loading, setLoading] = useState(true)
     const { user } = useGlobalContext()
-    const [ matchingModules, setMatchingModules] = useState([])
-    const [ selectedModules, setSelectedModules] = useState([])
+    const [ matchingModules, setMatchingModules] = useState<module[]>([])
+    const [ selectedModules, setSelectedModules] = useState<string[]>([])
     const { width } = useWindowDimensions()
     const numColumns = Math.floor(width / 300);
     
@@ -34,7 +37,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
     useEffect(() => {   
         if (userData == null) return;
         async function fetchModules() {
-            let modules = []
+            let modules: module[] = []
             if (userData.kategoryType == "UNIVERSITY") {
                 modules = await recommendationSearch({
                 kategoryType: userData.kategoryType,
@@ -44,7 +47,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                 creationUniversityProfession: userData.studiengangZiel,
                 creationUniversitySubject: userData.studiengang,
                 creationCountry: userData.country,
-            })
+            }) as module[]
             } else if (userData.kategoryType == "SCHOOL") {
                 modules = await recommendationSearch({
                     kategoryType: userData.kategoryType,
@@ -54,20 +57,20 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                     creationSchoolForm: userData.schoolType,
                     creationLanguage: userData.language,
                     creationKlassNumber: userData.schoolGrade,
-                })
+                })as module[]
             } else if (userData.kategoryType == "EDUCATION") {
                 modules = await recommendationSearch({
                     kategoryType: userData.kategoryType,
                     creationCountry: userData.country,
                     creationEducationKathegory: userData.educationKathegory,
                     creationEducationSubject: userData.educationKathegory,
-                })
+                })as module[]
             } else if (userData.kategoryType == "OTHER") {
                 modules = await recommendationSearch({
                     creationCountry: userData.country,
                     creationLanguage: userData.language,
                     creationSubject: userData.schoolSubjects,
-                })
+                })as module[]
             }
             const filteredModules = modules.filter((module) => module.public ) || []
             setMatchingModules(filteredModules)
@@ -76,7 +79,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
         fetchModules()
     },[userData])
 
-    async function add(mod) {
+    async function add(mod: any) {
         setLoading(true)
         try {
             const res = await addNewModule(mod)
@@ -98,7 +101,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
         </View>
         
         <BotCenter
-            message={loading ? texts[selectedLanguage].waitAMoment : matchingModules.length > 0  ? texts[selectedLanguage].iHaveFoundSomething : texts[selectedLanguage].iHaveFoundNothing}
+            message={loading ? t("gettingStarted.waitAMoment") : matchingModules.length > 0  ? t("gettingStarted.iHaveFoundSomething") : t("gettingStarted.iHaveFoundNothing")}
             imageSource='Search'
             spechBubbleStyle={""}
             spBCStyle={""}
@@ -107,10 +110,6 @@ const PageDiscover = ({ setUserChoices, userData}) => {
         <View className="flex-1    rounded-[10px] ml-2  justify-center z-10   "
             >
         <ScrollView 
-        style={{
-            scrollbarWidth: 'thin', // Dünne Scrollbar
-            scrollbarColor: 'gray transparent', 
-        }}
         className='w-full'
         >
             
@@ -119,7 +118,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                 <View className='w-full flex-row items-center justify-center '>
                     
                     <ActivityIndicator size="small" color="#20c1e1" />
-                    <Text className='text-gray-100 font-semibold text-[15px] m-2'>{texts[selectedLanguage].sucheLäuft}</Text>
+                    <Text className='text-gray-100 font-semibold text-[15px] m-2'>{t("gettingStarted.sucheLäuft")}</Text>
                     
                 </View>
                 :
@@ -141,17 +140,16 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                                             setSelectedModules([...selectedModules, item.name]);
                                         }
                                         }}
-                                         farbe={item.color}
+                                         farbe={item.color ?? ""}
                                             percentage={null}
                                             titel={item.name}
                                             studiengang={item.description}
                                             fragenAnzahl={item.questions}
                                             notizAnzahl={item.notes}
                                             creator={item.creator}
-                                            icon={"clock"}
                                             publicM={item.public}
                                             reportVisible={true}
-                                            moduleID={item.$id}
+                                            moduleID={item.$id ?? ""}
 
                                     />
                                     </View>
@@ -171,7 +169,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
         }}
         >
                             <ContinueBox
-                                text={texts[selectedLanguage].setTogether}
+                                text={t("gettingStarted.setTogether")}
                                 colorBorder={"#7a5af8"}
                                 colorBG={"#372292"}
                                 iconName={"bot"}
@@ -180,7 +178,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                                 selected={true}
                                 />
                             <ContinueBox
-                                text={texts[selectedLanguage].createSet}
+                                text={t("gettingStarted.createSet")}
                                 colorBorder={"#4f9c19"}
                                 colorBG={"#2b5314"}
                                 iconName={"cubes"}
@@ -250,7 +248,7 @@ const PageDiscover = ({ setUserChoices, userData}) => {
                 
                 >   
                 {
-                    selectedModules.length > 0 ? selectedModules.length == 1 ? texts[selectedLanguage].useThisModule : `${texts[selectedLanguage].this} ${selectedModules.length} ${texts[selectedLanguage].moduleUse}` : texts[selectedLanguage].noModulesFound
+                    selectedModules.length > 0 ? selectedModules.length == 1 ? t("gettingStarted.useThisModule") : `${t("gettingStarted.this")} ${selectedModules.length} ${t("gettingStarted.moduleUse")}` : t("gettingStarted.noModulesFound")
                 }
                 </Text>
             </TouchableOpacity>

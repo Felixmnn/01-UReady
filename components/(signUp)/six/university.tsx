@@ -10,13 +10,15 @@ const University = ({
         userData,
         setUserData,
         selectedSubjects,
-        handleItemPress
+        handleItemPress,
+        saveUserData
 
         }:{ 
         userData: any,
         setUserData: React.Dispatch<React.SetStateAction<any>>,
         selectedSubjects: { name: string; icon: string }[],
         handleItemPress: (item: {name: string, icon:string}) => void,
+        saveUserData: () => Promise<void>;
 
 }) => {
    const [ subjectFilter, setSubjectFilter ] = useState("");
@@ -55,7 +57,8 @@ const University = ({
                               abschlussziel={t("personalizeSix.yourSubjects")}
                               />
             <View className='w-full max-w-[200px] mt-3'>
-                    <GratisPremiumButton active={true} aditionalStyles={"rounded-full w-full bg-blue-500  "} handlePress={()=> {setUserData({...userData,signInProcessStep:"SEVEN"})}}>
+                    <GratisPremiumButton active={true} aditionalStyles={"rounded-full w-full bg-blue-500  "} handlePress={()=> {
+                        saveUserData()} }>
                     <Text className='text-gray-100 font-semibold text-[15px]'>{ t("personalizeSix.letsGo")}
                     </Text>
                 </GratisPremiumButton>  

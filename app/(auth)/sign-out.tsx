@@ -1,24 +1,15 @@
 import { View, Text, ActivityIndicator, Platform } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { router } from 'expo-router';
 import { signOut } from '@/lib/appwrite';
-import languages from '@/assets/exapleData/languageTabs.json';
 import * as Updates from 'expo-updates';
 import { useTranslation } from 'react-i18next';
 
 const SignOut = () => {
   const { t } = useTranslation();
-  const { setUser, setIsLoggedIn, setIsLoading, language } = useGlobalContext();
-  const [selectedLanguage, setSelectedLanguage] = useState('DEUTSCH');
-  const texts = languages.signout;
+  const { setUser, setIsLoggedIn, setIsLoading,  } = useGlobalContext();
 
-  // Set language
-  useEffect(() => {
-    if (language) {
-      setSelectedLanguage(language);
-    }
-  }, [language]);
 
   // Do sign-out once on mount
   useEffect(() => {

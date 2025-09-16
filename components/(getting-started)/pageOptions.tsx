@@ -1,40 +1,40 @@
 import { View, Text, Image, Dimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useTransition } from 'react';
 import ContinueBox from '../(signUp)/(components)/continueBox';
 import  languages  from '@/assets/exapleData/languageTabs.json';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import BotCenter from '../(signUp)/botCenter';
+import { useTranslation } from 'react-i18next';
 
 
 
-const PageOptions = ({ userChoices, setUserChoices }) => {
-  const { language } = useGlobalContext()
-    const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-    const texts = languages.gettingStarted;
-    useEffect(() => {
-      if(language) {
-        setSelectedLanguage(language)
-      }
-    }, [language])
+const PageOptions = ({ 
+  userChoices, 
+  setUserChoices 
+}:{
+  userChoices: string | null,
+  setUserChoices: React.Dispatch<React.SetStateAction<string | null>>
+}) => {
+  const { t } = useTranslation()
   const { width } = Dimensions.get('window');
 
   const options = [
     {
-      text: texts[selectedLanguage].setTogether,
+      text: t("gettingStarted.setTogether"),
       colorBorder: '#7a5af8',
       colorBG: '#372292',
       iconName: 'bot',
       handlePress: () => setUserChoices('GENERATE'),
     },
     {
-      text: texts[selectedLanguage].comilitones,
+      text: t("gettingStarted.comilitones"),
       colorBorder: '#20c1e1',
       colorBG: '#0d2d3a',
       iconName: 'search',
       handlePress: () => setUserChoices('DISCOVER'),
     },
     {
-      text: texts[selectedLanguage].createSet,
+      text: t("gettingStarted.createSet"),
       colorBorder: '#4f9c19',
       colorBG: '#2b5314',
       iconName: 'cubes',
@@ -56,7 +56,7 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
         marginTop: 50,}}
       >
         <BotCenter
-          message={texts[selectedLanguage].timeToStart}
+          message={t("gettingStarted.timeToStart")}
           imageSource="Waving"
           spechBubbleStyle="bg-blue-500"
           spBCStyle="max-w-[200px]"
@@ -95,12 +95,12 @@ const PageOptions = ({ userChoices, setUserChoices }) => {
       :
         <View className='w-full flex-1 items-center justify-center'>
           
-          <BotCenter message={texts[selectedLanguage].timeToStart} imageSource="Frage" spechBubbleStyle="bg-blue-500" spBCStyle="max-w-[200px]"/>
+          <BotCenter message={t("gettingStarted.timeToStart")} imageSource="Frage" spechBubbleStyle="bg-blue-500" spBCStyle="max-w-[200px]"/>
 
           <View className="flex-row">
-              <ContinueBox text={texts[selectedLanguage].setTogether} colorBorder={"#7a5af8"} colorBG={"#372292"} iconName={"bot"} handlePress={()=> setUserChoices("GENERATE")} selected={true}/>
-              <ContinueBox text={texts[selectedLanguage].comilitones} colorBorder={"#20c1e1"} colorBG={"#0d2d3a"} iconName={"search"} handlePress={()=> setUserChoices("DISCOVER")} selected={true}/>
-              <ContinueBox text={texts[selectedLanguage].createSet} colorBorder={"#4f9c19"} colorBG={"#2b5314"} iconName={"cubes"} handlePress={()=> setUserChoices("CREATE")} selected={true}/>
+              <ContinueBox text={t("gettingStarted.setTogether")} colorBorder={"#7a5af8"} colorBG={"#372292"} iconName={"bot"} handlePress={()=> setUserChoices("GENERATE")} selected={true}/>
+              <ContinueBox text={t("gettingStarted.comilitones")} colorBorder={"#20c1e1"} colorBG={"#0d2d3a"} iconName={"search"} handlePress={()=> setUserChoices("DISCOVER")} selected={true}/>
+              <ContinueBox text={t("gettingStarted.createSet")} colorBorder={"#4f9c19"} colorBG={"#2b5314"} iconName={"cubes"} handlePress={()=> setUserChoices("CREATE")} selected={true}/>
           </View>
         </View>
   }

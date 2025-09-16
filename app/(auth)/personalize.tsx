@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadUserData, loadUserDataKathegory } from '@/lib/appwriteDaten';
@@ -22,10 +22,14 @@ import {schoolListDeutschland,
  } from '@/assets/exapleData/countryList';
 import { useTranslation } from 'react-i18next';
 import { userData } from '@/types/moduleTypes';
+import { useLocalSearchParams, useSearchParams } from 'expo-router/build/hooks';
+import CustomButton from '@/components/(general)/customButton';
 
 
 const personalize = () => {
     const { t } = useTranslation();
+
+    const { editEducationGoals } = useLocalSearchParams()
 
 
     const { user } = useGlobalContext();
@@ -71,7 +75,7 @@ const personalize = () => {
     ] 
 
    
-  
+    // Allgemeiner Funktion
     useEffect(() => {
         async function fetchCountryList() {
                 const response = await getCountryList();
@@ -92,6 +96,8 @@ const personalize = () => {
     }
     , []);
 
+
+    //Funktion für Schul / Uni / Ausbildungsliste
     useEffect(() => {
         async function fetchList() {
             if (selectedKathegorie === "SCHOOL" || selectedKathegorie === "OTHER") {
@@ -132,7 +138,7 @@ const personalize = () => {
         fetchList();
     }, [selectedKathegorie]);
 
-
+    //Funktion für Ausbildungskategorien
     useEffect(() => {
         async function fetchEducationSubjects() {
             if (ausbildungKathegorie) {
@@ -145,6 +151,7 @@ const personalize = () => {
         fetchEducationSubjects();
     },[ausbildungKathegorie]);
 
+    // Delay
     function someDelayOrRefetch() {
         return new Promise((resolve) => {
         setTimeout(() => {
@@ -153,11 +160,12 @@ const personalize = () => {
         });
     }
 
+    // Navigation & User Data
     useEffect(() => {
-        if (userData?.signInProcessStep === "SEVEN") {
+        if (userData?.signInProcessStep === "SEVEN" && !editEducationGoals) {
             saveUserData();
             router.push("/getting-started")
-        } else if (userData?.signInProcessStep === "FINISHED") {
+        } else if (userData?.signInProcessStep === "FINISHED" && !editEducationGoals) {
             router.push("/getting-started");
         }
     }, [userData])
@@ -213,8 +221,9 @@ const personalize = () => {
                                     subscription:userD.subscription,
                                     uid:userD.uid,
                                     university:userD.university,
-                                    signInProcessStep:"SEVEN",
+                                    signInProcessStep: editEducationGoals ? "THREE" : userD.signInProcessStep,
                                 })
+                                console.log("SignInProcessStep", editEducationGoals, editEducationGoals ? "FOUR" : userD.signInProcessStep);
                             } catch (error) {
                                 if (__DEV__) {
                                 console.log("Error loading user data kathegory", error);
@@ -231,6 +240,7 @@ const personalize = () => {
               }
               fetchUserData();
           }, [user]);
+
     const saveUserData = async () => {
         const newUserData = {
             country:                            selectedCountry ? selectedCountry.name.toUpperCase() : null,
@@ -239,9 +249,9 @@ const personalize = () => {
             language :                          selectedLanguage ? languages[selectedLanguage].enum : languages[0].enum,
 
             //University
-            university:                         selectedUniversity ? selectedUniversity.name : null,
-            faculty:                            selectedField ? selectedField.map(item => item.faculty) : null,
-            studiengang:                        selectedField ? selectedField.map(item => item.name) : null,
+            university:                         "",
+            faculty:                            [""],
+            studiengang:                        [""],
             studiengangZiel:                    degree ? degree.name.toUpperCase() : null,
             studiengangKathegory:               selectedField ? selectedField.map(item => item.kathegory) : null,
 
@@ -255,6 +265,7 @@ const personalize = () => {
             educationKathegory:                 ausbildungKathegorie ? ausbildungKathegorie.name.DE.toUpperCase().replace(/\s+/g, '') : null,
 
         }
+        console.log("New User Data to save: ", newUserData);
         try {
             await addUserDatakathegory(user.$id,newUserData);
             const updatedUserData = {
@@ -271,6 +282,7 @@ const personalize = () => {
                     
             }
             await updateUserData(user.$id, updatedUserData);
+           if (editEducationGoals) router.replace("/profil");
         }
         catch (error) {
             console.warn("Adding user data failed, trying update...", error);
@@ -283,6 +295,7 @@ const personalize = () => {
             }
     }}
 
+        
 
 
   return (
@@ -312,8 +325,9 @@ const personalize = () => {
                                                                             selectedCountry={selectedCountry} 
                                                                             setSelectedCountry={setSelectedCountry} 
                                                                             countryList={countryListA? countryListA : countryList}
+                                                                            editing={editEducationGoals ? true : false}
                                                                         /> : null}
-        {userData !== null && userData?.signInProcessStep == "FOUR" ?    <StepFour 
+        {userData !== null && userData?.signInProcessStep == "FOUR"?    <StepFour 
                                                                             schoolListDeutschland={schoolList? schoolList : schoolListDeutschland} 
                                                                             universityListDeutschland={universityList? universityList :universityListDeutschland} 
                                                                             ausbildungsTypen={ausbildungsTypen? ausbildungsTypen : ausbildungsListDeutschland} 
@@ -337,15 +351,19 @@ const personalize = () => {
                                                                             setUserData={setUserData} 
                                                                             school={school} 
                                                                             ausbildungKathegorie={ausbildungKathegorie}
+                                                                            selectedSubjects={selectedSubjects}
+                                                                            setSelectedSubjects={setSelectedSubjects}
+                                                                                                                                                        saveUserData={saveUserData}
+
                                                                         /> : null}
         {userData !== null && userData?.signInProcessStep == "SIX" ?     <StepSix 
                                                                             selectedSubjects={selectedSubjects} 
                                                                             setSelectedSubjects={setSelectedSubjects} 
                                                                             userData={userData} setUserData={setUserData} 
                                                                             selectedKathegorie={selectedKathegorie} 
+                                                                            saveUserData={saveUserData}
                                                                         /> : null}
         {userData == null || userData?.signInProcessStep == "SEVEN" ?   <StepSeven /> : null}
-
     </SafeAreaView>
   )
 }

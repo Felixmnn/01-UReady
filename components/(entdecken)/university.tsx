@@ -6,6 +6,7 @@ import languages  from '@/assets/exapleData/languageTabs.json'
 import RenderFilters from './renderFilters'
 import StaticFilters from './staticFilters'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useTranslation } from 'react-i18next'
 
 const UniversityFilters = ({country=countryList[0], setFilters}) => {
   const { language } = useGlobalContext()
@@ -24,6 +25,11 @@ const UniversityFilters = ({country=countryList[0], setFilters}) => {
     const [ universityList, setUniversityList ] = useState([universityListDeutschland])
     const [ universityFacultys, setUniversityFacultys ] = useState(LeibnizFaculties)
     const [ universitySubjects, setUniversitySubjects ] = useState(LeibnizSubjects[0]["Bachelor"])
+    const { t } = useTranslation();
+    const subjectsRaw = t("personalizeSix.universitySubjects", { returnObjects: true });
+    const subjects: Array<{ name: string; icon?: string }> = Array.isArray(subjectsRaw) ? subjectsRaw : [];
+    const filteredData = subjects.sort((a, b) => a.name.localeCompare(b.name));
+
     const noSubjectsList = [
   {
     "name": "Architektur & Stadtplanung",
@@ -123,13 +129,6 @@ const UniversityFilters = ({country=countryList[0], setFilters}) => {
       }}
     >
       <StaticFilters
-          items={universityList[0].map((item) => item.name)} 
-          selectedItems={selectedUniversity} 
-          setSelectedItems={setSelectedUniversity}
-          multiselect={false}
-          title={"Universitys"}
-          />
-      <StaticFilters
           items={abschlussziele}
           selectedItems={selectedAbschlussziele}    
           setSelectedItems={setSelectedAbschlussziele}
@@ -137,29 +136,12 @@ const UniversityFilters = ({country=countryList[0], setFilters}) => {
           title={texts[selectedLanguage].abschlussziel}
           />
       <StaticFilters
-          items={noSubjectsList.map((item) => item.name)}
+          items={filteredData.map((item) => item.name)}
           selectedItems={selectedSubjects}
           setSelectedItems={setSelectedSubjects}
           multiselect={true}
           title={"Kathegorys"}
-          />
-      <StaticFilters
-          items={selectedUniversity[0] == "Other" ? [] : universityFacultys}
-          selectedItems={selectedFacultys}
-          setSelectedItems={setSelectedFacultys}
-          multiselect={true}
-          title={"Facultys"}
-          />
-      
-
-      
-      <StaticFilters
-          items={selectedUniversity[0] == "Other" ? [] :  universitySubjects.filter((item) => item.type == selectedAbschlussziele[0]).map((item) => item.name)}
-          selectedItems={selectedSubjects}
-          setSelectedItems={setSelectedSubjects}
-          multiselect={true}
-          title={texts[selectedLanguage].subject}
-          />    
+          /> 
     </ScrollView>
   )
 }

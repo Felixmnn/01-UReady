@@ -8,12 +8,14 @@ const StepSix = ({
         setUserData, 
         setSelectedSubjects, 
         selectedSubjects, 
+        saveUserData
       }:{
         selectedKathegorie: string,
         userData: any,
         setUserData: React.Dispatch<React.SetStateAction<any>>,
         setSelectedSubjects: React.Dispatch<React.SetStateAction<{ name: string; icon: string }[]>>,
         selectedSubjects: { name: string; icon: string }[],
+        saveUserData: () => Promise<void>;
       }) => {
     
       const subjectSelection = (item: { name: string; icon: string }) => {
@@ -32,6 +34,7 @@ const StepSix = ({
             selectedSubjects={selectedSubjects}
             selectedKathegorie={selectedKathegorie}
             handleItemPress={subjectSelection}
+            saveUserData={saveUserData}
         />
     }   
     
@@ -41,6 +44,7 @@ const StepSix = ({
             setUserData={setUserData}
             selectedSubjects={selectedSubjects}
             handleItemPress={subjectSelection}
+            saveUserData={saveUserData}
         />
     }    
 }

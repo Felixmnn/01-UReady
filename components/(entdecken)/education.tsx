@@ -33,6 +33,7 @@ const EudcationFilters = ({country=countryList[0], setFilters }) => {
         setEducationSubjects(ausbildungsListDeutschland[selectedEducationKathegory[0]].map((subject) => subject.name));
     }, [selectedEducationKathegory])
     useEffect(() => {
+      console.log("Selected education subjects:", selectedEducationKathegory);
         setFilters({
             creationCountry: country.name.toUpperCase(),
             kategoryType: "EDUCATION",

@@ -149,7 +149,7 @@
     "deleteAccount": "Account löschen",
     "cancel" : "Abbrechen",
     "header": "Account löschen?",
-    "message": "Möchtest du wirklich deinen Account löschen? Alle deine Daten gehen dabei verloren und können nicht wiederhergestellt werden.",
+    "message": "Möchtest du wirklich deinen Account löschen? Alle deine Daten gehen dabei verloren und können nicht wiederhergestellt werden."
   }, "personalizeZero":{
     "intro": "Heey, ich bin Copa – lass uns deine App personalisieren!",
     "letsGo": "Los geht's"
@@ -374,7 +374,7 @@
   }, "editSession":{
     "title": "Session bearbeiten",
     "name": "Session Name",
-    "descriotion": "Session Beschreibung",
+    "description": "Session Beschreibung",
     "icons": "Session Icons",
     "placeholderSessions": "Sessions",
     "placeholderDescription": "Beschreibung"
@@ -418,6 +418,97 @@
             "help": "Hilfe",
             "share": "Teilen",
             "shop": "Shop"
+  },"createModule":{
+    "moduleName": "Modulname",
+    "aOriginalName": "Ein origineller Name für dein Modul",
+    "description": "Beschreibung",
+    "aOriginalDescription": "Eine Beschreibung für dein Modul",
+    "color" : "Farbe",
+    "sessions": "Sitzungen",
+    "enterAName": "Gib einen Namen ein",
+    "createModule": "Modul erstellen",
+    "private": "Privat",
+    "public": "Öffentlich",
+    "newModule": "Neues Modul",
+    "errorMissingName": "Bitte gib einen Modulnamen ein.",
+    "errorMissingDescription": "Bitte gib eine Modulbeschreibung ein.",
+    "errorMissingColor": "Bitte wähle eine Farbe für dein Modul aus.",
+    "errorMissingSessions": "Bitte wähle mindestens eine Sitzung für dein Modul aus.",
+    "errorMissingSessionsContent": "Bitte füge mindestens einer Sitzung Inhalt hinzu.",
+    "noEnergy": "Du hast nicht genug Energie um dieses Modul zu erstellen.",
+    "addAText": "Ergänze einen Text",
+    "addAFile": "Generiere Fragen aus einer Datei",
+    "addATopic": "Füge ein Thema hinzu",
+    "aNewKathegorie": "Generiere Fragen zu gegebenen Informationen...",
+    "existingQuestions": "Füge vorhandene Fragen ein die in Karteikarten umgewandelt werden sollen...",
+    "aNewText": "Beschreibe worum es in den Fragen gehen soll...",
+    "transformData":"Fragen aus Fragen",
+    "noMaterialAdded": "Hier siehst du dann auf welcher Grundlage deine Fragen generiert werden...",
+    "generateModule": "Modul generieren",
+    "materials":"Material für Fragen",
+    "moreOptions": "Mehr Optionen",
+    "lessOptions": "Weniger Optionen",
+    "aiCreate": "Mit KI erstellen",
+    "questionsTopic": "Fragen zu Thema",
+    "questionsInfo": "Fragen zu Infos",
+    "questionFile": "Fragen zu Datei",
+    "onlyPdf": "Derzeit werden nur PDF-Dateien unterstützt.",
+    "settings": "Fragen Einstellungen",
+        "mutipleChoice": "Multiple Choice",
+        "singleChoice": "Single Choice",
+        "questionAnswer": "Frage & Antwort",
+        "numberOfAnswers": "Anzahl der Antworten"
+  },"profileSettings":{
+    "darkmode": "Dunkel",
+    "universityEducationGoals": "Abschlussziel",
+    "universityCategories": "Studiengangkathegorien",
+    
+    "editEducationGoals": "Bildungsziele bearbeiten",
+    "vorname": "Vorname",
+        "email": "Email",
+        "emailvalid": "Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.",
+        "emailvalid2": "Email-Adresse bestätigt",
+        "emailrenew": "Erneut senden",
+        "schooltype": "Schulform",
+        "schoolgrade": "Schulklasse",
+        "schoolsubjects": "Fächer",
+        "university": "Hochschule/ Universität",
+        "faculty": "Fakultät",
+        "studiengang": "Studiengang",
+        "abschlussziel": "Abschlussziel",
+        "actioncode": "Aktioncode",
+        "actioncodeText": "Aktioncode einlösen",
+        "help": "Hilfe",
+        "share": "Teilen",
+        "logout": "Abmelden",
+        "deleteAccount": "Account löschen",
+        "colorMode": "Darstellung",
+        "language": "Sprache",
+        "educationKathegory": "Ausbildungskathegorie",
+        "educationSubject": "Ausbildungfach",
+        "hell": "Hell",
+        "dunkel": "Dunkel",
+        "policys": "Datenschutzrichtlinien",
+        "cancel": "Abbrechen",
+        "ok": "OK"
+        
+
+  },"gettingStarted":{
+    "setTogether": "Erstellen wir zusammen ein Lernset.",
+    "comilitones": "Mal schauen was deine Komilitonen lernen.",
+    "createSet" : "Erstelle dein eigenes Lernset",
+    "timeToStart" : "Zeeit durchzustarten!",
+    "sucheLäuft": "Suche läuft...",
+    "useThisModule": "Dieses Modul verwenden",
+    "this": "Diese",
+    "moduleUse": "Module verwenden",
+    "noModulesFound": "Noch keine Molue ausgewählt",
+    "iHaveFoundSomething": "Icch habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
+    "iHaveFoundNothing": "Leeider habe ich nichts gefunden aber kein Problem",
+    "waitAMoment": "Giib mir einen Moment..."
+
+  },"singleModule":{
+    "recommended": "Empfohlen"
   }
 }
 

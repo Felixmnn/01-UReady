@@ -17,7 +17,6 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import languages  from '@/assets/exapleData/languageTabs.json';
 import { useFocusEffect } from '@react-navigation/native';
 import { loadModule } from '@/lib/appwriteDaten';
-import ChangeQuestions from './(createQuestion)/deprecated/changeQuestions';
 
 /**
  * The SingleModule Component is responsible for rendering the deatils of a single module.
@@ -431,7 +430,6 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
         status: null
 
    });
-   console.log("Module", module);
     return (
         <View className='flex-1 rounded-[10px] items-center '>
            
@@ -494,7 +492,7 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 </View>
                 }   
             </View> 
-
+            {/*}
             { isVisibleEditQuestion.state ?
             <ChangeQuestions
                 question={questionToEdit}
@@ -506,7 +504,8 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
                 isVisibleEditQuestion={isVisibleEditQuestion}
                 setIsVisibleEditQuestion={setIsVisibleEditQuestion}
 
-            />      : null}
+    />      : null}
+    */}
         </View>
     )
 }

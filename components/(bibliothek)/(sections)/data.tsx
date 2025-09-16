@@ -175,7 +175,6 @@ const Data = ({setIsVisibleEditQuestion, isVisibleEditQuestion, setQuestionToEdi
                                 <View className='flex-row items-center justify-between'>
                                     <View className='mr-5'>
                                     <Icon name="edit" size={15} color="white"  onPress={() => {
-                                        console.log("Edit Question", item);
                                         setQuestionToEdit(item);
                                         setIsVisibleEditQuestion({
                                             state: true,

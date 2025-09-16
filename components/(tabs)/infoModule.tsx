@@ -8,7 +8,7 @@ const InfoModule = ({
   hideHead,
   infoStyles
 }:{
-  content: ()=> React.ReactNode,
+  content:any,
   header: string,
   additional?: string,
   hideHead?: boolean,

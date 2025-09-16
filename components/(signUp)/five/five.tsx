@@ -14,8 +14,11 @@ const StepFive = (
         setUserData, 
         selectedLanguage, 
         setSelectedAusbildung, 
-        
-        setClass}:{
+        saveUserData,
+        setClass,
+        selectedSubjects,
+        setSelectedSubjects
+    }:{
 
         setDegree: React.Dispatch<React.SetStateAction<{name: string, icon: string} | null>>,
         ausbildungKathegorie: { id: string; name: { [key: string]: string; }; } | null,
@@ -27,6 +30,10 @@ const StepFive = (
         selectedLanguage: number | null,
         setSelectedAusbildung: React.Dispatch<React.SetStateAction<any>>,
         setClass: React.Dispatch<React.SetStateAction<string | null>>;
+        saveUserData: () => Promise<void>;
+        selectedSubjects: { name: string; icon: string }[],
+        setSelectedSubjects: React.Dispatch<React.SetStateAction<{ name: string; icon: string }[]>>
+        
     }
         
 ) => {
@@ -41,6 +48,15 @@ const StepFive = (
         return chunked;
         };
 
+    const subjectSelection = (item: { name: string; icon: string }) => {
+        console.log("Subject selected:", item);
+        if (selectedSubjects.some((i)=> i.name == item.name)) {
+            setSelectedSubjects(selectedSubjects.filter((subject) => subject.name !== item.name))
+        }
+        else {
+            setSelectedSubjects([...selectedSubjects, item])
+        }
+    }
 
   if ("UNIVERSITY" == setSelectedKathegorie) {
     return <University
@@ -56,7 +72,10 @@ const StepFive = (
         userData={userData} 
         ausbildungsListDeutschland={ausbildungsListDeutschland}
         ausbildungKathegorie={ausbildungKathegorie}
+        selectedSubjects={selectedSubjects}
         setSelectedAusbildung={setSelectedAusbildung}
+        saveUserData={saveUserData}
+        subjectSelection={subjectSelection}
     />
     }
         

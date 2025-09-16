@@ -93,6 +93,7 @@ console.log("SlectedSession", selected, moduleSessions[selected], "ModuleSession
                   color: moduleSessions[index].color,
                   iconName: moduleSessions[index].iconName,
                   questions: moduleSessions[index].questions,
+                  moduleID: currentModule.$id
                 } )
                 
               }}

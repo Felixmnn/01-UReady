@@ -19,7 +19,6 @@ const DeleteModule = ({
         modules,
         setModules,
         setSelectedModule,
-        texts
     }:{
         moduleID: string,
         moduleName: string,
@@ -29,11 +28,9 @@ const DeleteModule = ({
         modules: any,
         setModules: React.Dispatch<React.SetStateAction<any>>,
         setSelectedModule: React.Dispatch<React.SetStateAction<string>>,
-        texts: { [key: string]: string }
     }) => {
     const [ showWarning, setShowWarning ] = React.useState(false);  
     const [ savedChanges, setSavedChanges ] = React.useState(false);
-    const { width } = useWindowDimensions();
     const { t } = useTranslation();
     async function handleDelete() {
         if (showWarning === false){

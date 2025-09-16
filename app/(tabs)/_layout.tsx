@@ -23,6 +23,7 @@ const RootLayout = () => {
 
   return (
     <Tabs
+      initialRouteName="home"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false,

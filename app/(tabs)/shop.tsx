@@ -5,6 +5,7 @@ import { useGlobalContext } from '@/context/GlobalProvider'
 import { router } from 'expo-router'
 import images from '@/assets/shopItems/itemConfig'
 import TokenHeader from '@/components/(general)/tokenHeader'
+import { BannerAd } from 'react-native-google-mobile-ads'
 
 
 const shop = () => {

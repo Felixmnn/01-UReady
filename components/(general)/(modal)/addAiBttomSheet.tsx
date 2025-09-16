@@ -1,4 +1,3 @@
-import { View, Text, ScrollView } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import PageAiCreate from '@/components/(getting-started)/pageAiCreate';
@@ -8,7 +7,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 const AddAiBottomSheet = ({isVisibleAiModule=false, setIsVisibleAiModule}) => {
     const sheetRef = useRef<BottomSheet>(null);
     const [ isOpen, setIsOpen ] = useState(true);
-    const snapPoints = ["20%","60%","90%"];
+    const snapPoints = ["20%","60%","90%"];  
     
     useEffect(() => {
         if (isVisibleAiModule) {

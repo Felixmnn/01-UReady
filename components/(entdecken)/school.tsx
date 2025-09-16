@@ -49,13 +49,6 @@ const SchoolFilters = ({country=countryList[0], setFilters}) => {
         scrollbarColor: 'gray transparent', }}>
         
         <StaticFilters
-            items={regions} 
-            selectedItems={selectedRegions} 
-            setSelectedItems={setSelectedRegions}
-            multiselect={true}
-            title={texts[selectedLanguage].region}
-        />
-        <StaticFilters
             items={scholTypes}
             selectedItems={selectedSchoolTypes}
             setSelectedItems={setSelectedSchoolTypes}

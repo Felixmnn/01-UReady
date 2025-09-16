@@ -7,6 +7,7 @@ const quizLayout = () => {
     <View className='flex-1'>
         <>
             <Stack>
+              
                 <Stack.Screen name="quiz"  
                 options={{ 
                     headerShown: false 

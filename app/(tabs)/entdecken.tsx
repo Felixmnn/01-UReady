@@ -64,7 +64,6 @@ const entdecken = () => {
   const [ selectedModules, setSelectedModules] = useState<string[]>([])
   
   //Allgemeine Filter
-  const [ selectedCountry, setSelectedCountry] = useState(countryList[0])
   const [ filterVisible, setFilterVisible] = useState(false)
   const [ selectedKathegory, setSelectedKathegory ] = useState("UNIVERSITY")
 

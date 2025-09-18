@@ -413,23 +413,8 @@ const SingleModule = ({setSelectedScreen, moduleEntry, modules, setModules}) => 
     });
 
     const [ isVisibleEditQuestion, setIsVisibleEditQuestion ] = useState({state:false, status: 0});
-    const [ questionActive, setQuestionActive ] = useState(0);
-    const [ answerActive, setAnswerActive ] = useState(0);
-    const [ newQuestion, setNewQuestion ] = useState({
-        $id: undefined,
-        question: "",
-        questionUrl: "",
-        questionLatex: "",
-        answers: [],
-        answerIndex: [],
-        tags: [],
-        "public": false,
-        sessionID: null,
-        aiGenerated: false,
-        subjectID: module.$id,
-        status: null
+   
 
-   });
     return (
         <View className='flex-1 rounded-[10px] items-center '>
            

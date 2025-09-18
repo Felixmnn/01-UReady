@@ -4,8 +4,30 @@ import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryL
 import { useGlobalContext } from '@/context/GlobalProvider'
 import languages  from '@/assets/exapleData/languageTabs.json'
 import StaticFilters from './staticFilters'
-const SchoolFilters = ({country=countryList[0], setFilters}) => {
-    const { height,width } = useWindowDimensions()
+import { useTranslation } from 'react-i18next'
+import FilterPicker from './filterPicker'
+const SchoolFilters = ({
+  country=countryList[0], 
+  setFilters,
+  filters
+}:{
+    country: {name: string, code: string},
+    setFilters: (filters: any) => void,
+    filters: any
+}) => {
+    const { t } = useTranslation();
+
+
+    const grades = ["1","2","3","4","5","6","7","8","9","10","11","12","13"]
+    const schoolTypesRaw = ["grundschule","hauptschule","realschule","gesamtschule","gymnasium","berufsschule","sonstige"]
+    const schoolTypeObj = schoolTypesRaw.map((type) =>
+      t(`school.type.${type}`, { returnObjects: true })
+    );    
+    
+    const subjectKeys = ["mathematik","deutsch","englisch","biologie","chemie","physik","geschichte","geographie","politik","musik","kunst","sport","informatik","wirtschaftslehre","religion"]
+    const subjectList = t("school.subjects", { returnObjects: true });
+    console.log("subjectList", subjectList)
+    const subjects = Object.values(subjectList).map((s: any) => s.name);
 
     const { user,language } = useGlobalContext()
       const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
@@ -16,6 +38,7 @@ const SchoolFilters = ({country=countryList[0], setFilters}) => {
       }, [language])
     const texts = languages.school;
     
+
 
     //Algemeine Schuldaten
 
@@ -31,44 +54,53 @@ const SchoolFilters = ({country=countryList[0], setFilters}) => {
     const [ selectedSchoolSubjects, setSelectedSchoolSubjects] = useState([])
     const [ selectedSchoolStages, setSelectedSchoolStages] = useState([])
 
-    useEffect(() => {
-        setFilters({
-                creationCountry: country.name.toUpperCase(),
-                kategoryType: "SCHOOL",
-                creationRegion: selectedRegions,
-                creationSchoolForm: selectedSchoolTypes,
-                creationKlassNumber: selectedSchoolStages,
-                creationSubject: selectedSchoolSubjects
-            })
-    },[selectedRegions,selectedSchoolTypes,selectedSchoolSubjects,selectedSchoolStages])
-
+    
     
   return (
-    <ScrollView className=' w-full  ' style={{ 
-        scrollbarWidth: 'thin', 
-        scrollbarColor: 'gray transparent', }}>
-        
-        <StaticFilters
-            items={scholTypes}
-            selectedItems={selectedSchoolTypes}
-            setSelectedItems={setSelectedSchoolTypes}
-            multiselect={true}
-            title={texts[selectedLanguage].schoolform}
+    <ScrollView className=' w-full  '>
+        <FilterPicker
+            title='Schulform'
+            options={schoolTypeObj.map((type) => type.title)}
+            selectedOptions={filters.schoolType}
+            handlePress={(type)=>{
+              console.log("type", type, filters.schoolType)
+              if (!filters.schoolType) {setFilters({...filters, schoolType: [type]}) ;return;}
+              if (filters.schoolType && filters.schoolType.includes(type)) {
+                setFilters({...filters, schoolType: filters.schoolType.filter((t: string) => t !== type)});
+              } else {
+                setFilters({...filters, schoolType: [...filters.schoolType, type]});
+              }
+            }}
         />
-        <StaticFilters
-            items={schoolSubjects} 
-            selectedItems={selectedSchoolSubjects} 
-            setSelectedItems={setSelectedSchoolSubjects}
-            multiselect={true}
-            title={texts[selectedLanguage].subject} 
+
+        <FilterPicker
+          title="Klassen"
+          options={grades}
+          selectedOptions={filters.schoolGrades}
+          handlePress={(type)=>{
+            console.log("type", type, filters.schoolGrades)
+            if (!filters.schoolGrades) {setFilters({...filters, schoolGrades: [type]}) ;return;}
+            if (filters.schoolGrades && filters.schoolGrades.includes(type)) {
+              setFilters({...filters, schoolGrades: filters.schoolGrades.filter((t: string) => t !== type)});
+            } else {
+              setFilters({...filters, schoolGrades: [...filters.schoolGrades, type]});
+            }
+          }}
         />
-        <StaticFilters
-            items={schoolStages}
-            selectedItems={selectedSchoolStages}
-            setSelectedItems={setSelectedSchoolStages}
-            multiselect={true}
-            title={texts[selectedLanguage].class}
-        />  
+
+        <FilterPicker
+            title='Fächer'
+            options={subjects}
+            selectedOptions={filters.schoolSubjects}
+            handlePress={(type)=>{
+              if (!filters.schoolSubjects) {setFilters({...filters, schoolSubjects: [type]}) ;return;}
+              if (filters.schoolSubjects && filters.schoolSubjects.includes(type)) {
+                setFilters({...filters, schoolSubjects: filters.schoolSubjects.filter((t: string) => t !== type)});
+              } else {
+                setFilters({...filters, schoolSubjects: [...filters.schoolSubjects, type]});
+              }
+            }}
+        />
     </ScrollView>
   )
 }

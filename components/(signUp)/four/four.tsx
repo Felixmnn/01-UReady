@@ -3,6 +3,7 @@ import React, {  useState } from 'react'
 import School from './school';
 import University from './university';
 import Education from './education';
+import { useTranslation } from 'react-i18next';
 
 
 /** 
@@ -36,7 +37,7 @@ const StepFour = ({
     setAusbildungKathegorie: (kathegorie: any) => void,
     setSelectedUniversity: (university: any) => void,
     }) => {
-   
+   const { t } = useTranslation();
     const {width} = useWindowDimensions()
     const numColumns = width < 400 ? 2 : 3;
     const [isActive, setIsActive] = useState(false) 
@@ -50,22 +51,29 @@ const StepFour = ({
         }
         return chunked;
       };
-    const groupedData = chunkArray(schoolListDeutschland.schoolTypes, numColumns);
+
+    const schoolOptions = t("school.type", { returnObjects: true });
+    console.log("schoolOptions", JSON.stringify(schoolOptions))
+    const keys = Object.keys(schoolOptions);
+    const keyToObject = keys.map(key => ({
+        id: key,
+        name: schoolOptions[key].title,
+        icon: schoolOptions[key].icon,
+        grades: schoolOptions[key].grades,
+    }));
+    const formated = [...keyToObject];
+    console.log("formated", JSON.stringify(formated))
+
     const groupedDataEdu = chunkArray(ausbildungsTypen, numColumns);
+
     if (selectedKathegorie == "SCHOOL") {
-        const [ isVisible, setIsVisible ] = useState(true)
         return <School
-            userData={userData}
-            setUserData={setUserData}
-            selectedLanguage={selectedLanguage}
-            schoolListDeutschland={schoolListDeutschland}
-            school={userData.school}
-            setSchool={setSchool}
-            Sonstige={Sonstige}
-            groupedData={groupedData}
-            isActive={isActive}
-            setIsActive={setIsActive}
-        />
+                    userData={userData}
+                    setUserData={setUserData}
+                    setSchool={setSchool}
+                    Sonstige={Sonstige}
+                    groupedData={formated}
+                />
     } else if (selectedKathegorie == "UNIVERSITY") {
         return <University
             userData={userData}

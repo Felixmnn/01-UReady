@@ -1,63 +1,37 @@
-import { Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { countryList, schoolListDeutschland } from '@/assets/exapleData/countryList'
-import { useGlobalContext } from '@/context/GlobalProvider'
-import languages  from '@/assets/exapleData/languageTabs.json'
-import RenderFilters from './renderFilters'
+import React from 'react'
+import { countryList } from '@/assets/exapleData/countryList'
 import { ScrollView } from 'react-native-gesture-handler'
+import FilterPicker from './filterPicker'
+import { useTranslation } from 'react-i18next'
 
-const OtherFilters = ({country=countryList[0], setFilters}) => {
-    const { height,width } = useWindowDimensions()
+const OtherFilters = ({
+  setFilters,
+  filters}
+:{
+    setFilters: (filters: any) => void,
+    filters: any
+}) => {
+    const { t } = useTranslation();
 
-    const { user,language } = useGlobalContext()
-      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-      useEffect(() => {
-        if(language) {
-          setSelectedLanguage(language)
-        }
-      }, [language])
-    const texts = languages.other;
-    
-    //Dynnamische Schuldaten basierend auf dem Land
-    const [ otherSubjects, setOtherSubjects ] = useState(schoolListDeutschland.schoolSubjects.map((subject) => subject.name))
+    const subjectList = t("school.subjects", { returnObjects: true });
+    const subjects = Object.values(subjectList).map((s: any) => s.name);
 
-    //Dynamische Filter basierend auf den User eingaben
-    const [ selectedOtherSubjects, setSelectedOtherSubjects] = useState([])
-
-    useEffect(() => {
-        setFilters({
-                creationCountry: country.name.toUpperCase(),
-                kategoryType: ["OTHER","UNIVERSITY","EDUCATION","SCHOOL"],
-                creationSubject: selectedOtherSubjects
-            })
-        },[selectedOtherSubjects])
-
-    function handlePress(item) {
-        if (selectedOtherSubjects.includes(item)) {
-            setSelectedOtherSubjects(selectedOtherSubjects.filter((subject) => subject !== item))
-        } else {
-            setSelectedOtherSubjects([...selectedOtherSubjects, item])
-        }
-    }
   return (
-    <ScrollView className=' w-full' style={{ scrollbarWidth: 'thin', 
-                        scrollbarColor: 'gray transparent',}}>
-      <Text className='text-[15px] font-bold mb-2 px-2 text-gray-300'>
-        {texts[selectedLanguage].subjects}
-      </Text>
-      <View className='flex-row flex-wrap justify-start items-center w-full px-2 py-1 ml-2'>
-      {
-        otherSubjects.map((item, index) => {
-          return (
-            <TouchableOpacity key={index} className={`p-2 rounded-[5px] m-1 ${selectedOtherSubjects.includes(item) ? "bg-blue-500" : "bg-gray-500"}`} onPress={()=> handlePress(item)} >
-              <Text>
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )
-        })
-      }
-      </View>
+    <ScrollView className=' w-full' >
+      <FilterPicker
+            title='Fächer'
+            options={subjects}
+            selectedOptions={filters.schoolSubjects}
+            handlePress={(type)=>{
+              if (!filters.schoolSubjects) {setFilters({...filters, schoolSubjects: [type]}) ;return;}
+              if (filters.schoolSubjects && filters.schoolSubjects.includes(type)) {
+                setFilters({...filters, schoolSubjects: filters.schoolSubjects.filter((t: string) => t !== type)});
+              } else {
+                setFilters({...filters, schoolSubjects: [...filters.schoolSubjects, type]});
+              }
+            }}
+        />
+      
     </ScrollView>
   )
 }

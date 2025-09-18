@@ -26,16 +26,13 @@ const University = ({
 
         const [ isVisible, setIsVisible ] = useState(true)
         const { t } = useTranslation();
-        const subjectsRaw = t("personalizeSix.universitySubjects", { returnObjects: true });
-        const subjects: Array<{ name: string; icon?: string }> = Array.isArray(subjectsRaw) ? subjectsRaw : [];
-        const filteredData = subjects
-        .filter((item) =>
-            item.name.toLowerCase().includes(subjectFilter.toLowerCase())
-        )
-        .map((item) => ({
-            name: item.name,
-            icon: item.icon || "", 
-        }));
+        const subjectsRaw = t("universityCategories.universitySubjects", { returnObjects: true });
+        const keys = Object.keys(subjectsRaw);
+        const subjectsToObjects = keys.map((key) => {
+            return { id: key, icon: subjectsRaw[key].icon, name: subjectsRaw[key].name, id: key };
+        })
+
+       
         return (
             <View className='h-full  w-full justify-between items-center py-5'>
               <BotBottomLeft
@@ -49,7 +46,7 @@ const University = ({
                 <View className='w-full'>  
                     <ProgressBar percent={85} handlePress={ () => {setUserData({...userData,signInProcessStep:"FIVE"})}}/>
                     </View> 
-                    <SearchList data={filteredData}
+                    <SearchList data={subjectsToObjects}
                               handlePress={handleItemPress}
                               filter={subjectFilter}
                               setFilter={setSubjectFilter}

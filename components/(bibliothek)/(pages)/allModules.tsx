@@ -65,23 +65,9 @@ function calculatePercent(questions){
       const [ isVisible, setIsVisible] = useState(false);
       return (
         <View className={` mb-4`}>
-        <TouchableOpacity className='' onPress={()=> setIsVisible(!isVisible)}>
-          <View className='flex-row items-center justify-between w-full mb-2'>
-            <Text className='font-bold text-gray-100 text-[18px]'>{header}</Text>
-            <Icon name={isVisible ? "chevron-down" : "chevron-up"} size={20} color="white"/>
-          </View>
-        </TouchableOpacity>
-          {!isVisible && (
-          <View className={`flex-1 flex-row flex-wrap`}
-          
-          >
+          <View className={`flex-1 flex-row flex-wrap py-2`}>
             {items.map((item, index) => (
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
-                <Text>
-                  {
-                    JSON.stringify(item)
-                  }
-                </Text>
                 <Karteikarte
                   handlePress={async () => {
                     console.log("Module selected:", item);
@@ -122,7 +108,6 @@ function calculatePercent(questions){
               </View>
             ))}
           </View>
-        )}
         </View>
       )
 

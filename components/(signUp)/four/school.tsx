@@ -49,51 +49,27 @@ const School = ({
                 <ProgressBar percent={50} handlePress={()=> setUserData({...userData,signInProcessStep:"THREE"})}/>
             </View>
                 <View className='items-center'>
-                   
-                        <View className='justify-center items-center w-full'>
-                        {groupedData.map((row, rowIndex) => (
-                                    <View key={rowIndex} style={{ flexDirection: 'row' }}>
-                                    {row.map((item:SchoolType) => (
-                                        <TouchableOpacity
-                                        key={item.id}
-                                        onPress={() => {
-                                            setSchool(item);
-                                            setUserData({ ...userData, signInProcessStep: "FIVE" });
-                                        }}
-                                        className="p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
-                                        style={{ width: 120, height: 120 }}
-                                        >
-                                        <Icon name="school" size={20} color="#D1D5DB" />
-                                        <Text
-                                            className="text-gray-100 font-semibold text-[15px] text-center"
-                                            numberOfLines={item.name.length > 13 ? 2 : undefined}
-                                        >
-                                            {item.name}
-                                        </Text>
-                                        </TouchableOpacity>
-                                    ))}
-                                    </View>
-                                ))}
-
-                                {/* Footer Element (Sonstige) */}
-                                <View className="w-full justify-center items-center">
-                                    <TouchableOpacity
-                                    onPress={() => {
-                                        setSchool(Sonstige);
-                                        setUserData({ ...userData, signInProcessStep: "FIVE" });
-                                    }}
-                                    key={Sonstige.id}
-                                    className="p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
-                                    style={{ width: 120, height: 120 }}
-                                    >
-                                    <Icon name="ellipsis-h" size={15} color="#D1D5DB" />
-                                    <Text className="text-gray-100 font-semibold text-[15px] text-center">
-                                        {Sonstige.name}
-                                    </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
+                    <View className='justify-center items-center w-full flex-row flex-wrap mr-5 pr-3'>
+                    {groupedData.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            onPress={() => {
+                                setSchool(item);
+                                setUserData({ ...userData, signInProcessStep: "FIVE" });
+                            }}
+                            className=" border-gray-800 border-[1px] rounded-[10px] bg-gray-900 items-center justify-center m-1"
+                            style={{ width: 120, height: 120 }}
+                            >
+                            <Icon name="school" size={20} color="#D1D5DB" />
+                            <Text
+                                className="text-gray-100 font-semibold text-[15px] text-center"
+                                numberOfLines={item.name.length > 13 ? 2 : undefined}
+                            >
+                                {item.name}
+                            </Text>
+                        </TouchableOpacity>
+                        ))}
+                    </View>
             </View> 
             <View className='items-center justiy-center'></View>
             </View>

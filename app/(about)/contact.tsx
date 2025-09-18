@@ -62,7 +62,7 @@ const Contact = () => {
         <View className="w-full" style={{ maxWidth: 700 }}>
         <Text className="text-base mb-1 text-white">{t('contact.name')}</Text>
         <TextInput
-          className="border border-blue-300 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
+          className="border border-blue-700 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
           placeholder={t('contact.yourName')}
           maxLength={100}
           placeholderTextColor={'#888'}
@@ -71,7 +71,7 @@ const Contact = () => {
         />
         <Text className="text-base mb-1 text-white">{t('contact.email')}</Text>
         <TextInput
-          className="border border-blue-300 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
+          className="border border-blue-700 rounded-xl p-3 mb-4 bg-gray-800 text-gray-200"
           placeholder= {t('contact.yourEmail')}
           maxLength={100}
           placeholderTextColor={'#888'}
@@ -82,7 +82,7 @@ const Contact = () => {
 
         <Text className="text-base mb-1 text-white">{t('contact.message')}</Text>
         <TextInput
-          className="border border-blue-300 rounded-xl p-3 mb-6 bg-gray-800 h-32 text-start text-gray-200"
+          className="border border-blue-700 rounded-xl p-3 mb-6 bg-gray-800 h-32 text-start text-gray-200"
           placeholder={t('contact.yourMessage')}
           placeholderTextColor={'#888'}
           multiline
@@ -105,7 +105,8 @@ const Contact = () => {
         <CustomButton
             title={t('contact.send')}
             handlePress={handleSubmit}
-            containerStyles='bg-blue-700 border-blue-800 rounded-lg'
+            containerStyles='bg-blue-700 rounded-lg'
+            disabled={name.length < 1 || email.length < 5 || message.length < 1}
             />
       }
       

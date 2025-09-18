@@ -15,36 +15,31 @@ type Item = {
 
 
 const Education = ({
-    selectedLanguage,
     setUserData,
     userData,
-    ausbildungsListDeutschland,
     ausbildungKathegorie,
-    setSelectedAusbildung,
     saveUserData    ,
     subjectSelection,
-    selectedSubjects
+    selectedSubjects,
+    subjectFilter,
+    setSubjectFilter
 }:{
-    selectedLanguage: number | null,
     setUserData: (data: any) => void,
     userData: any,
     ausbildungsListDeutschland: any,
     ausbildungKathegorie: {id: string, name: {[key: string]: string}},
-    setSelectedAusbildung: React.Dispatch<React.SetStateAction<any>>,
     saveUserData: () => Promise<void>,
     subjectSelection: (item: { name: string; icon: string}) => void,
     selectedSubjects: { name: string; icon: string }[],
+    subjectFilter: string,
+    setSubjectFilter: React.Dispatch<React.SetStateAction<string>>
 
 }) => {
     const { t } = useTranslation();
+    const eduObjects = t(`education.educationSubjects.${ausbildungKathegorie.id}`, { returnObjects: true });
+    const preppedEduObjects = Object.keys(eduObjects).map((key) => ({ id: key, name: eduObjects[key].name, icon: eduObjects[key].icon }));
   const [ isVisible, setIsVisible ] = useState(true)
-    const [ausbildungsFilter, setAusbildungFilter] = useState("");
-
-    const handlePress = (item:Item) => {
-        saveUserData();
-    }
   
-    
     return (
         <View className='h-full  w-full justify-between py-5'>
             <BotBottomLeft
@@ -58,18 +53,14 @@ const Education = ({
             <View className='w-full'>
             <ProgressBar percent={75} handlePress={()=> setUserData({...userData,signInProcessStep:"FOUR"})}/>  
             </View>
-            <SearchList
-                data={selectedLanguage == null ? ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item:Item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase())) : ausbildungsListDeutschland[ausbildungKathegorie.name.DE].filter((item:Item) => item.name.toLowerCase().includes(ausbildungsFilter.toLowerCase()))}
-                filter={ausbildungsFilter}
-                setFilter={setAusbildungFilter}
-                handlePress={subjectSelection}
-                nameComparison={false}
-                selectedItems={selectedSubjects}
 
-                noResultsText={t("personalizeFive.noEducationFound")}
-                abschlussziel={t("personalizeFive.yourEducation")}
-
-            />
+            <SearchList data={preppedEduObjects}
+                        handlePress={subjectSelection}
+                        filter={subjectFilter}
+                        setFilter={setSubjectFilter}
+                        selectedItems={selectedSubjects}
+                        abschlussziel={t("personalizeSix.yourSubjects")}
+                        />
             
             <View/>
             <GratisPremiumButton active={true} aditionalStyles={"rounded-full w-full bg-blue-500 rounded-lg  "} handlePress={()=> {

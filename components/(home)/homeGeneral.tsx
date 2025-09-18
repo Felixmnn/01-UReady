@@ -14,11 +14,13 @@ import AddModuleBottomSheet from '../(general)/(modal)/addModuleBottomSheet';
 import { WebView } from 'react-native-webview';
 import CustomButton from '../(general)/customButton';
 import { generateQuestions } from '@/functions/(aiQuestions)/materialToModule';
+import { useTranslation } from 'react-i18next';
 
 
 const { width } = Dimensions.get('window');
 
 const HomeGeneral = () => {
+  const { t } = useTranslation();
   const { user, userUsage } = useGlobalContext()
   const [ userUsageP, setUserUsageP ] = useState(null)
   let count = 0
@@ -42,7 +44,8 @@ const HomeGeneral = () => {
     if(language) {
       setSelectedLanguage(language)
     }
-  }, [language])
+  },
+[language])
 
   
   {/*Überschrift für die einzelnen Abteie */}
@@ -211,14 +214,18 @@ const HomeGeneral = () => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
+    },
+2000);
   };
 
- 
 
-  return (
+
+
+
+    return (
     <SafeAreaView className='h-full w-full  '>
-      
+           <TokenHeader userUsage={userUsageP} />
+
     <ScrollView
        style={{
           height: '100%',
@@ -239,7 +246,6 @@ const HomeGeneral = () => {
         />
       }
     >
-      <TokenHeader userUsage={userUsageP} />
       
 
     <View className='flex-1 rounded-[10px] p-3'>

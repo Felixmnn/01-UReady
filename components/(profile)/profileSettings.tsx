@@ -224,7 +224,8 @@ const ProfileSettings = () => {
       await setColorMode(user.$id, text == "Hell" ? false : true)
     }
   }
-
+    const schoolTypeKey = userDataKathegory?.schoolType ? userDataKathegory.schoolType.toLowerCase() : null;
+    const schoolType = t(`school.type.${schoolTypeKey}.title`)
 
   return (
     <View className='flex-1 items-center '>
@@ -275,15 +276,24 @@ const ProfileSettings = () => {
                                 color: "#808080",
                               }}
                               >{t("profileSettings.universityEducationGoals")}</Text>
-                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.studiengangZiel}</Text> 
+                              <Text className='font-semibold text-white ml-2'>{t(`universityCategories.degrees.${userDataKathegory.studiengangZiel}.name`)}</Text> 
                               
                               <Text className='font-semibold text-white text-gray-500  '
                               style={{
                                 color: "#808080",
                               }}
                               >{t("profileSettings.universityCategories")}</Text>
-                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.schoolSubjects}</Text> 
-                              
+                              <View>
+                                {
+                                  userDataKathegory.schoolSubjects.map((schoolSubjects, index) => {
+                                    return(
+                                      <Text key={index} className='font-semibold text-white ml-2'>{t(`universityCategories.universitySubjects.${schoolSubjects}.name`)}</Text>
+                                    )
+                                  })
+                                }
+                              </View>
+
+
                             </View>
                             :userDataKathegory && userDataKathegory.kategoryType == "SCHOOL" ?
                             <View className='w-full'>
@@ -292,7 +302,7 @@ const ProfileSettings = () => {
                                 color: "#808080",
                               }}
                               >{t("profileSettings.schooltype")}</Text>
-                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.schoolType}</Text> 
+                              <Text className='font-semibold text-white ml-2'>{schoolType}</Text> 
                               
                               <Text className='font-semibold text-white text-gray-500  '
                               style={{
@@ -309,7 +319,7 @@ const ProfileSettings = () => {
                                 {
                                   userDataKathegory.schoolSubjects.map((schoolSubjects, index) => {
                                     return(
-                                      <Text key={index} className='font-semibold text-white ml-2'>{schoolSubjects}</Text>
+                                      <Text key={index} className='font-semibold text-white ml-2'>{t(`school.subjects.${schoolSubjects}.name`)}</Text>
                                     )
                                   })
                                 }
@@ -322,14 +332,16 @@ const ProfileSettings = () => {
                                 color: "#808080",
                               }}
                               >{t("profileSettings.educationKathegory")}</Text>
-                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.educationKathegory}</Text> 
+                              <Text className='font-semibold text-white ml-2'>{
+                                t(`education.educationKategories.${userDataKathegory.educationKathegory}.name`)}</Text> 
                               
                               <Text className='font-semibold text-white text-gray-500  '
                               style={{
                                 color: "#808080",
                               }}
                               >{t("profileSettings.educationSubject")}</Text>
-                              <Text className='font-semibold text-white ml-2'>{userDataKathegory.schoolSubjects}</Text> 
+                              <Text className='font-semibold text-white ml-2'>{
+                                t(`education.educationSubjects.${userDataKathegory.educationKathegory}.${userDataKathegory.educationSubject}.name`)}</Text> 
                               
                             </View>
                             :<View className='w-full'>
@@ -338,12 +350,14 @@ const ProfileSettings = () => {
                             style={{
                               color: "#808080",
                             }}
-                            >{t("profileSettings.schoolSubjects")}</Text>
+                            >{t("profileSettings.schoolsubjects")}</Text>
                             <View>
                               {
                                userDataKathegory && userDataKathegory.schoolSubjects.map((schoolSubjects, index) => {
                                   return(
-                                    <Text key={index} className='font-semibold text-white ml-2'>{schoolSubjects}</Text>
+                                    <Text key={index} className='font-semibold text-white ml-2'>
+                                      {t(`school.subjects.${schoolSubjects}.name`)}
+                                      </Text>
                                   )
                                 })
                               }

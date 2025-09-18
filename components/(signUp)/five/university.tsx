@@ -15,17 +15,20 @@ const University = ({
     setDegree: React.Dispatch<React.SetStateAction<{name: string, icon: string} | null>>
 
 }) => {
-  const degrees = [
-        { name: "Bachelor", icon: "graduation-cap" },
-        { name: "Master", icon: "user-graduate" }, 
-        { name: "Staatsexamen", icon: "file-signature" },
-        { name: "Diplom", icon: "scroll" }, 
-        { name: "Magister", icon: "book-reader" }, 
-        { name: "Others", icon: "question-circle" } 
-    ];
+
         const [ isVisible, setIsVisible ] = useState(true)
         const { width } = useWindowDimensions();
         const { t } = useTranslation();
+
+
+        const degreesRaw = t("universityCategories.degrees", { returnObjects: true });
+        console.log("Degrees Raw: ", degreesRaw);
+        const degreeKeys = Object.keys(degreesRaw);
+        console.log("Degree Keys: ", degreeKeys);
+        const degrees = degreeKeys.map((key) => {
+            return { name: degreesRaw[key].name, icon: degreesRaw[key].icon, id: key };
+        });
+        console.log("Degrees: ", degrees);
     return (
             <View  className='h-full  w-full justify-between items-center py-5'>
                 <BotBottomLeft
@@ -46,7 +49,9 @@ const University = ({
                         numColumns={width < 400 ? 2 : 3}
                         className='z-100'
                         renderItem={({item}) => (
-                            <TouchableOpacity key={item.name} onPress={()=> {setDegree(item); setUserData({...userData,signInProcessStep:"SIX"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
+                            <TouchableOpacity key={item.name} onPress={()=> {
+                                setDegree(item); 
+                                setUserData({...userData,signInProcessStep:"SIX"})}} className='p-4 border-gray-800 border-[1px] rounded-[10px] bg-gray-900  items-center justify-center m-1'
                                 style={{width:120, height:120}}
                             >
                                 <Icon name={item.icon} size={20} color="#D1D5DB" />

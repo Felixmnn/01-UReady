@@ -7,141 +7,77 @@ import RenderFilters from './renderFilters'
 import StaticFilters from './staticFilters'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useTranslation } from 'react-i18next'
+import { Filter } from 'react-native-svg'
+import FilterPicker from './filterPicker'
 
-const UniversityFilters = ({country=countryList[0], setFilters}) => {
-  const { language } = useGlobalContext()
-  const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-  useEffect(() => {
-    if(language) {
-      setSelectedLanguage(language)
-    }
-  }, [language])
-  const texts = languages.university;
+const UniversityFilters = ({
+  filters,
+  setFilters
+}:{
+  filters: any,
+  setFilters: any
+}) => {
     
     //Allgemeine Universitätsdaten
     const abschlussziele = ["Bachelor", "Master", "Staatsexamen","Diplom","Magister","Others"]
 
-    //Dynamische Universitätsdaten basierend auf dem Land
-    const [ universityList, setUniversityList ] = useState([universityListDeutschland])
-    const [ universityFacultys, setUniversityFacultys ] = useState(LeibnizFaculties)
-    const [ universitySubjects, setUniversitySubjects ] = useState(LeibnizSubjects[0]["Bachelor"])
     const { t } = useTranslation();
     const subjectsRaw = t("personalizeSix.universitySubjects", { returnObjects: true });
     const subjects: Array<{ name: string; icon?: string }> = Array.isArray(subjectsRaw) ? subjectsRaw : [];
     const filteredData = subjects.sort((a, b) => a.name.localeCompare(b.name));
 
-    const noSubjectsList = [
-  {
-    "name": "Architektur & Stadtplanung",
-  },
-  {
-    "name": "Bildende Kunst",
-  },
-  {
-    "name": "Erziehungswissenschaften & Pädagogik",
-  },
-  {
-    "name": "Geistes- und Sozialwissenschaften",
-  },
-  {
-    "name": "Geowissenschaften & Umweltwissenschaften",
-  },
-  {
-    "name": "Geschichte & Archäologie",
-  },
-  {
-    "name": "Informatik & Technik",
-  },
-  {
-    "name": "Kunst, Design & Medien",
-  },
-  {
-    "name": "Musik & Musikpädagogik",
-  },
-  {
-    "name": "Naturwissenschaften & Mathematik",
-  },
-  {
-    "name": "Philosophie & Ethik",
-  },
-  {
-    "name": "Politikwissenschaft & Internationale Beziehungen",
-  },
-  {
-    "name": "Rechtswissenschaften (Jura)",
-  },
-  {
-    "name": "Soziologie & Sozialwissenschaften",
-  },
-  {
-    "name": "Sportwissenschaften",
-  },
-  {
-    "name": "Sprach- & Literaturwissenschaften",
-  },
-  {
-    "name": "Theologie & Religionswissenschaften",
-  },
-  {
-    "name": "Umwelt, Landwirtschaft & Nachhaltigkeit",
-  },
-  {
-    "name": "Umwelttechnik",
-  },
-  {
-    "name": "Wirtschafts- und Rechtswissenschaften",
-  }
-      ];
-
-    //Dynamische Filter basierend auf den User eingaben
-    const [ selectedAbschlussziele, setSelectedAbschlussziele] = useState(["Bachelor"])
-    const [ selectedFacultys, setSelectedFacultys] = useState([])
-    const [ selectedSubjects, setSelectedSubjects] = useState([])
-    const [ selectedUniversity, setSelectedUniversity] = useState([])
-
-    useEffect(() => {
-      if (! abschlussziele.includes(selectedAbschlussziele[0] )) return;
-      setUniversitySubjects(LeibnizSubjects[0][selectedAbschlussziele[0]]);
-    }, [selectedAbschlussziele])
+    const univeristyDegreeType = t("universityCategories", { returnObjects: true });
     
-    useEffect(() => {
-      if (selectedUniversity.length === 0) return;
-      if (selectedUniversity[0].name == "Other"){
-        setSelectedSubjects(noSubjectsList.map((item) => item.name));
-      }
-    },[selectedUniversity])
 
-    useEffect(() => {
-      setFilters({
-                creationCountry: country.name.toUpperCase(),
-                kategoryType: "UNIVERSITY",
-                creationUniversity: selectedUniversity,
-                creationUniversityFaculty: selectedFacultys,
-                creationUniversitySubject: selectedSubjects
-      })
-    },[selectedUniversity,selectedFacultys,selectedSubjects])
-    
+    const degreeObject = t("universityCategories.degrees", { returnObjects: true });
+    const keys = Object.keys(degreeObject);
+    const degreeNames = keys.map((key) => degreeObject[key].name);
+
+    const subjectObjects = t("universityCategories.universitySubjects", { returnObjects: true });
+    const subjectKeys = Object.keys(subjectObjects);
+    const subjectList = subjectKeys.map((key) => subjectObjects[key].name);
+  
   return (
-    <ScrollView className=' w-full  ' 
-      style={{
-        scrollBarscrollbarWidth: 'thin', 
-        scrollbarColor: 'gray transparent',
-      }}
-    >
-      <StaticFilters
-          items={abschlussziele}
-          selectedItems={selectedAbschlussziele}    
-          setSelectedItems={setSelectedAbschlussziele}
-          multiselect={false}
-          title={texts[selectedLanguage].abschlussziel}
-          />
-      <StaticFilters
-          items={filteredData.map((item) => item.name)}
-          selectedItems={selectedSubjects}
-          setSelectedItems={setSelectedSubjects}
-          multiselect={true}
-          title={"Kathegorys"}
-          /> 
+    <ScrollView className=' w-full  '>
+      <FilterPicker
+        title='Anschlussziel'
+        options={degreeNames}
+        selectedOptions={filters.universityDegreeType}
+        handlePress={(option) => {
+          console.log("Pressed: ", option)
+          if (filters.universityDegreeType && filters.universityDegreeType.includes(option)) {
+            setFilters({
+              ...filters,
+              universityDegreeType: filters.universityDegreeType.length > 1 ? filters.universityDegreeType.filter((item:string) => item !== option) : []
+            })
+          } else {
+            setFilters({
+              ...filters,
+              universityDegreeType:filters.universityDegreeType ?  [...filters.universityDegreeType, option] : [option]
+            })
+          }
+        }}
+      />
+      <FilterPicker
+        title='Fachrichtung'
+        options={subjectList}
+        selectedOptions={filters.universityKategorie}
+        handlePress={(option) => {
+          console.log("Pressed: ", option)
+          if (filters.universityKategorie && filters.universityKategorie.includes(option)) {
+            setFilters({
+              ...filters,
+              universityKategorie: filters.universityKategorie.length > 1 ? filters.universityKategorie.filter((item:string) => item !== option) : []
+            })
+          } else {
+            setFilters({
+              ...filters,
+              universityKategorie:filters.universityKategorie ?  [...filters.universityKategorie, option] : [option]
+            })
+          }
+        }}
+      />
+      
     </ScrollView>
   )
 }

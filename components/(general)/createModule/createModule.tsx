@@ -86,7 +86,11 @@ const CreateModule = ({
             creator: userData.$id ?? "",
             creationCountry: userData.country,
             creationUniversity: userData.university,
-            creationUniversityProfession: userData.studiengangZiel,
+            creationUniversityProfession: 
+            userData.studiengangZiel == "MASTER" || userData.studiengangZiel || "BACHELOR" ||
+            userData.studiengangZiel == "STAATSEXAMEN" || userData.studiengangZiel == "DIPLOM" || 
+            userData.studiengangZiel == "PHD" || userData.studiengangZiel == "OTHER"
+            ?  userData.studiengangZiel : null,
             creationRegion: userData.region,
             creationUniversitySubject: userData.studiengang,
             creationSubject: userData.schoolSubjects,

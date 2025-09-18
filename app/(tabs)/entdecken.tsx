@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput ,Image, ActivityIndicator, FlatList, Platform} from 'react-native'
-import React,{useRef, useState, useEffect} from 'react'
+import React,{useRef, useState, useEffect, use} from 'react'
 import Tabbar from '@/components/(tabs)/tabbar'
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useWindowDimensions } from 'react-native';
@@ -20,7 +20,23 @@ import RenderResults from '@/components/(entdecken)/renderResults';
 import { searchDocuments } from '@/lib/appwriteQuerySerach';
 import { loadAllModules } from '@/lib/appwriteDaten';
 import { useTranslation } from 'react-i18next';
+import CustomButton from '@/components/(general)/customButton';
+import { getMatchingModules } from '@/lib/appwriteEntdecken';
 
+type FilterType = {
+  eductaionType: "UNIVERSITY" | "SCHOOL" | "EDUCATION" | "OTHER" | null,
+  universityDegreeType: "BACHELOR" | "MASTER" | "PHD" | "DIPLOM" | "STATE_EXAM" | "OTHER" | null,
+  universityKategorie: string[] | undefined | null
+
+  schoolType?: string[] | undefined | null,
+  schoolSubjects?: string[] | undefined | null,
+  schoolGrades?: number[] | undefined | null,
+
+  educationKathegory?: string[] | undefined | null,
+  educationSubject?: string[] | undefined | null,
+
+  otherSubjects?: string[] | undefined | null,
+}
 
 const entdecken = () => {
   const {t} = useTranslation();
@@ -36,6 +52,7 @@ const entdecken = () => {
     async function fetchAllModules(){
       const modules = await loadAllModules();
       if (modules) {
+
         setModules(modules.filter(m => m.public == true && m.questions > 0 && m.name.includes("Kopie") == false));
       } else {
         setModules([]);
@@ -76,6 +93,24 @@ const entdecken = () => {
   //____ The filter Part _____________________________________________________________
     const [ filters, setFilters ] = useState({})
 
+
+    const [ realFilters, setRealFilters ] = useState<FilterType>({
+      eductaionType: "UNIVERSITY",
+      universityDegreeType: null,
+      universityKategorie: null,
+      otherSubjects: null,
+      educationSubject: null,
+      educationKathegory: null,
+      schoolGrades: null,
+      schoolSubjects: null,
+      schoolType: null,
+    })
+
+
+
+
+
+
     async function fetchModules(filters: any) {
       const keys = Object.keys(filters);
       if (keys.length > 1) {
@@ -92,6 +127,7 @@ const entdecken = () => {
       fetchModules(filters)
     },[filters])
 
+    //Initial Filters
     useEffect(() => {
       if (!userData) {
         return;
@@ -178,6 +214,7 @@ const entdecken = () => {
       },
     }
   ]
+
   useEffect(() => {
     if (user == null) return;
     const fetchMyModules = async () => {
@@ -227,8 +264,8 @@ const entdecken = () => {
     }
       
     return (
-        <View className={`${Platform.OS == "web" ? "" : null} w-full  rounded-full  ${topButton ? "" : "p-2"}`} >
-          <TouchableOpacity disabled={loading  || (userUsage.energy < calculateEnergyCost())} className={`${topButton ? "px-2" : "p-2"} flex-row items-center justify-center rounded-full`}
+        <View className={`${Platform.OS == "web" ? "" : null}  rounded-full  ${topButton ? "" : "p-2"}`} >
+          <TouchableOpacity disabled={loading  || (userUsage.energy < calculateEnergyCost())} className={`${topButton ? "px-2" : "p-2"} flex-1 flex-row items-center justify-center rounded-full`}
           style={{
             backgroundColor: userUsage.energy > selectedModules.length * 3 ? "#3b82f6" : "#f63b3b",
             borderWidth: topButton ? 1 : 2,
@@ -315,6 +352,7 @@ const entdecken = () => {
         creationCountry : userData?.country || "DEUTSCHLAND"
           } as Filters)
       }
+
       return (
         <View className={`flex-row p-2 justify-between items-center rouned-[10px] w-full `}>
             
@@ -326,6 +364,10 @@ const entdecken = () => {
                   options.map((option, index) => (
                         <TouchableOpacity key={option.enum} className={` rounded-full  ${width > 600 ? "p-2" : "p-2"} ${selectedKathegory == option.enum ? "bg-blue-500 w-[120px] items-center" : ""}`} 
                         onPress={() => {
+                          setRealFilters({
+                            ...realFilters,
+                            eductaionType: option.enum as FilterType["eductaionType"],
+                          })
                           setSelectedKathegory(option.enum)
                           handlePress(option)
                           }}>
@@ -341,7 +383,111 @@ const entdecken = () => {
           </View>
       )
     }
+    
+    const [offset, setOffset] = useState(0);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
+    async function getModules(){
+
+    if (loading || (!hasMore && loadingMore)) return;
+
+    setLoading(true);
+
+    const currentOffset = loadingMore ? offset : 0;
+
+    const schoolTypesRaw = ["grundschule","hauptschule","realschule","gesamtschule","gymnasium","berufsschule","sonstige"]
+    const schoolTypeObj = schoolTypesRaw.map((type) =>
+      t(`school.type.${type}`, { returnObjects: true })
+    );    
+    
+    const subjectKeys = [ "english","math","german","biology","chemistry","physics","history","geography","art","music","sports","religion","ethics","computerScience","socialStudies","economics","technology"]
+    
+    const subjects = subjectKeys.map((type) =>
+      t(`school.subjects.${type}`, { returnObjects: true })
+    );
+
+    const universityObject = t("universityCategories.degrees", { returnObjects: true });
+    const universityDegreeTypeKeys = Object.keys(universityObject);
+    const universityDegreeObj = universityDegreeTypeKeys.map((key) => ({
+      name: universityObject[key].name,
+      id: key
+    }));
+
+    const uisSubsObject = t("universityCategories.universitySubjects", { returnObjects: true });
+    const uisSubsKeys = Object.keys(uisSubsObject);
+    const uisSubsObj = uisSubsKeys.map((key) => ({
+      name: uisSubsObject[key].name,
+      id: key
+    }));
+
+    const eduKatObjects = t("education.educationKategories", { returnObjects: true });
+    const eduKatKeys = Object.keys(eduKatObjects);
+    const eduKatList = eduKatKeys.map((key) => eduKatObjects[key].name);
+    console.log("EduKatList", eduKatList)
+
+    const indexOfEduKat = realFilters.educationKathegory?.map((kat) => {
+        return eduKatList.findIndex((k) => k === kat);
+      });
+
+    const eduSubObjects = t(`education.educationSubjects.${eduKatKeys[indexOfEduKat && typeof indexOfEduKat[0] =="number" ? indexOfEduKat[0] : 0 ]}`, { returnObjects: true });
+    const eduSubKeys = Object.keys(eduSubObjects);
+    const eduSubList = eduSubKeys.map((key) => eduSubObjects[key].name);
+    console.log("EduSubList", eduSubList)
+
+      const indexesOfSchoolTypes = realFilters.schoolType?.map((type) => {
+        return schoolTypeObj.findIndex((obj) => obj.title === type);
+      });
+      const indexesOfSubjects = realFilters.schoolSubjects?.map((subject) => {
+        return subjects.findIndex((s) => s.name === subject);
+      });
+      const indexOfDegreeType = realFilters.universityDegreeType ? 
+        realFilters.universityDegreeType.map((degree) => {
+          return universityDegreeObj.findIndex((obj) => obj.name === degree);
+        }) : null;
+      
+      const indexOfUniversitySubjects = realFilters.universityKategorie?.map((subject) => {
+        return uisSubsObj.findIndex((s) => s.name === subject);
+      })
+      
+      const indexesOfEduSubjects = realFilters.educationSubject?.map((subject) => {
+        return eduSubList.findIndex((s) => s === subject);
+      });
+      console.log("📈Indexes", indexesOfEduSubjects)
+      
+        
+
+      try {
+      getMatchingModules({
+        offset: currentOffset,
+        eductaionType: realFilters.eductaionType, 
+        universityDegreeType: indexOfDegreeType?.map((i) => universityDegreeTypeKeys[i]) || null,
+        universityKategorie: indexOfUniversitySubjects?.map((i) => uisSubsKeys[i]) || null,
+        schoolType: indexesOfSchoolTypes?.map((i) => schoolTypesRaw[i]) || null,
+        schoolSubjects: indexesOfSubjects?.map((i) => subjectKeys[i]) || null,
+        schoolGrades: realFilters.schoolGrades?.map((grade) => Number(grade)) || null,
+        eductaionCategory: indexOfEduKat?.map((i) => eduKatKeys[i]) || null,
+        educationSubject: indexesOfEduSubjects?.map((i) => eduSubKeys[i]) || null,
+        otherSubjects: realFilters.otherSubjects,
+      })
+      if (loadingMore) {
+      setModules((prev) => [...prev, ...res]);
+      setOffset((prev) => prev + res.length);
+    } else {
+      setModules(res);
+      setOffset(res.length);
+    }
+
+    setHasMore(res.length === 25);
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+}
+
+  useEffect(() => {
+    getModules()
+  }, [realFilters])
 
 
     
@@ -436,10 +582,10 @@ const entdecken = () => {
               showsVerticalScrollIndicator={false}>
                 <View className='w-full'>
                   <EducationFiel />
-                  {selectedKathegory == "UNIVERSITY" ? <UniversityFilters  setFilters={setFilters} country={countryList[0]}  /> : null}
-                  {selectedKathegory == "SCHOOL" ? <SchoolFilters  setFilters={setFilters} country={countryList[0]} /> : null}
-                  {selectedKathegory == "EDUCATION" ? <EudcationFilters setFilters={setFilters} country={countryList[0]}  /> : null}
-                  {selectedKathegory == "OTHER" ? <OtherFilters  setFilters={setFilters} country={countryList[0]}  /> : null}
+                  {realFilters.eductaionType == "UNIVERSITY" ? <UniversityFilters filters={realFilters}  setFilters={setRealFilters}  /> : null}
+                  {realFilters.eductaionType == "SCHOOL" ? <SchoolFilters filters={realFilters}  setFilters={setRealFilters} country={countryList[0]} /> : null}
+                  {realFilters.eductaionType == "EDUCATION" ? <EudcationFilters filters={realFilters}  setFilters={setRealFilters} /> : null}
+                  {realFilters.eductaionType == "OTHER" ? <OtherFilters filters={realFilters} setFilters={setRealFilters}   /> : null}
                 </View>
             </BottomSheetScrollView>
         </BottomSheet>

@@ -17,7 +17,8 @@ const StepFive = (
         saveUserData,
         setClass,
         selectedSubjects,
-        setSelectedSubjects
+        setSelectedSubjects,
+        
     }:{
 
         setDegree: React.Dispatch<React.SetStateAction<{name: string, icon: string} | null>>,
@@ -40,21 +41,15 @@ const StepFive = (
     const { width } = useWindowDimensions();
     const numColumns = width < 400 ? 2 : 3;
 
-    const chunkArray = <T,>(arr: T[], size: number): T[][] => {
-        const chunked: T[][] = [];
-        for (let i = 0; i < arr.length; i += size) {
-            chunked.push(arr.slice(i, i + size));
-        }
-        return chunked;
-        };
+   
 
     const subjectSelection = (item: { name: string; icon: string }) => {
         console.log("Subject selected:", item);
         if (selectedSubjects.some((i)=> i.name == item.name)) {
-            setSelectedSubjects(selectedSubjects.filter((subject) => subject.name !== item.name))
+            setSelectedSubjects([])
         }
         else {
-            setSelectedSubjects([...selectedSubjects, item])
+            setSelectedSubjects([item])
         }
     }
 
@@ -85,7 +80,6 @@ const StepFive = (
             setUserData={setUserData}
             school={school}
             setClass={setClass}
-            chunkArray={chunkArray}
             numColumns={numColumns}
         />
     }

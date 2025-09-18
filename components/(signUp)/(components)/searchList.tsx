@@ -64,7 +64,7 @@ type Item = {
                          ? "bg-blue-700 " : "bg-gray-800"}  items-center justify-start m-2`}
                     >
                         <Icon name={item.icon} size={20} color="white" />
-                        <Text className='text-gray-100 font-semibold text-[15px] text-center ml-2' numberOfLines={item.name.length > 13 ? 2 : undefined}>
+                        <Text className='text-gray-100 font-semibold text-[15px] text-start ml-2' numberOfLines={item.name.length > 13 ? 2 : undefined}>
                             {item.name}
                         </Text> 
                     </TouchableOpacity>

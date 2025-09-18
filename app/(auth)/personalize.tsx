@@ -118,6 +118,23 @@ const personalize = () => {
             } else if (selectedKathegorie === "EDUCATION") {
                 const res = await getEducationList(selectedCountry.educationListID);
                 const res2 = await getEducationSubjects(selectedCountry.educationSubjectListID);
+                const listI18n = t("educationSelection.ausbildungslistDeutschland", { returnObjects: true });
+
+                if (listI18n) {
+                    const eduList = listI18n as Record<string, any>;
+                    setEducationList({
+                        "Bau & Handwerk": eduList["Bau & Handwerk"],
+                        "Gastronomie & Tourismus": eduList["Gastronomie & Tourismus"],
+                        "Gesundheit & Pflege": eduList["Gesundheit & Pflege"],
+                        "IT & Medien": eduList["IT & Medien"],
+                        "Kunst & Gestaltung": eduList["Kunst & Gestaltung"],
+                        "Metall & Technik": eduList["Metall & Technik"],
+                        "Produktion & Logistik": eduList["Produktion & Logistik"],
+                        "Umwelt & Natur": eduList["Umwelt & Natur"],
+                        "Wirtschaft & Verwaltung": eduList["Wirtschaft & Verwaltung"],
+                    });
+                }
+                /*
                 if (res && res2) {
                     setEducationList(
                         {
@@ -133,6 +150,7 @@ const personalize = () => {
                         }
                     );
                 }
+                    */
             }       
     }
         fetchList();
@@ -174,8 +192,9 @@ const personalize = () => {
               if (user === null ) return;
               async function fetchUserData() {
                   try {
+                    console.log("USer", user);
                       let userD = await loadUserData(user.$id);
-
+                        console.log("Loaded user data:", userD);
                       const mapToUserData = (doc: any): userData => ({
                         $id: doc?.$id ?? "",
                         tutorialCompleted: doc?.tutorialCompleted ?? false,
@@ -207,7 +226,7 @@ const personalize = () => {
                         } else {
                         setUserData(userD ? mapToUserData(userD) : undefined);
                       }
-                      if (userD?.signInProcessStep == "FINISHED") {
+                      if (userD?.signInProcessStep == "FINISHED" || userD?.signInProcessStep == "DONE") {
                             try {
                                 const userDK = await loadUserDataKathegory(user.$id);
                                 setUserDataKathegory(userDK);
@@ -229,7 +248,8 @@ const personalize = () => {
                                 console.log("Error loading user data kathegory", error);
                                 }
                             }
-                      } else if (userD?.signInProcessStep == "DONE"){
+                      } else if (userD?.signInProcessStep == "DONE" && user.$id) {
+                        console.log("Das sollte nicht passieren, aber wenn doch, dann ab hier");
                             router.push("/home")
                       }
                   } catch (error) {
@@ -242,9 +262,10 @@ const personalize = () => {
           }, [user]);
 
     const saveUserData = async () => {
+        console.log("Ausbildungskathegorie: ", ausbildungKathegorie);
         const newUserData = {
             country:                            selectedCountry ? selectedCountry.name.toUpperCase() : null,
-            region:                             selectedRegion ? schoolListDeutschland.regions[selectedRegion].name : null,
+            region:                             "",
             kategoryType:                       selectedKathegorie ? selectedKathegorie : null, // Kategorytype steht für wahl ob School, University, Education
             language :                          selectedLanguage ? languages[selectedLanguage].enum : languages[0].enum,
 
@@ -252,20 +273,21 @@ const personalize = () => {
             university:                         "",
             faculty:                            [""],
             studiengang:                        [""],
-            studiengangZiel:                    degree ? degree.name.toUpperCase() : null,
-            studiengangKathegory:               selectedField ? selectedField.map(item => item.kathegory) : null,
+            studiengangZiel:                    selectedKathegorie == "UNIVERSITY" && degree ? degree.id.toUpperCase() : null,
+            studiengangKathegory:               selectedKathegorie == "UNIVERSITY" && selectedSubjects ? selectedSubjects.map(item => item.id) : null,
 
             //School
-            schoolType:                         school ? school.name.toUpperCase() : null, 
-            schoolGrade:                        classNumber ? classNumber : null,
-            schoolSubjects:                     selectedSubjects ? selectedSubjects.map(item => item.name) : null, // Wird auch bei Other genutzt
+            schoolType:                         selectedKathegorie == "SCHOOL" && school ? school.id.toUpperCase() : null, 
+            schoolGrade:                        selectedKathegorie == "SCHOOL" && classNumber ? classNumber : null,
+            schoolSubjects:                     (selectedKathegorie == "SCHOOL" || selectedKathegorie == "OTHER" || selectedKathegorie == "UNIVERSITY") && selectedSubjects ? selectedSubjects.map(item => item.id) : null, // Wird auch bei Other genutzt
 
             //Education
-            educationSubject:                   selectedAusbildung ? selectedAusbildung.name : null,
-            educationKathegory:                 ausbildungKathegorie ? ausbildungKathegorie.name.DE.toUpperCase().replace(/\s+/g, '') : null,
+            educationSubject:                   selectedKathegorie == "EDUCATION" && selectedSubjects  ? selectedSubjects[0].id : null,
+            educationKathegory:                 selectedKathegorie == "EDUCATION" && ausbildungKathegorie ? ausbildungKathegorie.id : null,
 
         }
-        console.log("New User Data to save: ", newUserData);
+
+        console.log("New User Data to save: ", newUserData.educationKathegory);
         try {
             await addUserDatakathegory(user.$id,newUserData);
             const updatedUserData = {

@@ -5,6 +5,7 @@ import ProgressBar from '../(components)/progressBar';
 import SearchList from '../(components)/searchList';
 import GratisPremiumButton from '@/components/(general)/gratisPremiumButton';
 import { useTranslation } from 'react-i18next';
+import CustomButton from '@/components/(general)/customButton';
 
 const School = ({
         userData,
@@ -25,7 +26,12 @@ const School = ({
    const [ subjectFilter, setSubjectFilter ] = useState("");
    const [ isVisible, setIsVisible ] = useState(true)
    const { t } = useTranslation();
-   const subjectsRaw = t("personalizeSix.subjectList", { returnObjects: true });
+   const subjectsRaw = t("school.subjects", { returnObjects: true });
+   const keys = Object.keys(subjectsRaw);
+   const subjectsToObjects = keys.map((key) => {
+    return { id: key, icon: subjectsRaw[key].icon, name: subjectsRaw[key].name };
+   });
+
    const subjects: Array<{ name: string; icon?: string }> = Array.isArray(subjectsRaw) ? subjectsRaw : [];
    const filteredData = subjects
   .filter((item) =>
@@ -56,7 +62,7 @@ const School = ({
 
         };}} />
                   </View>
-                  <SearchList data={filteredData}
+                  <SearchList data={subjectsToObjects}
                               handlePress={handleItemPress}
                               filter={subjectFilter}
                               setFilter={setSubjectFilter}
@@ -64,13 +70,13 @@ const School = ({
                               abschlussziel={t("personalizeSix.yourSubjects")}
                               />
                               
-              <View className='w-full max-w-[200px]'>
-                  <GratisPremiumButton active={true} aditionalStyles={"rounded-full w-full bg-blue-500 mt-2 "} handlePress={()=> {
-                    saveUserData()}}>
-                      <Text className='text-gray-100 font-semibold text-[15px]'>{ t("personalizeSix.letsGo")
-                        }</Text>
-                  </GratisPremiumButton>  
-              </View>
+                <CustomButton
+                    disabled={selectedSubjects.length < 1}
+                    containerStyles={"rounded-lg w-full bg-blue-500 mt-2 "}
+                    handlePress={()=> {saveUserData()}}
+                    title={ t("personalizeSix.letsGo") }
+                    />
+                  
               </View>
           )
 }

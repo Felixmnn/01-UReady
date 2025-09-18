@@ -96,8 +96,11 @@ export const universityListDeutschland = [
 
 ]
 
-export const ausbildungsTypen = 
-[
+
+
+
+
+export const ausbildungsTypen = [
     {
       "name": {
         "DE": "Bau & Handwerk",
@@ -106,9 +109,9 @@ export const ausbildungsTypen =
         "AU": "Building & Trades",
         "ES": "Construcción y Artesanía"
       },
-      "id": "bau_handwerk",
+      
       "icon": "hammer",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+      
     },
     {
       "name": {
@@ -118,9 +121,9 @@ export const ausbildungsTypen =
         "AU": "Metals & Tech",
         "ES": "Metales y Tecnología"
       },
-        "id": "metall_elektro_technik",
+        
         "icon": "cogs",
-        "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+        
     },
     {
       "name": {
@@ -130,9 +133,9 @@ export const ausbildungsTypen =
         "AU": "Production & Logistics",
         "ES": "Producción y Logística"
       },
-      "id": "produktion_logistik",
+      
       "icon": "truck",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+      
     },
     {
       "name": {
@@ -142,9 +145,9 @@ export const ausbildungsTypen =
         "AU": "Health & Care",
         "ES": "Salud y Cuidado"
       },
-        "id": "gesundheit_pflege",
+        
         "icon": "user-md",
-        "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+        
     },
     {
       "name": {
@@ -154,9 +157,9 @@ export const ausbildungsTypen =
         "AU": "Hospitality & Tourism",
         "ES": "Hostelería y Turismo"
       },
-      "id": "gastronomie_tourismus",
+      
       "icon": "utensils",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+      
     },
     {
       "name": {
@@ -166,9 +169,9 @@ export const ausbildungsTypen =
         "AU": "IT & Media",
         "ES": "TI y Medios"
       },
-      "id": "it_medien",
+      
       "icon": "laptop",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",},
+      },
     {
       "name": {
         "DE": "Kunst & Gestaltung",
@@ -177,9 +180,9 @@ export const ausbildungsTypen =
         "AU": "Art & Design",
         "ES": "Arte y Diseño"
       },
-      "id": "kunst_gestaltung",
+      
       "icon": "paint-brush",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+      
     },
     {
       "name": {
@@ -189,9 +192,9 @@ export const ausbildungsTypen =
         "AU": "Business & Admin",
         "ES": "Negocios y Administración"
       },
-      "id": "wirtschaft_verwaltung",
+      
       "icon": "chart-line",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+      
     },
     {
       "name": {
@@ -201,11 +204,13 @@ export const ausbildungsTypen =
         "AU": "Environment & Nature",
         "ES": "Medio Ambiente y Naturaleza"
       },
-      "id": "umwelt_natur",
+      
       "icon": "leaf",
-      "ausbildungListID": "4058177f-0cd4-4820-8f71-557c4b27dd42",
+      
     }
   ]
+  
+
 
 export const ausbildungsListDeutschland = {
         "Gastronomie & Tourismus": [
@@ -292,7 +297,7 @@ export const ausbildungsListDeutschland = {
         ],
         "Bau & Handwerk": [
             {
-                "name": "Ausbaufacharbeiter/Ausbaufacharbeiterin",
+                "name": "Ausbaufacharbeiter",
                 "icon": "tools"
             },
             {
@@ -300,59 +305,59 @@ export const ausbildungsListDeutschland = {
                 "icon": "tree"
             },
             {
-                "name": "Hochbaufacharbeiter/Hochbaufacharbeiterin",
+                "name": "Hochbaufacharbeiter",
                 "icon": "building"
             },
             {
-                "name": "Isolierfacharbeiter/Isolierfacharbeiterin",
+                "name": "Isolierfacharbeiter",
                 "icon": "fire-extinguisher"
             },
             {
-                "name": "Tiefbaufacharbeiter/Tiefbaufacharbeiterin",
+                "name": "Tiefbaufacharbeiter",
                 "icon": "road"
             },
             {
-                "name": "Asphaltbauer/Asphaltbauerin",
+                "name": "Asphaltbauer",
                 "icon": "road"
             },
             {
-                "name": "Baugeräteführer/Baugeräteführerin",
+                "name": "Baugeräteführer",
                 "icon": "tractor"
             },
             {
-                "name": "Bauwerksabdichter/Bauwerksabdichterin",
+                "name": "Bauwerksabdichter",
                 "icon": "building"
             },
             {
-                "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik/Bauwerksmechanikerin für Abbruch und Betontrenntechnik",
+                "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik",
                 "icon": "hammer"
             },
             {
-                "name": "Bauzeichner/Bauzeichnerin",
+                "name": "Bauzeichner",
                 "icon": "drafting-compass"
             },
             {
-                "name": "Beton- und Stahlbetonbauer/Beton- und Stahlbetonbauerin",
+                "name": "Beton- und Stahlbetonbauer",
                 "icon": "tools"
             },
             {
-                "name": "Bodenleger/Bodenlegerin",
+                "name": "Bodenleger",
                 "icon": "ruler-combined"
             },
             {
-                "name": "Böttcher/Böttcherin",
+                "name": "Böttcher",
                 "icon": "wine-bottle"
             },
             {
-                "name": "Brunnenbauer/Brunnenbauerin",
+                "name": "Brunnenbauer",
                 "icon": "faucet"
             },
             {
-                "name": "Dachdecker/Dachdeckerin",
+                "name": "Dachdecker",
                 "icon": "house-damage"
             },
             {
-                "name": "Estrichleger/Estrichlegerin",
+                "name": "Estrichleger",
                 "icon": "ruler-combined"
             },
             {
@@ -364,39 +369,39 @@ export const ausbildungsListDeutschland = {
                 "icon": "road"
             },
             {
-                "name": "Fassadenmonteur/Fassadenmonteurin",
+                "name": "Fassadenmonteur",
                 "icon": "building"
             },
             {
-                "name": "Feuerungs- und Schornsteinbauer/Feuerungs- und Schornsteinbauerin",
+                "name": "Feuerungs- und Schornsteinbauer",
                 "icon": "fire"
             },
             {
-                "name": "Fliesen-, Platten- und Mosaikleger/Fliesen-, Platten- und Mosaiklegerin",
+                "name": "Fliesen-, Platten- und Mosaikleger",
                 "icon": "th-large"
             },
             {
-                "name": "Gerüstbauer/Gerüstbauerin",
+                "name": "Gerüstbauer",
                 "icon": "building"
             },
             {
-                "name": "Glaser/Glaserin",
+                "name": "Glaser",
                 "icon": "window-maximize"
             },
             {
-                "name": "Gleisbauer/Gleisbauerin",
+                "name": "Gleisbauer",
                 "icon": "train"
             },
             {
-                "name": "Holz- und Bautenschützer/Holz- und Bautenschützerin",
+                "name": "Holz- und Bautenschützer",
                 "icon": "hammer"
             },
             {
-                "name": "Kanalbauer/Kanalbauerin",
+                "name": "Kanalbauer",
                 "icon": "water"
             },
             {
-                "name": "Maler und Lackierer/Malerin und Lackiererin",
+                "name": "Maler und Lackierer",
                 "icon": "paint-brush"
             },
             {
@@ -404,91 +409,91 @@ export const ausbildungsListDeutschland = {
                 "icon": "hammer"
             },
             {
-                "name": "Naturwerksteinmechaniker/Naturwerksteinmechanikerin",
+                "name": "Naturwerksteinmechaniker",
                 "icon": "gem"
             },
             {
-                "name": "Ofen- und Luftheizungsbauer/Ofen- und Luftheizungsbauerin",
+                "name": "Ofen- und Luftheizungsbauer",
                 "icon": "fire"
             },
             {
-                "name": "Parkettleger/Parkettlegerin",
+                "name": "Parkettleger",
                 "icon": "hard-hat"
             },
             {
-                "name": "Polsterer/Polsterin",
+                "name": "Polsterer",
                 "icon": "couch"
             },
             {
-                "name": "Raumausstatter/Raumausstatterin",
+                "name": "Raumausstatter",
                 "icon": "couch"
             },
             {
-                "name": "Rohrleitungsbauer/Rohrleitungsbauerin",
+                "name": "Rohrleitungsbauer",
                 "icon": "wrench"
             },
             {
-                "name": "Schornsteinfeger/Schornsteinfegerin",
+                "name": "Schornsteinfeger",
                 "icon": "smoking"
             },
             {
-                "name": "Segelmacher/Segelmacherin",
+                "name": "Segelmacher",
                 "icon": "ship"
             },
             {
-                "name": "Seiler/Seilerin",
+                "name": "Seiler",
                 "icon": "sitemap"
             },
             {
-                "name": "Spezialtiefbauer/Spezialtiefbauerin",
+                "name": "Spezialtiefbauer",
                 "icon": "hard-hat"
             },
             {
-                "name": "Steinmetz und Steinbildhauer/Steinmetzin und Steinbildhauerin",
+                "name": "Steinmetz und Steinbildhauer",
                 "icon": "gem"
             },
             {
-                "name": "Straßenbauer/Straßenbauerin",
+                "name": "Straßenbauer",
                 "icon": "road"
             },
             {
-                "name": "Straßenwärter/Straßenwärterin",
+                "name": "Straßenwärter",
                 "icon": "wrench"
             },
             {
-                "name": "Stuckateur/Stuckateurin",
+                "name": "Stuckateur",
                 "icon": "paint-roller"
             },
             {
-                "name": "Tischler/Tischlerin",
+                "name": "Tischler",
                 "icon": "hammer"
             },
             {
-                "name": "Trockenbaumonteur/Trockenbaumonteurin",
+                "name": "Trockenbaumonteur",
                 "icon": "hammer"
             },
             {
-                "name": "Vermessungstechniker/Vermessungstechnikerin",
+                "name": "Vermessungstechniker",
                 "icon": "compass"
             },
             {
-                "name": "Wärme-, Kälte- und Schallschutzisolierer/Wärme-, Kälte- und Schallschutzisoliererin",
+                "name": "Wärme-, Kälte- und Schallschutzisolierer",
                 "icon": "cloud"
             },
             {
-                "name": "Werksteinhersteller/Werksteinherstellerin",
+                "name": "Werksteinhersteller",
                 "icon": "gem"
             },
             {
-                "name": "Zimmerer/Zimmerin",
+                "name": "Zimmerer",
                 "icon": "hammer"
             },
             {
-                "name": "Bootsbauer/Bootsbauerin",
+                "name": "Bootsbauer",
                 "icon": "ship"
             },
             {
-                "name": "Klempner/Klempnerin",
+                "name": "Klempner",
                 "icon": "wrench"
             }
         ],

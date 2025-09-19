@@ -13,6 +13,7 @@ const images = {
     "bundle2": require('./12.png'),
     "COMERCIAL": require('./14.png'),
     "bundle1": require('./13.png'),
+    "bolt": require('./bolt.png'),
 
 };
 

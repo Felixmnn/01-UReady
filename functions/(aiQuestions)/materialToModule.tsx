@@ -1,106 +1,207 @@
+import {
+  addDocumentJob,
+  addNewModule,
+  addNewModuleWithID,
+} from "@/lib/appwriteAdd";
+import {
+  addQUestion,
+  setUserDataSetup,
+  updateModule,
+} from "@/lib/appwriteEdit";
+import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
+import { module } from "@/types/appwriteTypes";
+import { ModuleProps, Session } from "@/types/moduleTypes";
+import { router } from "expo-router";
+import uuid from "react-native-uuid";
 
-import { addDocumentJob, addNewModule, addNewModuleWithID } from '@/lib/appwriteAdd';
-import { addQUestion, setUserDataSetup } from '@/lib/appwriteEdit';
-import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
-import { ModuleProps } from '@/types/moduleTypes';
-import {router} from 'expo-router';
-import { useTranslation } from 'react-i18next';
-import uuid from 'react-native-uuid';
+export async function addNewQuestionToModule({
+  material,
+  module,
 
-
-
-export async function materialToModule({
-  user, 
-  material, 
-  newModule, 
-  sessions, 
-  setSessions, 
-  setLoading, 
-  reloadNeeded, 
-  setReloadNeeded,
-  setIsVisibleModal,
-  questionOptions
-}:{
-  user: string,
-  material: {type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
+  setQuestions,
+  setLoading,
+  setSessions,
+  selectedSession,
+}: {
+  material: {
+    type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
     content: string;
     uri: string | null;
     sessionID: string | null;
-    id: string | null;}[],
-  newModule: ModuleProps,
-  sessions: {id: string; tags: string;}[],
-  setSessions: React.Dispatch<React.SetStateAction<{id: string; tags: string;}[]>>,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  reloadNeeded: string[],
-  setReloadNeeded: React.Dispatch<React.SetStateAction<string[]>>,
-  setIsVisibleModal?: React.Dispatch<React.SetStateAction<boolean>>,
-  questionOptions: {questionsType: "MULTIPLE" | "SINGLE" | "QA",
-  amountOfAnswers: 2 | 3 | 4 | 5 | 6
-  }
-
-
+    id: string | null;
+  }[];
+  module: any;
+  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
+  selectedSession: any;
 }) {
-
   setLoading(true);
-  let directQuestions : any[] = [];
+  //Schritt 1: Fragen generieren
+  const newQuestions = await generateQuestions({
+    material,
+    moduleID: module.$id,
+    setSessions,
+    directQuestions: [],
+    questionOptions: {
+      questionsType: "MULTIPLE",
+      amountOfAnswers: 4,
+    },
+  });
+  //Schritt 2: Fragen speichern
+  let savedQuestions: any[] = [];
+  for (let i = 0; i < newQuestions.length; i++) {
+    try {
+      const question = { ...newQuestions[i], subjectID: module.$id };
+      const savedQuestion = await addQUestion(question);
+      savedQuestions.push({
+        id:
+          savedQuestion && typeof savedQuestion.$id == "string"
+            ? savedQuestion.$id
+            : uuid.v4(),
+        status: null,
+      });
+      setQuestions((prev) => [question, ...prev]);
+    } catch (error) {
+      if (__DEV__) {
+      }
+    }
+  }
+  //Schritt 3: Modul mit Fragen verknüpfen
+  if (!module || !module.$id) {
+    return;
+  }
+  const oldList = module.questionList
+    ? module.questionList.map((item: string) => JSON.parse(item))
+    : [];
+  const newList = [
+    ...oldList,
+    savedQuestions.map((i) => {
+      return { id: i.id, status: null };
+    }),
+  ];
+  const questionCountOld = module.questions ? module.questions : 0;
+  const questionCountNew = questionCountOld + savedQuestions.length;
+  const newModule = {
+    ...module,
+    questions: questionCountNew,
+    questionList: newList.map((item: any) => JSON.stringify(item)),
+  };
+  await updateModule(newModule);
+  //Schritt 4: Lokale States aktualisieren
+  const updatedSession = selectedSession
+    ? {
+        ...selectedSession,
+        questions:
+          (selectedSession.questions ? selectedSession.questions : 0) +
+          newQuestions.length,
+      }
+    : null;
+
+  setSessions((prevSessions) => {
+    if (!updatedSession) return prevSessions;
+    const newSessions = [...prevSessions];
+    const sessionIndex = newSessions.findIndex(
+      (session) => session.id === updatedSession.id
+    );
+    if (sessionIndex !== -1) {
+      newSessions[sessionIndex] = updatedSession;
+    }
+    return newSessions;
+  });
+
+  setLoading(false);
+}
+
+export async function materialToModule({
+  user,
+  material,
+  newModule,
+  sessions,
+  setSessions,
+  setLoading,
+  reloadNeeded,
+  setReloadNeeded,
+  setIsVisibleModal,
+  questionOptions,
+}: {
+  user: string;
+  material: {
+    type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
+    content: string;
+    uri: string | null;
+    sessionID: string | null;
+    id: string | null;
+  }[];
+  newModule: module;
+  sessions: Session[];
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  reloadNeeded: string[];
+  setReloadNeeded: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsVisibleModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  questionOptions: {
+    questionsType: "MULTIPLE" | "SINGLE" | "QA";
+    amountOfAnswers: 2 | 3 | 4 | 5 | 6;
+  };
+}) {
+  setLoading(true);
+  let directQuestions: any[] = [];
   const moduleID = uuid.v4();
 
   try {
-    console.log("Starting Step 1")
     // Schritt 1: Fragen erstellen
     directQuestions = await generateQuestions({
-      material,   // Materialien sind Objekte mit der Basis für die Generierung
+      material, // Materialien sind Objekte mit der Basis für die Generierung
       moduleID: moduleID as string,
       setSessions,
       directQuestions,
-      questionOptions
+      questionOptions,
     });
-    console.log("Generated Questions:", directQuestions);
 
     let newModuleData;
 
-    console.log("Starting Step 2")
     // Schritt 2: Modul speichern
     const resMod = await saveModule({
       newModule,
-      moduleID: moduleID as string, 
+      moduleID: moduleID as string,
       sessions,
       directQuestions,
-      newModuleData
+      newModuleData,
     });
 
     newModuleData = resMod;
-    console.log("Saved Module:", newModuleData);
 
-    let savedQuestions :  any [] = [];
+    let savedQuestions: any[] = [];
 
     // Schritt 3: Fragen speichern
-    console.log("Starting Step 3")
+
     await saveQuestions({
       newModuleData,
       directQuestions,
-      savedQuestions
+      savedQuestions,
     });
-    
 
-    console.log("Starting Step 4")
     // Schritt 4: Modul mit Fragen verknüpfen
 
-    if (!newModuleData || !newModuleData.$id) console.log("Fehlecode 1: newModuleData oder newModuleData.$id ist undefined");
-    await updateModuleQuestionList(newModuleData.$id, savedQuestions.map((item) => JSON.stringify(item)));
+    if (!newModuleData || !newModuleData.$id)
+      console.log(
+        "Fehlecode 1: newModuleData oder newModuleData.$id ist undefined"
+      );
+    await updateModuleQuestionList(
+      newModuleData.$id,
+      savedQuestions.map((item) => JSON.stringify(item))
+    );
     // Benutzer-Daten aktualisieren
     try {
       if (!user) throw new Error("User ID is undefined");
       const resp = await setUserDataSetup(user);
-
     } catch (error) {
       if (__DEV__) {
-      console.log("Fehler beim Aktualisieren der Benutzerdaten:", error);
       }
     }
   } catch (error) {
     if (__DEV__) {
-    console.log("Allgemeiner Fehler:", error);
     }
   } finally {
     setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
@@ -112,13 +213,12 @@ export async function materialToModule({
   }
 }
 
-
 export async function generateQuestions({
   material,
   moduleID,
   setSessions,
   directQuestions,
-  questionOptions
+  questionOptions,
 }: {
   material: {
     type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
@@ -128,13 +228,14 @@ export async function generateQuestions({
     id: string | null;
   }[];
   moduleID: string;
-  setSessions: React.Dispatch<React.SetStateAction<{ id: string; tags: string }[]>>;
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
   directQuestions: any[];
-  questionOptions: {questionsType: "MULTIPLE" | "SINGLE" | "QA",
-  amountOfAnswers:number};
+  questionOptions: {
+    questionsType: "MULTIPLE" | "SINGLE" | "QA";
+    amountOfAnswers: number;
+  };
 }) {
   try {
-    console.log("Material to process:", material);
     for (let i = 0; i < material.length; i++) {
       try {
         let res;
@@ -142,23 +243,20 @@ export async function generateQuestions({
           res = await generateQuestionsFromText({
             text: material[i].content,
             questionsType: questionOptions.questionsType,
-            amountOfAnswers: questionOptions.amountOfAnswers
-          }
-            
-          );
+            amountOfAnswers: questionOptions.amountOfAnswers,
+          });
         } else if (material[i].type === "TOPIC") {
           res = await questionFromTopic({
             text: material[i].content,
             questionsType: questionOptions.questionsType,
-            amountOfAnswers: questionOptions.amountOfAnswers
-          }
-          );
+            amountOfAnswers: questionOptions.amountOfAnswers,
+          });
         } else if (material[i].type === "QUESTION") {
           res = await generateQuestionsFromQuestions({
             text: material[i].content,
             questionsType: questionOptions.questionsType,
-            amountOfAnswers: questionOptions.amountOfAnswers
-          })
+            amountOfAnswers: questionOptions.amountOfAnswers,
+          });
         } else {
           res = await createDocumentJob(
             material[i].id ?? "",
@@ -166,7 +264,7 @@ export async function generateQuestions({
             material[i].sessionID ?? "",
             setSessions
           );
-        } 
+        }
         // The questions now need to be transformed into the correct format for the app adding ids etc.
         /*
         {
@@ -193,7 +291,7 @@ export async function generateQuestions({
 
 }
         */
-        res = res.map((r:any)=> {
+        res = res.map((r: any) => {
           return {
             sessionID: material[i].sessionID,
             subjectID: moduleID,
@@ -202,15 +300,17 @@ export async function generateQuestions({
             public: true,
             aiGenerated: true,
             question: r.question,
-            questionLatex:"",
+            questionLatex: "",
             questionSVG: "",
             questionUrl: "",
             hint: r.hint ? r.hint : "",
             explanation: r.explanation ? r.explanation : "",
-            answers: r.answers.map((a:any)=> JSON.stringify({title: a, latex: "", image: null})),
+            answers: r.answers.map((a: any) =>
+              JSON.stringify({ title: a, latex: "", image: null })
+            ),
             answerIndex: r.answerIndex,
-        }})
-        console.log("Generated questions:", res);
+          };
+        });
 
         if (Array.isArray(res)) {
           directQuestions = [...directQuestions, ...res];
@@ -227,123 +327,118 @@ export async function generateQuestions({
   }
 }
 
-
 async function saveModule({
   newModule,
   moduleID,
   sessions,
   directQuestions,
-  newModuleData
-}:{
-  newModule: ModuleProps, 
-  moduleID: string,
-  sessions: {id: string; tags: string;}[],
-  directQuestions : any[],
-  newModuleData: any
-
+  newModuleData,
+}: {
+  newModule: module;
+  moduleID: string;
+  sessions: Session[];
+  directQuestions: any[];
+  newModuleData: any;
 }) {
-   try {
-      newModuleData = await addNewModuleWithID({
+  try {
+    newModuleData = await addNewModuleWithID(
+      {
         ...newModule,
-        color: typeof newModule.color == "string" ? newModule.color.toUpperCase() : "BLUE",
+        color:
+          typeof newModule.color == "string"
+            ? newModule.color.toUpperCase()
+            : "BLUE",
         questions: directQuestions.length,
         sessions: sessions.map((item) => JSON.stringify(item)),
-      },moduleID);
-      return newModuleData;
-    } catch (error) {
-      if (__DEV__) {
-      console.log("Fehler beim Speichern des Moduls:", error);
-    }    
+      },
+      moduleID
+    );
+    return newModuleData;
+  } catch (error) {
+    if (__DEV__) {
+    }
   }
 }
 
 async function saveQuestions({
   newModuleData,
   directQuestions,
-  savedQuestions
-}:{
-  newModuleData: any,
-  directQuestions : any[],
-  savedQuestions: any[]
+  savedQuestions,
+}: {
+  newModuleData: any;
+  directQuestions: any[];
+  savedQuestions: any[];
 }) {
-    // Schritt 3: Fragen speichern
-    if (newModuleData && newModuleData.$id) {
-      for (let i = 0; i < directQuestions.length; i++) {
-        try { 
-          const question = { ...directQuestions[i], subjectID: newModuleData.$id };
-          const savedQuestion = await addQUestion(question);
-          savedQuestions.push({ 
-            id: savedQuestion && typeof savedQuestion.$id == "string" ? savedQuestion.$id : uuid.v4(),
-            status: null
-          })
-        }
-        catch (error) {
-          if (__DEV__) {
-          console.log("Fehler beim Speichern einer Frage:", error);
-          }
+  // Schritt 3: Fragen speichern
+  if (newModuleData && newModuleData.$id) {
+    for (let i = 0; i < directQuestions.length; i++) {
+      try {
+        const question = {
+          ...directQuestions[i],
+          subjectID: newModuleData.$id,
+        };
+        const savedQuestion = await addQUestion(question);
+        savedQuestions.push({
+          id:
+            savedQuestion && typeof savedQuestion.$id == "string"
+              ? savedQuestion.$id
+              : uuid.v4(),
+          status: null,
+        });
+      } catch (error) {
+        if (__DEV__) {
         }
       }
     }
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export async function createDocumentJob(databucketID:string, moduleID:string, sessionID:string, setSessions: React.Dispatch<React.SetStateAction<{ id: string; tags: string; }[]>>) {
-    const job = {
-        databucketID: databucketID,
-        subjectID: moduleID,
-        sessionID: sessionID,
+export async function createDocumentJob(
+  databucketID: string,
+  moduleID: string,
+  sessionID: string,
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>
+) {
+  const job = {
+    databucketID: databucketID,
+    subjectID: moduleID,
+    sessionID: sessionID,
+  };
+  const res = await addDocumentJob(job);
+  setSessions((prevSessions) => {
+    const newSessions = [...prevSessions];
+    const sessionIndex = newSessions.findIndex(
+      (session) => session.id === sessionID
+    );
+    if (sessionIndex !== -1) {
+      newSessions[sessionIndex].tags = ["JOB-PENDING"];
     }
-    const res = await addDocumentJob(job)
-    setSessions((prevSessions) => {
-        const newSessions = [...prevSessions];
-        const sessionIndex = newSessions.findIndex((session) => session.id === sessionID);
-        if (sessionIndex !== -1) {
-            newSessions[sessionIndex].tags = "JOB-PENDING";
-        }
-        return newSessions;
-    })
+    return newSessions;
+  });
 }
 
-
-export async function generateQuestionsFromText ({
+export async function generateQuestionsFromText({
   text,
   questionsType,
-  amountOfAnswers
-  
-}:{
-    text: string,
-    questionsType: "MULTIPLE" | "SINGLE" | "QA",
-    amountOfAnswers: number
+  amountOfAnswers,
+}: {
+  text: string;
+  questionsType: "MULTIPLE" | "SINGLE" | "QA";
+  amountOfAnswers: number;
 }) {
-    const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
-    const url = 'https://api.openai.com/v1/chat/completions';  // ChatGPT Endpunkt
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    };
+  const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
+  const url = "https://api.openai.com/v1/chat/completions"; // ChatGPT Endpunkt
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
 
-    const body = JSON.stringify({
-      model: 'gpt-4o-mini', 
-      messages: [{ role: 'user', content: `
+  const body = JSON.stringify({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "user",
+        content: `
         Erstelle basierend auf den folgenden Themen jeweils zwischen 3 und 10 Fragen: ${text}.  
         Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
         Der Nutuzer soll die Fragen isoliert beantworten können, ohne den Kontext anderer Fragen oder Materialien die nicht in der Frage enthalten sind, zu benötigen.
@@ -364,66 +459,70 @@ export async function generateQuestionsFromText ({
 
         Wichtige Regeln:
         - Die Anzahl der Antwortoptionen soll immer ${questionsType == "QA" ? 1 : amountOfAnswers} sein nicht mehr und nicht weniger.
-        ${questionsType === "MULTIPLE" ? 
-          "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein." : 
-          questionsType === "SINGLE" ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt." : 
-          "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."}
+        ${
+          questionsType === "MULTIPLE"
+            ? "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein."
+            : questionsType === "SINGLE"
+              ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt."
+              : "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
+        }
         - Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
         - Der index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.
         - Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
         - Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
 
-                `}],
-            });
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: body,
-      });
+                `,
+      },
+    ],
+  });
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: body,
+    });
 
-      if (!res.ok) {
-        throw new Error(`Fehler: ${res.status}`); 
-      }
-      const data = await res.json();
-      const text = data.choices[0].message.content.trim()
-      const startIndex = text.indexOf('[');
-      const endIndex = text.lastIndexOf(']');
-      if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-        const jsonString = text.substring(startIndex, endIndex + 1);
-        const parsedData = JSON.parse(jsonString);
-        
-        return parsedData
-      }
-      
-
-    } catch (error) {
-      console.error('Error fetching OpenAI API:', error);
-      const response = ('Es gab einen Fehler bei der Anfrage!');
+    if (!res.ok) {
+      throw new Error(`Fehler: ${res.status}`);
     }
-  };
+    const data = await res.json();
+    const text = data.choices[0].message.content.trim();
+    const startIndex = text.indexOf("[");
+    const endIndex = text.lastIndexOf("]");
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = text.substring(startIndex, endIndex + 1);
+      const parsedData = JSON.parse(jsonString);
 
+      return parsedData;
+    }
+  } catch (error) {
+    console.error("Error fetching OpenAI API:", error);
+    const response = "Es gab einen Fehler bei der Anfrage!";
+  }
+}
 
-export async function generateQuestionsFromQuestions ({
+export async function generateQuestionsFromQuestions({
   text,
   questionsType,
-  amountOfAnswers
-  
-}:{
-    text: string,
-    questionsType: "MULTIPLE" | "SINGLE" | "QA",
-    amountOfAnswers: number
+  amountOfAnswers,
+}: {
+  text: string;
+  questionsType: "MULTIPLE" | "SINGLE" | "QA";
+  amountOfAnswers: number;
 }) {
-    const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
-    const url = 'https://api.openai.com/v1/chat/completions';  // ChatGPT Endpunkt
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    };
+  const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
+  const url = "https://api.openai.com/v1/chat/completions"; // ChatGPT Endpunkt
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
 
-    const body = JSON.stringify({
-      model: 'gpt-4o-mini', 
-      messages: [{ role: 'user', content: `
+  const body = JSON.stringify({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "user",
+        content: `
         Du erhälts Fragen über einen User Input. Wandle diese Fragen in das gewünschte Format um versuche dabei nah an der ursprünglichen Frage zu bleiben.: ${text}.  
         Wenn der Nutzer bereits Antworten gegeben hat, übernehme diese. Wenn nicht, generiere passende Antworten.
         Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
@@ -444,65 +543,70 @@ export async function generateQuestionsFromQuestions ({
 
         Wichtige Regeln:
         - Die Anzahl der Antwortoptionen soll immer ${questionsType == "QA" ? 1 : amountOfAnswers} sein nicht mehr und nicht weniger.
-        ${questionsType === "MULTIPLE" ? 
-          "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein." : 
-          questionsType === "SINGLE" ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt." : 
-          "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."}
+        ${
+          questionsType === "MULTIPLE"
+            ? "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein."
+            : questionsType === "SINGLE"
+              ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt."
+              : "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
+        }
         -Wenn der Nutzer Anworten vorgeben hat halte dich an die Anzl der Antworten unabhängig von amountOfAnswers.
           - Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
         - Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
         - Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
 
-                `}],
-            });
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: body,
-      });
+                `,
+      },
+    ],
+  });
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: body,
+    });
 
-      if (!res.ok) {
-        throw new Error(`Fehler: ${res.status}`); 
-      }
-      const data = await res.json();
-      const text = data.choices[0].message.content.trim()
-      const startIndex = text.indexOf('[');
-      const endIndex = text.lastIndexOf(']');
-      if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-        const jsonString = text.substring(startIndex, endIndex + 1);
-        const parsedData = JSON.parse(jsonString);
-        
-        return parsedData
-      }
-      
-
-    } catch (error) {
-      console.error('Error fetching OpenAI API:', error);
-      const response = ('Es gab einen Fehler bei der Anfrage!');
+    if (!res.ok) {
+      throw new Error(`Fehler: ${res.status}`);
     }
-  };
+    const data = await res.json();
+    const text = data.choices[0].message.content.trim();
+    const startIndex = text.indexOf("[");
+    const endIndex = text.lastIndexOf("]");
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = text.substring(startIndex, endIndex + 1);
+      const parsedData = JSON.parse(jsonString);
 
-  export async function questionFromTopic ({
+      return parsedData;
+    }
+  } catch (error) {
+    console.error("Error fetching OpenAI API:", error);
+    const response = "Es gab einen Fehler bei der Anfrage!";
+  }
+}
+
+export async function questionFromTopic({
   text,
   questionsType,
-  amountOfAnswers
-  
-}:{
-    text: string,
-    questionsType: "MULTIPLE" | "SINGLE" | "QA",
-    amountOfAnswers: number
+  amountOfAnswers,
+}: {
+  text: string;
+  questionsType: "MULTIPLE" | "SINGLE" | "QA";
+  amountOfAnswers: number;
 }) {
-    const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
-    const url = 'https://api.openai.com/v1/chat/completions';  // ChatGPT Endpunkt
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    };
+  const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
+  const url = "https://api.openai.com/v1/chat/completions"; // ChatGPT Endpunkt
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
 
-    const body = JSON.stringify({
-      model: 'gpt-4o-mini', 
-      messages: [{ role: 'user', content: `
+  const body = JSON.stringify({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "user",
+        content: `
         Erstelle basierend auf dem dir im folgenden Text geben Informationen zwischen 3 und 10 Fragen: ${text}.  
         Diese Fragen sollen möglichst alle wichtigen Aspekte des Textes abdecken.
         Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
@@ -524,40 +628,43 @@ export async function generateQuestionsFromQuestions ({
 
         Wichtige Regeln:
         - Die Anzahl der Antwortoptionen soll immer ${questionsType == "QA" ? 1 : amountOfAnswers} sein nicht mehr und nicht weniger.
-        ${questionsType === "MULTIPLE" ? 
-          "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein." : 
-          questionsType === "SINGLE" ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt." : 
-          "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."}
+        ${
+          questionsType === "MULTIPLE"
+            ? "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein."
+            : questionsType === "SINGLE"
+              ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt."
+              : "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
+        }
         - Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
         - Der index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.
         - Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
         - Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
 
-        `}],
+        `,
+      },
+    ],
+  });
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: body,
     });
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: body,
-      });
 
-      if (!res.ok) {
-        throw new Error(`Fehler: ${res.status}`); 
-      }
-      const data = await res.json();
-      const text = data.choices[0].message.content.trim()
-      const startIndex = text.indexOf('[');
-      const endIndex = text.lastIndexOf(']');
-      if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-        const jsonString = text.substring(startIndex, endIndex + 1);
-        const parsedData = JSON.parse(jsonString);
-        return parsedData
-      }
-      
-
-    } catch (error) {
-      console.error('Error fetching OpenAI API:', error);
-      const response = ('Es gab einen Fehler bei der Anfrage!');
+    if (!res.ok) {
+      throw new Error(`Fehler: ${res.status}`);
     }
-  };
+    const data = await res.json();
+    const text = data.choices[0].message.content.trim();
+    const startIndex = text.indexOf("[");
+    const endIndex = text.lastIndexOf("]");
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = text.substring(startIndex, endIndex + 1);
+      const parsedData = JSON.parse(jsonString);
+      return parsedData;
+    }
+  } catch (error) {
+    console.error("Error fetching OpenAI API:", error);
+    const response = "Es gab einen Fehler bei der Anfrage!";
+  }
+}

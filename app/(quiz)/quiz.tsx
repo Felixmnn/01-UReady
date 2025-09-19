@@ -1,7 +1,7 @@
-import { SafeAreaView, Text, View} from 'react-native'
+import { SafeAreaView, View} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
-import { removeQuestion, updateDocument, updateModule} from "../../lib/appwriteEdit"
+import { removeQuestion} from "../../lib/appwriteEdit"
 import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { loadModule } from '@/lib/appwriteDaten';
@@ -10,17 +10,17 @@ import QuizNavigation from '@/components/(quiz)/quizNavigation';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Navigation from '@/components/(quiz)/navigation';
 import Quiz from '@/components/(quiz)/quiz';
-import { maybeParseJSON, randomizeArray } from '@/functions/(quiz)/helper';
+import {  randomizeArray } from '@/functions/(quiz)/helper';
 import { getAllQuestionsBySessionId } from '@/lib/appwriteQuerys';
 import { question } from '@/types/appwriteTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StatusBar } from 'expo-status-bar';
 import QuizResult from '@/components/(quiz)/quizResult';
 
 type QuestionItem = {
     id: string,
     status: string
 }
+
 
 
 const quiz = () => {
@@ -83,8 +83,8 @@ const quiz = () => {
             ? questionsRaw.map(q => q as unknown as question)
             : [];
         const module = await loadModule(moduleID)
-        const questionList = module?.questionList.map((q:any) => JSON.parse(q))
-        if (quizType == "limited" || quizType == "limitedTimed"){
+        const questionList = module?.questionList.map((q:string) => JSON.parse(q))
+        if (quizType !== "infinite"){
             let randomized = randomizeArray(questions ?? [])
             
             const amount = questionAmount ? parseInt(Array.isArray(questionAmount) ? questionAmount[0] : questionAmount) : 10;
@@ -281,7 +281,7 @@ const quiz = () => {
         selectedQuestion, 
         selectedAnswers,
     }:{
-        questionsParsed: any[],
+        questionsParsed: question[],
         selectedQuestion: number,
         selectedAnswers: string[],
     }) {
@@ -289,26 +289,26 @@ const quiz = () => {
         (index:number) => questionsParsed[0].answers[index]
         )
 
-        correctAnswer = correctAnswer.map((answer: string | {text: string, latex: string, image: string}) => {
-        if (typeof answer === "string") {
-            return {
-            text: answer,
-            latex: "",
-            image: ""
-            }
-        } else {
-            return answer;
-        }
-        })
-        
-        
+        // Ensure all answers are of type Answer
         interface Answer {
-            title: string;
+            text: string;
             latex: string;
             image: string;
         }
 
-        const correctAnswersAsString = correctAnswer.map((answer: any) => JSON.stringify(answer));
+        const correctAnswerObjects: Answer[] = correctAnswer.map((answer: string | {text: string, latex: string, image: string}) => {
+            if (typeof answer === "string") {
+                return {
+                    text: answer,
+                    latex: "",
+                    image: ""
+                }
+            } else {
+                return answer;
+            }
+        });
+
+        const correctAnswersAsString = correctAnswerObjects.map((answer: Answer) => JSON.stringify(answer));
         const correctAnswersInOrder = correctAnswersAsString.sort();
 
         const selectedAnswersInOrder = selectedAnswers.sort();

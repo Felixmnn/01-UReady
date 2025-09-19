@@ -15,132 +15,133 @@
   "info": {
     "title": "AGB",
     "policys":{
-    "usageRights": {
-      "title": "Nutzung & Rechte",
-      "icon": "shield-alt",
-      "subsections": {
-        "applicableFor": {
-          "title": "Für wen gelten die AGB?",
-          "content": "Für alle registrierten Nutzer:innen der App."
-        },
-        "registration": {
-          "title": "Registrierung",
-          "content": "Erfolgt per E-Mail-Anbieter. Angabe des Bildungsbereichs optional, dient zur Modulpersonalisierung."
-        },
-        "usageRights": {
-          "title": "Nutzungsrechte",
-          "content": "Private Module sind nur für den Nutzer sichtbar.\nÖffentliche Module können kopiert werden."
-        },
-        "prohibitedUsage": {
-          "title": "Verbotene Nutzung",
-          "content": "Kein Reverse Engineering, automatisierte Erstellung oder Kopieren von UI-Elementen."
+      "usageRights": {
+        "title": "Nutzung & Rechte",
+        "icon": "shield-alt",
+        "subsections": {
+          "applicableFor": {
+            "title": "Für wen gelten die AGB?",
+            "content": "Für alle registrierten Nutzer:innen der App."
+          },
+          "registration": {
+            "title": "Registrierung",
+            "content": "Erfolgt per E-Mail-Anbieter. Angabe des Bildungsbereichs optional, dient zur Modulpersonalisierung."
+          },
+          "usageRights": {
+            "title": "Nutzungsrechte",
+            "content": "Private Module sind nur für den Nutzer sichtbar.\nÖffentliche Module können kopiert werden."
+          },
+          "prohibitedUsage": {
+            "title": "Verbotene Nutzung",
+            "content": "Kein Reverse Engineering, automatisierte Erstellung oder Kopieren von UI-Elementen."
+          }
+        }
+      },
+      "pricing": {
+        "title": "Preise & Käufe",
+        "icon": "credit-card",
+        "subsections": {
+          "costs": {
+            "title": "Kosten",
+            "content": "Die App ist grundsätzlich kostenlos. Es gibt optionale In-App-Käufe (Chips)."
+          },
+          "payments": {
+            "title": "Zahlungen",
+            "content": "Zahlung über Google Pay und Apple Pay. Chips können gegen Energie getauscht werden."
+          },
+          "cancellation": {
+            "title": "Widerruf",
+            "content": "Kein Rückgaberecht für bereits verbrauchte Energie. Kein Abo-Modell im Einsatz."
+          },
+          "latePayment": {
+            "title": "Zahlungsverzug",
+            "content": "Bei Zahlungsproblemen kann der Account bis zur Klärung gesperrt werden."
+          }
+        }
+      },
+      "availability": {
+        "title": "Verfügbarkeit & Support",
+        "icon": "wifi",
+        "subsections": {
+          "provision": {
+            "title": "Bereitstellung",
+            "content": "Keine garantierte Mindestverfügbarkeit. Ziel ist jedoch dauerhafte Verfügbarkeit."
+          },
+          "support": {
+            "title": "Support & Updates",
+            "content": "Support via Mail oder Kontaktformular. Regelmäßige Updates geplant."
+          },
+          "liability": {
+            "title": "Haftung",
+            "content": "Keine Haftung für Datenverlust oder App-Abstürze. Exportfunktion für Datensicherung vorhanden."
+          }
+        }
+      },
+      "privacy": {
+        "title": "Datenschutz",
+        "icon": "lock",
+        "subsections": {
+          "collectedData": {
+            "title": "Erhobene Daten",
+            "content": "Registrierungsdaten, Lernverhalten, genutzte Features, letzte Anmeldung, Herkunftsland, Sprache etc."
+          },
+          "purpose": {
+            "title": "Verwendungszwecke",
+            "content": "Personalisierung, Funktionsgewährleistung und Weiterentwicklung der Plattform."
+          },
+          "userRights": {
+            "title": "Rechte der Nutzer:innen",
+            "content": "Accountlöschung möglich. Datenexport verfügbar."
+          }
+        }
+      },
+      "legal": {
+        "title": "Rechtliches",
+        "icon": "gavel",
+        "subsections": {
+          "applicableLaw": {
+            "title": "Geltendes Recht",
+            "content": "Es gilt deutsches Recht. Gerichtsstand ist der Sitz des Unternehmens."
+          },
+          "termsChanges": {
+            "title": "AGB-Änderungen",
+            "content": "Änderungen werden per App oder E-Mail bekanntgegeben."
+          },
+          "severability": {
+            "title": "Salvatorische Klausel",
+            "content": "Sollten einzelne Bestimmungen unwirksam sein, bleibt der Rest der AGB gültig."
+          }
+        }
+      },
+      "multilingual": {
+        "title": "Mehrsprachigkeit",
+        "icon": "globe",
+        "subsections": {
+          "legalLanguage": {
+            "title": "Rechtlich gültige Sprache",
+            "content": "Im Zweifel gilt die deutsche Fassung."
+          },
+          "languageNotifications": {
+            "title": "Sprachliche Benachrichtigungen",
+            "content": "AGB-Änderungen werden in allen unterstützten App-Sprachen angezeigt."
+          }
+        }
+      },
+      "special": {
+        "title": "Besonderheiten",
+        "icon": "star",
+        "subsections": {
+          "communityFeatures": {
+            "title": "Community-Funktionen",
+            "content": "Module können kopiert, erstellt und gemeldet werden."
+          },
+          "aiFeatures": {
+            "title": "KI-Funktionen",
+            "content": "KI wird verwendet, wenn der Nutzer dies explizit auswählt (z. B. 'Mit KI erstellen')."
+          }
         }
       }
-    },
-    "pricing": {
-      "title": "Preise & Käufe",
-      "icon": "credit-card",
-      "subsections": {
-        "costs": {
-          "title": "Kosten",
-          "content": "Die App ist grundsätzlich kostenlos. Es gibt optionale In-App-Käufe (Chips)."
-        },
-        "payments": {
-          "title": "Zahlungen",
-          "content": "Zahlung über Google Pay und Apple Pay. Chips können gegen Energie getauscht werden."
-        },
-        "cancellation": {
-          "title": "Widerruf",
-          "content": "Kein Rückgaberecht für bereits verbrauchte Energie. Kein Abo-Modell im Einsatz."
-        },
-        "latePayment": {
-          "title": "Zahlungsverzug",
-          "content": "Bei Zahlungsproblemen kann der Account bis zur Klärung gesperrt werden."
-        }
-      }
-    },
-    "availability": {
-      "title": "Verfügbarkeit & Support",
-      "icon": "wifi",
-      "subsections": {
-        "provision": {
-          "title": "Bereitstellung",
-          "content": "Keine garantierte Mindestverfügbarkeit. Ziel ist jedoch dauerhafte Verfügbarkeit."
-        },
-        "support": {
-          "title": "Support & Updates",
-          "content": "Support via Mail oder Kontaktformular. Regelmäßige Updates geplant."
-        },
-        "liability": {
-          "title": "Haftung",
-          "content": "Keine Haftung für Datenverlust oder App-Abstürze. Exportfunktion für Datensicherung vorhanden."
-        }
-      }
-    },
-    "privacy": {
-      "title": "Datenschutz",
-      "icon": "lock",
-      "subsections": {
-        "collectedData": {
-          "title": "Erhobene Daten",
-          "content": "Registrierungsdaten, Lernverhalten, genutzte Features, letzte Anmeldung, Herkunftsland, Sprache etc."
-        },
-        "purpose": {
-          "title": "Verwendungszwecke",
-          "content": "Personalisierung, Funktionsgewährleistung und Weiterentwicklung der Plattform."
-        },
-        "userRights": {
-          "title": "Rechte der Nutzer:innen",
-          "content": "Accountlöschung möglich. Datenexport verfügbar."
-        }
-      }
-    },
-    "legal": {
-      "title": "Rechtliches",
-      "icon": "gavel",
-      "subsections": {
-        "applicableLaw": {
-          "title": "Geltendes Recht",
-          "content": "Es gilt deutsches Recht. Gerichtsstand ist der Sitz des Unternehmens."
-        },
-        "termsChanges": {
-          "title": "AGB-Änderungen",
-          "content": "Änderungen werden per App oder E-Mail bekanntgegeben."
-        },
-        "severability": {
-          "title": "Salvatorische Klausel",
-          "content": "Sollten einzelne Bestimmungen unwirksam sein, bleibt der Rest der AGB gültig."
-        }
-      }
-    },
-    "multilingual": {
-      "title": "Mehrsprachigkeit",
-      "icon": "globe",
-      "subsections": {
-        "legalLanguage": {
-          "title": "Rechtlich gültige Sprache",
-          "content": "Im Zweifel gilt die deutsche Fassung."
-        },
-        "languageNotifications": {
-          "title": "Sprachliche Benachrichtigungen",
-          "content": "AGB-Änderungen werden in allen unterstützten App-Sprachen angezeigt."
-        }
-      }
-    },
-    "special": {
-      "title": "Besonderheiten",
-      "icon": "star",
-      "subsections": {
-        "communityFeatures": {
-          "title": "Community-Funktionen",
-          "content": "Module können kopiert, erstellt und gemeldet werden."
-        },
-        "aiFeatures": {
-          "title": "KI-Funktionen",
-          "content": "KI wird verwendet, wenn der Nutzer dies explizit auswählt (z. B. 'Mit KI erstellen')."
-        }
-      }
-    }}
+    }
   
   },
   "deleteAccount": {
@@ -274,8 +275,15 @@
     "noTitle": "Noch keine Überschrift",
     "noNote": "Noch keine Notiz",
     "save": "Änderungen speichern",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "back": "Zurück"
   },"quiz":{
+    "answeredCorrectly": "✅ Richtig beantwortet",
+    "answeredWrong": "❌ Falsch beantwortet",
+    "againSameQuestions": "Erneut mit gleichen Fragen",
+    "againNewQuestions": "Erneut mit neuen Fragen",
+    "finishQuiz": "Quiz beenden",
+    "results": "🎉 Ergebniss",
     "right": "Richtig!",
     "wrong": "Leider Falsch",
     "showExplanation": "Erklärung anzeigen",
@@ -314,12 +322,13 @@
     "moduleName": "Modulname",
     "typeModuleName": "Modulnamen eingeben",
     "moduleDescription": "Beschreibung",
-    "typeModuleDescription": "Modulbeschreibung eingeben",
+    "typeModuleDescription": "Noch keine Beschreibung...",
     "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
     "cannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
     "cancel": "Abbrechen",
     "delete": "Löschen"
   }, "editSession":{
+    "color": "Sessopm Farbe",
     "title": "Session bearbeiten",
     "name": "Session Name",
     "description": "Session Beschreibung",
@@ -973,6 +982,61 @@
         "Verwaltungsfachangestellter": {"icon": "cogs", "name": "Verwaltungsfachangestellter"}
       }
     }
+  },"bibliothek":{
+    "aiQuiz": "AI Quiz generieren",
+    "crtNote": "Notiz erstellen",
+    "crtQuestion": "Frage erstellen",
+    "quizSettings": "Quiz-Einstellungen",
+    "quizType": "Quiz-Typ",
+    "questionType": "Fragentyp",
+    "numQuestions": "Anzahl der Fragen",
+    "timeLimit": "Zeitlimit (Sekunden)",
+    "createModule": "Modul erstellen",
+    "refresh": "Aktualisieren..."
+
+
+  }, "aiQuestion":{
+    "title": "Generiere Karteikarten mit AI aus...",
+    "text": "Text",
+    "topic": "Thema",
+    "file": "Datei",
+    "generateCards": "Karten generieren",
+    "sumDocument": "Dokument zusammenfassen",
+    "selectFile": "Wähle eine Datei aus:",
+    "dragFile": "Ziehe eine Datei hier hin oder lade sie hoch",
+    "uploadDocument": "Dokument hochladen",
+    "yourTopics": "Deine Themen:",
+    "yourTexts": "Deine Texte:",
+    "noMaterials": "Noch keine Materialien",
+    "generateCardsDisabled": "Karten generieren",
+    "notEnoughEnergy": "Du hast nicht genug Energie. Bitte warte bis deine Energie wieder aufgefüllt ist."
+    ,"cardsFor":"Karteikarten für ",
+    "generate": "generieren."
+  },"editQuestion":{
+    "enterQuestion":"Gib deine Frage ein...",
+    "invaidImageURL":"Ungültige Bild-URL",
+    "enterLatex":"Gib deinen LaTeX-Code ein...",
+    "enterImageURL":"Gib eine Bild-URL ein...",
+    "save":"Speichern",
+    "editQuestion":"Frage bearbeiten",
+    "answers":"Antworten",
+    "addNewAnswer":"Neue Antwort hinzufügen...",
+    "enterYourAnswer":"Gib deine Antwort ein..."
+  },"home":{
+    "lastModules":"Letzte Module",
+    "lastSessions":"Letzte Sessions",
+    "quickActions":"Schnelle Aktionen",
+    "learnSetKI":"Erstellen wir zusammen ein Lernset.",
+    "learnSetDiscover":"Mal schauen was deine Komilitonen lernen.",
+    "learnSetCreate":"Erstelle dein eigenes Lernset.",
+    "questions":"Fragen",
+    "sessions":"Sessions",
+    "firstModule": "Erstes Modul",
+    "personalziedProfile": "Personalisiertes Profil",
+    "signUp":"Sign Up",
+    "gettingStarted":"Getting Started",
+    "refresh":"Aktualisieren..."
+
   }
 }
 

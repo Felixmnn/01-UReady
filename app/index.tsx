@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 
 export default function Index() {
-  const { isLoggedIn, isLoading, user, userData, setUserData, setUserUsage } = useGlobalContext();
+  const { isLoading, user, userData, setUserData } = useGlobalContext();
   const { t } = useTranslation();
   useEffect(() => {
      NavigationBar.setVisibilityAsync('hidden');

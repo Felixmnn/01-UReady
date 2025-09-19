@@ -8,18 +8,41 @@ import { router } from "expo-router";
 const Policys = () => {
   const { t } = useTranslation();
   type PolicySection = {
-    icon: string;
     title: string;
-    subsections: { [key: string]: any };
-    [key: string]: any;
+    subsections: {
+      [key: string]: {
+        title: string;
+        content: string;
+      };
+    };
+    [key: string]:
+      | {
+          icon?: string;
+          title?: string;
+          content?: string;
+          subsections?: {
+            [key: string]: {
+              title: string;
+              content: string;
+            };
+          };
+        }
+      | string;
   };
 
-  const obj = t("info.policys", { returnObjects: true }) as Record<string, PolicySection>;
+  const obj = t("info.policys", { returnObjects: true }) as Record<
+    string,
+    PolicySection
+  >;
   const objKeys = Object.keys(obj);
 
   // State für geöffnete Sections und Subsections
-  const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>({});
-  const [openSubSections, setOpenSubSections] = useState<{ [key: string]: boolean }>({});
+  const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+  const [openSubSections, setOpenSubSections] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const toggleSection = (key: string) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -33,7 +56,13 @@ const Policys = () => {
     subItems,
     parentKey,
   }: {
-    subItems: { [key: string]: any };
+    subItems: {
+      [key: string]: {
+        title: string;
+        content: string;
+        subItems?: { [key: string]: { title: string; content: string } };
+      };
+    };
     parentKey: string;
   }) => {
     const subItemKeys = Object.keys(subItems);
@@ -86,9 +115,14 @@ const Policys = () => {
   return (
     <SafeAreaView className="h-full w-full bg-[#0c111d] p-2">
       <View className="w-full items-center mb-2 flex-row justify-between p-2">
-        <TouchableOpacity className="justify-center items-start h-[30px] w-[30px]" onPress={()=> router.push("/profil")}><Icon name="arrow-left" size={20} color={"white"} /></TouchableOpacity>
+        <TouchableOpacity
+          className="justify-center items-start h-[30px] w-[30px]"
+          onPress={() => router.push("/profil")}
+        >
+          <Icon name="arrow-left" size={20} color={"white"} />
+        </TouchableOpacity>
         <Text className="text-white text-2xl font-bold">{t("info.title")}</Text>
-        <View style={{width:30}}/>
+        <View style={{ width: 30 }} />
       </View>
       <ScrollView>
         {objKeys.map((key) => {

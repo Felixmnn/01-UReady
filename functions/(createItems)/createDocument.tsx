@@ -2,7 +2,7 @@ import { addDocumentConfig, addDocumentToBucket, updateDocumentConfig } from '@/
 import * as DocumentPicker from 'expo-document-picker';
 import uuid from 'react-native-uuid';
 
-export async function addDocument (sessionID, subjectID){
+export async function addDocument (sessionID:string, subjectID:string){
     try {
          
         const res = await DocumentPicker.getDocumentAsync({type: "*/*"});
@@ -31,8 +31,10 @@ export async function addDocument (sessionID, subjectID){
         }
         const uploadRes = await addDocumentToBucket(data);
         //Set Upload to true && close the modal
-        appwriteRes.uploaded = true;
-        const final = await updateDocumentConfig(appwriteRes);
+        if (appwriteRes) {
+            appwriteRes.uploaded = true;
+            const final = await updateDocumentConfig(appwriteRes);
+        }
         return;
                     
     } catch (error) {

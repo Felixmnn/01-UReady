@@ -76,7 +76,7 @@ export function differenceInHours(date1, date2) {
     return Math.floor(diffInMs / (1000 * 60 * 60));
 }  
 
-function wasYesterday(date: Date) {
+function wasYesterday(date) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -87,7 +87,7 @@ function wasYesterday(date: Date) {
   return compare.getTime() === yesterday.getTime();
 }
 
-function isToday(date: Date) {
+function isToday(date) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   

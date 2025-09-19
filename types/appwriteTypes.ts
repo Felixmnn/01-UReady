@@ -18,6 +18,7 @@ export type UserUsage = {
 }
 
 export type userDataKathegory = {
+    $id?: string;
     country: string | null;
     university: string | null;
     region: string | null;

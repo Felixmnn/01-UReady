@@ -1,52 +1,63 @@
 import { Query } from "appwrite";
 import { databases, config } from "./appwrite";
 
-export async function getMatchingModules(
-    {
-        
-        eductaionType,
+export async function getMatchingModules({
+  offset = 0,
+  eductaionType,
 
+  universityDegreeType,
+  universityKategorie,
+
+  schoolType,
+  schoolSubjects,
+  schoolGrades,
+
+  eductaionCategory,
+  educationSubject,
+
+  otherSubjects,
+}: {
+  offset?: number;
+  eductaionType: "UNIVERSITY" | "SCHOOL" | "EDUCATION" | "OTHER" | null;
+  universityDegreeType: string[] | null;
+  universityKategorie: string[] | undefined | null;
+
+  schoolType?: string[] | undefined | null; // e.g. ["gymnasium", "realschule"]
+  schoolSubjects?: string[] | undefined | null; // e.g. ["mathematik", "deutsch"]
+  schoolGrades?: number[] | undefined | null; // e.g. [1,2,3,4,5,6,7,8,9,10,11,12,13]
+
+  eductaionCategory?: string[] | undefined | null;
+  educationSubject?: string[] | undefined | null;
+
+  otherSubjects?: string[] | undefined | null;
+}) {
+  console.log("getMatchingModules called with:");
+  switch (eductaionType) {
+    case "UNIVERSITY":
+      console.log("UNIVERSITY");
+      return await getUniversityModules({
         universityDegreeType,
         universityKategorie,
-
+        offset,
+      });
+    case "SCHOOL":
+      console.log("SCHOOL");
+      return await getSchoolModules({
         schoolType,
         schoolSubjects,
         schoolGrades,
-
+        offset,
+      });
+    case "EDUCATION":
+      return await getEducationModules({
         eductaionCategory,
         educationSubject,
-
-        otherSubjects
-
-    }:{
-        eductaionType: "UNIVERSITY" | "SCHOOL" | "EDUCATION" | "OTHER" | null,
-        universityDegreeType: "BACHELOR" | "MASTER" | "PHD" | "DIPLOM" | "STATE_EXAM" | "OTHER" | null ,
-        universityKategorie: string[] | undefined | null
-
-        schoolType?: string[] | undefined | null, // e.g. ["gymnasium", "realschule"]
-        schoolSubjects?: string[] | undefined | null, // e.g. ["mathematik", "deutsch"]
-        schoolGrades?: number[] | undefined | null, // e.g. [1,2,3,4,5,6,7,8,9,10,11,12,13]
-
-        eductaionCategory?: string[] | undefined | null,
-        educationSubject?: string[] | undefined | null,
-
-        otherSubjects?: string[] | undefined | null,
-    }
-) {
-    console.log("getMatchingModules called with:")
-    switch (eductaionType) {
-        case "UNIVERSITY":
-            console.log("UNIVERSITY")
-            return await getUniversityModules({universityDegreeType, universityKategorie});
-        case "SCHOOL":
-            console.log("SCHOOL")
-            return await getSchoolModules({schoolType, schoolSubjects, schoolGrades});
-        case "EDUCATION":
-            return await getEducationModules({eductaionCategory, educationSubject});
-            console.log("EDU")
-        case "OTHER":
-            return await getOtherModules({schoolSubjects});
-            }
+        offset,
+      });
+      console.log("EDU");
+    case "OTHER":
+      return await getOtherModules({ schoolSubjects, offset });
+  }
 }
 
 /* Function for University Modules 
@@ -56,18 +67,17 @@ export async function getMatchingModules(
 async function getUniversityModules({
   universityDegreeType,
   universityKategorie,
+  offset,
 }: {
-  universityDegreeType?:
-    | "BACHELOR"
-    | "MASTER"
-    | "PHD"
-    | "DIPLOM"
-    | "STATE_EXAM"
-    | "OTHER"
-    | "NONE";
+  offset?: number;
+  universityDegreeType?: string[] | null; // e.g. "BACHELOR", "MASTER", "PHD", "DIPLOM", "STATE_EXAM", "OTHER", "NONE"
   universityKategorie?: string[] | null;
 }) {
-
+  console.log("Fetching University Modules with:", {
+    universityDegreeType,
+    universityKategorie,
+    offset,
+  });
   const filters = [
     Query.equal("kategoryType", "UNIVERSITY"),
     Query.equal("public", true),
@@ -75,7 +85,9 @@ async function getUniversityModules({
 
   // Nur hinzufügen, wenn DegreeType übergeben wurde
   if (universityDegreeType) {
-    filters.push(Query.contains("creationUniversityProfession", universityDegreeType));
+    filters.push(
+      Query.contains("creationUniversityProfession", universityDegreeType)
+    );
   }
 
   if (universityKategorie && universityKategorie.length > 0) {
@@ -95,10 +107,7 @@ async function getUniversityModules({
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
-      [
-        Query.and(filters),
-        Query.limit(5)
-      ]
+      [...filters, Query.limit(5), Query.offset(offset ?? 0)]
     );
     return response.documents;
   } catch (error) {
@@ -107,16 +116,16 @@ async function getUniversityModules({
   }
 }
 
-
-
 async function getSchoolModules({
   schoolType,
   schoolSubjects,
   schoolGrades,
+  offset,
 }: {
-  schoolType?: string[] | undefined | null, // e.g. ["gymnasium", "realschule"]
-  schoolSubjects?: string[] | undefined | null, // e.g. ["mathematik", "deutsch"]
-  schoolGrades?: number[] | undefined | null, // e.g. [1,2,3,4,5,6,7,8,9,10,11,12,13]
+  schoolType?: string[] | undefined | null; // e.g. ["gymnasium", "realschule"]
+  schoolSubjects?: string[] | undefined | null; // e.g. ["mathematik", "deutsch"]
+  schoolGrades?: number[] | undefined | null; // e.g. [1,2,3,4,5,6,7,8,9,10,11,12,13]
+  offset?: number;
 }) {
   const filters = [
     Query.equal("kategoryType", "SCHOOL"),
@@ -125,7 +134,8 @@ async function getSchoolModules({
 
   if (schoolType && schoolType.length > 0) {
     // Falls mehrere Subjects: OR-Verknüpfung
-    let sType = schoolType.length > 1 ? schoolType: [schoolType[0], schoolType[0]]
+    let sType =
+      schoolType.length > 1 ? schoolType : [schoolType[0], schoolType[0]];
     const typeFilters = sType.map((type) =>
       Query.contains("creationSchoolForm", type.toUpperCase())
     );
@@ -133,7 +143,10 @@ async function getSchoolModules({
   }
   if (schoolSubjects && schoolSubjects.length > 0) {
     // Falls mehrere Subjects: OR-Verknüpfung
-    let sSub = schoolSubjects.length > 1 ? schoolSubjects: [schoolSubjects[0], schoolSubjects[0]]
+    let sSub =
+      schoolSubjects.length > 1
+        ? schoolSubjects
+        : [schoolSubjects[0], schoolSubjects[0]];
     const subjectFilters = sSub.map((sub) =>
       Query.contains("creationSubject", sub)
     );
@@ -141,7 +154,10 @@ async function getSchoolModules({
   }
   if (schoolGrades && schoolGrades.length > 0) {
     // Falls mehrere Subjects: OR-Verknüpfung
-    let sGrade = schoolGrades.length > 1 ? schoolGrades: [schoolGrades[0], schoolGrades[0]]
+    let sGrade =
+      schoolGrades.length > 1
+        ? schoolGrades
+        : [schoolGrades[0], schoolGrades[0]];
     const gradeFilters = sGrade.map((grade) =>
       Query.equal("creationKlassNumber", grade)
     );
@@ -151,21 +167,23 @@ async function getSchoolModules({
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
-      [Query.and(filters)]
+      [...filters, Query.limit(5), Query.offset(offset ?? 0)]
     );
     return response.documents;
   } catch (error) {
     console.error("Error fetching school modules:", error);
     return [];
-  }}
-
+  }
+}
 
 async function getOtherModules({
   schoolSubjects,
+  offset,
 }: {
-  schoolSubjects?: string[] | undefined | null,
+  schoolSubjects?: string[] | undefined | null;
+  offset?: number;
 }) {
-  console.log("Starting");  
+  console.log("Starting");
   const filters = [
     Query.notEqual("kategoryType", "UNIVERSITY"), // Ausschließen von University Modulen
     Query.notEqual("kategoryType", "EDUCATION"), // Ausschließen von Education Modulen
@@ -174,7 +192,10 @@ async function getOtherModules({
   ];
   if (schoolSubjects && schoolSubjects.length > 0) {
     // Falls mehrere Subjects: OR-Verknüpfung
-    let oSub = schoolSubjects.length > 1 ? schoolSubjects: [schoolSubjects[0], schoolSubjects[0]]
+    let oSub =
+      schoolSubjects.length > 1
+        ? schoolSubjects
+        : [schoolSubjects[0], schoolSubjects[0]];
     const subjectFilters = oSub.map((sub) =>
       Query.contains("creationSubject", sub)
     );
@@ -184,7 +205,7 @@ async function getOtherModules({
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
-      [Query.and(filters)]
+      [...filters, Query.limit(5), Query.offset(offset ?? 0)]
     );
     return response.documents;
   } catch (error) {
@@ -196,26 +217,34 @@ async function getOtherModules({
 async function getEducationModules({
   eductaionCategory,
   educationSubject,
+  offset,
 }: {
-  eductaionCategory?: string[] | undefined | null,
-  educationSubject?: string[] | undefined | null, 
-}) {  
+  offset?: number;
+  eductaionCategory?: string[] | undefined | null;
+  educationSubject?: string[] | undefined | null;
+}) {
   const filters = [
     Query.equal("kategoryType", "EDUCATION"),
     Query.equal("public", true),
   ];
-  if (eductaionCategory && eductaionCategory.length > 0) {  
+  if (eductaionCategory && eductaionCategory.length > 0) {
     // Falls mehrere Subjects: OR-Verknüpfung
-    let eKat = eductaionCategory.length > 1 ? eductaionCategory: [eductaionCategory[0], eductaionCategory[0]]
+    let eKat =
+      eductaionCategory.length > 1
+        ? eductaionCategory
+        : [eductaionCategory[0], eductaionCategory[0]];
     const categoryFilters = eKat.map((kat) =>
       Query.contains("creationEducationKathegory", kat)
     );
     console.log("💡Category Filters:", categoryFilters);
     filters.push(Query.or(categoryFilters));
-  }   
-  if (educationSubject && educationSubject.length > 0) {  
+  }
+  if (educationSubject && educationSubject.length > 0) {
     // Falls mehrere Subjects: OR-Verknüpfung
-    let eSub = educationSubject.length > 1 ? educationSubject: [educationSubject[0], educationSubject[0]]
+    let eSub =
+      educationSubject.length > 1
+        ? educationSubject
+        : [educationSubject[0], educationSubject[0]];
     const subjectFilters = eSub.map((sub) =>
       Query.contains("creationEducationSubject", sub)
     );
@@ -225,7 +254,7 @@ async function getEducationModules({
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
-      [Query.and(filters)]
+      [...filters, Query.limit(5), Query.offset(offset ?? 0)]
     );
     return response.documents;
   } catch (error) {

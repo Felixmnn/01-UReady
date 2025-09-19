@@ -13,7 +13,7 @@ const RootLayout = () => {
   useEffect(() => {
     NavigationBar.setVisibilityAsync("hidden");
   }, []);
-
+ 
   // Basis-Höhe der Tabbar (ohne SafeArea)
   const baseHeight = 60;
   // Gesamt-Höhe inkl. SafeArea

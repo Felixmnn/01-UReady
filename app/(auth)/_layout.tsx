@@ -3,7 +3,7 @@ import React from 'react'
 import { Stack } from 'expo-router'
 
 const authLayout = () => {
-  return (
+  return ( 
     <View className='flex-1'>
         <>
             <Stack>

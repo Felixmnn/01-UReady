@@ -19,16 +19,11 @@ const University = ({
         const [ isVisible, setIsVisible ] = useState(true)
         const { width } = useWindowDimensions();
         const { t } = useTranslation();
-
-
-        const degreesRaw = t("universityCategories.degrees", { returnObjects: true });
-        console.log("Degrees Raw: ", degreesRaw);
+        const degreesRaw = t("universityCategories.degrees", { returnObjects: true }) as Record<string, { name: string; icon: string }>;
         const degreeKeys = Object.keys(degreesRaw);
-        console.log("Degree Keys: ", degreeKeys);
         const degrees = degreeKeys.map((key) => {
             return { name: degreesRaw[key].name, icon: degreesRaw[key].icon, id: key };
         });
-        console.log("Degrees: ", degrees);
     return (
             <View  className='h-full  w-full justify-between items-center py-5'>
                 <BotBottomLeft

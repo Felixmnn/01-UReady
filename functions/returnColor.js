@@ -9,7 +9,7 @@ export function returnColor(color, moduleColor) {
     blue: "#1E90FF",
     purple: "#A64DFF",
     pink: "#FF4DA6",
-    green: "#4DFF4D"
+    green: "#4DFF4D",
   };
   if (colorMap[colorLow]) {
     return colorMap[colorLow];
@@ -26,7 +26,7 @@ export function returnColorButton(color, moduleColor) {
     blue: "#1E90FF",
     purple: "#A64DFF",
     pink: "#FF4DA6",
-    green: "#4DFF4D"
+    green: "#4DFF4D",
   };
   if (colorMap[color]) {
     return colorMap[color];
@@ -43,28 +43,25 @@ export function returnColorButtonShadow(color, moduleColor) {
     blue: "#1E90FF",
     purple: "#A64DFF",
     pink: "#FF4DA6",
-    green: "#4DFF4D"
+    green: "#4DFF4D",
   };
   if (colorMap[color]) {
     return colorMap[color];
   }
 }
 
-export function returnShadowComponents(color){
-
+export function returnShadowComponents(color) {
   const colorMap = {
-    red: '#DC2626',
-    blue: '#2563EB',
-    green: '#059669',
-    yellow: '#CA8A04',
-    orange: '#C2410C',
-    purple: '#7C3AED',
-    pink: '#DB2777',
-    emerald: '#059669',
-    cyan: '#0891B2',
+    red: "#DC2626",
+    blue: "#2563EB",
+    green: "#059669",
+    yellow: "#CA8A04",
+    orange: "#C2410C",
+    purple: "#7C3AED",
+    pink: "#DB2777",
+    emerald: "#059669",
+    cyan: "#0891B2",
   };
 
-  return colorMap[color] || '#1F2937'; 
-};
-
-
+  return colorMap[color] || "#1F2937";
+}

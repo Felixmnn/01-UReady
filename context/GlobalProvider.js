@@ -4,15 +4,15 @@ import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
-import * as NavigationBar from 'expo-navigation-bar';
+import * as NavigationBar from "expo-navigation-bar";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
-   useEffect(() => {
-       NavigationBar.setVisibilityAsync('hidden');
-    }, []);
+  useEffect(() => {
+    NavigationBar.setVisibilityAsync("hidden");
+  }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -27,39 +27,39 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   // 1. Session-Check
   // -------------------------------
-  
+
   useEffect(() => {
-  let isMounted = true;
+    let isMounted = true;
 
-  const initSession = async () => {
-    try {
-      const res = await checkSession();
-      if (!isMounted) return;
-      if (res) {
-        setIsLoggedIn(true);
-        setUser(res);
-      } else {
-        setIsLoggedIn(false);
-        setUser(null);
+    const initSession = async () => {
+      try {
+        const res = await checkSession();
+        if (!isMounted) return;
+        if (res) {
+          setIsLoggedIn(true);
+          setUser(res);
+        } else {
+          setIsLoggedIn(false);
+          setUser(null);
+        }
+      } catch (err) {
+        if (__DEV__) console.log("Session error", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
-    } catch (err) {
-      if (__DEV__) console.log("Session error", err);
-    } finally {
-      if (isMounted) setIsLoading(false);
-    }
-  };
+    };
 
-  initSession();
+    initSession();
 
-  return () => {
-    isMounted = false;
-  };
-}, []);
-  
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // -------------------------------
   // 2. UserData + Language + UserUsage laden
   // -------------------------------
-  
+
   useEffect(() => {
     if (!user) return;
 
@@ -68,8 +68,16 @@ const GlobalProvider = ({ children }) => {
         const data = await loadUserDataKathegory(user.$id);
 
         if (data) {
-          const allowedLanguages = ["DEUTSCH", "ENGLISH(US)", "ENGLISH(UK)", "AUSTRALIAN", "SPANISH"];
-          setNewLanguage(allowedLanguages.includes(data.language) ? data.language : "DEUTSCH");
+          const allowedLanguages = [
+            "DEUTSCH",
+            "ENGLISH(US)",
+            "ENGLISH(UK)",
+            "AUSTRALIAN",
+            "SPANISH",
+          ];
+          setNewLanguage(
+            allowedLanguages.includes(data.language) ? data.language : "DEUTSCH"
+          );
         }
 
         await ensureUserUsage();
@@ -138,7 +146,7 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   // Exportierte Werte
   // -------------------------------
-  
+
   return (
     <GlobalContext.Provider
       value={{

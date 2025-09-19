@@ -8,7 +8,7 @@ import { deleteAllModules, deleteUserData, deleteUserDataKathegory, deleteUserUs
 import CustomButton from '@/components/(general)/customButton';
 import { useTranslation } from 'react-i18next';
 
-
+ 
 const DeleteAccount = () => {
   const { t } = useTranslation();
   
@@ -17,7 +17,6 @@ const DeleteAccount = () => {
 
   useEffect(() => {
     if (!user) {
-      console.error("No user is logged in.");
       router.push('/sign-in');
     }},[])
 
@@ -33,7 +32,6 @@ const DeleteAccount = () => {
   }
   async function handleDelete () {
     if (!user) {
-      console.error("No user is logged in.");
       router.push('/sign-in');
     }
     await deleteModules();

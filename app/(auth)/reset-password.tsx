@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 
 const ResetPassword = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(); 
 
     const [secret, setSecret] =  useState(new URLSearchParams(window.location.search).get('secret'))
     const [userId, setUserId] =  useState(new URLSearchParams(window.location.search).get('userId'))

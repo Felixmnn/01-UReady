@@ -1,63 +1,76 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 
-const SwichTab = ({setTab, tab1, tab2, tab, change}:{
-
-    setTab: React.Dispatch<React.SetStateAction<number>>,
-    tab1: string,
-    tab2: string,
-    tab: number,
-    change?: boolean
+const SwichTab = ({
+  setTab,
+  tab1,
+  tab2,
+  tab,
+  change,
+}: {
+  setTab: React.Dispatch<React.SetStateAction<number>>;
+  tab1: string;
+  tab2: string;
+  tab: number;
+  change?: boolean;
 }) => {
-const [activeTab, setActiveTab] = useState(0);
-const translateX = useSharedValue(0);
+  const [activeTab, setActiveTab] = useState(0);
+  const translateX = useSharedValue(0);
 
-const switchTab = (index:number) => {
+  const switchTab = (index: number) => {
     setActiveTab(index);
-    setTab(index)
+    setTab(index);
     translateX.value = withTiming(index * 68, { duration: 300 }); // Weicher Übergang
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     if (change) {
-        setActiveTab(tab);
-        translateX.value = withTiming(tab * 76, { duration: 300 });
+      setActiveTab(tab);
+      translateX.value = withTiming(tab * 76, { duration: 300 });
     }
-}, [tab, change]);
+  }, [tab, change]);
 
-const animatedIndicatorStyle = useAnimatedStyle(() => ({
+  const animatedIndicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
-}));
+  }));
   return (
     <View className=" pt-4 bg-[#0c111d] ">
-            <View className="flex-row justify-start relative">
-              <TouchableOpacity
-                className="ml-2 w-[60px] items-center pb-2"
-                onPress={() => switchTab(0)}
-              >
-                <Text className={` ${activeTab === 0 ? "font-bold text-white" : "text-gray-400"}`}>
-                  {tab1}
-                </Text>
-              </TouchableOpacity>
-      
-              <TouchableOpacity
-                className="w-[80px] items-center pb-2 ml-2"
-                onPress={() => switchTab(1)}
-              >
-                <Text className={` ${activeTab === 1 ? "font-bold text-white" : "text-gray-400"}`}>
-                  {tab2}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View className="relative h-[2px] bg-[#0c111d] ml-2">
-              <Animated.View
-                className={`absolute left-0 h-[2px] bg-blue-500 ${activeTab == 1 ? "w-[80px]" : "w-[60px]"} `}
-                style={animatedIndicatorStyle}
-              />
-    </View>
-    </View>
-  )
-}
+      <View className="flex-row justify-start relative">
+        <TouchableOpacity
+          className="ml-2 w-[60px] items-center pb-2"
+          onPress={() => switchTab(0)}
+        >
+          <Text
+            className={` ${activeTab === 0 ? "font-bold text-white" : "text-gray-400"}`}
+          >
+            {tab1}
+          </Text>
+        </TouchableOpacity>
 
-export default SwichTab
+        <TouchableOpacity
+          className="w-[80px] items-center pb-2 ml-2"
+          onPress={() => switchTab(1)}
+        >
+          <Text
+            className={` ${activeTab === 1 ? "font-bold text-white" : "text-gray-400"}`}
+          >
+            {tab2}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View className="relative h-[2px] bg-[#0c111d] ml-2">
+        <Animated.View
+          className={`absolute left-0 h-[2px] bg-blue-500 ${activeTab == 1 ? "w-[80px]" : "w-[60px]"} `}
+          style={animatedIndicatorStyle}
+        />
+      </View>
+    </View>
+  );
+};
+
+export default SwichTab;

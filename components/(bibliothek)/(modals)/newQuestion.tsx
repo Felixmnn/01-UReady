@@ -1,81 +1,129 @@
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, Modal, TouchableOpacity } from "react-native";
+import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import  Selectable  from '../selectable'
+import Selectable from "../selectable";
+
+type EditQuestionState = {
+  state: boolean;
+  status: "ADD" | "EDIT";
+};
+
+type Props = {
+  question: any;
+  questions: any[];
+  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
+  module: any;
+  setModule: React.Dispatch<React.SetStateAction<any>>;
+  selectedSession: any;
+  isVisibleEditQuestion: { state: boolean; status: "ADD" | "EDIT" };
+  setIsVisibleEditQuestion: React.Dispatch<
+    React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>
+  >;
+};
 
 const ModalNewQuestion = ({
-    isVisible,
-    setQuestionToEdit ,
-    isVisibleEditQuestion , 
-    setIsVisibleEditQuestion , 
-    setIsVisible,
-     selectAi, 
-     module, 
-     addDocument, 
-     SwichToEditNote,
-     texts, 
-     selectedLanguage,
-    }:{
-    isVisible: boolean,
-    setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>,
-    isVisibleEditQuestion: {state: boolean, status: number},
-    setIsVisibleEditQuestion: React.Dispatch<React.SetStateAction<{state: boolean, status: number}>>,
-    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>,
-    selectAi: () => void,
-    module: any,
-    addDocument: () => void,
-    SwichToEditNote: (noteID: string | null) => void,
-    texts: { [key: string]: { [key: string]: string } },
-    selectedLanguage: string
-    }) => {
-    
+  isVisible,
+  setQuestionToEdit,
+  setIsVisibleEditQuestion,
+  setIsVisible,
+  selectAi,
+  module,
+  addDocument,
+  SwichToEditNote,
+  texts,
+  selectedLanguage,
+}: {
+  isVisible: boolean;
+  setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>;
+ setIsVisibleEditQuestion: React.Dispatch<React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>>;
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  selectAi: () => void;
+  module: any;
+  addDocument: () => void;
+  SwichToEditNote: (noteID: string | null) => void;
+  texts: { [key: string]: { [key: string]: string } };
+  selectedLanguage: string;
+}) => {
   return (
-    <View >
-                {
-    isVisible ? 
-    <Modal 
-        animationType="fade"
-        transparent={true}
-        visible={isVisible}
-    >
-        <TouchableOpacity 
-            className="absolute top-0 left-0 w-full h-full justify-center items-center p-5" 
-            style={{ backgroundColor: 'rgba(17, 24, 39, 0.5)' }}  // 50% Transparenz
+    <View>
+      {isVisible ? (
+        <Modal animationType="fade" transparent={true} visible={isVisible}>
+          <TouchableOpacity
+            className="absolute top-0 left-0 w-full h-full justify-center items-center p-5"
+            style={{ backgroundColor: "rgba(17, 24, 39, 0.5)" }} // 50% Transparenz
             onPress={() => setIsVisible(false)}
-        >
-            <View className=' w-full max-w-[600px] items-center justify-center bg-gray-800 border-gray-700 border-[1px] rounded-xl p-2'>
-                <View className='w-full flex-row justify-between'>
-                    <Text className='text-white font-bold mr-2 text-[15px]' >{texts[selectedLanguage].addMaterial}</Text>
-                    <Icon name="times" size={20} color="white"/>
-                </View>
-                <View className='w-full p-2'>
-                    <Selectable   icon={"robot"} iconColor={"#7a5af8"} bgColor={"bg-[#372292]"} title={texts[selectedLanguage].aiQuiz} empfolen={true} handlePress={()=> selectAi()}/>
-                    <Selectable   icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/>
-                    <Selectable   icon={"file-alt"} iconColor={"#c1840b"} bgColor={"bg-[#713b12]"} title={texts[selectedLanguage].crtQuestio} empfolen={false} handlePress={()=> {setQuestionToEdit({
-                         $id: undefined,
-                        question: "",
-                        questionUrl: "",
-                        questionLatex: "",
-                        answers: [],
-                        answerIndex: [],
-                        tags: [],
-                        "public": false,
-                        sessionID: null,
-                        subjectID: module.$id,
-                        aiGenerated: false,                        
-                        status: null
-                    }); setIsVisibleEditQuestion({state:true, status: isVisibleEditQuestion.status +1 });setIsVisible(false); }} />
-                    <Selectable   icon={"sticky-note"} iconColor={"#15b79e"} bgColor={"bg-[#134e48]"} title={texts[selectedLanguage].crtNote} empfolen={false}  handlePress={()=> {
-                        SwichToEditNote(null);
-                        }}/>
-                </View>
+          >
+            <View className=" w-full max-w-[600px] items-center justify-center bg-gray-800 border-gray-700 border-[1px] rounded-xl p-2">
+              <View className="w-full flex-row justify-between">
+                <Text className="text-white font-bold mr-2 text-[15px]">
+                  {texts[selectedLanguage].addMaterial}
+                </Text>
+                <Icon name="times" size={20} color="white" />
+              </View>
+              <View className="w-full p-2">
+                <Selectable
+                  icon={"robot"}
+                  iconColor={"#7a5af8"}
+                  bgColor={"bg-[#372292]"}
+                  title={texts[selectedLanguage].aiQuiz}
+                  empfolen={true}
+                  handlePress={() => selectAi()}
+                />
+                <Selectable
+                  icon={"file-pdf"}
+                  iconColor={"#004eea"}
+                  bgColor={"bg-[#00359e]"}
+                  title={texts[selectedLanguage].dokUpload}
+                  empfolen={false}
+                  handlePress={() => {
+                    addDocument();
+                  }}
+                />
+                <Selectable
+                  icon={"file-alt"}
+                  iconColor={"#c1840b"}
+                  bgColor={"bg-[#713b12]"}
+                  title={texts[selectedLanguage].crtQuestio}
+                  empfolen={false}
+                  handlePress={() => {
+                    setQuestionToEdit({
+                      $id: undefined,
+                      question: "",
+                      questionUrl: "",
+                      questionLatex: "",
+                      answers: [],
+                      answerIndex: [],
+                      tags: [],
+                      public: false,
+                      sessionID: null,
+                      subjectID: module.$id,
+                      aiGenerated: false,
+                      status: null,
+                    });
+                    setIsVisibleEditQuestion({
+                      state: true,
+                      status: "ADD",
+                    });
+                    setIsVisible(false);
+                  }}
+                />
+                <Selectable
+                  icon={"sticky-note"}
+                  iconColor={"#15b79e"}
+                  bgColor={"bg-[#134e48]"}
+                  title={texts[selectedLanguage].crtNote}
+                  empfolen={false}
+                  handlePress={() => {
+                    SwichToEditNote(null);
+                  }}
+                />
+              </View>
             </View>
-        </TouchableOpacity>
-    </Modal>
-    : null
-}
-        </View>
-  )
-}
+          </TouchableOpacity>
+        </Modal>
+      ) : null}
+    </View>
+  );
+};
 
-export default ModalNewQuestion
+export default ModalNewQuestion;

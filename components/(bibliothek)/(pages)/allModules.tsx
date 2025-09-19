@@ -2,28 +2,34 @@ import { View, Text, TouchableOpacity, ScrollView,FlatList, Image, RefreshContro
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { loadUserDataKathegory} from "../../../lib/appwriteDaten"
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules, updateUserUsageSessions } from '@/lib/appwriteUpdate';
-import  languages  from '@/assets/exapleData/languageTabs.json';
 import TokenHeader from '@/components/(general)/tokenHeader';
 import AddAiBottomSheet from '@/components/(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '@/components/(general)/(modal)/addModuleBottomSheet';
+import { module } from '@/types/appwriteTypes';
+import { useTranslation } from 'react-i18next';
 
-const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refreshing}) => {
+const AllModules = ({
+  setSelected,
+  modules,
+  setSelectedModule,
+  onRefresh,
+  refreshing
+}:{
+  setSelected: React.Dispatch<React.SetStateAction<"AllModules" | "SingleModule" | "CreateModule" | "AiModule">>,
+  modules: module[],
+  setSelectedModule: React.Dispatch<React.SetStateAction<number>>,
+  onRefresh: () => void,
+  refreshing: boolean
+}) => {
 
-    
+    const { t } = useTranslation();
 
-    const { user,language, userUsage } = useGlobalContext()
-      const [ selectedLanguage, setSelectedLanguage ] = useState("DEUTSCH")
-      useEffect(() => {
-        if(language) {
-          setSelectedLanguage(language)
-        }
-      }, [language])
+    const { user, userUsage } = useGlobalContext()
       
-    const texts = languages.allModules;
    
       
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
@@ -41,7 +47,7 @@ const AllModules = ({setSelected, modules, setSelectedModule, onRefresh, refresh
     return target <= minAgo && target >= maxAgo;
 }
 
-function calculatePercent(questions){
+function calculatePercent(questions:string[]){
   const parsedQuestions = questions.map(q => JSON.parse(q));
   let sum = 0;
     for (let i = 0; i < parsedQuestions.length; i++) {
@@ -61,16 +67,18 @@ function calculatePercent(questions){
       
     const [ isVisibleAI, setIsVisibleAI] = useState(false)
 
-    const ModuleList = ({items=[], header="Letzte 7 Tage" }) => {
-      const [ isVisible, setIsVisible] = useState(false);
+    const ModuleList = ({
+      items
+     }:{
+      items: module[]
+     }) => {
       return (
         <View className={` mb-4`}>
           <View className={`flex-1 flex-row flex-wrap py-2`}>
-            {items.map((item, index) => (
+            {items.map((item:module, index) => (
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
                 <Karteikarte
                   handlePress={async () => {
-                    console.log("Module selected:", item);
                     await updateUserUsageModules(user.$id, {
 
                       name: item.name,
@@ -91,18 +99,15 @@ function calculatePercent(questions){
                                       questions: moduleSessions[0].questions,
                                       moduleID: item.$id
                                     } )
-                    console.log("Susccess ✅")
                     setSelectedModule(index);
                   }}
-                  farbe={item.color}
+                  farbe={item.color ?? ""}
                   percentage={Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0}
                   titel={item.name}
                   studiengang={item.description}
                   fragenAnzahl={item.questions}
                   notizAnzahl={item.notes}
                   creator={item.creator}
-                  availability={item.public}
-                  icon={"clock"}
                   publicM={item.public}
                 />
               </View>
@@ -119,11 +124,11 @@ function calculatePercent(questions){
           
           <TouchableOpacity onPress={()=> {setIsVisibleNewModule(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
               <Icon name="cubes" size={15} color="white"/>
-              <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> 
+              <Text className='text-gray-300 text-[12px] ml-2'>{t("bibliothek.createModule")}</Text> 
           </TouchableOpacity>
           <TouchableOpacity onPress={()=> {setIsVisibleAI(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
               <Image source={require("../../../assets/bot.png")} style={{height: 16, width: 16}} />
-              <Text className='text-gray-300 text-[12px] ml-2'>{texts[selectedLanguage].erstelleModul}</Text> 
+              <Text className='text-gray-300 text-[12px] ml-2'>{t("bibliothek.createModule")}</Text> 
           </TouchableOpacity>
           
         </View>
@@ -144,8 +149,7 @@ function calculatePercent(questions){
         >
           <View style={{flexGrow:1.5}}>
           <ModuleList
-            items={modules.documents}
-            header={texts[selectedLanguage].last7}
+            items={modules}
           />
           </View>
           {/*

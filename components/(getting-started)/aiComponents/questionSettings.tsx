@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useTranslation } from 'react-i18next';
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { useTranslation } from "react-i18next";
 
 const QuestionSettings = ({
   questionOptions,
@@ -9,34 +9,40 @@ const QuestionSettings = ({
 }: {
   questionOptions: {
     amountOfAnswers: number;
-    questionsType: 'MULTIPLE_CHOICE' | 'SINGLE_CHOICE' | 'TEXT';
+    questionsType: "MULTIPLE_CHOICE" | "SINGLE_CHOICE" | "TEXT";
   };
   setQuestionOptions: React.Dispatch<
     React.SetStateAction<{
       amountOfAnswers: number;
-      questionsType: 'MULTIPLE_CHOICE' | 'SINGLE_CHOICE' | 'TEXT';
+      questionsType: "MULTIPLE_CHOICE" | "SINGLE_CHOICE" | "TEXT";
     }>
   >;
 }) => {
   const { t } = useTranslation();
 
   const questionTypeMap = {
-    MULTIPLE_CHOICE: { label: t('createModule.mutipleChoice'), icon: 'check-square' },
-    SINGLE_CHOICE: { label: t('createModule.singleChoice'), icon: 'dot-circle' },
-    TEXT: { label: t('createModule.questionAnswer'), icon: 'font' },
+    MULTIPLE_CHOICE: {
+      label: t("createModule.mutipleChoice"),
+      icon: "check-square",
+    },
+    SINGLE_CHOICE: {
+      label: t("createModule.singleChoice"),
+      icon: "dot-circle",
+    },
+    TEXT: { label: t("createModule.questionAnswer"), icon: "font" },
   };
 
   return (
-    <View className='mb-2'>
+    <View className="mb-2">
       {/* Header */}
       <Text className="text-gray-300 text-lg font-semibold">
-        {t('createModule.settings')}
+        {t("createModule.settings")}
       </Text>
 
       {/* Auswahl des Fragetypen */}
       <View className="w-full flex-row flex-wrap justify-start items-center">
         {Object.keys(questionTypeMap).map((key) => {
-          const type = key as 'MULTIPLE_CHOICE' | 'SINGLE_CHOICE' | 'TEXT';
+          const type = key as "MULTIPLE_CHOICE" | "SINGLE_CHOICE" | "TEXT";
           const { label, icon } = questionTypeMap[type];
           const isActive = questionOptions.questionsType === type;
 
@@ -44,7 +50,9 @@ const QuestionSettings = ({
             <TouchableOpacity
               key={type}
               className={`px-3 py-2 flex-row items-center justify-center rounded-[10px] border-[1px] shadow-lg mr-2 mb-2 ${
-                isActive ? 'bg-blue-600 border-blue-400' : 'bg-[#0c111d] border-gray-800'
+                isActive
+                  ? "bg-blue-600 border-blue-400"
+                  : "bg-[#0c111d] border-gray-800"
               }`}
               onPress={() =>
                 setQuestionOptions({
@@ -56,11 +64,11 @@ const QuestionSettings = ({
               <Icon
                 name={icon}
                 size={15}
-                color={isActive ? '#fff' : '#9CA3AF'}
+                color={isActive ? "#fff" : "#9CA3AF"}
               />
               <Text
                 className={`ml-2 font-semibold text-[12px] ${
-                  isActive ? 'text-white' : 'text-gray-300'
+                  isActive ? "text-white" : "text-gray-300"
                 }`}
               >
                 {label}
@@ -71,10 +79,10 @@ const QuestionSettings = ({
       </View>
 
       {/* Anzahl der Antworten einstellen */}
-      {questionOptions.questionsType !== 'TEXT' && (
+      {questionOptions.questionsType !== "TEXT" && (
         <View className="flex-row items-center">
           <Text className="text-gray-300 font-semibold mr-3">
-            {t('createModule.numberOfAnswers')}:
+            {t("createModule.numberOfAnswers")}:
           </Text>
           <View className="flex-row items-center">
             <TouchableOpacity
@@ -82,7 +90,10 @@ const QuestionSettings = ({
               onPress={() =>
                 setQuestionOptions({
                   ...questionOptions,
-                  amountOfAnswers: Math.max(1, questionOptions.amountOfAnswers - 1),
+                  amountOfAnswers: Math.max(
+                    1,
+                    questionOptions.amountOfAnswers - 1
+                  ),
                 })
               }
             >

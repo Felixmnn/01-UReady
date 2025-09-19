@@ -1,7 +1,7 @@
-import { View, Text, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { enterResponse } from '@/lib/appwrite';
-import { useTranslation } from 'react-i18next';
+import { View, Text, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import { enterResponse } from "@/lib/appwrite";
+import { useTranslation } from "react-i18next";
 
 const ValidMail = () => {
   const { t } = useTranslation();
@@ -10,8 +10,8 @@ const ValidMail = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const secret = urlParams.get('secret');
-    const userId = urlParams.get('userId');
+    const secret = urlParams.get("secret");
+    const userId = urlParams.get("userId");
 
     if (!secret || !userId) {
       setError(true);
@@ -22,9 +22,9 @@ const ValidMail = () => {
     async function validateMail() {
       try {
         const response = await enterResponse(secret, userId);
-        window.location.href = '/profil';
+        window.location.href = "/profil";
       } catch (err) {
-        console.error('Validation error:', err);
+        console.error("Validation error:", err);
         setError(true);
         setLoading(false);
       }
@@ -37,8 +37,7 @@ const ValidMail = () => {
     return (
       <View className="flex-1 items-center justify-center bg-[#0c111d]">
         <ActivityIndicator size="large" color="#fff" />
-        <Text className="text-white mt-4">{t("validMail.validating")}
-        </Text>
+        <Text className="text-white mt-4">{t("validMail.validating")}</Text>
       </View>
     );
   }
@@ -51,7 +50,7 @@ const ValidMail = () => {
     );
   }
 
-  return null; 
+  return null;
 };
 
 export default ValidMail;

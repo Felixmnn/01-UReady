@@ -20,7 +20,7 @@ const aboutLayout = () => {
             </Stack>
         </>
     </View>
-  )
+  ) 
 }
 
 export default aboutLayout

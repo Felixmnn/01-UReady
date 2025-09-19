@@ -1,95 +1,90 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
-import { isColor } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { BlockMath } from 'react-katex';
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import { isColor } from "react-native-reanimated";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { BlockMath } from "react-katex";
 
 const AnswerComponent = ({
-    index,
-    selectAnswer,
-    showAnsers,
-    isCorrect,
-    parsedItem,
-    width,
-    isSelected,
-    text,
-    latex,
-    image,
-    questionType
+  index,
+  selectAnswer,
+  showAnsers,
+  isCorrect,
+  parsedItem,
+  width,
+  isSelected,
+  text,
+  latex,
+  image,
 }: {
-    index: number,
-    selectAnswer: (answer: string) => void,
-    showAnsers: boolean,
-    isCorrect: boolean,
-    parsedItem: any,
-    width: number,
-    isSelected: boolean,
-    text: string,
-    latex: string,
-    image: string,
-    questionType: "single" | "multiple" | "questionAnswer",
-
-
+  index: number;
+  selectAnswer: (answer: string) => void;
+  showAnsers: boolean;
+  isCorrect: boolean;
+  parsedItem: any;
+  width: number;
+  isSelected: boolean;
+  text: string;
+  latex: string;
+  image: string;
 }) => {
-    
   return (
     <TouchableOpacity
-        key={index}
-        disabled={showAnsers}
-        onPress={() => selectAnswer(JSON.stringify(parsedItem))}
-        className={`${width > 900 ? "w-[48%] mr-2 mt-2" : "w-full"} flex-1 items-center justify-center border-[1px] p-2 rounded-[10px] mb-2 
-        ${showAnsers
+      key={index}
+      disabled={showAnsers}
+      onPress={() => selectAnswer(JSON.stringify(parsedItem))}
+      className={`${width > 900 ? "w-[48%] mr-2 mt-2" : "w-full"} flex-1 items-center justify-center border-[1px] p-2 rounded-[10px] mb-2 
+        ${
+          showAnsers
             ? isCorrect
-            ? "bg-green-900 border-green-600"
-            : "bg-red-900 border-red-600"
+              ? "bg-green-900 border-green-600"
+              : "bg-red-900 border-red-600"
             : isSelected
-            ? "bg-blue-900 border-blue-600"
-            : "bg-gray-800 border-gray-600"
+              ? "bg-blue-900 border-blue-600"
+              : "bg-gray-800 border-gray-600"
         }`}
-       style={{
-            
-            width: width > 900 ? (width - 100) / 2 : width - 40,
-            marginBottom: 10,
-            padding: 10,
-        }}
+      style={{
+        width: width > 900 ? (width - 100) / 2 : width - 40,
+        marginBottom: 10,
+        padding: 10,
+      }}
     >
-        <View className="flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center">
         {latex.length > 0 ? (
-            <View className="w-full rounded-lg overflow-hidden">
+          <View className="w-full rounded-lg overflow-hidden">
             <BlockMath
-                math={latex}
-                className="text-white"
-                style={{ color: "white", fontSize: 10 }}
+              math={latex}
+              className="text-white"
+              style={{ color: "white", fontSize: 10 }}
             />
-            </View>
+          </View>
         ) : image.length > 0 ? (
-            <View className="w-full rounded-lg overflow-hidden min-h-10 items-center">
+          <View className="w-full rounded-lg overflow-hidden min-h-10 items-center">
             <Image
-                source={{ uri: image }}
-                style={{
+              source={{ uri: image }}
+              style={{
                 width: 200,
                 aspectRatio: 1.5,
                 borderRadius: 10,
-                }}
-                resizeMode="cover"
+              }}
+              resizeMode="cover"
             />
-            </View>
+          </View>
         ) : (
-            <Text className="text-white text-center font-bold text-[18px]">
+          <Text className="text-white text-center font-bold text-[18px]">
             {text}
-            </Text>
+          </Text>
         )}
 
-        {showAnsers && isSelected && (
-            isCorrect ? (
+        {showAnsers &&
+          isSelected &&
+          (isCorrect ? (
             <Icon name="check" size={15} color="green" />
-            ) : (
+          ) : (
             <Icon name="times" size={15} color="red" />
-            )
-        )}
-        </View>
+          ))}
+      </View>
     </TouchableOpacity>
-    );
-}
+  );
+};
 
-export default AnswerComponent
+export default AnswerComponent;

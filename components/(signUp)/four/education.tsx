@@ -37,7 +37,7 @@ const Education = ({
     id: key,
     icon: eduobjects[key].icon,
   }));
-
+  console.log("EduObj:", eduObj);
   return (
     <ScrollView className="w-full ">
       <BotBottomLeft
@@ -60,7 +60,11 @@ const Education = ({
         <View className="justify-center items-center flex-row flex-wrap ">
           {eduObj.map((item) => (
             <TouchSquare
-              text={item.name[i18n.language] || Object.values(item.name)[0]}
+              text={
+                typeof item.name[i18n.language] === "string"
+                  ? item.name[i18n.language]
+                  : Object.values(item.name).join(", ")
+              }
               icon={item.icon}
               key={item.id}
               handlePress={() => {

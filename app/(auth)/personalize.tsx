@@ -77,11 +77,10 @@ const personalize = () => {
   ]);
 
   const languages = [
-    { name: "Deutsch", enum: "DEUTSCH", code: "DE" },
-    { name: "English", enum: "ENGLISH(UK)", code: "GB" },
-    { name: "English", enum: "ENGLISH(US)", code: "US" },
-    { name: "Spanish", enum: "SPANISH", code: "ES" },
-    { name: "Australian", enum: "AUSTRALIAN", code: "AU" },
+    { label: "Deutsch", value: "de", enum: "DEUTSCH" },
+    { label: "English", value: "en" ,  enum: "ENGLISH(US)" },
+    { label: "Spanish", value: "es", enum: "SPANISH" },
+    { label: "Français", value: "fra", enum: "FRENCH" },
   ];
 
   // Delay
@@ -188,15 +187,15 @@ const personalize = () => {
 
   const saveUserData = async () => {
     const newUserData = {
-      country: selectedCountry ? selectedCountry.name.toUpperCase() : null,
+      country: selectedCountry ? selectedCountry.code.toUpperCase() : "DE",
       region: "",
       kategoryType: selectedKathegorie ? selectedKathegorie : null, // Kategorytype steht für wahl ob School, University, Education
       language: selectedLanguage
-        ? languages[selectedLanguage].enum
-        : languages[0].enum,
+        ? languages[selectedLanguage].value
+        : languages[0].value,
 
       //University
-      university: "",
+      university: "NONE",
       faculty: [""],
       studiengang: [""],
       studiengangZiel:
@@ -239,13 +238,13 @@ const personalize = () => {
       const updatedUserData = {
         birthday: userData?.birthday,
         city: userData?.city,
-        country: userData?.country,
+        country: selectedCountry ? selectedCountry.code.toUpperCase() : "DE",
         darkmode: userData?.darkmode,
         language: userData?.language,
         profilePicture: userData?.profilePicture,
         subscription: userData?.subscription,
         uid: userData?.uid,
-        university: userData?.university,
+        university: "NONE",
         signInProcessStep: "FINISHED",
       };
       await updateUserData(user.$id, updatedUserData);

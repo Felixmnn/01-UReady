@@ -224,19 +224,23 @@ const entdecken = () => {
 
     return (
       <View
-        className={`${Platform.OS == "web" ? "" : null}  rounded-full  ${topButton ? "" : "p-2"}`}
+        className={`${Platform.OS == "web" ? "" : null}  rounded-full `}
+        style={{
+          height: topButton ? 35 : 50,
+          padding: topButton ? 0 : 10,
+        }}
       >
         <TouchableOpacity
           disabled={loading || userUsage.energy < calculateEnergyCost()}
-          className={`${topButton ? "px-2" : "p-2"} flex-1 flex-row items-center justify-center rounded-full`}
+          className={`${topButton ? "px-2" : ""} flex-1 flex-row items-center justify-center rounded-lg`}
           style={{
             backgroundColor:
-              userUsage.energy > selectedModules.length * 3
+               userUsage.energy >= calculateEnergyCost()
                 ? "#3b82f6"
                 : "#f63b3b",
             borderWidth: topButton ? 1 : 2,
             borderColor:
-              userUsage.energy > selectedModules.length * 3
+               userUsage.energy >= calculateEnergyCost()
                 ? "#3c6dbc"
                 : "#bc3c3c",
           }}
@@ -263,7 +267,7 @@ const entdecken = () => {
                     qualityScore: module.qualityScore,
                     copy: true,
                     synchronization: false,
-                    questionList: module.questionList,
+                    questionList: module.questionList.map((q:string) => JSON.stringify({ ...JSON.parse(q), userAnswer: null, status: null })),
                   };
                   add(mod);
                 }
@@ -493,7 +497,7 @@ const entdecken = () => {
     );
 
     try {
-      const res = await getMatchingModules({
+      let res = await getMatchingModules({
         offset: offset,
         eductaionType: realFilters.eductaionType,
         universityDegreeType:
@@ -509,9 +513,8 @@ const entdecken = () => {
           indexesOfEduSubjects?.map((i) => eduSubKeys[i]) || null,
         otherSubjects: realFilters.otherSubjects,
       });
-      console.log("Fetched Modules: ", res?.length, res && res[0].name);
+      res = res?.filter((m)=> modules.some((mod)=> mod.$id == m.$id) == false)
       if (loadingMore) {
-        console.log("Appending Modules");
         setModules((prev: module[]) => [
           ...prev,
           ...((res ?? []) as unknown as module[]),
@@ -574,12 +577,12 @@ const entdecken = () => {
                     sheetRef.current?.snapToIndex(0));
                   setIsOpen(true);
                 }}
-                className="h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-center"
+                className="h-[35px] rounded-[10px] mr-4 p-2 mb-2 bg-gray-800 items-center justify-start"
               >
                 <Icon name="filter" size={15} color="white" />
               </TouchableOpacity>
             </View>
-            <View className="w-full flex-row items-center justify-between mb-2">
+            <View className="w-full flex-row items-start justify-between mb-2 ">
               <View
                 className=" bg-gray-500 rounded-full items-center justify-center"
                 style={{
@@ -599,9 +602,19 @@ const entdecken = () => {
                 {selectedModules.length > 0 ? (
                   <CopyModulesButton topButton={true} />
                 ) : (
-                  <Text className="px-3 py-[1px] bg-blue-500 rounded-full text-white font-semibold text-[10px]">
+                  <View
+                className=" bg-gray-500 rounded-full items-center justify-center"
+                style={{
+                  marginLeft: 18,
+                  paddingVertical: 2,
+                  paddingHorizontal: 4,
+                  marginBottom: 8,
+                }}
+              >
+                <Text className="text-white font-semibold text-[10px] ">
                     {t("entdecken.selectToCopy")}
                   </Text>
+                  </View>
                 )}
               </View>
             </View>

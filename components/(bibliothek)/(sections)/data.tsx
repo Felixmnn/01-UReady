@@ -19,6 +19,7 @@ import SmileyStatus from "../(components)/smileyStatus";
 import { Session } from "@/types/moduleTypes";
 import { module, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
+import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -65,7 +66,11 @@ const Data = ({
   SwichToEditNote,
   texts,
   selectedLanguage,
+  selectedSessionID: selectedS,
+  setModule,
+  setQuestions,
 }: {
+  setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   setIsVisibleEditQuestion: React.Dispatch<
     React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>
   >;
@@ -92,6 +97,8 @@ const Data = ({
   SwichToEditNote: (noteID: string | null) => void;
   texts: { [key: string]: { [key: string]: string } };
   selectedLanguage: string;
+  selectedSessionID: string;
+  setModule: React.Dispatch<React.SetStateAction<module>>;
 }) => {
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
@@ -210,6 +217,14 @@ const Data = ({
     );
   };
 
+
+  function getSmileyStatus(id:string){
+    const parsed = module.questionList.map((i) => JSON.parse(i) as ParsedQuestion);
+    console.log("Parsed Questions:", parsed);
+    const found = parsed.find(q => q.id === id);
+    return found?.status ?? null;
+  }
+
   /**
    * Unused component to show the upload status of the file
    */
@@ -222,7 +237,7 @@ const Data = ({
         >
           <View className="bg-red-800 p-4 rounded-[10px]">
             <Text className="text-white">
-              {texts[selectedLanguage].unsupported}
+              {t("data.unsupported")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -244,7 +259,7 @@ const Data = ({
         }}
       >
         <CounterText
-          title={texts[selectedLanguage].questio}
+          title={t("data.questio")}
           count={filteredData.length}
         />
         {filteredData ? (
@@ -272,7 +287,7 @@ const Data = ({
                         }}
                       />
                       <Text className="text-white text-center">
-                        {texts[selectedLanguage].pendingAI}
+                        {t("data.pendingAI")}
                       </Text>
                     </View>
                   ) : null}
@@ -282,26 +297,24 @@ const Data = ({
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() =>
-                    router.push({
-                      pathname: "/quiz",
-                      params: {
-                        questions: JSON.stringify(filteredData),
-                        moduleID: module.$id,
-                      },
-                    })
-                  }
+                  onPress={() => router.push({
+                                pathname:"/quiz",
+                                params: {
+                                  sessionID: selectedS,
+                                  quizType : "infinite",
+                                  questionType : "multiple",
+                                  questionAmount : null,
+                                  timeLimit : null,
+                                  moduleID: module.$id,
+                                }})}
                   className="p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800"
                 >
                   <View className="w-full justify-between flex-row items-center ">
                     {item.status !== null ? (
                       <SmileyStatus
                         status={
-                          item.status === "BAD" ||
-                          item.status === "OK" ||
-                          item.status === "GOOD" ||
-                          item.status === "GREAT"
-                            ? item.status
+                          ["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(item.$id!) as string)
+                            ? (getSmileyStatus(item.$id!) as "BAD" | "OK" | "GOOD" | "GREAT")
                             : null
                         }
                       />
@@ -325,7 +338,9 @@ const Data = ({
                   <View className="w-full flex-row justify-between items-center">
                     {optionsVisible.includes(item.$id ?? "") ? (
                       <View className="flex-row items-center justify-between">
+                        { !module.copy &&
                         <View className="mr-5">
+                          
                           <Icon
                             name="edit"
                             size={15}
@@ -342,17 +357,43 @@ const Data = ({
                                         */
                             }}
                           />
+                          
                         </View>
+                        }
                         <Icon
                           name="trash"
                           size={15}
                           color="red"
                           onPress={async () => {
-                            if (item.$id) {
-                              await deleteDocument(item.$id, "question");
-                              handleOptionsVisibility(item.$id);
+                            if (!module.copy) {
+                              if (item.$id) {
+                                await deleteDocument(item.$id, "question");
+                                handleOptionsVisibility(item.$id);
+                              }
+                            } else {
+                              // Neue Liste ohne die entfernte Frage
+                              const updatedList = module.questionList.filter(
+                                (q) => JSON.parse(q).id !== item.$id
+                              );
+
+                              const res = await updateModuleQuestionList(module.$id, updatedList);
+
+                              console.log(
+                                "Result of removing question from copied module:",
+                                module.questionList.length,
+                                updatedList.length
+                              );
+
+                              setQuestions(questions.filter((q) => q.$id !== item.$id));
+
+                              setModule({
+                                ...module,
+                                questionList: updatedList,
+                              });
                             }
+
                           }}
+                          
                         />
                       </View>
                     ) : null}
@@ -378,9 +419,9 @@ const Data = ({
         {filteredData.length == 0 &&
         !moduleSessions[selected]?.tags?.includes("JOB-PENDING") ? (
           <AddData
-            title={texts[selectedLanguage].questioH}
-            subTitle={texts[selectedLanguage].questioSH}
-            button={texts[selectedLanguage].questioBtn}
+            title={t("data.questioH")}
+            subTitle={t("data.questioSH")}
+            button={t("data.questioBtn")}
             handlePress={() => setIsVisibleNewQuestion(true)}
           />
         ) : null}
@@ -400,7 +441,7 @@ const Data = ({
         }}
       >
         <CounterText
-          title={texts[selectedLanguage].file}
+          title={t("data.file")}
           count={filteredDocuments.length}
         />
         {documents ? (
@@ -414,7 +455,7 @@ const Data = ({
                 <View className="flex-row items-start justify-start">
                   <Icon name="file" size={40} color="white" />
                   <Text className="text-white mx-2 font-bold text-[14px]">
-                    {item.title ? item.title : texts[selectedLanguage].unnamed}
+                    {item.title ? item.title : t("data.unnamed")}
                   </Text>
                 </View>
                 <View className="flex-row items-center justify-between">
@@ -446,16 +487,16 @@ const Data = ({
           </View>
         ) : (
           <AddData
-            title={texts[selectedLanguage].fileH}
-            subTitle={texts[selectedLanguage].fileSH}
-            button={texts[selectedLanguage].fileBtn}
+            title={t("data.fileH")}
+            subTitle={t("data.fileSH")}
+            button={t("data.fileBtn")}
           />
         )}
         {filteredDocuments.length == 0 ? (
           <AddData
-            title={texts[selectedLanguage].fileH}
-            subTitle={texts[selectedLanguage].fileSH}
-            button={texts[selectedLanguage].fileBtn}
+            title={t("data.fileH")}
+            subTitle={t("data.fileSH")}
+            button={t("data.fileBtn")}
             handlePress={() => addDocument()}
           />
         ) : null}
@@ -470,7 +511,7 @@ const Data = ({
     return (
       <View className="flex-1">
         <CounterText
-          title={texts[selectedLanguage].note}
+          title={t("data.note")}
           count={filteredNotes.length}
         />
         {notes ? (
@@ -489,7 +530,7 @@ const Data = ({
                 <View className="flex-row items-start justify-start">
                   <Icon name="file" size={40} color="white" />
                   <Text className="text-white mx-2 font-bold text-[14px]">
-                    {item.title ? item.title : texts[selectedLanguage].unnamed}
+                    {item.title ? item.title : t("data.unnamed")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -497,18 +538,18 @@ const Data = ({
           </View>
         ) : (
           <AddData
-            title={texts[selectedLanguage].noteH}
-            subTitle={texts[selectedLanguage].noteSH}
-            button={texts[selectedLanguage].noteBtn}
+            title={t("data.noteH")}
+            subTitle={t("data.noteSH")}
+            button={t("data.noteBtn")}
             handlePress={() => SwichToEditNote(null)}
           />
         )}
         {filteredNotes.length == 0 ? (
           <AddData
             handlePress={() => SwichToEditNote(null)}
-            title={texts[selectedLanguage].noteH}
-            subTitle={texts[selectedLanguage].noteSH}
-            button={texts[selectedLanguage].noteBtn}
+            title={t("data.noteH")}
+            subTitle={t("data.noteSH")}
+            button={t("data.noteBtn")}
           />
         ) : null}
       </View>
@@ -527,7 +568,7 @@ const Data = ({
               icon={"robot"}
               iconColor={"#7a5af8"}
               bgColor={"bg-[#372292]"}
-              title={texts[selectedLanguage].aiQuiz}
+              title={t("data.aiQuiz")}
               empfolen={true}
               handlePress={() => setIsVisibleAI(true)}
             />
@@ -536,7 +577,7 @@ const Data = ({
               icon={"file-alt"}
               iconColor={"#004eea"}
               bgColor={"bg-[#00359e]"}
-              title={texts[selectedLanguage].crtQuestio}
+              title={t("data.crtQuestio")}
               empfolen={false}
               handlePress={() => {
                 setIsVisibleEditQuestion({
@@ -549,7 +590,7 @@ const Data = ({
               icon={"sticky-note"}
               iconColor={"#15b79e"}
               bgColor={"bg-[#134e48]"}
-              title={texts[selectedLanguage].crtNote}
+              title={t("data.crtNote")}
               empfolen={false}
               handlePress={() => {
                 SwichToEditNote(null);

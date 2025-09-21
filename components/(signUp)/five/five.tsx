@@ -50,6 +50,7 @@ const StepFive = ({
       setSelectedSubjects([item]);
     }
   };
+  console.log("School in Five:", school);
 
   if ("UNIVERSITY" == setSelectedKathegorie) {
     return (

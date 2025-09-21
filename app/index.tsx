@@ -6,6 +6,8 @@ import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
 import { addNewUserConfig } from "@/lib/appwriteAdd";
 import * as NavigationBar from 'expo-navigation-bar';
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "@/assets/languages/i18n";
 
 
 export default function Index() {
@@ -14,6 +16,8 @@ export default function Index() {
   useEffect(() => {
      NavigationBar.setVisibilityAsync('hidden');
   }, []);
+
+  
 
   useEffect(() => {
   let isMounted = true;
@@ -30,7 +34,7 @@ export default function Index() {
         userD = await addNewUserConfig(user.$id);
         if (!isMounted) return;
         setUserData(userD);
-        router.push("/personalize");
+        router.replace("/personalize");
       }
     } catch (error) {
       if (__DEV__) {

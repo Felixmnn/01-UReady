@@ -1043,38 +1043,6 @@
     "gettingStarted":"Getting Started",
     "refresh":"Aktualisieren..."
 
-  },"data":{
-    "title": "Alle Fragen",
-            "sessions": "Sessions",
-            "addMaterial": "Material hinzufügen",
-            "learnNow": "Jetzt lernen",
-            "questio": "Fragen",
-            "questioH": "Frage hinzufügen",
-            "questioSH": "Erstelle deine erste Frage.",
-            "questioBtn": "Frage erstellen",
-            "file": "Dateien",
-            "fileH": "Datei hinzufügen",
-            "fileSH": "Lade deine erste Datei hoch (nur PDF)",
-            "fileBtn": "Dokument hochladen",
-            "note": "Notizen",
-            "noteH": "Notiz hinzufügen",
-            "noteSH": "Erstelle deine erste Notiz.",
-            "noteBtn": "Notiz erstellen",
-            "share": "Teilen",
-            "unsupported": "Nicht unterstützter Dateityp",
-            "unnamed": "Unbenannt",
-            "recommended":"Empfolen",
-            "aiQuiz": "AI Quiz generieren",
-            "dokUpload": "Dokument hochladen",
-            "crtQuestio": "Frage erstellen",
-            "crtNote": "Notiz erstellen",
-            "pendingAI": "AI Quiz wird generiert",
-            "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
-            "cannotBeUndone": "Dies kann nicht rückgängig gemacht werden.",
-            "cancel": "Abbrechen",
-            "delete": "Löschen",
-            "youNeedQuestionsToStartAQuiz": "Du benötigst mindestens eine Frage, um ein Quiz zu starten."
-
   }
 }
 

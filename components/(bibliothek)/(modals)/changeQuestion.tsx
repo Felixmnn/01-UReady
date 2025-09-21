@@ -1,13 +1,13 @@
-import { View, Text, TouchableOpacity, TextInput, Image } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Image, ScrollView } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ToggleSwitch from "@/components/(general)/toggleSwich";
-import "katex/dist/katex.min.css";
-import { BlockMath } from "react-katex";
 import { addQUestion, updateDocument } from "@/lib/appwriteEdit";
 import { module, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
+import CustomButton from "@/components/(general)/customButton";
+import KaTeXExample from "@/components/(home)/katext";
 
 const ChangeQuestions = ({
   question,
@@ -50,6 +50,8 @@ const ChangeQuestions = ({
 
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
+  const [ moreOptionsVisible, setMoreOptionsVisible ] = useState(false);
+
   const snapPoints = ["40%", "60%", "90%"];
 
   function validateNewQuestion() {
@@ -111,7 +113,7 @@ const ChangeQuestions = ({
     }) => {
       return (
         <TouchableOpacity
-          className="flex-row items-center justify-center rounded-full h-8 px-1"
+          className="flex-row items-center justify-center rounded-full h-8 px-2 py-1"
           style={{ backgroundColor: isSelected ? "#3B82F6" : undefined }}
           onPress={handlePress}
         >
@@ -145,11 +147,10 @@ const ChangeQuestions = ({
             </Text>
             {dataType === "latex" ? (
               <View className=" w-full   rounded-lg  overflow-hidden ">
-                <BlockMath
-                  math={latex}
-                  className="text-white"
-                  style={{ color: "white", fontSize: 20 }}
-                />
+                  <KaTeXExample
+                      formula={latex}
+                      fontSize={16}
+                      />
               </View>
             ) : dataType === "image" ? (
               <View className="w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4">
@@ -186,8 +187,8 @@ const ChangeQuestions = ({
                 multiline
                 numberOfLines={2}
                 style={{
-                  minHeight: 40,
-                  maxHeight: 40,
+                  minHeight: 60,
+                  maxHeight: 60,
                   textAlignVertical: "top",
                 }}
               />
@@ -221,15 +222,10 @@ const ChangeQuestions = ({
                 ) : null}
                 {dataType === "latex" && !textVisible ? (
                   <View className="bg-gray-900 w-full mt-2  rounded-lg overflow-hidden min-h-10">
-                    <BlockMath
-                      math={latex}
-                      className="text-white"
-                      style={{
-                        color: "white",
-                        fontSize: 20,
-                        marginTop: 10,
-                      }}
-                    />
+                    <KaTeXExample
+                      formula={latex}
+                      fontSize={16}
+                      />
                   </View>
                 ) : dataType === "image" && !textVisible ? (
                   <View className="bg-gray-900 w-full mt-2 rounded-lg overflow-hidden min-h-10 p-2 items-center">
@@ -340,7 +336,11 @@ const ChangeQuestions = ({
                     }
                     setDetailsHidden(true);
                   }}
-                  className="bg-blue-500 ml-2 rounded-lg h-6 w-6 items-center justify-center "
+                  className="bg-blue-500 ml-2 rounded-lg h-6 w-6 items-center justify-center  flex-row" 
+                  style={{
+                    height: 20,
+                    width : 20,
+                  }}
                 >
                   <Icon name="check" size={15} color="white" />
                 </TouchableOpacity>
@@ -373,12 +373,10 @@ const ChangeQuestions = ({
       >
         <View className="flex-1 h-full items-center justify-center p-4">
           <View className="flex-row items-center justify-between w-full mb-4">
-            <TouchableOpacity className="p-2">
-              <Icon name="ellipsis-v" size={15} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="px-3 py-1 bg-blue-500 rounded-full"
-              onPress={async () => {
+            <CustomButton
+              containerStyles="w-full bg-blue-500 rounded-full px-3 py-1"
+              title={t("editQuestion.save")}
+              handlePress={async () => {
                 if (validateNewQuestion()) {
                   //Modul Conifg
                   //Question Locally
@@ -449,11 +447,7 @@ const ChangeQuestions = ({
                   });
                 }
               }}
-            >
-              <Text className="text-white text-[15px] font-semibold">
-                {t("editQuestion.save")}
-              </Text>
-            </TouchableOpacity>
+              />
           </View>
           <View className="w-full mb-4">
             <Text className="text-white text-[17px] font-semibold">
@@ -524,15 +518,43 @@ const ChangeQuestions = ({
                 {t("editQuestion.addNewAnswer")}
               </Text>
             </TouchableOpacity>
-            <TextInput
-              className="w-full bg-gray-900 text-white rounded-lg p-2 mt-2"
-              placeholder={t("editQuestion.enterYourAnswer")}
-              value={questionToEdit.explaination ?? ""}
-              placeholderTextColor="#9CA3AF"
-              multiline
-              numberOfLines={2}
-              style={{ minHeight: 40, maxHeight: 40, textAlignVertical: "top" }}
-            />
+            { moreOptionsVisible &&
+            <View className="p-2">
+              <Text className="text-white text-[14px] mt-2">
+                {t("editQuestion.headerExplanation")}
+              </Text>
+              <TextInput
+                className="w-full text-white bg-gray-900 rounded-lg p-2 mt-2 border-blue-500 border-[1px] ml-2"
+                placeholder={t("editQuestion.enterAExplanaition")}
+                value={questionToEdit.explaination ?? ""}
+                placeholderTextColor="#9CA3AF"
+                multiline
+                numberOfLines={2}
+                style={{ minHeight: 40, maxHeight: 40, textAlignVertical: "top" }}
+              />
+              <Text className="text-white text-[14px] mt-2">
+                {t("editQuestion.headerHint")}
+              </Text>
+              <TextInput  
+                className="w-full text-white bg-gray-900 rounded-lg p-2 mt-2 border-blue-500 border-[1px] ml-2"
+                placeholder={t("editQuestion.enterAHint")}
+                value={questionToEdit.hint ?? ""}
+                placeholderTextColor="#9CA3AF"
+                multiline
+                numberOfLines={2}
+                style={{ minHeight: 40, maxHeight: 40, textAlignVertical: "top" }}
+                onChangeText={(text) => setQuestionToEdit({ ...questionToEdit, hint: text })}
+              />
+            </View>
+            }
+            <TouchableOpacity
+              onPress={() => setMoreOptionsVisible(!moreOptionsVisible)}
+              className="w-full rounded-lg p-2 items-center mt-2"
+            >
+              <Text className="text-white text-[12px] font-semibold">
+                { moreOptionsVisible ? t("editQuestion.showLessOptions") : t("editQuestion.showMoreOptions") }
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </BottomSheetScrollView>

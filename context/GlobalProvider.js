@@ -5,6 +5,7 @@ import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
 import * as NavigationBar from "expo-navigation-bar";
+import i18n from "@/assets/languages/i18n";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -74,10 +75,15 @@ const GlobalProvider = ({ children }) => {
             "ENGLISH(UK)",
             "AUSTRALIAN",
             "SPANISH",
+            "de",
+            "en",
+            "es",
+            "fra"
           ];
           setNewLanguage(
             allowedLanguages.includes(data.language) ? data.language : "DEUTSCH"
           );
+          await i18n.changeLanguage(data.language);
         }
 
         await ensureUserUsage();

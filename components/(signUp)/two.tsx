@@ -23,7 +23,7 @@ const StepTwo = ({
 }: {
   selectedLanguage: number | null;
   setSelectedLanguage: React.Dispatch<React.SetStateAction<number | null>>;
-  languages: Array<{ name: string; code: string; enum: string }>;
+  languages: Array<{ label: string; value: string; enum: string }>;
   userData: userData;
   setUserData: React.Dispatch<React.SetStateAction<userData | undefined>>;
   name: string;
@@ -47,21 +47,12 @@ const StepTwo = ({
         <View>
           <TouchableOpacity
             onPress={() => setIsActive(!isActive)}
-            className="flex-row w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 my-2 items-center justify-center mx-1"
+            className="flex-row w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 my-2 items-center justify-between mx-1"
           >
-            <CountryFlag
-              isoCode={
-                selectedLanguage == null
-                  ? "DE"
-                  : languages[selectedLanguage].code
-              }
-              size={18}
-              style={{ width: 30, height: 18 }}
-            />
             <Text className="text-gray-300 font-semibold text-center mx-2 mt-[1px]">
               {selectedLanguage == null
                 ? "Deutsch"
-                : languages[selectedLanguage].name}
+                : languages[selectedLanguage].label}
             </Text>
             <Icon
               name={!isActive ? "caret-down" : "caret-up"}
@@ -83,13 +74,8 @@ const StepTwo = ({
                   }}
                   className="flex-row justify-start items-center p-2 rounded-lg m-1"
                 >
-                  <CountryFlag
-                    isoCode={language.code}
-                    size={18}
-                    style={{ width: 30, height: 18 }}
-                  />
-                  <Text className="text-gray-300 font-semibold text-center ml-2 mt-[1px] ">
-                    {language.name}
+                  <Text className="text-gray-300 font-semibold text-center mt-[1px] ">
+                    {language.label}
                   </Text>
                 </TouchableOpacity>
               ))}

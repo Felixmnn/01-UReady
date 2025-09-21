@@ -225,15 +225,25 @@ const SingleModule = ({
   }
 
   async function fetchQuestions(sessionID: string) {
-    const sessionQuestions = await getSessionQuestions(sessionID);
+    let sessionQuestions = await getSessionQuestions(sessionID);
+    // Filter questions so only those in questionList are set
+    const filteredQuestions = sessionQuestions.filter(q =>
+      module.questionList.some((mq: string) => {
+        try {
+          return JSON.parse(mq).id === q.$id;
+        } catch {
+          return false;
+        }
+      })
+    );
     setQuestionLoadedSessions([...questionLoadedSessions, sessionID]);
-    const percent = calculatePercent(sessionQuestions as unknown as question[]);
-    await updateSessionData(sessionID, percent, sessionQuestions.length);
+    const percent = calculatePercent(filteredQuestions as unknown as question[]);
+    await updateSessionData(sessionID, percent, filteredQuestions.length);
 
     const notes = await getSessionNotes(sessionID);
     const documents = await getAllDocuments(sessionID);
     const existingIds = questions.map((q) => (q ? q.$id : undefined));
-    const newQuestions = sessionQuestions.filter(
+    const newQuestions = filteredQuestions.filter(
       (q) => !existingIds.includes(q.$id)
     );
     if (newQuestions.length > 0) {
@@ -250,7 +260,7 @@ const SingleModule = ({
         return unique;
       });
     }
-    //else {setQuestions(sessionQuestions);}
+    //else {setQuestions(filteredQuestions);}
     if (notes) {
       setNotes(notes as unknown as Note[]);
     }
@@ -264,11 +274,23 @@ const SingleModule = ({
       setModule(moduledata);
     }
 
-    const questions = await getSessionQuestions(sessions[selectedSession].id);
+    let sessionQuestions = await getSessionQuestions(sessions[selectedSession].id);
+    // Filter questions so only those in questionList are set
+    const filteredQuestions = sessionQuestions.filter(q =>
+      module.questionList.some((mq: string) => {
+        try {
+          return JSON.parse(mq).id === q.$id;
+        } catch {
+          return false;
+        }
+      })
+    );
+    console.log("Fetched Questions for Session:", sessionQuestions.length);
+    console.log("Filtered Questions for Session:", filteredQuestions.length);
     const notes = await getSessionNotes(sessions[selectedSession].id);
     const documents = await getAllDocuments(sessions[selectedSession].id);
-    if (questions) {
-      setQuestions(questions as unknown as question[]);
+    if (filteredQuestions) {
+      setQuestions(filteredQuestions as unknown as question[]);
     }
     if (notes) {
       setNotes(notes as unknown as Note[]);
@@ -276,14 +298,14 @@ const SingleModule = ({
     if (documents) {
       setDocuments(documents as unknown as AppwriteDocument[]);
     }
-    const percent = calculatePercent(questions as unknown as question[]);
+    const percent = calculatePercent(filteredQuestions as unknown as question[]);
     setSessions((prevSessions: Session[]) => {
       return prevSessions.map((session) => {
         if (session.id === sessions[selectedSession].id) {
           return {
             ...session,
             percent: percent,
-            questions: questions.length,
+            questions: filteredQuestions.length,
           };
         }
         return session;
@@ -608,6 +630,7 @@ const SingleModule = ({
               {isVertical || tab == 1 ? (
                 <View className="p-4 flex-1">
                   <Data
+                    setQuestions={setQuestions}
                     setQuestionToEdit={setQuestionToEdit}
                     isVisibleEditQuestion={isVisibleEditQuestion}
                     setIsVisibleEditQuestion={setIsVisibleEditQuestion}
@@ -627,6 +650,12 @@ const SingleModule = ({
                     documents={documents}
                     module={module}
                     setSelectedScreen={setSelectedScreen}
+                    selectedSessionID={
+                      sessions[selectedSession]
+                        ? sessions[selectedSession].id
+                        : "ALL"
+                    }
+                    setModule={setModule}
                   />
                 </View>
               ) : null}
@@ -701,7 +730,7 @@ const SingleModule = ({
         sheetRef={startQuizBottomSheetRef}
         moduleID={module.$id}
         sessionID={
-          sessions[selectedSession] ? sessions[selectedSession].id : null
+          sessions[selectedSession] ? sessions[selectedSession].id : "ALL"
         }
         maxQuestions={questions ? questions.length : 0}
       />

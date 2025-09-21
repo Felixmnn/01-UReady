@@ -11,7 +11,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import Navigation from '@/components/(quiz)/navigation';
 import Quiz from '@/components/(quiz)/quiz';
 import {  randomizeArray } from '@/functions/(quiz)/helper';
-import { getAllQuestionsBySessionId } from '@/lib/appwriteQuerys';
+import { getAllQuestionsByIds, getAllQuestionsBySessionId } from '@/lib/appwriteQuerys';
 import { question } from '@/types/appwriteTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QuizResult from '@/components/(quiz)/quizResult';
@@ -78,11 +78,22 @@ const quiz = () => {
         moduleID?: string ,
     }){
         if (!sessionID || !moduleID) router.replace("/bibliothek");
-        const questionsRaw = await getAllQuestionsBySessionId(sessionID)
+        const module = await loadModule(moduleID)
+        console.log("Loaded Module:", module)
+        let questionsRaw = [];
+        if (sessionID === "ALL" && module) {
+
+            const q = await getAllQuestionsByIds(module.questionList.map((q:string) => JSON.parse(q).id))
+            questionsRaw.push(...q)
+        } else {
+           let res = (await getAllQuestionsBySessionId(sessionID)) ?? []
+           res = res.filter((q) => module?.questionList.some((mq:string) => JSON.parse(mq).id === q.$id))
+           questionsRaw.push(...res)
+        }
+        console.log("Fetched Questions:", questionsRaw)
         const questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
-        const module = await loadModule(moduleID)
         const questionList = module?.questionList.map((q:string) => JSON.parse(q))
         if (quizType !== "infinite"){
             let randomized = randomizeArray(questions ?? [])

@@ -30,7 +30,7 @@ const School = ({
     name: string;
     icon?: string;
     image?: string;
-    klassenstufen: string[];
+    grades: string[];
   };
   setClass: React.Dispatch<React.SetStateAction<string | null>>;
   numColumns: number;
@@ -58,7 +58,7 @@ const School = ({
           />
         </View>
         <View className="justify-center items-center flex-row flex-wrap">
-          {school.klassenstufen.map((item) => (
+          {school && school.grades.map((item) => (
             <TouchableOpacity
               key={item}
               onPress={() => {

@@ -25,6 +25,7 @@ import CustomButton from "../(general)/customButton";
 import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
+import KaTeXExample from "./katext";
 
 type MiniModule = {
   name: string;
@@ -282,6 +283,7 @@ const HomeGeneral = () => {
           }
         }
       />
+
 
       <ScrollView
         style={{

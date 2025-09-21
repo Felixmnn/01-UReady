@@ -17,14 +17,12 @@ import { TextInput } from "react-native-gesture-handler";
 import { useActionCode } from "@/lib/appwriteShop";
 import { useTranslation } from "react-i18next";
 import { userDataKathegory } from "@/types/appwriteTypes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileSettings = () => {
   const { t } = useTranslation();
   const { user, language, setNewLanguage, userUsage, setUserUsage } =
     useGlobalContext();
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(
-    "DEUTSCH"
-  );
   useEffect(() => {
     if (language) {
       setSelectedLanguage(language);
@@ -55,10 +53,10 @@ const ProfileSettings = () => {
         userDataKathegoryDoc as unknown as userDataKathegory;
       setSelectedLanguage(
         userDataKathegoryTyped &&
-          (userDataKathegoryTyped.language === "DEUTSCH" ||
-            userDataKathegoryTyped.language === "ENGLISH(US)" ||
-            userDataKathegoryTyped.language === "ENGLISH(UK)" ||
-            userDataKathegoryTyped.language === "AUSTRALIAN" ||
+          (userDataKathegoryTyped.language === "de" ||
+            userDataKathegoryTyped.language === "en" ||
+            userDataKathegoryTyped.language === "fra" ||
+            userDataKathegoryTyped.language === "es" ||
             userDataKathegoryTyped.language === "SPANISH")
           ? userDataKathegoryTyped.language
           : "DEUTSCH"
@@ -235,21 +233,38 @@ const ProfileSettings = () => {
 
   const { width } = useWindowDimensions(); // Bildschirmbreite holen
   const isVertical = width > 700;
+
+
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>("de");
+
+  useEffect(() => {
+    if (language) {
+      setSelectedLanguage(language);
+    }
+  }, [language]);
+
   const languageoptions = [
-    { label: "Deutsch", value: "DE" },
-    { label: "English(UK)", value: "GB" },
-    { label: "English(US)", value: "US" },
-    { label: "Spanish", value: "ES" },
-    { label: "Australian", value: "AU" },
+    { label: "Deutsch", value: "de" },
+    { label: "English", value: "en" },
+    { label: "Spanish", value: "es" },
+    { label: "Français", value: "fra" },
   ];
   const colorOptions = [
     { label: t("profileSettings.darkmode"), value: "dark" },
   ];
 
   async function updateLanguage(text: string) {
-    setSelectedLanguage(text.toUpperCase());
-    setNewLanguage(text.toUpperCase());
-    await setLanguage(user.$id, text.toUpperCase());
+    console.log(text);
+    languageoptions.map((option) => {
+      console.log(option,text, option.label === text);
+    })
+    const i = languageoptions.findIndex((option) => option.label === text);
+
+    if (i == -1 ) return;
+    console.log(languageoptions[i].value);
+    setSelectedLanguage(languageoptions[i].value.toLowerCase());
+    setNewLanguage(languageoptions[i].value.toLowerCase());
+    await setLanguage(user.$id, languageoptions[i].value.toLowerCase());
   }
   async function updateColorMode(text: string | null) {
     setSelectedColorMode(text);
@@ -515,7 +530,9 @@ const ProfileSettings = () => {
                       <OptionSelector
                         title={t("profileSettings.language")}
                         options={languageoptions}
-                        selectedValue={selectedLanguage}
+                        selectedValue={
+                          languageoptions.find((option) => option.value === selectedLanguage)?.label ?? "Deutsch"
+                        }
                         setSelectedValue={setSelectedLanguage}
                         onChangeItem={updateLanguage}
                       />

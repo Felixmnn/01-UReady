@@ -8,6 +8,7 @@ import TouchSquare from "./(components)/touchSquare";
 import ProgressBar from "./(components)/progressBar";
 import { router } from "expo-router";
 import { userData } from "@/types/appwriteTypes";
+import CountryPicker from "./(components)/countryPicker";
 
 /**
  * Selction of Education Category and his Country
@@ -97,7 +98,7 @@ const StepThree = ({
           message={t("personalizeThree.whereDoYouStudy")}
           imageSource="Location"
         />
-
+        {/*
         <View style={{ position: "relative", zIndex: 10 }}>
           <TouchableOpacity
             onPress={() => setIsActive(!isActive)}
@@ -154,6 +155,9 @@ const StepThree = ({
             </View>
           ) : null}
         </View>
+        */}
+        
+            <CountryPicker onSelect={(country) => console.log(country)}/>
 
         <View className="p-2 my-2 items-center justify-center mx-1">
           {textIcons.map((itextIconList, index) => (

@@ -31,7 +31,6 @@ export async function getMatchingModules({
 
   otherSubjects?: string[] | undefined | null;
 }) {
-  console.log("getMatchingModules called with:");
   switch (eductaionType) {
     case "UNIVERSITY":
       console.log("UNIVERSITY");

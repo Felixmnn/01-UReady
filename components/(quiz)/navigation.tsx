@@ -95,16 +95,6 @@ const Navigation = ({
             <View />
           ) : deatilsVisible ? (
             <View className="flex-row items-center gap-2">
-              <TouchableOpacity>
-                <Icon
-                  name="trash-alt"
-                  size={15}
-                  color="white"
-                  onPress={async () => {
-                    removeQuestion();
-                  }}
-                />
-              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setDetailsVisible(!deatilsVisible)}
               >

@@ -3,6 +3,7 @@ import React from "react";
 import AnswerComponent from "./answerComponent";
 import { BlockMath } from "react-katex";
 import { maybeParseJSON } from "@/functions/(quiz)/helper";
+import KaTeXExample from "../(home)/katext";
 
 const Question = ({
   question,
@@ -19,6 +20,8 @@ const Question = ({
   width: number;
   quizType: "single" | "multiple" | "questionAnswer";
 }) => {
+  console.log("Question Rendered", question)
+
   function selectAnswer(answer: string) {
     if (quizType === "single") {
       setSelectedAnswers([answer]);
@@ -33,13 +36,13 @@ const Question = ({
 
   function parseIfIncludesLatex(item: string) {
     try {
-      if (item.includes("latext")) {
+      if (item.includes("latex")) {
         return JSON.parse(item);
       } else {
-        return { text: item, latex: "", image: "" };
+        return { title: item, latex: "", image: "" };
       }
     } catch (e) {
-      return { text: item, latex: "", image: "" };
+      return { title: item, latex: "", image: "" };
     }
   }
 
@@ -49,22 +52,12 @@ const Question = ({
         {question.question}
       </Text>
       {question.questionLatex?.length > 0 ? (
-        <ScrollView
-          horizontal
-          className="w-full"
-          contentContainerStyle={{
-            alignItems: "center",
-            justifyContent: "flex-start",
-          }}
-        >
-          <View style={{ width: "100%", marginLeft: 5 }}>
-            <BlockMath
-              math={question.questionLatex}
-              className="text-white"
-              style={{ color: "white", fontSize: 16 }}
+          <View className="w-full rounded-lg overflow-hidden min-h-10 mx-2" >
+            <KaTeXExample
+              formula={question.questionLatex}
+              fontSize={16}
             />
           </View>
-        </ScrollView>
       ) : question.questionUrl?.length > 0 ? (
         <View className="w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4">
           <Image
@@ -100,7 +93,7 @@ const Question = ({
                 selectAnswer={selectAnswer}
                 width={width}
                 index={index}
-                text={parsedItem.text}
+                text={parsedItem.title}
                 latex={parsedItem.latex}
                 image={parsedItem.image}
               />

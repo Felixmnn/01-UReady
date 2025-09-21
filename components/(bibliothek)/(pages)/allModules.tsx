@@ -29,7 +29,8 @@ const AllModules = ({
     const { t } = useTranslation();
 
     const { user, userUsage } = useGlobalContext()
-      
+    
+    const [ addUserRequesModules, setAddUserRequesModules] = useState<module | null>()
    
       
     const { width } = useWindowDimensions(); // Bildschirmbreite holen

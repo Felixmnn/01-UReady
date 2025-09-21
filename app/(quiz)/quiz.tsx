@@ -1,4 +1,4 @@
-import { SafeAreaView, View} from 'react-native'
+import { SafeAreaView, Text, View} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
 import { removeQuestion} from "../../lib/appwriteEdit"
@@ -287,52 +287,66 @@ const quiz = () => {
         })
    }
 
-    function correctAnswers({
-        questionsParsed, 
-        selectedQuestion, 
-        selectedAnswers,
-    }:{
-        questionsParsed: question[],
-        selectedQuestion: number,
-        selectedAnswers: string[],
-    }) {
-        let correctAnswer = questionsParsed[0].answerIndex.map(
-        (index:number) => questionsParsed[0].answers[index]
-        )
+ 
+interface Answer {
+  title: string;
+  latex: string;
+  image: string;
+}
 
-        // Ensure all answers are of type Answer
-        interface Answer {
-            text: string;
-            latex: string;
-            image: string;
-        }
-
-        const correctAnswerObjects: Answer[] = correctAnswer.map((answer: string | {text: string, latex: string, image: string}) => {
-            if (typeof answer === "string") {
-                return {
-                    text: answer,
-                    latex: "",
-                    image: ""
-                }
-            } else {
-                return answer;
-            }
-        });
-
-        const correctAnswersAsString = correctAnswerObjects.map((answer: Answer) => JSON.stringify(answer));
-        const correctAnswersInOrder = correctAnswersAsString.sort();
-
-        const selectedAnswersInOrder = selectedAnswers.sort();
-       
-
-        if (correctAnswersInOrder.length !== selectedAnswersInOrder.length) return false;
-        for (let i = 0; i < correctAnswersInOrder.length; i++) {
-            if (correctAnswersInOrder[i] !== selectedAnswersInOrder[i]) {
-                return false;
-            }
-        }
-        return true;
+function toAnswer(answer: any): Answer {
+  if (typeof answer === "string") {
+    try {
+      return JSON.parse(answer);
+    } catch {
+      return { title: answer, latex: "", image: "" };
     }
+  }
+  return answer;
+}
+
+function answersAreEqual(a: Answer, b: Answer) {
+  return a.title === b.title && a.latex === b.latex && a.image === b.image;
+}
+
+function correctAnswers({
+  questionsParsed,
+  selectedQuestion,
+  selectedAnswers,
+}: {
+  questionsParsed: question[];
+  selectedQuestion: number;
+  selectedAnswers: any[];
+}) {
+  // Korrekte Antworten parsen
+  const correctAnswerObjects: Answer[] =
+    questionsParsed[selectedQuestion].answerIndex.map((index: number) =>
+      toAnswer(questionsParsed[selectedQuestion].answers[index])
+    );
+
+  // Auch ausgewählte Antworten normalisieren
+  const selectedAnswerObjects: Answer[] = selectedAnswers.map(toAnswer);
+
+  if (correctAnswerObjects.length !== selectedAnswerObjects.length) return false;
+
+  // Sortieren nach Titel
+  const sortByTitle = (arr: Answer[]) =>
+    arr.slice().sort((a, b) => a.title.localeCompare(b.title));
+
+  const correctSorted = sortByTitle(correctAnswerObjects);
+  const selectedSorted = sortByTitle(selectedAnswerObjects);
+
+  for (let i = 0; i < correctSorted.length; i++) {
+    if (!answersAreEqual(correctSorted[i], selectedSorted[i])) {
+      console.log("Mismatch:", correctSorted[i], selectedSorted[i]);
+      return false;
+    }
+  }
+  return true;
+}
+
+
+
     const [ startTime, setStartTime] = useState(Date.now());
     function tryAgain(){
         setQuestionsForQuiz(questions);
@@ -409,12 +423,13 @@ const quiz = () => {
                 selectedQuestion,
                 selectedAnswers,
             })}
-            setShowSolution={() => setShowSolution(false)}
+            setShowSolution={() => setShowSolution(true)}
             sheetRef={sheetRef}
             quizType={quizType === "single" || quizType === "multiple" || quizType === "questionAnswer" ? (Array.isArray(quizType) ? quizType[0] : quizType) : "single"}
             selectedLanguage={"de"} // or use a variable if you have one
         />
         }
+
 
         {showSoloution &&
             <QuizNavigation

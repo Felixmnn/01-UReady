@@ -317,6 +317,10 @@
   }, "index":{
     "loading": "Lade deine Daten..."
   }, "deleteModule":{
+    "pending": "Angefragt",
+    "enterAUsername": "Gib einen Nutzernamen ein...",
+    "noUsersAdded": "Keine Nutzer hinzugefügt",
+    "addUsers": "Nutzer hinzufügen",
     "saveChanges": "Änderungen speichern",
     "changesSaved": "Änderungen gespeichert",
     "moduleName": "Modulname",
@@ -344,6 +348,9 @@
     "notes": "Notizen",
     "fromYou": "von dir"
   },"tokenHeader":{
+    "minutesLeft": "Minuten bis zur nächsten Energie",
+    "energyNotEnough": "Nicht genug Energie",
+    "energyFull": "Energie voll",
     "youHave": "Du hast",
     "daysInARow": "Tage in Folge gelernt",
     "close": "Schließen"

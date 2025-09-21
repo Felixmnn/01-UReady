@@ -49,7 +49,7 @@ const { width } = Dimensions.get("window");
 
 const HomeGeneral = () => {
   const { t } = useTranslation();
-  const { user, userUsage } = useGlobalContext();
+  const { user, userUsage,setUserUsage } = useGlobalContext();
   const [userUsageP, setUserUsageP] = useState<UserUsage | null>(null);
   let count = 0;
   useEffect(() => {
@@ -67,7 +67,7 @@ const HomeGeneral = () => {
     }
   }, [userUsage]);
 
-  const { language } = useGlobalContext();
+  const { language} = useGlobalContext();
   const [selectedLanguage, setSelectedLanguage] = useState("DEUTSCH");
   const texts = languages.home;
   useEffect(() => {
@@ -273,17 +273,8 @@ const HomeGeneral = () => {
 
   return (
     <SafeAreaView className="h-full w-full  ">
-      <TokenHeader
-        userUsage={
-          userUsageP ?? {
-            streak: 0,
-            energy: 0,
-            microchip: 0,
-            boostActive: false,
-          }
-        }
-      />
-
+      
+      <TokenHeader/>
 
       <ScrollView
         style={{

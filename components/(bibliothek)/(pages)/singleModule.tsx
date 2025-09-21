@@ -578,6 +578,7 @@ const SingleModule = ({
         ) : (
           <View className="flex-1">
             <Header
+              moduleUsers={module.tags}
               moduleID={module.$id}
               moduleName={module.name}
               texts={texts}

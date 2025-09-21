@@ -35,13 +35,23 @@ const Quiz = ({
 }) => {
   const { t } = useTranslation();
   console.log("Quiz Rendered", quizType);
+  function getSmileyStatus(questionID: string) {
+    const question = questions.find((q) => q.$id === questionID);
+    return question ? question.status : null;
+  }
   return (
     <View className="flex-1 justify-end">
       <View className="flex-1 rounded-[10px] bg-gray-900 border-gray-600 border-[1px] m-4">
         <View className="w-full justify-between flex-row items-center p-4 ">
           <View className="flex-row items-center">
             {questions[0].status !== null ? (
-              <SmileyStatus status={questions[0].status} />
+              <SmileyStatus
+                        status={
+                          ["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(questions[0].$id!) as string)
+                            ? (getSmileyStatus(questions[0].$id!) as "BAD" | "OK" | "GOOD" | "GREAT")
+                            : null
+                        }
+                      />
             ) : null}
           </View>
           <View className="flex-row items-center">
@@ -96,7 +106,7 @@ const Quiz = ({
                 )}
               </View>
               <View
-                className={`${true ? "w-full mt-2" : ""} justify-start flex-row items-center gap-2`}
+                className={`${true ? "w-full mt-2" : ""} justify-start items-center gap-2`}
               >
                 {questions[0].explaination?.length > 1 && (
                   <CustomButton

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { isColor } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { BlockMath } from "react-katex";
+import KaTeXExample from "../(home)/katext";
 
 const AnswerComponent = ({
   index,
@@ -49,15 +49,18 @@ const AnswerComponent = ({
       }}
     >
       <View className="flex-1 items-center justify-center">
-        {latex.length > 0 ? (
-          <View className="w-full rounded-lg overflow-hidden">
-            <BlockMath
-              math={latex}
-              className="text-white"
-              style={{ color: "white", fontSize: 10 }}
-            />
+        { latex && latex.length > 0 ? (
+          <View className="w-full rounded-lg overflow-hidden"
+            style={{ height: 200, width: 200 }}
+          >
+          
+            <KaTeXExample
+              formula={latex}
+              fontSize={16}
+              />
+
           </View>
-        ) : image.length > 0 ? (
+        ) : image && image.length > 0 ? (
           <View className="w-full rounded-lg overflow-hidden min-h-10 items-center">
             <Image
               source={{ uri: image }}

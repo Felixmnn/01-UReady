@@ -1,7 +1,7 @@
 export type UserUsage = {
     streak: number;
     streakActive: boolean;
-    streakLastLJpdate: string | null;
+    streakLastUpdate: string | null;
     energy: number;
     microchip: number;
     boostActive: boolean

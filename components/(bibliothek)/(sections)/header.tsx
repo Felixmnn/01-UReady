@@ -32,6 +32,7 @@ const Header = ({
   setSelectedModule,
   openQuizSheet,
   openSessionSheet,
+  moduleUsers,
 }: {
   setSelectedScreen: React.Dispatch<React.SetStateAction<ScreenType>>;
   selected: number;
@@ -49,6 +50,7 @@ const Header = ({
   setSelectedModule: React.Dispatch<React.SetStateAction<string>>;
   openQuizSheet: () => void;
   openSessionSheet: () => void;
+  moduleUsers: string[];
 }) => {
   const { width } = useWindowDimensions();
   const [deleteModuleVisible, setDeleteModuleVisible] = useState(false);
@@ -71,6 +73,7 @@ const Header = ({
         moduleID={moduleID}
         moduleName={moduleName}
         isVisible={deleteModuleVisible}
+        tags={moduleUsers}
         setIsVisible={setDeleteModuleVisible}
         modules={modules}
         setModules={setModules}

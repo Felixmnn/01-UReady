@@ -49,14 +49,7 @@ const QuizNavigation = ({
             <Text className="text-white text-[18px] font-bold">
               {t("quizNavigation.explanation")}
             </Text>
-            <TouchableOpacity
-              onPress={() => {}}
-              className="items-center justify-center p-2 bg-blue-900 rounded-[10px]"
-            >
-              <Text className="text-white text-[15px] font-semibold">
-                {t("quizNavigation.next")}
-              </Text>
-            </TouchableOpacity>
+           
           </View>
           <View className="mt-2">
             <Text className="text-gray-300 text-[15px]">{explaination}</Text>

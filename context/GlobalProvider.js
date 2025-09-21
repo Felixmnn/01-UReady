@@ -138,8 +138,7 @@ const GlobalProvider = ({ children }) => {
     const updateUsage = async () => {
       try {
         await updateUserUsageData({
-          ...userUsage,
-          streakLastUpdate: new Date(),
+          ...userUsage
         });
       } catch (err) {
         if (__DEV__) console.log("Usage update error", err);

@@ -273,10 +273,18 @@ const entdecken = () => {
                 }
               });
             }
+            if (userUsage.energy > 10 && userUsage.energy - calculateEnergyCost() < 10){
+             setUserUsage({
+              ...userUsage,
+              energy: userUsage.energy - calculateEnergyCost(),
+              streakLastUpdate: new Date().toISOString(),
+            }); 
+            } else {
             setUserUsage({
               ...userUsage,
               energy: userUsage.energy - calculateEnergyCost(),
             });
+            }
             setRel(!rel);
             setSelectedModules([]);
             setMyModules(undefined);

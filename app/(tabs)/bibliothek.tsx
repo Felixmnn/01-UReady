@@ -22,7 +22,7 @@ const Bibliothek = () => {
       setSelected("SingleModule");
     }
   }, [selectedModuleIndex]);
-
+  
   const [selected, setSelected] = useState("AllModules");
   const [modules, setModules] = useState<module[] | null>(null);
   const [loading, setLoading] = useState(true);

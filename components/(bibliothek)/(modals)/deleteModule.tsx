@@ -6,10 +6,13 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import { useTranslation } from 'react-i18next';
 
+
+//Name might be missleading - this modal is for editing module data and also for deleting the module
 const DeleteModule = ({
   moduleID = "id",
   moduleName = "Name",
   description = "",
+  tags = [],
   isVisible = false,
   setIsVisible,
   modules,
@@ -19,6 +22,7 @@ const DeleteModule = ({
   moduleID: string,
   moduleName: string,
   description: string,
+  tags: string[],
   isVisible: boolean, 
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>,
   modules: any,
@@ -31,7 +35,7 @@ const DeleteModule = ({
 
   const [newModuleName, setNewModuleName] = React.useState(moduleName);
   const [newModuleDescription, setNewModuleDescription] = React.useState(description);
-
+  const [newTags, setNewTags] = React.useState(tags);
   async function handleDelete() {
     if (!showWarning) {
       setShowWarning(true);
@@ -46,17 +50,25 @@ const DeleteModule = ({
   }
 
   async function handleSaveChanges() {
-    if (newModuleName === moduleName && newModuleDescription === description) {
+    if ((newModuleName === moduleName && newModuleDescription === description)) {
       setIsVisible(false);
       return;
     } else {
+      try {
       await updateModuleData(moduleID , {
         name: newModuleName,
-        description: newModuleDescription
+        description: newModuleDescription,
+        tags: newTags,
       })
+      } catch (error) {
+        console.error(error);
+        return;
+      }
       setSavedChanges(true);
     }
   }
+
+  const [ newUser, setNewUser ] = React.useState("");
 
   return (
     <Modal
@@ -117,8 +129,74 @@ const DeleteModule = ({
             value={newModuleDescription}
             onChangeText={(text) => { setNewModuleDescription(text); setSavedChanges(false); }}
           />
-        </View>
 
+          {/* In einer andren Verison
+          <Text className="text-white font-semibold text-lg mb-2">{t("deleteModule.addUsers")}</Text>
+          {
+            newTags.length > 0 ? (
+              newTags.filter((t) => t.startsWith("USER")).map((user, index) => (
+                <View key={index} className="bg-gray-800 rounded-lg p-3 mb-2 border border-gray-700 justify-between flex-row items-center">
+                  {
+                    user.startsWith("USER_REQUEST_") ?
+                    <Text className="text-white italic">{user.replace("USER_REQUEST_", "")} ({t("deleteModule.pending")})</Text>
+                  :
+                  <Text className="text-white">{user}</Text>
+                  } 
+                  <TouchableOpacity onPress={() => {
+                    if (user.startsWith("USER_REQUEST_")) {
+                      const updatedTags = newTags.filter((t) => t !== user);
+                      setNewTags(updatedTags);
+                      setSavedChanges(false);
+                      return;
+                    }
+                    const updatedTags = newTags.filter((t) => t !== user);
+                    setNewTags(updatedTags);
+                    setSavedChanges(false);
+                  }}>
+                    <Icon name="times" size={15} color="white" />
+                  </TouchableOpacity>
+                </View>
+              ))
+            ) : (
+              <Text className="text-gray-400 italic">{t("deleteModule.noUsersAdded")}</Text>
+            )
+          }
+            
+          
+
+          <View className="w-full flex-row items-center">
+            <TextInput
+              className="flex-1 mb-6 mt-4 px-4 ml-2 bg-gray-800 text-white rounded-lg border border-gray-700"
+              placeholder={t("deleteModule.enterAUsername")}
+              multiline
+              numberOfLines={3}
+              maxLength={200}
+              placeholderTextColor="gray"
+              value={newUser}
+              onChangeText={(text) => { setNewUser(text);  }}
+            />
+            <TouchableOpacity className=" bg-blue-600 rounded-lg px-4 ml-2 mb-2 items-center justify-center"
+              onPress={() => {
+                if (newUser.trim() === "") return;
+                if (tags.includes(newUser.trim())) {
+                  setNewUser("");
+                  return;
+                } else {
+                  const updatedTags = [...tags, "USER_REQUEST_" + newUser.trim()];
+                  setNewTags(updatedTags);
+                  setNewUser("");
+                  setSavedChanges(false);
+                }
+              }}
+              style={{
+                height: 40, 
+              }}
+            >
+              <Icon name="plus" size={15} color="white" />
+            </TouchableOpacity>
+            
+        </View>
+        */}
         {/* Delete Section */}
         <View className={`rounded-xl p-4 ${showWarning ? "bg-red-900" : "bg-gray-800"} border border-gray-700`}>
           {showWarning && (
@@ -148,6 +226,9 @@ const DeleteModule = ({
             </TouchableOpacity>
           </View>
         </View>
+        </View>
+
+
       </View>
     </Modal>
   )

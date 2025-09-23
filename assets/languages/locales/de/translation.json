@@ -1734,5 +1734,28 @@
     "cancel": "Abbrechen",
     "delete": "Löschen",
     "youNeedQuestionsToStartAQuiz": "Du benötigst mindestens eine Frage, um ein Quiz zu starten."
-  }
+  },"prompts": {
+    "createQuestionsPrompt": "{{instruction}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules}}",
+    "convertQuestionsPrompt": "{{instruction_convert}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules_convert}}",
+    "createQuestionsFromTextPrompt": "{{instruction_text}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules_text}}",
+
+    "instruction": "Erstelle basierend auf den folgenden Themen jeweils zwischen 3 und 10 Fragen: {{text}}.",
+    "instruction_convert": "Du erhältst Fragen über einen User Input. Wandle diese Fragen in das gewünschte Format um und versuche dabei, nah an der ursprünglichen Frage zu bleiben: {{text}}.",
+    "instruction_text": "Erstelle basierend auf den dir im folgenden Text gegebenen Informationen zwischen 3 und 10 Fragen: {{text}}.\n\nDiese Fragen sollen möglichst alle wichtigen Aspekte des Textes abdecken.",
+
+    "standaloneRule": "Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen. Der Nutzer soll die Fragen isoliert beantworten können, ohne den Kontext anderer Fragen oder Materialien, die nicht in der Frage enthalten sind, zu benötigen.",
+    "important": "WICHTIG: Keine Fragen mit externen Materialien oder Texten, die nicht in der Frage enthalten sind!",
+    "outputFormat": "Die Ausgabe soll ausschließlich ein gültiges, parsebares JSON-Array von Objekten sein.",
+    "questionStructure": "Jede Frage muss folgende Struktur haben (bitte exakt einhalten):",
+    "structureExample": "{\n  \"question\": \"Die Frage als String.\",\n  \"hint\": \"\",          // Wenn die Frage einen Hinweis benötigt, ansonsten leer lassen\n  \"explanation\": \"\",   // Wenn die Frage eine Erklärung benötigt, ansonsten leer lassen\n  \"answers\": [\"\", ...],\n  \"answerIndex\": [X]     // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0)\n}",
+
+    "rules": "- Die Anzahl der Antwortoptionen soll immer {{numberOfAnswers}} sein, nicht mehr und nicht weniger.\n- {{questionTypeDescription}}\n- Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.\n- Der Index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.\n- Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.\n- Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das.",
+    
+    "rules_convert": "- Die Anzahl der Antwortoptionen soll immer {{numberOfAnswers}} sein, nicht mehr und nicht weniger.\n- {{questionTypeDescription}}\n- Wenn der Nutzer Antworten vorgegeben hat, halte dich an die Anzahl der Antworten, unabhängig von {{numberOfAnswers}}.\n- Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.\n- Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.\n- Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das.",
+    
+    "rules_text": "- Die Anzahl der Antwortoptionen soll immer {{numberOfAnswers}} sein, nicht mehr und nicht weniger.\n- {{questionTypeDescription}}\n- Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.\n- Der Index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.\n- Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.\n- Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das."
+    ,"multipleChoiceDescription": "Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein.",
+    "singleChoiceDescription": "Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt.",
+    "openQuestionDescription": "Es handelt sich um eine offene Frage, bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben.",
+     }
 }

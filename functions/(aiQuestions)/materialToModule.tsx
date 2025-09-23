@@ -417,88 +417,111 @@ export async function createDocumentJob(
   });
 }
 
+import { t } from "i18next";
+
 export async function generateQuestionsFromText({
   text,
   questionsType,
   amountOfAnswers,
+  promptType = "createQuestionsPrompt", // "createQuestionsPrompt" | "convertQuestionsPrompt" | "createQuestionsFromTextPrompt"
 }: {
   text: string;
   questionsType: "MULTIPLE" | "SINGLE" | "QA";
   amountOfAnswers: number;
+  promptType?: "createQuestionsPrompt" | "convertQuestionsPrompt" | "createQuestionsFromTextPrompt";
 }) {
-  const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
-  const url = "https://api.openai.com/v1/chat/completions"; // ChatGPT Endpunkt
+  const apiKey = process.env.EXPO_PUBLIC_API_URL;
+  const url = "https://api.openai.com/v1/chat/completions";
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
   };
 
+  // Berechne die Beschreibung basierend auf dem questionsType
+  let questionTypeDescription = "";
+  switch (questionsType) {
+    case "MULTIPLE":
+      questionTypeDescription = t("prompts.multipleChoiceDescription");
+      break;
+    case "SINGLE":
+      questionTypeDescription = t("prompts.singleChoiceDescription");
+      break;
+    case "QA":
+      questionTypeDescription = t("prompts.openQuestionDescription");
+      break;
+  }
+
+  // Hilfsfunktion für die Interpolation aller Platzhalter
+  function interpolatePrompt(template: string, vars: Record<string, string>): string {
+    let result = template;
+    for (const key in vars) {
+      result = result.replace(new RegExp(`{{${key}}}`, "g"), vars[key]);
+    }
+    return result;
+  }
+
+  // Lade den i18n-Prompt und ersetze alle Platzhalter
+  const promptTemplate = interpolatePrompt(t(`prompts.${promptType}`), {
+    instruction: t("prompts.instruction"),
+    instruction_convert: t("prompts.instruction_convert"),
+    instruction_text: t("prompts.instruction_text"),
+    standaloneRule: t("prompts.standaloneRule"),
+    important: t("prompts.important"),
+    outputFormat: t("prompts.outputFormat"),
+    questionStructure: t("prompts.questionStructure"),
+    structureExample: t("prompts.structureExample"),
+    rules: t("prompts.rules"),
+    rules_convert: t("prompts.rules_convert"),
+    rules_text: t("prompts.rules_text"),
+    text: text,
+    numberOfAnswers: amountOfAnswers.toString(),
+    questionTypeDescription: questionTypeDescription,
+  });
+
   const body = JSON.stringify({
     model: "gpt-4o-mini",
-    messages: [
-      {
-        role: "user",
-        content: `
-        Erstelle basierend auf den folgenden Themen jeweils zwischen 3 und 10 Fragen: ${text}.  
-        Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
-        Der Nutuzer soll die Fragen isoliert beantworten können, ohne den Kontext anderer Fragen oder Materialien die nicht in der Frage enthalten sind, zu benötigen.
-        WICHTIG: Keine Fragen mit externen Materialien oder Texten, die nicht in der Frage enthalten sind. !
-
-        Die Ausgabe soll ausschließlich ein gültiges, parsebares JSON-Array von Objekten sein.  
-
-        Jede Frage muss folgende Struktur haben (bitte exakt einhalten):
-        {
-          "question": "Die Frage als String.",
-          "hint": "",          // Wenn die Frage einen Hinweis benötigt, ansonsten leer lassen
-          "explanation": "",   // Wenn die Frage eine Erklärung benötigt, ansonsten leer lassen
-          "answers": [
-            "",...
-          ],
-          "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0),
-        }
-
-        Wichtige Regeln:
-        - Die Anzahl der Antwortoptionen soll immer ${questionsType == "QA" ? 1 : amountOfAnswers} sein nicht mehr und nicht weniger.
-        ${
-          questionsType === "MULTIPLE"
-            ? "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein."
-            : questionsType === "SINGLE"
-              ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt."
-              : "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
-        }
-        - Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
-        - Der index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.
-        - Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
-        - Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
-
-                `,
-      },
-    ],
+    messages: [{ role: "user", content: promptTemplate }],
   });
+
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: headers,
-      body: body,
+      headers,
+      body,
     });
 
     if (!res.ok) {
       throw new Error(`Fehler: ${res.status}`);
     }
-    const data = await res.json();
-    const text = data.choices[0].message.content.trim();
-    const startIndex = text.indexOf("[");
-    const endIndex = text.lastIndexOf("]");
-    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-      const jsonString = text.substring(startIndex, endIndex + 1);
-      const parsedData = JSON.parse(jsonString);
 
+    const data = await res.json();
+    const textResponse = data.choices[0].message.content.trim();
+
+    const startIndex = textResponse.indexOf("[");
+    const endIndex = textResponse.lastIndexOf("]");
+
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = textResponse.substring(startIndex, endIndex + 1);
+      const parsedData = JSON.parse(jsonString);
       return parsedData;
     }
+
+    return [];
   } catch (error) {
     console.error("Error fetching OpenAI API:", error);
-    const response = "Es gab einen Fehler bei der Anfrage!";
+    return [];
   }
+}
+
+
+
+// Hilfsfunktion zum Ersetzen verschachtelter Platzhalter
+function interpolatePrompt(template: string, vars: Record<string, string>): string {
+  let result = template;
+  for (const key in vars) {
+    result = result.replace(new RegExp(`{{${key}}}`, "g"), vars[key]);
+  }
+  return result;
 }
 
 export async function generateQuestionsFromQuestions({
@@ -510,78 +533,62 @@ export async function generateQuestionsFromQuestions({
   questionsType: "MULTIPLE" | "SINGLE" | "QA";
   amountOfAnswers: number;
 }) {
-  const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
-  const url = "https://api.openai.com/v1/chat/completions"; // ChatGPT Endpunkt
+  const apiKey = process.env.EXPO_PUBLIC_API_URL;
+  const url = "https://api.openai.com/v1/chat/completions";
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
   };
 
+  let questionTypeDescription = "";
+  switch (questionsType) {
+    case "MULTIPLE":
+      questionTypeDescription = t("prompts.multipleChoiceDescription");
+      break;
+    case "SINGLE":
+      questionTypeDescription = t("prompts.singleChoiceDescription");
+      break;
+    case "QA":
+      questionTypeDescription = t("prompts.openQuestionDescription");
+      break;
+  }
+
+  const promptTemplate = interpolatePrompt(t("prompts.convertQuestionsPrompt"), {
+    instruction_convert: t("prompts.instruction_convert"),
+    standaloneRule: t("prompts.standaloneRule"),
+    important: t("prompts.important"),
+    outputFormat: t("prompts.outputFormat"),
+    questionStructure: t("prompts.questionStructure"),
+    structureExample: t("prompts.structureExample"),
+    rules_convert: t("prompts.rules_convert"),
+    text: text,
+    numberOfAnswers: amountOfAnswers.toString(),
+    questionTypeDescription: questionTypeDescription,
+  });
+
   const body = JSON.stringify({
     model: "gpt-4o-mini",
-    messages: [
-      {
-        role: "user",
-        content: `
-        Du erhälts Fragen über einen User Input. Wandle diese Fragen in das gewünschte Format um versuche dabei nah an der ursprünglichen Frage zu bleiben.: ${text}.  
-        Wenn der Nutzer bereits Antworten gegeben hat, übernehme diese. Wenn nicht, generiere passende Antworten.
-        Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
-        WICHTIG: Keine Fragen mit externen Materialien oder Texten, die nicht in der Frage enthalten sind. !
-
-        Die Ausgabe soll ausschließlich ein gültiges, parsebares JSON-Array von Objekten sein.  
-
-        Jede Frage muss folgende Struktur haben (bitte exakt einhalten):
-        {
-          "question": "Die Frage als String.",
-          "hint": "",          // Wenn die Frage einen Hinweis benötigt, ansonsten leer lassen
-          "explanation": "",   // Wenn die Frage eine Erklärung benötigt, ansonsten leer lassen
-          "answers": [
-            "",...
-          ],
-          "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0),
-        }
-
-        Wichtige Regeln:
-        - Die Anzahl der Antwortoptionen soll immer ${questionsType == "QA" ? 1 : amountOfAnswers} sein nicht mehr und nicht weniger.
-        ${
-          questionsType === "MULTIPLE"
-            ? "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein."
-            : questionsType === "SINGLE"
-              ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt."
-              : "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
-        }
-        -Wenn der Nutzer Anworten vorgeben hat halte dich an die Anzl der Antworten unabhängig von amountOfAnswers.
-          - Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
-        - Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
-        - Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
-
-                `,
-      },
-    ],
+    messages: [{ role: "user", content: promptTemplate }],
   });
+
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: headers,
-      body: body,
-    });
+    const res = await fetch(url, { method: "POST", headers, body });
+    if (!res.ok) throw new Error(`Fehler: ${res.status}`);
 
-    if (!res.ok) {
-      throw new Error(`Fehler: ${res.status}`);
-    }
     const data = await res.json();
-    const text = data.choices[0].message.content.trim();
-    const startIndex = text.indexOf("[");
-    const endIndex = text.lastIndexOf("]");
-    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-      const jsonString = text.substring(startIndex, endIndex + 1);
-      const parsedData = JSON.parse(jsonString);
+    const textResponse = data.choices[0].message.content.trim();
+    const startIndex = textResponse.indexOf("[");
+    const endIndex = textResponse.lastIndexOf("]");
 
-      return parsedData;
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = textResponse.substring(startIndex, endIndex + 1);
+      return JSON.parse(jsonString);
     }
+
+    return [];
   } catch (error) {
     console.error("Error fetching OpenAI API:", error);
-    const response = "Es gab einen Fehler bei der Anfrage!";
+    return [];
   }
 }
 
@@ -594,77 +601,62 @@ export async function questionFromTopic({
   questionsType: "MULTIPLE" | "SINGLE" | "QA";
   amountOfAnswers: number;
 }) {
-  const apiKey = process.env.EXPO_PUBLIC_API_URL; // Dein OpenAI API-Schlüssel
-  const url = "https://api.openai.com/v1/chat/completions"; // ChatGPT Endpunkt
+  const apiKey = process.env.EXPO_PUBLIC_API_URL;
+  const url = "https://api.openai.com/v1/chat/completions";
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
   };
 
+  let questionTypeDescription = "";
+  switch (questionsType) {
+    case "MULTIPLE":
+      questionTypeDescription = t("prompts.multipleChoiceDescription");
+      break;
+    case "SINGLE":
+      questionTypeDescription = t("prompts.singleChoiceDescription");
+      break;
+    case "QA":
+      questionTypeDescription = t("prompts.openQuestionDescription");
+      break;
+  }
+
+  const promptTemplate = interpolatePrompt(t("prompts.createQuestionsFromTextPrompt"), {
+    instruction_text: t("prompts.instruction_text"),
+    standaloneRule: t("prompts.standaloneRule"),
+    important: t("prompts.important"),
+    outputFormat: t("prompts.outputFormat"),
+    questionStructure: t("prompts.questionStructure"),
+    structureExample: t("prompts.structureExample"),
+    rules_text: t("prompts.rules_text"),
+    text: text,
+    numberOfAnswers: amountOfAnswers.toString(),
+    questionTypeDescription: questionTypeDescription,
+  });
+
   const body = JSON.stringify({
     model: "gpt-4o-mini",
-    messages: [
-      {
-        role: "user",
-        content: `
-        Erstelle basierend auf dem dir im folgenden Text geben Informationen zwischen 3 und 10 Fragen: ${text}.  
-        Diese Fragen sollen möglichst alle wichtigen Aspekte des Textes abdecken.
-        Jede Frage muss für sich allein stehen und darf nicht vom Kontext anderen Fragen oder eines externen Textes abhängen.
-        Der Nutuzer soll die Fragen isoliert beantworten können, ohne den Kontext anderer Fragen oder Materialien die nicht in der Frage enthalten sind, zu benötigen.
-        WICHTIG: Keine Fragen mit externen Materialien oder Texten, die nicht in der Frage enthalten sind. !
-
-        Die Ausgabe soll ausschließlich ein gültiges, parsebares JSON-Array von Objekten sein.  
-
-        Jede Frage muss folgende Struktur haben (bitte exakt einhalten):
-        {
-          "question": "Die Frage als String.",
-          "hint": "",          // Wenn die Frage einen Hinweis benötigt, ansonsten leer lassen
-          "explanation": "",   // Wenn die Frage eine Erklärung benötigt, ansonsten leer lassen
-          "answers": [
-            "",...
-          ],
-          "answerIndex": [X]   // eine oder mehrere korrekte Antworten; Index basiert auf der Position im answers-Array (beginnend bei 0),
-        }
-
-        Wichtige Regeln:
-        - Die Anzahl der Antwortoptionen soll immer ${questionsType == "QA" ? 1 : amountOfAnswers} sein nicht mehr und nicht weniger.
-        ${
-          questionsType === "MULTIPLE"
-            ? "- Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein."
-            : questionsType === "SINGLE"
-              ? "- Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt."
-              : "- Es handelt sich um eine offene Frage bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
-        }
-        - Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.
-        - Der index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.
-        - Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.
-        - Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das
-
-        `,
-      },
-    ],
+    messages: [{ role: "user", content: promptTemplate }],
   });
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: headers,
-      body: body,
-    });
 
-    if (!res.ok) {
-      throw new Error(`Fehler: ${res.status}`);
-    }
+  try {
+    const res = await fetch(url, { method: "POST", headers, body });
+    if (!res.ok) throw new Error(`Fehler: ${res.status}`);
+
     const data = await res.json();
-    const text = data.choices[0].message.content.trim();
-    const startIndex = text.indexOf("[");
-    const endIndex = text.lastIndexOf("]");
+    const textResponse = data.choices[0].message.content.trim();
+    const startIndex = textResponse.indexOf("[");
+    const endIndex = textResponse.lastIndexOf("]");
+
     if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-      const jsonString = text.substring(startIndex, endIndex + 1);
-      const parsedData = JSON.parse(jsonString);
-      return parsedData;
+      const jsonString = textResponse.substring(startIndex, endIndex + 1);
+      return JSON.parse(jsonString);
     }
+
+    return [];
   } catch (error) {
     console.error("Error fetching OpenAI API:", error);
-    const response = "Es gab einen Fehler bei der Anfrage!";
+    return [];
   }
 }
+

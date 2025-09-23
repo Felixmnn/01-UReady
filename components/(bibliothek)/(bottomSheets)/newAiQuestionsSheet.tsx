@@ -45,7 +45,6 @@ const NewAiQuestionsSheet = ({
   const [moreOptions, setMoreOptions] = React.useState(false);
   const { t } = useTranslation();
   const { userUsage } = useGlobalContext();
-  console.log("User Data⚡: ", userUsage);
   const [items, setItems] = useState<Items>([]);
   const [loading, setLoading] = useState(false);
 

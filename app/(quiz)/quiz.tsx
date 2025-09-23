@@ -23,7 +23,7 @@ type QuestionItem = {
 
 
 
-const quiz = () => {s
+const quiz = () => {
     const {user, isLoggedIn,isLoading } = useGlobalContext();
     
 

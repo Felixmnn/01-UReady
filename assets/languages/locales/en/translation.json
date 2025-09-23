@@ -1727,5 +1727,29 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "youNeedQuestionsToStartAQuiz": "You need at least one question to start a quiz."
+  },"prompts": {
+    "createQuestionsPrompt": "{{instruction}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules}}",
+    "convertQuestionsPrompt": "{{instruction_convert}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules_convert}}",
+    "createQuestionsFromTextPrompt": "{{instruction_text}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules_text}}",
+
+    "instruction": "Create between 3 and 10 questions based on the following topics: {{text}}.",
+    "instruction_convert": "You will receive questions from user input. Convert these questions into the desired format, trying to stay as close as possible to the original question: {{text}}.",
+    "instruction_text": "Create between 3 and 10 questions based on the information provided in the following text: {{text}}.\n\nThese questions should cover all important aspects of the text.",
+
+    "standaloneRule": "Each question must stand alone and must not depend on the context of other questions or any external text. The user should be able to answer the questions independently without needing context from other questions or materials not included in the question.",
+    "important": "IMPORTANT: Do not include questions that rely on external materials or texts not contained within the question!",
+    "outputFormat": "The output must be a valid, parseable JSON array of objects.",
+    "questionStructure": "Each question must have the following structure (please follow exactly):",
+    "structureExample": "{\n  \"question\": \"The question as a string.\",\n  \"hint\": \"\",          // If the question requires a hint, otherwise leave empty\n  \"explanation\": \"\",   // If the question requires an explanation, otherwise leave empty\n  \"answers\": [\"\", ...],\n  \"answerIndex\": [X]     // one or more correct answers; index based on position in the answers array (starting at 0)\n}",
+
+    "rules": "- The number of answer options must always be {{numberOfAnswers}}, no more, no less.\n- {{questionTypeDescription}}\n- The number of correct answers (answerIndex) must be at least 1.\n- The index of the correct answer should be randomized and not always 0.\n- Each answer option must be a valid, stringified JSON string.\n- Do not provide any additional explanation or introduction outside the JSON – only return the JSON.",
+    
+    "rules_convert": "- The number of answer options must always be {{numberOfAnswers}}, no more, no less.\n- {{questionTypeDescription}}\n- If the user has provided answers, adhere to the number of provided answers regardless of {{numberOfAnswers}}.\n- The number of correct answers (answerIndex) must be at least 1.\n- Each answer option must be a valid, stringified JSON string.\n- Do not provide any additional explanation or introduction outside the JSON – only return the JSON.",
+    
+    "rules_text": "- The number of answer options must always be {{numberOfAnswers}}, no more, no less.\n- {{questionTypeDescription}}\n- The number of correct answers (answerIndex) must be at least 1.\n- The index of the correct answer should be randomized and not always 0.\n- Each answer option must be a valid, stringified JSON string.\n- Do not provide any additional explanation or introduction outside the JSON – only return the JSON.",
+
+    "multipleChoiceDescription": "This is a multiple-choice question, multiple answers may be correct.",
+    "singleChoiceDescription": "This is a single-choice question, only one answer is correct.",
+    "openQuestionDescription": "This is an open-ended question where the user must first provide an answer, which will then be checked against the correct answer. Only one correct answer exists."
   }
 }

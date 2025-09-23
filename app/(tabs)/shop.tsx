@@ -6,6 +6,8 @@ import { router } from "expo-router";
 import images from "@/assets/shopItems/itemConfig";
 import TokenHeader from "@/components/(general)/tokenHeader";
 import { setUserData } from "@/lib/appwriteEdit";
+import RewardedAdScreen from "@/components/(shop)/add";
+import SimpleStore from "@/components/(shop)/iap";
 
 const shop = () => {
   const { user, isLoggedIn, isLoading, userUsage } = useGlobalContext();
@@ -130,9 +132,9 @@ const shop = () => {
                 </Text>
               </View>
               <View className="p-4">
-                <WatchAdd/>
+                <RewardedAdScreen/>
               </View>
-
+                <SimpleStore/>
             </ScrollView>
           </View>
         );

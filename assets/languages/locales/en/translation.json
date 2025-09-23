@@ -1,1087 +1,1731 @@
 {
   "contact": {
     "name": "Name",
-    "yourName": "Dein Name",
-    "email": "E-Mail",
-    "yourEmail": "Deine E-Mail",
-    "message": "Nachricht",
-    "yourMessage": "Deine Nachricht",
-    "send": "Senden",
-    "contact": "Kontakt",
-    "backToHome": "Zurück zur Startseite",
-    "successMessage": "Nachricht gesendet wurde gesendet :)",
-    "errorMessage": "Bitte fülle alle Felder aus."
+    "yourName": "Your Name",
+    "email": "Email",
+    "yourEmail": "Your Email",
+    "message": "Message",
+    "yourMessage": "Your Message",
+    "send": "Send",
+    "contact": "Contact",
+    "backToHome": "Back to Home",
+    "successMessage": "Message has been sent :)",
+    "errorMessage": "Please fill out all fields."
   },
   "info": {
-    "title": "AGB",
-    "policys":{
+    "title": "Terms & Conditions",
+    "policys": {
       "usageRights": {
-        "title": "Nutzung & Rechte",
+        "title": "Usage & Rights",
         "icon": "shield-alt",
         "subsections": {
           "applicableFor": {
-            "title": "Für wen gelten die AGB?",
-            "content": "Für alle registrierten Nutzer:innen der App."
+            "title": "Who do the Terms & Conditions apply to?",
+            "content": "For all registered users of the app."
           },
           "registration": {
-            "title": "Registrierung",
-            "content": "Erfolgt per E-Mail-Anbieter. Angabe des Bildungsbereichs optional, dient zur Modulpersonalisierung."
+            "title": "Registration",
+            "content": "Via email provider. Indicating the educational field is optional and used for module personalization."
           },
           "usageRights": {
-            "title": "Nutzungsrechte",
-            "content": "Private Module sind nur für den Nutzer sichtbar.\nÖffentliche Module können kopiert werden."
+            "title": "Usage Rights",
+            "content": "Private modules are only visible to the user.\nPublic modules can be copied."
           },
           "prohibitedUsage": {
-            "title": "Verbotene Nutzung",
-            "content": "Kein Reverse Engineering, automatisierte Erstellung oder Kopieren von UI-Elementen."
+            "title": "Prohibited Usage",
+            "content": "No reverse engineering, automated creation, or copying of UI elements."
           }
         }
       },
       "pricing": {
-        "title": "Preise & Käufe",
+        "title": "Pricing & Purchases",
         "icon": "credit-card",
         "subsections": {
           "costs": {
-            "title": "Kosten",
-            "content": "Die App ist grundsätzlich kostenlos. Es gibt optionale In-App-Käufe (Chips)."
+            "title": "Costs",
+            "content": "The app is generally free. There are optional in-app purchases (chips)."
           },
           "payments": {
-            "title": "Zahlungen",
-            "content": "Zahlung über Google Pay und Apple Pay. Chips können gegen Energie getauscht werden."
+            "title": "Payments",
+            "content": "Payment via Google Pay and Apple Pay. Chips can be exchanged for energy."
           },
           "cancellation": {
-            "title": "Widerruf",
-            "content": "Kein Rückgaberecht für bereits verbrauchte Energie. Kein Abo-Modell im Einsatz."
+            "title": "Cancellation",
+            "content": "No refund for already consumed energy. No subscription model in use."
           },
           "latePayment": {
-            "title": "Zahlungsverzug",
-            "content": "Bei Zahlungsproblemen kann der Account bis zur Klärung gesperrt werden."
+            "title": "Late Payment",
+            "content": "In case of payment issues, the account may be suspended until resolved."
           }
         }
       },
       "availability": {
-        "title": "Verfügbarkeit & Support",
+        "title": "Availability & Support",
         "icon": "wifi",
         "subsections": {
           "provision": {
-            "title": "Bereitstellung",
-            "content": "Keine garantierte Mindestverfügbarkeit. Ziel ist jedoch dauerhafte Verfügbarkeit."
+            "title": "Provision",
+            "content": "No guaranteed minimum availability. The goal, however, is permanent availability."
           },
           "support": {
             "title": "Support & Updates",
-            "content": "Support via Mail oder Kontaktformular. Regelmäßige Updates geplant."
+            "content": "Support via email or contact form. Regular updates are planned."
           },
           "liability": {
-            "title": "Haftung",
-            "content": "Keine Haftung für Datenverlust oder App-Abstürze. Exportfunktion für Datensicherung vorhanden."
+            "title": "Liability",
+            "content": "No liability for data loss or app crashes. Export function for data backup is available."
           }
         }
       },
       "privacy": {
-        "title": "Datenschutz",
+        "title": "Privacy",
         "icon": "lock",
         "subsections": {
           "collectedData": {
-            "title": "Erhobene Daten",
-            "content": "Registrierungsdaten, Lernverhalten, genutzte Features, letzte Anmeldung, Herkunftsland, Sprache etc."
+            "title": "Collected Data",
+            "content": "Registration data, learning behavior, used features, last login, country of origin, language, etc."
           },
           "purpose": {
-            "title": "Verwendungszwecke",
-            "content": "Personalisierung, Funktionsgewährleistung und Weiterentwicklung der Plattform."
+            "title": "Purpose of Use",
+            "content": "Personalization, functionality assurance, and further development of the platform."
           },
           "userRights": {
-            "title": "Rechte der Nutzer:innen",
-            "content": "Accountlöschung möglich. Datenexport verfügbar."
+            "title": "User Rights",
+            "content": "Account deletion possible. Data export available."
           }
         }
       },
       "legal": {
-        "title": "Rechtliches",
+        "title": "Legal",
         "icon": "gavel",
         "subsections": {
           "applicableLaw": {
-            "title": "Geltendes Recht",
-            "content": "Es gilt deutsches Recht. Gerichtsstand ist der Sitz des Unternehmens."
+            "title": "Applicable Law",
+            "content": "German law applies. Place of jurisdiction is the company’s registered office."
           },
           "termsChanges": {
-            "title": "AGB-Änderungen",
-            "content": "Änderungen werden per App oder E-Mail bekanntgegeben."
+            "title": "Changes to Terms & Conditions",
+            "content": "Changes will be announced via app or email."
           },
           "severability": {
-            "title": "Salvatorische Klausel",
-            "content": "Sollten einzelne Bestimmungen unwirksam sein, bleibt der Rest der AGB gültig."
+            "title": "Severability Clause",
+            "content": "If individual provisions are invalid, the remainder of the Terms & Conditions remains valid."
           }
         }
       },
       "multilingual": {
-        "title": "Mehrsprachigkeit",
+        "title": "Multilingualism",
         "icon": "globe",
         "subsections": {
           "legalLanguage": {
-            "title": "Rechtlich gültige Sprache",
-            "content": "Im Zweifel gilt die deutsche Fassung."
+            "title": "Legally Binding Language",
+            "content": "In case of doubt, the German version applies."
           },
           "languageNotifications": {
-            "title": "Sprachliche Benachrichtigungen",
-            "content": "AGB-Änderungen werden in allen unterstützten App-Sprachen angezeigt."
+            "title": "Language Notifications",
+            "content": "Changes to the Terms & Conditions will be displayed in all supported app languages."
           }
         }
       },
       "special": {
-        "title": "Besonderheiten",
+        "title": "Special Features",
         "icon": "star",
         "subsections": {
           "communityFeatures": {
-            "title": "Community-Funktionen",
-            "content": "Module können kopiert, erstellt und gemeldet werden."
+            "title": "Community Features",
+            "content": "Modules can be copied, created, and reported."
           },
           "aiFeatures": {
-            "title": "KI-Funktionen",
-            "content": "KI wird verwendet, wenn der Nutzer dies explizit auswählt (z. B. 'Mit KI erstellen')."
+            "title": "AI Features",
+            "content": "AI is used when the user explicitly selects it (e.g., 'Create with AI')."
           }
         }
       }
     }
-  
   },
   "deleteAccount": {
-    "title": "Account löschen",
-    "backToProfile": "Zurück zum Profil",
-    "deleteAccount": "Account löschen",
-    "cancel" : "Abbrechen",
-    "header": "Account löschen?",
-    "message": "Möchtest du wirklich deinen Account löschen? Alle deine Daten gehen dabei verloren und können nicht wiederhergestellt werden."
-  }, "personalizeZero":{
-    "intro": "Heey, ich bin Copa – lass uns deine App personalisieren!",
-    "letsGo": "Los geht's"
-  }, "personalizeOne":{
-    "name": "Dein Vorname",
-    "greeting": "Wiie darf ich dich nennen?",
-    "continue": "Weiter gehts"
-  }, "personalizeTwo":{
-    "continue": "Weiter gehts",
-    "niceToMeetYou": "Frreut mich, dich kennenzulernen {{name}}! In welcher Sprache möchtest du die App nutzen?" 
-  }, "personalizeThree":{
-    "school": "Schule",
-    "university": "Universität",
-    "education": "Ausbildung",
-    "other": "Sonstiges",
-    "whereDoYouStudy": "Geehst du zur Schule, Uni oder machst eine Ausbildung?"
-  }, 
-  "personalizeFour":{
-   "whichSchool": "Weelche Schule besuchst du?",
-    "wichEducation": "Weelche Ausbildung machst du?",
-    "whichUniversity": "Weelche Uni besuchst du?",
-    "yourUniversity": "Deine Uni",
-    "noUniversityFound": "Keine Uni gefunden",
-    "noUniversityAvailable": "Keine Unis verfügbar"
-  }, "personalizeFive":{
-    "whatDegree": "Weelchen Abschluss strebst du an?",
-    "interestingArea": "Eiin interessantes Gebiet!",
-    "yourEducation": "Deine Ausbildung",
-    "noEducationFound": "Keine Ausbildung gefunden",
-    "noEducationAvailable": "Keine Ausbildung verfügbar",
-    "yourSchoolLevel": "Inn welcher Klasse bist du?"
-  }, "personalizeSix":{
+    "title": "Delete Account",
+    "backToProfile": "Back to Profile",
+    "deleteAccount": "Delete Account",
+    "cancel": "Cancel",
+    "header": "Delete Account?",
+    "message": "Do you really want to delete your account? All your data will be lost and cannot be recovered."
+  },
+  "personalizeZero": {
+    "intro": "Hey, I’m Copa – let’s personalize your app!",
+    "letsGo": "Let’s go"
+  },
+  "personalizeOne": {
+    "name": "Your First Name",
+    "greeting": "What should I call you?",
+    "continue": "Continue"
+  },
+  "personalizeTwo": {
+    "continue": "Continue",
+    "niceToMeetYou": "Nice to meet you, {{name}}! In which language would you like to use the app?"
+  },
+  "personalizeThree": {
+    "school": "School",
+    "university": "University",
+    "education": "Vocational Training",
+    "other": "Other",
+    "whereDoYouStudy": "Do you go to school, university, or vocational training?"
+  },
+  "personalizeFour": {
+    "whichSchool": "Which school do you attend?",
+    "wichEducation": "Which vocational training are you doing?",
+    "whichUniversity": "Which university do you attend?",
+    "yourUniversity": "Your University",
+    "noUniversityFound": "No university found",
+    "noUniversityAvailable": "No universities available"
+  },
+  "personalizeFive": {
+    "whatDegree": "Which degree are you aiming for?",
+    "interestingArea": "An interesting field!",
+    "yourEducation": "Your Vocational Training",
+    "noEducationFound": "No training found",
+    "noEducationAvailable": "No trainings available",
+    "yourSchoolLevel": "Which grade are you in?"
+  },
+  "personalizeSix": {
     "subjectList": [
-        {"icon": "book-open", "name": "Deutsch"}, 
-        {"icon": "language", "name": "Englisch"}, 
-        {"icon": "flag", "name": "Französisch"}, 
-        {"icon": "flag",  "name": "Spanisch"}, 
-        {"icon": "scroll", "name": "Latein"}, 
-        {"icon": "square-root-alt", "name": "Griechisch"}, 
-        {"icon": "square-root-alt",  "name": "Mathe"}, 
-        {"icon": "atom", "name": "Physik"}, 
-        {"icon": "flask",  "name": "Chemie"}, 
-        {"icon": "leaf",  "name": "Biologie"}, 
-        {"icon": "landmark", "name": "Geschichte"}, 
-        {"icon": "balance-scale", "name": "Politik"}, 
-        {"icon": "globe",  "name": "Erdkunde"}, 
-        {"icon": "paint-brush", "name": "Kunst"}, 
-        {"icon": "futbol",  "name": "Sport"}, 
-        {"icon": "music", "name": "Musik"}, 
-        {"icon": "cross",  "name": "Religion"}, 
-        {"icon": "handshake",  "name": "Ethik"}, 
-        {"icon": "laptop-code","name": "Informatik"}, 
-        {"icon": "chart-line", "name": "Wirtschaft"}, 
-        {"icon": "cogs",  "name": "Technik"}, 
-        {"icon": "users", "name": "Sozialkunde"}, 
-        {"icon": "lightbulb", "name": "Philosophie"}, 
-        {"icon": "child", "name": "Pädagogik"}, 
-        {"icon": "theater-masks",  "name": "Darstellendes Spiel"}, 
-        {"icon": "brain",  "name": "Psychologie"}, 
-        {"icon": "ellipsis-h", "name": "Other"}
+      { "icon": "book-open", "name": "German" },
+      { "icon": "language", "name": "English" },
+      { "icon": "flag", "name": "French" },
+      { "icon": "flag", "name": "Spanish" },
+      { "icon": "scroll", "name": "Latin" },
+      { "icon": "square-root-alt", "name": "Greek" },
+      { "icon": "square-root-alt", "name": "Math" },
+      { "icon": "atom", "name": "Physics" },
+      { "icon": "flask", "name": "Chemistry" },
+      { "icon": "leaf", "name": "Biology" },
+      { "icon": "landmark", "name": "History" },
+      { "icon": "balance-scale", "name": "Politics" },
+      { "icon": "globe", "name": "Geography" },
+      { "icon": "paint-brush", "name": "Art" },
+      { "icon": "futbol", "name": "Sports" },
+      { "icon": "music", "name": "Music" },
+      { "icon": "cross", "name": "Religion" },
+      { "icon": "handshake", "name": "Ethics" },
+      { "icon": "laptop-code", "name": "Computer Science" },
+      { "icon": "chart-line", "name": "Economics" },
+      { "icon": "cogs", "name": "Technology" },
+      { "icon": "users", "name": "Social Studies" },
+      { "icon": "lightbulb", "name": "Philosophy" },
+      { "icon": "child", "name": "Pedagogy" },
+      { "icon": "theater-masks", "name": "Drama" },
+      { "icon": "brain", "name": "Psychology" },
+      { "icon": "ellipsis-h", "name": "Other" }
     ],
-    "whatSubjects": "Weelche Fächer hast du?",
-    "yourSubjects": "Deine Fächer",
-    "letsGo": "Los gehts",
-   
-    "almostDone": "Faast geschafft! Was genau studierst du?",
-    "yourEducation": "Deine Ausbildung"
-  },"passwordReset":{
-     "error": "Fehler aufgetreten",
-      "pleaseValidMail": "Bitte gib eine gültige E-Mail-Adresse ein.",
-      "passwordLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
-      "passwordMatch": "Die Passwörter stimmen nicht überein.",
-      "tryAgain": "Bitte versuche es erneut.",
-      "pleaseGoToAppToSignIn": "Bitte gehe zur App, um dich anzumelden.",
-      "successMessage": "Passwort erfolgreich zurückgesetzt.",
-      "backToLoginApp": "Zurück zur Anmeldung - App",
-      "backToLoginWeb": "Zurück zur Anmeldung - Web",
-      "resetPassword": "Passwort zurücksetzen",
-      "mailHasBeenSent": "Eine E-Mail mit Anweisungen zum Zurücksetzen des Passworts wurde gesendet.",
-      "pleaseCheckYourPostfach": "Bitte überprüfe dein Postfach.",
-      "passwordRecoveryMail": "Wiederherstellungs-E-Mail",
-      "confirmPassword": "Passwort bestätigen",
-      "password": "Passwort"
-  },"signIn":{
-    "error": "Ein Fehler ist aufgetreten.",
-    "validEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
-    "validPassword": "Bitte gib ein gültiges Passwort ein (mindestens 8 Zeichen).",
-    "toolsForSuccess": "Tools für deinen Erfolg",
-    "title": "Anmelden",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "resetPassword": "Passwort vergessen?",
-    "continueWithGoogle": "Mit Google fortfahren",
-    "register": "Noch keinen Account? Jetzt registrieren"
-  }, "signOut":{
-    "signingOut": "Du wirst abgemeldet..."
-  },"signUp": {
-    "error": "Ein Fehler ist aufgetreten.",
-    "validUsername": "Bitte gib einen gültigen Benutzernamen ein (mindestens 3 Zeichen).",
-    "validEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
-    "validPassword": "Bitte gib ein gültiges Passwort ein (mindestens 8 Zeichen).",
-    "passwordMatch": "Die Passwörter stimmen nicht überein.",
-    "acceptAGB": "Bitte akzeptiere die AGB.",
-    "toolsForSuccess": "Tools für deinen Erfolg",
-    "title": "Registrieren",
-    "username": "Benutzername",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "passwordConfirm": "Passwort bestätigen",
-    "acceptText": "Ich akzeptiere die ",
-    "agb": "AGB",
-    "acceptText2": " und Datenschutzbestimmungen.",
-    "register": "Registrieren",
-    "continueWithGoogle": "Mit Google fortfahren",
-    "login": "Bereits registriert? Jetzt anmelden",
-    "close": "Schließen"
-  }, "validMail":{
-    "validating": "E-Mail wird bestätigt...",
-    "validationFailed": "Ein Fehler ist aufgetreten."
-  }, "editNote": {
-    "header": "Notiz bearbeiten",
-    "noTitle": "Noch keine Überschrift",
-    "noNote": "Noch keine Notiz",
-    "save": "Änderungen speichern",
-    "delete": "Löschen",
-    "back": "Zurück"
-  },"quiz":{
-    "answeredCorrectly": "✅ Richtig beantwortet",
-    "answeredWrong": "❌ Falsch beantwortet",
-    "againSameQuestions": "Erneut mit gleichen Fragen",
-    "againNewQuestions": "Erneut mit neuen Fragen",
-    "finishQuiz": "Quiz beenden",
-    "results": "🎉 Ergebniss",
-    "right": "Richtig!",
-    "wrong": "Leider Falsch",
-    "showExplanation": "Erklärung anzeigen",
-    "next": "Weiter",
-    "checkAnswer": "Antwort Prüfen"
-  },"quizNavigation": {
-    "explanation": "Erklärung",
-    "next": "Weiter"
-  },"entdecken":{
-    "title": "Entdecken",
-    "university":"Universität",
-    "school":"Schule",
-    "education":"Ausbildung",
-    "other":"Sonstiges",
-    "searchText": "Suche nach Modulen",
-    "noResults": "Keine Ergebnisse gefunden",
-    "loading": "Lade deine Module...",
-    "copy1": "Modul Kopieren",
-    "copy2": "Module Kopieren",
-    "results": "Ergebnisse",
-    "subjects": "Fächer",
-    "synchronization": "Synchronisierung",
-    "report" : " melden!",
-    "reasonForReport" : "Grund für die Meldung",
-    "reportText" : "Bitte beschreibe den Grund für die Meldung des Moduls.",
-    "cancel": "Abbrechen",
-    "send": "Absenden",
-    "for": "für",
-    "noEnergy": "Du hast keine Energie mehr übrig.",
-    "selectToCopy": "Wähle ein Modul aus"
-  }, "index":{
-    "loading": "Lade deine Daten..."
-  }, "deleteModule":{
-    "pending": "Angefragt",
-    "enterAUsername": "Gib einen Nutzernamen ein...",
-    "noUsersAdded": "Keine Nutzer hinzugefügt",
-    "addUsers": "Nutzer hinzufügen",
-    "saveChanges": "Änderungen speichern",
-    "changesSaved": "Änderungen gespeichert",
-    "moduleName": "Modulname",
-    "typeModuleName": "Modulnamen eingeben",
-    "moduleDescription": "Beschreibung",
-    "typeModuleDescription": "Noch keine Beschreibung...",
-    "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
-    "cannotBeUndone": "Diese Aktion kann nicht rückgängig gemacht werden.",
-    "cancel": "Abbrechen",
-    "delete": "Löschen"
-  }, "editSession":{
-    "color": "Sessopm Farbe",
-    "title": "Session bearbeiten",
+    "whatSubjects": "Which subjects do you have?",
+    "yourSubjects": "Your Subjects",
+    "letsGo": "Let’s go",
+    "almostDone": "Almost done! What exactly are you studying?",
+    "yourEducation": "Your Vocational Training"
+  },
+  "passwordReset": {
+    "error": "An error occurred",
+    "pleaseValidMail": "Please enter a valid email address.",
+    "passwordLength": "The password must be at least 8 characters long.",
+    "passwordMatch": "Passwords do not match.",
+    "tryAgain": "Please try again.",
+    "pleaseGoToAppToSignIn": "Please go to the app to sign in.",
+    "successMessage": "Password successfully reset.",
+    "backToLoginApp": "Back to Login - App",
+    "backToLoginWeb": "Back to Login - Web",
+    "resetPassword": "Reset Password",
+    "mailHasBeenSent": "An email with instructions to reset your password has been sent.",
+    "pleaseCheckYourPostfach": "Please check your inbox.",
+    "passwordRecoveryMail": "Password Recovery Email",
+    "confirmPassword": "Confirm Password",
+    "password": "Password"
+  },
+  "signIn": {
+    "error": "An error occurred.",
+    "validEmail": "Please enter a valid email address.",
+    "validPassword": "Please enter a valid password (at least 8 characters).",
+    "toolsForSuccess": "Tools for your success",
+    "title": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "resetPassword": "Forgot password?",
+    "continueWithGoogle": "Continue with Google",
+    "register": "Don't have an account? Register now"
+  },
+  "signOut": {
+    "signingOut": "Signing out..."
+  },
+  "signUp": {
+    "error": "An error occurred.",
+    "validUsername": "Please enter a valid username (at least 3 characters).",
+    "validEmail": "Please enter a valid email address.",
+    "validPassword": "Please enter a valid password (at least 8 characters).",
+    "passwordMatch": "Passwords do not match.",
+    "acceptAGB": "Please accept the Terms & Conditions.",
+    "toolsForSuccess": "Tools for your success",
+    "title": "Sign Up",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirm": "Confirm Password",
+    "acceptText": "I accept the ",
+    "agb": "Terms & Conditions",
+    "acceptText2": " and Privacy Policy.",
+    "register": "Register",
+    "continueWithGoogle": "Continue with Google",
+    "login": "Already registered? Sign in now",
+    "close": "Close"
+  },
+  "validMail": {
+    "validating": "Validating email...",
+    "validationFailed": "An error occurred."
+  },
+  "editNote": {
+    "header": "Edit Note",
+    "noTitle": "No title yet",
+    "noNote": "No note yet",
+    "save": "Save Changes",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "quiz": {
+    "answeredCorrectly": "✅ Answered correctly",
+    "answeredWrong": "❌ Answered incorrectly",
+    "againSameQuestions": "Again with the same questions",
+    "againNewQuestions": "Again with new questions",
+    "finishQuiz": "Finish quiz",
+    "results": "🎉 Results",
+    "right": "Correct!",
+    "wrong": "Incorrect",
+    "showExplanation": "Show explanation",
+    "next": "Next",
+    "checkAnswer": "Check answer"
+  },
+  "quizNavigation": {
+    "explanation": "Explanation",
+    "next": "Next"
+  },
+  "entdecken": {
+    "title": "Discover",
+    "university": "University",
+    "school": "School",
+    "education": "Education",
+    "other": "Other",
+    "searchText": "Search for modules",
+    "noResults": "No results found",
+    "loading": "Loading your modules...",
+    "copy1": "Copy module",
+    "copy2": "Copy modules",
+    "results": "Results",
+    "subjects": "Subjects",
+    "synchronization": "Synchronization",
+    "report": "Report!",
+    "reasonForReport": "Reason for report",
+    "reportText": "Please describe the reason for reporting the module.",
+    "cancel": "Cancel",
+    "send": "Send",
+    "for": "for",
+    "noEnergy": "You have no energy left.",
+    "selectToCopy": "Select a module"
+  },
+  "index": {
+    "loading": "Loading your data..."
+  },
+  "deleteModule": {
+    "pending": "Requested",
+    "enterAUsername": "Enter a username...",
+    "noUsersAdded": "No users added",
+    "addUsers": "Add Users",
+    "saveChanges": "Save Changes",
+    "changesSaved": "Changes Saved",
+    "moduleName": "Module Name",
+    "typeModuleName": "Enter module name",
+    "moduleDescription": "Description",
+    "typeModuleDescription": "No description yet...",
+    "areYousureDelete": "Are you sure you want to delete this module?",
+    "cannotBeUndone": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "editSession": {
+    "color": "Session Color",
+    "title": "Edit Session",
     "name": "Session Name",
-    "description": "Session Beschreibung",
+    "description": "Session Description",
     "icons": "Session Icons",
     "placeholderSessions": "Sessions",
-    "placeholderDescription": "Beschreibung"
-  }, "sessionList":{
-    "title": "Session-Liste",
-    "addSession": "Neue Session hinzufügen"
-  
-  },"karteikarte": {
-    "questio": "Fragen",
-    "notes": "Notizen",
-    "fromYou": "von dir"
-  },"tokenHeader":{
-    "minutesLeft": "Minuten bis zur nächsten Energie",
-    "energyNotEnough": "Nicht genug Energie",
-    "energyFull": "Energie voll",
-    "youHave": "Du hast",
-    "daysInARow": "Tage in Folge gelernt",
-    "close": "Schließen"
-  },"tutorialFirstModule":{
-   "letUsCreate": "Laass uns gemeinsam dein erstes Modul erstellen!",
-    "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
-    "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
-    "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
-    "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
-    "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
-    "youCanCreate": "Diiesen kannst du anhand von Themen, Texten oder Dateien erstellen.",
-    "chooseSession": "Wäähle dafür einfach eine Session aus und ergänze den gewünschten Inhalt",
-    "thatIsAll": "Daas ist alles, was du für dein erstes Modul brauchst.",
-    "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
-
-  },"tutorialModule": {
-     "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!",
-            "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
-            "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
-            "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
-            "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
-            "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
-            "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
-  },"tabbar":{
-     "home": "Startseite",
-            "bibliothek": "Bibliothek",
-            "entdecken": "Entdecken",
-            "profil": "Profil",
-            "help": "Hilfe",
-            "share": "Teilen",
-            "shop": "Shop"
-  },"createModule":{
-    "moduleName": "Modulname",
-    "aOriginalName": "Ein origineller Name für dein Modul",
-    "description": "Beschreibung",
-    "aOriginalDescription": "Eine Beschreibung für dein Modul",
-    "color" : "Farbe",
-    "sessions": "Sitzungen",
-    "enterAName": "Gib einen Namen ein",
-    "createModule": "Modul erstellen",
-    "private": "Privat",
-    "public": "Öffentlich",
-    "newModule": "Neues Modul",
-    "errorMissingName": "Bitte gib einen Modulnamen ein.",
-    "errorMissingDescription": "Bitte gib eine Modulbeschreibung ein.",
-    "errorMissingColor": "Bitte wähle eine Farbe für dein Modul aus.",
-    "errorMissingSessions": "Bitte wähle mindestens eine Sitzung für dein Modul aus.",
-    "errorMissingSessionsContent": "Bitte füge mindestens einer Sitzung Inhalt hinzu.",
-    "noEnergy": "Du hast nicht genug Energie um dieses Modul zu erstellen.",
-    "addAText": "Ergänze einen Text",
-    "addAFile": "Generiere Fragen aus einer Datei",
-    "addATopic": "Füge ein Thema hinzu",
-    "aNewKathegorie": "Generiere Fragen zu gegebenen Informationen...",
-    "existingQuestions": "Füge vorhandene Fragen ein die in Karteikarten umgewandelt werden sollen...",
-    "aNewText": "Beschreibe worum es in den Fragen gehen soll...",
-    "transformData":"Fragen aus Fragen",
-    "noMaterialAdded": "Hier siehst du dann auf welcher Grundlage deine Fragen generiert werden...",
-    "generateModule": "Modul generieren",
-    "materials":"Material für Fragen",
-    "moreOptions": "Mehr Optionen",
-    "lessOptions": "Weniger Optionen",
-    "aiCreate": "Mit KI erstellen",
-    "questionsTopic": "Fragen zu Thema",
-    "questionsInfo": "Fragen zu Infos",
-    "questionFile": "Fragen zu Datei",
-    "onlyPdf": "Derzeit werden nur PDF-Dateien unterstützt.",
-    "settings": "Fragen Einstellungen",
-        "mutipleChoice": "Multiple Choice",
-        "singleChoice": "Single Choice",
-        "questionAnswer": "Frage & Antwort",
-        "numberOfAnswers": "Anzahl der Antworten"
-  },"profileSettings":{
-    "darkmode": "Dunkel",
-    "universityEducationGoals": "Abschlussziel",
-    "universityCategories": "Studiengangkathegorien",
-    
-    "editEducationGoals": "Bildungsziele bearbeiten",
-    "vorname": "Vorname",
-        "email": "Email",
-        "emailvalid": "Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.",
-        "emailvalid2": "Email-Adresse bestätigt",
-        "emailrenew": "Erneut senden",
-        "schooltype": "Schulform",
-        "schoolgrade": "Schulklasse",
-        "schoolsubjects": "Fächer",
-        "university": "Hochschule/ Universität",
-        "faculty": "Fakultät",
-        "studiengang": "Studiengang",
-        "abschlussziel": "Abschlussziel",
-        "actioncode": "Aktioncode",
-        "actioncodeText": "Aktioncode einlösen",
-        "help": "Hilfe",
-        "share": "Teilen",
-        "logout": "Abmelden",
-        "deleteAccount": "Account löschen",
-        "colorMode": "Darstellung",
-        "language": "Sprache",
-        "educationKathegory": "Ausbildungskathegorie",
-        "educationSubject": "Ausbildungfach",
-        "hell": "Hell",
-        "dunkel": "Dunkel",
-        "policys": "Datenschutzrichtlinien",
-        "cancel": "Abbrechen",
-        "ok": "OK"
-        
-
-  },"gettingStarted":{
-    "setTogether": "Erstellen wir zusammen ein Lernset.",
-    "comilitones": "Mal schauen was deine Komilitonen lernen.",
-    "createSet" : "Erstelle dein eigenes Lernset",
-    "timeToStart" : "Zeeit durchzustarten!",
-    "sucheLäuft": "Suche läuft...",
-    "useThisModule": "Dieses Modul verwenden",
-    "this": "Diese",
-    "moduleUse": "Module verwenden",
-    "noModulesFound": "Noch keine Molue ausgewählt",
-    "iHaveFoundSomething": "Icch habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
-    "iHaveFoundNothing": "Leeider habe ich nichts gefunden aber kein Problem",
-    "waitAMoment": "Giib mir einen Moment..."
-
-  },"singleModule":{
-    "recommended": "Empfohlen"
+    "placeholderDescription": "Description"
   },
-
-
-
-
-  "school":{
+  "sessionList": {
+    "title": "Session List",
+    "addSession": "Add New Session"
+  },
+  "karteikarte": {
+    "questio": "Questions",
+    "notes": "Notes",
+    "fromYou": "from you"
+  },
+  "tokenHeader": {
+    "minutesLeft": "Minutes until next energy",
+    "energyNotEnough": "Not enough energy",
+    "energyFull": "Energy full",
+    "youHave": "You have",
+    "daysInARow": "Days studied in a row",
+    "close": "Close"
+  },
+  "tutorialFirstModule": {
+    "letUsCreate": "Let's create your first module together!",
+    "firstInfo": "First, we need some basic information about your module.",
+    "forExample": "For example: Name, description, and a color for better organization.",
+    "nextSession": "Next, you can add your first session.",
+    "aSession": "A session is a single event, like a lecture or class unit.",
+    "thenContent": "Then, we just need the content for your module.",
+    "youCanCreate": "You can create it using topics, texts, or files.",
+    "chooseSession": "Simply select a session and add the content you want.",
+    "thatIsAll": "That's all you need for your first module.",
+    "nowYouCanCreate": "Now you can create your module – it will be generated automatically."
+  },
+  "tutorialModule": {
+    "letUsCreate": "Let's create your first module together!",
+    "firstInfo": "First, we need some basic information about your module.",
+    "forExample": "For example: Name, description, and a color for better organization.",
+    "nextSession": "Next, you can add your first session.",
+    "aSession": "A session is a single event, like a lecture or class unit.",
+    "thenContent": "Then, we just need the content for your module.",
+    "nowYouCanCreate": "Now you can create your module – it will be generated automatically."
+  },
+  "tabbar": {
+    "home": "Home",
+    "bibliothek": "Library",
+    "entdecken": "Discover",
+    "profil": "Profile",
+    "help": "Help",
+    "share": "Share",
+    "shop": "Shop"
+  },
+  "createModule": {
+    "moduleName": "Module Name",
+    "aOriginalName": "An original name for your module",
+    "description": "Description",
+    "aOriginalDescription": "A description for your module",
+    "color": "Color",
+    "sessions": "Sessions",
+    "enterAName": "Enter a name",
+    "createModule": "Create Module",
+    "private": "Private",
+    "public": "Public",
+    "newModule": "New Module",
+    "errorMissingName": "Please enter a module name.",
+    "errorMissingDescription": "Please enter a module description.",
+    "errorMissingColor": "Please choose a color for your module.",
+    "errorMissingSessions": "Please select at least one session for your module.",
+    "errorMissingSessionsContent": "Please add content to at least one session.",
+    "noEnergy": "You don't have enough energy to create this module.",
+    "addAText": "Add a text",
+    "addAFile": "Generate questions from a file",
+    "addATopic": "Add a topic",
+    "aNewKathegorie": "Generate questions from given information...",
+    "existingQuestions": "Insert existing questions to convert into flashcards...",
+    "aNewText": "Describe what the questions should be about...",
+    "transformData": "Generate questions from questions",
+    "noMaterialAdded": "Here you will see the basis on which your questions will be generated...",
+    "generateModule": "Generate Module",
+    "materials": "Materials for questions",
+    "moreOptions": "More Options",
+    "lessOptions": "Less Options",
+    "aiCreate": "Create with AI",
+    "questionsTopic": "Questions by topic",
+    "questionsInfo": "Questions by info",
+    "questionFile": "Questions by file",
+    "onlyPdf": "Currently only PDF files are supported.",
+    "settings": "Question Settings",
+    "mutipleChoice": "Multiple Choice",
+    "singleChoice": "Single Choice",
+    "questionAnswer": "Question & Answer",
+    "numberOfAnswers": "Number of answers"
+  },
+  "profileSettings": {
+    "darkmode": "Dark",
+    "universityEducationGoals": "Degree Goal",
+    "universityCategories": "Study Program Categories",
+    "editEducationGoals": "Edit Education Goals",
+    "vorname": "First Name",
+    "email": "Email",
+    "emailvalid": "Please confirm your email address via the link we sent you.",
+    "emailvalid2": "Email confirmed",
+    "emailrenew": "Resend",
+    "schooltype": "School Type",
+    "schoolgrade": "Grade",
+    "schoolsubjects": "Subjects",
+    "university": "College / University",
+    "faculty": "Faculty",
+    "studiengang": "Study Program",
+    "abschlussziel": "Degree Goal",
+    "actioncode": "Action Code",
+    "actioncodeText": "Redeem Action Code",
+    "help": "Help",
+    "share": "Share",
+    "logout": "Log Out",
+    "deleteAccount": "Delete Account",
+    "colorMode": "Display Mode",
+    "language": "Language",
+    "educationKathegory": "Education Category",
+    "educationSubject": "Education Subject",
+    "hell": "Light",
+    "dunkel": "Dark",
+    "policys": "Privacy Policy",
+    "cancel": "Cancel",
+    "ok": "OK"
+  },
+  "gettingStarted": {
+    "setTogether": "Let's create a study set together.",
+    "comilitones": "See what your classmates are learning.",
+    "createSet": "Create your own study set",
+    "timeToStart": "Time to get started!",
+    "sucheLäuft": "Searching...",
+    "useThisModule": "Use this module",
+    "this": "This",
+    "moduleUse": "Use Module",
+    "noModulesFound": "No module selected yet",
+    "iHaveFoundSomething": "I found something! Just tap the module and I'll add it for you.",
+    "iHaveFoundNothing": "Unfortunately I found nothing, but no problem.",
+    "waitAMoment": "Give me a moment..."
+  },
+  "singleModule": {
+    "recommended": "Recommended"
+  },
+  "school": {
     "type": {
       "grundschule": {
-        "title": "Grundschule",
+        "title": "Primary School",
         "icon": "school",
         "grades": [1, 2, 3, 4]
       },
       "hauptschule": {
-        "title": "Hauptschule",
+        "title": "Secondary School",
         "icon": "school",
         "grades": [5, 6, 7, 8, 9, 10]
       },
       "realschule": {
-        "title": "Realschule",
+        "title": "Intermediate School",
         "icon": "school",
         "grades": [5, 6, 7, 8, 9, 10]
       },
       "gymnasium": {
-        "title": "Gymnasium",
+        "title": "Grammar School",
         "icon": "school",
         "grades": [5, 6, 7, 8, 9, 10, 11, 12, 13]
       },
       "gesamtschule": {
-        "title": "Gesamtschule",
+        "title": "Comprehensive School",
         "icon": "school",
         "grades": [5, 6, 7, 8, 9, 10, 11, 12, 13]
       },
       "berufsschule": {
-        "title": "Berufsschule",
+        "title": "Vocational School",
         "icon": "school",
         "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       },
       "sonstige": {
-        "title": "Sonstige",
+        "title": "Other",
         "icon": "school",
         "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
       }
     },
-    "subjects":{
-      "english": {"icon": "language", "name": "Englisch"},
-      "math": {"icon": "square-root-alt", "name": "Mathe"},
-      "german": {"icon": "book-open", "name": "Deutsch"},
-      "biology": {"icon": "leaf", "name": "Biologie"},
-      "chemistry": {"icon": "flask", "name": "Chemie"},
-      "physics": {"icon": "atom", "name": "Physik"},
-      "history": {"icon": "landmark", "name": "Geschichte"},
-      "geography": {"icon": "globe", "name": "Erdkunde"},
-      "art": {"icon": "paint-brush", "name": "Kunst"},
-      "music": {"icon": "music", "name": "Musik"},
-      "sports": {"icon": "futbol", "name": "Sport"},
-      "religion": {"icon": "cross", "name": "Religion"},
-      "ethics": {"icon": "handshake", "name": "Ethik"},
-      "computerScience": {"icon": "laptop-code", "name": "Informatik"},
-      "socialStudies": {"icon": "users", "name": "Sozialkunde"},
-      "economics": {"icon": "chart-line", "name": "Wirtschaft"},
-      "technology": {"icon": "cogs", "name": "Technik"},
-      "other": {"icon": "ellipsis-h", "name": "Other"}
+    "subjects": {
+      "english": { "icon": "language", "name": "English" },
+      "math": { "icon": "square-root-alt", "name": "Math" },
+      "german": { "icon": "book-open", "name": "German" },
+      "biology": { "icon": "leaf", "name": "Biology" },
+      "chemistry": { "icon": "flask", "name": "Chemistry" },
+      "physics": { "icon": "atom", "name": "Physics" },
+      "history": { "icon": "landmark", "name": "History" },
+      "geography": { "icon": "globe", "name": "Geography" },
+      "art": { "icon": "paint-brush", "name": "Art" },
+      "music": { "icon": "music", "name": "Music" },
+      "sports": { "icon": "futbol", "name": "Sports" },
+      "religion": { "icon": "cross", "name": "Religion" },
+      "ethics": { "icon": "handshake", "name": "Ethics" },
+      "computerScience": { "icon": "laptop-code", "name": "Computer Science" },
+      "socialStudies": { "icon": "users", "name": "Social Studies" },
+      "economics": { "icon": "chart-line", "name": "Economics" },
+      "technology": { "icon": "cogs", "name": "Technology" },
+      "other": { "icon": "ellipsis-h", "name": "Other" }
     }
   },
-  "educationSelection":{
-    
-    
-    
-  },"universityCategories":{
-      "degrees":{
-        "BACHELOR": { "name": "Bachelor", "icon": "graduation-cap" },
-        "MASTER": { "name": "Master", "icon": "user-graduate" },
-        "STAATSEXAMEN": { "name": "Staatsexamen", "icon": "file-signature" },
-        "DIPLOM": { "name": "Diplom", "icon": "scroll" },
-        "MAGISTER": { "name": "Magister", "icon": "book-reader" },
-        "OTHERS": { "name": "Others", "icon": "question-circle" }
+  "universityCategories": {
+    "degrees": {
+      "BACHELOR": { "name": "Bachelor", "icon": "graduation-cap" },
+      "MASTER": { "name": "Master", "icon": "user-graduate" },
+      "STAATSEXAMEN": { "name": "State Exam", "icon": "file-signature" },
+      "DIPLOM": { "name": "Diploma", "icon": "scroll" },
+      "MAGISTER": { "name": "Magister", "icon": "book-reader" },
+      "OTHERS": { "name": "Others", "icon": "question-circle" }
     },
     "universitySubjects": {
-      "businessAdministration": { "name": "Betriebswirtschaftslehre", "icon": "briefcase" },
-      "economics": { "name": "Volkswirtschaftslehre", "icon": "chart-line" },
-      "computerScience": { "name": "Informatik", "icon": "laptop-code" },
-      "businessInformatics": { "name": "Wirtschaftsinformatik", "icon": "network-wired" },
-      "mechanicalEngineering": { "name": "Maschinenbau", "icon": "cogs" },
-      "electricalEngineering": { "name": "Elektrotechnik", "icon": "bolt" },
-      "civilEngineering": { "name": "Bauingenieurwesen", "icon": "hard-hat" },
-      "architecture": { "name": "Architektur", "icon": "drafting-compass" },
-      "medicine": { "name": "Medizin", "icon": "user-md" },
-      "dentistry": { "name": "Zahnmedizin", "icon": "tooth" },
-      "pharmacy": { "name": "Pharmazie", "icon": "pills" },
-      "nursingScience": { "name": "Pflegewissenschaft", "icon": "procedures" },
-      "psychology": { "name": "Psychologie", "icon": "brain" },
-      "sociology": { "name": "Soziologie", "icon": "users" },
-      "politicalScience": { "name": "Politikwissenschaft", "icon": "landmark" },
-      "law": { "name": "Rechtswissenschaften", "icon": "gavel" },
-      "primaryEducation": { "name": "Lehramt Grundschule", "icon": "chalkboard-teacher" },
-      "secondaryEducation": { "name": "Lehramt Gymnasium", "icon": "chalkboard" },
-      "biology": { "name": "Biologie", "icon": "dna" },
-      "chemistry": { "name": "Chemie", "icon": "flask" },
-      "physics": { "name": "Physik", "icon": "atom" },
-      "mathematics": { "name": "Mathematik", "icon": "square-root-alt" },
-      "geosciences": { "name": "Geowissenschaften", "icon": "globe-europe" },
-      "environmentalEngineering": { "name": "Umweltingenieurwesen", "icon": "leaf" },
-      "agriculturalSciences": { "name": "Agrarwissenschaften", "icon": "tractor" },
-      "forestry": { "name": "Forstwissenschaften", "icon": "tree" },
-      "mediaStudies": { "name": "Medienwissenschaften", "icon": "photo-video" },
-      "journalism": { "name": "Journalismus", "icon": "newspaper" },
-      "communicationStudies": { "name": "Kommunikationswissenschaft", "icon": "comments" },
+      "businessAdministration": {
+        "name": "Business Administration",
+        "icon": "briefcase"
+      },
+      "economics": { "name": "Economics", "icon": "chart-line" },
+      "computerScience": { "name": "Computer Science", "icon": "laptop-code" },
+      "businessInformatics": {
+        "name": "Business Informatics",
+        "icon": "network-wired"
+      },
+      "mechanicalEngineering": {
+        "name": "Mechanical Engineering",
+        "icon": "cogs"
+      },
+      "electricalEngineering": {
+        "name": "Electrical Engineering",
+        "icon": "bolt"
+      },
+      "civilEngineering": { "name": "Civil Engineering", "icon": "hard-hat" },
+      "architecture": { "name": "Architecture", "icon": "drafting-compass" },
+      "medicine": { "name": "Medicine", "icon": "user-md" },
+      "dentistry": { "name": "Dentistry", "icon": "tooth" },
+      "pharmacy": { "name": "Pharmacy", "icon": "pills" },
+      "nursingScience": { "name": "Nursing Science", "icon": "procedures" },
+      "psychology": { "name": "Psychology", "icon": "brain" },
+      "sociology": { "name": "Sociology", "icon": "users" },
+      "politicalScience": { "name": "Political Science", "icon": "landmark" },
+      "law": { "name": "Law", "icon": "gavel" },
+      "primaryEducation": {
+        "name": "Primary Education Teaching",
+        "icon": "chalkboard-teacher"
+      },
+      "secondaryEducation": {
+        "name": "Secondary Education Teaching",
+        "icon": "chalkboard"
+      },
+      "biology": { "name": "Biology", "icon": "dna" },
+      "chemistry": { "name": "Chemistry", "icon": "flask" },
+      "physics": { "name": "Physics", "icon": "atom" },
+      "mathematics": { "name": "Mathematics", "icon": "square-root-alt" },
+      "geosciences": { "name": "Geosciences", "icon": "globe-europe" },
+      "environmentalEngineering": {
+        "name": "Environmental Engineering",
+        "icon": "leaf"
+      },
+      "agriculturalSciences": {
+        "name": "Agricultural Sciences",
+        "icon": "tractor"
+      },
+      "forestry": { "name": "Forestry", "icon": "tree" },
+      "mediaStudies": { "name": "Media Studies", "icon": "photo-video" },
+      "journalism": { "name": "Journalism", "icon": "newspaper" },
+      "communicationStudies": {
+        "name": "Communication Studies",
+        "icon": "comments"
+      },
       "design": { "name": "Design", "icon": "paint-brush" },
-      "interiorArchitecture": { "name": "Innenarchitektur", "icon": "couch" },
-      "music": { "name": "Musik", "icon": "music" },
-      "theatreStudies": { "name": "Theaterwissenschaft", "icon": "theater-masks" },
-      "filmStudies": { "name": "Filmwissenschaft", "icon": "film" },
-      "artHistory": { "name": "Kunstgeschichte", "icon": "palette" },
-      "history": { "name": "Geschichte", "icon": "book-open" },
-      "philosophy": { "name": "Philosophie", "icon": "lightbulb" },
-      "religiousStudies": { "name": "Religionswissenschaft", "icon": "cross" },
-      "sportsScience": { "name": "Sportwissenschaft", "icon": "football-ball" },
-      "nutritionScience": { "name": "Ernährungswissenschaften", "icon": "carrot" },
-      "socialWork": { "name": "Soziale Arbeit", "icon": "hands-helping" },
-      "pedagogy": { "name": "Pädagogik", "icon": "child" },
-      "educationScience": { "name": "Erziehungswissenschaft", "icon": "user-graduate" },
-      "logistics": { "name": "Logistik", "icon": "truck" },
-      "tourismManagement": { "name": "Tourismusmanagement", "icon": "plane-departure" },
-      "hotelManagement": { "name": "Hotelmanagement", "icon": "hotel" },
-      "internationalBusiness": { "name": "International Business", "icon": "globe" },
-      "healthManagement": { "name": "Gesundheitsmanagement", "icon": "heartbeat" },
+      "interiorArchitecture": {
+        "name": "Interior Architecture",
+        "icon": "couch"
+      },
+      "music": { "name": "Music", "icon": "music" },
+      "theatreStudies": { "name": "Theatre Studies", "icon": "theater-masks" },
+      "filmStudies": { "name": "Film Studies", "icon": "film" },
+      "artHistory": { "name": "Art History", "icon": "palette" },
+      "history": { "name": "History", "icon": "book-open" },
+      "philosophy": { "name": "Philosophy", "icon": "lightbulb" },
+      "religiousStudies": { "name": "Religious Studies", "icon": "cross" },
+      "sportsScience": { "name": "Sports Science", "icon": "football-ball" },
+      "nutritionScience": { "name": "Nutrition Science", "icon": "carrot" },
+      "socialWork": { "name": "Social Work", "icon": "hands-helping" },
+      "pedagogy": { "name": "Pedagogy", "icon": "child" },
+      "educationScience": {
+        "name": "Education Science",
+        "icon": "user-graduate"
+      },
+      "logistics": { "name": "Logistics", "icon": "truck" },
+      "tourismManagement": {
+        "name": "Tourism Management",
+        "icon": "plane-departure"
+      },
+      "hotelManagement": { "name": "Hotel Management", "icon": "hotel" },
+      "internationalBusiness": {
+        "name": "International Business",
+        "icon": "globe"
+      },
+      "healthManagement": { "name": "Health Management", "icon": "heartbeat" },
       "dataScience": { "name": "Data Science", "icon": "database" },
-      "artificialIntelligence": { "name": "Künstliche Intelligenz", "icon": "robot" },
+      "artificialIntelligence": {
+        "name": "Artificial Intelligence",
+        "icon": "robot"
+      },
       "cybersecurity": { "name": "Cybersecurity", "icon": "shield-alt" },
-      "other": { "name": "Sonstiges", "icon": "ellipsis-h" }
+      "other": { "name": "Other", "icon": "ellipsis-h" }
     }
-
-  }, 
-  "education":{
-    "educationKategories":{
+  },
+  "education": {
+    "educationKategories": {
       "construction_and_crafts": {
-       "name": "Bau & Handwerk",
-       "icon": "hammer"
-       },
+        "name": "Construction & Crafts",
+        "icon": "hammer"
+      },
       "metal_and_technology": {
-       "name": "Metall & Technik",
-       "icon": "cogs"
-       },
+        "name": "Metal & Technology",
+        "icon": "cogs"
+      },
       "production_and_logistics": {
-       "name": "Produktion & Logistik",
-       "icon": "truck"
-       },
+        "name": "Production & Logistics",
+        "icon": "truck"
+      },
       "health_and_care": {
-       "name": "Gesundheit & Pflege",
-       "icon": "user-md"
-       },
+        "name": "Health & Care",
+        "icon": "user-md"
+      },
       "gastronomy_and_tourism": {
-       "name": "Gastronomie & Tourismus",
-       "icon": "utensils"
-       },
+        "name": "Gastronomy & Tourism",
+        "icon": "utensils"
+      },
       "it_and_media": {
-       "name": "IT & Medien",
-       "icon": "laptop"
-       },
+        "name": "IT & Media",
+        "icon": "laptop"
+      },
       "art_and_design": {
-       "name": "Kunst & Gestaltung",
-       "icon": "paint-brush"
-       },
+        "name": "Art & Design",
+        "icon": "paint-brush"
+      },
       "business_and_administration": {
-       "name": "Wirtschaft & Verwaltung",
-       "icon": "chart-line"
-       },
+        "name": "Business & Administration",
+        "icon": "chart-line"
+      },
       "environment_and_nature": {
-       "name": "Umwelt & Natur",
-       "icon": "leaf"
-       }
+        "name": "Environment & Nature",
+        "icon": "leaf"
+      }
     },
-    "educationSubjects":{
+    "educationSubjects": {
       "gastronomy_and_tourism": {
-        "Brauer und Mälzer": {"icon": "beer", "name": "Brauer und Mälzer"},
-        "Brenner": {"icon": "wine-glass", "name": "Brenner"},
-        "Bäcker": {"icon": "bread-slice", "name": "Bäcker"},
-        "Destillateur": {"icon": "cocktail", "name": "Destillateur"},
-        "Fachkraft Küche": {"icon": "bread-slice", "name": "Fachkraft Küche"},
-        "Fachkraft für Fruchtsafttechnik": {"icon": "wine-glass", "name": "Fachkraft für Fruchtsafttechnik"},
-        "Fachkraft für Gastronomie": {"icon": "utensils", "name": "Fachkraft für Gastronomie"},
-        "Fachkraft für Lebensmitteltechnik": {"icon": "utensils", "name": "Fachkraft für Lebensmitteltechnik"},
-        "Fachmann für Restaurants und Veranstaltungsgastronomie": {"icon": "wine-glass-alt", "name": "Fachmann für Restaurants und Veranstaltungsgastronomie"},
-        "Fachmann für Systemgastronomie": {"icon": "utensils", "name": "Fachmann für Systemgastronomie"},
-        "Fachverkäufer im Lebensmittelhandwerk": {"icon": "shopping-basket", "name": "Fachverkäufer im Lebensmittelhandwerk"},
-        "Fleischer": {"icon": "drumstick-bite", "name": "Fleischer"},
-        "Hotelfachmann": {"icon": "hotel", "name": "Hotelfachmann"},
-        "Kaufmann für Hotelmanagement": {"icon": "concierge-bell", "name": "Kaufmann für Hotelmanagement"},
-        "Kaufmann für Tourismus und Freizeit": {"icon": "plane", "name": "Kaufmann für Tourismus und Freizeit"},
-        "Koch": {"icon": "utensils", "name": "Koch"},
-        "Konditor": {"icon": "birthday-cake", "name": "Konditor"},
-        "Servicekaufmann im Luftverkehr": {"icon": "plane", "name": "Servicekaufmann im Luftverkehr"},
-        "Tourismuskaufmann": {"icon": "passport", "name": "Tourismuskaufmann"},
-        "Veranstaltungskaufmann": {"icon": "calendar-check", "name": "Veranstaltungskaufmann"}
+        "Brauer und Mälzer": { "icon": "beer", "name": "Brewer and Maltster" },
+        "Brenner": { "icon": "wine-glass", "name": "Distiller" },
+        "Bäcker": { "icon": "bread-slice", "name": "Baker" },
+        "Destillateur": {
+          "icon": "cocktail",
+          "name": "Distillation Specialist"
+        },
+        "Fachkraft Küche": {
+          "icon": "bread-slice",
+          "name": "Kitchen Specialist"
+        },
+        "Fachkraft für Fruchtsafttechnik": {
+          "icon": "wine-glass",
+          "name": "Fruit Juice Technology Specialist"
+        },
+        "Fachkraft für Gastronomie": {
+          "icon": "utensils",
+          "name": "Gastronomy Specialist"
+        },
+        "Fachkraft für Lebensmitteltechnik": {
+          "icon": "utensils",
+          "name": "Food Technology Specialist"
+        },
+        "Fachmann für Restaurants und Veranstaltungsgastronomie": {
+          "icon": "wine-glass-alt",
+          "name": "Restaurant and Event Catering Specialist"
+        },
+        "Fachmann für Systemgastronomie": {
+          "icon": "utensils",
+          "name": "System Catering Specialist"
+        },
+        "Fachverkäufer im Lebensmittelhandwerk": {
+          "icon": "shopping-basket",
+          "name": "Food Sales Specialist"
+        },
+        "Fleischer": { "icon": "drumstick-bite", "name": "Butcher" },
+        "Hotelfachmann": { "icon": "hotel", "name": "Hotel Specialist" },
+        "Kaufmann für Hotelmanagement": {
+          "icon": "concierge-bell",
+          "name": "Hotel Management Clerk"
+        },
+        "Kaufmann für Tourismus und Freizeit": {
+          "icon": "plane",
+          "name": "Tourism and Leisure Clerk"
+        },
+        "Koch": { "icon": "utensils", "name": "Cook" },
+        "Konditor": { "icon": "birthday-cake", "name": "Confectioner" },
+        "Servicekaufmann im Luftverkehr": {
+          "icon": "plane",
+          "name": "Airline Service Clerk"
+        },
+        "Tourismuskaufmann": { "icon": "passport", "name": "Tourism Clerk" },
+        "Veranstaltungskaufmann": {
+          "icon": "calendar-check",
+          "name": "Event Clerk"
+        }
       },
       "construction_and_crafts": {
-        "Asphaltbauer": {"icon": "road", "name": "Asphaltbauer"},
-        "Ausbaufacharbeiter": {"icon": "tools", "name": "Ausbaufacharbeiter"},
-        "Baugeräteführer": {"icon": "tractor", "name": "Baugeräteführer"},
-        "Bauwerksabdichter": {"icon": "building", "name": "Bauwerksabdichter"},
-        "Bauwerksmechaniker für Abbruch und Betontrenntechnik": {"icon": "hammer", "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik"},
-        "Bauzeichner": {"icon": "drafting-compass", "name": "Bauzeichner"},
-        "Beton- und Stahlbetonbauer": {"icon": "tools", "name": "Beton- und Stahlbetonbauer"},
-        "Bodenleger": {"icon": "ruler-combined", "name": "Bodenleger"},
-        "Bootsbauer": {"icon": "ship", "name": "Bootsbauer"},
-        "Brunnenbauer": {"icon": "faucet", "name": "Brunnenbauer"},
-        "Böttcher": {"icon": "wine-bottle", "name": "Böttcher"},
-        "Dachdecker": {"icon": "house-damage", "name": "Dachdecker"},
-        "Estrichleger": {"icon": "ruler-combined", "name": "Estrichleger"},
-        "Fachkraft für Holz- und Bautenschutzarbeiten": {"icon": "tree", "name": "Fachkraft für Holz- und Bautenschutzarbeiten"},
-        "Fachkraft für Rohr-, Kanal- und Industrieservice": {"icon": "wrench", "name": "Fachkraft für Rohr-, Kanal- und Industrieservice"},
-        "Fachkraft für Straßen- und Verkehrstechnik": {"icon": "road", "name": "Fachkraft für Straßen- und Verkehrstechnik"},
-        "Fassadenmonteur": {"icon": "building", "name": "Fassadenmonteur"},
-        "Feuerungs- und Schornsteinbauer": {"icon": "fire", "name": "Feuerungs- und Schornsteinbauer"},
-        "Fliesen-, Platten- und Mosaikleger": {"icon": "th-large", "name": "Fliesen-, Platten- und Mosaikleger"},
-        "Gerüstbauer": {"icon": "building", "name": "Gerüstbauer"},
-        "Glaser": {"icon": "window-maximize", "name": "Glaser"},
-        "Gleisbauer": {"icon": "train", "name": "Gleisbauer"},
-        "Hochbaufacharbeiter": {"icon": "building", "name": "Hochbaufacharbeiter"},
-        "Holz- und Bautenschützer": {"icon": "hammer", "name": "Holz- und Bautenschützer"},
-        "Isolierfacharbeiter": {"icon": "fire-extinguisher", "name": "Isolierfacharbeiter"},
-        "Kanalbauer": {"icon": "water", "name": "Kanalbauer"},
-        "Klempner": {"icon": "wrench", "name": "Klempner"},
-        "Maler und Lackierer": {"icon": "paint-brush", "name": "Maler und Lackierer"},
-        "Maurer": {"icon": "hammer", "name": "Maurer"},
-        "Naturwerksteinmechaniker": {"icon": "gem", "name": "Naturwerksteinmechaniker"},
-        "Ofen- und Luftheizungsbauer": {"icon": "fire", "name": "Ofen- und Luftheizungsbauer"},
-        "Parkettleger": {"icon": "hard-hat", "name": "Parkettleger"},
-        "Polsterer": {"icon": "couch", "name": "Polsterer"},
-        "Raumausstatter": {"icon": "couch", "name": "Raumausstatter"},
-        "Rohrleitungsbauer": {"icon": "wrench", "name": "Rohrleitungsbauer"},
-        "Schornsteinfeger": {"icon": "smoking", "name": "Schornsteinfeger"},
-        "Segelmacher": {"icon": "ship", "name": "Segelmacher"},
-        "Seiler": {"icon": "sitemap", "name": "Seiler"},
-        "Spezialtiefbauer": {"icon": "hard-hat", "name": "Spezialtiefbauer"},
-        "Steinmetz und Steinbildhauer": {"icon": "gem", "name": "Steinmetz und Steinbildhauer"},
-        "Straßenbauer": {"icon": "road", "name": "Straßenbauer"},
-        "Straßenwärter": {"icon": "wrench", "name": "Straßenwärter"},
-        "Stuckateur": {"icon": "paint-roller", "name": "Stuckateur"},
-        "Tiefbaufacharbeiter": {"icon": "road", "name": "Tiefbaufacharbeiter"},
-        "Tischler": {"icon": "hammer", "name": "Tischler"},
-        "Trockenbaumonteur": {"icon": "hammer", "name": "Trockenbaumonteur"},
-        "Vermessungstechniker": {"icon": "compass", "name": "Vermessungstechniker"},
-        "Werksteinhersteller": {"icon": "gem", "name": "Werksteinhersteller"},
-        "Wärme-, Kälte- und Schallschutzisolierer": {"icon": "cloud", "name": "Wärme-, Kälte- und Schallschutzisolierer"},
-        "Zimmerer": {"icon": "hammer", "name": "Zimmerer"}
+        "Asphaltbauer": { "icon": "road", "name": "Asphaltbauer" },
+        "Ausbaufacharbeiter": { "icon": "tools", "name": "Ausbaufacharbeiter" },
+        "Baugeräteführer": { "icon": "tractor", "name": "Baugeräteführer" },
+        "Bauwerksabdichter": {
+          "icon": "building",
+          "name": "Bauwerksabdichter"
+        },
+        "Bauwerksmechaniker für Abbruch und Betontrenntechnik": {
+          "icon": "hammer",
+          "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik"
+        },
+        "Bauzeichner": { "icon": "drafting-compass", "name": "Bauzeichner" },
+        "Beton- und Stahlbetonbauer": {
+          "icon": "tools",
+          "name": "Beton- und Stahlbetonbauer"
+        },
+        "Bodenleger": { "icon": "ruler-combined", "name": "Bodenleger" },
+        "Bootsbauer": { "icon": "ship", "name": "Bootsbauer" },
+        "Brunnenbauer": { "icon": "faucet", "name": "Brunnenbauer" },
+        "Böttcher": { "icon": "wine-bottle", "name": "Böttcher" },
+        "Dachdecker": { "icon": "house-damage", "name": "Dachdecker" },
+        "Estrichleger": { "icon": "ruler-combined", "name": "Estrichleger" },
+        "Fachkraft für Holz- und Bautenschutzarbeiten": {
+          "icon": "tree",
+          "name": "Fachkraft für Holz- und Bautenschutzarbeiten"
+        },
+        "Fachkraft für Rohr-, Kanal- und Industrieservice": {
+          "icon": "wrench",
+          "name": "Fachkraft für Rohr-, Kanal- und Industrieservice"
+        },
+        "Fachkraft für Straßen- und Verkehrstechnik": {
+          "icon": "road",
+          "name": "Fachkraft für Straßen- und Verkehrstechnik"
+        },
+        "Fassadenmonteur": { "icon": "building", "name": "Fassadenmonteur" },
+        "Feuerungs- und Schornsteinbauer": {
+          "icon": "fire",
+          "name": "Feuerungs- und Schornsteinbauer"
+        },
+        "Fliesen-, Platten- und Mosaikleger": {
+          "icon": "th-large",
+          "name": "Fliesen-, Platten- und Mosaikleger"
+        },
+        "Gerüstbauer": { "icon": "building", "name": "Gerüstbauer" },
+        "Glaser": { "icon": "window-maximize", "name": "Glaser" },
+        "Gleisbauer": { "icon": "train", "name": "Gleisbauer" },
+        "Hochbaufacharbeiter": {
+          "icon": "building",
+          "name": "Hochbaufacharbeiter"
+        },
+        "Holz- und Bautenschützer": {
+          "icon": "hammer",
+          "name": "Holz- und Bautenschützer"
+        },
+        "Isolierfacharbeiter": {
+          "icon": "fire-extinguisher",
+          "name": "Isolierfacharbeiter"
+        },
+        "Kanalbauer": { "icon": "water", "name": "Kanalbauer" },
+        "Klempner": { "icon": "wrench", "name": "Klempner" },
+        "Maler und Lackierer": {
+          "icon": "paint-brush",
+          "name": "Maler und Lackierer"
+        },
+        "Maurer": { "icon": "hammer", "name": "Maurer" },
+        "Naturwerksteinmechaniker": {
+          "icon": "gem",
+          "name": "Naturwerksteinmechaniker"
+        },
+        "Ofen- und Luftheizungsbauer": {
+          "icon": "fire",
+          "name": "Ofen- und Luftheizungsbauer"
+        },
+        "Parkettleger": { "icon": "hard-hat", "name": "Parkettleger" },
+        "Polsterer": { "icon": "couch", "name": "Polsterer" },
+        "Raumausstatter": { "icon": "couch", "name": "Raumausstatter" },
+        "Rohrleitungsbauer": { "icon": "wrench", "name": "Rohrleitungsbauer" },
+        "Schornsteinfeger": { "icon": "smoking", "name": "Schornsteinfeger" },
+        "Segelmacher": { "icon": "ship", "name": "Segelmacher" },
+        "Seiler": { "icon": "sitemap", "name": "Seiler" },
+        "Spezialtiefbauer": { "icon": "hard-hat", "name": "Spezialtiefbauer" },
+        "Steinmetz und Steinbildhauer": {
+          "icon": "gem",
+          "name": "Steinmetz und Steinbildhauer"
+        },
+        "Straßenbauer": { "icon": "road", "name": "Straßenbauer" },
+        "Straßenwärter": { "icon": "wrench", "name": "Straßenwärter" },
+        "Stuckateur": { "icon": "paint-roller", "name": "Stuckateur" },
+        "Tiefbaufacharbeiter": {
+          "icon": "road",
+          "name": "Tiefbaufacharbeiter"
+        },
+        "Tischler": { "icon": "hammer", "name": "Tischler" },
+        "Trockenbaumonteur": { "icon": "hammer", "name": "Trockenbaumonteur" },
+        "Vermessungstechniker": {
+          "icon": "compass",
+          "name": "Vermessungstechniker"
+        },
+        "Werksteinhersteller": { "icon": "gem", "name": "Werksteinhersteller" },
+        "Wärme-, Kälte- und Schallschutzisolierer": {
+          "icon": "cloud",
+          "name": "Wärme-, Kälte- und Schallschutzisolierer"
+        },
+        "Zimmerer": { "icon": "hammer", "name": "Zimmerer" }
       },
       "health_and_care": {
-        "Augenoptiker": {"icon": "glasses", "name": "Augenoptiker"},
-        "Bestattungsfachkraft": {"icon": "cross", "name": "Bestattungsfachkraft"},
-        "Biologielaborant": {"icon": "flask", "name": "Biologielaborant"},
-        "Chirurgiemechaniker": {"icon": "heartbeat", "name": "Chirurgiemechaniker"},
-        "Drogist": {"icon": "capsules", "name": "Drogist"},
-        "Fachangestellter für Bäderbetriebe": {"icon": "swimmer", "name": "Fachangestellter für Bäderbetriebe"},
-        "Friseur": {"icon": "cut", "name": "Friseur"},
-        "Hauswirtschafter": {"icon": "home", "name": "Hauswirtschafter"},
-        "Hörakustiker": {"icon": "deaf", "name": "Hörakustiker"},
-        "Kaufmann im Gesundheitswesen": {"icon": "heartbeat", "name": "Kaufmann im Gesundheitswesen"},
-        "Kosmetiker": {"icon": "spa", "name": "Kosmetiker"},
-        "Medizinischer Fachangestellter": {"icon": "user-md", "name": "Medizinischer Fachangestellter"},
-        "Orthopädieschuhmacher": {"icon": "shoe-prints", "name": "Orthopädieschuhmacher"},
-        "Orthopädietechnik-Mechaniker": {"icon": "user-md", "name": "Orthopädietechnik-Mechaniker"},
-        "Pharmakant": {"icon": "capsules", "name": "Pharmakant"},
-        "Pharmazeutisch-kaufmännischer Angestellter": {"icon": "capsules", "name": "Pharmazeutisch-kaufmännischer Angestellter"},
-        "Sport- und Fitnesskaufmann": {"icon": "dumbbell", "name": "Sport- und Fitnesskaufmann"},
-        "Sportfachmann": {"icon": "futbol", "name": "Sportfachmann"},
-        "Tiermedizinischer Fachangestellter": {"icon": "paw", "name": "Tiermedizinischer Fachangestellter"},
-        "Werkfeuerwehrmann": {"icon": "fire-extinguisher", "name": "Werkfeuerwehrmann"},
-        "Zahnmedizinischer Fachangestellter": {"icon": "tooth", "name": "Zahnmedizinischer Fachangestellter"},
-        "Zahntechniker": {"icon": "tooth", "name": "Zahntechniker"}
+        "Augenoptiker": { "icon": "glasses", "name": "Optician" },
+        "Bestattungsfachkraft": {
+          "icon": "cross",
+          "name": "Funeral Specialist"
+        },
+        "Biologielaborant": {
+          "icon": "flask",
+          "name": "Biological Laboratory Technician"
+        },
+        "Chirurgiemechaniker": {
+          "icon": "heartbeat",
+          "name": "Surgical Technician"
+        },
+        "Drogist": { "icon": "capsules", "name": "Pharmacist Assistant" },
+        "Fachangestellter für Bäderbetriebe": {
+          "icon": "swimmer",
+          "name": "Swimming Pool Specialist"
+        },
+        "Friseur": { "icon": "cut", "name": "Hairdresser" },
+        "Hauswirtschafter": { "icon": "home", "name": "Housekeeper" },
+        "Hörakustiker": { "icon": "deaf", "name": "Hearing Aid Specialist" },
+        "Kaufmann im Gesundheitswesen": {
+          "icon": "heartbeat",
+          "name": "Healthcare Manager"
+        },
+        "Kosmetiker": { "icon": "spa", "name": "Beautician" },
+        "Medizinischer Fachangestellter": {
+          "icon": "user-md",
+          "name": "Medical Assistant"
+        },
+        "Orthopädieschuhmacher": {
+          "icon": "shoe-prints",
+          "name": "Orthopedic Shoemaker"
+        },
+        "Orthopädietechnik-Mechaniker": {
+          "icon": "user-md",
+          "name": "Orthopedic Technician"
+        },
+        "Pharmakant": {
+          "icon": "capsules",
+          "name": "Pharmaceutical Technician"
+        },
+        "Pharmazeutisch-kaufmännischer Angestellter": {
+          "icon": "capsules",
+          "name": "Pharmaceutical Clerk"
+        },
+        "Sport- und Fitnesskaufmann": {
+          "icon": "dumbbell",
+          "name": "Sports and Fitness Manager"
+        },
+        "Sportfachmann": { "icon": "futbol", "name": "Sports Specialist" },
+        "Tiermedizinischer Fachangestellter": {
+          "icon": "paw",
+          "name": "Veterinary Assistant"
+        },
+        "Werkfeuerwehrmann": {
+          "icon": "fire-extinguisher",
+          "name": "Industrial Firefighter"
+        },
+        "Zahnmedizinischer Fachangestellter": {
+          "icon": "tooth",
+          "name": "Dental Assistant"
+        },
+        "Zahntechniker": { "icon": "tooth", "name": "Dental Technician" }
       },
       "it_and_media": {
-        "Fachangestellter für Medien- und Informationsdienste": {"icon": "book-open", "name": "Fachangestellter für Medien- und Informationsdienste"},
-        "Fachinformatiker": {"icon": "laptop-code", "name": "Fachinformatiker"},
-        "Fotomedienfachmann": {"icon": "images", "name": "Fotomedienfachmann"},
-        "Gestalter für immersive Medien": {"icon": "vr-cardboard", "name": "Gestalter für immersive Medien"},
-        "IT-System-Elektroniker": {"icon": "server", "name": "IT-System-Elektroniker"},
-        "Informationselektroniker": {"icon": "desktop", "name": "Informationselektroniker"},
-        "Kaufmann für Digitalisierungsmanagement": {"icon": "cloud", "name": "Kaufmann für Digitalisierungsmanagement"},
-        "Kaufmann für IT-System-Management": {"icon": "desktop", "name": "Kaufmann für IT-System-Management"},
-        "Kaufmann für audiovisuelle Medien": {"icon": "film", "name": "Kaufmann für audiovisuelle Medien"},
-        "Mathematisch-technischer Softwareentwickler": {"icon": "laptop-code", "name": "Mathematisch-technischer Softwareentwickler"},
-        "Mediengestalter Bild und Ton": {"icon": "camera-retro", "name": "Mediengestalter Bild und Ton"},
-        "Mediengestalter Digital und Print": {"icon": "print", "name": "Mediengestalter Digital und Print"}
+        "Fachangestellter für Medien- und Informationsdienste": {
+          "icon": "book-open",
+          "name": "Media and Information Services Specialist"
+        },
+        "Fachinformatiker": { "icon": "laptop-code", "name": "IT Specialist" },
+        "Fotomedienfachmann": {
+          "icon": "images",
+          "name": "Photography Media Specialist"
+        },
+        "Gestalter für immersive Medien": {
+          "icon": "vr-cardboard",
+          "name": "Immersive Media Designer"
+        },
+        "IT-System-Elektroniker": {
+          "icon": "server",
+          "name": "IT Systems Electronics Technician"
+        },
+        "Informationselektroniker": {
+          "icon": "desktop",
+          "name": "Information Electronics Technician"
+        },
+        "Kaufmann für Digitalisierungsmanagement": {
+          "icon": "cloud",
+          "name": "Digitalization Management Clerk"
+        },
+        "Kaufmann für IT-System-Management": {
+          "icon": "desktop",
+          "name": "IT Systems Manager"
+        },
+        "Kaufmann für audiovisuelle Medien": {
+          "icon": "film",
+          "name": "Audiovisual Media Manager"
+        },
+        "Mathematisch-technischer Softwareentwickler": {
+          "icon": "laptop-code",
+          "name": "Mathematical-Technical Software Developer"
+        },
+        "Mediengestalter Bild und Ton": {
+          "icon": "camera-retro",
+          "name": "Media Designer for Image and Sound"
+        },
+        "Mediengestalter Digital und Print": {
+          "icon": "print",
+          "name": "Media Designer Digital and Print"
+        }
       },
       "art_and_design": {
-        "Bogenmacher": {"icon": "bullseye", "name": "Bogenmacher"},
-        "Buchbinder": {"icon": "book", "name": "Buchbinder"},
-        "Bühnenmaler und -plastiker": {"icon": "palette", "name": "Bühnenmaler und -plastiker"},
-        "Bürsten- und Pinselmacher": {"icon": "paint-brush", "name": "Bürsten- und Pinselmacher"},
-        "Drechsler": {"icon": "cogs", "name": "Drechsler"},
-        "Edelsteinfasser": {"icon": "gem", "name": "Edelsteinfasser"},
-        "Edelsteinschleifer": {"icon": "gem", "name": "Edelsteinschleifer"},
-        "Fachkraft für Lederverarbeitung": {"icon": "shoe-prints", "name": "Fachkraft für Lederverarbeitung"},
-        "Fachkraft für Veranstaltungstechnik": {"icon": "lightbulb", "name": "Fachkraft für Veranstaltungstechnik"},
-        "Figurenkeramformer": {"icon": "palette", "name": "Figurenkeramformer"},
-        "Flechtwerkgestalter": {"icon": "chair", "name": "Flechtwerkgestalter"},
-        "Fotograf": {"icon": "camera", "name": "Fotograf"},
-        "Geigenbauer": {"icon": "music", "name": "Geigenbauer"},
-        "Gestalter für visuelles Marketing": {"icon": "paint-brush", "name": "Gestalter für visuelles Marketing"},
-        "Glas- und Porzellanmaler": {"icon": "palette", "name": "Glas- und Porzellanmaler"},
-        "Glasbläser": {"icon": "wind", "name": "Glasbläser"},
-        "Glasveredler": {"icon": "gem", "name": "Glasveredler"},
-        "Goldschmied": {"icon": "gem", "name": "Goldschmied"},
-        "Handzuginstrumentenmacher": {"icon": "music", "name": "Handzuginstrumentenmacher"},
-        "Holzbildhauer": {"icon": "chess", "name": "Holzbildhauer"},
-        "Holzblasinstrumentenmacher": {"icon": "music", "name": "Holzblasinstrumentenmacher"},
-        "Holzspielzeugmacher": {"icon": "puzzle-piece", "name": "Holzspielzeugmacher"},
-        "Industriekeramiker Dekorationstechnik": {"icon": "paint-brush", "name": "Industriekeramiker Dekorationstechnik"},
-        "Keramiker": {"icon": "mug-hot", "name": "Keramiker"},
-        "Kerzenhersteller und Wachsbildner": {"icon": "fire", "name": "Kerzenhersteller und Wachsbildner"},
-        "Klavier- und Cembalobauer": {"icon": "music", "name": "Klavier- und Cembalobauer"},
-        "Kürschner": {"icon": "tshirt", "name": "Kürschner"},
-        "Leuchtröhrenglasbläser": {"icon": "glass-cheers", "name": "Leuchtröhrenglasbläser"},
-        "Manufakturporzellanmaler": {"icon": "paint-brush", "name": "Manufakturporzellanmaler"},
-        "Maskenbildner": {"icon": "theater-masks", "name": "Maskenbildner"},
-        "Maßschneider": {"icon": "cut", "name": "Maßschneider"},
-        "Maßschuhmacher": {"icon": "shoe-prints", "name": "Maßschuhmacher"},
-        "Metallblasinstrumentenmacher": {"icon": "music", "name": "Metallblasinstrumentenmacher"},
-        "Modist": {"icon": "hat-cowboy", "name": "Modist"},
-        "Orgelbauer": {"icon": "music", "name": "Orgelbauer"},
-        "Pelzveredler": {"icon": "tshirt", "name": "Pelzveredler"},
-        "Polster- und Dekorationsnäher": {"icon": "couch", "name": "Polster- und Dekorationsnäher"},
-        "Produktgestalter-Textil": {"icon": "tshirt", "name": "Produktgestalter-Textil"},
-        "Produktprüfer-Textil": {"icon": "tshirt", "name": "Produktprüfer-Textil"},
-        "Sattler": {"icon": "user-tie", "name": "Sattler"},
-        "Schilder- und Lichtreklamehersteller": {"icon": "sign", "name": "Schilder- und Lichtreklamehersteller"},
-        "Schuhfertiger": {"icon": "shoe-prints", "name": "Schuhfertiger"},
-        "Silberschmied": {"icon": "gem", "name": "Silberschmied"},
-        "Spielzeughersteller": {"icon": "gamepad", "name": "Spielzeughersteller"},
-        "Textil- und Modenäher": {"icon": "tshirt", "name": "Textil- und Modenäher"},
-        "Textil- und Modeschneider": {"icon": "cut", "name": "Textil- und Modeschneider"},
-        "Textilgestalter im Handwerk": {"icon": "paint-brush", "name": "Textilgestalter im Handwerk"},
-        "Vergolder": {"icon": "star", "name": "Vergolder"},
-        "Vorpolierer Schmuck- und Kleingeräteherstellung": {"icon": "gem", "name": "Vorpolierer Schmuck- und Kleingeräteherstellung"},
-        "Zupfinstrumentenmacher": {"icon": "guitar", "name": "Zupfinstrumentenmacher"},
-        "Änderungsschneider": {"icon": "cut", "name": "Änderungsschneider"}
+        "Bogenmacher": { "icon": "bullseye", "name": "Bow Maker" },
+        "Buchbinder": { "icon": "book", "name": "Bookbinder" },
+        "Bühnenmaler und -plastiker": {
+          "icon": "palette",
+          "name": "Stage Painter and Sculptor"
+        },
+        "Bürsten- und Pinselmacher": {
+          "icon": "paint-brush",
+          "name": "Brush and Paintbrush Maker"
+        },
+        "Drechsler": { "icon": "cogs", "name": "Wood Turner" },
+        "Edelsteinfasser": { "icon": "gem", "name": "Gem Setter" },
+        "Edelsteinschleifer": { "icon": "gem", "name": "Gem Cutter" },
+        "Fachkraft für Lederverarbeitung": {
+          "icon": "shoe-prints",
+          "name": "Leather Processing Specialist"
+        },
+        "Fachkraft für Veranstaltungstechnik": {
+          "icon": "lightbulb",
+          "name": "Event Technology Specialist"
+        },
+        "Figurenkeramformer": {
+          "icon": "palette",
+          "name": "Figurine Ceramist"
+        },
+        "Flechtwerkgestalter": { "icon": "chair", "name": "Weaving Designer" },
+        "Fotograf": { "icon": "camera", "name": "Photographer" },
+        "Geigenbauer": { "icon": "music", "name": "Violin Maker" },
+        "Gestalter für visuelles Marketing": {
+          "icon": "paint-brush",
+          "name": "Visual Marketing Designer"
+        },
+        "Glas- und Porzellanmaler": {
+          "icon": "palette",
+          "name": "Glass and Porcelain Painter"
+        },
+        "Glasbläser": { "icon": "wind", "name": "Glassblower" },
+        "Glasveredler": { "icon": "gem", "name": "Glass Finisher" },
+        "Goldschmied": { "icon": "gem", "name": "Goldsmith" },
+        "Handzuginstrumentenmacher": {
+          "icon": "music",
+          "name": "Accordion Maker"
+        },
+        "Holzbildhauer": { "icon": "chess", "name": "Wood Sculptor" },
+        "Holzblasinstrumentenmacher": {
+          "icon": "music",
+          "name": "Woodwind Instrument Maker"
+        },
+        "Holzspielzeugmacher": {
+          "icon": "puzzle-piece",
+          "name": "Wooden Toy Maker"
+        },
+        "Industriekeramiker Dekorationstechnik": {
+          "icon": "paint-brush",
+          "name": "Industrial Ceramist (Decoration Technology)"
+        },
+        "Keramiker": { "icon": "mug-hot", "name": "Ceramist" },
+        "Kerzenhersteller und Wachsbildner": {
+          "icon": "fire",
+          "name": "Candle Maker and Wax Artist"
+        },
+        "Klavier- und Cembalobauer": {
+          "icon": "music",
+          "name": "Piano and Harpsichord Maker"
+        },
+        "Kürschner": { "icon": "tshirt", "name": "Furrier" },
+        "Leuchtröhrenglasbläser": {
+          "icon": "glass-cheers",
+          "name": "Neon Tube Glassblower"
+        },
+        "Manufakturporzellanmaler": {
+          "icon": "paint-brush",
+          "name": "Porcelain Painter (Manufacture)"
+        },
+        "Maskenbildner": { "icon": "theater-masks", "name": "Makeup Artist" },
+        "Maßschneider": { "icon": "cut", "name": "Tailor" },
+        "Maßschuhmacher": { "icon": "shoe-prints", "name": "Custom Shoemaker" },
+        "Metallblasinstrumentenmacher": {
+          "icon": "music",
+          "name": "Brass Instrument Maker"
+        },
+        "Modist": { "icon": "hat-cowboy", "name": "Milliner" },
+        "Orgelbauer": { "icon": "music", "name": "Organ Builder" },
+        "Pelzveredler": { "icon": "tshirt", "name": "Fur Finisher" },
+        "Polster- und Dekorationsnäher": {
+          "icon": "couch",
+          "name": "Upholsterer and Decoration Sewer"
+        },
+        "Produktgestalter-Textil": {
+          "icon": "tshirt",
+          "name": "Textile Product Designer"
+        },
+        "Produktprüfer-Textil": {
+          "icon": "tshirt",
+          "name": "Textile Product Inspector"
+        },
+        "Sattler": { "icon": "user-tie", "name": "Saddler" },
+        "Schilder- und Lichtreklamehersteller": {
+          "icon": "sign",
+          "name": "Sign and Light Advertisement Maker"
+        },
+        "Schuhfertiger": { "icon": "shoe-prints", "name": "Shoe Maker" },
+        "Silberschmied": { "icon": "gem", "name": "Silversmith" },
+        "Spielzeughersteller": { "icon": "gamepad", "name": "Toy Maker" },
+        "Textil- und Modenäher": {
+          "icon": "tshirt",
+          "name": "Textile and Fashion Sewer"
+        },
+        "Textil- und Modeschneider": {
+          "icon": "cut",
+          "name": "Textile and Fashion Tailor"
+        },
+        "Textilgestalter im Handwerk": {
+          "icon": "paint-brush",
+          "name": "Textile Designer (Craft)"
+        },
+        "Vergolder": { "icon": "star", "name": "Gilder" },
+        "Vorpolierer Schmuck- und Kleingeräteherstellung": {
+          "icon": "gem",
+          "name": "Pre-Polisher for Jewelry and Small Equipment"
+        },
+        "Zupfinstrumentenmacher": {
+          "icon": "guitar",
+          "name": "Plucked String Instrument Maker"
+        },
+        "Änderungsschneider": { "icon": "cut", "name": "Alteration Tailor" }
       },
       "metal_and_technology": {
-        "Anlagenmechaniker": {"icon": "tools", "name": "Anlagenmechaniker"},
-        "Automatenfachmann": {"icon": "robot", "name": "Automatenfachmann"},
-        "Behälter- und Apparatebauer": {"icon": "archive", "name": "Behälter- und Apparatebauer"},
-        "Büchsenmacher": {"icon": "crosshairs", "name": "Büchsenmacher"},
-        "Chemielaborant": {"icon": "flask", "name": "Chemielaborant"},
-        "Chemikant": {"icon": "flask", "name": "Chemikant"},
-        "Edelmetallprüfer": {"icon": "balance-scale", "name": "Edelmetallprüfer"},
-        "Elektroanlagenmonteur": {"icon": "bolt", "name": "Elektroanlagenmonteur"},
-        "Elektroniker": {"icon": "bolt", "name": "Elektroniker"},
-        "Elektroniker für Automatisierungstechnik": {"icon": "cogs", "name": "Elektroniker für Automatisierungstechnik"},
-        "Elektroniker für Betriebstechnik": {"icon": "plug", "name": "Elektroniker für Betriebstechnik"},
-        "Elektroniker für Gebäude- und Infrastruktursysteme": {"icon": "home", "name": "Elektroniker für Gebäude- und Infrastruktursysteme"},
-        "Elektroniker für Gebäudesystemintegration": {"icon": "building", "name": "Elektroniker für Gebäudesystemintegration"},
-        "Elektroniker für Geräte und Systeme": {"icon": "desktop", "name": "Elektroniker für Geräte und Systeme"},
-        "Elektroniker für Informations- und Systemtechnik": {"icon": "network-wired", "name": "Elektroniker für Informations- und Systemtechnik"},
-        "Elektroniker für Maschinen und Antriebstechnik": {"icon": "cogs", "name": "Elektroniker für Maschinen und Antriebstechnik"},
-        "Fachkraft für Metalltechnik": {"icon": "cogs", "name": "Fachkraft für Metalltechnik"},
-        "Fahrradmonteur": {"icon": "bicycle", "name": "Fahrradmonteur"},
-        "Fahrzeuginterieur-Mechaniker": {"icon": "car", "name": "Fahrzeuginterieur-Mechaniker"},
-        "Fahrzeuglackierer": {"icon": "paint-roller", "name": "Fahrzeuglackierer"},
-        "Feinoptiker": {"icon": "eye", "name": "Feinoptiker"},
-        "Feinpolierer": {"icon": "gem", "name": "Feinpolierer"},
-        "Feinwerkmechaniker": {"icon": "tools", "name": "Feinwerkmechaniker"},
-        "Fluggerätelektroniker": {"icon": "plane", "name": "Fluggerätelektroniker"},
-        "Fluggerätmechaniker": {"icon": "plane", "name": "Fluggerätmechaniker"},
-        "Gießereimechaniker": {"icon": "industry", "name": "Gießereimechaniker"},
-        "Glasapparatebauer": {"icon": "flask", "name": "Glasapparatebauer"},
-        "Graveur": {"icon": "stamp", "name": "Graveur"},
-        "Industrie-Isolierer": {"icon": "thermometer-half", "name": "Industrie-Isolierer"},
-        "Industrieelektriker": {"icon": "bolt", "name": "Industrieelektriker"},
-        "Industriemechaniker": {"icon": "cogs", "name": "Industriemechaniker"},
-        "Karosserie- und Fahrzeugbaumechaniker": {"icon": "car", "name": "Karosserie- und Fahrzeugbaumechaniker"},
-        "Konstruktionsmechaniker": {"icon": "tools", "name": "Konstruktionsmechaniker"},
-        "Kraftfahrzeugmechatroniker": {"icon": "car", "name": "Kraftfahrzeugmechatroniker"},
-        "Lacklaborant": {"icon": "paint-brush", "name": "Lacklaborant"},
-        "Land- und Baumaschinenmechatroniker": {"icon": "tractor", "name": "Land- und Baumaschinenmechatroniker"},
-        "Leichtflugzeugbauer": {"icon": "plane", "name": "Leichtflugzeugbauer"},
-        "Mechaniker für Reifen- und Vulkanisationstechnik": {"icon": "wrench", "name": "Mechaniker für Reifen- und Vulkanisationstechnik"},
-        "Mechatroniker": {"icon": "robot", "name": "Mechatroniker"},
-        "Mechatroniker für Kältetechnik": {"icon": "snowflake", "name": "Mechatroniker für Kältetechnik"},
-        "Metall- und Glockengießer": {"icon": "bell", "name": "Metall- und Glockengießer"},
-        "Metallbauer": {"icon": "hammer", "name": "Metallbauer"},
-        "Metallbildner": {"icon": "hammer", "name": "Metallbildner"},
-        "Mikrotechnologe": {"icon": "microchip", "name": "Mikrotechnologe"},
-        "Oberflächenbeschichter": {"icon": "paint-brush", "name": "Oberflächenbeschichter"},
-        "Physiklaborant": {"icon": "flask", "name": "Physiklaborant"},
-        "Präzisionswerkzeugmechaniker": {"icon": "wrench", "name": "Präzisionswerkzeugmechaniker"},
-        "Rollladen- und Sonnenschutzmechatroniker": {"icon": "window-maximize", "name": "Rollladen- und Sonnenschutzmechatroniker"},
-        "Stanz- und Umformmechaniker": {"icon": "cogs", "name": "Stanz- und Umformmechaniker"},
-        "Technischer Konfektionär": {"icon": "cut", "name": "Technischer Konfektionär"},
-        "Technischer Modellbauer": {"icon": "cube", "name": "Technischer Modellbauer"},
-        "Technischer Produktdesigner": {"icon": "pencil-ruler", "name": "Technischer Produktdesigner"},
-        "Technischer Systemplaner": {"icon": "project-diagram", "name": "Technischer Systemplaner"},
-        "Thermometermacher": {"icon": "thermometer", "name": "Thermometermacher"},
-        "Uhrmacher": {"icon": "clock", "name": "Uhrmacher"},
-        "Verfahrensmechaniker Glastechnik": {"icon": "glass-whiskey", "name": "Verfahrensmechaniker Glastechnik"},
-        "Verfahrensmechaniker für Brillenoptik": {"icon": "glasses", "name": "Verfahrensmechaniker für Brillenoptik"},
-        "Werkgehilfe Schmuckwarenindustrie": {"icon": "gem", "name": "Werkgehilfe Schmuckwarenindustrie"},
-        "Werkzeugmechaniker": {"icon": "tools", "name": "Werkzeugmechaniker"},
-        "Zerspanungsmechaniker": {"icon": "cut", "name": "Zerspanungsmechaniker"},
-        "Zweiradmechatroniker": {"icon": "bicycle", "name": "Zweiradmechatroniker"}
+        "Anlagenmechaniker": { "icon": "tools", "name": "Anlagenmechaniker" },
+        "Automatenfachmann": { "icon": "robot", "name": "Automatenfachmann" },
+        "Behälter- und Apparatebauer": {
+          "icon": "archive",
+          "name": "Behälter- und Apparatebauer"
+        },
+        "Büchsenmacher": { "icon": "crosshairs", "name": "Büchsenmacher" },
+        "Chemielaborant": { "icon": "flask", "name": "Chemielaborant" },
+        "Chemikant": { "icon": "flask", "name": "Chemikant" },
+        "Edelmetallprüfer": {
+          "icon": "balance-scale",
+          "name": "Edelmetallprüfer"
+        },
+        "Elektroanlagenmonteur": {
+          "icon": "bolt",
+          "name": "Elektroanlagenmonteur"
+        },
+        "Elektroniker": { "icon": "bolt", "name": "Elektroniker" },
+        "Elektroniker für Automatisierungstechnik": {
+          "icon": "cogs",
+          "name": "Elektroniker für Automatisierungstechnik"
+        },
+        "Elektroniker für Betriebstechnik": {
+          "icon": "plug",
+          "name": "Elektroniker für Betriebstechnik"
+        },
+        "Elektroniker für Gebäude- und Infrastruktursysteme": {
+          "icon": "home",
+          "name": "Elektroniker für Gebäude- und Infrastruktursysteme"
+        },
+        "Elektroniker für Gebäudesystemintegration": {
+          "icon": "building",
+          "name": "Elektroniker für Gebäudesystemintegration"
+        },
+        "Elektroniker für Geräte und Systeme": {
+          "icon": "desktop",
+          "name": "Elektroniker für Geräte und Systeme"
+        },
+        "Elektroniker für Informations- und Systemtechnik": {
+          "icon": "network-wired",
+          "name": "Elektroniker für Informations- und Systemtechnik"
+        },
+        "Elektroniker für Maschinen und Antriebstechnik": {
+          "icon": "cogs",
+          "name": "Elektroniker für Maschinen und Antriebstechnik"
+        },
+        "Fachkraft für Metalltechnik": {
+          "icon": "cogs",
+          "name": "Fachkraft für Metalltechnik"
+        },
+        "Fahrradmonteur": { "icon": "bicycle", "name": "Fahrradmonteur" },
+        "Fahrzeuginterieur-Mechaniker": {
+          "icon": "car",
+          "name": "Fahrzeuginterieur-Mechaniker"
+        },
+        "Fahrzeuglackierer": {
+          "icon": "paint-roller",
+          "name": "Fahrzeuglackierer"
+        },
+        "Feinoptiker": { "icon": "eye", "name": "Feinoptiker" },
+        "Feinpolierer": { "icon": "gem", "name": "Feinpolierer" },
+        "Feinwerkmechaniker": { "icon": "tools", "name": "Feinwerkmechaniker" },
+        "Fluggerätelektroniker": {
+          "icon": "plane",
+          "name": "Fluggerätelektroniker"
+        },
+        "Fluggerätmechaniker": {
+          "icon": "plane",
+          "name": "Fluggerätmechaniker"
+        },
+        "Gießereimechaniker": {
+          "icon": "industry",
+          "name": "Gießereimechaniker"
+        },
+        "Glasapparatebauer": { "icon": "flask", "name": "Glasapparatebauer" },
+        "Graveur": { "icon": "stamp", "name": "Graveur" },
+        "Industrie-Isolierer": {
+          "icon": "thermometer-half",
+          "name": "Industrie-Isolierer"
+        },
+        "Industrieelektriker": {
+          "icon": "bolt",
+          "name": "Industrieelektriker"
+        },
+        "Industriemechaniker": {
+          "icon": "cogs",
+          "name": "Industriemechaniker"
+        },
+        "Karosserie- und Fahrzeugbaumechaniker": {
+          "icon": "car",
+          "name": "Karosserie- und Fahrzeugbaumechaniker"
+        },
+        "Konstruktionsmechaniker": {
+          "icon": "tools",
+          "name": "Konstruktionsmechaniker"
+        },
+        "Kraftfahrzeugmechatroniker": {
+          "icon": "car",
+          "name": "Kraftfahrzeugmechatroniker"
+        },
+        "Lacklaborant": { "icon": "paint-brush", "name": "Lacklaborant" },
+        "Land- und Baumaschinenmechatroniker": {
+          "icon": "tractor",
+          "name": "Land- und Baumaschinenmechatroniker"
+        },
+        "Leichtflugzeugbauer": {
+          "icon": "plane",
+          "name": "Leichtflugzeugbauer"
+        },
+        "Mechaniker für Reifen- und Vulkanisationstechnik": {
+          "icon": "wrench",
+          "name": "Mechaniker für Reifen- und Vulkanisationstechnik"
+        },
+        "Mechatroniker": { "icon": "robot", "name": "Mechatroniker" },
+        "Mechatroniker für Kältetechnik": {
+          "icon": "snowflake",
+          "name": "Mechatroniker für Kältetechnik"
+        },
+        "Metall- und Glockengießer": {
+          "icon": "bell",
+          "name": "Metall- und Glockengießer"
+        },
+        "Metallbauer": { "icon": "hammer", "name": "Metallbauer" },
+        "Metallbildner": { "icon": "hammer", "name": "Metallbildner" },
+        "Mikrotechnologe": { "icon": "microchip", "name": "Mikrotechnologe" },
+        "Oberflächenbeschichter": {
+          "icon": "paint-brush",
+          "name": "Oberflächenbeschichter"
+        },
+        "Physiklaborant": { "icon": "flask", "name": "Physiklaborant" },
+        "Präzisionswerkzeugmechaniker": {
+          "icon": "wrench",
+          "name": "Präzisionswerkzeugmechaniker"
+        },
+        "Rollladen- und Sonnenschutzmechatroniker": {
+          "icon": "window-maximize",
+          "name": "Rollladen- und Sonnenschutzmechatroniker"
+        },
+        "Stanz- und Umformmechaniker": {
+          "icon": "cogs",
+          "name": "Stanz- und Umformmechaniker"
+        },
+        "Technischer Konfektionär": {
+          "icon": "cut",
+          "name": "Technischer Konfektionär"
+        },
+        "Technischer Modellbauer": {
+          "icon": "cube",
+          "name": "Technischer Modellbauer"
+        },
+        "Technischer Produktdesigner": {
+          "icon": "pencil-ruler",
+          "name": "Technischer Produktdesigner"
+        },
+        "Technischer Systemplaner": {
+          "icon": "project-diagram",
+          "name": "Technischer Systemplaner"
+        },
+        "Thermometermacher": {
+          "icon": "thermometer",
+          "name": "Thermometermacher"
+        },
+        "Uhrmacher": { "icon": "clock", "name": "Uhrmacher" },
+        "Verfahrensmechaniker Glastechnik": {
+          "icon": "glass-whiskey",
+          "name": "Verfahrensmechaniker Glastechnik"
+        },
+        "Verfahrensmechaniker für Brillenoptik": {
+          "icon": "glasses",
+          "name": "Verfahrensmechaniker für Brillenoptik"
+        },
+        "Werkgehilfe Schmuckwarenindustrie": {
+          "icon": "gem",
+          "name": "Werkgehilfe Schmuckwarenindustrie"
+        },
+        "Werkzeugmechaniker": { "icon": "tools", "name": "Werkzeugmechaniker" },
+        "Zerspanungsmechaniker": {
+          "icon": "cut",
+          "name": "Zerspanungsmechaniker"
+        },
+        "Zweiradmechatroniker": {
+          "icon": "bicycle",
+          "name": "Zweiradmechatroniker"
+        }
       },
       "production_and_logistics": {
-        "Aufbereitungsmechaniker": {"icon": "industry", "name": "Aufbereitungsmechaniker"},
-        "Berg- und Maschinenmann": {"icon": "hard-hat", "name": "Berg- und Maschinenmann"},
-        "Bergbautechnologe": {"icon": "hard-hat", "name": "Bergbautechnologe"},
-        "Berufskraftfahrer": {"icon": "truck-moving", "name": "Berufskraftfahrer"},
-        "Betonfertigteilbauer": {"icon": "industry", "name": "Betonfertigteilbauer"},
-        "Binnenschiffer": {"icon": "ship", "name": "Binnenschiffer"},
-        "Eisenbahner im Betriebsdienst Lokführer und Transport": {"icon": "train", "name": "Eisenbahner im Betriebsdienst Lokführer und Transport"},
-        "Eisenbahner in der Zugverkehrssteuerung": {"icon": "traffic-light", "name": "Eisenbahner in der Zugverkehrssteuerung"},
-        "Fachkraft für Hafenlogistik": {"icon": "ship", "name": "Fachkraft für Hafenlogistik"},
-        "Fachkraft für Kurier-, Express- und Postdienstleistungen": {"icon": "truck", "name": "Fachkraft für Kurier-, Express- und Postdienstleistungen"},
-        "Fachkraft für Lagerlogistik": {"icon": "boxes", "name": "Fachkraft für Lagerlogistik"},
-        "Fachkraft für Lederherstellung und Gerbereitechnik": {"icon": "tshirt", "name": "Fachkraft für Lederherstellung und Gerbereitechnik"},
-        "Fachkraft für Möbel-, Küchen- und Umzugsservice": {"icon": "couch", "name": "Fachkraft für Möbel-, Küchen- und Umzugsservice"},
-        "Fachkraft im Fahrbetrieb": {"icon": "bus", "name": "Fachkraft im Fahrbetrieb"},
-        "Fachlagerist": {"icon": "boxes", "name": "Fachlagerist"},
-        "Fertigungsmechaniker": {"icon": "cogs", "name": "Fertigungsmechaniker"},
-        "Flachglastechnologe": {"icon": "window-maximize", "name": "Flachglastechnologe"},
-        "Gebäudereiniger": {"icon": "broom", "name": "Gebäudereiniger"},
-        "Glasmacher": {"icon": "industry", "name": "Glasmacher"},
-        "Hafenschiffer": {"icon": "ship", "name": "Hafenschiffer"},
-        "Holzbearbeitungsmechaniker": {"icon": "tree", "name": "Holzbearbeitungsmechaniker"},
-        "Holzmechaniker": {"icon": "cogs", "name": "Holzmechaniker"},
-        "Industriekeramiker Anlagentechnik": {"icon": "industry", "name": "Industriekeramiker Anlagentechnik"},
-        "Industriekeramiker Modelltechnik": {"icon": "cubes", "name": "Industriekeramiker Modelltechnik"},
-        "Industriekeramiker Verfahrenstechnik": {"icon": "flask", "name": "Industriekeramiker Verfahrenstechnik"},
-        "Kaufmann für Kurier-, Express- und Postdienstleistungen": {"icon": "truck", "name": "Kaufmann für Kurier-, Express- und Postdienstleistungen"},
-        "Kaufmann für Spedition und Logistikdienstleistung": {"icon": "shipping-fast", "name": "Kaufmann für Spedition und Logistikdienstleistung"},
-        "Kaufmann für Verkehrsservice": {"icon": "bus", "name": "Kaufmann für Verkehrsservice"},
-        "Kaufmann im Eisenbahn- und Straßenverkehr": {"icon": "train", "name": "Kaufmann im Eisenbahn- und Straßenverkehr"},
-        "Kunststoff- und Kautschuktechnologe": {"icon": "cogs", "name": "Kunststoff- und Kautschuktechnologe"},
-        "Maschinen- und Anlagenführer": {"icon": "industry", "name": "Maschinen- und Anlagenführer"},
-        "Medientechnologe Druck": {"icon": "fax", "name": "Medientechnologe Druck"},
-        "Medientechnologe Druckverarbeitung": {"icon": "cut", "name": "Medientechnologe Druckverarbeitung"},
-        "Medientechnologe Siebdruck": {"icon": "print", "name": "Medientechnologe Siebdruck"},
-        "Milchtechnologe": {"icon": "glass-cheers", "name": "Milchtechnologe"},
-        "Milchwirtschaftlicher Laborant": {"icon": "flask", "name": "Milchwirtschaftlicher Laborant"},
-        "Packmitteltechnologe": {"icon": "box", "name": "Packmitteltechnologe"},
-        "Papiertechnologe": {"icon": "file-alt", "name": "Papiertechnologe"},
-        "Produktionsmechaniker-Textil": {"icon": "cogs", "name": "Produktionsmechaniker-Textil"},
-        "Produktionstechnologe": {"icon": "cogs", "name": "Produktionstechnologe"},
-        "Produktveredler-Textil": {"icon": "tshirt", "name": "Produktveredler-Textil"},
-        "Prüftechnologe Keramik": {"icon": "flask", "name": "Prüftechnologe Keramik"},
-        "Servicefahrer": {"icon": "truck", "name": "Servicefahrer"},
-        "Süßwarentechnologe": {"icon": "candy-cane", "name": "Süßwarentechnologe"},
-        "Tankwart": {"icon": "gas-pump", "name": "Tankwart"},
-        "Textillaborant": {"icon": "yarn", "name": "Textillaborant"},
-        "Textilreiniger": {"icon": "tshirt", "name": "Textilreiniger"},
-        "Verfahrensmechaniker für Beschichtungstechnik": {"icon": "paint-roller", "name": "Verfahrensmechaniker für Beschichtungstechnik"},
-        "Verfahrensmechaniker in der Steine- und Erdenindustrie": {"icon": "gem", "name": "Verfahrensmechaniker in der Steine- und Erdenindustrie"},
-        "Verfahrenstechnologe Metall": {"icon": "industry", "name": "Verfahrenstechnologe Metall"},
-        "Verfahrenstechnologe Mühlen- und Getreidewirtschaft": {"icon": "seedling", "name": "Verfahrenstechnologe Mühlen- und Getreidewirtschaft"},
-        "Weintechnologe": {"icon": "wine-glass", "name": "Weintechnologe"},
-        "Werkstoffprüfer": {"icon": "search", "name": "Werkstoffprüfer"}
+        "Aufbereitungsmechaniker": {
+          "icon": "industry",
+          "name": "Aufbereitungsmechaniker"
+        },
+        "Berg- und Maschinenmann": {
+          "icon": "hard-hat",
+          "name": "Berg- und Maschinenmann"
+        },
+        "Bergbautechnologe": {
+          "icon": "hard-hat",
+          "name": "Bergbautechnologe"
+        },
+        "Berufskraftfahrer": {
+          "icon": "truck-moving",
+          "name": "Berufskraftfahrer"
+        },
+        "Betonfertigteilbauer": {
+          "icon": "industry",
+          "name": "Betonfertigteilbauer"
+        },
+        "Binnenschiffer": { "icon": "ship", "name": "Binnenschiffer" },
+        "Eisenbahner im Betriebsdienst Lokführer und Transport": {
+          "icon": "train",
+          "name": "Eisenbahner im Betriebsdienst Lokführer und Transport"
+        },
+        "Eisenbahner in der Zugverkehrssteuerung": {
+          "icon": "traffic-light",
+          "name": "Eisenbahner in der Zugverkehrssteuerung"
+        },
+        "Fachkraft für Hafenlogistik": {
+          "icon": "ship",
+          "name": "Fachkraft für Hafenlogistik"
+        },
+        "Fachkraft für Kurier-, Express- und Postdienstleistungen": {
+          "icon": "truck",
+          "name": "Fachkraft für Kurier-, Express- und Postdienstleistungen"
+        },
+        "Fachkraft für Lagerlogistik": {
+          "icon": "boxes",
+          "name": "Fachkraft für Lagerlogistik"
+        },
+        "Fachkraft für Lederherstellung und Gerbereitechnik": {
+          "icon": "tshirt",
+          "name": "Fachkraft für Lederherstellung und Gerbereitechnik"
+        },
+        "Fachkraft für Möbel-, Küchen- und Umzugsservice": {
+          "icon": "couch",
+          "name": "Fachkraft für Möbel-, Küchen- und Umzugsservice"
+        },
+        "Fachkraft im Fahrbetrieb": {
+          "icon": "bus",
+          "name": "Fachkraft im Fahrbetrieb"
+        },
+        "Fachlagerist": { "icon": "boxes", "name": "Fachlagerist" },
+        "Fertigungsmechaniker": {
+          "icon": "cogs",
+          "name": "Fertigungsmechaniker"
+        },
+        "Flachglastechnologe": {
+          "icon": "window-maximize",
+          "name": "Flachglastechnologe"
+        },
+        "Gebäudereiniger": { "icon": "broom", "name": "Gebäudereiniger" },
+        "Glasmacher": { "icon": "industry", "name": "Glasmacher" },
+        "Hafenschiffer": { "icon": "ship", "name": "Hafenschiffer" },
+        "Holzbearbeitungsmechaniker": {
+          "icon": "tree",
+          "name": "Holzbearbeitungsmechaniker"
+        },
+        "Holzmechaniker": { "icon": "cogs", "name": "Holzmechaniker" },
+        "Industriekeramiker Anlagentechnik": {
+          "icon": "industry",
+          "name": "Industriekeramiker Anlagentechnik"
+        },
+        "Industriekeramiker Modelltechnik": {
+          "icon": "cubes",
+          "name": "Industriekeramiker Modelltechnik"
+        },
+        "Industriekeramiker Verfahrenstechnik": {
+          "icon": "flask",
+          "name": "Industriekeramiker Verfahrenstechnik"
+        },
+        "Kaufmann für Kurier-, Express- und Postdienstleistungen": {
+          "icon": "truck",
+          "name": "Kaufmann für Kurier-, Express- und Postdienstleistungen"
+        },
+        "Kaufmann für Spedition und Logistikdienstleistung": {
+          "icon": "shipping-fast",
+          "name": "Kaufmann für Spedition und Logistikdienstleistung"
+        },
+        "Kaufmann für Verkehrsservice": {
+          "icon": "bus",
+          "name": "Kaufmann für Verkehrsservice"
+        },
+        "Kaufmann im Eisenbahn- und Straßenverkehr": {
+          "icon": "train",
+          "name": "Kaufmann im Eisenbahn- und Straßenverkehr"
+        },
+        "Kunststoff- und Kautschuktechnologe": {
+          "icon": "cogs",
+          "name": "Kunststoff- und Kautschuktechnologe"
+        },
+        "Maschinen- und Anlagenführer": {
+          "icon": "industry",
+          "name": "Maschinen- und Anlagenführer"
+        },
+        "Medientechnologe Druck": {
+          "icon": "fax",
+          "name": "Medientechnologe Druck"
+        },
+        "Medientechnologe Druckverarbeitung": {
+          "icon": "cut",
+          "name": "Medientechnologe Druckverarbeitung"
+        },
+        "Medientechnologe Siebdruck": {
+          "icon": "print",
+          "name": "Medientechnologe Siebdruck"
+        },
+        "Milchtechnologe": {
+          "icon": "glass-cheers",
+          "name": "Milchtechnologe"
+        },
+        "Milchwirtschaftlicher Laborant": {
+          "icon": "flask",
+          "name": "Milchwirtschaftlicher Laborant"
+        },
+        "Packmitteltechnologe": {
+          "icon": "box",
+          "name": "Packmitteltechnologe"
+        },
+        "Papiertechnologe": { "icon": "file-alt", "name": "Papiertechnologe" },
+        "Produktionsmechaniker-Textil": {
+          "icon": "cogs",
+          "name": "Produktionsmechaniker-Textil"
+        },
+        "Produktionstechnologe": {
+          "icon": "cogs",
+          "name": "Produktionstechnologe"
+        },
+        "Produktveredler-Textil": {
+          "icon": "tshirt",
+          "name": "Produktveredler-Textil"
+        },
+        "Prüftechnologe Keramik": {
+          "icon": "flask",
+          "name": "Prüftechnologe Keramik"
+        },
+        "Servicefahrer": { "icon": "truck", "name": "Servicefahrer" },
+        "Süßwarentechnologe": {
+          "icon": "candy-cane",
+          "name": "Süßwarentechnologe"
+        },
+        "Tankwart": { "icon": "gas-pump", "name": "Tankwart" },
+        "Textillaborant": { "icon": "yarn", "name": "Textillaborant" },
+        "Textilreiniger": { "icon": "tshirt", "name": "Textilreiniger" },
+        "Verfahrensmechaniker für Beschichtungstechnik": {
+          "icon": "paint-roller",
+          "name": "Verfahrensmechaniker für Beschichtungstechnik"
+        },
+        "Verfahrensmechaniker in der Steine- und Erdenindustrie": {
+          "icon": "gem",
+          "name": "Verfahrensmechaniker in der Steine- und Erdenindustrie"
+        },
+        "Verfahrenstechnologe Metall": {
+          "icon": "industry",
+          "name": "Verfahrenstechnologe Metall"
+        },
+        "Verfahrenstechnologe Mühlen- und Getreidewirtschaft": {
+          "icon": "seedling",
+          "name": "Verfahrenstechnologe Mühlen- und Getreidewirtschaft"
+        },
+        "Weintechnologe": { "icon": "wine-glass", "name": "Weintechnologe" },
+        "Werkstoffprüfer": { "icon": "search", "name": "Werkstoffprüfer" }
       },
       "environment_and_nature": {
-        "Baustoffprüfer": {"icon": "flask", "name": "Baustoffprüfer"},
-        "Biologiemodellmacher": {"icon": "flask", "name": "Biologiemodellmacher"},
-        "Chemielaborjungwerker": {"icon": "flask", "name": "Chemielaborjungwerker"},
-        "Fachkraft Agrarservice": {"icon": "seedling", "name": "Fachkraft Agrarservice"},
-        "Fachkraft für Abwassertechnik": {"icon": "water", "name": "Fachkraft für Abwassertechnik"},
-        "Fachkraft für Kreislauf- und Abfallwirtschaft": {"icon": "recycle", "name": "Fachkraft für Kreislauf- und Abfallwirtschaft"},
-        "Fachkraft für Wasserversorgungstechnik": {"icon": "faucet", "name": "Fachkraft für Wasserversorgungstechnik"},
-        "Fachkraft für Wasserwirtschaft": {"icon": "tint", "name": "Fachkraft für Wasserwirtschaft"},
-        "Fischwirt": {"icon": "fish", "name": "Fischwirt"},
-        "Florist": {"icon": "spa", "name": "Florist"},
-        "Forstwirt": {"icon": "tree", "name": "Forstwirt"},
-        "Geomatiker": {"icon": "map-marked-alt", "name": "Geomatiker"},
-        "Gärtner": {"icon": "seedling", "name": "Gärtner"},
-        "Landwirt": {"icon": "tractor", "name": "Landwirt"},
-        "Pferdewirt": {"icon": "horse", "name": "Pferdewirt"},
-        "Pflanzentechnologe": {"icon": "seedling", "name": "Pflanzentechnologe"},
-        "Produktionsfachkraft Chemie": {"icon": "flask", "name": "Produktionsfachkraft Chemie"},
-        "Revierjäger": {"icon": "paw", "name": "Revierjäger"},
-        "Schädlingsbekämpfer": {"icon": "bug", "name": "Schädlingsbekämpfer"},
-        "Tierpfleger": {"icon": "paw", "name": "Tierpfleger"},
-        "Tierwirt": {"icon": "paw", "name": "Tierwirt"},
-        "Wasserbauer": {"icon": "water", "name": "Wasserbauer"},
-        "Winzer": {"icon": "wine-bottle", "name": "Winzer"}
+        "Baustoffprüfer": { "icon": "flask", "name": "Baustoffprüfer" },
+        "Biologiemodellmacher": {
+          "icon": "flask",
+          "name": "Biologiemodellmacher"
+        },
+        "Chemielaborjungwerker": {
+          "icon": "flask",
+          "name": "Chemielaborjungwerker"
+        },
+        "Fachkraft Agrarservice": {
+          "icon": "seedling",
+          "name": "Fachkraft Agrarservice"
+        },
+        "Fachkraft für Abwassertechnik": {
+          "icon": "water",
+          "name": "Fachkraft für Abwassertechnik"
+        },
+        "Fachkraft für Kreislauf- und Abfallwirtschaft": {
+          "icon": "recycle",
+          "name": "Fachkraft für Kreislauf- und Abfallwirtschaft"
+        },
+        "Fachkraft für Wasserversorgungstechnik": {
+          "icon": "faucet",
+          "name": "Fachkraft für Wasserversorgungstechnik"
+        },
+        "Fachkraft für Wasserwirtschaft": {
+          "icon": "tint",
+          "name": "Fachkraft für Wasserwirtschaft"
+        },
+        "Fischwirt": { "icon": "fish", "name": "Fischwirt" },
+        "Florist": { "icon": "spa", "name": "Florist" },
+        "Forstwirt": { "icon": "tree", "name": "Forstwirt" },
+        "Geomatiker": { "icon": "map-marked-alt", "name": "Geomatiker" },
+        "Gärtner": { "icon": "seedling", "name": "Gärtner" },
+        "Landwirt": { "icon": "tractor", "name": "Landwirt" },
+        "Pferdewirt": { "icon": "horse", "name": "Pferdewirt" },
+        "Pflanzentechnologe": {
+          "icon": "seedling",
+          "name": "Pflanzentechnologe"
+        },
+        "Produktionsfachkraft Chemie": {
+          "icon": "flask",
+          "name": "Produktionsfachkraft Chemie"
+        },
+        "Revierjäger": { "icon": "paw", "name": "Revierjäger" },
+        "Schädlingsbekämpfer": { "icon": "bug", "name": "Schädlingsbekämpfer" },
+        "Tierpfleger": { "icon": "paw", "name": "Tierpfleger" },
+        "Tierwirt": { "icon": "paw", "name": "Tierwirt" },
+        "Wasserbauer": { "icon": "water", "name": "Wasserbauer" },
+        "Winzer": { "icon": "wine-bottle", "name": "Winzer" }
       },
       "business_and_administration": {
-        "Automobilkaufmann": {"icon": "car", "name": "Automobilkaufmann"},
-        "Bankkaufmann": {"icon": "university", "name": "Bankkaufmann"},
-        "Buchhändler": {"icon": "store", "name": "Buchhändler"},
-        "Fachangestellter für Arbeitsmarktdienstleistungen": {"icon": "briefcase", "name": "Fachangestellter für Arbeitsmarktdienstleistungen"},
-        "Fachangestellter für Markt- und Sozialforschung": {"icon": "chart-bar", "name": "Fachangestellter für Markt- und Sozialforschung"},
-        "Fachkraft für Schutz und Sicherheit": {"icon": "shield-alt", "name": "Fachkraft für Schutz und Sicherheit"},
-        "Immobilienkaufmann": {"icon": "building", "name": "Immobilienkaufmann"},
-        "Industriekaufmann": {"icon": "chart-line", "name": "Industriekaufmann"},
-        "Investmentfondskaufmann": {"icon": "chart-line", "name": "Investmentfondskaufmann"},
-        "Justizfachangestellter": {"icon": "gavel", "name": "Justizfachangestellter"},
-        "Kaufmann für Büromanagement": {"icon": "briefcase", "name": "Kaufmann für Büromanagement"},
-        "Kaufmann für Dialogmarketing": {"icon": "comments", "name": "Kaufmann für Dialogmarketing"},
-        "Kaufmann für Groß- und Außenhandelsmanagement": {"icon": "exchange-alt", "name": "Kaufmann für Groß- und Außenhandelsmanagement"},
-        "Kaufmann für Marketingkommunikation": {"icon": "bullhorn", "name": "Kaufmann für Marketingkommunikation"},
-        "Kaufmann für Versicherungen und Finanzanlagen": {"icon": "shield-alt", "name": "Kaufmann für Versicherungen und Finanzanlagen"},
-        "Kaufmann im E-Commerce": {"icon": "shopping-cart", "name": "Kaufmann im E-Commerce"},
-        "Kaufmann im Einzelhandel": {"icon": "store", "name": "Kaufmann im Einzelhandel"},
-        "Luftverkehrskaufmann": {"icon": "plane-departure", "name": "Luftverkehrskaufmann"},
-        "Medienkaufmann Digital und Print": {"icon": "file-alt", "name": "Medienkaufmann Digital und Print"},
-        "Musikfachhändler": {"icon": "guitar", "name": "Musikfachhändler"},
-        "Notarfachangestellter": {"icon": "file-contract", "name": "Notarfachangestellter"},
-        "Patentanwaltsfachangestellter": {"icon": "gavel", "name": "Patentanwaltsfachangestellter"},
-        "Personaldienstleistungskaufmann": {"icon": "user-tie", "name": "Personaldienstleistungskaufmann"},
-        "Rechtsanwalts- und Notarfachangestellter": {"icon": "file-contract", "name": "Rechtsanwalts- und Notarfachangestellter"},
-        "Rechtsanwaltsfachangestellter": {"icon": "gavel", "name": "Rechtsanwaltsfachangestellter"},
-        "Schifffahrtskaufmann": {"icon": "ship", "name": "Schifffahrtskaufmann"},
-        "Servicefachkraft für Dialogmarketing": {"icon": "headset", "name": "Servicefachkraft für Dialogmarketing"},
-        "Servicekraft für Schutz und Sicherheit": {"icon": "shield-alt", "name": "Servicekraft für Schutz und Sicherheit"},
-        "Sozialversicherungsfachangestellter": {"icon": "shield-alt", "name": "Sozialversicherungsfachangestellter"},
-        "Steuerfachangestellter": {"icon": "calculator", "name": "Steuerfachangestellter"},
-        "Verkäufer": {"icon": "shopping-cart", "name": "Verkäufer"},
-        "Verwaltungsfachangestellter": {"icon": "cogs", "name": "Verwaltungsfachangestellter"}
+        "Automobilkaufmann": { "icon": "car", "name": "Automobilkaufmann" },
+        "Bankkaufmann": { "icon": "university", "name": "Bankkaufmann" },
+        "Buchhändler": { "icon": "store", "name": "Buchhändler" },
+        "Fachangestellter für Arbeitsmarktdienstleistungen": {
+          "icon": "briefcase",
+          "name": "Fachangestellter für Arbeitsmarktdienstleistungen"
+        },
+        "Fachangestellter für Markt- und Sozialforschung": {
+          "icon": "chart-bar",
+          "name": "Fachangestellter für Markt- und Sozialforschung"
+        },
+        "Fachkraft für Schutz und Sicherheit": {
+          "icon": "shield-alt",
+          "name": "Fachkraft für Schutz und Sicherheit"
+        },
+        "Immobilienkaufmann": {
+          "icon": "building",
+          "name": "Immobilienkaufmann"
+        },
+        "Industriekaufmann": {
+          "icon": "chart-line",
+          "name": "Industriekaufmann"
+        },
+        "Investmentfondskaufmann": {
+          "icon": "chart-line",
+          "name": "Investmentfondskaufmann"
+        },
+        "Justizfachangestellter": {
+          "icon": "gavel",
+          "name": "Justizfachangestellter"
+        },
+        "Kaufmann für Büromanagement": {
+          "icon": "briefcase",
+          "name": "Kaufmann für Büromanagement"
+        },
+        "Kaufmann für Dialogmarketing": {
+          "icon": "comments",
+          "name": "Kaufmann für Dialogmarketing"
+        },
+        "Kaufmann für Groß- und Außenhandelsmanagement": {
+          "icon": "exchange-alt",
+          "name": "Kaufmann für Groß- und Außenhandelsmanagement"
+        },
+        "Kaufmann für Marketingkommunikation": {
+          "icon": "bullhorn",
+          "name": "Kaufmann für Marketingkommunikation"
+        },
+        "Kaufmann für Versicherungen und Finanzanlagen": {
+          "icon": "shield-alt",
+          "name": "Kaufmann für Versicherungen und Finanzanlagen"
+        },
+        "Kaufmann im E-Commerce": {
+          "icon": "shopping-cart",
+          "name": "Kaufmann im E-Commerce"
+        },
+        "Kaufmann im Einzelhandel": {
+          "icon": "store",
+          "name": "Kaufmann im Einzelhandel"
+        },
+        "Luftverkehrskaufmann": {
+          "icon": "plane-departure",
+          "name": "Luftverkehrskaufmann"
+        },
+        "Medienkaufmann Digital und Print": {
+          "icon": "file-alt",
+          "name": "Medienkaufmann Digital und Print"
+        },
+        "Musikfachhändler": { "icon": "guitar", "name": "Musikfachhändler" },
+        "Notarfachangestellter": {
+          "icon": "file-contract",
+          "name": "Notarfachangestellter"
+        },
+        "Patentanwaltsfachangestellter": {
+          "icon": "gavel",
+          "name": "Patentanwaltsfachangestellter"
+        },
+        "Personaldienstleistungskaufmann": {
+          "icon": "user-tie",
+          "name": "Personaldienstleistungskaufmann"
+        },
+        "Rechtsanwalts- und Notarfachangestellter": {
+          "icon": "file-contract",
+          "name": "Rechtsanwalts- und Notarfachangestellter"
+        },
+        "Rechtsanwaltsfachangestellter": {
+          "icon": "gavel",
+          "name": "Rechtsanwaltsfachangestellter"
+        },
+        "Schifffahrtskaufmann": {
+          "icon": "ship",
+          "name": "Schifffahrtskaufmann"
+        },
+        "Servicefachkraft für Dialogmarketing": {
+          "icon": "headset",
+          "name": "Servicefachkraft für Dialogmarketing"
+        },
+        "Servicekraft für Schutz und Sicherheit": {
+          "icon": "shield-alt",
+          "name": "Servicekraft für Schutz und Sicherheit"
+        },
+        "Sozialversicherungsfachangestellter": {
+          "icon": "shield-alt",
+          "name": "Sozialversicherungsfachangestellter"
+        },
+        "Steuerfachangestellter": {
+          "icon": "calculator",
+          "name": "Steuerfachangestellter"
+        },
+        "Verkäufer": { "icon": "shopping-cart", "name": "Verkäufer" },
+        "Verwaltungsfachangestellter": {
+          "icon": "cogs",
+          "name": "Verwaltungsfachangestellter"
+        }
       }
     }
-  },"bibliothek":{
-    "aiQuiz": "AI Quiz generieren",
-    "crtNote": "Notiz erstellen",
-    "crtQuestion": "Frage erstellen",
-    "quizSettings": "Quiz-Einstellungen",
-    "quizType": "Quiz-Typ",
-    "questionType": "Fragentyp",
-    "numQuestions": "Anzahl der Fragen",
-    "timeLimit": "Zeitlimit (Sekunden)",
-    "createModule": "Modul erstellen",
-    "refresh": "Aktualisieren..."
-
-
-  }, "aiQuestion":{
-    "title": "Generiere Karteikarten mit AI aus...",
+  },
+  "bibliothek": {
+    "aiQuiz": "Generate AI Quiz",
+    "crtNote": "Create Note",
+    "crtQuestion": "Create Question",
+    "quizSettings": "Quiz Settings",
+    "quizType": "Quiz Type",
+    "questionType": "Question Type",
+    "numQuestions": "Number of Questions",
+    "timeLimit": "Time Limit (seconds)",
+    "createModule": "Create Module",
+    "refresh": "Refreshing..."
+  },
+  "aiQuestion": {
+    "title": "Generate flashcards with AI from...",
     "text": "Text",
-    "topic": "Thema",
-    "file": "Datei",
-    "generateCards": "Karten generieren",
-    "sumDocument": "Dokument zusammenfassen",
-    "selectFile": "Wähle eine Datei aus:",
-    "dragFile": "Ziehe eine Datei hier hin oder lade sie hoch",
-    "uploadDocument": "Dokument hochladen",
-    "yourTopics": "Deine Themen:",
-    "yourTexts": "Deine Texte:",
-    "noMaterials": "Noch keine Materialien",
-    "generateCardsDisabled": "Karten generieren",
-    "notEnoughEnergy": "Du hast nicht genug Energie. Bitte warte bis deine Energie wieder aufgefüllt ist."
-    ,"cardsFor":"Karteikarten für ",
-    "generate": "generieren."
-  },"editQuestion":{
-    "showMoreOptions":"Mehr Optionen anzeigen",
-    "showLessOptions":"Weniger Optionen anzeigen",
-    "enterAExplanaition":"Gib eine Erklärung ein...",
-    "headerExplanation":"Erklärung (optional)",
-    "headerHint":"Hinweis (optional)",
-    "enterAHint":"Gib einen Hinweis ein...",
-    "enterQuestion":"Gib deine Frage ein...",
-    "invaidImageURL":"Ungültige Bild-URL",
-    "enterLatex":"Gib deinen LaTeX-Code ein...",
-    "enterImageURL":"Gib eine Bild-URL ein...",
-    "save":"Speichern",
-    "editQuestion":"Frage bearbeiten",
-    "answers":"Antworten",
-    "addNewAnswer":"Neue Antwort hinzufügen...",
-    "enterYourAnswer":"Gib deine Antwort ein..."
-  },"home":{
-    "lastModules":"Letzte Module",
-    "lastSessions":"Letzte Sessions",
-    "quickActions":"Schnelle Aktionen",
-    "learnSetKI":"Erstellen wir zusammen ein Lernset.",
-    "learnSetDiscover":"Mal schauen was deine Komilitonen lernen.",
-    "learnSetCreate":"Erstelle dein eigenes Lernset.",
-    "questions":"Fragen",
-    "sessions":"Sessions",
-    "firstModule": "Erstes Modul",
-    "personalziedProfile": "Personalisiertes Profil",
-    "signUp":"Sign Up",
-    "gettingStarted":"Getting Started",
-    "refresh":"Aktualisieren..."
-
-  },"data":{
-    "title": "Alle Fragen",
-            "sessions": "Sessions",
-            "addMaterial": "Material hinzufügen",
-            "learnNow": "Jetzt lernen",
-            "questio": "Fragen",
-            "questioH": "Frage hinzufügen",
-            "questioSH": "Erstelle deine erste Frage.",
-            "questioBtn": "Frage erstellen",
-            "file": "Dateien",
-            "fileH": "Datei hinzufügen",
-            "fileSH": "Lade deine erste Datei hoch (nur PDF)",
-            "fileBtn": "Dokument hochladen",
-            "note": "Notizen",
-            "noteH": "Notiz hinzufügen",
-            "noteSH": "Erstelle deine erste Notiz.",
-            "noteBtn": "Notiz erstellen",
-            "share": "Teilen",
-            "unsupported": "Nicht unterstützter Dateityp",
-            "unnamed": "Unbenannt",
-            "recommended":"Empfolen",
-            "aiQuiz": "AI Quiz generieren",
-            "dokUpload": "Dokument hochladen",
-            "crtQuestio": "Frage erstellen",
-            "crtNote": "Notiz erstellen",
-            "pendingAI": "AI Quiz wird generiert",
-            "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
-            "cannotBeUndone": "Dies kann nicht rückgängig gemacht werden.",
-            "cancel": "Abbrechen",
-            "delete": "Löschen",
-            "youNeedQuestionsToStartAQuiz": "Du benötigst mindestens eine Frage, um ein Quiz zu starten."
-
+    "topic": "Topic",
+    "file": "File",
+    "generateCards": "Generate Cards",
+    "sumDocument": "Summarize Document",
+    "selectFile": "Select a file:",
+    "dragFile": "Drag a file here or upload",
+    "uploadDocument": "Upload Document",
+    "yourTopics": "Your Topics:",
+    "yourTexts": "Your Texts:",
+    "noMaterials": "No materials yet",
+    "generateCardsDisabled": "Generate Cards",
+    "notEnoughEnergy": "You don't have enough energy. Please wait until your energy is replenished.",
+    "cardsFor": "Flashcards for ",
+    "generate": "generate."
+  },
+  "editQuestion": {
+    "showMoreOptions": "Show more options",
+    "showLessOptions": "Show fewer options",
+    "enterAExplanaition": "Enter an explanation...",
+    "headerExplanation": "Explanation (optional)",
+    "headerHint": "Hint (optional)",
+    "enterAHint": "Enter a hint...",
+    "enterQuestion": "Enter your question...",
+    "invaidImageURL": "Invalid image URL",
+    "enterLatex": "Enter your LaTeX code...",
+    "enterImageURL": "Enter an image URL...",
+    "save": "Save",
+    "editQuestion": "Edit Question",
+    "answers": "Answers",
+    "addNewAnswer": "Add new answer...",
+    "enterYourAnswer": "Enter your answer..."
+  },
+  "home": {
+    "lastModules": "Last Modules",
+    "lastSessions": "Last Sessions",
+    "quickActions": "Quick Actions",
+    "learnSetKI": "Let's create a learning set together.",
+    "learnSetDiscover": "See what your classmates are learning.",
+    "learnSetCreate": "Create your own learning set.",
+    "questions": "Questions",
+    "sessions": "Sessions",
+    "firstModule": "First Module",
+    "personalziedProfile": "Personalized Profile",
+    "signUp": "Sign Up",
+    "gettingStarted": "Getting Started",
+    "refresh": "Refreshing..."
+  },
+  "data": {
+    "title": "All Questions",
+    "sessions": "Sessions",
+    "addMaterial": "Add Material",
+    "learnNow": "Learn Now",
+    "questio": "Questions",
+    "questioH": "Add Question",
+    "questioSH": "Create your first question.",
+    "questioBtn": "Create Question",
+    "file": "Files",
+    "fileH": "Add File",
+    "fileSH": "Upload your first file (PDF only)",
+    "fileBtn": "Upload Document",
+    "note": "Notes",
+    "noteH": "Add Note",
+    "noteSH": "Create your first note.",
+    "noteBtn": "Create Note",
+    "share": "Share",
+    "unsupported": "Unsupported file type",
+    "unnamed": "Unnamed",
+    "recommended": "Recommended",
+    "aiQuiz": "Generate AI Quiz",
+    "dokUpload": "Upload Document",
+    "crtQuestio": "Create Question",
+    "crtNote": "Create Note",
+    "pendingAI": "AI Quiz is being generated",
+    "areYousureDelete": "Are you sure you want to delete this module?",
+    "cannotBeUndone": "This cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "youNeedQuestionsToStartAQuiz": "You need at least one question to start a quiz."
   }
 }
-

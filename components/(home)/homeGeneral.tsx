@@ -272,7 +272,7 @@ const HomeGeneral = () => {
   };
 
   return (
-    <SafeAreaView className="h-full w-full  ">
+    <SafeAreaView className="h-full w-full ">
       
       <TokenHeader/>
 

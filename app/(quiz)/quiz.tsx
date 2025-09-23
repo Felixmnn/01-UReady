@@ -23,7 +23,7 @@ type QuestionItem = {
 
 
 
-const quiz = () => {
+const quiz = () => {s
     const {user, isLoggedIn,isLoading } = useGlobalContext();
     
 
@@ -162,7 +162,8 @@ const quiz = () => {
             status: newStatus
             };
         }
-
+        
+        
         setQuestionList(tempQuestionList);
 
         const success = await updateModuleQuestionList(

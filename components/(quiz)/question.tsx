@@ -63,7 +63,7 @@ const Question = ({
           <Image
             source={{ uri: question.questionUrl }}
             style={{
-              width: 200, // feste Breite
+              width: "100%", // feste Breite
               aspectRatio: 1.5, // Breite / Höhe → z.B. 3:2
               borderRadius: 10,
               resizeMode: "contain",

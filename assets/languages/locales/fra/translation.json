@@ -493,7 +493,9 @@
     "waitAMoment": "Donne-moi un instant..."
   },
   "singleModule": {
-    "recommended": "Recommandé"
+    "recommended": "Recommandé",
+    "generateModuleFor": "Générer un module pour",
+    "energy": "Énergie"
   },
   "school": {
     "type": {

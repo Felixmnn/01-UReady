@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.felix08.nodeready"
+      "package": "com.felix08.nodeready",
+      "permissions": ["BILLING"]
     },
     "web": {
       "bundler": "metro",
@@ -49,8 +50,8 @@
       [
         "react-native-google-mobile-ads",
         {
-          "androidAppId": "id",
-          "iosAppId": "id"
+          "androidAppId": "ca-app-pub-9834411851111627~1536371503",
+          "iosAppId": "ca-app-pub-XXXXXXXXXXXXXXXX~YYYYYYYYYY"
         }
       ],
       "react-native-iap",

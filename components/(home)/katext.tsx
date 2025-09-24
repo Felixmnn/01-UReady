@@ -37,7 +37,7 @@ export default function KaTeXExample({ formula, fontSize = 16 }) {
   `;
 
   return (
-    <View style={{ height: 200, width: '100%' }}>
+    <View style={{ height: 80, width: '100%' }}>
       <WebView
         originWhitelist={['*']}
         source={{ html }}

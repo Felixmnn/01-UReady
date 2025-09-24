@@ -18,6 +18,7 @@ import { useActionCode } from "@/lib/appwriteShop";
 import { useTranslation } from "react-i18next";
 import { userDataKathegory } from "@/types/appwriteTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "@/assets/languages/i18n";
 
 const ProfileSettings = () => {
   const { t } = useTranslation();
@@ -246,7 +247,7 @@ const ProfileSettings = () => {
   const languageoptions = [
     { label: "Deutsch", value: "de" },
     { label: "English", value: "en" },
-    { label: "Spanish", value: "es" },
+    { label: "Spanish", value: "es" }, 
     { label: "Français", value: "fra" },
   ];
   const colorOptions = [
@@ -265,6 +266,8 @@ const ProfileSettings = () => {
     setSelectedLanguage(languageoptions[i].value.toLowerCase());
     setNewLanguage(languageoptions[i].value.toLowerCase());
     await setLanguage(user.$id, languageoptions[i].value.toLowerCase());
+    await i18n.changeLanguage(languageoptions[i].value.toLowerCase());
+    
   }
   async function updateColorMode(text: string | null) {
     setSelectedColorMode(text);
@@ -518,7 +521,7 @@ const ProfileSettings = () => {
                 content={() => {
                   return (
                     <View
-                      className={`flex-1  ${isVertical ? "flex-row justify-start  items-center" : "items-start"}`}
+                      className={`flex-1  ${ "items-start"}`}
                     >
                       <OptionSelector
                         title={t("profileSettings.colorMode")}

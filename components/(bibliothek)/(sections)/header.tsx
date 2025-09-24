@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 import DeleteModule from "../(modals)/deleteModule";
+import { useTranslation } from "react-i18next";
 
 type ScreenType =
   | "CreateQuestion"
@@ -66,9 +67,10 @@ const Header = ({
   } else {
     filteredData = questions;
   }
-
-  return (
+  const t = useTranslation() 
+    return (
     <View className={`${!isVertical ? "bg-[#0c111d]" : null}`}>
+      
       <DeleteModule
         moduleID={moduleID}
         moduleName={moduleName}
@@ -95,13 +97,14 @@ const Header = ({
         </TouchableOpacity>
       </View>
       <View className="w-full  flex-row px-4 justify-between items-center">
+        
         <Text
           className="text-gray-200 font-bold text-2xl "
           style={{ maxWidth: isVertical ? "70%" : "50%" }}
         >
-          {selected > sessions.length
-            ? "All Questions"
-            : sessions[selected].title}
+          {Array.isArray(sessions) && sessions.length > 0 && typeof selected === "number" && selected >= 0 && selected < sessions.length && sessions[selected] && sessions[selected].title
+            ? sessions[selected].title
+            : (Array.isArray(sessions) && selected >= sessions.length ? "All Questions" : "")}
         </Text>
         <View className="flex-row items-center">
           <TouchableOpacity
@@ -109,22 +112,13 @@ const Header = ({
             className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}
           >
             <Icon name={"layer-group"} color={"white"} size={15} />
-            {isVertical ? (
-              <Text className="text-gray-300 text-[12px] ml-2">
-                {texts[selectedLanguage].sessions}
-              </Text>
-            ) : null}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setIsVisibleNewQuestion(true)}
             className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}
           >
             <Icon name="plus" size={15} color="white" />
-            {isVertical ? (
-              <Text className="text-gray-300 text-[12px] ml-2">
-                {texts[selectedLanguage].addMaterial}
-              </Text>
-            ) : null}
+            
           </TouchableOpacity>
           <TouchableOpacity
             disabled={questions.length == 0}
@@ -133,14 +127,11 @@ const Header = ({
             className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}
           >
             <Icon name="play" size={15} color="white" />
-            {isVertical ? (
-              <Text className="text-gray-300 text-[12px] ml-2">
-                {texts[selectedLanguage].learnNow}
-              </Text>
-            ) : null}
+           
           </TouchableOpacity>
         </View>
       </View>
+      
     </View>
   );
 };

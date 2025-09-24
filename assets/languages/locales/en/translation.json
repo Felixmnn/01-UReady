@@ -492,7 +492,9 @@
     "waitAMoment": "Give me a moment..."
   },
   "singleModule": {
-    "recommended": "Recommended"
+    "recommended": "Recommended",
+    "generateModuleFor": "Generate module for",
+    "energy": "Energy"
   },
   "school": {
     "type": {

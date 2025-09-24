@@ -48,7 +48,10 @@ const Tabbar = ({
   return (
     <View className="bg-[#0c111d] flex-1">
       {isVertical ? (
-        <View className="bg-gradient-to-b from-blue-800 to-[#0c111d] flex-1 py-3 pr-3 flex-row ">
+        <SafeAreaView className="bg-gradient-to-b from-blue-800 to-[#0c111d] flex-1 py-3 pr-3 flex-row "
+                    edges={["top", "left", "right"]} // ⬅️ 'bottom' entfernt
+
+        >
           <View className="bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[100px] items-center justify-between">
             <View className="items-center my-1">
               {tabbarIcon("home", 25, "white", "home", "/home")}
@@ -68,7 +71,7 @@ const Tabbar = ({
               {content()}
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       ) : (
         <SafeAreaView
           edges={["top", "left", "right"]} // ⬅️ 'bottom' entfernt

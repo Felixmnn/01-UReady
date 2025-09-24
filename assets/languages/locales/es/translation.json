@@ -492,7 +492,9 @@
     "waitAMoment": "Dame un momento..."
   },
   "singleModule": {
-    "recommended": "Recomendado"
+    "recommended": "Recomendado",
+    "generateModuleFor": "Generar módulo para",
+    "energy": "Energía"
   },
   "school": {
     "type": {

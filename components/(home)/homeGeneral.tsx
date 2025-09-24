@@ -50,6 +50,12 @@ const { width } = Dimensions.get("window");
 const HomeGeneral = () => {
   const { t } = useTranslation();
   const { user, userUsage,setUserUsage } = useGlobalContext();
+  const selected = "de" // Can be de, en, fr, es
+
+
+
+
+  
   const [userUsageP, setUserUsageP] = useState<UserUsage | null>(null);
   let count = 0;
   useEffect(() => {
@@ -255,7 +261,7 @@ const HomeGeneral = () => {
         colorBG={item.colorBG}
         iconName={item.iconName}
         handlePress={item.handlePress}
-        horizontal={width > 700 ? false : true}
+        horizontal={ true}
         selected={true}
       />
     );
@@ -305,7 +311,7 @@ const HomeGeneral = () => {
               <View className="flex-1">
                 <Module
                   item={{
-                    name: t("home.gettingstarted"),
+                    name: t("home.firstModule"),
                     percent: 100,
                     color: "blue",
                     fragen: 10,
@@ -315,7 +321,8 @@ const HomeGeneral = () => {
                 />
               </View>
             ) : (
-              userUsageP.lastModules.map((item, index) => {
+              userUsageP.lastModules
+              .map((item, index) => {
                 const miniModule: MiniModule =
                   typeof item === "string" ? JSON.parse(item) : item;
                 return <Module key={index} item={miniModule} />;
@@ -324,8 +331,7 @@ const HomeGeneral = () => {
           </ScrollView>
           <Header title={t("home.lastSessions")} />
           <ScrollView horizontal={true} className="flex-row">
-            {!userUsageP ||
-            userUsageP.lastSessions
+            {!userUsageP  || userUsageP.lastSessions
               .map((s) => (typeof s === "string" ? JSON.parse(s) : s))
               .filter((s) => s.questions > 0).length == 0 ? (
               <View className="flex-row">
@@ -372,7 +378,7 @@ const HomeGeneral = () => {
           <Header title={t("home.quickActions")} />
           <View
             key={selectedLanguage}
-            className={`${width > 700 ? "flex-row" : ""} `}
+            className={` `}
           >
             {quickActions.map((item, index) => {
               return <QuickAction key={index} item={item} />;
@@ -380,39 +386,8 @@ const HomeGeneral = () => {
           </View>
         </View>
 
-        {/*
-        My testing button
-        */}
-        <CustomButton
-          title="Do Stuff :)"
-          handlePress={() =>
-            router.push({
-              pathname: "/quiz",
-              params: {
-                sessionID: "ce9122db-03a6-4fcb-96b9-8b28adcca9a8",
-                quizType: "questionAnswer", // infinite, limited, limitedTime, limitedAllCorrect
-                questionType: "single", // single, multiple, questionAnswer
-                questionAmount: 10, // How many questions should be in the quiz
-                timeLimit: null, // Timelimit will be in seconds
-                moduleID: "686a934a4140eb9893b9",
-              },
-            })
-          }
-          /*
-              Potential Cases
-              1. Unendlich Fragen kein Zeitlimit
-              2. Unendlich Fragen mit Zeitlimit
-
-              3. Limitierte Fragen kein Zeitlimit
-              4. Limitierte Fragen Zeitlimit 
-
-              5. Limitierte Fragen bis alle korrekt sind kein Zeitlimit
-              6. Limitierte Fragen bis alle korrekt sind Zeitlimit
-
-
-            */
-          containerStyles="m-4 bg-blue-700"
-        />
+       
+         
       </ScrollView>
       {isVisibleNewAiModule ? (
         <AddAiBottomSheet

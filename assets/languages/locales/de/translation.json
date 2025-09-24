@@ -494,7 +494,9 @@
     "waitAMoment": "Giib mir einen Moment..."
   },
   "singleModule": {
-    "recommended": "Empfohlen"
+    "recommended": "Empfohlen",
+    "generateModuleFor": "Modul generieren für",
+    "energy": "Energie"
   },
   "school": {
     "type": {

@@ -430,11 +430,11 @@ const PageAiCreate = ({
           ) : (
             <View className="flex-row items-center">
               <Text className="text-white  font-semibold text-[15px] ">
-                Modul für {calculateTotalPrice()}
+                {t("singleModule.generateModuleFor")} {calculateTotalPrice()}
               </Text>
               <Icon name="bolt" size={15} color="white" className="mx-1 mt-1" />
               <Text className="text-white  font-semibold text-[15px]  mb-[1px]">
-                generieren
+                {t("singleModule.energy")}
               </Text>
             </View>
           )}

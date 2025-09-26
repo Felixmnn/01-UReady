@@ -52,7 +52,7 @@ const Tabbar = ({
                     edges={["top", "left", "right"]} // ⬅️ 'bottom' entfernt
 
         >
-          <View className="bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[100px] items-center justify-between">
+          <View className="bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[110px] items-center justify-between">
             <View className="items-center my-1">
               {tabbarIcon("home", 25, "white", "home", "/home")}
               {tabbarIcon("book", 25, "white", "bibliothek", "/bibliothek")}

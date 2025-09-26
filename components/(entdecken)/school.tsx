@@ -54,7 +54,6 @@ const SchoolFilters = ({
         options={schoolTypeTitles}
         selectedOptions={filters.schoolType}
         handlePress={(type) => {
-          console.log("type", type, filters.schoolType);
           if (!filters.schoolType) {
             setFilters({ ...filters, schoolType: [type] });
             return;
@@ -78,7 +77,6 @@ const SchoolFilters = ({
         options={grades}
         selectedOptions={filters.schoolGrades}
         handlePress={(type) => {
-          console.log("type", type, filters.schoolGrades);
           if (!filters.schoolGrades) {
             setFilters({ ...filters, schoolGrades: [type] });
             return;

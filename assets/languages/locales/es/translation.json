@@ -162,7 +162,7 @@
   },
   "personalizeTwo": {
     "continue": "Continuar",
-    "niceToMeetYou": "¡Encantado de conocerte, {{name}}! ¿En qué idioma quieres usar la aplicación?"
+    "niceToMeetYou": "¿En qué idioma quieres usar la aplicación?"
   },
   "personalizeThree": {
     "school": "Escuela",
@@ -299,7 +299,12 @@
     "wrong": "Incorrecto",
     "showExplanation": "Mostrar explicación",
     "next": "Siguiente",
-    "checkAnswer": "Comprobar respuesta"
+    "checkAnswer": "Comprobar respuesta",
+    "sorry": "Lo siento, algo ha salido mal. Por favor, inténtalo de nuevo.",
+    "answered": " respondido",
+    "remaining": " restante",
+    "hint": "Pista",
+    "explanation": "Explicación"
   },
   "quizNavigation": {
     "explanation": "Explicación",
@@ -374,26 +379,11 @@
     "close": "Cerrar"
   },
   "tutorialFirstModule": {
-    "letUsCreate": "¡Vamos a crear juntos tu primer módulo!",
-    "firstInfo": "Primero necesitamos algunos datos básicos de tu módulo.",
-    "forExample": "Por ejemplo: nombre, descripción y un color para una mejor organización.",
-    "nextSession": "Después podrás añadir tu primera sesión.",
-    "aSession": "Una sesión es un evento único, como una clase o lección.",
-    "thenContent": "Luego solo falta el contenido de tu módulo.",
-    "youCanCreate": "Puedes crearlo a partir de temas, textos o archivos.",
-    "chooseSession": "Elige simplemente una sesión y añade el contenido que desees.",
-    "thatIsAll": "Eso es todo lo que necesitas para tu primer módulo.",
-    "nowYouCanCreate": "Ahora puedes crear tu módulo – se generará automáticamente."
+    "letUsCreate": "¡Vamos a crear juntos tu primer módulo!"
   },
   "tutorialModule": {
-    "letUsCreate": "¡Vamos a crear juntos tu primer módulo!",
-    "firstInfo": "Primero necesitamos algunos datos básicos de tu módulo.",
-    "forExample": "Por ejemplo: nombre, descripción y un color para una mejor organización.",
-    "nextSession": "Después podrás añadir tu primera sesión.",
-    "aSession": "Una sesión es un evento único, como una clase o lección.",
-    "thenContent": "Luego solo falta el contenido de tu módulo.",
-    "nowYouCanCreate": "Ahora puedes crear tu módulo – se generará automáticamente."
-  },
+    "letUsCreate": "¡Vamos a crear juntos tu primer módulo!"
+    },
   "tabbar": {
     "home": "Inicio",
     "bibliothek": "Biblioteca",
@@ -489,7 +479,8 @@
     "noModulesFound": "Todavía no se ha seleccionado ningún módulo",
     "iHaveFoundSomething": "He encontrado algo, solo pulsa en los módulos y los añadiré para ti",
     "iHaveFoundNothing": "No encontré nada, pero no pasa nada",
-    "waitAMoment": "Dame un momento..."
+    "waitAMoment": "Dame un momento...",
+     "nothingForMe": "Nada para mí"
   },
   "singleModule": {
     "recommended": "Recomendado",
@@ -1784,7 +1775,16 @@
     "numQuestions": "Número de preguntas",
     "timeLimit": "Límite de tiempo (segundos)",
     "createModule": "Crear módulo",
-    "refresh": "Actualizar..."
+    "refresh": "Actualizar...",
+    "startQuiz": "Iniciar cuestionario",
+    "infiniteExplanation": "Responde preguntas infinitas sin límite.",
+    "limitedFixedExplanation": "Responde un número fijo de preguntas y recibe tu resultado.",
+    "limitedAllCorrectExplanation": "Sigue respondiendo hasta que todas las preguntas del conjunto sean correctas.",
+    "limitedTimeExplanation": "Responde un número fijo de preguntas dentro de un límite de tiempo.",
+    "minMaxQuestions": "Por favor, introduce un número de preguntas entre {{min}} y {{max}}.",
+      "minTimeLimit": "El límite de tiempo debe ser de al menos {{min}} segundos.",
+      "generateQuestions": "Generar preguntas por {{price}}⚡",
+      "notEnoughEnergy": "No hay suficiente energía (⚡)"
   },
   "aiQuestion": {
     "title": "Generar tarjetas con IA a partir de...",

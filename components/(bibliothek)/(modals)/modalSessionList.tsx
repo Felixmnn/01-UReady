@@ -32,13 +32,13 @@ const ModalSessionList = ({
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       {isVisible ? (
         <View
-          className="absolute top-0 left-0 w-full h-full justify-center items-center p-2"
+          className="absolute top-0 left-0 h-full w-full  justify-center items-center p-2"
           style={{ backgroundColor: "rgba(17, 24, 39,0.7)" }}
         >
           <View
-            className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl ${width < 400 ? "w-full" : "w-[400px]"}`}
+            className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl  min-w-[300px]`}
           >
-            <ScrollView className="h-[90%] w-full">
+            <ScrollView >
               <View className="flex-row items-center justify-between">
                 <Text className="text-white text-xl mb-2 font-semibold">
                   {t("sessionList.title")}

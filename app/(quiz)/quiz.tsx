@@ -1,5 +1,5 @@
-import { SafeAreaView, Text, View} from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { Image, SafeAreaView, Text, View} from 'react-native'
+import React, { use, useEffect, useRef, useState, useTransition } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
 import { removeQuestion} from "../../lib/appwriteEdit"
 import { useWindowDimensions } from 'react-native';
@@ -15,6 +15,10 @@ import { getAllQuestionsByIds, getAllQuestionsBySessionId } from '@/lib/appwrite
 import { question } from '@/types/appwriteTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QuizResult from '@/components/(quiz)/quizResult';
+import { useTranslation } from 'react-i18next';
+import CustomButton from '@/components/(general)/customButton';
+import ExplanationSheet from '@/components/(quiz)/explanationSheet';
+import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 
 type QuestionItem = {
     id: string,
@@ -25,7 +29,7 @@ type QuestionItem = {
 
 const quiz = () => {
     const {user, isLoggedIn,isLoading } = useGlobalContext();
-    
+    const [loading, setLoading] = useState(true);
 
     const {
         sessionID,
@@ -48,6 +52,8 @@ const quiz = () => {
     const {width} = useWindowDimensions();
     const isVertical = width > 700;
     const sheetRef = useRef<BottomSheet>(null);
+    const sheetRefExplanation = useRef<CustomBottomSheetRef>(null);
+
     //This ensures that a user can only access this page when logged in
      useEffect(() => {
         if (!isLoading && (!user || !isLoggedIn)) {
@@ -87,7 +93,10 @@ const quiz = () => {
             questionsRaw.push(...q)
         } else {
            let res = (await getAllQuestionsBySessionId(sessionID)) ?? []
+           console.log("Questions fetched by sessionID:", res.map((r) => r.$id))
+           console.log("Question list ids in module:", module?.questionList.map((q:string) => JSON.parse(q).id))
            res = res.filter((q) => module?.questionList.some((mq:string) => JSON.parse(mq).id === q.$id))
+           console.log("Questions after filtering by module questionList:", res)
            questionsRaw.push(...res)
         }
         console.log("Fetched Questions:", questionsRaw)
@@ -113,6 +122,7 @@ const quiz = () => {
         setQuestionList(questionList ? questionList : [])
         setQuestionListOriginal(questionList ? questionList : [])
     }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -180,6 +190,11 @@ const quiz = () => {
             await AsyncStorage.removeItem(`unsyncedModuleList${moduleID}`);
         }
     }
+
+    useEffect(() => {
+        if (!moduleID) return;
+        syncUnsyncedData(Array.isArray(moduleID) ? moduleID[0] : moduleID, questionList);
+    }, [moduleID]);
 
     async function syncUnsyncedData(moduleID: string, questionList: QuestionItem[]) {
         const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
@@ -294,6 +309,8 @@ interface Answer {
   latex: string;
   image: string;
 }
+const [typeHint, setTypeHint] = useState(false)
+const [explainationContent, setExplainationContent] = useState("")
 
 function toAnswer(answer: any): Answer {
   if (typeof answer === "string") {
@@ -347,7 +364,7 @@ function correctAnswers({
 }
 
 
-
+const {t} = useTranslation()
     const [ startTime, setStartTime] = useState(Date.now());
     function tryAgain(){
         setQuestionsForQuiz(questions);
@@ -375,9 +392,29 @@ function correctAnswers({
         setSelectedQuestion(0);
         setStartTime(Date.now());
     }
-        
-
-
+        const [remainingPercent, setPercent] = React.useState(100);
+    
+  if ( !loading && questions.length == 0 ) return (
+    <SafeAreaView className='flex-1 pt-5 bg-gray-900 items-center justify-center' >
+        <Text className="text-white text-center text-[15px] font-bold my-2 p-4">
+            {
+                t("quiz.sorry")
+            }
+        </Text>
+        <Image 
+        source={require("../../assets/Uncertain.gif")}
+        style={{
+            width: 200,
+            height: 200,
+            resizeMode: "contain"
+        }} />
+        <CustomButton
+            title={t("editNote.back")}
+            handlePress={() => router.back()}
+            containerStyles='mt-5 w-full max-w-[200px] px-10 bg-blue-600 rounded-full'
+        />
+    </SafeAreaView>
+  )
 
   return (
     <SafeAreaView className='flex-1 pt-5 bg-gray-900' >
@@ -386,17 +423,17 @@ function correctAnswers({
       <View className={`flex-1  w-full bg-[#0c111d]  ${isVertical ? "rounded-[10px] border-[1px] border-gray-600" : ""}`}>
 
         <Navigation
-            deatilsVisible={deatilsVisible}
-            removeQuestion={removeQuestionCompleately}
-            questionsParsed={questionList.filter((q) => questionsForQuiz.some(qq => qq.$id === q.id))}
-            setDetailsVisible={setDetailsVisible}
-            percent={
-                100 - Math.ceil(questionsForQuiz.length / questions.length * 100)
+            quizType={ (Array.isArray(quizType) ? quizType[0] : quizType) }
+            timeLimit={timeLimit ? (Array.isArray(timeLimit) ? parseInt(timeLimit[0]) : parseInt(timeLimit)) : undefined}
+            startTime={startTime}
+            questionStates={
+                questionList.filter((q) => questions.some(qq => qq.$id === q.id))
             }
-            type={quizType === "infinite" || quizType === "limitedFixed" || quizType === "limitedAllCorrect" || quizType === "timed" ? (Array.isArray(quizType) ? quizType[0] : quizType) : "limitedFixed"}
-            timeLimit={ timeLimit ? (Array.isArray(timeLimit) ? parseInt(timeLimit[0]) : parseInt(timeLimit)) : 0}
-            startTime={ startTime}
-            setQuestionsForQuiz={()=> setQuestionsForQuiz([])}
+            totalAmountOfQuestions={questions.length}
+            amountOfAnsweredQuestions={questionsForQuiz.length}
+            remainingPercent={remainingPercent}
+            setRemainingPercent={setPercent}
+            
             
         
         />
@@ -409,8 +446,11 @@ function correctAnswers({
         </Text>
         */}
         { questionsForQuiz.length > 0 &&
+            !(remainingPercent <= 0 && quizType == "limitedTime")
+        
+        &&
         <Quiz
-
+            questionList={questionList}
             questions={questionsForQuiz}
             nextQuestion={gotToNextQuestion}
 
@@ -428,11 +468,23 @@ function correctAnswers({
             sheetRef={sheetRef}
             quizType={quizType === "single" || quizType === "multiple" || quizType === "questionAnswer" ? (Array.isArray(quizType) ? quizType[0] : quizType) : "single"}
             selectedLanguage={"de"} // or use a variable if you have one
+            showHint={() => {
+                sheetRefExplanation.current?.openSheet(0)
+                setTypeHint(true)
+                setExplainationContent(questionsForQuiz[0].hint ? questionsForQuiz[0].hint : "")
+            }}
+            showExplanation={() => {
+                sheetRefExplanation.current?.openSheet(0)
+                setTypeHint(false)
+                setExplainationContent(questionsForQuiz[0].explaination ? questionsForQuiz[0].explaination : "")
+            }}
         />
         }
 
 
-        {showSoloution &&
+        {showSoloution || 
+         remainingPercent <= 0
+        &&
             <QuizNavigation
                 showAnswer={showSoloution}
                 explaination={questions.length > 0 ? questions[0].explaination : ""}
@@ -450,9 +502,19 @@ function correctAnswers({
                 tryAgainNewQuestions={tryAgainNewQuestions}
             />
         }
+
+        <ExplanationSheet
+            sheetRef={sheetRefExplanation}
+            explaination='Blub'
+            typeHint={typeHint} 
+            />
+        <View>
+           
+        </View>
             
         
       </View>
+      
     </View>
     </SafeAreaView> 
   )

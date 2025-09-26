@@ -152,40 +152,40 @@
     "message": "Möchtest du wirklich deinen Account löschen? Alle deine Daten gehen dabei verloren und können nicht wiederhergestellt werden."
   },
   "personalizeZero": {
-    "intro": "Heey, ich bin Copa – lass uns deine App personalisieren!",
+    "intro": "Hey, ich bin Copa – lass uns deine App personalisieren!",
     "letsGo": "Los geht's"
   },
   "personalizeOne": {
     "name": "Dein Vorname",
-    "greeting": "Wiie darf ich dich nennen?",
+    "greeting": "Wie darf ich dich nennen?",
     "continue": "Weiter gehts"
   },
   "personalizeTwo": {
     "continue": "Weiter gehts",
-    "niceToMeetYou": "Frreut mich, dich kennenzulernen {{name}}! In welcher Sprache möchtest du die App nutzen?"
+    "niceToMeetYou": "In welcher Sprache möchtest du die App nutzen?"
   },
   "personalizeThree": {
     "school": "Schule",
     "university": "Universität",
     "education": "Ausbildung",
     "other": "Sonstiges",
-    "whereDoYouStudy": "Geehst du zur Schule, Uni oder machst eine Ausbildung?"
+    "whereDoYouStudy": "Gehst du zur Schule, Uni oder machst eine Ausbildung?"
   },
   "personalizeFour": {
-    "whichSchool": "Weelche Schule besuchst du?",
-    "wichEducation": "Weelche Ausbildung machst du?",
-    "whichUniversity": "Weelche Uni besuchst du?",
+    "whichSchool": "Welche Schule besuchst du?",
+    "wichEducation": "Welche Ausbildung machst du?",
+    "whichUniversity": "Welche Uni besuchst du?",
     "yourUniversity": "Deine Uni",
     "noUniversityFound": "Keine Uni gefunden",
     "noUniversityAvailable": "Keine Unis verfügbar"
   },
   "personalizeFive": {
-    "whatDegree": "Weelchen Abschluss strebst du an?",
-    "interestingArea": "Eiin interessantes Gebiet!",
+    "whatDegree": "Welchen Abschluss strebst du an?",
+    "interestingArea": "Ein interessantes Gebiet!",
     "yourEducation": "Deine Ausbildung",
     "noEducationFound": "Keine Ausbildung gefunden",
     "noEducationAvailable": "Keine Ausbildung verfügbar",
-    "yourSchoolLevel": "Inn welcher Klasse bist du?"
+    "yourSchoolLevel": "In welcher Klasse bist du?"
   },
   "personalizeSix": {
     "subjectList": [
@@ -217,11 +217,11 @@
       { "icon": "brain", "name": "Psychologie" },
       { "icon": "ellipsis-h", "name": "Other" }
     ],
-    "whatSubjects": "Weelche Fächer hast du?",
+    "whatSubjects": "Welche Fächer hast du?",
     "yourSubjects": "Deine Fächer",
     "letsGo": "Los gehts",
 
-    "almostDone": "Faast geschafft! Was genau studierst du?",
+    "almostDone": "Fast geschafft! Was genau studierst du?",
     "yourEducation": "Deine Ausbildung"
   },
   "passwordReset": {
@@ -300,7 +300,12 @@
     "wrong": "Leider Falsch",
     "showExplanation": "Erklärung anzeigen",
     "next": "Weiter",
-    "checkAnswer": "Antwort Prüfen"
+    "checkAnswer": "Antwort Prüfen",
+    "sorry": "Entschuldigung, etwas ist schief gelaufen. Bitte versuche es erneut.",
+    "answered": " beantwortet",
+    "remaining": " verbleibend",
+    "hint": "Tipp",
+    "explanation": "Erklärung"
   },
   "quizNavigation": {
     "explanation": "Erklärung",
@@ -375,25 +380,10 @@
     "close": "Schließen"
   },
   "tutorialFirstModule": {
-    "letUsCreate": "Laass uns gemeinsam dein erstes Modul erstellen!",
-    "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
-    "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
-    "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
-    "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
-    "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
-    "youCanCreate": "Diiesen kannst du anhand von Themen, Texten oder Dateien erstellen.",
-    "chooseSession": "Wäähle dafür einfach eine Session aus und ergänze den gewünschten Inhalt",
-    "thatIsAll": "Daas ist alles, was du für dein erstes Modul brauchst.",
-    "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
+    "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!"
   },
   "tutorialModule": {
-    "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!",
-    "firstInfo": "Zuuerst brauchen wir ein paar grundlegende Infos zu deinem Modul.",
-    "forExample": "Zuum Beispiel: Name, Beschreibung und eine Farbe zur besseren Übersicht.",
-    "nextSession": "Alls nächstes kannst du deine erste Session hinzufügen.",
-    "aSession": "Eiine Session ist eine einzelne Veranstaltung, wie eine Vorlesung oder Unterrichtseinheit.",
-    "thenContent": "Daann fehlt nur noch der Inhalt für dein Modul.",
-    "nowYouCanCreate": "Jeetzt kannst du dein Modul erstellen – es wird automatisch generiert."
+    "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!"
   },
   "tabbar": {
     "home": "Startseite",
@@ -483,15 +473,16 @@
     "setTogether": "Erstellen wir zusammen ein Lernset.",
     "comilitones": "Mal schauen was deine Komilitonen lernen.",
     "createSet": "Erstelle dein eigenes Lernset",
-    "timeToStart": "Zeeit durchzustarten!",
+    "timeToStart": "Zeit durchzustarten!",
     "sucheLäuft": "Suche läuft...",
     "useThisModule": "Dieses Modul verwenden",
     "this": "Diese",
     "moduleUse": "Module verwenden",
     "noModulesFound": "Noch keine Molue ausgewählt",
-    "iHaveFoundSomething": "Icch habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
-    "iHaveFoundNothing": "Leeider habe ich nichts gefunden aber kein Problem",
-    "waitAMoment": "Giib mir einen Moment..."
+    "iHaveFoundSomething": "Ich habe da was gefunden drücke einfach auf die Module und ich füge sie für dich hinzu",
+    "iHaveFoundNothing": "Leider habe ich nichts gefunden aber kein Problem",
+    "waitAMoment": "Gib mir einen Moment...",
+      "nothingForMe": "Nichts für mich dabei"
   },
   "singleModule": {
     "recommended": "Empfohlen",
@@ -1653,7 +1644,16 @@
     "numQuestions": "Anzahl der Fragen",
     "timeLimit": "Zeitlimit (Sekunden)",
     "createModule": "Modul erstellen",
-    "refresh": "Aktualisieren..."
+    "refresh": "Aktualisieren...",
+    "startQuiz": "Quiz starten",
+    "infiniteExplanation": "Beantworte endlos viele Fragen ohne Limit.",
+    "limitedFixedExplanation": "Beantworte eine feste Anzahl an Fragen und erhalte dein Ergebnis.",
+    "limitedAllCorrectExplanation": "Beantworte alle Fragen richtig, bis die feste Anzahl erreicht ist.",
+    "limitedTimeExplanation": "Beantworte eine feste Anzahl an Fragen innerhalb eines Zeitlimits.",
+    "minMaxQuestions": "Bitte gib eine Anzahl zwischen {{min}} und {{max}} Fragen ein.",
+      "minTimeLimit": "Das Zeitlimit muss mindestens {{min}} Sekunden betragen.",
+      "generateQuestions": "Fragen für {{price}}⚡ generieren",
+      "notEnoughEnergy": "Nicht genug Energie (⚡)"
   },
   "aiQuestion": {
     "title": "Generiere Karteikarten mit AI aus...",
@@ -1758,6 +1758,6 @@
     "rules_text": "- Die Anzahl der Antwortoptionen soll immer {{numberOfAnswers}} sein, nicht mehr und nicht weniger.\n- {{questionTypeDescription}}\n- Die Anzahl der korrekten Antworten (answerIndex) muss mindestens 1 betragen.\n- Der Index der korrekten Antwort sollte zufällig sein und nicht immer 0 sein.\n- Jede Antwortoption muss ein gültiger, stringifizierter JSON-String sein.\n- Gib keine zusätzliche Erklärung oder Einleitung außerhalb des JSON zurück – nur das."
     ,"multipleChoiceDescription": "Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein.",
     "singleChoiceDescription": "Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt.",
-    "openQuestionDescription": "Es handelt sich um eine offene Frage, bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben.",
+    "openQuestionDescription": "Es handelt sich um eine offene Frage, bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
      }
 }

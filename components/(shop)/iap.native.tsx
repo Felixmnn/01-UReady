@@ -24,7 +24,6 @@ export default function SimpleStore() {
     if (currentPurchase) {
       const completePurchase = async () => {
         try {
-          console.log('Purchase completed:', currentPurchase.id);
           await finishTransaction({
             purchase: currentPurchase,
             isConsumable: true,

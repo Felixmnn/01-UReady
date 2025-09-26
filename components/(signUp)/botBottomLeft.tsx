@@ -65,7 +65,7 @@ const BotBottomLeft = ({
               top: 15,
             }}
           >
-            <TypewriterText text={message} speed={40} />
+            <TypewriterText text={message = message[0] + message} speed={40} />
             <View
               style={{
                 position: "absolute",

@@ -31,7 +31,7 @@ const personalize = () => {
   const [userData, setUserData] = useState<userData>();
   const [userDataKathegory, setUserDataKathegory] =
     useState<userDataKathegory | null>(null);
-  const [name, setName] = useState("");
+  const [name, setName] = useState("name");
   const [selectedCountry, setSelectedCountry] = useState({
     name: "Deutschland",
     code: "DE",
@@ -186,6 +186,7 @@ const personalize = () => {
   }, [user]);
 
   const saveUserData = async () => {
+    
     const newUserData = {
       country: selectedCountry ? selectedCountry.code.toUpperCase() : "DE",
       region: "",
@@ -258,6 +259,10 @@ const personalize = () => {
         console.error("Error saving user data", error);
       }
     }
+    setUserData({
+      ...userData!,
+      signInProcessStep: "FINISHED",
+    })
   };
 
   return (
@@ -265,15 +270,8 @@ const personalize = () => {
       {userData !== null && userData?.signInProcessStep == "ZERO" ? (
         <StepZero userData={userData} setUserData={setUserData} />
       ) : null}
-      {userData !== null && userData?.signInProcessStep == "ONE" ? (
-        <StepOne
-          name={name}
-          setName={setName}
-          userData={userData}
-          setUserData={setUserData}
-        />
-      ) : null}
-      {userData !== null && userData?.signInProcessStep == "TWO" ? (
+      
+      {(userData !== null && userData?.signInProcessStep == "TWO") || userData !== null && userData?.signInProcessStep == "ONE" ? (
         <StepTwo
           name={name}
           selectedLanguage={selectedLanguage}
@@ -283,7 +281,7 @@ const personalize = () => {
           setSelectedLanguage={setSelectedLanguage}
         />
       ) : null}
-      {userData !== null && userData?.signInProcessStep == "THREE" ? (
+      {userData !== null && userData?.signInProcessStep == "THREE"  ? (
         <StepThree
           userData={userData}
           setUserData={setUserData}

@@ -52,7 +52,8 @@ const HomeGeneral = () => {
   const { user, userUsage,setUserUsage } = useGlobalContext();
   const selected = "de" // Can be de, en, fr, es
 
-
+  
+      
 
 
   
@@ -148,22 +149,12 @@ const HomeGeneral = () => {
   };
 
   async function startQuiz(session: MiniSession) {
-    console.log("Starting quiz for session:", session);
     const questions = await getSessionQuestions(session.sessionID);
     if (!questions || questions.length == 0) {
       router.push("/bibliothek");
       return;
     }
-    console.log(
-      "Elements:",
-      session.sessionID,
-      "infinite", // infinite, limited, limitedTime, limitedAllCorrect
-      "multiple", // single, multiple, questionAnswer
-      null, // How many questions should be in the quiz
-      null, // Timelimit will be in seconds
-      questions[0].subjectID //CHANGE REQUIRED LATER IN PRODUCTION
-    );
-
+    
     router.push({
       pathname: "/quiz",
       params: {

@@ -20,7 +20,6 @@ const Question = ({
   width: number;
   quizType: "single" | "multiple" | "questionAnswer";
 }) => {
-  console.log("Question Rendered", question)
 
   function selectAnswer(answer: string) {
     if (quizType === "single") {

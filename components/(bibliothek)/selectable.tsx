@@ -42,13 +42,12 @@ const Selectable = ({
       </View>
       {empfolen ? (
         <View
-          className="items-center justify-center border-[1px] border-green-500 bg-green-700 bg-opacity-10 rounded-[5px]  my-1"
-          style={{ maxWidth: 70 }}
-        >
-          <Text className="text-green-500 text-[10px]">
-            {t("singleModule.recommended")}
-          </Text>
-        </View>
+  className="justify-center border-[1px] border-green-500 bg-green-700 bg-opacity-10 rounded-[5px] my-1 px-2 self-start"
+>
+  <Text className="text-green-500 text-[10px]">
+    {t("singleModule.recommended")}
+  </Text>
+</View>
       ) : null}
       <View className="flex-row items-center justify-between">
         <Text className="text-gray-200 font-bold text-[15px] pr-2">

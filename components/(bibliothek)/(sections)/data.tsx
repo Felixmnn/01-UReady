@@ -69,6 +69,7 @@ const Data = ({
   selectedSessionID: selectedS,
   setModule,
   setQuestions,
+  selectAi 
 }: {
   setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   setIsVisibleEditQuestion: React.Dispatch<
@@ -99,6 +100,7 @@ const Data = ({
   selectedLanguage: string;
   selectedSessionID: string;
   setModule: React.Dispatch<React.SetStateAction<module>>;
+  selectAi : () => void;
 }) => {
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
@@ -220,7 +222,6 @@ const Data = ({
 
   function getSmileyStatus(id:string){
     const parsed = module.questionList.map((i) => JSON.parse(i) as ParsedQuestion);
-    console.log("Parsed Questions:", parsed);
     const found = parsed.find(q => q.id === id);
     return found?.status ?? null;
   }
@@ -258,6 +259,7 @@ const Data = ({
             : null,
         }}
       >
+        
         <CounterText
           title={t("data.questio")}
           count={filteredData.length}
@@ -338,7 +340,7 @@ const Data = ({
                   <View className="w-full flex-row justify-between items-center">
                     {optionsVisible.includes(item.$id ?? "") ? (
                       <View className="flex-row items-center justify-between">
-                        { !module.copy &&
+                        { (!module.copy || item.subjectID == module.$id ) &&
                         <View className="mr-5">
                           
                           <Icon
@@ -378,12 +380,7 @@ const Data = ({
 
                               const res = await updateModuleQuestionList(module.$id, updatedList);
 
-                              console.log(
-                                "Result of removing question from copied module:",
-                                module.questionList.length,
-                                updatedList.length
-                              );
-
+                            
                               setQuestions(questions.filter((q) => q.$id !== item.$id));
 
                               setModule({
@@ -567,10 +564,10 @@ const Data = ({
             <Selectable
               icon={"robot"}
               iconColor={"#7a5af8"}
-              bgColor={"bg-[#372292]"}
+              bgColor={"bg-[#372292]"} 
               title={t("data.aiQuiz")}
               empfolen={true}
-              handlePress={() => setIsVisibleAI(true)}
+              handlePress={() => selectAi()}
             />
             {/* <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/>*/}
             <Selectable

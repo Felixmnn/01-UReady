@@ -32,11 +32,13 @@ import { useTranslation } from "react-i18next";
 const PageDiscover = ({
   setUserChoices,
   userData,
+  nothingForMe = () => {},
 }: {
   setUserChoices: React.Dispatch<
     React.SetStateAction<"GENERATE" | "DISCOVER" | "CREATE" | null>
   >;
   userData: userData;
+  nothingForMe?: () => void;
 }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
@@ -279,6 +281,17 @@ const PageDiscover = ({
             </Text>
           </TouchableOpacity>
         ) : null}
+        {/* Nothing for me Button */}
+        {matchingModules.length > 0 && (
+          <TouchableOpacity
+            className="w-full max-w-[300px] rounded-full bg-gray-700 h-10 mt-2 items-center justify-center"
+            onPress={nothingForMe}
+          >
+            <Text className="text-gray-300 font-semibold text-[15px]">
+              {t("gettingStarted.nothingForMe")}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );

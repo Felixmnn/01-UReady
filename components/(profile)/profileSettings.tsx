@@ -257,7 +257,6 @@ const ProfileSettings = () => {
   async function updateLanguage(text: string) {
     console.log(text);
     languageoptions.map((option) => {
-      console.log(option,text, option.label === text);
     })
     const i = languageoptions.findIndex((option) => option.label === text);
 
@@ -269,6 +268,7 @@ const ProfileSettings = () => {
     await i18n.changeLanguage(languageoptions[i].value.toLowerCase());
     
   }
+
   async function updateColorMode(text: string | null) {
     setSelectedColorMode(text);
     if (text !== null) {

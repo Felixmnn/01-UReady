@@ -7,6 +7,9 @@ import ProgressBar from "./(components)/progressBar";
 import BotCenter from "./botCenter";
 import { useTranslation } from "react-i18next";
 import { userData } from "@/types/appwriteTypes";
+import { setLanguage } from "@/lib/appwriteEdit";
+import i18n from "@/assets/languages/i18n";
+import { useGlobalContext } from "@/context/GlobalProvider";
 /**
  * Country selection
  * The User can select theur prefered language
@@ -30,6 +33,25 @@ const StepTwo = ({
 }) => {
   const [isActive, setIsActive] = useState(false);
   const { t } = useTranslation();
+  const { user, language, setNewLanguage, userUsage, setUserUsage } = useGlobalContext();
+  const languageoptions = [
+      { label: "Deutsch", value: "de" },
+      { label: "English", value: "en" },
+      { label: "Spanish", value: "es" }, 
+      { label: "Français", value: "fra" },
+    ];
+  async function updateLanguage(text: string) {
+    
+    const i = languageoptions.findIndex((option) => option.label === text);
+
+    if (i == -1 ) return;
+    console.log(languageoptions[i].value);
+    setNewLanguage(languageoptions[i].value.toLowerCase());
+    await setLanguage(user.$id, languageoptions[i].value.toLowerCase());
+    await i18n.changeLanguage(languageoptions[i].value.toLowerCase());
+    
+  }
+
   return (
     <View className="h-full  w-full justify-between items-center py-5">
       <ProgressBar
@@ -40,7 +62,7 @@ const StepTwo = ({
       />
       <View className="items-center justiy-center">
         <BotCenter
-          message={t("personalizeTwo.niceToMeetYou", { name: name })}
+          message={t("personalizeTwo.niceToMeetYou", { name: "" })}
           imageSource="Language"
         />
 
@@ -68,7 +90,10 @@ const StepTwo = ({
               {languages.map((language, index) => (
                 <TouchableOpacity
                   key={index}
-                  onPress={() => {
+                  onPress={async () => {
+                    
+                    await updateLanguage(language.label);
+                   
                     setSelectedLanguage(index);
                     setIsActive(false);
                   }}
@@ -87,7 +112,7 @@ const StepTwo = ({
         <GratisPremiumButton
           active={true}
           aditionalStyles={"rounded-full w-full bg-blue-500 z-0 "}
-          handlePress={() => {
+          handlePress={async () => {
             if (selectedLanguage == null) {
               setSelectedLanguage(0);
             }

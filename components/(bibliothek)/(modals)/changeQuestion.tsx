@@ -177,7 +177,11 @@ const ChangeQuestions = ({
           <View
             className={`flex-col w-full items-start justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg px-4 py-2`}
           >
-            <View className="w-full items-center  max-h-60 mb-2">
+            <View className="w-full items-center  max-h-60 mb-2"
+              style={{
+                minHeight: dataType === "text" ? 60 : textVisible ? 140 : 40,
+              }}
+            >
               <TextInput
                 className={`flex-1 w-full bg-gray-900  text-white rounded-lg p-2`}
                 placeholder={t("editQuestion.enterQuestion")}
@@ -192,7 +196,7 @@ const ChangeQuestions = ({
                   textAlignVertical: "top",
                 }}
               />
-              <View className="flex-1 flex-row w-full justify-between items-center">
+              <View className="flex-1 flex-row w-full  justify-between items-center">
                 {textVisible && (dataType == "latex" || dataType == "image") ? (
                   <TextInput
                     className="flex-1 w-full bg-gray-900 p-2 text-white rounded-lg mt-2"
@@ -531,6 +535,7 @@ const ChangeQuestions = ({
                 multiline
                 numberOfLines={2}
                 style={{ minHeight: 40, maxHeight: 40, textAlignVertical: "top" }}
+                onChangeText={(text) => setQuestionToEdit({ ...questionToEdit, explaination: text })}
               />
               <Text className="text-white text-[14px] mt-2">
                 {t("editQuestion.headerHint")}

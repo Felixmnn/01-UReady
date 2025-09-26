@@ -19,6 +19,7 @@ import ErrorPopup from "@/components/(general)/(modal)/errorPopup";
 import { loginWithOAuth } from "@/lib/appwriteOAuth";
 import { loadUserData } from "@/lib/appwriteDaten";
 import { useTranslation } from "react-i18next";
+import * as Updates from "expo-updates";
 
 const SignIn = () => {
   const { t } = useTranslation();
@@ -58,36 +59,54 @@ const SignIn = () => {
   }, [user]);
 
   const submitSignIn = async () => {
-    if (form.email.length < 5) {
-      setErrorMessage(t("signIn.validEmail"));
-      setIsError(true);
-      return;
-    } else if (form.password.length < 8) {
-      setErrorMessage(t("signIn.validPassword"));
-      setIsError(true);
-      return;
-    } else {
-      setIsSubmitting(true);
-      try {
-        const user = await signIn(form.email, form.password);
-        if (user.success === false) {
-          setErrorMessage(user.error);
-          setIsError(true);
-          return;
-        } else {
-          setUser(user.data);
-          setIsLoggedIn(true);
-          router.push("/home");
-          return;
-        }
-      } catch (error) {
-        setErrorMessage((error as Error).message);
+  if (form.email.length < 5) {
+    setErrorMessage(t("signIn.validEmail"));
+    setIsError(true);
+    return;
+  } else if (form.password.length < 8) {
+    setErrorMessage(t("signIn.validPassword"));
+    setIsError(true);
+    return;
+  } else {
+    setIsSubmitting(true);
+    try {
+      const user = await signIn(form.email, form.password);
+      if (user.success === false) {
+        setErrorMessage(user.error);
         setIsError(true);
-      } finally {
-        setIsSubmitting(false);
+        return;
+      } else {
+        setUser(user.data);
+        setIsLoggedIn(true);
+
+        // User-Daten laden und Weiterleitung abhängig vom Step
+        if (user.data) {
+          const res = await loadUserData(user.data.$id);
+          if (res && res.signInProcessStep === "DONE") {
+            router.push("/home");
+          } else if (res && res.signInProcessStep === "FINISHED") {
+            router.push("/getting-started");
+          } else if (res && res.signInProcessStep === "ZERO") {
+            router.push("/personalize");
+          } else {
+            await Updates.reloadAsync();
+
+            router.push("/home");
+          }
+        } else {
+          setErrorMessage(t("signIn.error"));
+          setIsError(true);
+        }
+        return;
       }
+    } catch (error) {
+      setErrorMessage((error as Error).message);
+      setIsError(true);
+    } finally {
+      setIsSubmitting(false);
     }
-  };
+  }
+};
   const LogInOption = ({
     iconName,
     title,

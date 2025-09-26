@@ -162,7 +162,7 @@
   },
   "personalizeTwo": {
     "continue": "Continue",
-    "niceToMeetYou": "Nice to meet you, {{name}}! In which language would you like to use the app?"
+    "niceToMeetYou": "In which language would you like to use the app?"
   },
   "personalizeThree": {
     "school": "School",
@@ -299,7 +299,12 @@
     "wrong": "Incorrect",
     "showExplanation": "Show explanation",
     "next": "Next",
-    "checkAnswer": "Check answer"
+    "checkAnswer": "Check answer",
+    "sorry": "Sorry, something went wrong. Please try again.",
+    "answered": " answered",
+    "remaining": " remaining",
+    "hint": "Hint",
+    "explanation": "Explanation"
   },
   "quizNavigation": {
     "explanation": "Explanation",
@@ -374,26 +379,12 @@
     "close": "Close"
   },
   "tutorialFirstModule": {
-    "letUsCreate": "Let's create your first module together!",
-    "firstInfo": "First, we need some basic information about your module.",
-    "forExample": "For example: Name, description, and a color for better organization.",
-    "nextSession": "Next, you can add your first session.",
-    "aSession": "A session is a single event, like a lecture or class unit.",
-    "thenContent": "Then, we just need the content for your module.",
-    "youCanCreate": "You can create it using topics, texts, or files.",
-    "chooseSession": "Simply select a session and add the content you want.",
-    "thatIsAll": "That's all you need for your first module.",
-    "nowYouCanCreate": "Now you can create your module – it will be generated automatically."
+    "letUsCreate": "Let's create your first module together!"
+    
   },
   "tutorialModule": {
-    "letUsCreate": "Let's create your first module together!",
-    "firstInfo": "First, we need some basic information about your module.",
-    "forExample": "For example: Name, description, and a color for better organization.",
-    "nextSession": "Next, you can add your first session.",
-    "aSession": "A session is a single event, like a lecture or class unit.",
-    "thenContent": "Then, we just need the content for your module.",
-    "nowYouCanCreate": "Now you can create your module – it will be generated automatically."
-  },
+    "letUsCreate": "Let's create your first module together!"
+    },
   "tabbar": {
     "home": "Home",
     "bibliothek": "Library",
@@ -489,7 +480,8 @@
     "noModulesFound": "No module selected yet",
     "iHaveFoundSomething": "I found something! Just tap the module and I'll add it for you.",
     "iHaveFoundNothing": "Unfortunately I found nothing, but no problem.",
-    "waitAMoment": "Give me a moment..."
+    "waitAMoment": "Give me a moment...",
+    "nothingForMe": "Nothing for me"
   },
   "singleModule": {
     "recommended": "Recommended",
@@ -1646,7 +1638,16 @@
     "numQuestions": "Number of Questions",
     "timeLimit": "Time Limit (seconds)",
     "createModule": "Create Module",
-    "refresh": "Refreshing..."
+    "refresh": "Refreshing...",
+    "startQuiz": "Start Quiz",
+    "infiniteExplanation": "Answer unlimited questions without an end.",
+    "limitedFixedExplanation": "Answer a fixed number of questions and get your result.",
+    "limitedAllCorrectExplanation": "Keep answering until all questions in the set are correct.",
+    "limitedTimeExplanation": "Answer a fixed number of questions within a time limit.",
+    "minMaxQuestions": "Please enter a number of questions between {{min}} and {{max}}.",
+      "minTimeLimit": "The time limit must be at least {{min}} seconds.",
+      "generateQuestions": "Generate questions for {{price}}⚡",
+      "notEnoughEnergy": "Not enough energy (⚡)"
   },
   "aiQuestion": {
     "title": "Generate flashcards with AI from...",

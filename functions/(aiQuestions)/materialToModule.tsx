@@ -22,6 +22,7 @@ export async function addNewQuestionToModule({
   setLoading,
   setSessions,
   selectedSession,
+  setModule
 }: {
   material: {
     type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
@@ -35,6 +36,7 @@ export async function addNewQuestionToModule({
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
   selectedSession: any;
+  setModule: React.Dispatch<React.SetStateAction<any>>;
 }) {
   setLoading(true);
   //Schritt 1: Fragen generieren
@@ -69,19 +71,29 @@ export async function addNewQuestionToModule({
   }
   //Schritt 3: Modul mit Fragen verknüpfen
   if (!module || !module.$id) {
+
     return;
   }
   const oldList = module.questionList
     ? module.questionList.map((item: string) => JSON.parse(item))
     : [];
   const newList = [
-    ...oldList,
-    savedQuestions.map((i) => {
-      return { id: i.id, status: null };
-    }),
-  ];
+  ...oldList,
+  ...savedQuestions.map((i) => {
+    return { id: i.id, status: null };
+  }),
+];
+
   const questionCountOld = module.questions ? module.questions : 0;
   const questionCountNew = questionCountOld + savedQuestions.length;
+  console.log("🫡New List:", newList);
+  console.log("🫡Question Count New:", questionCountNew);
+
+  setModule({
+    ...module,
+    questions: questionCountNew,
+    questionList: newList.map((item: any) => JSON.stringify(item)),
+  })
   const newModule = {
     ...module,
     questions: questionCountNew,

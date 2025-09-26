@@ -4,13 +4,16 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
 import GlobalProvider, { useGlobalContext } from "@/context/GlobalProvider";
 import { UserUsage } from "@/types/appwriteTypes";
+import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import * as Updates from "expo-updates";
 
 
 
 
 const TokenHeader = ({
 }) => {
-  const { setUserUsage, userData,userUsage } = useGlobalContext();
+
+  const { setUserUsage, userData,userUsage, user, setUserDataKathegory } = useGlobalContext();
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [moreVisible, setMoreVisible] = useState(false);
@@ -31,12 +34,7 @@ const TokenHeader = ({
       const minutesLeft = Math.ceil(msTillNext / 60000);
       setTimeLeft(minutesLeft);
 
-      // Debug in Konsole
-      console.log(
-        `[Energy Timer] Noch ${minutesLeft} Minuten (${Math.floor(
-          msTillNext / 1000
-        )} Sekunden) bis zum nächsten Energiepunkt.`
-      );
+   
     } else {
       setTimeLeft(null);
     }
@@ -58,6 +56,9 @@ const TokenHeader = ({
       });
     }
   };
+
+
+
 
   // prüft alle 30 Sekunden
   useEffect(() => {

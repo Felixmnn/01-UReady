@@ -25,7 +25,6 @@ const ModalEditSession = ({
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
 
-  const [newTag, setNewTag] = useState(session);
   const [selectedColor, setSelectedColor] = useState<string | null>(
     session.color || null
   );
@@ -50,14 +49,14 @@ const ModalEditSession = ({
   }
 
   return (
-    <View className="bg-gray-800  rounded-xl px-2 mt-2">
+    <View className="bg-gray-900  rounded-xl px-2 mt-2">
       <Text className="text-gray-400 font-bold text-[12px]">
         {t("editSession.name")}
       </Text>
       <TextInput
         className="text-white rounded-[10px] p-2 my-2 ml-2 border-blue-700 border-[1px] bg-[#0c111d]"
         style={{ height: 40 }}
-        value={newTag?.title}
+        value={session?.title}
         maxLength={50}
         placeholder={t("editSession.placeholderSessions")}
         placeholderTextColor={"#9CA3AF"}
@@ -72,14 +71,13 @@ const ModalEditSession = ({
         {t("editSession.description")}
       </Text>
       <TextInput
-        value={newTag?.description}
+        value={session?.description}
         maxLength={150}
         placeholderTextColor={"#9CA3AF"}
         placeholder={t("editSession.placeholderDescription")}
         className="text-white rounded-[10px] p-2 my-2 ml-2 border-blue-700 border-[1px] bg-[#0c111d]"
         style={{ height: 40 }}
         onChangeText={(e) => {
-          setNewTag((prev: any) => ({ ...prev, description: e }));
           setSessions((prevSessions) =>
             prevSessions.map((s, i) =>
               i === index ? { ...s, description: e } : s

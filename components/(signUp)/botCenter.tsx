@@ -2,6 +2,7 @@ import { View, Text, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 
 const BotCenter = ({ message = "", imageSource = "Waving" }) => {
+
   const TypewriterText = ({
     text,
     speed = 50,
@@ -16,15 +17,15 @@ const BotCenter = ({ message = "", imageSource = "Waving" }) => {
       let isCancelled = false;
 
       const typeNext = () => {
-        if (index < text.length - 1) {
+        if (index < text.length -1) {
           setDisplayedText((prev) => prev + text[index]);
           index++;
           setTimeout(typeNext, speed);
         }
       };
 
-      setDisplayedText(""); // Reset text when `text` prop changes
       typeNext();
+      TypewriterText
 
       return () => {
         isCancelled = true;
@@ -58,7 +59,7 @@ const BotCenter = ({ message = "", imageSource = "Waving" }) => {
           bottom: 10,
         }}
       >
-        <TypewriterText text={message} speed={40} />
+        <TypewriterText text={message = message[0] + message } speed={40} />
         <View
           style={{
             position: "absolute",

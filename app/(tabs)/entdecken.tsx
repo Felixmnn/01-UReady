@@ -403,7 +403,6 @@ const entdecken = () => {
   }) {
     
     if (loading || (!hasMore && loadingMore)) return;
-    console.log("Loading More Offset: ", offset);
     setLoading(true);
 
     const schoolTypesRaw = [

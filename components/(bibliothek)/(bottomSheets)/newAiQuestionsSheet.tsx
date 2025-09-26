@@ -26,6 +26,7 @@ const NewAiQuestionsSheet = ({
   module,
   questions,
   setQuestions,
+  setModule,
 }: {
   sessions: any[];
   setSessions: React.Dispatch<React.SetStateAction<any[]>>;
@@ -41,6 +42,7 @@ const NewAiQuestionsSheet = ({
   module: any;
   questions: any[];
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
+  setModule: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const [moreOptions, setMoreOptions] = React.useState(false);
   const { t } = useTranslation();
@@ -174,17 +176,16 @@ const NewAiQuestionsSheet = ({
           containerStyles="w-full rounded-lg   bg-blue-700 mb-2"
           title={
             userUsage.energy > calculateTotalPrice()
-              ? "Fragen für " + calculateTotalPrice() + "⚡ generieren"
-              : "Nicht genug Energie (⚡)"
+              ? t("bibliothek.generateQuestions", { price: calculateTotalPrice() })
+              : t("bibliothek.notEnoughEnergy")
           }
           handlePress={async () => {
             await addNewQuestionToModule({
               material: items,
               module: module,
-              questions: questions,
+              setModule: setModule,
               setQuestions: setQuestions,
               setLoading: setLoading,
-              sessions: sessions,
               setSessions: setSessions,
               selectedSession: selectedSession,
             });

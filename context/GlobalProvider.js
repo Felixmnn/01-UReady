@@ -149,6 +149,21 @@ const GlobalProvider = ({ children }) => {
   }, [userUsage]);
 
   // -------------------------------
+  // App neu laden, falls kein User vorhanden ist und das Laden abgeschlossen ist
+  // -------------------------------
+  useEffect(() => {
+    if (!user && !isLoading) {
+      // App neu laden, z.B. mit window.location.reload() (nur Web) oder Navigation reset
+      if (typeof window !== "undefined" && window.location) {
+        window.location.reload();
+      } else {
+        // Optional: Navigation reset für native
+        // z.B. router.replace("/sign-in") falls du expo-router nutzt
+      }
+    }
+  }, [user, isLoading]);
+
+  // -------------------------------
   // Exportierte Werte
   // -------------------------------
 

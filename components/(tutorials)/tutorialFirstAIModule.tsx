@@ -22,7 +22,7 @@ const TutorialFirstAIModule = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={isVisible && tutorialStep < 10}
+      visible={isVisible && tutorialStep < 2}
       onRequestClose={() => {
         setIsVisible(false);
       }}
@@ -36,27 +36,7 @@ const TutorialFirstAIModule = ({
       >
         {tutorialStep === 0 ? (
           <RobotWihtMessage message={t("tutorialFirstModule.letUsCreate")} />
-        ) : tutorialStep === 1 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.firstInfo")} />
-        ) : tutorialStep === 2 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.forExample")} />
-        ) : tutorialStep === 3 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.nextSession")} />
-        ) : tutorialStep === 4 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.aSession")} />
-        ) : tutorialStep === 5 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.thenContent")} />
-        ) : tutorialStep === 6 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.youCanCreate")} />
-        ) : tutorialStep === 7 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.chooseSession")} />
-        ) : tutorialStep === 8 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.thatIsAll")} />
-        ) : tutorialStep === 9 ? (
-          <RobotWihtMessage
-            message={t("tutorialFirstModule.nowYouCanCreate")}
-          />
-        ) : null}
+        )  : null}
       </TouchableOpacity>
     </Modal>
   );

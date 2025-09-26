@@ -171,7 +171,7 @@ const gettingStarted = () => {
           userData={userDataP}
         />
       ) : userChoices == "DISCOVER" && userDataP ? (
-        <PageDiscover setUserChoices={setUserChoices} userData={userDataP} />
+        <PageDiscover setUserChoices={setUserChoices} userData={userDataP} nothingForMe={() => setUserChoices("CREATE")}/>
       ) : userChoices == "CREATE" ? (
         <View className="flex-1 w-full">
           <TutorialFirstModule

@@ -19,6 +19,9 @@ const Quiz = ({
   setShowSolution,
   sheetRef,
   quizType,
+  questionList,
+  showHint,
+  showExplanation
 }: {
   questions: any[];
   selectedAnswers: string[];
@@ -32,6 +35,9 @@ const Quiz = ({
   setShowSolution: React.Dispatch<React.SetStateAction<boolean>>;
   sheetRef: React.RefObject<any>;
   quizType: "single" | "multiple" | "questionAnswer";
+  questionList: { id: string; status: string | null }[];  
+  showHint: () => void;
+  showExplanation: () => void;
 }) => {
   const { t } = useTranslation();
   console.log("Quiz Rendered", quizType);
@@ -39,17 +45,18 @@ const Quiz = ({
     const question = questions.find((q) => q.$id === questionID);
     return question ? question.status : null;
   }
+
+  const statusIndex = questionList.findIndex((q) => q.id === questions[0].$id);
+  const status = questionList[statusIndex]?.status || null; 
   return (
     <View className="flex-1 justify-end">
       <View className="flex-1 rounded-[10px] bg-gray-900 border-gray-600 border-[1px] m-4">
         <View className="w-full justify-between flex-row items-center p-4 ">
           <View className="flex-row items-center">
-            {questions[0].status !== null ? (
+            {status !== null ? (
               <SmileyStatus
                         status={
-                          ["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(questions[0].$id!) as string)
-                            ? (getSmileyStatus(questions[0].$id!) as "BAD" | "OK" | "GOOD" | "GREAT")
-                            : null
+                          status as "BAD" | "OK" | "GOOD" | "GREAT" | null
                         }
                       />
             ) : null}
@@ -111,10 +118,7 @@ const Quiz = ({
                 {questions[0].explaination?.length > 1 && (
                   <CustomButton
                     title={t("quiz.showExplanation")}
-                    handlePress={() => {
-                      setShowSolution(true);
-                      sheetRef.current?.snapToIndex(0);
-                    }}
+                    handlePress={showExplanation}
                     containerStyles="w-full mr-2 bg-blue-700 rounded-lg"
                   />
                 )}
@@ -159,7 +163,7 @@ const Quiz = ({
               </View>
             </View>
           ) : (
-            <View className="w-full p-2 ">
+            <View className="w-full p-2 flex-row items-center justify-center ">
               <CustomButton
                 title={
                   quizType == "questionAnswer"
@@ -167,8 +171,20 @@ const Quiz = ({
                     : t("quiz.checkAnswer")
                 }
                 handlePress={changeVisibility}
-                containerStyles="w-full bg-blue-700 rounded-lg"
+                containerStyles="flex-1 bg-blue-700 rounded-lg"
               />
+              { questions[0].hint?.length > 1 && !showAnsers && (
+              <TouchableOpacity className="bg-yellow-500 ml-2 p-2 rounded-lg"
+              style={{
+                height: 38, 
+                width: 38,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={showHint}>
+                <Icon name="lightbulb" size={20} color="yellow" />
+              </TouchableOpacity>
+              )}
             </View>
           )}
         </View>

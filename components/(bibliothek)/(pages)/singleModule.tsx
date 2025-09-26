@@ -160,6 +160,7 @@ const SingleModule = ({
       const newModule = {
         ...module,
         sessions: sessions.map((session: string) => JSON.stringify(session)),
+        quesitonList: typeof module.questionList[0] === "string" ? module.questionList : module.questionList.map((q: any) => JSON.stringify(q)),
       };
       await updateModule(newModule);
     }
@@ -285,8 +286,6 @@ const SingleModule = ({
         }
       })
     );
-    console.log("Fetched Questions for Session:", sessionQuestions.length);
-    console.log("Filtered Questions for Session:", filteredQuestions.length);
     const notes = await getSessionNotes(sessions[selectedSession].id);
     const documents = await getAllDocuments(sessions[selectedSession].id);
     if (filteredQuestions) {
@@ -631,6 +630,7 @@ const SingleModule = ({
               {isVertical || tab == 1 ? (
                 <View className="p-4 flex-1">
                   <Data
+                    selectAi={() => aiBottomSheetRef.current?.openSheet(1)}
                     setQuestions={setQuestions}
                     setQuestionToEdit={setQuestionToEdit}
                     isVisibleEditQuestion={isVisibleEditQuestion}
@@ -713,6 +713,7 @@ const SingleModule = ({
       />
 
       <NewAiQuestionsSheet
+        setModule={setModule}
         sheetRef={aiBottomSheetRef}
         selectedSession={sessions[selectedSession] || null}
         module={module}

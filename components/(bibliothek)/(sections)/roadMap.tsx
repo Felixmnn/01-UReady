@@ -85,13 +85,7 @@ const RoadMap = ({
         return "#2C3E50"; // fallback
     }
   }
-  console.log(
-    "SlectedSession",
-    selected,
-    moduleSessions[selected],
-    "ModuleSessions",
-    moduleSessions
-  );
+ 
 
   return (
     <ScrollView className={`${width > 700 ? "" : null} `}>

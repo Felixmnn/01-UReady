@@ -19,7 +19,9 @@ const SignOut = () => {
         setUser(undefined);
         setIsLoggedIn(false);
       } catch (err) {
+        if (__DEV__) {
         console.error("Sign out failed", err);
+        }
       } finally {
         setIsLoading(false);
         if (Platform.OS === "web") {

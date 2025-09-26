@@ -368,7 +368,8 @@
   "karteikarte": {
     "questio": "Questions",
     "notes": "Notes",
-    "fromYou": "from you"
+    "fromYou": "from you",
+    "you": "You"
   },
   "tokenHeader": {
     "minutesLeft": "Minutes until next energy",
@@ -436,6 +437,9 @@
     "numberOfAnswers": "Number of answers"
   },
   "profileSettings": {
+    "invalidCode": "Invalid action code.",
+    "alreadyUsed": "Action code already used.",
+    "successActionCode": "Action code redeemed successfully!",
     "darkmode": "Dark",
     "universityEducationGoals": "Degree Goal",
     "universityCategories": "Study Program Categories",
@@ -1754,5 +1758,8 @@
     "multipleChoiceDescription": "This is a multiple-choice question, multiple answers may be correct.",
     "singleChoiceDescription": "This is a single-choice question, only one answer is correct.",
     "openQuestionDescription": "This is an open-ended question where the user must first provide an answer, which will then be checked against the correct answer. Only one correct answer exists."
+  }, "provider": {
+    "noNetworkConnection": "No network connection",
+    "tryAgain": "Try again"
   }
 }

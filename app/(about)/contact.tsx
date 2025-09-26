@@ -119,7 +119,7 @@ const Contact = () => {
             {successMessage ? (
               <CustomButton
                 title={t("contact.backToHome")}
-                handlePress={() => router.push("/home")}
+                handlePress={() => router.push("/profil")}
                 containerStyles="bg-green-700 border-green-800 rounded-lg"
               />
             ) : (

@@ -10,12 +10,20 @@ import { ModuleProps, Session, userData } from "@/types/moduleTypes";
 import TutorialFirstModule from "@/components/(tutorials)/tutorialFirstModule";
 import { View } from "react-native";
 import CreateModule from "@/components/(general)/createModule/createModule";
+import { updateUserData } from "@/lib/appwriteUpdate";
+import { setUserDataSetup } from "@/lib/appwriteEdit";
 
 const gettingStarted = () => {
   const [userChoices, setUserChoices] = useState<
     "GENERATE" | "DISCOVER" | "CREATE" | null
   >(null);
+  
+  
+
   const { user, isLoggedIn, isLoading } = useGlobalContext();
+  useEffect(() => {
+    setUserDataSetup(user.$id);
+  }, []);
   const [sessions, setSessions] = useState<Session[]>([
     {
       title: "S1",
@@ -23,7 +31,7 @@ const gettingStarted = () => {
       color: "blue",
       iconName: "book",
       questions: 0,
-      description: "string",
+      description: "",
       tags: [],
       id: Math.random().toString(36).substring(7),
       generating: false,

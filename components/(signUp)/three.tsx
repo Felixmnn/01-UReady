@@ -1,7 +1,5 @@
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
-import CountryFlag from "react-native-country-flag";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import BotCenter from "./botCenter";
 import { useTranslation } from "react-i18next";
 import TouchSquare from "./(components)/touchSquare";
@@ -157,7 +155,13 @@ const StepThree = ({
         </View>
         */}
         
-            <CountryPicker onSelect={(country) => console.log(country)}/>
+            <CountryPicker onSelect={(country:{id:string,name:string,code:string}) =>setSelectedCountry({
+              ...country,
+              schoolListID: "",
+              universityListID: "",
+              educationListID: "",
+              educationSubjectListID: "",
+            })}/>
 
         <View className="p-2 my-2 items-center justify-center mx-1">
           {textIcons.map((itextIconList, index) => (

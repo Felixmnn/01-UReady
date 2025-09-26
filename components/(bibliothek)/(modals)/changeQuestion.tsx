@@ -394,16 +394,18 @@ const ChangeQuestions = ({
                       subjectID: module.$id !== undefined ? module.$id : null,
                       sessionID: selectedSession.id,
                     });
+
                     if (res && typeof res === "object" && "$id" in res) {
-                      setQuestions([...questions, res as unknown as question]);
+                      setQuestions([...questions, res.answers.map((a:string)=> JSON.parse(a)) as unknown as question]);
                     }
                     setModule({
                       ...module,
                       questionList: [
                         ...module.questionList,
-                        res && res.$id ? res.$id : "",
+                        JSON.stringify({id:res && res.$id ? res.$id : "",status:null})
                       ],
                     });
+                    
                     setQuestionToEdit({
                       $id: undefined,
                       question: "",
@@ -421,6 +423,7 @@ const ChangeQuestions = ({
                       explaination: "",
                       hint: null,
                     });
+                    
                   } else {
                     const res = await updateDocument({
                       ...questionToEdit,

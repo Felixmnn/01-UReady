@@ -369,7 +369,8 @@
   "karteikarte": {
     "questio": "Fragen",
     "notes": "Notizen",
-    "fromYou": "von dir"
+    "fromYou": "von dir",
+    "you": "Du"
   },
   "tokenHeader": {
     "minutesLeft": "Minuten bis zur nächsten Energie",
@@ -436,6 +437,9 @@
     "numberOfAnswers": "Anzahl der Antworten"
   },
   "profileSettings": {
+    "invalidCode": "Ungültiger Aktioncode.",
+    "alreadyUsed": "Aktioncode bereits verwendet.",
+    "successActionCode": "Aktioncode erfolgreich eingelöst!",
     "darkmode": "Dunkel",
     "universityEducationGoals": "Abschlussziel",
     "universityCategories": "Studiengangkathegorien",
@@ -1759,5 +1763,8 @@
     ,"multipleChoiceDescription": "Es handelt sich um Multiple-Choice Fragen, es können also mehrere Antworten korrekt sein.",
     "singleChoiceDescription": "Es handelt sich um Single-Choice Fragen, es ist also nur eine Antwort korrekt.",
     "openQuestionDescription": "Es handelt sich um eine offene Frage, bei der der Nutzer erst selbst Antworten muss und dann die korrekte Antwort angezeigt bekommt. Es soll also nur eine Antwort geben."
+     }, "provider":{
+      "noNetworkConnection": "Keine Netzwerkverbindung",
+      "tryAgain": "Erneut versuchen"
      }
 }

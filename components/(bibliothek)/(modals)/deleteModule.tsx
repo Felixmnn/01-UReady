@@ -61,7 +61,9 @@ const DeleteModule = ({
         tags: newTags,
       })
       } catch (error) {
+        if (__DEV__) {
         console.error(error);
+        }
         return;
       }
       setSavedChanges(true);

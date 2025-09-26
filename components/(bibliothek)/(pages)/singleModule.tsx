@@ -98,6 +98,7 @@ const SingleModule = ({
         let result = item;
         while (typeof result === "string") {
           try {
+
             result = JSON.parse(result);
           } catch (e) {
             break;
@@ -105,7 +106,9 @@ const SingleModule = ({
         }
         return result;
       } catch (error) {
+        if (__DEV__) {
         console.error("Error parsing item:", item, error);
+        }
         return item; // Return the original item if parsing fails
       }
     });
@@ -115,15 +118,15 @@ const SingleModule = ({
   }
   const [module, setModule] = useState({
     ...moduleEntry,
-    questionList: reverseToManyStringifyActions(moduleEntry.questionList),
+    questionList: Array.isArray(moduleEntry.questionList) ? reverseToManyStringifyActions(moduleEntry.questionList) : [],
   });
   const [selectedSession, setSelectedSession] = useState(0);
   const [questions, setQuestions] = useState<question[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
   const [documents, setDocuments] = useState<AppwriteDocument[]>([]);
-  const parsedSessions = module.sessions.map((session: string) =>
+  const parsedSessions = Array.isArray(module.sessions) ? module.sessions.map((session: string) =>
     JSON.parse(session)
-  );
+  ) : [];
   const [sessions, setSessions] = useState(parsedSessions);
   {
     /* Language and Texts */
@@ -705,7 +708,9 @@ const SingleModule = ({
         isVisible={isVisibleNewQuestion}
         setIsVisible={setIsVisibleNewQuestion}
         openSheet={(index?: number) => bottomSheetRef.current?.openSheet(index)}
-        closeSheet={() => bottomSheetRef.current?.closeSheet()}
+        close={() => {
+          bottomSheetRef.current?.closeSheet();
+        }}
         selectAi={() => {
           bottomSheetRef.current?.closeSheet();
           aiBottomSheetRef.current?.openSheet(1);

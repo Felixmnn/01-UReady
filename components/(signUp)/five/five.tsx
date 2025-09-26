@@ -43,14 +43,12 @@ const StepFive = ({
   const numColumns = width < 400 ? 2 : 3;
 
   const subjectSelection = (item: { name: string; icon: string }) => {
-    console.log("Subject selected:", item);
     if (selectedSubjects.some((i) => i.name == item.name)) {
       setSelectedSubjects([]);
     } else {
       setSelectedSubjects([item]);
     }
   };
-  console.log("School in Five:", school);
 
   if ("UNIVERSITY" == setSelectedKathegorie) {
     return (

@@ -132,7 +132,12 @@ const Karteikarte = ({
                       : "#1F2937";
 
   return (
-    <TouchableOpacity className=" " onPress={handlePress}>
+    <TouchableOpacity className={`${creator == user.$id && reportVisible ? "opacity-50" : ""}`
+
+    }
+     onPress={handlePress} 
+      disabled={reportVisible && creator == user.$id}
+    >
       <ReportModal />
       <View
         className={` rounded-t-[10px] border-t-[1px] border-gray-700 `}
@@ -165,7 +170,9 @@ const Karteikarte = ({
               icon={"clock"}
               strokeColor={color}
             />
-          ) : null}
+          ) : 
+            reportVisible && creator == user.$id ? (<Text className="text-blue-500 p-1 border-blue-500 border italic mb-1">{t("karteikarte.fromYou")}</Text>) : null
+          }
         </View>
         <View className="flex-row">
           <Text className="my-1 text-gray-300 font-semibold text-[14px]">
@@ -178,8 +185,8 @@ const Karteikarte = ({
           <View className="py-[2px] px-2 border-[1px] border-gray-700 rounded-full flex-row items-center">
             <Icon name="user" size={10} color="white" />
             <Text className="text-gray-300 text-[12px] ml-1">
-              {creator == "YOU"
-                ? t("karteikarte.fromYou")
+              {creator == user.$id
+                ? t("karteikarte.you")
                 : creator.length > 10
                   ? creator.substring(0, 10) + "..."
                   : creator}

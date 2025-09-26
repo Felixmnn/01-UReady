@@ -32,7 +32,7 @@ const AddModuleBottomSheet = ({
       color: "blue",
       iconName: "book",
       questions: 0,
-      description: "string",
+      description: "",
       tags: [],
       id: Math.random().toString(36).substring(7),
       generating: false,

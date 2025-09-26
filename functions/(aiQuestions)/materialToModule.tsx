@@ -86,8 +86,6 @@ export async function addNewQuestionToModule({
 
   const questionCountOld = module.questions ? module.questions : 0;
   const questionCountNew = questionCountOld + savedQuestions.length;
-  console.log("🫡New List:", newList);
-  console.log("🫡Question Count New:", questionCountNew);
 
   setModule({
     ...module,
@@ -197,9 +195,7 @@ export async function materialToModule({
     // Schritt 4: Modul mit Fragen verknüpfen
 
     if (!newModuleData || !newModuleData.$id)
-      console.log(
-        "Fehlecode 1: newModuleData oder newModuleData.$id ist undefined"
-      );
+     
     await updateModuleQuestionList(
       newModuleData.$id,
       savedQuestions.map((item) => JSON.stringify(item))
@@ -329,12 +325,16 @@ export async function generateQuestions({
           // setQuestions((prev) => [...prev, ...res]);
         }
       } catch (error) {
+        if (__DEV__) {
         console.error("Error processing material:", error);
+        }
       }
     }
     return directQuestions;
   } catch (err) {
+    if (__DEV__) {
     console.error("Error in generateQuestions:", err);
+    }
     return directQuestions;
   }
 }
@@ -520,7 +520,9 @@ export async function generateQuestionsFromText({
 
     return [];
   } catch (error) {
+    if (__DEV__) {
     console.error("Error fetching OpenAI API:", error);
+    }
     return [];
   }
 }
@@ -599,7 +601,9 @@ export async function generateQuestionsFromQuestions({
 
     return [];
   } catch (error) {
+    if (__DEV__) {
     console.error("Error fetching OpenAI API:", error);
+    }
     return [];
   }
 }
@@ -667,7 +671,9 @@ export async function questionFromTopic({
 
     return [];
   } catch (error) {
+    if (__DEV__) {
     console.error("Error fetching OpenAI API:", error);
+    }
     return [];
   }
 }

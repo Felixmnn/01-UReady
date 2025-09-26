@@ -1,11 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
-import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import { loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
 import * as NavigationBar from "expo-navigation-bar";
 import i18n from "@/assets/languages/i18n";
+import { router } from "expo-router";
+import NetInfo from "@react-native-community/netinfo";
+import { Image, Text, View } from "react-native";
+import CustomButton from "@/components/(general)/customButton";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -24,6 +28,7 @@ const GlobalProvider = ({ children }) => {
   const [userCathegory, setUserCategory] = useState(null);
   const [reloadNeeded, setReloadNeeded] = useState([]);
   const [userUsage, setUserUsage] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
 
   // -------------------------------
   // 1. Session-Check
@@ -149,6 +154,16 @@ const GlobalProvider = ({ children }) => {
   }, [userUsage]);
 
   // -------------------------------
+  // Netzwerkstatus überwachen
+  // -------------------------------
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsOffline(!state.isConnected);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // -------------------------------
   // App neu laden, falls kein User vorhanden ist und das Laden abgeschlossen ist
   // -------------------------------
   useEffect(() => {
@@ -166,6 +181,35 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   // Exportierte Werte
   // -------------------------------
+
+  if (isOffline) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#111418" }}>
+        
+        <Image
+          source={require("../assets/Uncertain.gif")}
+          style={{ width: 150, height: 150, marginBottom: 20 }}
+          resizeMode="contain"
+        />
+        <Text style={{ color: "white", fontSize: 20, textAlign: "center", margin: 20 }}>
+          {i18n.t("provider.noNetworkConnection")}
+        </Text>
+        <CustomButton
+          title={i18n.t("provider.tryAgain")}
+          handlePress={() => {
+            NetInfo.fetch().then(state => {
+              if (state.isConnected) {
+                setIsOffline(false);
+                router.reload();
+              }
+            });
+          }}
+          
+          containerStyles="bg-blue-600 px-6 py-3 rounded-md"
+        />
+      </View>
+    );
+  }
 
   return (
     <GlobalContext.Provider

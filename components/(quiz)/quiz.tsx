@@ -40,7 +40,6 @@ const Quiz = ({
   showExplanation: () => void;
 }) => {
   const { t } = useTranslation();
-  console.log("Quiz Rendered", quizType);
   function getSmileyStatus(questionID: string) {
     const question = questions.find((q) => q.$id === questionID);
     return question ? question.status : null;

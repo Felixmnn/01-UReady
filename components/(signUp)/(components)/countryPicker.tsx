@@ -158,7 +158,9 @@ const COUNTRY_LIST = [
 
 const FAVORITE_COUNTRIES = ["DE", "US", "CH"];
 
-const CountryPicker = ({ onSelect }) => {
+const CountryPicker = ({ onSelect }:{
+  onSelect: (country: { id: string; name: string; code: string }) => void;
+}) => {
   const [isActive, setIsActive] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(COUNTRY_LIST[0]);
   const [searchText, setSearchText] = useState("");
@@ -170,7 +172,9 @@ const CountryPicker = ({ onSelect }) => {
     c.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const handleSelect = (country) => {
+  const handleSelect = (country:{
+    id: string; name: string; code: string
+  }) => {
     setSelectedCountry(country);
     setIsActive(false);
     onSelect && onSelect(country);

@@ -45,7 +45,6 @@ const StepTwo = ({
     const i = languageoptions.findIndex((option) => option.label === text);
 
     if (i == -1 ) return;
-    console.log(languageoptions[i].value);
     setNewLanguage(languageoptions[i].value.toLowerCase());
     await setLanguage(user.$id, languageoptions[i].value.toLowerCase());
     await i18n.changeLanguage(languageoptions[i].value.toLowerCase());

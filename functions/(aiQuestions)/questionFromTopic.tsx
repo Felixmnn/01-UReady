@@ -57,7 +57,8 @@ export async function questionFromTopic(topics:any, sessionID:string, subjectID:
       return "Keine Antwort von OpenAI erhalten.";
     }
   } catch (error) {
+    if (__DEV__) {
     console.error("Error fetching OpenAI API:", error);
-    const response = "Es gab einen Fehler bei der Anfrage!";
+    }
   }
 }

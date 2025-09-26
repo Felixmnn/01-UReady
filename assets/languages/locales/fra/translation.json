@@ -368,7 +368,8 @@
   "karteikarte": {
     "questio": "Questions",
     "notes": "Notes",
-    "fromYou": "de toi"
+    "fromYou": "de toi",
+    "you": "Tu"
   },
   "tokenHeader": {
     "minutesLeft": "Minutes avant la prochaine énergie",
@@ -437,6 +438,9 @@
     "numberOfAnswers": "Nombre de réponses"
   },
   "profileSettings": {
+    "invalidCode": "Code d’action non valide.",
+    "alreadyUsed": "Code d’action déjà utilisé.",
+    "successActionCode": "Code d’action utilisé avec succès !",
     "darkmode": "Sombre",
     "universityEducationGoals": "Objectif de diplôme",
     "universityCategories": "Catégories d’études",
@@ -1852,5 +1856,8 @@
     "cancel": "Annuler",
     "delete": "Supprimer",
     "youNeedQuestionsToStartAQuiz": "Tu as besoin d’au moins une question pour démarrer un quiz."
+  },"provider":{
+    "noNetworkConnection":"Pas de connexion réseau",
+    "tryAgain":"Réessayer"
   }
 }

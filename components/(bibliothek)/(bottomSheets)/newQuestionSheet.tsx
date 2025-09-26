@@ -17,6 +17,7 @@ const NewQuestionSheet = ({
   module,
   SwichToEditNote,
   sheetRef,
+  close
 }: {
   isVisible: boolean;
   setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>;
@@ -27,8 +28,8 @@ const NewQuestionSheet = ({
   module: any;
   SwichToEditNote: (noteID: string | null) => void;  selectedLanguage: string;
   openSheet: (index?: number) => void;
-  closeSheet: () => void;
   sheetRef: React.RefObject<any>;
+  close: () => void;
 }) => {
     const { t } = useTranslation();
   return (
@@ -55,6 +56,7 @@ const NewQuestionSheet = ({
               title={t("bibliothek.crtQuestion")}
               empfolen={false}
               handlePress={() => {
+                close();
                 setQuestionToEdit({
                   $id: undefined,
                   question: "",

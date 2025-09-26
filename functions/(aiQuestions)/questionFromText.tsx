@@ -48,7 +48,6 @@ export async function generateQuestionsFromText(
     if (!res.ok) {
       throw new Error(`Fehler: ${res.status}`);
     }
-    console.log("Response from OpenAI:", res);
 
     const data = await res.json();
 
@@ -61,7 +60,8 @@ export async function generateQuestionsFromText(
       return "Keine Antwort von OpenAI erhalten.";
     }
   } catch (error) {
+    if (__DEV__) {
     console.error("Error fetching OpenAI API:", error);
-    const response = "Es gab einen Fehler bei der Anfrage!";
+    }
   }
 }

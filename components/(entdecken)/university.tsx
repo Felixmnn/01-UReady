@@ -33,7 +33,6 @@ const UniversityFilters = ({
         options={degreeNames}
         selectedOptions={filters.universityDegreeType}
         handlePress={(option) => {
-          console.log("Pressed: ", option);
           if (
             filters.universityDegreeType &&
             filters.universityDegreeType.includes(option)

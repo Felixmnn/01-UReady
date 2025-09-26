@@ -76,7 +76,13 @@ const entdecken = () => {
     }
     fetchAllModules();
   }, []);
-
+const languageoptions = [
+      { label: "Deutsch", value: "de" },
+      { label: "English", value: "en" },
+      { label: "Spanish", value: "es" }, 
+      { label: "Français", value: "fra" },
+    ];
+const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
   const snapPoints = ["40%", "60%", "90%"];
@@ -269,6 +275,7 @@ const entdecken = () => {
                     synchronization: false,
                     questionList: module.questionList.map((q:string) => JSON.stringify({ ...JSON.parse(q), userAnswer: null, status: null })),
                   };
+
                   add(mod);
                 }
               });
@@ -656,6 +663,30 @@ const entdecken = () => {
                   showsVerticalScrollIndicator={false}
                 >
                   <View className="w-full">
+                    <View className="px-4 py-2 border-b border-gray-600 flex-row items-center justify-between">
+                      {
+                        languageoptions.map((lang) => (
+                          <TouchableOpacity
+                            key={lang.value}
+                            className={`px-3 py-1 rounded-full ${selectedLanguages.includes(lang.value) ? "bg-blue-500" : "bg-gray-700"}`}
+                            onPress={() => {
+                             console.log("Language selected:", lang.value, selectedLanguages);
+                             if (selectedLanguages && selectedLanguages.length > 0) {
+                              if (selectedLanguages.includes(lang.value)) {
+                                setSelectedLanguage(selectedLanguages.filter(l => l !== lang.value));
+                              } else {
+                                setSelectedLanguage([...selectedLanguages, lang.value]);
+                              }
+                            } else {
+                              setSelectedLanguage([lang.value]);
+                            }}
+                          }
+                          >
+                            <Text className="text-white">{lang.label}</Text>
+                          </TouchableOpacity>
+                        ))
+                      }
+                    </View>
                     <EducationFiel />
                     {realFilters.eductaionType == "UNIVERSITY" ? (
                       <UniversityFilters

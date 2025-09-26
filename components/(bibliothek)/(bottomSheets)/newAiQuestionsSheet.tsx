@@ -175,7 +175,7 @@ const NewAiQuestionsSheet = ({
         <CustomButton
           containerStyles="w-full rounded-lg   bg-blue-700 mb-2"
           title={
-            userUsage.energy > calculateTotalPrice()
+            userUsage?.energy > calculateTotalPrice()
               ? t("bibliothek.generateQuestions", { price: calculateTotalPrice() })
               : t("bibliothek.notEnoughEnergy")
           }
@@ -194,7 +194,7 @@ const NewAiQuestionsSheet = ({
           disabled={
             items.length < 1 ||
             loading ||
-            userUsage.energy < calculateTotalPrice()
+            userUsage?.energy < calculateTotalPrice()
           }
         />
       </View>

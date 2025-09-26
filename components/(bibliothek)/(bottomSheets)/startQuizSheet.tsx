@@ -20,8 +20,8 @@ const StartQuizSheet = ({
   const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime">("infinite");
   const [ explainationVisible, setExplanationVisible ] = React.useState(false); 
   const [questionType, setQuestionType] = React.useState<"single" | "multiple" | "questionAnswer">("single");
-  const [questionAmount, setQuestionAmount] = React.useState<number>(Math.min(10, maxQuestions));
-  const [timeLimit, setTimeLimit] = React.useState<number | null>(null); // in seconds
+  const [questionAmount, setQuestionAmount] = React.useState<number>(1);
+  const [timeLimit, setTimeLimit] = React.useState<number | null>(60); // in seconds
   const { t } = useTranslation();
   return (
     <CustomBottomSheet ref={sheetRef}>
@@ -57,7 +57,7 @@ const StartQuizSheet = ({
           <Text className="text-gray-300 mb-2">{t("bibliothek.questionType")}</Text>
           
         <View className="flex-row gap-2 mb-4">
-          {["single","multiple","questionAnswer"].map((type) => (
+          {["single","multiple"].map((type) => (
             <Pressable
               key={type}
               onPress={() => setQuestionType(type as any)}

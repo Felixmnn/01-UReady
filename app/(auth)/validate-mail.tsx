@@ -24,7 +24,9 @@ const ValidMail = () => {
         const response = await enterResponse(secret, userId);
         window.location.href = "/profil";
       } catch (err) {
+        if (__DEV__) {
         console.error("Validation error:", err);
+        }
         setError(true);
         setLoading(false);
       }

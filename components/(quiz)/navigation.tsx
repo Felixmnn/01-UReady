@@ -14,6 +14,7 @@ const Navigation = ({
   totalAmountOfQuestions,
   remainingPercent,
   setRemainingPercent,
+  setPercent  
 }: {
   quizType: "infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" ;
   timeLimit?: number;
@@ -23,6 +24,7 @@ const Navigation = ({
   totalAmountOfQuestions: number;
   remainingPercent: number;
   setRemainingPercent: React.Dispatch<React.SetStateAction<number>>;
+  setPercent: React.Dispatch<React.SetStateAction<number>>;
 
 }) => {
   const { t } = useTranslation();

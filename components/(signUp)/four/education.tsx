@@ -37,14 +37,10 @@ const Education = ({
     id: key,
     icon: eduobjects[key].icon,
   }));
-  console.log("EduObj:", eduObj);
   return (
     <ScrollView className="w-full ">
       <BotBottomLeft
         message={t("personalizeFour.wichEducation")}
-        imageSource="Location"
-        spechBubbleStyle="bg-blue-500"
-        spBCStyle="max-w-[200px]"
         isVisible={isVisible}
         setIsVisible={setIsVisible}
       />

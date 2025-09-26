@@ -255,13 +255,11 @@ const ProfileSettings = () => {
   ];
 
   async function updateLanguage(text: string) {
-    console.log(text);
     languageoptions.map((option) => {
     })
     const i = languageoptions.findIndex((option) => option.label === text);
 
     if (i == -1 ) return;
-    console.log(languageoptions[i].value);
     setSelectedLanguage(languageoptions[i].value.toLowerCase());
     setNewLanguage(languageoptions[i].value.toLowerCase());
     await setLanguage(user.$id, languageoptions[i].value.toLowerCase());

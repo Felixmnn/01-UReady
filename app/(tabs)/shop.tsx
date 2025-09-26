@@ -46,7 +46,6 @@ const shop = () => {
           <Text className="text-gray-400">Get {amount} energy for {price}€</Text>
         </View>
         <TouchableOpacity className="bg-blue-900 px-4 py-2 rounded-[10px]" onPress={() => {
-          console.log("Buying Energy");
         }}> 
           <Text className="text-white font-bold">Buy</Text>
         </TouchableOpacity>

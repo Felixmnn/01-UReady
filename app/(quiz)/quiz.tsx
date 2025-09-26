@@ -40,14 +40,7 @@ const quiz = () => {
         timeLimit,
     } = useLocalSearchParams()
 
-    console.log("Quiz params:", {
-        sessionID,
-        moduleID,
-        quizType,
-        questionType,
-        questionAmount,
-        timeLimit,
-    })
+    
     // Unwichtig, nur für responsive Design
     const {width} = useWindowDimensions();
     const isVertical = width > 700;
@@ -85,7 +78,6 @@ const quiz = () => {
     }){
         if (!sessionID || !moduleID) router.replace("/bibliothek");
         const module = await loadModule(moduleID)
-        console.log("Loaded Module:", module)
         let questionsRaw = [];
         if (sessionID === "ALL" && module) {
 
@@ -93,13 +85,9 @@ const quiz = () => {
             questionsRaw.push(...q)
         } else {
            let res = (await getAllQuestionsBySessionId(sessionID)) ?? []
-           console.log("Questions fetched by sessionID:", res.map((r) => r.$id))
-           console.log("Question list ids in module:", module?.questionList.map((q:string) => JSON.parse(q).id))
            res = res.filter((q) => module?.questionList.some((mq:string) => JSON.parse(mq).id === q.$id))
-           console.log("Questions after filtering by module questionList:", res)
            questionsRaw.push(...res)
         }
-        console.log("Fetched Questions:", questionsRaw)
         const questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
@@ -356,7 +344,6 @@ function correctAnswers({
 
   for (let i = 0; i < correctSorted.length; i++) {
     if (!answersAreEqual(correctSorted[i], selectedSorted[i])) {
-      console.log("Mismatch:", correctSorted[i], selectedSorted[i]);
       return false;
     }
   }
@@ -433,6 +420,7 @@ const {t} = useTranslation()
             amountOfAnsweredQuestions={questionsForQuiz.length}
             remainingPercent={remainingPercent}
             setRemainingPercent={setPercent}
+            setPercent={setPercent}
             
             
         
@@ -505,7 +493,7 @@ const {t} = useTranslation()
 
         <ExplanationSheet
             sheetRef={sheetRefExplanation}
-            explaination='Blub'
+            explaination={explainationContent}
             typeHint={typeHint} 
             />
         <View>

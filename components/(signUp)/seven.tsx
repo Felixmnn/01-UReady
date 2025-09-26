@@ -23,7 +23,9 @@ const StepSeven = () => {
         return res;
       }
     } catch (error) {
+      if (__DEV__) {
       console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+      }
       return null;
     }
   }

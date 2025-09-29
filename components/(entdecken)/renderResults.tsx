@@ -27,9 +27,7 @@ const RenderResults = ({
   return (
     <View className="flex-1 w-full pl-2 justify-center ">
       <FlatList
-        data={modules.filter((item) =>
-          item.name.toLowerCase().includes(searchBarText.toLowerCase())
-        )}
+        data={modules}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center">
             <Image

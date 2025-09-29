@@ -512,7 +512,9 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
 
     try {
       let res = await getMatchingModules({
-        offset: offset,
+        searchText: searchBarText,
+        offset: modules.length ? modules.length : 0,
+        languages: selectedLanguages.length > 0 ? selectedLanguages : null,
         eductaionType: realFilters.eductaionType,
         universityDegreeType:
           indexOfDegreeType?.map((i) => universityDegreeTypeKeys[i]) || null,
@@ -540,7 +542,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
         
       }
 
-      setHasMore(res && res.length === 5 ? true : false); // Assuming page size of 25
+      setHasMore(res && res.length > 0 ? true : false); // Assuming page size of 25
     } catch (e) {
     } finally {
       setLoading(false);
@@ -551,7 +553,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     getModules({
       loadingMore: false,
     });
-  }, [realFilters]);
+  }, [realFilters, selectedLanguages, searchBarText]);
 
   return (
     <Tabbar

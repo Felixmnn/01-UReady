@@ -11,7 +11,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "key_here"
+        "EXPO_PUBLIC_API_URL": "key"
       }
     },
     "preview": {
@@ -20,18 +20,21 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "key_here"
+        "EXPO_PUBLIC_API_URL": "key"
       }
     },
     "production": {
-    "autoIncrement": true,
-    "android": {
-      "buildType": "app-bundle"
-    },
-    "env": {
-      "EXPO_PUBLIC_API_URL": "avs"
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "key"
+      }
     }
-}
   },
   "submit": {
     "production": {}

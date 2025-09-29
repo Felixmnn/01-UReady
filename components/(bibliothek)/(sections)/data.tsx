@@ -134,7 +134,9 @@ const Data = ({
     let pI: ParsedQuestion | string = i;
     try {
       pI = JSON.parse(i) as ParsedQuestion;
-    } catch (e) {}
+    } catch (e) {
+      pI = { id: undefined, status: null };
+    }
     return pI;
   });
   const filteredData = filtered.map((item) => {
@@ -221,7 +223,13 @@ const Data = ({
 
 
   function getSmileyStatus(id:string){
-    const parsed = module.questionList.map((i) => JSON.parse(i) as ParsedQuestion);
+    const parsed = module.questionList.map((i) => {
+      try {
+        return JSON.parse(i) as ParsedQuestion;
+      } catch (e) {
+        return { id: undefined, status: null };
+      }
+    });
     const found = parsed.find(q => q.id === id);
     return found?.status ?? null;
   }

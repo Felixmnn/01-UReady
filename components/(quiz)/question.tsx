@@ -54,7 +54,6 @@ const Question = ({
           <View className="w-full rounded-lg overflow-hidden min-h-10 mx-2" >
             <KaTeXExample
               formula={question.questionLatex}
-              fontSize={16}
             />
           </View>
       ) : question.questionUrl?.length > 0 ? (

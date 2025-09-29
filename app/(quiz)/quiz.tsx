@@ -80,18 +80,35 @@ const quiz = () => {
         const module = await loadModule(moduleID)
         let questionsRaw = [];
         if (sessionID === "ALL" && module) {
-
-            const q = await getAllQuestionsByIds(module.questionList.map((q:string) => JSON.parse(q).id))
+            const q = await getAllQuestionsByIds(module.questionList.map((q:string) => {
+              try {
+                return JSON.parse(q).id;
+              } catch (e) {
+                return null;
+              }
+            }).filter(Boolean))
             questionsRaw.push(...q)
         } else {
            let res = (await getAllQuestionsBySessionId(sessionID)) ?? []
-           res = res.filter((q) => module?.questionList.some((mq:string) => JSON.parse(mq).id === q.$id))
+           res = res.filter((q) => module?.questionList.some((mq:string) => {
+             try {
+               return JSON.parse(mq).id === q.$id;
+             } catch (e) {
+               return false;
+             }
+           }))
            questionsRaw.push(...res)
         }
         const questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
-        const questionList = module?.questionList.map((q:string) => JSON.parse(q))
+        const questionList = module?.questionList.map((q:string) => {
+          try {
+            return JSON.parse(q);
+          } catch (e) {
+            return { id: null, status: null };
+          }
+        })
         if (quizType !== "infinite"){
             let randomized = randomizeArray(questions ?? [])
             
@@ -135,14 +152,11 @@ const quiz = () => {
 
         if (res) {
         const parsedList = JSON.parse(res) as QuestionItem[];
-
         const parsedMap = new Map(parsedList.map(q => [q.id, q.status]));
-
         tempQuestionList = questionList.map(q => ({
             ...q,
             status: parsedMap.get(q.id) ?? q.status,
         }));
-
         parsedList.forEach(q => {
             if (!tempQuestionList.some(item => item.id === q.id)) {
             tempQuestionList.push(q);
@@ -151,16 +165,21 @@ const quiz = () => {
         }
 
         const indexOfQuestion = tempQuestionList.findIndex(q => q.id === id);
-
+        let finalStatus = newStatus;
+        if (indexOfQuestion !== -1) {
+          const prevStatus = tempQuestionList[indexOfQuestion].status;
+          if (prevStatus === "GOOD" && newStatus === "GOOD" || prevStatus === "GREAT" && newStatus === "GREAT") {
+            finalStatus = "GREAT";
+          }
+        }
         if (indexOfQuestion === -1) {
-            tempQuestionList.push({ id, status: newStatus });
+            tempQuestionList.push({ id, status: finalStatus });
         } else {
             tempQuestionList[indexOfQuestion] = {
             ...tempQuestionList[indexOfQuestion],
-            status: newStatus
+            status: finalStatus
             };
         }
-        
         
         setQuestionList(tempQuestionList);
 

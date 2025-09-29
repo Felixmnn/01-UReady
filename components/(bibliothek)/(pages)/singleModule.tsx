@@ -124,9 +124,18 @@ const SingleModule = ({
   const [questions, setQuestions] = useState<question[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
   const [documents, setDocuments] = useState<AppwriteDocument[]>([]);
-  const parsedSessions = Array.isArray(module.sessions) ? module.sessions.map((session: string) =>
-    JSON.parse(session)
-  ) : [];
+  const parsedSessions = Array.isArray(module.sessions)
+  ? module.sessions.map((session: string) => {
+      try {
+        return JSON.parse(session);
+      } catch (e) {
+        if (__DEV__) {
+          console.error("Error parsing session:", session, e);
+        }
+        return session;
+      }
+    })
+  : [];
   const [sessions, setSessions] = useState(parsedSessions);
   {
     /* Language and Texts */

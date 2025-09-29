@@ -51,12 +51,10 @@ const AnswerComponent = ({
       <View className="flex-1 items-center justify-center">
         { latex && latex.length > 0 ? (
           <View className="w-full rounded-lg overflow-hidden"
-            style={{ height: 50, width: 200 }}
           >
           
             <KaTeXExample
               formula={latex}
-              fontSize={16}
               />
 
           </View>

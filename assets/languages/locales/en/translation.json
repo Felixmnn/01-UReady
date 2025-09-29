@@ -1761,5 +1761,16 @@
   }, "provider": {
     "noNetworkConnection": "No network connection",
     "tryAgain": "Try again"
+  },
+  "shop": {
+    "refillXEnergy": "Refill {{amount}} energy",
+    "getXEnergyForY": "Get {{amount}} energy for {{price}}€",
+    "buy": "Buy",
+    "buyEnergy": "Buy energy",
+    "freeEnergy": "Free energy"
+  },"ad": {
+    "watchAd": "Watch ad",
+    "get1EnergyFree": "Get 1 energy for free",
+    "watch": "Watch"
   }
 }

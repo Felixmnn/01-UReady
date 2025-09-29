@@ -49,7 +49,17 @@ const AllModules = ({
 }
 
 function calculatePercent(questions:string[]){
-  const parsedQuestions = questions.map(q => JSON.parse(q));
+  let parsedQuestions = []
+   parsedQuestions = questions.map(q => 
+   {
+    try {
+     return JSON.parse(q);
+    } catch (error) {
+      console.log("Error parsing question:", q, error);
+      return { status: null }; 
+    }
+  })
+  
   let sum = 0;
     for (let i = 0; i < parsedQuestions.length; i++) {
       if (parsedQuestions[i].status =="BAD") sum -= 1;

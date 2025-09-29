@@ -1,9 +1,22 @@
+import { getHeight, getZoom } from '@/functions/editQuestion';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-export default function KaTeXExample({ formula, fontSize = 16 }) {
+export default function KaTeXExample({ formula, fontSize, height }:{
+  formula: string;
+  fontSize?: number;
+  height?: number;
+}) {
   const [webViewHeight, setWebViewHeight] = useState(40);
+  console.log("Rendering formula:", formula);
+const justLatex = JSON.stringify(formula.replace(/(HEIGHT_NEUTRAL|HEIGHT_SMALL|HEIGHT_MEDIUM|HEIGHT_LARGE|ZOOM_IN_[123]|ZOOM_OUT_[123]|ZOOM_NEUTRAL)+$/, ''))
+  console.log("Extracted LaTeX:", justLatex); 
+  const fontS = fontSize ?  fontSize : getZoom(formula);
+  const heightS = height ? height : getHeight(formula);
+  console.log("Calculated font size:", fontS, fontSize);
+  console.log("Calculated height size:", heightS, height);
 
   const html = `
     <!doctype html>
@@ -14,7 +27,7 @@ export default function KaTeXExample({ formula, fontSize = 16 }) {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
         <style>
           body { margin:0; padding:0; }
-          .formula { font-size: ${fontSize}px; color: white; }
+          .formula { font-size: ${fontS}px; color: white; }
         </style>
       </head>
       <body>
@@ -22,7 +35,7 @@ export default function KaTeXExample({ formula, fontSize = 16 }) {
         <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
         <script>
           try {
-            const tex = ${JSON.stringify(formula)};
+            const tex = ${justLatex};
             const formulaDiv = document.getElementById('formula');
             katex.render(tex, formulaDiv, { throwOnError: false, displayMode: true });
             setTimeout(function() {
@@ -37,7 +50,7 @@ export default function KaTeXExample({ formula, fontSize = 16 }) {
   `;
 
   return (
-    <View style={{ height: 80, width: '100%' }}>
+    <View style={{ height: heightS, width: '100%' }}>
       <WebView
         originWhitelist={['*']}
         source={{ html }}

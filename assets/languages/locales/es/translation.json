@@ -1874,5 +1874,15 @@
   }, "provider":{
     "noNetworkConnection": "Sin conexión de red",
     "tryAgain": "Intentar de nuevo"
+  },"shop": {
+    "refillXEnergy": "Recargar {{amount}} de energía",
+    "getXEnergyForY": "Obtén {{amount}} de energía por {{price}}€",
+    "buy": "Comprar",
+    "buyEnergy": "Comprar energía",
+    "freeEnergy": "Energía gratis"
+  },"ad": {
+    "watchAd": "Ver anuncio",
+    "get1EnergyFree": "Obtén 1 energía gratis",
+    "watch": "Ver"
   }
 }

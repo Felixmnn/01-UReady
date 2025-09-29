@@ -3,18 +3,25 @@ import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
 import images from "@/assets/shopItems/itemConfig";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { RewardedAd, RewardedAdEventType, TestIds } from "react-native-google-mobile-ads"
+import { useTranslation } from "react-i18next";
+import { loadAproved } from "@/lib/appwriteDaten";
 
-export default function RewardedAdScreen() {
+export default function RewardedAdScreen({
+    aproved
+}:{
+    aproved: boolean
+  }) {
+  const { t } = useTranslation();
   const { userUsage, setUserUsage } = useGlobalContext();
-  
   // Dynamically require to avoid bundling on web
 
-  const adUnitId = __DEV__
+  const adUnitId = !aproved
     ? TestIds.REWARDED
-    : TestIds.REWARDED; // Hier ggf. echte AdUnit-ID eintragen
+    : "ca-app-pub-9834411851111627~1536371503"
+      "ca-app-pub-9834411851111627~5284044824"
 
-  const rewarded = RewardedAd.createForAdRequest(adUnitId);
-
+  let rewarded = RewardedAd.createForAdRequest(adUnitId);
+  
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -46,9 +53,8 @@ export default function RewardedAdScreen() {
   if (!loaded) {
     return null;
   }
-
   return (
-    <View className="flex-1 h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
+    <View className="flex-1  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
       <Image
         source={images.COMERCIAL}
         style={{
@@ -59,8 +65,8 @@ export default function RewardedAdScreen() {
         }}
       />
       <View className="flex-1">
-        <Text className="text-white font-bold">Watch Ad</Text>
-        <Text className="text-gray-400">Get 5 energy for free</Text>
+        <Text className="text-white font-bold">{t("ad.watchAd")}</Text>
+        <Text className="text-gray-400">{t("ad.get1EnergyFree")}</Text>
       </View>
       <TouchableOpacity
         className="bg-blue-900 px-4 py-2 rounded-[10px]"
@@ -73,7 +79,9 @@ export default function RewardedAdScreen() {
         }}
         disabled={!loaded}
       >
-        <Text className="text-white font-bold">Watch</Text>
+        <Text className="text-white font-bold">
+          {t("ad.watch") /* Watch Ad */}
+        </Text>
       </TouchableOpacity>
     </View>
   );

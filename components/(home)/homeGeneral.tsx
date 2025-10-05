@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import KaTeXExample from "./katext";
+import { handleValidationCode, sendValidationCode } from "@/lib/appwriteEmailValidation";
 
 type MiniModule = {
   name: string;
@@ -272,7 +273,7 @@ const HomeGeneral = () => {
     <SafeAreaView className="h-full w-full ">
       
       <TokenHeader/>
-
+      
       <ScrollView
         style={{
           height: "100%",

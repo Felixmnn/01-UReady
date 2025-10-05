@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
 import images from "@/assets/shopItems/itemConfig";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -13,32 +13,38 @@ export default function RewardedAdScreen({
   }) {
   const { t } = useTranslation();
   const { userUsage, setUserUsage } = useGlobalContext();
+  const [key, setKey] = useState(0); // <--- Neu
+
   // Dynamically require to avoid bundling on web
 
   const adUnitId = !aproved
     ? TestIds.REWARDED
-    : "ca-app-pub-9834411851111627~1536371503"
-      "ca-app-pub-9834411851111627~5284044824"
+    : Platform.OS == "android" ? "ca-app-pub-9834411851111627/7624634683"
+    :  "ca-app-pub-9834411851111627/7503014052"
 
-  let rewarded = RewardedAd.createForAdRequest(adUnitId);
+  let rewarded = useRef(
+    RewardedAd.createForAdRequest(adUnitId)
+  ).current;
   
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    console.log("AdUnitId:", adUnitId);
   const unsubscribeLoaded = rewarded.addAdEventListener(
     RewardedAdEventType.LOADED,
     () => {
       setLoaded(true);
     }
   );
-
+  console.log("Rewarded Ad Object:", rewarded);
   const unsubscribeEarned = rewarded.addAdEventListener(
     RewardedAdEventType.EARNED_REWARD,
     (reward) => {
       setUserUsage({
         ...userUsage,
-        energy: userUsage.energy + 5,
+        energy: userUsage.energy + 1,
       });
+      setKey(k => k + 1); // <--- Komponente neu laden nach Ad
     }
   );
 
@@ -48,13 +54,13 @@ export default function RewardedAdScreen({
     unsubscribeLoaded();
     unsubscribeEarned();
   }; 
-}, []);
+}, [key]); // <--- key als Dependency
 
   if (!loaded) {
     return null;
   }
   return (
-    <View className="flex-1  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
+    <View key={key} className="flex-1  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
       <Image
         source={images.COMERCIAL}
         style={{
@@ -70,12 +76,13 @@ export default function RewardedAdScreen({
       </View>
       <TouchableOpacity
         className="bg-blue-900 px-4 py-2 rounded-[10px]"
-       onPress={() => {
-        try {
-          rewarded.show();
-        } catch (error) {
-          rewarded.load();
-        }
+        onPress={() => {
+          try {
+            rewarded.show();
+            setKey(k => k + 1); // <--- Komponente neu laden nach Ad
+          } catch (error) {
+            rewarded.load();
+          }
         }}
         disabled={!loaded}
       >

@@ -237,11 +237,7 @@ const SignIn = () => {
               />
               <TouchableOpacity
                 onPress={() => {
-                  if (Platform.OS === "web") {
                     router.push("/reset-password");
-                  } else {
-                    Linking.openURL("https://qready-app.com/reset-password");
-                  }
                 }}
                 className="mt-2 items-center justify-center"
               >

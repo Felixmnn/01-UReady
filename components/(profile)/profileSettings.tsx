@@ -19,6 +19,8 @@ import { useTranslation } from "react-i18next";
 import { userDataKathegory } from "@/types/appwriteTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "@/assets/languages/i18n";
+import { handleValidationCode } from "@/lib/appwriteEmailValidation";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const ProfileSettings = () => {
   const { t } = useTranslation();
@@ -189,9 +191,23 @@ const ProfileSettings = () => {
   };
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | number >("");
+  const [successMessage, setSuccessMessage] = useState<string | number >("");
+  const [verifcationCode, setVerificationCode] = useState("");
   const ErrorModal = () => {
+    const codes = {
+      100: t("passwordReset.100"),
+      101: t("passwordReset.101"),
+      102: t("passwordReset.102"),
+      103: t("passwordReset.103"),
+      500: t("passwordReset.500"),
+      501: t("passwordReset.501"),
+      502: t("passwordReset.502"),
+      503: t("passwordReset.503"),
+      504: t("passwordReset.504"),
+      505: t("passwordReset.505"),
+    }
+    console.log("ErrorMessage",codes)
     return (
       <Modal
         animationType="slide"
@@ -216,11 +232,9 @@ const ProfileSettings = () => {
             }}
           >
             <Text className="text-white font-bold text-gray-300">
-              {isSuccess
-                ? t("profileSettings.successActionCode")
-                : errorMessage == "You already used this action code :("
-                  ? t("profileSettings.alreadyUsed")
-                  : actioncode + t("profileSettings.invalidCode")}
+             {
+              isSuccess && typeof successMessage === "number" ? codes[successMessage] : isSuccess && typeof successMessage === "string" ? successMessage : isError && typeof errorMessage === "number" ? codes[errorMessage] : isError && typeof errorMessage === "string" ? errorMessage : null
+            }
             </Text>
           </View>
         </TouchableOpacity>
@@ -277,7 +291,7 @@ const ProfileSettings = () => {
     ? userDataKathegory.schoolType.toLowerCase()
     : null;
   const schoolType = t(`school.type.${schoolTypeKey}.title`);
-
+  const [ verified, setVerified ] = useState<boolean | null>(null);
   return (
     <View className="flex-1 items-center ">
       {!loading ? (
@@ -308,23 +322,74 @@ const ProfileSettings = () => {
                         (text) => updateUserEmail(text),
                         true
                       )}
-                      {!user.emailVerification ? (
+                      {!user.emailVerification && (verified == null ||verified === false)
+                        ? (
                         <View
                           className={`${isVertical ? "flex-row w-[96%] justify-between items-center" : "justify-start items-start"} py-2 `}
                         >
                           <Text className="text-red-300 font-bold text-[12px]">
                             {t("profileSettings.emailvalid")}
                           </Text>
-                          <TouchableOpacity
-                            className="py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]"
-                            onPress={() => {
-                              validateEmail();
-                            }}
-                          >
-                            <Text className="text-gray-300 font-bold text-[12px]">
-                              {t("profileSettings.emailrenew")}
-                            </Text>
-                          </TouchableOpacity>
+                          <View className="flex-row items-center">
+                            <TouchableOpacity
+                              className="py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]"
+                              onPress={async() => {
+                                const res = await handleValidationCode(user.email);
+                                console.log("res",res)
+                                console.log("Parse Res",res.code)
+                                if (res && res.code === 100) {
+                                  console.log("Email sent successfully", t("passwordReset.100"));
+                                  setSuccessMessage(100);
+                                  setIsSccess(true);
+                                } else {
+                                  console.log("Error sending email", t(`passwordReset.${res.code}`));
+                                  setErrorMessage(res.code);
+
+                                  setIsError(true);
+                                }
+
+                              }}
+                            >
+                              <Text className="text-gray-300 font-bold text-[12px]">
+                                {t("profileSettings.emailrenew")}
+                              </Text>
+                            </TouchableOpacity>
+                                                      
+                            </View>
+                            <View className="flex-row items-center">
+                            <TextInput 
+                              placeholder={t("profileSettings.validationCode")}
+                              className="flex-1 bg-gray-800 text-white p-2 rounded-[10px] border border-gray-600  text-[12px]"
+                              placeholderTextColor="#808080"
+                              value={verifcationCode}
+                              onChangeText={setVerificationCode}
+                              />   
+                            <TouchableOpacity
+                              disabled={verifcationCode.length != 6}
+                              onPress={async() => {
+                                const res = await handleValidationCode(user.email, verifcationCode,user.$id);
+                               if (res && res.code === 101) {
+                                  console.log("Email verified successfully", t("passwordReset.101"));
+                                  setVerified(true);
+                                  setSuccessMessage(101);
+                                  setIsSccess(true);
+                                } else {
+                                  console.log("Error verifying email", t(`passwordReset.${res.code}`));
+                                  setVerified(false);
+                                  setErrorMessage(res.code);
+                                  setIsError(true);
+                                }
+                              }}
+                              className="flex-1 py-2 px-3 m-2 rounded-full bg-blue-500 items-center justify-center"
+                              style={{
+                                opacity: verifcationCode.length != 6 ? 0.5 : 1,
+                              }}
+                            >
+                              <Text className="text-gray-300 font-bold text-[12px]">
+                                {t("profileSettings.verify")}
+                              </Text>
+                            </TouchableOpacity>
+                            </View>
                         </View>
                       ) : (
                         <View className="w-full m-2 px-2">

@@ -223,7 +223,18 @@
     "almostDone": "Presque fini ! Qu’étudies-tu exactement ?",
     "yourEducation": "Ta formation"
   },
+ 
   "passwordReset": {
+    "100": "Code de validation envoyé avec succès",
+    "101": "E-mail vérifié avec succès",
+    "102": "Code de réinitialisation du mot de passe envoyé avec succès",
+    "103": "Mot de passe réinitialisé avec succès",
+    "500": "Erreur générale",
+    "501": "Aucun utilisateur trouvé avec cet e-mail",
+    "502": "Code invalide ou déjà utilisé",
+    "503": "Le code a expiré",
+    "504": "Les mots de passe ne correspondent pas",
+    "505": "Le nouveau mot de passe et la confirmation sont requis",
     "error": "Une erreur est survenue",
     "pleaseValidMail": "Veuillez saisir une adresse e-mail valide.",
     "passwordLength": "Le mot de passe doit contenir au moins 8 caractères.",
@@ -238,7 +249,16 @@
     "pleaseCheckYourPostfach": "Veuillez vérifier votre boîte mail.",
     "passwordRecoveryMail": "E-mail de récupération",
     "confirmPassword": "Confirmer le mot de passe",
-    "password": "Mot de passe"
+    "password": "Mot de passe",
+
+    "title": "Réinitialiser le mot de passe",
+    "requestNewCode": "Demander un nouveau code",
+    "codePlaceholder": "Entrez le code que vous avez reçu par e-mail",
+    "newPassordPlaceholder": "Entrez votre nouveau mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+    "resetPasswordButton": "Réinitialiser le mot de passe",
+    "backToLogin": "Retour à la connexion"
+    
   },
   "signIn": {
     "error": "Une erreur est survenue.",
@@ -438,6 +458,8 @@
     "numberOfAnswers": "Nombre de réponses"
   },
   "profileSettings": {
+    "validationCode": "Code de validation",
+    "verify": "Vérifier",
     "invalidCode": "Code d’action non valide.",
     "alreadyUsed": "Code d’action déjà utilisé.",
     "successActionCode": "Code d’action utilisé avec succès !",

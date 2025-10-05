@@ -223,7 +223,17 @@
     "almostDone": "¡Casi terminado! ¿Qué estudias exactamente?",
     "yourEducation": "Tu formación"
   },
-  "passwordReset": {
+  
+  "passwordReset": {"100": "Código de validación enviado con éxito",
+    "101": "Correo electrónico verificado con éxito",
+    "102": "Código de restablecimiento de contraseña enviado con éxito",
+    "103": "Contraseña restablecida con éxito",
+    "500": "Error general",
+    "501": "No se encontró un usuario con este correo electrónico",
+    "502": "Código no válido o ya utilizado",
+    "503": "El código ha expirado",
+    "504": "Las contraseñas no coinciden",
+    "505": "Se requieren la nueva contraseña y la confirmación",
     "error": "Se ha producido un error",
     "pleaseValidMail": "Por favor, introduce una dirección de correo electrónico válida.",
     "passwordLength": "La contraseña debe tener al menos 8 caracteres.",
@@ -238,7 +248,16 @@
     "pleaseCheckYourPostfach": "Por favor, revisa tu buzón.",
     "passwordRecoveryMail": "Correo de recuperación",
     "confirmPassword": "Confirmar contraseña",
-    "password": "Contraseña"
+    "password": "Contraseña",
+
+    "title": "Restablecer contraseña",
+    "requestNewCode": "Solicitar nuevo código",
+    "codePlaceholder": "Introduce el código que has recibido por correo",
+    "newPassordPlaceholder": "Introduce tu nueva contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu nueva contraseña",
+    "resetPasswordButton": "Restablecer contraseña",
+    "backToLogin": "Volver al inicio de sesión"
+    
   },
   "signIn": {
     "error": "Se ha producido un error.",
@@ -436,6 +455,8 @@
     "numberOfAnswers": "Número de respuestas"
   },
   "profileSettings": {
+    "validationCode": "Código de validación",
+    "verify": "Verificar",
     "invalidCode": "Código de acción no válido.",
     "alreadyUsed": "Código de acción ya utilizado.",
     "successActionCode": "¡Código de acción canjeado con éxito!",

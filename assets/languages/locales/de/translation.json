@@ -225,6 +225,16 @@
     "yourEducation": "Deine Ausbildung"
   },
   "passwordReset": {
+    "100": "Validierungscode erfolgreich versendet",
+    "101": "E-Mail erfolgreich verifiziert",
+    "102": "Passwort-Zurücksetzungs-Code erfolgreich versendet",
+    "103": "Passwort erfolgreich zurückgesetzt",
+    "500": "Allgemeiner Fehler",
+    "501": "Kein Benutzer mit dieser E-Mail gefunden",
+    "502": "Code ungültig oder bereits benutzt",
+    "503": "Code abgelaufen",
+    "504": "Passwörter stimmen nicht überein",
+    "505": "Neues Passwort und Bestätigung sind erforderlich",
     "error": "Fehler aufgetreten",
     "pleaseValidMail": "Bitte gib eine gültige E-Mail-Adresse ein.",
     "passwordLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
@@ -239,7 +249,15 @@
     "pleaseCheckYourPostfach": "Bitte überprüfe dein Postfach.",
     "passwordRecoveryMail": "Wiederherstellungs-E-Mail",
     "confirmPassword": "Passwort bestätigen",
-    "password": "Passwort"
+    "password": "Passwort",
+    
+    "title": "Passwort zurücksetzen",
+    "requestNewCode": "Neuen Code anfordern",
+    "codePlaceholder": "Gib den Code ein, den du per E-Mail erhalten hast",
+    "newPassordPlaceholder": "Gib dein neues Passwort ein",
+    "confirmPasswordPlaceholder": "Bestätige dein neues Passwort",
+    "resetPasswordButton": "Passwort zurücksetzen",
+    "backToLogin": "Zurück zur Anmeldung"
   },
   "signIn": {
     "error": "Ein Fehler ist aufgetreten.",
@@ -437,6 +455,8 @@
     "numberOfAnswers": "Anzahl der Antworten"
   },
   "profileSettings": {
+    "validationCode": "Bestätigungscode",
+    "verify": "Bestätigen",
     "invalidCode": "Ungültiger Aktioncode.",
     "alreadyUsed": "Aktioncode bereits verwendet.",
     "successActionCode": "Aktioncode erfolgreich eingelöst!",

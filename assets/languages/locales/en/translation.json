@@ -224,6 +224,16 @@
     "yourEducation": "Your Vocational Training"
   },
   "passwordReset": {
+    "100": "Verification code sent successfully",
+    "101": "Email verified successfully",
+    "102": "Password reset code sent successfully",
+    "103": "Password reset successfully",
+    "500": "General error",
+    "501": "No user found with this email",
+    "502": "Code invalid or already used",
+    "503": "Code has expired",
+    "504": "Passwords do not match",
+    "505": "New password and confirmation are required",
     "error": "An error occurred",
     "pleaseValidMail": "Please enter a valid email address.",
     "passwordLength": "The password must be at least 8 characters long.",
@@ -238,7 +248,15 @@
     "pleaseCheckYourPostfach": "Please check your inbox.",
     "passwordRecoveryMail": "Password Recovery Email",
     "confirmPassword": "Confirm Password",
-    "password": "Password"
+    "password": "Password",
+
+    "title": "Reset Password",
+    "requestNewCode": "Request New Code",
+    "codePlaceholder": "Enter the code you received via email",
+    "newPassordPlaceholder": "Enter your new password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "resetPasswordButton": "Reset Password",
+    "backToLogin": "Back to Login"
   },
   "signIn": {
     "error": "An error occurred.",
@@ -437,6 +455,8 @@
     "numberOfAnswers": "Number of answers"
   },
   "profileSettings": {
+    "validationCode": "Validation Code",
+    "verify": "Verify",
     "invalidCode": "Invalid action code.",
     "alreadyUsed": "Action code already used.",
     "successActionCode": "Action code redeemed successfully!",

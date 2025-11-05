@@ -99,6 +99,7 @@ const quiz = () => {
            }))
            questionsRaw.push(...res)
         }
+        console.log("Questions Raw:", questionsRaw);
         const questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];

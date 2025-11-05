@@ -49,7 +49,10 @@ const SearchList = ({
       />
       <View className="flex-1">
         <FlatList
-          data={data}
+          data={data.filter((item) =>
+            item.name.toLowerCase().includes(filter.toLowerCase())
+          )
+          }
           keyExtractor={(item) => item.name}
           ListEmptyComponent={() => (
             <View className="items-center justify-center flex-1">

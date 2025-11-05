@@ -133,6 +133,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     if (keys.length > 1) {
       const modules = await searchDocuments(filters);
       if (modules) {
+        console.log("Fetched Modules:", modules);
         setModules(modules as module[]);
       } else {
         setModules([]);
@@ -529,6 +530,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
           indexesOfEduSubjects?.map((i) => eduSubKeys[i]) || null,
         otherSubjects: realFilters.otherSubjects,
       });
+      console.log("Modules fetched with filters:",  res);
       res = res?.filter((m)=> modules.some((mod)=> mod.$id == m.$id) == false)
       if (loadingMore) {
         setModules((prev: module[]) => [

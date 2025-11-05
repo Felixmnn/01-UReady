@@ -1,98 +1,81 @@
-# 🎓 Q-Ready – Deine smarte Lernplattform
+<!-- Highlighted App Store review notice -->
+<div style="background-color:#1b4d75; padding:10px; border-radius:5px; margin-bottom:15px;">
+<strong>Notice:</strong> The app is currently under review by the App Store and is not yet available.
+</div>
 
-![Q-Ready Logo](./assets/images/favicon.png)
+<!-- Title with icon -->
+<div style="display:flex; align-items:center; gap:16px;">
+  <img src="./assets/images/icon.png" alt="QReady Icon" style="width:50px; height:50px;">
+  <h1 style="margin:0;">QReady</h1>
+</div>
 
-> **Q-Ready** ist eine Lernerweiterung. Welche dir hilft dein Wissen zu festigen und mithilfe von Repetive learning zu erweitern. 🚀  
-> Entwickelt für Schüler, Studenten, Auszubildende und alle die ihr Wissen erweitern wollen.
+# QReady
 
----
+QReady is a learning platform designed for students, trainees, and university students. The app is currently available in English, German, Spanish, and French.
 
-## 📸 App-Vorschau
+## About QReady
 
-| Dashboard | Modulerstellung | Fragen | Quiz | 
-|----------|-----------------|------| ----- |
-| ![Dashboard](./assets/screens/dashboard.png) | ![Modul](./assets/screens/module.png) |![Fragen](./assets/screens/quiz.png) | ![Quiz](./assets/screens/quiz.png) |
+- Users can create modules, which contain sessions. Sessions can include quiz questions, documents, and notes.
+- Documents can be published and shared via the "Discover" page.
+- Modules can be created manually or with AI, based on texts, content, or existing questions. This feature works in all four supported languages.
+- LaTeX formulas and images can be rendered in quiz questions.
+- i18n is used for multilingual support.
 
----
+### Technical Details
 
-## ⚙️ Features
-Fragen
-- ✅ Eigene Module und Fragen erstellen
-- 📈 Lernstatistiken & Fortschrittsverfolgung
-- 🧠 Quiz-Modus zur Wiederholung
-- 💡 Vorschläge für neue Module basierend auf Lernzielen
-- 👥 Kontakt- & Freundschaftsfunktionen
-- 🔒 Sicheres Login (Appwrite)
-- 🌙 Dark Mode / Light Mode
-- 🧾 Premiumfunktionen über Stripe
+- Built with React Native.
+- Backend: Appwrite and Python.
+- AI Integration: OpenAI API (GPT-4).
+- In-App Purchases: iOS and Google Play.
+- Google AdMob integration.
+- Search engine with filters for published modules.
 
----
+<!-- Highlighted legal notice -->
+<div style="background-color:#d71b32; padding:10px; border-radius:5px;">
+<strong>All rights reserved by QReady.</strong> The code may be used for understanding specific aspects (e.g., Appwrite OAuth, OpenAI integration, IAP integration, Google AdMob integration) for learning purposes. Feedback and suggestions for improvement are very welcome! 🤗
+</div>
 
-## 🧱 Tech Stack
+## Screenshots
 
-| Technologie     | Einsatzbereich                         |
-|----------------|------------------------------------------|
-| React Native    | Mobile App (Cross-Platform)             |
-| Expo Router     | Navigation                              |
-| Appwrite        | Authentifizierung, Datenbank, Storage   |
-| Stripe          | Zahlungsabwicklung                      |
-| OpenAI API      | Generierung von Fragen (optional)       |
+### General UI
 
----
+<div style="display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px;">
+  <img src="./aditional-media/6.jpeg" alt="Home Screen" style="max-width:200px;">
+  <img src="./aditional-media/9.jpeg" alt="Shop" style="max-width:200px;">
+  <img src="./aditional-media/10.jpeg" alt="Profile Page" style="max-width:200px;">
+</div>
 
-## 🛠️ Installation
+**Descriptions:**
+1. Home Screen  
+2. Discover Page with User-Generated Modules  
+3. Shop  
+4. Profile
 
-```bash
-git clone https://github.com/deinuser/q-ready.git
-cd q-ready
-npm install
-npx expo start
-```
---- 
-## 🔐 .env-Konfiguration
+### Module Features
 
-```bash
-APPWRITE_ENDPOINT=https://your-appwrite-url
-APPWRITE_PROJECT=your_project_id
-OPENAI_API_KEY=sk-...
-```
----
+<div style="display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px;">
+  <img src="./aditional-media/4.jpeg" alt="Module Overview" style="max-width:200px;">
+  <img src="./aditional-media/3.jpeg" alt="AI Module Overview" style="max-width:200px;">
+  <img src="./aditional-media/1.jpeg" alt="Active Quiz" style="max-width:200px;">#
+    <img src="./aditional-media/2.jpeg" alt="Active Quiz" style="max-width:200px;">#
 
-## 🚀 Deployment 
-```bash
-npx expo export
-npx expo build:android
-npx expo build:ios
-```
----
+</div>
 
-## ✅ Roadmap
+**Descriptions:**
+4. Module Overview with Questions, etc.  
+5. Module Overview with AI Generation  
+6. Question with Latex 
+7. Question with Image
 
-- 📈 Integration von Visualisierungen und Diagrammen  
-- 🔗 Teilen von Lernmodulen mit anderen Nutzer:innen  
-- 🧩 Erweiterte Quiz-Modi (z. B. Zeitmodus, Lernkarten)
+### User & Creation
 
----
+<div style="display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px;">
+  <img src="./aditional-media/7.jpeg" alt="Discover Page" style="max-width:200px;">
+  <img src="./aditional-media/8.jpeg" alt="Module Creation" style="max-width:200px;">
+</div>
 
-## 🔐 Lizenz
+**Descriptions:**
+7. Discover Modules 
+8. Module Creation (AI)  
 
-**Copyright © 2025 UReady**
 
-Diese App steht **nicht unter einer Open-Source-Lizenz**.
-
-### 💡 Du darfst:
-- ✅ Die App installieren und verwenden  
-- ✅ Screenshots für Präsentationen und Vorführungen nutzen
-
-### ❌ Du darfst nicht:
-- ❌ Den Quellcode kopieren, verändern oder verbreiten  
-- ❌ Die App als eigene Arbeit ausgeben  
-- ❌ Kommerzielle Ableger auf Basis dieses Codes entwickeln
-
----
-
-## 📩 Kontakt
-
-**UReady App Team**  
-📧 support@uready.app  
-🌐 [www.uready.app](https://www.uready.app)

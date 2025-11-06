@@ -1,4 +1,4 @@
-import { functions } from "./appwrite";
+import { config, functions } from "./appwrite";
 
 export async function handleValidationCode(email: string, code?: string, userId?: string, passwordReset?: boolean, newPassword?: string, passwordConfirm?: string) {
   let response = "";
@@ -12,7 +12,7 @@ export async function handleValidationCode(email: string, code?: string, userId?
     if (passwordConfirm) payload.passwordConfirm = passwordConfirm;
 
     const execution = await functions.createExecution(
-      "68def3d80003c2647922", // ID deiner All-in-One Function
+      config.functionID ,
       JSON.stringify(payload),
       false // false = warte auf Response
     );

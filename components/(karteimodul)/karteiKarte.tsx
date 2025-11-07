@@ -140,7 +140,7 @@ const Karteikarte = ({
     >
       <ReportModal />
       <View
-        className={` rounded-t-[10px] border-t-[1px] border-gray-700 `}
+        className={` rounded-t-[10px]  border-gray-700 `}
         style={{ height: 5, backgroundColor: color }}
       />
       <View
@@ -157,8 +157,8 @@ const Karteikarte = ({
               style={{ height: 50 }}
             >
               {studiengang
-                ? studiengang.length > 100
-                  ? studiengang.substring(0, 100) + "..."
+                ? studiengang.length > 150
+                  ? studiengang.substring(0, 150) + "..."
                   : studiengang
                 : null}
             </Text>

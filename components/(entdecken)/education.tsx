@@ -34,7 +34,7 @@ const EudcationFilters = ({
   return (
     <ScrollView className=" w-full  ">
       <FilterPicker
-        title="Anschlussziel"
+        title={t("entdecken.educationCategory")}
         options={eduList}
         selectedOptions={filters.educationKathegory}
         handlePress={(option) => {
@@ -45,6 +45,7 @@ const EudcationFilters = ({
             setFilters({
               ...filters,
               educationKathegory: [],
+              educationSubject: null,
             });
           } else {
             setFilters({
@@ -56,10 +57,16 @@ const EudcationFilters = ({
       />
       {filters.educationKathegory && filters.educationKathegory.length > 0 && (
         <FilterPicker
-          title="Fachrichtung"
+          title={t("entdecken.educationField")}
           options={eduSubList}
           selectedOptions={filters.educationSubject}
           handlePress={(option) => {
+            console.log("option", filters.educationSubject &&
+                  filters.educationSubject.length > 0
+                    ? filters.educationSubject.filter(
+                        (item: string) => item !== option
+                      )
+                    : [],);
             if (
               filters.educationSubject &&
               filters.educationSubject.includes(option)

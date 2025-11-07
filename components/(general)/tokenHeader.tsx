@@ -147,7 +147,11 @@ const TokenHeader = ({
       </View>
 
       {moreVisible && (
-        <View className="w-full px-4  justify-center items-center p-2">
+        <TouchableOpacity className="w-full px-4  justify-center items-center p-2"
+          onPress={()=> setMoreVisible(!moreVisible)}
+        >
+          {
+            userUsage && userUsage.energy < 10 &&
           <View className="w-full flex-row justify-between max-w-[200px]">
             {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
               <Icon
@@ -158,6 +162,7 @@ const TokenHeader = ({
               />
             ))}
           </View>
+          }
           <View>
             <Text className="text-white text-center mt-2 font-semibold">
               {userUsage?.energy >= 10
@@ -165,10 +170,10 @@ const TokenHeader = ({
                 : `${timeLeft ?? "…"} ${t("tokenHeader.minutesLeft")}`}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       )}
 
-      <View className="w-full border-[1px] border-gray-700 mb-2" />
+      <View className="w-full border-t-[1px]  border-gray-700 mb-2" />
     </View>
   );
 };

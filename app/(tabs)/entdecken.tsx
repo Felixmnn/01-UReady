@@ -31,7 +31,10 @@ import { loadAllModules } from "@/lib/appwriteDaten";
 import { useTranslation } from "react-i18next";
 import { getMatchingModules } from "@/lib/appwriteEntdecken";
 import { module } from "@/types/appwriteTypes";
+import { convertToObjects, repairAndParseJSONStrings, repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
 
+
+//Constant Values
 type FilterType = {
   eductaionType: "UNIVERSITY" | "SCHOOL" | "EDUCATION" | "OTHER" | null;
   universityDegreeType:
@@ -52,36 +55,52 @@ type FilterType = {
   educationSubject?: string[] | undefined | null;
 
   otherSubjects?: string[] | undefined | null;
+  textSearchType: "NAME" | "DESCRIPTION" | "CREATOR";
+  minQuestions?: number;
+  includeCopies?: boolean;
 };
-
-const entdecken = () => {
-  const { t } = useTranslation();
-  const { userUsage, setUserUsage, userData } = useGlobalContext();
-
-  useEffect(() => {
-    async function fetchAllModules() {
-      const modules = await loadAllModules();
-      if (modules) {
-        setModules(
-          ((modules as unknown) as module[]).filter(
-            (m) =>
-              m.public == true &&
-              m.questions > 0 &&
-              m.name.includes("Kopie") == false
-          )
-        );
-      } else {
-        setModules([]);
-      }
-    }
-    fetchAllModules();
-  }, []);
 const languageoptions = [
       { label: "Deutsch", value: "de" },
       { label: "English", value: "en" },
       { label: "Spanish", value: "es" }, 
       { label: "Français", value: "fra" },
     ];
+
+
+const entdecken = () => {
+  const { t } = useTranslation();
+  const { userUsage, setUserUsage, userData,user, isLoggedIn, isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
+  useEffect(() => {
+    if (!isLoading && (!user || !isLoggedIn)) {
+      router.replace("/"); // oder "/sign-in"
+    }
+  }, [user, isLoggedIn, isLoading]);
+
+
+
+  // Currently loading all Modules later edit to only load personalized Modules
+  useEffect(() => {
+    async function fetchAllModules() {
+      const moduleOBJ = await loadAllModules();
+      let modules = moduleOBJ ? moduleOBJ.modules : []; 
+      setAmountOfModules(moduleOBJ ? moduleOBJ.total : 0); // Is not working correctly since all modules also incdued private ones will fix later
+      if (modules) {
+        setModules(
+          ((modules as unknown) as module[]).filter(
+            (m) =>
+              m.public == true &&
+              m.questions > 0 
+          )
+        );
+        setLoading(false);
+      } else {
+        setModules([]);
+        setLoading(false);
+      }
+    }
+    fetchAllModules();
+  }, []);
+
 const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
@@ -90,14 +109,8 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   {
     /*Ersetze die is Copyed durch orginal Id für den Fal eines Clon Updates */
   }
-  const { user, isLoggedIn, isLoading, setReloadNeeded, reloadNeeded } =
-    useGlobalContext();
   const [rel, setRel] = useState(false);
-  useEffect(() => {
-    if (!isLoading && (!user || !isLoggedIn)) {
-      router.replace("/"); // oder "/sign-in"
-    }
-  }, [user, isLoggedIn, isLoading]);
+  
 
   const { width } = useWindowDimensions();
   const numColumns = Math.floor(width / 300);
@@ -109,8 +122,9 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   const [selectedKathegory, setSelectedKathegory] = useState("UNIVERSITY");
 
   //Module entdecken
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modules, setModules] = useState<module[]>([]);
+  const [amountOfModules, setAmountOfModules] = useState(0);
   const [myModules, setMyModules] = useState<module>();
 
   //____ The filter Part _____________________________________________________________
@@ -126,8 +140,12 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     schoolGrades: null,
     schoolSubjects: null,
     schoolType: null,
+    textSearchType: "NAME",
+    minQuestions: 0,
+    includeCopies: false,
   });
 
+  /* Veraltete Fetch Function kann gelöscht werden
   async function fetchModules(filters: any) {
     const keys = Object.keys(filters);
     if (keys.length > 1) {
@@ -144,6 +162,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   useEffect(() => {
     fetchModules(filters);
   }, [filters]);
+  */
 
   //_____________________________________________________________________________________
 
@@ -182,7 +201,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
       },
     },
     {
-      name: t("entdecken.other"),
+      name: t("entdecken.moreFilters"),
       enum: "OTHER",
       icon: "ellipsis-h",
       color: "#f39c12",
@@ -193,9 +212,11 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     },
   ];
 
+  const [searchBarTextOld, setSearchBarTextOld] = useState("");
   const [searchBarText, setSearchBarText] = useState("");
   const [focused, setFocused] = useState(false);
 
+  // Function to add a Module to the User's Library
   async function add(mod: any) {
     setLoading(true);
     try {
@@ -212,6 +233,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     }
   }
 
+  // This is a UI Component that shows the Copy Button when the User has selected Modules
   const CopyModulesButton = ({ topButton = false }) => {
     function calculateEnergyCost() {
       let price = 0;
@@ -252,10 +274,12 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
                 : "#bc3c3c",
           }}
           onPress={async () => {
+            console.log("I have been pressed")
             setReloadNeeded([...reloadNeeded, "Bibliothek"]);
             if (selectedModules.length > 0) {
               modules.map((module: any) => {
                 if (selectedModules.includes(module.$id)) {
+                  
                   const mod = {
                     name: module.name + " (Kopie)",
                     subject: module.subject,
@@ -266,7 +290,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
                     progress: 0,
                     creator: user.$id,
                     color: module.color,
-                    sessions: module.sessions,
+                    sessions: repairAndParseJSONStringsSessions(module.sessions).map(s=> JSON.stringify(s)),
                     tags: module.tags,
                     description: module.description,
                     releaseDate: new Date(),
@@ -274,8 +298,9 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
                     qualityScore: module.qualityScore,
                     copy: true,
                     synchronization: false,
-                    questionList: module.questionList.map((q:string) => JSON.stringify({ ...JSON.parse(q), userAnswer: null, status: null })),
-                  };
+                    questionList: repairQuestionList(module.questionList).map(q => JSON.stringify(q))
+                                    };
+                  console.log("Adding Module:", mod.questionList);
 
                   add(mod);
                 }
@@ -512,7 +537,20 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     );
 
     try {
-      let res = await getMatchingModules({
+      const isSearchTextLonger = searchBarText.length > searchBarTextOld.length;
+      const allModulesMatch = modules.every(m => m.name.includes(searchBarText));
+
+      if (isSearchTextLonger && allModulesMatch && modules.length === amountOfModules) {
+        setLoading(false);
+        return;
+      }
+const educationSubject = (() => {
+  const result = indexesOfEduSubjects?.map((i) => eduSubKeys[i]) ?? [];
+  const filtered = result.filter((v) => v !== undefined && v !== null);
+  return filtered.length > 0 ? filtered : null;
+})();
+
+      let resOBJ = await getMatchingModules({
         searchText: searchBarText,
         offset: modules.length ? modules.length : 0,
         languages: selectedLanguages.length > 0 ? selectedLanguages : null,
@@ -526,16 +564,21 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
         schoolGrades:
           realFilters.schoolGrades?.map((grade) => Number(grade)) || null,
         eductaionCategory: indexOfEduKat?.map((i) => eduKatKeys[i]) || null,
-        educationSubject:
-          indexesOfEduSubjects?.map((i) => eduSubKeys[i]) || null,
+        educationSubject:educationSubject,
         otherSubjects: realFilters.otherSubjects,
+        textSearchType: realFilters.textSearchType,
+        minQuestions: realFilters.minQuestions,
+        includeCopies: realFilters.includeCopies || false,
       });
-      console.log("Modules fetched with filters:",  res);
-      res = res?.filter((m)=> modules.some((mod)=> mod.$id == m.$id) == false)
+      console.log("Amount of Modules fetched:", resOBJ ? resOBJ.total : 0);
+      setAmountOfModules(resOBJ ? resOBJ.total : 0);
+      let res = resOBJ ? resOBJ.modules : [];
+
       if (loadingMore) {
         setModules((prev: module[]) => [
           ...prev,
-          ...((res ?? []) as unknown as module[]),
+          ...((res.filter((m: any) => m.$id && !prev.some(pm => pm.$id === m.$id))
+             ?? []) as unknown as module[]),
         ]);
         setOffset((prev) => prev + (res ? res.length : 0));
       } else {
@@ -544,14 +587,20 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
         
       }
 
-      setHasMore(res && res.length > 0 ? true : false); // Assuming page size of 25
-    } catch (e) {
+if (loadingMore) {
+  // Pagination: alte Module + neue Module
+  setHasMore(resOBJ ? modules.length + res.length < resOBJ.total : false);
+} else {
+  // Neue Suche: nur das aktuelle Ergebnis zählt
+  setHasMore(resOBJ ? res.length < resOBJ.total : false);
+}    } catch (e) {
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
+    console.log("Educatio Subjects ", realFilters.educationSubject);
     getModules({
       loadingMore: false,
     });
@@ -562,7 +611,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
       content={() => {
         return (
           <View className="flex-1  w-full bg-[#0c111d] rounded-[10px] ">
-            <TokenHeader userUsage={userUsage} />
+            <TokenHeader />
 
             {/* Searchbar and Filter Activation */}
             <View className="flex-row w-full items-center">
@@ -584,7 +633,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}
                     placeholder={t("entdecken.searchText")}
-                    onChangeText={(text) => setSearchBarText(text)}
+                    onChangeText={(text) =>{setSearchBarTextOld(text); setSearchBarText(text)}}
                     placeholderTextColor={"#797d83"}
                   />
                 </View>
@@ -604,7 +653,6 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
               <View
                 className=" bg-gray-500 rounded-full items-center justify-center"
                 style={{
-                  width: 80,
                   marginLeft: 18,
                   paddingVertical: 2,
                   paddingHorizontal: 4,
@@ -612,7 +660,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
                 }}
               >
                 <Text className="text-white font-semibold text-[10px] ">
-                  {modules.filter((m: any) => m.public == true).length}{" "}
+                  {amountOfModules}{" "}
                   {t("entdecken.results")}
                 </Text>
               </View>

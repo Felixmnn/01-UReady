@@ -14,7 +14,7 @@ const FilterPicker = ({
 }) => {
   return (
     <View className="w-full px-4">
-      <Text className="text-lg font-semibold text-gray-700 mb-2 mt-4">
+      <Text className="text-lg font-semibold text-gray-300 mb-2 mt-4">
         {title}
       </Text>
       <View className="flex-row flex-wrap justify-start items-center w-full py-1">

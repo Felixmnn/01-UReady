@@ -50,7 +50,7 @@ const SchoolFilters = ({
   return (
     <ScrollView className=" w-full  ">
       <FilterPicker
-        title="Schulform"
+        title={t("entdecken.schooltype")}
         options={schoolTypeTitles}
         selectedOptions={filters.schoolType}
         handlePress={(type) => {
@@ -73,7 +73,7 @@ const SchoolFilters = ({
       />
 
       <FilterPicker
-        title="Klassen"
+        title={t("entdecken.schoolGrade")}
         options={grades}
         selectedOptions={filters.schoolGrades}
         handlePress={(type) => {
@@ -98,7 +98,7 @@ const SchoolFilters = ({
       />
 
       <FilterPicker
-        title="Fächer"
+        title={t("entdecken.schoolGrade")}
         options={subjects}
         selectedOptions={filters.schoolSubjects}
         handlePress={(type) => {

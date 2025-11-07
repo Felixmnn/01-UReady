@@ -29,7 +29,7 @@ const UniversityFilters = ({
   return (
     <ScrollView className=" w-full  ">
       <FilterPicker
-        title="Anschlussziel"
+        title={t("entdecken.educationGoal")}
         options={degreeNames}
         selectedOptions={filters.universityDegreeType}
         handlePress={(option) => {
@@ -57,7 +57,7 @@ const UniversityFilters = ({
         }}
       />
       <FilterPicker
-        title="Fachrichtung"
+        title={t("entdecken.fieldOfStudy")}
         options={subjectList}
         selectedOptions={filters.universityKategorie}
         handlePress={(option) => {

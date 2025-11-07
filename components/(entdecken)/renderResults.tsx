@@ -34,9 +34,6 @@ const RenderResults = ({
               source={require("../../assets/noResults.png")}
               style={{ width: 200, height: 200, borderRadius: 5 }}
             />
-            <Text className="text-gray-300 font-bold text-[18px]">
-              Keine Ergebnisse
-            </Text>
           </View>
         }
         renderItem={({ item, index }) => (
@@ -46,6 +43,16 @@ const RenderResults = ({
               height: 180, // feste Höhe
               marginRight: 8,
               marginBottom: 8,
+              opacity: selectedModules.includes(item.$id ?? "") ? 1 : 0.6,
+              borderColor: selectedModules.includes(item.$id ?? "")
+                ? "#3B82F6"
+                : "none",
+              borderWidth: selectedModules.includes(item.$id ?? "") ? 2 : 0,
+              borderBottomEndRadius: 12,
+              borderBottomStartRadius: 12,
+              borderTopStartRadius: 8,
+              borderTopEndRadius: 8,
+              
             }}
           >
             <Karteikarte

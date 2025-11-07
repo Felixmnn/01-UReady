@@ -18,6 +18,9 @@ export async function getMatchingModules({
   educationSubject,
 
   otherSubjects,
+  textSearchType,
+  minQuestions,
+  includeCopies,
 }: {
   searchText?: string;  
   offset?: number;
@@ -34,6 +37,10 @@ export async function getMatchingModules({
   educationSubject?: string[] | undefined | null;
 
   otherSubjects?: string[] | undefined | null;
+  textSearchType: "NAME" | "DESCRIPTION" | "CREATOR";
+  minQuestions?: number;
+  includeCopies?: boolean;
+
 }) {
   console.log("Aufruf mit:", {
     searchText,
@@ -48,6 +55,9 @@ export async function getMatchingModules({
     eductaionCategory,
     educationSubject,
     otherSubjects,
+    textSearchType,
+    minQuestions,
+    includeCopies,
   }
   )
   switch (eductaionType) {
@@ -59,6 +69,9 @@ export async function getMatchingModules({
         offset,
         languages,
         searchText,
+        textSearchType,
+        minQuestions,
+        includeCopies,
       });
     case "SCHOOL":
       console.log("SCHOOL");
@@ -69,6 +82,9 @@ export async function getMatchingModules({
         offset,
         languages,
         searchText,
+        textSearchType,
+        minQuestions,
+        includeCopies,
       });
     case "EDUCATION":
       return await getEducationModules({
@@ -77,10 +93,20 @@ export async function getMatchingModules({
         offset,
         languages,
         searchText,
+        textSearchType,
+        minQuestions,
+        includeCopies,
       });
-      console.log("EDU");
     case "OTHER":
-      return await getOtherModules({ schoolSubjects, offset, languages });
+      return await getOtherModules({
+        schoolSubjects,
+        offset,
+        languages,
+        searchText,
+        textSearchType,
+        minQuestions,
+        includeCopies,
+      });
   }
 }
 
@@ -94,12 +120,18 @@ async function getUniversityModules({
   offset,
   languages,
   searchText,
+  textSearchType,
+  minQuestions,
+  includeCopies,
 }: {
   offset?: number;
   universityDegreeType?: string[] | null; // e.g. "BACHELOR", "MASTER", "PHD", "DIPLOM", "STATE_EXAM", "OTHER", "NONE"
   universityKategorie?: string[] | null;
   languages?: string[] | null;
   searchText?: string;
+  textSearchType: "NAME" | "DESCRIPTION" | "CREATOR";
+  minQuestions?: number;
+  includeCopies?: boolean;
 }) {
   console.log("Fetching University Modules with:", {
     universityDegreeType,
@@ -139,8 +171,25 @@ async function getUniversityModules({
     filters.push(Query.or(subjectFilters));
   }
   if (searchText && searchText.trim() !== "") {
-    filters.push(Query.contains("name", searchText));
+    if (textSearchType === "NAME") {
+      filters.push(Query.contains("name", searchText));
+    } else if (textSearchType === "DESCRIPTION") {
+      filters.push(Query.contains("description", searchText));
+    } else if (textSearchType === "CREATOR") {
+      filters.push(Query.contains("creator", searchText));
+    }
   }
+
+  
+
+  if (minQuestions !== undefined) {
+    filters.push(Query.greaterThanEqual("questions", minQuestions));
+  }
+
+  if (includeCopies === false) {
+    filters.push(Query.equal("copy", false));
+  }
+
   console.log("Filters for University Modules:", filters);
   try {
     const response = await databases.listDocuments(
@@ -148,10 +197,10 @@ async function getUniversityModules({
       config.moduleCollectionId,
       [...filters,Query.limit(10), Query.offset(offset ?? 0)]
     );
-    return response.documents;
+    return {modules:response.documents, total: response.total};
   } catch (error) {
     console.error("Error fetching university modules:", error);
-    return [];
+    return {modules:[], total: 0};
   }
 }
 
@@ -162,6 +211,9 @@ async function getSchoolModules({
   offset,
   languages,
   searchText,
+  textSearchType,
+  minQuestions,
+  includeCopies,
 }: {
   schoolType?: string[] | undefined | null;
   schoolSubjects?: string[] | undefined | null;
@@ -169,6 +221,9 @@ async function getSchoolModules({
   offset?: number;
   languages?: string[] | null;
   searchText?: string;
+  textSearchType: "NAME" | "DESCRIPTION" | "CREATOR";
+  minQuestions?: number;
+  includeCopies?: boolean;
 }) {
   const filters = [
     Query.equal("kategoryType", "SCHOOL"),
@@ -208,18 +263,35 @@ async function getSchoolModules({
     filters.push(Query.or(gradeFilters));
   }
   if (searchText && searchText.trim() !== "") {
-    filters.push(Query.contains("name", searchText));
+    if (textSearchType === "NAME") {
+      filters.push(Query.contains("name", searchText));
+    } else if (textSearchType === "DESCRIPTION") {
+      filters.push(Query.contains("description", searchText));
+    } else if (textSearchType === "CREATOR") {
+      filters.push(Query.contains("creator", searchText));
+    }
   }
+
+  
+
+  if (minQuestions !== undefined) {
+    filters.push(Query.greaterThanEqual("questions", minQuestions));
+  }
+
+  if (includeCopies === false) {
+    filters.push(Query.equal("copy", false));
+  }
+
   try {
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
       [...filters, Query.limit(10), Query.offset(offset ?? 0)]
     );
-    return response.documents;
+    return {modules:response.documents, total: response.total};
   } catch (error) {
     console.error("Error fetching school modules:", error);
-    return [];
+    return {modules:[], total: 0};
   }
 }
 
@@ -228,17 +300,20 @@ async function getOtherModules({
   offset,
   languages,
   searchText,
+  textSearchType,
+  minQuestions,
+  includeCopies,
 }: {
   schoolSubjects?: string[] | undefined | null;
   offset?: number;
   languages?: string[] | null;
   searchText?: string;
+  textSearchType: "NAME" | "DESCRIPTION" | "CREATOR";
+  minQuestions?: number;
+  includeCopies?: boolean;
 }) {
   console.log("Starting");
   const filters = [
-    Query.notEqual("kategoryType", "UNIVERSITY"),
-    Query.notEqual("kategoryType", "EDUCATION"),
-    Query.notEqual("kategoryType", "OTHER"),
     Query.equal("public", true),
   ];
   if (languages && languages.length > 0) {
@@ -255,18 +330,36 @@ async function getOtherModules({
     filters.push(Query.or(subjectFilters));
   }
   if (searchText && searchText.trim() !== "") {
-    filters.push(Query.contains("name", searchText));
+    if (textSearchType === "NAME") {
+      filters.push(Query.contains("name", searchText));
+    } else if (textSearchType === "DESCRIPTION") {
+      filters.push(Query.contains("description", searchText));
+    } else if (textSearchType === "CREATOR") {
+      filters.push(Query.contains("creator", searchText));
+    }
+    
   }
+
+  
+
+  if (minQuestions !== undefined) {
+    filters.push(Query.greaterThanEqual("questions", minQuestions));
+  }
+
+  if (includeCopies === false) {
+    filters.push(Query.equal("copy", false));
+  }
+
   try {
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
       [...filters, Query.limit(10), Query.offset(offset ?? 0)]
     );
-    return response.documents;
+    return {modules:response.documents, total: response.total};
   } catch (error) {
     console.error("Error fetching other modules:", error);
-    return [];
+    return {modules:[], total: 0}
   }
 }
 
@@ -276,12 +369,18 @@ async function getEducationModules({
   offset,
   languages,
   searchText,
+  textSearchType,
+  minQuestions,
+  includeCopies,
 }: {
   offset?: number;
   eductaionCategory?: string[] | undefined | null;
   educationSubject?: string[] | undefined | null;
   languages?: string[] | null;
   searchText?: string;
+  textSearchType: "NAME" | "DESCRIPTION" | "CREATOR";
+  minQuestions?: number;
+  includeCopies?: boolean;
 }) {
   const filters = [
     Query.equal("kategoryType", "EDUCATION"),
@@ -301,7 +400,9 @@ async function getEducationModules({
     console.log("💡Category Filters:", categoryFilters);
     filters.push(Query.or(categoryFilters));
   }
+  
   if (educationSubject && educationSubject.length > 0) {
+    console.log("💡Education Subject Filter:", educationSubject);
     let eSub =
       educationSubject.length > 1
         ? educationSubject
@@ -312,17 +413,35 @@ async function getEducationModules({
     filters.push(Query.or(subjectFilters));
   }
   if (searchText && searchText.trim() !== "") {
-    filters.push(Query.contains("name", searchText));
+    if (textSearchType === "NAME") {
+      filters.push(Query.contains("name", searchText));
+    } else if (textSearchType === "DESCRIPTION") {
+      filters.push(Query.contains("description", searchText));
+    } else if (textSearchType === "CREATOR") {
+      filters.push(Query.contains("creator", searchText));
+    }
   }
+
+  
+
+  if (minQuestions !== undefined) {
+    filters.push(Query.greaterThanEqual("questions", minQuestions));
+  }
+
+  if (includeCopies === false) {
+    filters.push(Query.equal("copy", false));
+  }
+
+  console.log("Final Queries for Education Modules:", filters);
   try {
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
       [...filters, Query.limit(10), Query.offset(offset ?? 0)]
     );
-    return response.documents;
+    return {modules:response.documents, total: response.total};
   } catch (error) {
     console.error("Error fetching education modules:", error);
-    return [];
+    return {modules:[], total: 0}
   }
 }

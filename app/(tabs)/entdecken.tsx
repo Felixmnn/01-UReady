@@ -31,8 +31,8 @@ import { loadAllModules } from "@/lib/appwriteDaten";
 import { useTranslation } from "react-i18next";
 import { getMatchingModules } from "@/lib/appwriteEntdecken";
 import { module } from "@/types/appwriteTypes";
-import { convertToObjects, repairAndParseJSONStrings, repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
-
+import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
+import germanTranslation from "@/assets/languages/locales/de/translation.json"
 
 //Constant Values
 type FilterType = {
@@ -69,7 +69,7 @@ const languageoptions = [
 
 const entdecken = () => {
   const { t } = useTranslation();
-  const { userUsage, setUserUsage, userData,user, isLoggedIn, isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
+  const { userUsage, userCathegory, setUserUsage, userData,user, isLoggedIn, isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
       router.replace("/"); // oder "/sign-in"
@@ -77,9 +77,23 @@ const entdecken = () => {
   }, [user, isLoggedIn, isLoading]);
 
 
-
+  const [realFilters, setRealFilters] = useState<FilterType>({
+      eductaionType: userCathegory && userCathegory.kategoryType ? userCathegory.kategoryType :"UNIVERSITY",
+      universityDegreeType: null,
+      universityKategorie: null,
+      otherSubjects: null,
+      educationSubject: null,
+      educationKathegory: null,
+      schoolGrades: null,
+      schoolSubjects: null,
+      schoolType: null,
+      textSearchType: "NAME",
+      minQuestions: 0,
+      includeCopies: false,
+    });
   // Currently loading all Modules later edit to only load personalized Modules
   useEffect(() => {
+    if (!userCathegory) return;
     async function fetchAllModules() {
       const moduleOBJ = await loadAllModules();
       let modules = moduleOBJ ? moduleOBJ.modules : []; 
@@ -99,7 +113,19 @@ const entdecken = () => {
       }
     }
     fetchAllModules();
-  }, []);
+    setRealFilters({
+      ...realFilters,
+      eductaionType: userCathegory.kategoryType,
+      universityDegreeType: userCathegory.kategoryType == "UNIVERSITY" ? userCathegory.degreeType : null,
+      universityKategorie: userCathegory.kategoryType == "UNIVERSITY" ? userCathegory.universitySubjects : null,
+      educationKathegory: userCathegory.kategoryType == "EDUCATION" ? userCathegory.educationKategory : null,
+      educationSubject: userCathegory.kategoryType == "EDUCATION" ? userCathegory.educationSubjects : null,
+      schoolGrades  : userCathegory.kategoryType == "SCHOOL" ? userCathegory.schoolGrades : null,
+      schoolSubjects: userCathegory.kategoryType == "SCHOOL" ? userCathegory.schoolSubjects : null,
+      schoolType: userCathegory.kategoryType == "SCHOOL" ? userCathegory.schoolTypes : null,
+      
+    })
+  }, [userCathegory]);
 
 const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   const sheetRef = useRef<BottomSheet>(null);
@@ -119,7 +145,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
 
   //Allgemeine Filter
   const [filterVisible, setFilterVisible] = useState(false);
-  const [selectedKathegory, setSelectedKathegory] = useState("UNIVERSITY");
+  const [selectedKathegory, setSelectedKathegory] = useState(userCathegory && userCathegory.kategoryType ? userCathegory.kategoryType :"UNIVERSITY");
 
   //Module entdecken
   const [loading, setLoading] = useState(true);
@@ -130,20 +156,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
   //____ The filter Part _____________________________________________________________
   const [filters, setFilters] = useState({});
 
-  const [realFilters, setRealFilters] = useState<FilterType>({
-    eductaionType: "UNIVERSITY",
-    universityDegreeType: null,
-    universityKategorie: null,
-    otherSubjects: null,
-    educationSubject: null,
-    educationKathegory: null,
-    schoolGrades: null,
-    schoolSubjects: null,
-    schoolType: null,
-    textSearchType: "NAME",
-    minQuestions: 0,
-    includeCopies: false,
-  });
+  
 
   /* Veraltete Fetch Function kann gelöscht werden
   async function fetchModules(filters: any) {
@@ -264,17 +277,19 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
           className={`${topButton ? "px-2" : ""} flex-1 flex-row items-center justify-center rounded-lg`}
           style={{
             backgroundColor:
-               userUsage.energy >= calculateEnergyCost()
-                ? "#3b82f6"
-                : "#f63b3b",
+               userUsage.energy < calculateEnergyCost()
+                ? "#f63b3b"
+                : "#3b82f6"
+                ,
             borderWidth: topButton ? 1 : 2,
             borderColor:
-               userUsage.energy >= calculateEnergyCost()
-                ? "#3c6dbc"
-                : "#bc3c3c",
+               userUsage.energy < calculateEnergyCost()
+                
+                ? "#bc3c3c"
+                :"#3c6dbc"
+                ,
           }}
           onPress={async () => {
-            console.log("I have been pressed")
             setReloadNeeded([...reloadNeeded, "Bibliothek"]);
             if (selectedModules.length > 0) {
               modules.map((module: any) => {
@@ -300,7 +315,6 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
                     synchronization: false,
                     questionList: repairQuestionList(module.questionList).map(q => JSON.stringify(q))
                                     };
-                  console.log("Adding Module:", mod.questionList);
 
                   add(mod);
                 }
@@ -326,7 +340,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
         >
           {loading ? (
             <ActivityIndicator size="small" color="#fff" />
-          ) : userUsage.energy > selectedModules.length * 3 ? (
+          ) : userUsage.energy <= calculateEnergyCost() ? (
             <View className="flex-row items-center">
               <Text
                 className={`${topButton ? "text-[12px]" : "text-[15px] mb-1"} font-semibold  text-white  `}
@@ -484,6 +498,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
       id: key,
     }));
 
+    
     const uisSubsObject = t("universityCategories.universitySubjects", {
       returnObjects: true,
     }) as { [key: string]: { name: string } };
@@ -539,11 +554,12 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
     try {
       const isSearchTextLonger = searchBarText.length > searchBarTextOld.length;
       const allModulesMatch = modules.every(m => m.name.includes(searchBarText));
-
-      if (isSearchTextLonger && allModulesMatch && modules.length === amountOfModules) {
+      
+      if ((isSearchTextLonger && allModulesMatch && modules.length === amountOfModules)){
         setLoading(false);
         return;
       }
+        
 const educationSubject = (() => {
   const result = indexesOfEduSubjects?.map((i) => eduSubKeys[i]) ?? [];
   const filtered = result.filter((v) => v !== undefined && v !== null);
@@ -553,7 +569,7 @@ const educationSubject = (() => {
       let resOBJ = await getMatchingModules({
         searchText: searchBarText,
         offset: modules.length ? modules.length : 0,
-        languages: selectedLanguages.length > 0 ? selectedLanguages : null,
+        languages: selectedLanguages.length > 0 ? selectedLanguages.map(l => l == "fra" ? "fr" : l) : null,
         eductaionType: realFilters.eductaionType,
         universityDegreeType:
           indexOfDegreeType?.map((i) => universityDegreeTypeKeys[i]) || null,
@@ -570,7 +586,6 @@ const educationSubject = (() => {
         minQuestions: realFilters.minQuestions,
         includeCopies: realFilters.includeCopies || false,
       });
-      console.log("Amount of Modules fetched:", resOBJ ? resOBJ.total : 0);
       setAmountOfModules(resOBJ ? resOBJ.total : 0);
       let res = resOBJ ? resOBJ.modules : [];
 
@@ -580,6 +595,7 @@ const educationSubject = (() => {
           ...((res.filter((m: any) => m.$id && !prev.some(pm => pm.$id === m.$id))
              ?? []) as unknown as module[]),
         ]);
+        
         setOffset((prev) => prev + (res ? res.length : 0));
       } else {
         setModules((res ?? []) as unknown as module[]);
@@ -600,7 +616,6 @@ if (loadingMore) {
   }
 
   useEffect(() => {
-    console.log("Educatio Subjects ", realFilters.educationSubject);
     getModules({
       loadingMore: false,
     });
@@ -722,7 +737,6 @@ if (loadingMore) {
                             key={lang.value}
                             className={`px-3 py-1 rounded-full ${selectedLanguages.includes(lang.value) ? "bg-blue-500" : "bg-gray-700"}`}
                             onPress={() => {
-                             console.log("Language selected:", lang.value, selectedLanguages);
                              if (selectedLanguages && selectedLanguages.length > 0) {
                               if (selectedLanguages.includes(lang.value)) {
                                 setSelectedLanguage(selectedLanguages.filter(l => l !== lang.value));

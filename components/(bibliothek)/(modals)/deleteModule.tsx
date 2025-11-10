@@ -41,9 +41,16 @@ const DeleteModule = ({
       setShowWarning(true);
       return;
     }
-    await deleteDocument(moduleID);
+    try  {
+      await deleteDocument(moduleID);
+    
     const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
     setModules({ ...modules, documents: updatedModules });
+    } catch (error) {
+      if (__DEV__) {  
+        console.error("Error deleting module:", error);
+      }
+    }
     setSelectedModule("AllModules");
     setIsVisible(false);
     router.push("/bibliothek");
@@ -85,11 +92,13 @@ const DeleteModule = ({
         <View className="w-full flex-row justify-between items-center mb-6">
           <TouchableOpacity
             onPress={() => {
+              console.log("Ich werde gedrückt");
               if (savedChanges) {
                 setSelectedModule("AllModules");
               } else {
                 setIsVisible(false);
               }
+              setIsVisible(false);
             }}
           >
             <Icon name="arrow-left" size={20} color="white" />

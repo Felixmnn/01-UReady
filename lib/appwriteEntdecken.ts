@@ -137,6 +137,7 @@ async function getUniversityModules({
     universityDegreeType,
     universityKategorie,
     offset,
+    languages
   });
   const filters = [
     Query.equal("kategoryType", "UNIVERSITY"),
@@ -312,7 +313,6 @@ async function getOtherModules({
   minQuestions?: number;
   includeCopies?: boolean;
 }) {
-  console.log("Starting");
   const filters = [
     Query.equal("public", true),
   ];
@@ -397,12 +397,10 @@ async function getEducationModules({
     const categoryFilters = eKat.map((kat) =>
       Query.contains("creationEducationKathegory", kat)
     );
-    console.log("💡Category Filters:", categoryFilters);
     filters.push(Query.or(categoryFilters));
   }
   
   if (educationSubject && educationSubject.length > 0) {
-    console.log("💡Education Subject Filter:", educationSubject);
     let eSub =
       educationSubject.length > 1
         ? educationSubject
@@ -432,7 +430,6 @@ async function getEducationModules({
     filters.push(Query.equal("copy", false));
   }
 
-  console.log("Final Queries for Education Modules:", filters);
   try {
     const response = await databases.listDocuments(
       config.databaseId,

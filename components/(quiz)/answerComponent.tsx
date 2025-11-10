@@ -27,6 +27,24 @@ const AnswerComponent = ({
   latex: string;
   image: string;
 }) => {
+
+  function diceUpText(text:string){
+    if (text[0] == "'") {
+      text = text.slice(1);
+    } 
+    if (text[text.length - 1] == "'") {
+      text = text.slice(0, -1);
+    }
+    if (text.includes("['")){
+      text = text.slice(2);
+    } 
+    if (text.includes("']")){
+      text = text.slice(0, -2);
+    }
+    return text;
+
+  }
+
   return (
     <TouchableOpacity
       key={index}
@@ -72,7 +90,7 @@ const AnswerComponent = ({
           </View>
         ) : (
           <Text className="text-white text-center font-bold text-[18px]">
-            {text}
+            {diceUpText(text)}
           </Text>
         )}
 

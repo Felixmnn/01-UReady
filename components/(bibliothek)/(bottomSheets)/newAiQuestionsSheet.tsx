@@ -173,6 +173,7 @@ const NewAiQuestionsSheet = ({
         />
 
         <CustomButton
+          loading={loading}
           containerStyles="w-full rounded-lg   bg-blue-700 mb-2"
           title={
             userUsage?.energy > calculateTotalPrice()
@@ -189,7 +190,8 @@ const NewAiQuestionsSheet = ({
               setSessions: setSessions,
               selectedSession: selectedSession,
             });
-            sheetRef.current?.close();
+            
+            sheetRef.current?.closeSheet();
           }}
           disabled={
             items.length < 1 ||

@@ -207,7 +207,6 @@ const ProfileSettings = () => {
       504: t("passwordReset.504"),
       505: t("passwordReset.505"),
     }
-    console.log("ErrorMessage",codes)
     return (
       <Modal
         animationType="slide"

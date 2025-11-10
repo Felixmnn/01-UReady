@@ -344,6 +344,7 @@ const CreateModule = ({
               handlePress={async () => {
                 const res = await adddModule({
                   ...newModule,
+                  publicAcess: newModule?.public ? true : false,
                   color:
                     typeof newModule.color == "string"
                       ? newModule.color.toUpperCase()

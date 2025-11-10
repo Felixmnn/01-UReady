@@ -35,6 +35,13 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
 
   useEffect(() => {
+    if (!user) return;
+    loadUserDataKathegory(user?.$id).then((data) => {
+      setUserCategory(data);
+    });
+  }, [user]);
+
+  useEffect(() => {
     let isMounted = true;
 
     const initSession = async () => {

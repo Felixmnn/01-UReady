@@ -421,6 +421,7 @@ const PageAiCreate = ({
           handlePress={async () => generateModule()}
           active={false}
         >
+          
           {loading ? (
             <ActivityIndicator size="small" color="#4B5563" />
           ) : !calculatePrice ? (

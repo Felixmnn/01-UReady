@@ -39,6 +39,7 @@ const Quiz = ({
   showHint: () => void;
   showExplanation: () => void;
 }) => {
+  console.log("Questsions in Quiz component:", questions);
   const { t } = useTranslation();
   function getSmileyStatus(questionID: string) {
     const question = questions.find((q) => q.$id === questionID);

@@ -348,58 +348,46 @@ const Data = ({
                   <View className="w-full flex-row justify-between items-center">
                     {optionsVisible.includes(item.$id ?? "") ? (
                       <View className="flex-row items-center justify-between">
-                        { (!module.copy || item.subjectID == module.$id ) &&
-                        <View className="mr-5">
-                          
-                          <Icon
-                            name="edit"
-                            size={15}
-                            color="white"
-                            onPress={() => {
-                              setQuestionToEdit(item);
+                        <TouchableOpacity className="p-2 items-center justify-center" 
+                        
+                        onPress={async () => {
                               setIsVisibleEditQuestion({
-                                state: true,
+                                state: false,
                                 status: "EDIT",
                               });
-                              /*
-                                        setSelectedScreen("CreateQuestion");
-                                        handleOptionsVisibility(item.$id);
-                                        */
-                            }}
-                          />
-                          
-                        </View>
-                        }
-                        <Icon
-                          name="trash"
-                          size={15}
-                          color="red"
-                          onPress={async () => {
-                            if (!module.copy) {
-                              if (item.$id) {
-                                await deleteDocument(item.$id, "question");
-                                handleOptionsVisibility(item.$id);
-                              }
-                            } else {
-                              // Neue Liste ohne die entfernte Frage
-                              const updatedList = module.questionList.filter(
-                                (q) => JSON.parse(q).id !== item.$id
-                              );
-
-                              const res = await updateModuleQuestionList(module.$id, updatedList);
-
+                             
                             
-                              setQuestions(questions.filter((q) => q.$id !== item.$id));
+                              if (!module.copy) {
+                                if (item.$id) {
+                                  await deleteDocument(item.$id, "question");
+                                  handleOptionsVisibility(item.$id);
+                                }
+                              } else {
+                                // Neue Liste ohne die entfernte Frage
+                                const updatedList = module.questionList.filter(
+                                  (q) => JSON.parse(q).id !== item.$id
+                                );
 
-                              setModule({
-                                ...module,
-                                questionList: updatedList,
-                              });
-                            }
+                                const res = await updateModuleQuestionList(module.$id, updatedList);
 
-                          }}
-                          
-                        />
+                              
+                                setQuestions(questions.filter((q) => q.$id !== item.$id));
+
+                                setModule({
+                                  ...module,
+                                  questionList: updatedList,
+                                });
+                              }
+
+                            }}>
+                          <Icon
+                            name="trash"
+                            size={15}
+                            color="red"
+                            
+                            
+                          />
+                        </TouchableOpacity>
                       </View>
                     ) : null}
                     <View
@@ -408,7 +396,14 @@ const Data = ({
                       <TouchableOpacity
                         className="p-2"
                         onPress={() => {
+                          console.log("Edit Question:", item);
                           handleOptionsVisibility(item.$id);
+                          setQuestionToEdit(item)
+                          setIsVisibleEditQuestion({
+                                state: true,
+                                status: "EDIT",
+                              });
+                          //handleOptionsVisibility(item.$id);
                         }}
                       >
                         <Icon name="ellipsis-h" size={15} color="white" />

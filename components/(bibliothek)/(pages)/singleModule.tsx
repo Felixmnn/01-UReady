@@ -533,6 +533,9 @@ const SingleModule = ({
     hint: "",
     explaination: "",
   });
+  useEffect(() => {
+    console.log("👩‍🚒❌👩‍🚒Editing Question:", questionToEdit.question);
+  }, [questionToEdit]);
 
   const [isVisibleEditQuestion, setIsVisibleEditQuestion] = useState<{
     state: boolean;

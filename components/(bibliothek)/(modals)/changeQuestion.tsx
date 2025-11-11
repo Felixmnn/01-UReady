@@ -31,6 +31,7 @@ const ChangeQuestions = ({
     React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>
   >;
 }) => {
+  console.log("💵Question to edit:", question);
   const { t } = useTranslation();
   const [questionToEdit, setQuestionToEdit] = useState({
     ...question,
@@ -48,6 +49,25 @@ const ChangeQuestions = ({
       };
     }),
   });
+
+  useEffect(() => {
+  setQuestionToEdit({
+    ...question,
+    answers: question.answers.map((a) => {
+      try {
+        const parsed = JSON.parse(a);
+        if (parsed.title !== undefined) {
+          return parsed;
+        }
+      } catch (error) {}
+      return {
+        title: a,
+        latex: null,
+        image: null,
+      };
+    }),
+  });
+}, [question]);
 
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
@@ -285,6 +305,7 @@ const ChangeQuestions = ({
               </Text>
             </TouchableOpacity>
           </View>
+          
         </View>
       </BottomSheetScrollView>
     </BottomSheet>

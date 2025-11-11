@@ -59,6 +59,7 @@ const HomeGeneral = () => {
 
   
   const [userUsageP, setUserUsageP] = useState<UserUsage | null>(null);
+  console.log("❌❌User Usage in Home General", userUsageP?.lastSessions);
   let count = 0;
   useEffect(() => {
     count++;

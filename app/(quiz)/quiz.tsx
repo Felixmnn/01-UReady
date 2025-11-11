@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import CustomButton from '@/components/(general)/customButton';
 import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
+import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 
 type QuestionItem = {
     id: string,
@@ -78,9 +79,10 @@ const quiz = () => {
     }){
         if (!sessionID || !moduleID) router.replace("/bibliothek");
         const module = await loadModule(moduleID)
+        const repaired_question_list = repairQuestionList(module?.questionList).map(q => JSON.stringify(q));
         let questionsRaw = [];
         if (sessionID === "ALL" && module) {
-            const q = await getAllQuestionsByIds(module.questionList.map((q:string) => {
+            const q = await getAllQuestionsByIds(repaired_question_list.map((q:string) => {
               try {
                 return JSON.parse(q).id;
               } catch (e) {
@@ -89,17 +91,19 @@ const quiz = () => {
             }).filter(Boolean))
             questionsRaw.push(...q)
         } else {
+
            let res = (await getAllQuestionsBySessionId(sessionID)) ?? []
-           res = res.filter((q) => module?.questionList.some((mq:string) => {
+           const repaired_question_list = repairQuestionList(module?.questionList).map(q => JSON.stringify(q));
+           res = res.filter((q) => repaired_question_list.some((mq:string) => {
              try {
                return JSON.parse(mq).id === q.$id;
              } catch (e) {
+                console.log("Error parsing question ID from module questionList:", mq);
                return false;
              }
            }))
            questionsRaw.push(...res)
         }
-        console.log("Questions Raw:", questionsRaw);
         const questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];

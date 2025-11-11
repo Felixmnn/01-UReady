@@ -83,6 +83,7 @@ export function repairAndParseJSONStringsSessions(csvData: string[]): Session[] 
 }
 
 export function repairQuestionList(csvData: string[]): Question[] {
+    console.log("‼️‼️‼️")
     try {
         let csvDataParsed = csvData.map(i=> JSON.parse(i));
         console.log("Parsed Question List",csvDataParsed)
@@ -101,5 +102,6 @@ export function repairQuestionList(csvData: string[]): Question[] {
         newList.push({id:i, status: null})
         }
     })
+    console.log("New List", newList)
     return newList;
 }

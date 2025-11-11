@@ -84,9 +84,7 @@ export async function addNewQuestionToModule({
     return { id: i.id, status: null };
   }),
 ];
-  console.log("NEW LIST",newList)
-  console.log("New List IDS",newList.map((i:any) => i.id))
-
+  
   const questionCountOld = module.questions ? module.questions : 0;
   const questionCountNew = questionCountOld + savedQuestions.length;
 
@@ -186,25 +184,28 @@ export async function materialToModule({
     newModuleData = resMod;
 
     let savedQuestions: any[] = [];
-
+    console.log("Direct Questions Length:", directQuestions.length);
+    console.log("Direct Questions:", directQuestions.map((q) => q.question));
     // Schritt 3: Fragen speichern
-    console.log("Questions to save:", directQuestions.length);
-    console.log("Direct Questions Sample:", directQuestions.slice(0, 2));
-    await saveQuestions({
+    const savedList = await saveQuestions({
       newModuleData,
       directQuestions,
       savedQuestions,
     });
-
+    console.log("👩‍🚒👩‍🚒👩‍🚒👩‍🚒Saved Questions")
+    console.log(savedList);
+    console.log("Saved Questions:",savedQuestions )
 
     // Schritt 4: Modul mit Fragen verknüpfen
 
     if (!newModuleData || !newModuleData.$id)
-     
-    await updateModuleQuestionList(
+    console.log("Hier komme ich hin 2")
+     await updateModuleQuestionList(
       newModuleData.$id,
-      savedQuestions.map((item) => JSON.stringify(item))
+      savedList ? savedList.map((item) => JSON.stringify(item)) : []
     );
+    console.log("Hier komme ich hin 3")
+
     // Benutzer-Daten aktualisieren
     try {
       if (!user) throw new Error("User ID is undefined");
@@ -387,6 +388,7 @@ async function saveQuestions({
   savedQuestions: any[];
 }) {
   // Schritt 3: Fragen speichern
+  let saveQuestionsHere = []
   if (newModuleData && newModuleData.$id) {
     for (let i = 0; i < directQuestions.length; i++) {
       try {
@@ -395,19 +397,21 @@ async function saveQuestions({
           subjectID: newModuleData.$id,
         };
         const savedQuestion = await addQUestion(question);
-        savedQuestions.push({
+        saveQuestionsHere.push({
           id:
             savedQuestion && typeof savedQuestion.$id == "string"
               ? savedQuestion.$id
               : uuid.v4(),
           status: null,
         });
+        console.log("🐞Saved Questions Length:", saveQuestionsHere.length);
       } catch (error) {
         if (__DEV__) {
           console.error("Error saving question:", error);
         }
       }
     }
+    return saveQuestionsHere;
   }
 }
 

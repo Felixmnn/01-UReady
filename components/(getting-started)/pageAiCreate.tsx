@@ -67,7 +67,7 @@ const PageAiCreate = ({
   // Lokale
   const { t } = useTranslation();
 
-  const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage } = useGlobalContext();
   const [questions, setQuestions] = useState<any[]>([]);
   const [sessions, setSessions] = useState<Session[]>([
     {
@@ -282,10 +282,10 @@ const PageAiCreate = ({
       },
     });
     if (userData) {
-      setUserData({
-        ...userData,
-        energy: userData.energy - calculateTotalPrice(),
-      });
+      setUserUsage({
+              ...userUsage,
+              energy: userUsage.energy - calculateTotalPrice(),
+            });
     }
   }
 

@@ -239,6 +239,7 @@ const SingleModule = ({
 
   async function fetchQuestions(sessionID: string) {
     let sessionQuestions = await getSessionQuestions(sessionID);
+    console.log("Session Questions", sessionQuestions);
     // Filter questions so only those in questionList are set
     const filteredQuestions = sessionQuestions.filter(q =>
       module.questionList.some((mq: string) => {

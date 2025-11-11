@@ -340,7 +340,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
         >
           {loading ? (
             <ActivityIndicator size="small" color="#fff" />
-          ) : userUsage.energy <= calculateEnergyCost() ? (
+          ) : userUsage.energy >= calculateEnergyCost() ? (
             <View className="flex-row items-center">
               <Text
                 className={`${topButton ? "text-[12px]" : "text-[15px] mb-1"} font-semibold  text-white  `}
@@ -574,9 +574,9 @@ const educationSubject = (() => {
         universityDegreeType:
           indexOfDegreeType?.map((i) => universityDegreeTypeKeys[i]) || null,
         universityKategorie:
-          indexOfUniversitySubjects?.map((i) => uisSubsKeys[i]) || null,
+          indexOfUniversitySubjects?.map((i) =>germanTranslation["universityCategories"]["universitySubjects"][uisSubsKeys[i]].name) || null,
         schoolType: indexesOfSchoolTypes?.map((i) => schoolTypesRaw[i]) || null,
-        schoolSubjects: indexesOfSubjects?.map((i) => subjectKeys[i]) || null,
+        schoolSubjects: indexesOfSubjects?.map((i) => germanTranslation["school"]["subjects"][subjectKeys[i]].name) || null,
         schoolGrades:
           realFilters.schoolGrades?.map((grade) => Number(grade)) || null,
         eductaionCategory: indexOfEduKat?.map((i) => eduKatKeys[i]) || null,

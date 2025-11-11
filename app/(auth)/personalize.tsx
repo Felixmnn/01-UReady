@@ -96,12 +96,12 @@ const personalize = () => {
   useEffect(() => {
     if (userData?.signInProcessStep === "SEVEN" && !editEducationGoals) {
       saveUserData();
-      router.push("/getting-started");
+      router.push("/home");
     } else if (
       userData?.signInProcessStep === "FINISHED" &&
       !editEducationGoals
     ) {
-      router.push("/getting-started");
+      router.push("/home");
     }
   }, [userData]);
 

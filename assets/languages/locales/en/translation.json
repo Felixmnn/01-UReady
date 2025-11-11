@@ -341,7 +341,7 @@
     "moreFilters": "More Filters",
     "educationGoal": "Degree Goal",
     "fieldOfStudy": "Field of Study",
-    "schooltype":  "School Type",
+    "schooltype": "School Type",
     "schoolGrade": "Grade",
     "educationCategory": "Education Category",
     "educationField": "Education Field",
@@ -415,11 +415,10 @@
   },
   "tutorialFirstModule": {
     "letUsCreate": "Let's create your first module together!"
-    
   },
   "tutorialModule": {
     "letUsCreate": "Let's create your first module together!"
-    },
+  },
   "tabbar": {
     "home": "Home",
     "bibliothek": "Library",
@@ -792,111 +791,136 @@
         }
       },
       "construction_and_crafts": {
-        "Asphaltbauer": { "icon": "road", "name": "Asphaltbauer" },
-        "Ausbaufacharbeiter": { "icon": "tools", "name": "Ausbaufacharbeiter" },
-        "Baugeräteführer": { "icon": "tractor", "name": "Baugeräteführer" },
+        "Asphaltbauer": { "icon": "road", "name": "Asphalt Worker" },
+        "Ausbaufacharbeiter": {
+          "icon": "tools",
+          "name": "Interior Construction Worker"
+        },
+        "Baugeräteführer": {
+          "icon": "tractor",
+          "name": "Construction Equipment Operator"
+        },
         "Bauwerksabdichter": {
           "icon": "building",
-          "name": "Bauwerksabdichter"
+          "name": "Structural Waterproofing Worker"
         },
         "Bauwerksmechaniker für Abbruch und Betontrenntechnik": {
           "icon": "hammer",
-          "name": "Bauwerksmechaniker für Abbruch und Betontrenntechnik"
+          "name": "Structural Mechanic for Demolition and Concrete Cutting"
         },
-        "Bauzeichner": { "icon": "drafting-compass", "name": "Bauzeichner" },
+        "Bauzeichner": {
+          "icon": "drafting-compass",
+          "name": "Technical Draftsman (Construction)"
+        },
         "Beton- und Stahlbetonbauer": {
           "icon": "tools",
-          "name": "Beton- und Stahlbetonbauer"
+          "name": "Concrete and Reinforced Concrete Worker"
         },
-        "Bodenleger": { "icon": "ruler-combined", "name": "Bodenleger" },
-        "Bootsbauer": { "icon": "ship", "name": "Bootsbauer" },
-        "Brunnenbauer": { "icon": "faucet", "name": "Brunnenbauer" },
-        "Böttcher": { "icon": "wine-bottle", "name": "Böttcher" },
-        "Dachdecker": { "icon": "house-damage", "name": "Dachdecker" },
-        "Estrichleger": { "icon": "ruler-combined", "name": "Estrichleger" },
+        "Bodenleger": { "icon": "ruler-combined", "name": "Floor Layer" },
+        "Bootsbauer": { "icon": "ship", "name": "Boat Builder" },
+        "Brunnenbauer": { "icon": "faucet", "name": "Well Builder" },
+        "Böttcher": { "icon": "wine-bottle", "name": "Cooper (Barrel Maker)" },
+        "Dachdecker": { "icon": "house-damage", "name": "Roofer" },
+        "Estrichleger": {
+          "icon": "ruler-combined",
+          "name": "Floor Screed Installer"
+        },
         "Fachkraft für Holz- und Bautenschutzarbeiten": {
           "icon": "tree",
-          "name": "Fachkraft für Holz- und Bautenschutzarbeiten"
+          "name": "Specialist for Wood and Building Protection"
         },
         "Fachkraft für Rohr-, Kanal- und Industrieservice": {
           "icon": "wrench",
-          "name": "Fachkraft für Rohr-, Kanal- und Industrieservice"
+          "name": "Specialist for Pipe, Sewer and Industrial Service"
         },
         "Fachkraft für Straßen- und Verkehrstechnik": {
           "icon": "road",
-          "name": "Fachkraft für Straßen- und Verkehrstechnik"
+          "name": "Specialist for Road and Traffic Engineering"
         },
-        "Fassadenmonteur": { "icon": "building", "name": "Fassadenmonteur" },
+        "Fassadenmonteur": { "icon": "building", "name": "Facade Installer" },
         "Feuerungs- und Schornsteinbauer": {
           "icon": "fire",
-          "name": "Feuerungs- und Schornsteinbauer"
+          "name": "Furnace and Chimney Builder"
         },
         "Fliesen-, Platten- und Mosaikleger": {
           "icon": "th-large",
-          "name": "Fliesen-, Platten- und Mosaikleger"
+          "name": "Tile, Slab and Mosaic Layer"
         },
-        "Gerüstbauer": { "icon": "building", "name": "Gerüstbauer" },
-        "Glaser": { "icon": "window-maximize", "name": "Glaser" },
-        "Gleisbauer": { "icon": "train", "name": "Gleisbauer" },
+        "Gerüstbauer": { "icon": "building", "name": "Scaffolder" },
+        "Glaser": { "icon": "window-maximize", "name": "Glazier" },
+        "Gleisbauer": { "icon": "train", "name": "Track Layer" },
         "Hochbaufacharbeiter": {
           "icon": "building",
-          "name": "Hochbaufacharbeiter"
+          "name": "Structural Engineering Worker"
         },
         "Holz- und Bautenschützer": {
           "icon": "hammer",
-          "name": "Holz- und Bautenschützer"
+          "name": "Wood and Building Protection Specialist"
         },
         "Isolierfacharbeiter": {
           "icon": "fire-extinguisher",
-          "name": "Isolierfacharbeiter"
+          "name": "Insulation Specialist"
         },
-        "Kanalbauer": { "icon": "water", "name": "Kanalbauer" },
-        "Klempner": { "icon": "wrench", "name": "Klempner" },
+        "Kanalbauer": { "icon": "water", "name": "Sewer Constructor" },
+        "Klempner": { "icon": "wrench", "name": "Plumber / Tinsmith" },
         "Maler und Lackierer": {
           "icon": "paint-brush",
-          "name": "Maler und Lackierer"
+          "name": "Painter and Varnisher"
         },
-        "Maurer": { "icon": "hammer", "name": "Maurer" },
+        "Maurer": { "icon": "hammer", "name": "Bricklayer / Mason" },
         "Naturwerksteinmechaniker": {
           "icon": "gem",
-          "name": "Naturwerksteinmechaniker"
+          "name": "Natural Stone Mechanic"
         },
         "Ofen- und Luftheizungsbauer": {
           "icon": "fire",
-          "name": "Ofen- und Luftheizungsbauer"
+          "name": "Stove and Air Heating System Builder"
         },
-        "Parkettleger": { "icon": "hard-hat", "name": "Parkettleger" },
-        "Polsterer": { "icon": "couch", "name": "Polsterer" },
-        "Raumausstatter": { "icon": "couch", "name": "Raumausstatter" },
-        "Rohrleitungsbauer": { "icon": "wrench", "name": "Rohrleitungsbauer" },
-        "Schornsteinfeger": { "icon": "smoking", "name": "Schornsteinfeger" },
-        "Segelmacher": { "icon": "ship", "name": "Segelmacher" },
-        "Seiler": { "icon": "sitemap", "name": "Seiler" },
-        "Spezialtiefbauer": { "icon": "hard-hat", "name": "Spezialtiefbauer" },
+        "Parkettleger": { "icon": "hard-hat", "name": "Parquet Layer" },
+        "Polsterer": { "icon": "couch", "name": "Upholsterer" },
+        "Raumausstatter": { "icon": "couch", "name": "Interior Decorator" },
+        "Rohrleitungsbauer": {
+          "icon": "wrench",
+          "name": "Pipeline Constructor"
+        },
+        "Schornsteinfeger": { "icon": "smoking", "name": "Chimney Sweep" },
+        "Segelmacher": { "icon": "ship", "name": "Sailmaker" },
+        "Seiler": { "icon": "sitemap", "name": "Ropemaker" },
+        "Spezialtiefbauer": {
+          "icon": "hard-hat",
+          "name": "Specialist in Deep Foundation Engineering"
+        },
         "Steinmetz und Steinbildhauer": {
           "icon": "gem",
-          "name": "Steinmetz und Steinbildhauer"
+          "name": "Stonemason and Stone Sculptor"
         },
-        "Straßenbauer": { "icon": "road", "name": "Straßenbauer" },
-        "Straßenwärter": { "icon": "wrench", "name": "Straßenwärter" },
-        "Stuckateur": { "icon": "paint-roller", "name": "Stuckateur" },
+        "Straßenbauer": { "icon": "road", "name": "Road Builder" },
+        "Straßenwärter": {
+          "icon": "wrench",
+          "name": "Road Maintenance Worker"
+        },
+        "Stuckateur": { "icon": "paint-roller", "name": "Plasterer" },
         "Tiefbaufacharbeiter": {
           "icon": "road",
-          "name": "Tiefbaufacharbeiter"
+          "name": "Civil Engineering Worker"
         },
-        "Tischler": { "icon": "hammer", "name": "Tischler" },
-        "Trockenbaumonteur": { "icon": "hammer", "name": "Trockenbaumonteur" },
+        "Tischler": { "icon": "hammer", "name": "Carpenter / Joiner" },
+        "Trockenbaumonteur": { "icon": "hammer", "name": "Drywall Installer" },
         "Vermessungstechniker": {
           "icon": "compass",
-          "name": "Vermessungstechniker"
+          "name": "Surveying Technician"
         },
-        "Werksteinhersteller": { "icon": "gem", "name": "Werksteinhersteller" },
+        "Werksteinhersteller": {
+          "icon": "gem",
+          "name": "Artificial Stone Manufacturer"
+        },
         "Wärme-, Kälte- und Schallschutzisolierer": {
           "icon": "cloud",
-          "name": "Wärme-, Kälte- und Schallschutzisolierer"
+          "name": "Thermal, Cold and Sound Insulation Worker"
         },
-        "Zimmerer": { "icon": "hammer", "name": "Zimmerer" }
+        "Zimmerer": { "icon": "hammer", "name": "Carpenter" }
       },
+
       "health_and_care": {
         "Augenoptiker": { "icon": "glasses", "name": "Optician" },
         "Bestattungsfachkraft": {
@@ -1139,531 +1163,558 @@
         "Änderungsschneider": { "icon": "cut", "name": "Alteration Tailor" }
       },
       "metal_and_technology": {
-        "Anlagenmechaniker": { "icon": "tools", "name": "Anlagenmechaniker" },
-        "Automatenfachmann": { "icon": "robot", "name": "Automatenfachmann" },
+        "Anlagenmechaniker": { "icon": "tools", "name": "Plant Mechanic" },
+        "Automatenfachmann": {
+          "icon": "robot",
+          "name": "Vending Machine Specialist"
+        },
         "Behälter- und Apparatebauer": {
           "icon": "archive",
-          "name": "Behälter- und Apparatebauer"
+          "name": "Container and Equipment Builder"
         },
-        "Büchsenmacher": { "icon": "crosshairs", "name": "Büchsenmacher" },
-        "Chemielaborant": { "icon": "flask", "name": "Chemielaborant" },
-        "Chemikant": { "icon": "flask", "name": "Chemikant" },
+        "Büchsenmacher": { "icon": "crosshairs", "name": "Gunsmith" },
+        "Chemielaborant": {
+          "icon": "flask",
+          "name": "Chemical Laboratory Assistant"
+        },
+        "Chemikant": {
+          "icon": "flask",
+          "name": "Chemical Production Technician"
+        },
         "Edelmetallprüfer": {
           "icon": "balance-scale",
-          "name": "Edelmetallprüfer"
+          "name": "Precious Metal Assayer"
         },
         "Elektroanlagenmonteur": {
           "icon": "bolt",
-          "name": "Elektroanlagenmonteur"
+          "name": "Electrical Systems Installer"
         },
-        "Elektroniker": { "icon": "bolt", "name": "Elektroniker" },
+        "Elektroniker": { "icon": "bolt", "name": "Electronics Technician" },
         "Elektroniker für Automatisierungstechnik": {
           "icon": "cogs",
-          "name": "Elektroniker für Automatisierungstechnik"
+          "name": "Electronics Technician for Automation Technology"
         },
         "Elektroniker für Betriebstechnik": {
           "icon": "plug",
-          "name": "Elektroniker für Betriebstechnik"
+          "name": "Electronics Technician for Industrial Engineering"
         },
         "Elektroniker für Gebäude- und Infrastruktursysteme": {
           "icon": "home",
-          "name": "Elektroniker für Gebäude- und Infrastruktursysteme"
+          "name": "Electronics Technician for Building and Infrastructure Systems"
         },
         "Elektroniker für Gebäudesystemintegration": {
           "icon": "building",
-          "name": "Elektroniker für Gebäudesystemintegration"
+          "name": "Electronics Technician for Building System Integration"
         },
         "Elektroniker für Geräte und Systeme": {
           "icon": "desktop",
-          "name": "Elektroniker für Geräte und Systeme"
+          "name": "Electronics Technician for Devices and Systems"
         },
         "Elektroniker für Informations- und Systemtechnik": {
           "icon": "network-wired",
-          "name": "Elektroniker für Informations- und Systemtechnik"
+          "name": "Electronics Technician for Information and System Technology"
         },
         "Elektroniker für Maschinen und Antriebstechnik": {
           "icon": "cogs",
-          "name": "Elektroniker für Maschinen und Antriebstechnik"
+          "name": "Electronics Technician for Machinery and Drive Technology"
         },
         "Fachkraft für Metalltechnik": {
           "icon": "cogs",
-          "name": "Fachkraft für Metalltechnik"
+          "name": "Metalworking Specialist"
         },
-        "Fahrradmonteur": { "icon": "bicycle", "name": "Fahrradmonteur" },
+        "Fahrradmonteur": { "icon": "bicycle", "name": "Bicycle Assembler" },
         "Fahrzeuginterieur-Mechaniker": {
           "icon": "car",
-          "name": "Fahrzeuginterieur-Mechaniker"
+          "name": "Vehicle Interior Mechanic"
         },
         "Fahrzeuglackierer": {
           "icon": "paint-roller",
-          "name": "Fahrzeuglackierer"
+          "name": "Vehicle Painter"
         },
-        "Feinoptiker": { "icon": "eye", "name": "Feinoptiker" },
-        "Feinpolierer": { "icon": "gem", "name": "Feinpolierer" },
-        "Feinwerkmechaniker": { "icon": "tools", "name": "Feinwerkmechaniker" },
+        "Feinoptiker": { "icon": "eye", "name": "Precision Optics Technician" },
+        "Feinpolierer": { "icon": "gem", "name": "Precision Polisher" },
+        "Feinwerkmechaniker": { "icon": "tools", "name": "Precision Mechanic" },
         "Fluggerätelektroniker": {
           "icon": "plane",
-          "name": "Fluggerätelektroniker"
+          "name": "Avionics Technician"
         },
-        "Fluggerätmechaniker": {
-          "icon": "plane",
-          "name": "Fluggerätmechaniker"
-        },
+        "Fluggerätmechaniker": { "icon": "plane", "name": "Aircraft Mechanic" },
         "Gießereimechaniker": {
           "icon": "industry",
-          "name": "Gießereimechaniker"
+          "name": "Foundry Mechanic"
         },
-        "Glasapparatebauer": { "icon": "flask", "name": "Glasapparatebauer" },
-        "Graveur": { "icon": "stamp", "name": "Graveur" },
+        "Glasapparatebauer": {
+          "icon": "flask",
+          "name": "Glass Apparatus Builder"
+        },
+        "Graveur": { "icon": "stamp", "name": "Engraver" },
         "Industrie-Isolierer": {
           "icon": "thermometer-half",
-          "name": "Industrie-Isolierer"
+          "name": "Industrial Insulator"
         },
         "Industrieelektriker": {
           "icon": "bolt",
-          "name": "Industrieelektriker"
+          "name": "Industrial Electrician"
         },
         "Industriemechaniker": {
           "icon": "cogs",
-          "name": "Industriemechaniker"
+          "name": "Industrial Mechanic"
         },
         "Karosserie- und Fahrzeugbaumechaniker": {
           "icon": "car",
-          "name": "Karosserie- und Fahrzeugbaumechaniker"
+          "name": "Body and Vehicle Construction Mechanic"
         },
         "Konstruktionsmechaniker": {
           "icon": "tools",
-          "name": "Konstruktionsmechaniker"
+          "name": "Structural Mechanic"
         },
         "Kraftfahrzeugmechatroniker": {
           "icon": "car",
-          "name": "Kraftfahrzeugmechatroniker"
+          "name": "Automotive Mechatronics Technician"
         },
-        "Lacklaborant": { "icon": "paint-brush", "name": "Lacklaborant" },
+        "Lacklaborant": {
+          "icon": "paint-brush",
+          "name": "Coating Laboratory Technician"
+        },
         "Land- und Baumaschinenmechatroniker": {
           "icon": "tractor",
-          "name": "Land- und Baumaschinenmechatroniker"
+          "name": "Agricultural and Construction Machinery Mechatronics Technician"
         },
         "Leichtflugzeugbauer": {
           "icon": "plane",
-          "name": "Leichtflugzeugbauer"
+          "name": "Light Aircraft Builder"
         },
         "Mechaniker für Reifen- und Vulkanisationstechnik": {
           "icon": "wrench",
-          "name": "Mechaniker für Reifen- und Vulkanisationstechnik"
+          "name": "Mechanic for Tire and Vulcanization Technology"
         },
-        "Mechatroniker": { "icon": "robot", "name": "Mechatroniker" },
+        "Mechatroniker": { "icon": "robot", "name": "Mechatronics Technician" },
         "Mechatroniker für Kältetechnik": {
           "icon": "snowflake",
-          "name": "Mechatroniker für Kältetechnik"
+          "name": "Mechatronics Technician for Refrigeration Technology"
         },
         "Metall- und Glockengießer": {
           "icon": "bell",
-          "name": "Metall- und Glockengießer"
+          "name": "Metal and Bell Founder"
         },
-        "Metallbauer": { "icon": "hammer", "name": "Metallbauer" },
-        "Metallbildner": { "icon": "hammer", "name": "Metallbildner" },
-        "Mikrotechnologe": { "icon": "microchip", "name": "Mikrotechnologe" },
+        "Metallbauer": { "icon": "hammer", "name": "Metalworker" },
+        "Metallbildner": { "icon": "hammer", "name": "Metal Designer" },
+        "Mikrotechnologe": { "icon": "microchip", "name": "Microtechnologist" },
         "Oberflächenbeschichter": {
           "icon": "paint-brush",
-          "name": "Oberflächenbeschichter"
+          "name": "Surface Coater"
         },
-        "Physiklaborant": { "icon": "flask", "name": "Physiklaborant" },
+        "Physiklaborant": {
+          "icon": "flask",
+          "name": "Physics Laboratory Assistant"
+        },
         "Präzisionswerkzeugmechaniker": {
           "icon": "wrench",
-          "name": "Präzisionswerkzeugmechaniker"
+          "name": "Precision Tool Mechanic"
         },
         "Rollladen- und Sonnenschutzmechatroniker": {
           "icon": "window-maximize",
-          "name": "Rollladen- und Sonnenschutzmechatroniker"
+          "name": "Mechatronics Technician for Shutters and Sun Protection Systems"
         },
         "Stanz- und Umformmechaniker": {
           "icon": "cogs",
-          "name": "Stanz- und Umformmechaniker"
+          "name": "Stamping and Forming Mechanic"
         },
         "Technischer Konfektionär": {
           "icon": "cut",
-          "name": "Technischer Konfektionär"
+          "name": "Technical Fabrication Specialist"
         },
         "Technischer Modellbauer": {
           "icon": "cube",
-          "name": "Technischer Modellbauer"
+          "name": "Technical Model Maker"
         },
         "Technischer Produktdesigner": {
           "icon": "pencil-ruler",
-          "name": "Technischer Produktdesigner"
+          "name": "Technical Product Designer"
         },
         "Technischer Systemplaner": {
           "icon": "project-diagram",
-          "name": "Technischer Systemplaner"
+          "name": "Technical System Planner"
         },
         "Thermometermacher": {
           "icon": "thermometer",
-          "name": "Thermometermacher"
+          "name": "Thermometer Maker"
         },
-        "Uhrmacher": { "icon": "clock", "name": "Uhrmacher" },
+        "Uhrmacher": { "icon": "clock", "name": "Watchmaker" },
         "Verfahrensmechaniker Glastechnik": {
           "icon": "glass-whiskey",
-          "name": "Verfahrensmechaniker Glastechnik"
+          "name": "Process Mechanic for Glass Technology"
         },
         "Verfahrensmechaniker für Brillenoptik": {
           "icon": "glasses",
-          "name": "Verfahrensmechaniker für Brillenoptik"
+          "name": "Process Mechanic for Eyewear Optics"
         },
         "Werkgehilfe Schmuckwarenindustrie": {
           "icon": "gem",
-          "name": "Werkgehilfe Schmuckwarenindustrie"
+          "name": "Jewelry Industry Assistant"
         },
-        "Werkzeugmechaniker": { "icon": "tools", "name": "Werkzeugmechaniker" },
+        "Werkzeugmechaniker": { "icon": "tools", "name": "Tool Mechanic" },
         "Zerspanungsmechaniker": {
           "icon": "cut",
-          "name": "Zerspanungsmechaniker"
+          "name": "Cutting Machine Operator"
         },
         "Zweiradmechatroniker": {
           "icon": "bicycle",
-          "name": "Zweiradmechatroniker"
+          "name": "Two-Wheeler Mechatronics Technician"
         }
       },
+
       "production_and_logistics": {
         "Aufbereitungsmechaniker": {
           "icon": "industry",
-          "name": "Aufbereitungsmechaniker"
+          "name": "Processing Mechanic"
         },
         "Berg- und Maschinenmann": {
           "icon": "hard-hat",
-          "name": "Berg- und Maschinenmann"
+          "name": "Mining and Machinery Operator"
         },
         "Bergbautechnologe": {
           "icon": "hard-hat",
-          "name": "Bergbautechnologe"
+          "name": "Mining Technologist"
         },
         "Berufskraftfahrer": {
           "icon": "truck-moving",
-          "name": "Berufskraftfahrer"
+          "name": "Professional Driver"
         },
         "Betonfertigteilbauer": {
           "icon": "industry",
-          "name": "Betonfertigteilbauer"
+          "name": "Precast Concrete Builder"
         },
-        "Binnenschiffer": { "icon": "ship", "name": "Binnenschiffer" },
+        "Binnenschiffer": { "icon": "ship", "name": "Inland Waterway Skipper" },
         "Eisenbahner im Betriebsdienst Lokführer und Transport": {
           "icon": "train",
-          "name": "Eisenbahner im Betriebsdienst Lokführer und Transport"
+          "name": "Railway Operations Specialist – Locomotive Driver and Transport"
         },
         "Eisenbahner in der Zugverkehrssteuerung": {
           "icon": "traffic-light",
-          "name": "Eisenbahner in der Zugverkehrssteuerung"
+          "name": "Railway Traffic Control Specialist"
         },
         "Fachkraft für Hafenlogistik": {
           "icon": "ship",
-          "name": "Fachkraft für Hafenlogistik"
+          "name": "Port Logistics Specialist"
         },
         "Fachkraft für Kurier-, Express- und Postdienstleistungen": {
           "icon": "truck",
-          "name": "Fachkraft für Kurier-, Express- und Postdienstleistungen"
+          "name": "Courier, Express and Postal Services Specialist"
         },
         "Fachkraft für Lagerlogistik": {
           "icon": "boxes",
-          "name": "Fachkraft für Lagerlogistik"
+          "name": "Warehouse Logistics Specialist"
         },
         "Fachkraft für Lederherstellung und Gerbereitechnik": {
           "icon": "tshirt",
-          "name": "Fachkraft für Lederherstellung und Gerbereitechnik"
+          "name": "Leather Production and Tanning Technician"
         },
         "Fachkraft für Möbel-, Küchen- und Umzugsservice": {
           "icon": "couch",
-          "name": "Fachkraft für Möbel-, Küchen- und Umzugsservice"
+          "name": "Furniture, Kitchen and Relocation Service Specialist"
         },
         "Fachkraft im Fahrbetrieb": {
           "icon": "bus",
-          "name": "Fachkraft im Fahrbetrieb"
+          "name": "Public Transport Operations Specialist"
         },
-        "Fachlagerist": { "icon": "boxes", "name": "Fachlagerist" },
+        "Fachlagerist": { "icon": "boxes", "name": "Warehouse Clerk" },
         "Fertigungsmechaniker": {
           "icon": "cogs",
-          "name": "Fertigungsmechaniker"
+          "name": "Manufacturing Mechanic"
         },
         "Flachglastechnologe": {
           "icon": "window-maximize",
-          "name": "Flachglastechnologe"
+          "name": "Flat Glass Technologist"
         },
-        "Gebäudereiniger": { "icon": "broom", "name": "Gebäudereiniger" },
-        "Glasmacher": { "icon": "industry", "name": "Glasmacher" },
-        "Hafenschiffer": { "icon": "ship", "name": "Hafenschiffer" },
+        "Gebäudereiniger": { "icon": "broom", "name": "Building Cleaner" },
+        "Glasmacher": { "icon": "industry", "name": "Glassmaker" },
+        "Hafenschiffer": { "icon": "ship", "name": "Harbor Boat Operator" },
         "Holzbearbeitungsmechaniker": {
           "icon": "tree",
-          "name": "Holzbearbeitungsmechaniker"
+          "name": "Wood Processing Mechanic"
         },
-        "Holzmechaniker": { "icon": "cogs", "name": "Holzmechaniker" },
+        "Holzmechaniker": { "icon": "cogs", "name": "Wood Mechanic" },
         "Industriekeramiker Anlagentechnik": {
           "icon": "industry",
-          "name": "Industriekeramiker Anlagentechnik"
+          "name": "Industrial Ceramist – Plant Engineering"
         },
         "Industriekeramiker Modelltechnik": {
           "icon": "cubes",
-          "name": "Industriekeramiker Modelltechnik"
+          "name": "Industrial Ceramist – Model Technology"
         },
         "Industriekeramiker Verfahrenstechnik": {
           "icon": "flask",
-          "name": "Industriekeramiker Verfahrenstechnik"
+          "name": "Industrial Ceramist – Process Technology"
         },
         "Kaufmann für Kurier-, Express- und Postdienstleistungen": {
           "icon": "truck",
-          "name": "Kaufmann für Kurier-, Express- und Postdienstleistungen"
+          "name": "Clerk for Courier, Express and Postal Services"
         },
         "Kaufmann für Spedition und Logistikdienstleistung": {
           "icon": "shipping-fast",
-          "name": "Kaufmann für Spedition und Logistikdienstleistung"
+          "name": "Clerk for Freight Forwarding and Logistics Services"
         },
         "Kaufmann für Verkehrsservice": {
           "icon": "bus",
-          "name": "Kaufmann für Verkehrsservice"
+          "name": "Clerk for Transport Services"
         },
         "Kaufmann im Eisenbahn- und Straßenverkehr": {
           "icon": "train",
-          "name": "Kaufmann im Eisenbahn- und Straßenverkehr"
+          "name": "Clerk for Rail and Road Transport"
         },
         "Kunststoff- und Kautschuktechnologe": {
           "icon": "cogs",
-          "name": "Kunststoff- und Kautschuktechnologe"
+          "name": "Plastics and Rubber Technologist"
         },
         "Maschinen- und Anlagenführer": {
           "icon": "industry",
-          "name": "Maschinen- und Anlagenführer"
+          "name": "Machine and Plant Operator"
         },
         "Medientechnologe Druck": {
           "icon": "fax",
-          "name": "Medientechnologe Druck"
+          "name": "Media Technologist – Printing"
         },
         "Medientechnologe Druckverarbeitung": {
           "icon": "cut",
-          "name": "Medientechnologe Druckverarbeitung"
+          "name": "Media Technologist – Print Finishing"
         },
         "Medientechnologe Siebdruck": {
           "icon": "print",
-          "name": "Medientechnologe Siebdruck"
+          "name": "Media Technologist – Screen Printing"
         },
         "Milchtechnologe": {
           "icon": "glass-cheers",
-          "name": "Milchtechnologe"
+          "name": "Dairy Technologist"
         },
         "Milchwirtschaftlicher Laborant": {
           "icon": "flask",
-          "name": "Milchwirtschaftlicher Laborant"
+          "name": "Dairy Laboratory Assistant"
         },
         "Packmitteltechnologe": {
           "icon": "box",
-          "name": "Packmitteltechnologe"
+          "name": "Packaging Technologist"
         },
-        "Papiertechnologe": { "icon": "file-alt", "name": "Papiertechnologe" },
+        "Papiertechnologe": {
+          "icon": "file-alt",
+          "name": "Paper Technologist"
+        },
         "Produktionsmechaniker-Textil": {
           "icon": "cogs",
-          "name": "Produktionsmechaniker-Textil"
+          "name": "Production Mechanic – Textiles"
         },
         "Produktionstechnologe": {
           "icon": "cogs",
-          "name": "Produktionstechnologe"
+          "name": "Production Technologist"
         },
         "Produktveredler-Textil": {
           "icon": "tshirt",
-          "name": "Produktveredler-Textil"
+          "name": "Textile Finishing Specialist"
         },
         "Prüftechnologe Keramik": {
           "icon": "flask",
-          "name": "Prüftechnologe Keramik"
+          "name": "Testing Technologist – Ceramics"
         },
-        "Servicefahrer": { "icon": "truck", "name": "Servicefahrer" },
+        "Servicefahrer": { "icon": "truck", "name": "Service Driver" },
         "Süßwarentechnologe": {
           "icon": "candy-cane",
-          "name": "Süßwarentechnologe"
+          "name": "Confectionery Technologist"
         },
-        "Tankwart": { "icon": "gas-pump", "name": "Tankwart" },
-        "Textillaborant": { "icon": "yarn", "name": "Textillaborant" },
-        "Textilreiniger": { "icon": "tshirt", "name": "Textilreiniger" },
+        "Tankwart": { "icon": "gas-pump", "name": "Gas Station Attendant" },
+        "Textillaborant": {
+          "icon": "yarn",
+          "name": "Textile Laboratory Assistant"
+        },
+        "Textilreiniger": { "icon": "tshirt", "name": "Textile Cleaner" },
         "Verfahrensmechaniker für Beschichtungstechnik": {
           "icon": "paint-roller",
-          "name": "Verfahrensmechaniker für Beschichtungstechnik"
+          "name": "Process Mechanic for Coating Technology"
         },
         "Verfahrensmechaniker in der Steine- und Erdenindustrie": {
           "icon": "gem",
-          "name": "Verfahrensmechaniker in der Steine- und Erdenindustrie"
+          "name": "Process Mechanic in the Stone and Earth Industry"
         },
         "Verfahrenstechnologe Metall": {
           "icon": "industry",
-          "name": "Verfahrenstechnologe Metall"
+          "name": "Process Technologist – Metal"
         },
         "Verfahrenstechnologe Mühlen- und Getreidewirtschaft": {
           "icon": "seedling",
-          "name": "Verfahrenstechnologe Mühlen- und Getreidewirtschaft"
+          "name": "Process Technologist – Milling and Grain Industry"
         },
-        "Weintechnologe": { "icon": "wine-glass", "name": "Weintechnologe" },
-        "Werkstoffprüfer": { "icon": "search", "name": "Werkstoffprüfer" }
+        "Weintechnologe": { "icon": "wine-glass", "name": "Wine Technologist" },
+        "Werkstoffprüfer": { "icon": "search", "name": "Materials Tester" }
       },
+
       "environment_and_nature": {
-        "Baustoffprüfer": { "icon": "flask", "name": "Baustoffprüfer" },
+        "Baustoffprüfer": {
+          "icon": "flask",
+          "name": "Construction Materials Tester"
+        },
         "Biologiemodellmacher": {
           "icon": "flask",
-          "name": "Biologiemodellmacher"
+          "name": "Biological Model Maker"
         },
         "Chemielaborjungwerker": {
           "icon": "flask",
-          "name": "Chemielaborjungwerker"
+          "name": "Chemical Laboratory Assistant"
         },
         "Fachkraft Agrarservice": {
           "icon": "seedling",
-          "name": "Fachkraft Agrarservice"
+          "name": "Agricultural Service Specialist"
         },
         "Fachkraft für Abwassertechnik": {
           "icon": "water",
-          "name": "Fachkraft für Abwassertechnik"
+          "name": "Wastewater Technology Specialist"
         },
         "Fachkraft für Kreislauf- und Abfallwirtschaft": {
           "icon": "recycle",
-          "name": "Fachkraft für Kreislauf- und Abfallwirtschaft"
+          "name": "Recycling and Waste Management Specialist"
         },
         "Fachkraft für Wasserversorgungstechnik": {
           "icon": "faucet",
-          "name": "Fachkraft für Wasserversorgungstechnik"
+          "name": "Water Supply Technology Specialist"
         },
         "Fachkraft für Wasserwirtschaft": {
           "icon": "tint",
-          "name": "Fachkraft für Wasserwirtschaft"
+          "name": "Water Management Specialist"
         },
-        "Fischwirt": { "icon": "fish", "name": "Fischwirt" },
+        "Fischwirt": { "icon": "fish", "name": "Fish Farmer" },
         "Florist": { "icon": "spa", "name": "Florist" },
-        "Forstwirt": { "icon": "tree", "name": "Forstwirt" },
-        "Geomatiker": { "icon": "map-marked-alt", "name": "Geomatiker" },
-        "Gärtner": { "icon": "seedling", "name": "Gärtner" },
-        "Landwirt": { "icon": "tractor", "name": "Landwirt" },
-        "Pferdewirt": { "icon": "horse", "name": "Pferdewirt" },
+        "Forstwirt": { "icon": "tree", "name": "Forestry Worker" },
+        "Geomatiker": {
+          "icon": "map-marked-alt",
+          "name": "Geomatics Technician"
+        },
+        "Gärtner": { "icon": "seedling", "name": "Gardener" },
+        "Landwirt": { "icon": "tractor", "name": "Farmer" },
+        "Pferdewirt": { "icon": "horse", "name": "Equine Manager" },
         "Pflanzentechnologe": {
           "icon": "seedling",
-          "name": "Pflanzentechnologe"
+          "name": "Plant Technologist"
         },
         "Produktionsfachkraft Chemie": {
           "icon": "flask",
-          "name": "Produktionsfachkraft Chemie"
+          "name": "Chemical Production Specialist"
         },
-        "Revierjäger": { "icon": "paw", "name": "Revierjäger" },
-        "Schädlingsbekämpfer": { "icon": "bug", "name": "Schädlingsbekämpfer" },
-        "Tierpfleger": { "icon": "paw", "name": "Tierpfleger" },
-        "Tierwirt": { "icon": "paw", "name": "Tierwirt" },
-        "Wasserbauer": { "icon": "water", "name": "Wasserbauer" },
-        "Winzer": { "icon": "wine-bottle", "name": "Winzer" }
+        "Revierjäger": { "icon": "paw", "name": "Gamekeeper" },
+        "Schädlingsbekämpfer": { "icon": "bug", "name": "Pest Controller" },
+        "Tierpfleger": { "icon": "paw", "name": "Animal Keeper" },
+        "Tierwirt": { "icon": "paw", "name": "Animal Farmer" },
+        "Wasserbauer": {
+          "icon": "water",
+          "name": "Hydraulic Construction Worker"
+        },
+        "Winzer": { "icon": "wine-bottle", "name": "Vintner" }
       },
+
       "business_and_administration": {
-        "Automobilkaufmann": { "icon": "car", "name": "Automobilkaufmann" },
-        "Bankkaufmann": { "icon": "university", "name": "Bankkaufmann" },
-        "Buchhändler": { "icon": "store", "name": "Buchhändler" },
+        "Automobilkaufmann": {
+          "icon": "car",
+          "name": "Automotive Salesperson"
+        },
+        "Bankkaufmann": { "icon": "university", "name": "Bank Clerk" },
+        "Buchhändler": { "icon": "store", "name": "Bookseller" },
         "Fachangestellter für Arbeitsmarktdienstleistungen": {
           "icon": "briefcase",
-          "name": "Fachangestellter für Arbeitsmarktdienstleistungen"
+          "name": "Employment Services Clerk"
         },
         "Fachangestellter für Markt- und Sozialforschung": {
           "icon": "chart-bar",
-          "name": "Fachangestellter für Markt- und Sozialforschung"
+          "name": "Market and Social Research Clerk"
         },
         "Fachkraft für Schutz und Sicherheit": {
           "icon": "shield-alt",
-          "name": "Fachkraft für Schutz und Sicherheit"
+          "name": "Security Specialist"
         },
         "Immobilienkaufmann": {
           "icon": "building",
-          "name": "Immobilienkaufmann"
+          "name": "Real Estate Agent"
         },
         "Industriekaufmann": {
           "icon": "chart-line",
-          "name": "Industriekaufmann"
+          "name": "Industrial Clerk"
         },
         "Investmentfondskaufmann": {
           "icon": "chart-line",
-          "name": "Investmentfondskaufmann"
+          "name": "Investment Fund Manager"
         },
-        "Justizfachangestellter": {
-          "icon": "gavel",
-          "name": "Justizfachangestellter"
-        },
+        "Justizfachangestellter": { "icon": "gavel", "name": "Judicial Clerk" },
         "Kaufmann für Büromanagement": {
           "icon": "briefcase",
-          "name": "Kaufmann für Büromanagement"
+          "name": "Office Management Clerk"
         },
         "Kaufmann für Dialogmarketing": {
           "icon": "comments",
-          "name": "Kaufmann für Dialogmarketing"
+          "name": "Dialogue Marketing Clerk"
         },
         "Kaufmann für Groß- und Außenhandelsmanagement": {
           "icon": "exchange-alt",
-          "name": "Kaufmann für Groß- und Außenhandelsmanagement"
+          "name": "Wholesale and Foreign Trade Management Clerk"
         },
         "Kaufmann für Marketingkommunikation": {
           "icon": "bullhorn",
-          "name": "Kaufmann für Marketingkommunikation"
+          "name": "Marketing Communications Clerk"
         },
         "Kaufmann für Versicherungen und Finanzanlagen": {
           "icon": "shield-alt",
-          "name": "Kaufmann für Versicherungen und Finanzanlagen"
+          "name": "Insurance and Financial Services Clerk"
         },
         "Kaufmann im E-Commerce": {
           "icon": "shopping-cart",
-          "name": "Kaufmann im E-Commerce"
+          "name": "E-Commerce Clerk"
         },
         "Kaufmann im Einzelhandel": {
           "icon": "store",
-          "name": "Kaufmann im Einzelhandel"
+          "name": "Retail Salesperson"
         },
         "Luftverkehrskaufmann": {
           "icon": "plane-departure",
-          "name": "Luftverkehrskaufmann"
+          "name": "Air Transport Clerk"
         },
         "Medienkaufmann Digital und Print": {
           "icon": "file-alt",
-          "name": "Medienkaufmann Digital und Print"
+          "name": "Media Management Clerk (Digital and Print)"
         },
-        "Musikfachhändler": { "icon": "guitar", "name": "Musikfachhändler" },
+        "Musikfachhändler": { "icon": "guitar", "name": "Music Retailer" },
         "Notarfachangestellter": {
           "icon": "file-contract",
-          "name": "Notarfachangestellter"
+          "name": "Notary Clerk"
         },
         "Patentanwaltsfachangestellter": {
           "icon": "gavel",
-          "name": "Patentanwaltsfachangestellter"
+          "name": "Patent Attorney Clerk"
         },
         "Personaldienstleistungskaufmann": {
           "icon": "user-tie",
-          "name": "Personaldienstleistungskaufmann"
+          "name": "Personnel Services Clerk"
         },
         "Rechtsanwalts- und Notarfachangestellter": {
           "icon": "file-contract",
-          "name": "Rechtsanwalts- und Notarfachangestellter"
+          "name": "Legal and Notary Clerk"
         },
         "Rechtsanwaltsfachangestellter": {
           "icon": "gavel",
-          "name": "Rechtsanwaltsfachangestellter"
+          "name": "Legal Clerk"
         },
-        "Schifffahrtskaufmann": {
-          "icon": "ship",
-          "name": "Schifffahrtskaufmann"
-        },
+        "Schifffahrtskaufmann": { "icon": "ship", "name": "Shipping Agent" },
         "Servicefachkraft für Dialogmarketing": {
           "icon": "headset",
-          "name": "Servicefachkraft für Dialogmarketing"
+          "name": "Customer Service Specialist for Dialogue Marketing"
         },
         "Servicekraft für Schutz und Sicherheit": {
           "icon": "shield-alt",
-          "name": "Servicekraft für Schutz und Sicherheit"
+          "name": "Security Service Assistant"
         },
         "Sozialversicherungsfachangestellter": {
           "icon": "shield-alt",
-          "name": "Sozialversicherungsfachangestellter"
+          "name": "Social Insurance Clerk"
         },
-        "Steuerfachangestellter": {
-          "icon": "calculator",
-          "name": "Steuerfachangestellter"
-        },
-        "Verkäufer": { "icon": "shopping-cart", "name": "Verkäufer" },
+        "Steuerfachangestellter": { "icon": "calculator", "name": "Tax Clerk" },
+        "Verkäufer": { "icon": "shopping-cart", "name": "Salesperson" },
         "Verwaltungsfachangestellter": {
           "icon": "cogs",
-          "name": "Verwaltungsfachangestellter"
+          "name": "Administrative Clerk"
         }
       }
     }
@@ -1685,9 +1736,9 @@
     "limitedAllCorrectExplanation": "Keep answering until all questions in the set are correct.",
     "limitedTimeExplanation": "Answer a fixed number of questions within a time limit.",
     "minMaxQuestions": "Please enter a number of questions between {{min}} and {{max}}.",
-      "minTimeLimit": "The time limit must be at least {{min}} seconds.",
-      "generateQuestions": "Generate questions for {{price}}⚡",
-      "notEnoughEnergy": "Not enough energy (⚡)"
+    "minTimeLimit": "The time limit must be at least {{min}} seconds.",
+    "generateQuestions": "Generate questions for {{price}}⚡",
+    "notEnoughEnergy": "Not enough energy (⚡)"
   },
   "aiQuestion": {
     "title": "Generate flashcards with AI from...",
@@ -1770,7 +1821,8 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "youNeedQuestionsToStartAQuiz": "You need at least one question to start a quiz."
-  },"prompts": {
+  },
+  "prompts": {
     "createQuestionsPrompt": "{{instruction}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules}}",
     "convertQuestionsPrompt": "{{instruction_convert}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules_convert}}",
     "createQuestionsFromTextPrompt": "{{instruction_text}}\n\n{{standaloneRule}}\n\n{{important}}\n\n{{outputFormat}}\n\n{{questionStructure}}\n\n{{structureExample}}\n\n{{rules_text}}",
@@ -1786,15 +1838,16 @@
     "structureExample": "{\n  \"question\": \"The question as a string.\",\n  \"hint\": \"\",          // If the question requires a hint, otherwise leave empty\n  \"explanation\": \"\",   // If the question requires an explanation, otherwise leave empty\n  \"answers\": [\"\", ...],\n  \"answerIndex\": [X]     // one or more correct answers; index based on position in the answers array (starting at 0)\n}",
 
     "rules": "- The number of answer options must always be {{numberOfAnswers}}, no more, no less.\n- {{questionTypeDescription}}\n- The number of correct answers (answerIndex) must be at least 1.\n- The index of the correct answer should be randomized and not always 0.\n- Each answer option must be a valid, stringified JSON string.\n- Do not provide any additional explanation or introduction outside the JSON – only return the JSON.",
-    
+
     "rules_convert": "- The number of answer options must always be {{numberOfAnswers}}, no more, no less.\n- {{questionTypeDescription}}\n- If the user has provided answers, adhere to the number of provided answers regardless of {{numberOfAnswers}}.\n- The number of correct answers (answerIndex) must be at least 1.\n- Each answer option must be a valid, stringified JSON string.\n- Do not provide any additional explanation or introduction outside the JSON – only return the JSON.",
-    
+
     "rules_text": "- The number of answer options must always be {{numberOfAnswers}}, no more, no less.\n- {{questionTypeDescription}}\n- The number of correct answers (answerIndex) must be at least 1.\n- The index of the correct answer should be randomized and not always 0.\n- Each answer option must be a valid, stringified JSON string.\n- Do not provide any additional explanation or introduction outside the JSON – only return the JSON.",
 
     "multipleChoiceDescription": "This is a multiple-choice question, multiple answers may be correct.",
     "singleChoiceDescription": "This is a single-choice question, only one answer is correct.",
     "openQuestionDescription": "This is an open-ended question where the user must first provide an answer, which will then be checked against the correct answer. Only one correct answer exists."
-  }, "provider": {
+  },
+  "provider": {
     "noNetworkConnection": "No network connection",
     "tryAgain": "Try again"
   },
@@ -1804,7 +1857,8 @@
     "buy": "Buy",
     "buyEnergy": "Buy energy",
     "freeEnergy": "Free energy"
-  },"ad": {
+  },
+  "ad": {
     "watchAd": "Watch ad",
     "get1EnergyFree": "Get 1 energy for free",
     "watch": "Watch"

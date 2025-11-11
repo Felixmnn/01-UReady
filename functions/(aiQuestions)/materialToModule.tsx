@@ -77,12 +77,15 @@ export async function addNewQuestionToModule({
   const oldList = module.questionList
     ? module.questionList.map((item: string) => JSON.parse(item))
     : [];
+
   const newList = [
   ...oldList,
   ...savedQuestions.map((i) => {
     return { id: i.id, status: null };
   }),
 ];
+  console.log("NEW LIST",newList)
+  console.log("New List IDS",newList.map((i:any) => i.id))
 
   const questionCountOld = module.questions ? module.questions : 0;
   const questionCountNew = questionCountOld + savedQuestions.length;
@@ -135,7 +138,7 @@ export async function materialToModule({
   setIsVisibleModal,
   questionOptions,
 }: {
-  user: string;
+  user: any;
   material: {
     type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
     content: string;
@@ -185,12 +188,14 @@ export async function materialToModule({
     let savedQuestions: any[] = [];
 
     // Schritt 3: Fragen speichern
-
+    console.log("Questions to save:", directQuestions.length);
+    console.log("Direct Questions Sample:", directQuestions.slice(0, 2));
     await saveQuestions({
       newModuleData,
       directQuestions,
       savedQuestions,
     });
+
 
     // Schritt 4: Modul mit Fragen verknüpfen
 
@@ -203,7 +208,7 @@ export async function materialToModule({
     // Benutzer-Daten aktualisieren
     try {
       if (!user) throw new Error("User ID is undefined");
-      const resp = await setUserDataSetup(user);
+      const resp = await setUserDataSetup(user.$id);
     } catch (error) {
       if (__DEV__) {
       }
@@ -399,6 +404,7 @@ async function saveQuestions({
         });
       } catch (error) {
         if (__DEV__) {
+          console.error("Error saving question:", error);
         }
       }
     }

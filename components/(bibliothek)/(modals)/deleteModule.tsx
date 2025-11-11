@@ -43,9 +43,9 @@ const DeleteModule = ({
     }
     try  {
       await deleteDocument(moduleID);
-    
-    const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
-    setModules({ ...modules, documents: updatedModules });
+    console.log("HI IM HERE",modules)
+    //const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
+    //setModules({ ...modules, documents: updatedModules ? updatedModules : modules });
     } catch (error) {
       if (__DEV__) {  
         console.error("Error deleting module:", error);

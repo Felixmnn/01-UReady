@@ -83,12 +83,12 @@ const Header = ({
         description={moduleDescription}
       />
       <View className="flex-row w-full justify-between p-4 items-center">
-        <View className="flex-row items-center gap-2">
-          <TouchableOpacity onPress={() => setSelectedScreen("AllModules")}>
+        <TouchableOpacity className="flex-row items-center gap-2" onPress={() => setSelectedScreen("AllModules")}>
+          <TouchableOpacity >
             <Icon name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
           <Text className="font-bold text-white text-[15px]">{moduleName}</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setDeleteModuleVisible(true)}
           className="px-2"

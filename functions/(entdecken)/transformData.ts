@@ -18,6 +18,13 @@ interface Question {
 
 export function repairAndParseJSONStringsSessions(csvData: string[]): Session[] {
     // Hilfsfunktion, um einen String zu reparieren und in ein JSON-Objekt umzuwandeln
+    try {
+        let csvDataParsed = csvData.map(i=> JSON.parse(i));
+        console.log("Parsed Session List",csvDataParsed)
+        return csvDataParsed;
+    } catch (error) {
+        // This will happen when the data comes from the csv
+    }
     let c = 0
     let objects: Session[] = [];
     let newOBJ: Session = {
@@ -76,6 +83,13 @@ export function repairAndParseJSONStringsSessions(csvData: string[]): Session[] 
 }
 
 export function repairQuestionList(csvData: string[]): Question[] {
+    try {
+        let csvDataParsed = csvData.map(i=> JSON.parse(i));
+        console.log("Parsed Question List",csvDataParsed)
+        return csvDataParsed;
+    } catch (error) {
+        // This will happen when the data comes from the csv
+    }
     let newList: Question[] = [];
     let c = 0;
     csvData.map(i=> {

@@ -77,7 +77,6 @@ function calculatePercent(questions:string[]){
 
       
     const [ isVisibleAI, setIsVisibleAI] = useState(false)
-
     const ModuleList = ({
       items
      }:{
@@ -116,7 +115,7 @@ function calculatePercent(questions:string[]){
                   percentage={Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0}
                   titel={item.name}
                   studiengang={item.description}
-                  fragenAnzahl={item.questions}
+                  fragenAnzahl={item.questionList.length}
                   notizAnzahl={item.notes}
                   creator={item.creator}
                   publicM={item.public}

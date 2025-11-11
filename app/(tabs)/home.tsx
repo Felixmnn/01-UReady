@@ -21,7 +21,7 @@ const home = () => {
     if(!user) return;
         loadUserData(user?.$id).then((data) => {
           if (data?.signInProcessStep === "DONE") return;
-          if (data?.signInProcessStep === "FINISHED") router.replace("/getting-started")
+          if (data?.signInProcessStep === "FINISHED") return; 
           else {router.replace("/personalize")}
         });
     }, [user]);

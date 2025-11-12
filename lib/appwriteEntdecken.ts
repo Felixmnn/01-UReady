@@ -160,17 +160,19 @@ async function getUniversityModules({
 
 
   if (universityKategorie && universityKategorie.length > 0) {
-    // Falls mehrere Subjects: OR-Verknüpfung
-    const uKat =
-      universityKategorie.length > 1
-        ? universityKategorie
-        : [universityKategorie[0], universityKategorie[0]];
+  // Falls mehrere Subjects: OR-Verknüpfung
+  const uKat = universityKategorie;
 
-    const subjectFilters = uKat.map((kat) =>
-      Query.contains("creationSubject", kat)
-    );
-    filters.push(Query.or(subjectFilters));
-  }
+  const subjectFilters = uKat.flatMap((kat) => {
+    let kat_new = "['" + kat + "']";
+    return [
+      Query.contains("creationSubject", kat),
+      Query.contains("creationSubject", kat_new)
+    ];
+  });
+
+  filters.push(Query.or(subjectFilters));
+}
   if (searchText && searchText.trim() !== "") {
     if (textSearchType === "NAME") {
       filters.push(Query.contains("name", searchText));

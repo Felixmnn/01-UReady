@@ -554,11 +554,7 @@
         "icon": "school",
         "grades": [5, 6, 7, 8, 9, 10, 11, 12, 13]
       },
-      "berufsschule": {
-        "title": "Vocational School",
-        "icon": "school",
-        "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      },
+      
       "sonstige": {
         "title": "Other",
         "icon": "school",

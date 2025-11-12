@@ -32,7 +32,6 @@ const SchoolFilters = ({
     "realschule",
     "gesamtschule",
     "gymnasium",
-    "berufsschule",
     "sonstige",
   ];
   const schoolTypeObj = schoolTypesRaw.map((type) =>

@@ -322,6 +322,7 @@ const SingnUp = () => {
                 signUp();
               }}
             />
+            {/*
             <LogInOption
               iconName="google"
               handlePress={() => {
@@ -332,6 +333,7 @@ const SingnUp = () => {
                 }
               }}
             />
+            */}
 
             <TouchableOpacity
               onPress={() => router.push("/sign-in")}

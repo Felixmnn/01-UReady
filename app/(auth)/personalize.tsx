@@ -20,6 +20,8 @@ import { updateUserData } from "@/lib/appwriteUpdate";
 import { useTranslation } from "react-i18next";
 import { useLocalSearchParams, useSearchParams } from "expo-router/build/hooks";
 import { userDataKathegory, userData } from "@/types/appwriteTypes";
+import { reloadAsync } from "expo-updates";
+import * as Updates from "expo-updates";
 
 
 const personalize = () => {
@@ -95,13 +97,14 @@ const personalize = () => {
   // Navigation & User Data
   useEffect(() => {
     if (userData?.signInProcessStep === "SEVEN" && !editEducationGoals) {
-      saveUserData();
-      router.push("/home");
+      saveUserData().then(() => {
+        router.push("/");
+      })
     } else if (
       userData?.signInProcessStep === "FINISHED" &&
       !editEducationGoals
     ) {
-      router.push("/home");
+       Updates.reloadAsync();
     }
   }, [userData]);
 

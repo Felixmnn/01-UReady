@@ -507,6 +507,15 @@
     "cancel": "Cancel",
     "ok": "OK"
   },
+  "quizResult": {
+    "tryAgain": "Try again!",
+    "excellent": "Excellent! You did great!",
+    "goodJob": "Good job! Keep it up!",
+    "notBad": "Not bad! You can do even better!",
+    "newAttempt": "New attempt",
+    "otherQuestions": "Other questions",
+    "finishQuiz": "Finish quiz"
+  },
   "gettingStarted": {
     "setTogether": "Let's create a study set together.",
     "comilitones": "See what your classmates are learning.",

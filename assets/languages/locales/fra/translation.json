@@ -512,6 +512,15 @@
     "cancel": "Annuler",
     "ok": "OK"
   },
+  "quizResult": {
+    "tryAgain": "Réessayez !",
+    "excellent": "Excellent ! Vous avez fait un excellent travail !",
+    "goodJob": "Bon travail ! Continuez comme ça !",
+    "notBad": "Pas mal ! Vous pouvez faire encore mieux !",
+    "newAttempt": "Nouvelle tentative",
+    "otherQuestions": "Autres questions",
+    "finishQuiz": "Terminer le quiz"
+  },
   "gettingStarted": {
     "setTogether": "Créons ensemble un set d’apprentissage.",
     "comilitones": "Voyons ce que tes camarades étudient.",

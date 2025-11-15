@@ -48,6 +48,8 @@ const Quiz = ({
 
   const statusIndex = questionList.findIndex((q) => q.id === questions[0].$id);
   const status = questionList[statusIndex]?.status || null; 
+
+ 
   return (
     <View className="flex-1 justify-end">
       <View className="flex-1 rounded-[10px] bg-gray-900 border-gray-600 border-[1px] m-4">

@@ -274,7 +274,7 @@ const HomeGeneral = () => {
     <SafeAreaView className="h-full w-full ">
       
       <TokenHeader/>
-      
+     
       <ScrollView
         style={{
           height: "100%",

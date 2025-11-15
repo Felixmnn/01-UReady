@@ -248,7 +248,7 @@ const SignIn = () => {
                 title={t("signIn.title")}
                 handlePress={() => submitSignIn()}
               />
-
+              {/*
               <LogInOption
                 iconName="google"
                 title={t("signIn.continueWithGoogle")}
@@ -261,6 +261,7 @@ const SignIn = () => {
                   }
                 }}
               />
+              */}
               <TouchableOpacity
                 onPress={() => router.push("/sign-up")}
                 className="mt-2 items-center justify-center"

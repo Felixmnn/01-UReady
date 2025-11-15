@@ -28,6 +28,9 @@ import BotCenter from "../(signUp)/botCenter";
 import { userData } from "@/types/moduleTypes";
 import { module } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
+import { getMatchingModules } from "@/lib/appwriteEntdecken";
+import CustomButton from "../(general)/customButton";
+import germanTranslation from "@/assets/languages/locales/de/translation.json"
 
 const PageDiscover = ({
   setUserChoices,
@@ -51,44 +54,8 @@ const PageDiscover = ({
   useEffect(() => {
     if (userData == null) return;
     async function fetchModules() {
-      let modules: module[] = [];
-      if (userData.kategoryType == "UNIVERSITY") {
-        modules = (await recommendationSearch({
-          kategoryType: userData.kategoryType,
-          studiengangKathegory: userData.studiengangKathegory,
-          creationUniversityFaculty: userData.faculty,
-          creationUniversity: userData.university,
-          creationUniversityProfession: userData.studiengangZiel,
-          creationUniversitySubject: userData.studiengang,
-          creationCountry: userData.country,
-        })) as module[];
-      } else if (userData.kategoryType == "SCHOOL") {
-        modules = (await recommendationSearch({
-          kategoryType: userData.kategoryType,
-          creationCountry: userData.country,
-          creationSubject: userData.schoolSubjects,
-          creationRegion: userData.region,
-          creationSchoolForm: userData.schoolType,
-          creationLanguage: userData.language,
-          creationKlassNumber: userData.schoolGrade,
-        })) as module[];
-      } else if (userData.kategoryType == "EDUCATION") {
-        modules = (await recommendationSearch({
-          kategoryType: userData.kategoryType,
-          creationCountry: userData.country,
-          creationEducationKathegory: userData.educationKathegory,
-          creationEducationSubject: userData.educationKathegory,
-        })) as module[];
-      } else if (userData.kategoryType == "OTHER") {
-        modules = (await recommendationSearch({
-          creationCountry: userData.country,
-          creationLanguage: userData.language,
-          creationSubject: userData.schoolSubjects,
-        })) as module[];
-      }
-      const filteredModules = modules.filter((module) => module.public) || [];
-      setMatchingModules(filteredModules);
-      setLoading(false);
+      router.replace("/home")
+      
     }
     fetchModules();
   }, [userData]);
@@ -106,10 +73,26 @@ const PageDiscover = ({
       setLoading(false);
     }
   }
+
+
+
+
+
+
   return (
     <SafeAreaView className="w-full h-full p-4">
       <View>
-        <Icon
+        <Text className="text-white">
+          {
+            JSON.stringify(userData)
+          }
+        </Text>
+        <CustomButton
+          title={"Entdecken"}
+          handlePress={()=> {router.push("/entdecken")}}
+
+          />       
+           <Icon
           name="arrow-left"
           size={20}
           color="#20c1e1"

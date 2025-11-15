@@ -14,6 +14,7 @@ import { updateUserData } from "@/lib/appwriteUpdate";
 import { setUserDataSetup } from "@/lib/appwriteEdit";
 
 const gettingStarted = () => {
+  router.replace("/home")
   const [userChoices, setUserChoices] = useState<
     "GENERATE" | "DISCOVER" | "CREATE" | null
   >(null);
@@ -80,7 +81,7 @@ const gettingStarted = () => {
     if (!user) return;
     async function fetchUserDataKathegory() {
       const res = await loadUserData(user.$id);
-      if (res && res.signInProcessStep == "DONE") {
+      if (res && res.signInProcessStep == "FINISHED") {
         router.push("/home");
       }
     }

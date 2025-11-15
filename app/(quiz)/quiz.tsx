@@ -104,16 +104,32 @@ const quiz = () => {
            }))
            questionsRaw.push(...res)
         }
-        const questions: question[] = Array.isArray(questionsRaw)
+        let questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
-        const questionList = module?.questionList.map((q:string) => {
+        console.log("😩😩😩",questions)
+        questions = questions.map((question) => {
+            const answersWithIndex = question.answers.map((answer, index) => ({ answer, index }));
+            const randomizedAnswers = answersWithIndex.sort(() => Math.random() - 0.5);
+            const newAnswers = randomizedAnswers.map(item => item.answer);
+            const newAnswerIndex = randomizedAnswers
+                .filter(item => question.answerIndex.includes(item.index))
+                .map(item => randomizedAnswers.indexOf(item));
+            return {
+                ...question,
+                answers: newAnswers,
+                answerIndex: newAnswerIndex,
+            };
+        })
+        
+        let questionList = module?.questionList.map((q:string) => {
           try {
             return JSON.parse(q);
           } catch (e) {
             return { id: null, status: null };
           }
         })
+       
         if (quizType !== "infinite"){
             let randomized = randomizeArray(questions ?? [])
             

@@ -1680,6 +1680,9 @@
   },
 
   "bibliothek": {
+    "wouldYouLikeToAddModule": "Möchtest du das Modul {{moduleName}} zu deiner Bibliothek hinzufügen?",
+    "addModule": "Modul hinzufügen",
+    "doNotAdd": "Nicht hinzufügen",
     "aiQuiz": "AI Quiz generieren",
     "crtNote": "Notiz erstellen",
     "crtQuestion": "Frage erstellen",

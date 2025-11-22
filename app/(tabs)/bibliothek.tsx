@@ -1,5 +1,5 @@
 import { View, FlatList, Animated } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Tabbar from "@/components/(tabs)/tabbar";
 import AllModules from "@/components/(bibliothek)/(pages)/allModules";
 import SingleModule from "@/components/(bibliothek)/(pages)/singleModule";
@@ -8,11 +8,13 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { router, useLocalSearchParams } from "expo-router";
 import SkeletonListBibliothek from "@/components/(general)/(skeleton)/skeletonListBibliothek";
 import { module } from "@/types/appwriteTypes";
+import { copyModule } from "@/lib/appwriteShare";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Bibliothek = () => {
-  const { user, isLoggedIn, isLoading, reloadNeeded } =
-    useGlobalContext();
+  const { user, isLoggedIn, isLoading, reloadNeeded } = useGlobalContext();
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
+  
 
   const { selectedModuleIndex } = useLocalSearchParams();
   useEffect(() => {
@@ -23,6 +25,7 @@ const Bibliothek = () => {
     }
   }, [selectedModuleIndex]);
   
+
   const [selected, setSelected] = useState("AllModules");
   const [modules, setModules] = useState<module[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -74,6 +77,7 @@ const Bibliothek = () => {
                     setSelected={setSelected}
                     modules={modules}
                     setSelectedModule={setSelectedModule}
+                    setModules={setModules}
                   />
                 ) : null}
                 {selected == "SingleModule" ? (

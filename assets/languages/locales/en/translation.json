@@ -1725,6 +1725,9 @@
     }
   },
   "bibliothek": {
+    "wouldYouLikeToAddModule": "Would you like to add the module {{moduleName}} to your library?",
+    "addModule": "Add module",
+    "doNotAdd": "Do not add",
     "aiQuiz": "Generate AI Quiz",
     "crtNote": "Create Note",
     "crtQuestion": "Create Question",

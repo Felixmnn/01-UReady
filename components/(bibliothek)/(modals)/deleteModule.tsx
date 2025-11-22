@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import { useTranslation } from 'react-i18next';
+import ShareModuleIcon from '../(components)/shareModule';
 
 
 //Name might be missleading - this modal is for editing module data and also for deleting the module
@@ -90,6 +91,7 @@ const DeleteModule = ({
         
         {/* Header */}
         <View className="w-full flex-row justify-between items-center mb-6">
+          <View className="w-full flex-row items-center justify-between">
           <TouchableOpacity
             onPress={() => {
               console.log("Ich werde gedrückt");
@@ -103,6 +105,8 @@ const DeleteModule = ({
           >
             <Icon name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
+          <ShareModuleIcon moduleID={moduleID} />
+          </View>
 
           { (newModuleName !== moduleName || newModuleDescription !== description) && !savedChanges ? (
             <TouchableOpacity onPress={handleSaveChanges} className="bg-blue-600 rounded-lg px-4 py-2">

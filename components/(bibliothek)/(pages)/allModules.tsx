@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView,FlatList, Image, RefreshContro
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
-import React, {  useState } from 'react'
+import React, {  use, useEffect, useState } from 'react'
 import { loadUserDataKathegory} from "../../../lib/appwriteDaten"
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules, updateUserUsageSessions } from '@/lib/appwriteUpdate';
@@ -11,42 +11,39 @@ import AddAiBottomSheet from '@/components/(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '@/components/(general)/(modal)/addModuleBottomSheet';
 import { module } from '@/types/appwriteTypes';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getSpecificModule, OrigninalModule } from '@/lib/appwriteShare';
+import { ModuleProps } from '@/types/moduleTypes';
+import AcceptShareModule from '../(components)/acceptShareModule';
 
 const AllModules = ({
   setSelected,
   modules,
   setSelectedModule,
   onRefresh,
-  refreshing
+  refreshing,
+  setModules  
 }:{
   setSelected: React.Dispatch<React.SetStateAction<"AllModules" | "SingleModule" | "CreateModule" | "AiModule">>,
   modules: module[],
   setSelectedModule: React.Dispatch<React.SetStateAction<number>>,
   onRefresh: () => void,
-  refreshing: boolean
+  refreshing: boolean,
+  setModules: React.Dispatch<React.SetStateAction<module[]>>
 }) => {
 
     const { t } = useTranslation();
 
     const { user, userUsage } = useGlobalContext()
     
-    const [ addUserRequesModules, setAddUserRequesModules] = useState<module | null>()
-   
+
       
     const { width } = useWindowDimensions(); // Bildschirmbreite holen
     const isVertical = width > 700;
     const [isVisibleNewModule, setIsVisibleNewModule] = useState(false);
     const numColumns = Math.floor(width / 300);
 
-    function isBetweenNDaysAgo(targetDateIso: string, minDaysAgo: number, maxDaysAgo: number): boolean {
-    const now = new Date().getTime();
-    const target = new Date(targetDateIso).getTime();
-
-    const minAgo = now - minDaysAgo * 24 * 60 * 60 * 1000;
-    const maxAgo = now - maxDaysAgo * 24 * 60 * 60 * 1000;
-
-    return target <= minAgo && target >= maxAgo;
-}
+  
 
 function calculatePercent(questions:string[]){
   let parsedQuestions = []
@@ -72,6 +69,26 @@ function calculatePercent(questions:string[]){
   return Math.floor((sum / (questions.length * 2)) * 100);
 
 }
+
+  const [ moduleToBeAdded, setModuleToBeAdded ] = useState<ModuleProps | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    async function showCopyModuleIfAvailable() {
+
+      const moduleToBeAdded = await AsyncStorage.getItem("moduleToBeAddedAfterSignUp");
+      console.log("Module to be added after sign up:", moduleToBeAdded);
+      if (moduleToBeAdded) {
+        await getSpecificModule(JSON.parse(moduleToBeAdded)).then((res => {
+          if (res) {
+            setModuleToBeAdded(res as  ModuleProps);
+          }
+      }))
+    }
+  }
+    showCopyModuleIfAvailable();
+  
+  }, []);
 
 
 
@@ -129,7 +146,7 @@ function calculatePercent(questions:string[]){
     }
   return (
     <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
-        <TokenHeader userUsage={userUsage}/>
+        <TokenHeader />
         <View className={`flex-row justify-start items-center rouned-[10px] mx-5 my-2 `}>
           
           <TouchableOpacity onPress={()=> {setIsVisibleNewModule(true)}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
@@ -143,6 +160,7 @@ function calculatePercent(questions:string[]){
           
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
+        
         <ScrollView
           className={`flex-1 bg-gray-900 ${isVertical ? "p-4" : "p-2"}`}
           refreshControl={
@@ -158,6 +176,15 @@ function calculatePercent(questions:string[]){
           }
         >
           <View style={{flexGrow:1.5}}>
+            {
+              moduleToBeAdded &&
+                <AcceptShareModule
+                  module={ moduleToBeAdded }
+                  user={user}
+                  setModuleToBeAdded={setModuleToBeAdded}
+                  setModules={setModules}
+                  />
+            }
           <ModuleList
             items={modules}
           />

@@ -1798,6 +1798,10 @@
     }
   },
   "bibliothek": {
+    "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
+"addModule": "Añadir módulo",
+"doNotAdd": "No añadir",
+
     "aiQuiz": "Générer un quiz IA",
     "crtNote": "Créer une note",
     "crtQuestion": "Créer une question",

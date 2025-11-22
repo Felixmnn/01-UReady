@@ -1,5 +1,5 @@
 import { Text, View, SafeAreaView, ActivityIndicator, Image, Animated } from "react-native";
-import { router, Redirect } from "expo-router";
+import { router, Redirect, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
@@ -8,10 +8,16 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "@/assets/languages/i18n";
+import { copyModule } from "@/lib/appwriteShare";
 
 
 export default function Index() {
+  //This paramters may be trasmitted via deeplinks
+  const { moduleID } = useLocalSearchParams();
+
   const { isLoading, user, userData, setUserData } = useGlobalContext();
+
+
   const { t } = useTranslation();
   useEffect(() => {
      NavigationBar.setVisibilityAsync('hidden');
@@ -22,9 +28,13 @@ export default function Index() {
   useEffect(() => {
   let isMounted = true;
   if (user == null) return;
-
+  
   async function fetchUserData() {
+
     try {
+      if (moduleID) {
+        await AsyncStorage.setItem("moduleToBeAddedAfterSignUp", JSON.stringify(moduleID));
+      }
       let userD = await loadUserData(user.$id);
       if (!isMounted) return; // Nur setzen, wenn noch mounted
 

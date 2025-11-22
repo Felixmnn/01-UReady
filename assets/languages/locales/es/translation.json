@@ -1812,6 +1812,10 @@
     }
   },
   "bibliothek": {
+    "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
+"addModule": "Añadir módulo",
+"doNotAdd": "No añadir",
+
     "aiQuiz": "Generar cuestionario con IA",
     "crtNote": "Crear nota",
     "crtQuestion": "Crear pregunta",

@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import CustomButton from "@/components/(general)/customButton";
 import KaTeXExample from "@/components/(home)/katext";
 import ContentInput from "./newQuestionContentInput";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import Offline from "@/components/(general)/offline";
 
 const ChangeQuestions = ({
   question,
@@ -33,6 +35,7 @@ const ChangeQuestions = ({
 }) => {
   console.log("💵Question to edit:", question);
   const { t } = useTranslation();
+  const { isOffline } = useGlobalContext();
   const [questionToEdit, setQuestionToEdit] = useState({
     ...question,
     answers: question.answers.map((a) => {
@@ -107,6 +110,7 @@ const ChangeQuestions = ({
       }}
       backgroundStyle={{ backgroundColor: "#1F2937" }}
     >
+      { isOffline ? <Offline /> :
       <BottomSheetScrollView
         contentContainerStyle={{
           backgroundColor: "#111418ff",
@@ -308,6 +312,7 @@ const ChangeQuestions = ({
           
         </View>
       </BottomSheetScrollView>
+}
     </BottomSheet>
   );
 };

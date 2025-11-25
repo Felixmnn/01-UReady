@@ -13,6 +13,7 @@
     "errorMessage": "Bitte fülle alle Felder aus."
   },
   "info": {
+    "thisOnlyWorksIfYouAreOnline": "Diese Funktion funktioniert leider nur, wenn du online bist.",
     "title": "AGB",
     "policys": {
       "usageRights": {
@@ -1680,6 +1681,7 @@
   },
 
   "bibliothek": {
+
     "wouldYouLikeToAddModule": "Möchtest du das Modul {{moduleName}} zu deiner Bibliothek hinzufügen?",
     "addModule": "Modul hinzufügen",
     "doNotAdd": "Nicht hinzufügen",

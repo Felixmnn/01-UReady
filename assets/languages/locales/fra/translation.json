@@ -13,6 +13,7 @@
     "errorMessage": "Veuillez remplir tous les champs."
   },
   "info": {
+    "thisOnlyWorksIfYouAreOnline": "Cette fonction ne fonctionne que si vous êtes en ligne.",
     "title": "CGU",
     "policys": {
       "usageRights": {

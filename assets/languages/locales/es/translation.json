@@ -13,6 +13,7 @@
     "errorMessage": "Por favor, completa todos los campos."
   },
   "info": {
+    "thisOnlyWorksIfYouAreOnline": "Esta función solo funciona si estás en línea.",
     "title": "Términos y Condiciones",
     "policys": {
       "usageRights": {

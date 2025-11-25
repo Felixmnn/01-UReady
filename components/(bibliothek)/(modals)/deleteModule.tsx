@@ -6,6 +6,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import { useTranslation } from 'react-i18next';
 import ShareModuleIcon from '../(components)/shareModule';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import Offline from '@/components/(general)/offline';
 
 
 //Name might be missleading - this modal is for editing module data and also for deleting the module
@@ -79,7 +81,7 @@ const DeleteModule = ({
   }
 
   const [ newUser, setNewUser ] = React.useState("");
-
+  const { isOffline } = useGlobalContext();
   return (
     <Modal
       animationType="slide"
@@ -122,6 +124,7 @@ const DeleteModule = ({
         </View>
 
         {/* Content */}
+        { isOffline ? <Offline /> :
         <View className="flex-1">
           <Text className="text-white font-semibold text-lg mb-2">{t("deleteModule.moduleName")}</Text>
           <TextInput
@@ -242,6 +245,7 @@ const DeleteModule = ({
           </View>
         </View>
         </View>
+}
 
 
       </View>

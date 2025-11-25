@@ -19,10 +19,11 @@ import uuid from "react-native-uuid";
 import * as DocumentPicker from "expo-document-picker";
 import {
   getAllDocuments,
+  getAllQuestionsByIds,
   getSessionNotes,
   getSessionQuestions,
 } from "@/lib/appwriteQuerys";
-import { updateModuleData } from "@/lib/appwriteUpdate";
+import { updateModuleData, updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import ModalNewQuestion from "../(modals)/newQuestion";
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -38,6 +39,13 @@ import SessionListSheet from "../(bottomSheets)/sessionListSheet";
 import { question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
+import { storage } from "@/lib/mmkv";
+import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV } from "@/lib/mmkvFunctions";
+
+type QuestionListItem = {
+  id: string;
+  status: null | "BAD" | "OK" | "GOOD" | "GREAT";
+}
 
 type Note = {
   $id?: string;
@@ -87,7 +95,6 @@ const SingleModule = ({
     /* Dimensions and Window Measurements */
   }
   const { width } = useWindowDimensions();
-  const tabWidth = width / 2;
   const isVertical = width > 700;
   const [tab, setTab] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -121,7 +128,8 @@ const SingleModule = ({
     questionList: Array.isArray(moduleEntry.questionList) ? reverseToManyStringifyActions(moduleEntry.questionList) : [],
   });
   const [selectedSession, setSelectedSession] = useState(0);
-  const [questions, setQuestions] = useState<question[]>([]);
+  const [questions, setQuestions] = useState<question[]>(getQuestionsFromMMKV(module.$id));
+
   const [notes, setNotes] = useState<Note[]>([]);
   const [documents, setDocuments] = useState<AppwriteDocument[]>([]);
   const parsedSessions = Array.isArray(module.sessions)
@@ -168,11 +176,32 @@ const SingleModule = ({
    */
   useEffect(() => {
     if (!module) return;
+    console.log("Wird aufgerufen")
+    const locallySavedQuestionLists = getUnsavedModulesFromMMKV();
+    console.log("😩",JSON.stringify(locallySavedQuestionLists))
+    let newQuestionList = typeof module.questionList[0] === "string" ? module.questionList : module.questionList.map((q: any) => JSON.stringify(q))
+    if (locallySavedQuestionLists.some((qL) => qL.moduleID === module.$id)) {
+    const locallySavedList = locallySavedQuestionLists.find(
+      (qL) => qL.moduleID === module.$id
+    );
+    console.log("✅",locallySavedList)
+
+    if (locallySavedList) {
+      console.log("Found locally saved question list. Replacing with new list.");
+       newQuestionList = locallySavedList.items
+      
+    }
+  }
+    
+    setModule({
+      ...module,
+      questionList: newQuestionList
+    })
     async function updateModuleLocal() {
       const newModule = {
         ...module,
         sessions: sessions.map((session: string) => JSON.stringify(session)),
-        quesitonList: typeof module.questionList[0] === "string" ? module.questionList : module.questionList.map((q: any) => JSON.stringify(q)),
+        quesitonList:newQuestionList,
       };
       await updateModule(newModule);
     }
@@ -237,9 +266,75 @@ const SingleModule = ({
     });
   }
 
+
+  function ensureQuestionListIsParsed(questionList: string[] | QuestionListItem[]): QuestionListItem[] {
+    try {
+      return questionList.map((item) => {
+        if (typeof item === "string") {
+          return JSON.parse(item);
+        }
+        return item;
+      });
+    } catch (error) {
+      return []
+    }}
+  function checkIfOldQuestionsEqualNewQuestions(oldList: any[], newList: any[]) {
+    if (oldList.length !== newList.length) return false;
+    for (let i = 0; i < oldList.length; i++) {
+      if (oldList[i].id !== newList[i].id) return false;
+    }
+    return true;
+  }
+  /**
+   * From now on, the questions will only be fetched from the QuestionList.
+   * This ensures that only the questions that are actually in the module are loaded.
+   * This function recives the Object form of the questionList.
+   */
+  async function fetchAllQuestions(quesitonList: QuestionListItem[], moduleID: string) {
+    try {
+    const parsedQuestionList = ensureQuestionListIsParsed(quesitonList);
+    const allQuestions = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
+    if (allQuestions === "404" || allQuestions === "400") return ;
+
+    console.log("🔴All Questions length:", allQuestions.length);
+    
+    /*
+    SPÄTER AKTIVIEREN
+    if (allQuestions.length < quesitonList.length) {
+      // Some questions are missing, thus we need to update the questionList
+      const newQuestionList = quesitonList.filter(ql => allQuestions.some(aq => aq.$id === ql.id));
+      await updateModuleData(moduleID, {
+        questionList: newQuestionList.map((item) => JSON.stringify(item)),
+        questions: newQuestionList.length,
+        progress: calculatePercent(allQuestions as unknown as question[]),
+      });
+      const newModule = {...module, questionList: newQuestionList};
+      const newModuleList = modules.map((m: any) => m.$id === newModule.$id ? newModule : m);
+      saveModulesToMMKV(newModuleList);
+    }
+      */
+    saveQuestionsToMMKV(moduleID, allQuestions);
+    const savedQuestions = getQuestionsFromMMKV(moduleID);
+    console.log("🔵 Saved Questions length:", savedQuestions ? savedQuestions.length : "No saved questions");
+    if (!checkIfOldQuestionsEqualNewQuestions(questions, allQuestions)) {
+      console.log("🟢 Questions updated from fetchAllQuestions");
+      setQuestions(allQuestions as unknown as question[]);
+    }
+    
+    } catch (error) {
+      if (__DEV__) {  
+        console.error("Error fetching all questions:", error);
+      }
+  }}
+
+  useEffect(() => {
+    if (!module) return;
+    fetchAllQuestions(module.questionList, module.$id);
+  }, [refreshing]);
+
   async function fetchQuestions(sessionID: string) {
+    /*
     let sessionQuestions = await getSessionQuestions(sessionID);
-    console.log("Session Questions", sessionQuestions);
     // Filter questions so only those in questionList are set
     const filteredQuestions = sessionQuestions.filter(q =>
       module.questionList.some((mq: string) => {
@@ -251,30 +346,14 @@ const SingleModule = ({
       })
     );
     setQuestionLoadedSessions([...questionLoadedSessions, sessionID]);
+    
     const percent = calculatePercent(filteredQuestions as unknown as question[]);
     await updateSessionData(sessionID, percent, filteredQuestions.length);
+    */
 
     const notes = await getSessionNotes(sessionID);
     const documents = await getAllDocuments(sessionID);
-    const existingIds = questions.map((q) => (q ? q.$id : undefined));
-    const newQuestions = filteredQuestions.filter(
-      (q) => !existingIds.includes(q.$id)
-    );
-    if (newQuestions.length > 0) {
-      setQuestions((prevQuestions) => {
-        const combined = [...prevQuestions, ...newQuestions];
-        // Only keep items that are of type 'question'
-        const unique = combined.filter(
-          (item, index, arr) =>
-            item &&
-            typeof item === "object" &&
-            "question" in item &&
-            arr.findIndex((q) => q && q.$id === item.$id) === index
-        ) as question[];
-        return unique;
-      });
-    }
-    //else {setQuestions(filteredQuestions);}
+   
     if (notes) {
       setNotes(notes as unknown as Note[]);
     }
@@ -282,6 +361,7 @@ const SingleModule = ({
       setDocuments(documents as unknown as AppwriteDocument[]);
     }
   }
+
   async function checkForUpdates() {
     const moduledata = await loadModule(module.$id);
     if (moduledata) {
@@ -301,9 +381,6 @@ const SingleModule = ({
     );
     const notes = await getSessionNotes(sessions[selectedSession].id);
     const documents = await getAllDocuments(sessions[selectedSession].id);
-    if (filteredQuestions) {
-      setQuestions(filteredQuestions as unknown as question[]);
-    }
     if (notes) {
       setNotes(notes as unknown as Note[]);
     }
@@ -325,7 +402,7 @@ const SingleModule = ({
     });
   }
 
-  //This effect causes Quetions rende
+  //This effect causes Questions to render
   useEffect(() => {
     if (sessions == undefined || selectedSession > sessions.length) {
       if (selectedSession > sessions.length) {
@@ -533,9 +610,7 @@ const SingleModule = ({
     hint: "",
     explaination: "",
   });
-  useEffect(() => {
-    console.log("👩‍🚒❌👩‍🚒Editing Question:", questionToEdit.question);
-  }, [questionToEdit]);
+
 
   const [isVisibleEditQuestion, setIsVisibleEditQuestion] = useState<{
     state: boolean;
@@ -543,22 +618,6 @@ const SingleModule = ({
   }>({
     state: false,
     status: "ADD",
-  });
-  const [questionActive, setQuestionActive] = useState(0);
-  const [answerActive, setAnswerActive] = useState(0);
-  const [newQuestion, setNewQuestion] = useState({
-    $id: undefined,
-    question: "",
-    questionUrl: "",
-    questionLatex: "",
-    answers: [],
-    answerIndex: [],
-    tags: [],
-    public: false,
-    sessionID: null,
-    aiGenerated: false,
-    subjectID: module.$id,
-    status: null,
   });
   const bottomSheetRef = React.useRef<CustomBottomSheetRef>(null);
   const aiBottomSheetRef = React.useRef<CustomBottomSheetRef>(null);
@@ -569,21 +628,7 @@ const SingleModule = ({
 
   return (
     <View className="flex-1 rounded-[10px] items-center ">
-      <ModalNewQuestion
-        setQuestionToEdit={setQuestionToEdit}
-        setIsVisibleEditQuestion={setIsVisibleEditQuestion}
-        texts={texts}
-        selectedLanguage={selectedLanguage}
-        SwichToEditNote={SwichToEditNote}
-        addDocument={addDocument}
-        module={module}
-        isVisible={isVisibleNewQuestion}
-        setIsVisible={setIsVisibleNewQuestion}
-        selectAi={() => {
-          setIsVisibleNewQuestion(false);
-          setIsVisibleAI(true);
-        }}
-      />
+      
       {isVertical ? (
         <View className=" h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50"></View>
       ) : null}
@@ -629,7 +674,7 @@ const SingleModule = ({
             <View
               className={`border-t-[1px] border-gray-600 ${isVertical ? "mt-3" : null}`}
             />
-
+           
             <View className={`flex-1 ${isVertical ? "flex-row" : null}`}>
               {tab == 0 ? (
                 <View className="h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[500px]">
@@ -697,6 +742,23 @@ const SingleModule = ({
           </View>
         )}
       </View>
+
+{/*______________________Modals_____________________ */}
+      <ModalNewQuestion
+        setQuestionToEdit={setQuestionToEdit}
+        setIsVisibleEditQuestion={setIsVisibleEditQuestion}
+        texts={texts}
+        selectedLanguage={selectedLanguage}
+        SwichToEditNote={SwichToEditNote}
+        addDocument={addDocument}
+        module={module}
+        isVisible={isVisibleNewQuestion}
+        setIsVisible={setIsVisibleNewQuestion}
+        selectAi={() => {
+          setIsVisibleNewQuestion(false);
+          setIsVisibleAI(true);
+        }}
+      />
 
       {isVisibleEditQuestion.state && (
         <ChangeQuestions

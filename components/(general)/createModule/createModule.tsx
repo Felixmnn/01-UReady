@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { Session, UserData } from "@/types/moduleTypes";
 import CustomButton from "../customButton";
 import { module } from "@/types/appwriteTypes";
+import Offline from "../offline";
 
 const CreateModule = ({
   newModule,
@@ -47,7 +48,7 @@ const CreateModule = ({
   // Lokale States
   const { t } = useTranslation();
 
-  const { user, reloadNeeded, setReloadNeeded } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded, isOffline } = useGlobalContext();
   const [isVisible, setIsVisible] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
 
@@ -129,6 +130,7 @@ const CreateModule = ({
   }
   const [showMore, setShowMore] = useState(false);
 
+  if (isOffline) return <Offline/>;
   return (
     <ScrollView
       className={`flex-1 bg-gray-900 p-2   rounded-[10px] `}

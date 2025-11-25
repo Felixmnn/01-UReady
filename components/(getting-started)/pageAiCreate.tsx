@@ -34,6 +34,7 @@ import {
   userDataKathegory,
   UserUsage,
 } from "@/types/appwriteTypes";
+import Offline from "../(general)/offline";
 
 type Items = {
   type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
@@ -67,7 +68,7 @@ const PageAiCreate = ({
   // Lokale
   const { t } = useTranslation();
 
-  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline } = useGlobalContext();
   const [questions, setQuestions] = useState<any[]>([]);
   const [sessions, setSessions] = useState<Session[]>([
     {
@@ -313,6 +314,8 @@ const PageAiCreate = ({
     amountOfAnswers: 4,
   });
 
+
+  if (isOffline) return <Offline/>
   return (
     <ScrollView
       className={`flex-1 bg-gray-900 p-3   rounded-[10px] `}

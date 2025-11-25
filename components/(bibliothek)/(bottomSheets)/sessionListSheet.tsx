@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import { uuid } from "expo-modules-core";
 import ColorPicker from "@/components/(general)/colorPicker";
 import IconPicker from "@/components/(general)/iconPicker";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import Offline from "@/components/(general)/offline";
 
 const SessionListSheet = ({
   sheetRef,
@@ -25,9 +27,11 @@ const SessionListSheet = ({
   const { width } = useWindowDimensions();
   const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
   const { t } = useTranslation();
+  const { isOffline } = useGlobalContext();
 
   return (
     <CustomBottomSheet ref={sheetRef}>
+      {isOffline ? <Offline /> :
       <View
         className="flex-1 justify-center items-center p-2"
         style={{ backgroundColor: "rgba(17, 24, 39,0.7)" }}
@@ -219,6 +223,7 @@ const SessionListSheet = ({
           </TouchableOpacity>
         </View>
       </View>
+      }
     </CustomBottomSheet>
   );
 };

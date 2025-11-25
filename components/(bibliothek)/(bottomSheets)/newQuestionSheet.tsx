@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { use } from "react";
 import CustomBottomSheet from "./customBottomSheet";
 import Selectable from "../selectable";
 import { useTranslation } from "react-i18next";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import Offline from "@/components/(general)/offline";
 type EditQuestionState = {
   state: boolean;
   status: "ADD" | "EDIT";
@@ -32,8 +34,10 @@ const NewQuestionSheet = ({
   close: () => void;
 }) => {
     const { t } = useTranslation();
+    const { isOffline } = useGlobalContext();
   return (
     <CustomBottomSheet ref={sheetRef}>
+      {isOffline ? <Offline /> :
       <TouchableOpacity
         className=" w-full h-full justify-center items-center"
         onPress={() => setIsVisible(false)}
@@ -91,6 +95,7 @@ const NewQuestionSheet = ({
           </View>
         </View>
       </TouchableOpacity>
+      }
     </CustomBottomSheet>
   );
 };

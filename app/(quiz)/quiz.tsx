@@ -1,17 +1,14 @@
 import { Image, SafeAreaView, Text, View} from 'react-native'
 import React, { use, useEffect, useRef, useState, useTransition } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
-import { removeQuestion} from "../../lib/appwriteEdit"
 import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { loadModule } from '@/lib/appwriteDaten';
 import { updateModuleQuestionList } from '@/lib/appwriteUpdate';
 import QuizNavigation from '@/components/(quiz)/quizNavigation';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Navigation from '@/components/(quiz)/navigation';
 import Quiz from '@/components/(quiz)/quiz';
 import {  randomizeArray } from '@/functions/(quiz)/helper';
-import { getAllQuestionsByIds, getAllQuestionsBySessionId } from '@/lib/appwriteQuerys';
 import { question } from '@/types/appwriteTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QuizResult from '@/components/(quiz)/quizResult';
@@ -20,6 +17,7 @@ import CustomButton from '@/components/(general)/customButton';
 import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
+import { getModuleFromMMKV, getQuestionsFromMMKV } from '@/lib/mmkvFunctions';
 
 type QuestionItem = {
     id: string,
@@ -78,21 +76,18 @@ const quiz = () => {
         moduleID?: string ,
     }){
         if (!sessionID || !moduleID) router.replace("/bibliothek");
-        const module = await loadModule(moduleID)
+        const module = getModuleFromMMKV(moduleID as string);
+        if (!module) {
+            router.replace("/bibliothek");
+            return;
+        }
         const repaired_question_list = repairQuestionList(module?.questionList).map(q => JSON.stringify(q));
         let questionsRaw = [];
+        const q = getQuestionsFromMMKV(moduleID as string);
         if (sessionID === "ALL" && module) {
-            const q = await getAllQuestionsByIds(repaired_question_list.map((q:string) => {
-              try {
-                return JSON.parse(q).id;
-              } catch (e) {
-                return null;
-              }
-            }).filter(Boolean))
             questionsRaw.push(...q)
         } else {
-
-           let res = (await getAllQuestionsBySessionId(sessionID)) ?? []
+           let res = q.filter((q) => q.sessionID === sessionID);
            const repaired_question_list = repairQuestionList(module?.questionList).map(q => JSON.stringify(q));
            res = res.filter((q) => repaired_question_list.some((mq:string) => {
              try {
@@ -107,7 +102,6 @@ const quiz = () => {
         let questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
-        console.log("😩😩😩",questions)
         questions = questions.map((question) => {
             const answersWithIndex = question.answers.map((answer, index) => ({ answer, index }));
             const randomizedAnswers = answersWithIndex.sort(() => Math.random() - 0.5);
@@ -193,6 +187,7 @@ const quiz = () => {
             finalStatus = "GREAT";
           }
         }
+        console.log("Final Status to be saved:", finalStatus);
         if (indexOfQuestion === -1) {
             tempQuestionList.push({ id, status: finalStatus });
         } else {
@@ -203,7 +198,7 @@ const quiz = () => {
         }
         
         setQuestionList(tempQuestionList);
-
+        console.log("Temp Question List after update:", tempQuestionList);
         const success = await updateModuleQuestionList(
             moduleID ? moduleID.toString() : "",
             tempQuestionList
@@ -278,7 +273,7 @@ const quiz = () => {
         quizType: "infinity" | "limitedFixed" | "limitedAllCorrect" | "timed"
     }){
         if (status === "GOOD" || status === "GREAT") setAnsweredCorrectly([...answeredCorrectly, questionsForQuiz[0].question ? questionsForQuiz[0].question : ""]);
-        if (status === "BAD") setAnsweredWrong([...answeredWrong, questionsForQuiz[0].question ? questionsForQuiz[0].question : ""]);
+        if (status === "BAD" || status === "OK") setAnsweredWrong([...answeredWrong, questionsForQuiz[0].question ? questionsForQuiz[0].question : ""]);
         if (quizType === "infinity"){
             if (status === "GOOD" || status === "GREAT"){
                 const rotated = [...questionsForQuiz.slice(1), questionsForQuiz[0]];
@@ -301,17 +296,9 @@ const quiz = () => {
             }
     } }
 
-    async function removeQuestionCompleately(){
-        const id = questionsForQuiz[0].$id;
-        await removeQuestion(id)
-        setQuestions(questions.filter(q => q.$id !== id));
-        setQuestionsForQuiz(questionsForQuiz.filter(q => q.$id !== id));
-        setQuestionList(questionList.filter(q => q.id !== id));
-        setQuestionListOriginal(questionListOriginal.filter(q => q.id !== id));
-    }
-
 
     const gotToNextQuestion = async (status: "GOOD" | "BAD" | "OK" | "GREAT") => {
+        console.log("New Question Status:", status);
         if (!questionsForQuiz[0].$id ) return;
         await saveQuestionStatus(
             questionsForQuiz[0].$id,
@@ -355,6 +342,8 @@ function answersAreEqual(a: Answer, b: Answer) {
   return a.title === b.title && a.latex === b.latex && a.image === b.image;
 }
 
+type Result = "GOOD" | "OK" | "BAD";
+
 function correctAnswers({
   questionsParsed,
   selectedQuestion,
@@ -363,32 +352,49 @@ function correctAnswers({
   questionsParsed: question[];
   selectedQuestion: number;
   selectedAnswers: any[];
-}) {
-  // Korrekte Antworten parsen
+}): Result {
+  // Korrekte Antworten parsen (wie vorher)
   const correctAnswerObjects: Answer[] =
     questionsParsed[selectedQuestion].answerIndex.map((index: number) =>
       toAnswer(questionsParsed[selectedQuestion].answers[index])
     );
 
-  // Auch ausgewählte Antworten normalisieren
+  // Ausgewählte Antworten normalisieren
   const selectedAnswerObjects: Answer[] = selectedAnswers.map(toAnswer);
 
-  if (correctAnswerObjects.length !== selectedAnswerObjects.length) return false;
+  // Falls es überhaupt keine korrekten Antworten gäbe, wertet das als BAD
+  const totalCorrect = correctAnswerObjects.length;
+  if (totalCorrect === 0) return "BAD";
 
-  // Sortieren nach Titel
-  const sortByTitle = (arr: Answer[]) =>
-    arr.slice().sort((a, b) => a.title.localeCompare(b.title));
 
-  const correctSorted = sortByTitle(correctAnswerObjects);
-  const selectedSorted = sortByTitle(selectedAnswerObjects);
+  const key = (a: Answer) => a.title;
 
-  for (let i = 0; i < correctSorted.length; i++) {
-    if (!answersAreEqual(correctSorted[i], selectedSorted[i])) {
-      return false;
-    }
+  const correctSet = new Set(correctAnswerObjects.map(key));
+
+  const matchedSet = new Set<string>();
+  for (const sel of selectedAnswerObjects) {
+    const k = key(sel);
+    if (correctSet.has(k)) matchedSet.add(k);
   }
-  return true;
+
+  const matches = matchedSet.size;
+
+  // Strenge GOOD-Bedingung: alle richtigen getroffen und keine Extras ausgewählt
+  const selectedCount = selectedAnswerObjects.length;
+  if (matches === totalCorrect && selectedCount === totalCorrect) {
+    return "GOOD";
+  }
+
+  // OK: mehr als die Hälfte der korrekten Antworten getroffen
+  if (matches >= totalCorrect / 2) {
+    return "OK";
+  }
+
+  // Sonst BAD
+  return "BAD";
 }
+
+
 
 
 const {t} = useTranslation()

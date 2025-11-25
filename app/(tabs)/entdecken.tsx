@@ -33,6 +33,7 @@ import { getMatchingModules } from "@/lib/appwriteEntdecken";
 import { module } from "@/types/appwriteTypes";
 import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
 import germanTranslation from "@/assets/languages/locales/de/translation.json"
+import Offline from "@/components/(general)/offline";
 
 //Constant Values
 type FilterType = {
@@ -69,7 +70,7 @@ const languageoptions = [
 
 const entdecken = () => {
   const { t } = useTranslation();
-  const { userUsage, userCathegory, setUserUsage, userData,user, isLoggedIn, isLoading, setReloadNeeded, reloadNeeded } = useGlobalContext();
+  const { userUsage, userCathegory, setUserUsage, userData,user, isLoggedIn, isLoading, setReloadNeeded, reloadNeeded, isOffline } = useGlobalContext();
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
       router.replace("/"); // oder "/sign-in"
@@ -396,7 +397,6 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
         creationCountry: userData?.country || "DEUTSCHLAND",
       } as Filters);
     }
-
     return (
       <View
         className={`flex-row p-2 justify-between items-center rouned-[10px] w-full `}
@@ -621,13 +621,15 @@ if (loadingMore) {
     });
   }, [realFilters, selectedLanguages, searchBarText]);
 
+
   return (
     <Tabbar
       content={() => {
         return (
           <View className="flex-1  w-full bg-[#0c111d] rounded-[10px] ">
             <TokenHeader />
-
+            {isOffline ? <Offline /> :
+            <View className="flex-1">
             {/* Searchbar and Filter Activation */}
             <View className="flex-row w-full items-center">
               <View className="flex-1    w-full bg-gray-800  rounded-[10px] ml-4 mr-2 mb-2  px-2 flex-row items-center justify-between">
@@ -782,6 +784,8 @@ if (loadingMore) {
                 </BottomSheetScrollView>
               </BottomSheet>
             ) : null}
+            </View>
+          }
           </View>
         );
       }}

@@ -328,7 +328,6 @@ export async function generateQuestions({
 
         if (Array.isArray(res)) {
           directQuestions = [...directQuestions, ...res];
-          // setQuestions((prev) => [...prev, ...res]);
         }
       } catch (error) {
         if (__DEV__) {

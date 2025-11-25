@@ -27,6 +27,7 @@ import { module, UserUsage } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import KaTeXExample from "./katext";
 import { handleValidationCode, sendValidationCode } from "@/lib/appwriteEmailValidation";
+import Offline from "../(general)/offline";
 
 type MiniModule = {
   name: string;
@@ -59,7 +60,6 @@ const HomeGeneral = () => {
 
   
   const [userUsageP, setUserUsageP] = useState<UserUsage | null>(null);
-  console.log("❌❌User Usage in Home General", userUsageP?.lastSessions);
   let count = 0;
   useEffect(() => {
     count++;
@@ -272,7 +272,6 @@ const HomeGeneral = () => {
 
   return (
     <SafeAreaView className="h-full w-full ">
-      
       <TokenHeader/>
      
       <ScrollView
@@ -298,6 +297,7 @@ const HomeGeneral = () => {
         }
       >
         <View className="flex-1 rounded-[10px] p-3">
+
           <Header title={t("home.lastModules")} />
           <ScrollView horizontal={true} className="flex-row">
             {!userUsageP || userUsageP.lastModules.length == 0 ? (

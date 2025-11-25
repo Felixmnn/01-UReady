@@ -28,7 +28,7 @@ const GlobalProvider = ({ children }) => {
   const [userCathegory, setUserCategory] = useState(null);
   const [reloadNeeded, setReloadNeeded] = useState([]);
   const [userUsage, setUserUsage] = useState(null);
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(true);
 
   // -------------------------------
   // 1. Session-Check
@@ -163,12 +163,15 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   // Netzwerkstatus überwachen
   // -------------------------------
+  /*
+  WICHTIG SPÄTER WIEDER AKTIVIEREN
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsOffline(!state.isConnected);
     });
     return () => unsubscribe();
   }, []);
+  /*
 
   // -------------------------------
   // App neu laden, falls kein User vorhanden ist und das Laden abgeschlossen ist
@@ -188,7 +191,7 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   // Exportierte Werte
   // -------------------------------
-
+  /*
   if (isOffline) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#111418" }}>
@@ -217,6 +220,7 @@ const GlobalProvider = ({ children }) => {
       </View>
     );
   }
+    */
 
   return (
     <GlobalContext.Provider
@@ -239,6 +243,7 @@ const GlobalProvider = ({ children }) => {
         setReloadNeeded,
         userUsage,
         setUserUsage,
+        isOffline
       }}
     >
       {children}

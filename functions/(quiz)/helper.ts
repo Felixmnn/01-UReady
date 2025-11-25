@@ -2,11 +2,12 @@
 export async function tryBack(router: any) {
   try {
     router.back();
-    router.push("/bibliothek");
   } catch (error) {
     if (__DEV__) {
       console.log(error);
     }
+    router.push("/bibliothek");
+
   }
 }
 

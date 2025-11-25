@@ -49,7 +49,6 @@ type AppwriteDocument = {
 
 const Data = ({
   setIsVisibleEditQuestion,
-  isVisibleEditQuestion,
   setQuestionToEdit,
   onRefresh,
   refreshing,
@@ -62,11 +61,9 @@ const Data = ({
   module,
   addDocument,
   setIsVisibleNewQuestion,
-  setIsVisibleAI,
   SwichToEditNote,
-  texts,
-  selectedLanguage,
-  selectedSessionID: selectedS,
+  selectedSessionID: 
+  selectedS,
   setModule,
   setQuestions,
   selectAi 
@@ -223,9 +220,12 @@ const Data = ({
 
 
   function getSmileyStatus(id:string){
-    const parsed = module.questionList.map((i) => {
+
+    let questionList = module.questionList
+    let parsed = questionList.map((i) => {
       try {
-        return JSON.parse(i) as ParsedQuestion;
+        if (typeof i == "string") return JSON.parse(i) as ParsedQuestion;
+        else return i
       } catch (e) {
         return { id: undefined, status: null };
       }
@@ -320,7 +320,7 @@ const Data = ({
                   className="p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800"
                 >
                   <View className="w-full justify-between flex-row items-center ">
-                    {item.status !== null ? (
+                    {["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(item.$id!) as string) ? (
                       <SmileyStatus
                         status={
                           ["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(item.$id!) as string)
@@ -329,7 +329,7 @@ const Data = ({
                         }
                       />
                     ) : null}
-
+                    
                     <Image
                       source={require("../../../assets/bot.png")}
                       tintColor={"#fff"}
@@ -558,11 +558,13 @@ const Data = ({
 
   return (
     <View className="flex-1">
+      
       <NichtUnterstuzterDateityp />
       {filteredData.length == 0 &&
       filteredDocuments.length == 0 &&
       filteredNotes.length == 0 ? (
         <ScrollView>
+          
           <View className="flex-1">
             <Selectable
               icon={"robot"}

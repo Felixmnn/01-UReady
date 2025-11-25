@@ -29,9 +29,9 @@ const Quiz = ({
   showAnsers: boolean;
   width: number;
   changeVisibility: () => void;
-  nextQuestion: (status: "GOOD" | "BAD", step: number) => void;
+  nextQuestion: (status: "GOOD" | "BAD" | "OK", step: number) => void;
   selectedLanguage: string;
-  correctAnswers: () => boolean;
+  correctAnswers: () => string;
   setShowSolution: React.Dispatch<React.SetStateAction<boolean>>;
   sheetRef: React.RefObject<any>;
   quizType: "single" | "multiple" | "questionAnswer";
@@ -39,7 +39,6 @@ const Quiz = ({
   showHint: () => void;
   showExplanation: () => void;
 }) => {
-  console.log("Questsions in Quiz component:", questions);
   const { t } = useTranslation();
   function getSmileyStatus(questionID: string) {
     const question = questions.find((q) => q.$id === questionID);
@@ -95,7 +94,7 @@ const Quiz = ({
               className={`${true ? "justify-start" : "justify-between flex-row"}  items-center w-full bg-gray-800 p-4 rounded-b-[10px] `}
             >
               <View className="w-full justify-start">
-                {quizType == "questionAnswer" ? null : correctAnswers() ? (
+                {quizType == "questionAnswer" ? null : correctAnswers() == "GOOD" ? (
                   <View className="flex-row items-center gap-2">
                     <Icon name="check-circle" size={20} color={"green"} />
                     <Text className="text-green-500">{t("quiz.right")}</Text>
@@ -128,7 +127,7 @@ const Quiz = ({
                   <CustomButton
                     title={t("quiz.next")}
                     handlePress={() => {
-                      nextQuestion(correctAnswers() ? "GOOD" : "BAD", 1);
+                      nextQuestion(correctAnswers() == "GOOD" ? "GOOD" : correctAnswers() == "OK" ? "OK" : "BAD", 1);
                       setSelectedAnswers([]);
                     }}
                     containerStyles="w-full bg-blue-700 rounded-lg"

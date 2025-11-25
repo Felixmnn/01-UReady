@@ -13,7 +13,6 @@ const Navigation = ({
   amountOfAnsweredQuestions,
   totalAmountOfQuestions,
   remainingPercent,
-  setRemainingPercent,
   setPercent  
 }: {
   quizType: "infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" ;
@@ -23,7 +22,6 @@ const Navigation = ({
   amountOfAnsweredQuestions: number;
   totalAmountOfQuestions: number;
   remainingPercent: number;
-  setRemainingPercent: React.Dispatch<React.SetStateAction<number>>;
   setPercent: React.Dispatch<React.SetStateAction<number>>;
 
 }) => {
@@ -81,6 +79,27 @@ const Navigation = ({
     ( quizType == "limitedFixed" && amountOfAnsweredQuestions == 0) ||
     ( quizType == "limitedAllCorrect" && questionStates.every(q => q.status === "GREAT" || q.status === "GOOD"))
 
+
+  function brS({
+    status,
+  }:{
+    status: "BAD" | "OK" | "GOOD" | "GREAT";
+  }) {
+    let output = "";
+    const p = questionSegmentation({ questionList: questionStates })
+    if (status === "BAD") {
+      if (p[1] + p[2] + p[3] === 0) output = "rounded-l-full";
+    } else if (status === "OK") {
+      if (p[2] + p[3] === 0) return "rounded-r-full";
+      if (p[0] === 0) return "rounded-l-full";
+    } else if (status === "GOOD") {
+      if (p[3] === 0) return "rounded-r-full";
+      if (p[0] + p[1] === 0) return "rounded-l-full";
+    } else if (status === "GREAT") {
+      if (p[0] + p[1] + p[2] === 0) return "rounded-l-full";
+      }
+
+  }  
   return (
     <View className="bg-gray-900 items-center justify-between p-4 rounded-t-[10px]">
       <View className="flex-row items-center justify-between w-full">
@@ -108,30 +127,31 @@ const Navigation = ({
         </Text>
       ) : quizType == "infinite" ? (
 
-        <View className="rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row">
+        <View className="rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row"
+        >
           <View
             style={{
               width: `${questionSegmentation({ questionList: questionStates })[0]}%`,
             }}
-            className="h-[5px] bg-red-700 rounded-l-full"
+            className={`h-[5px] bg-red-700 rounded-l-full ${brS({status: "BAD"})}`}
           />
           <View
             style={{
               width: `${questionSegmentation({ questionList: questionStates })[1]}%`,
             }}
-            className="h-[5px] bg-yellow-500"
+            className={`h-[5px] bg-yellow-500 ${brS({status: "OK"})}`}
           />
           <View
             style={{
               width: `${questionSegmentation({ questionList: questionStates })[2]}%`,
             }}
-            className="h-[5px] bg-green-500"
+            className={`h-[5px] bg-green-500 ${brS({status: "GOOD"})}`}
           />
           <View
             style={{
               width: `${questionSegmentation({ questionList: questionStates })[3]}%`,
             }}
-            className="h-[5px] bg-blue-500 rounded-r-full"
+            className={`h-[5px] bg-blue-500 rounded-r-full ${brS({status: "GREAT"})}`}
           />
         </View>
 

@@ -2,8 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView,FlatList, Image, RefreshContro
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
-import React, {  use, useEffect, useState } from 'react'
-import { loadUserDataKathegory} from "../../../lib/appwriteDaten"
+import React, {   useEffect, useState } from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { updateUserUsageModules, updateUserUsageSessions } from '@/lib/appwriteUpdate';
 import TokenHeader from '@/components/(general)/tokenHeader';
@@ -12,7 +11,7 @@ import AddModuleBottomSheet from '@/components/(general)/(modal)/addModuleBottom
 import { module } from '@/types/appwriteTypes';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getSpecificModule, OrigninalModule } from '@/lib/appwriteShare';
+import { getSpecificModule } from '@/lib/appwriteShare';
 import { ModuleProps } from '@/types/moduleTypes';
 import AcceptShareModule from '../(components)/acceptShareModule';
 

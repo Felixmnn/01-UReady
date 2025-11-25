@@ -83,10 +83,8 @@ export function repairAndParseJSONStringsSessions(csvData: string[]): Session[] 
 }
 
 export function repairQuestionList(csvData: string[]): Question[] {
-    console.log("‼️‼️‼️")
     try {
         let csvDataParsed = csvData.map(i=> JSON.parse(i));
-        console.log("Parsed Question List",csvDataParsed)
         return csvDataParsed;
     } catch (error) {
         // This will happen when the data comes from the csv

@@ -5,24 +5,48 @@ import CustomButton from '@/components/(general)/customButton'
 import { router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { question } from '@/types/appwriteTypes'
 
 const StartQuizSheet = ({
   sheetRef,
   moduleID,
   sessionID,
-  maxQuestions
+  maxQuestions,
+  questions
 }:{
   sheetRef: React.RefObject<any>,
   moduleID: string,
   sessionID: string,
-  maxQuestions: number
+  maxQuestions: number,
+  questions: question[]
 }) => {
+  
+
+  console.log("First Question",sessionID)
   const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime">("infinite");
   const [ explainationVisible, setExplanationVisible ] = React.useState(false); 
-  const [questionType, setQuestionType] = React.useState<"single" | "multiple" | "questionAnswer">("single");
+  const [questionType, setQuestionType] = React.useState<"single" | "multiple" | "questionAnswer">("multiple");
   const [questionAmount, setQuestionAmount] = React.useState<number>(1);
   const [timeLimit, setTimeLimit] = React.useState<number | null>(60); // in seconds
   const { t } = useTranslation();
+
+
+  function calculateMaximumQuestionAmount () {
+    let amount = maxQuestions
+    if (sessionID !== "ALL") {
+      if (questionType == "single") {
+        amount = questions.filter(q => q.sessionID === sessionID && q.answerIndex.length === 1).length
+      } else {
+      amount = questions.filter(q => q.sessionID === sessionID).length
+      }
+    } else {
+      if (questionType == "single") {
+        amount = questions.filter(q => q.answerIndex.length === 1).length 
+      }
+    }
+    
+    return amount
+  }
   return (
     <CustomBottomSheet ref={sheetRef}>
       <View className="p-2 bg-gray-900 min-h-[400px] rounded-2xl">
@@ -83,7 +107,7 @@ const StartQuizSheet = ({
             </Pressable>
             <Text className="text-white text-lg">{questionAmount}</Text>
             <Pressable
-              onPress={() => setQuestionAmount((prev) => Math.min(maxQuestions, prev + 1))}
+              onPress={() => setQuestionAmount((prev) => Math.min(calculateMaximumQuestionAmount(), prev + 1))}
               className="px-3 py-2 bg-gray-800 rounded-xl"
             >
               <Text className="text-white">+</Text>
@@ -111,6 +135,8 @@ const StartQuizSheet = ({
         {/* Start Button */}
         <CustomButton
           title={
+            calculateMaximumQuestionAmount() === 0  ?
+            t("bibliothek.notEnoughQuestionsToStart") :
             (quizType !== "infinite" && (questionAmount < 1 || questionAmount > maxQuestions)) ?
             t("bibliothek.minMaxQuestions", { min: 1, max: maxQuestions }) :
             (quizType === "limitedTime" && (timeLimit === null || timeLimit < 5)) ?
@@ -121,7 +147,7 @@ const StartQuizSheet = ({
             pathname:"/quiz",
             params: {
               sessionID: sessionID,
-              quizType : quizType,
+              quizType : quizType, 
               questionType : questionType,
               questionAmount : questionAmount,
               timeLimit : timeLimit,
@@ -129,7 +155,8 @@ const StartQuizSheet = ({
             }
           })}
           disabled={(quizType !== "infinite" && (questionAmount < 1 || questionAmount > maxQuestions)) ||
-          (quizType === "limitedTime" && (timeLimit === null || timeLimit < 5))
+          (quizType === "limitedTime" && (timeLimit === null || timeLimit < 5)) ||
+          calculateMaximumQuestionAmount() === 0
            }
           containerStyles='bg-blue-700 rounded-2xl rounded-xl border-blue-700'
           textStyles='text-center'

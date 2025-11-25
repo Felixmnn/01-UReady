@@ -39,6 +39,13 @@ const quiz = () => {
         timeLimit,
     } = useLocalSearchParams()
 
+    console.log("Local Params: ", sessionID,
+        moduleID,
+        quizType,
+        questionType,
+        questionAmount,
+        timeLimit)
+
     
     // Unwichtig, nur für responsive Design
     const {width} = useWindowDimensions();
@@ -83,10 +90,12 @@ const quiz = () => {
         }
         const repaired_question_list = repairQuestionList(module?.questionList).map(q => JSON.stringify(q));
         let questionsRaw = [];
+        // Step 1: The Questions get Filtered
         const q = getQuestionsFromMMKV(moduleID as string);
         if (sessionID === "ALL" && module) {
             questionsRaw.push(...q)
         } else {
+           
            let res = q.filter((q) => q.sessionID === sessionID);
            const repaired_question_list = repairQuestionList(module?.questionList).map(q => JSON.stringify(q));
            res = res.filter((q) => repaired_question_list.some((mq:string) => {
@@ -102,6 +111,7 @@ const quiz = () => {
         let questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
+        //Step 2: The Question Answers get shuffled
         questions = questions.map((question) => {
             const answersWithIndex = question.answers.map((answer, index) => ({ answer, index }));
             const randomizedAnswers = answersWithIndex.sort(() => Math.random() - 0.5);
@@ -115,7 +125,7 @@ const quiz = () => {
                 answerIndex: newAnswerIndex,
             };
         })
-        
+        //Step 3: The Question List gets loaded
         let questionList = module?.questionList.map((q:string) => {
           try {
             return JSON.parse(q);
@@ -123,15 +133,19 @@ const quiz = () => {
             return { id: null, status: null };
           }
         })
-       
+        //Step 4: Depending on the Quiz Mode more filters get Applied
         if (quizType !== "infinite"){
+            //Step 4.1: The Questions get Shuffled
             let randomized = randomizeArray(questions ?? [])
             
+            //Step 4.2: Depending on the User Choice the Question Array get sliced
             const amount = questionAmount ? parseInt(Array.isArray(questionAmount) ? questionAmount[0] : questionAmount) : 10;
+            //Step 4.3: Determination if the answersAmount is 1
             if (questionType && questionType == "single"){
                 randomized = randomized.filter((q) => q.answerIndex.length <= 2)
             }
             randomized = randomized.slice(0, amount);
+            //This ensures we can later use the options newQuestions/tryAgain
             setQuestionsForQuiz(randomized);
             setQuestions(randomized);
             setQuestionList(questionList ? questionList : [])

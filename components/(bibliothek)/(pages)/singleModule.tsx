@@ -815,6 +815,7 @@ const SingleModule = ({
           sessions[selectedSession] ? sessions[selectedSession].id : "ALL"
         }
         maxQuestions={questions ? questions.length : 0}
+        questions={questions}
       />
     </View>
   );

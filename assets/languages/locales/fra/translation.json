@@ -1799,6 +1799,7 @@
     }
   },
   "bibliothek": {
+    "notEnoughQuestionsToStart": "Pas assez de questions pour démarrer une session d’apprentissage.",
     "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
 "addModule": "Añadir módulo",
 "doNotAdd": "No añadir",

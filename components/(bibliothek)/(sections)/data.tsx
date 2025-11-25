@@ -307,7 +307,7 @@ const Data = ({
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() => router.push({
+                  onPress={() => router.push({ 
                                 pathname:"/quiz",
                                 params: {
                                   sessionID: selectedS,

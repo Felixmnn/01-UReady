@@ -1726,6 +1726,7 @@
     }
   },
   "bibliothek": {
+    "notEnoughQuestionsToStart": "Not enough questions to start a quiz.",
     "wouldYouLikeToAddModule": "Would you like to add the module {{moduleName}} to your library?",
     "addModule": "Add module",
     "doNotAdd": "Do not add",

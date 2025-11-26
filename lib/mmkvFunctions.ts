@@ -1,6 +1,6 @@
 import { Module } from "i18next";
 import { storage } from "./mmkv";
-import { question } from "@/types/appwriteTypes";
+import { question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { ModuleProps } from "@/types/moduleTypes";
 
 /**
@@ -94,18 +94,41 @@ export function getNotesFromMMKV(moduleID: string): any[] | null {
 /**
  * This function saves user usage data to MMKV storage.
  */
-export function saveUserUsageToMMKV(usage: any) {
+export function saveUserUsageToMMKV(usage: UserUsage) {
     const usageString = JSON.stringify(usage);
     storage.set('user.usage', usageString);
 }
 /**
  * This function retrieves user usage data from MMKV storage.
  */ 
-export function getUserUsageFromMMKV(): any | null {
+export function getUserUsageFromMMKV(): UserUsage | null {
     const usageString = storage.getString('user.usage');
     return usageString ? JSON.parse(usageString) : null;
 }
 
+/**
+ * This function ensures offine userUsage updates work
+ */
+
+export function saveUsavedUserUsageToMMKV(usage: UserUsage){
+    const usageString = JSON.stringify(usage);
+    storage.set('user.usavedUsage', usageString);
+} 
+
+/**
+ * This function retrieves unsaved user usage data from MMKV storage.
+ */
+export function getUsavedUserUsageFromMMKV(): UserUsage | null {
+    const usageString = storage.getString('user.usavedUsage');
+    return usageString ? JSON.parse(usageString) : null;
+}
+
+/**
+ *
+ */
+export function resetUsavedUserUsageInMMKV() {
+    storage.remove('user.usavedUsage');
+}
 
 /**
  * This function adds a module to the list of unsaved modules in MMKV storage.
@@ -147,4 +170,22 @@ export function getUnsavedModulesFromMMKV(): unsavedItem[] {
 export function resetUnsavedModulesInMMKV() {
     storage.remove('user.usavedModules');
 }
+
+
+/**
+ * Function to saveThe userKategorie to MMKV
+ */
+export function saveUserKategorieToMMKV(userDataKategorie: userDataKathegory) {
+    const userDataKategorieString = JSON.stringify(userDataKategorie);
+    storage.set('user.userDataKategorie', userDataKategorieString);
+}
+
+/**
+ * Function to get The userKategorie from MMKV
+ */
+export function getUserKategorieFromMMKV(): userDataKathegory | null {
+    const userDataKategorieString = storage.getString('user.userDataKategorie');
+    return userDataKategorieString ? JSON.parse(userDataKategorieString) : null;
+}
+
  

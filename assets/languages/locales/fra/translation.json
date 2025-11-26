@@ -475,6 +475,7 @@
     "numberOfAnswers": "Nombre de réponses"
   },
   "profileSettings": {
+    "goOnlineToEdit": "Connecte-toi pour modifier tes objectifs éducatifs.",
     "validationCode": "Code de validation",
     "verify": "Vérifier",
     "invalidCode": "Code d’action non valide.",

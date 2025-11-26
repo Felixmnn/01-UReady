@@ -8,8 +8,8 @@ import * as NavigationBar from "expo-navigation-bar";
 import i18n from "@/assets/languages/i18n";
 import { router } from "expo-router";
 import NetInfo from "@react-native-community/netinfo";
-import { Image, Text, View } from "react-native";
 import CustomButton from "@/components/(general)/customButton";
+import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -25,9 +25,9 @@ const GlobalProvider = ({ children }) => {
   const [colorScheme, setColorScheme] = useState("light");
   const [language, setNewLanguage] = useState("DEUTSCH");
   const [userData, setUserData] = useState(null);
-  const [userCathegory, setUserCategory] = useState(null);
+  const [userCathegory, setUserCategory] = useState(getUserKategorieFromMMKV());
   const [reloadNeeded, setReloadNeeded] = useState([]);
-  const [userUsage, setUserUsage] = useState(null);
+  const [userUsage, setUserUsage] = useState(getUserUsageFromMMKV());
   const [isOffline, setIsOffline] = useState(true);
 
   // -------------------------------
@@ -38,6 +38,7 @@ const GlobalProvider = ({ children }) => {
     if (!user) return;
     loadUserDataKathegory(user?.$id).then((data) => {
       setUserCategory(data);
+      saveUserKategorieToMMKV(data);
     });
   }, [user]);
 
@@ -113,6 +114,14 @@ const GlobalProvider = ({ children }) => {
   const ensureUserUsage = async () => {
     try {
       let usage = await loadUserUsage(user.$id);
+      let unsavedUsage = getUsavedUserUsageFromMMKV();
+      if (unsavedUsage) {
+        usage = {
+          ...usage,
+          lastModules : unsavedUsage.lastModules,
+          lastSessions : unsavedUsage.lastSessions,
+        }
+      }
       if (!usage) {
         usage = await addUserUsage(user.$id, {
           streak: 0,
@@ -134,6 +143,8 @@ const GlobalProvider = ({ children }) => {
         });
       } else {
         usage = await updateUserUsage(usage);
+        saveUserUsageToMMKV(usage);
+        resetUnsavedModulesInMMKV();
       }
       setUserUsage(usage);
     } catch (err) {
@@ -149,11 +160,17 @@ const GlobalProvider = ({ children }) => {
 
     const updateUsage = async () => {
       try {
+
+
         await updateUserUsageData({
           ...userUsage
         });
+        saveUserUsageToMMKV(userUsage);
+
       } catch (err) {
+        saveUsavedUserUsageToMMKV(userUsage);
         if (__DEV__) console.log("Usage update error", err);
+
       }
     };
 

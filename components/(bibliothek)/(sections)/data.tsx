@@ -20,6 +20,8 @@ import { Session } from "@/types/moduleTypes";
 import { module, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
 import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import Offline from "@/components/(general)/offline";
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -99,6 +101,7 @@ const Data = ({
   setModule: React.Dispatch<React.SetStateAction<module>>;
   selectAi : () => void;
 }) => {
+  const { isOffline } = useGlobalContext()
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
   function handleOptionsVisibility(id = "") {
@@ -562,7 +565,11 @@ const Data = ({
       <NichtUnterstuzterDateityp />
       {filteredData.length == 0 &&
       filteredDocuments.length == 0 &&
-      filteredNotes.length == 0 ? (
+      filteredNotes.length == 0 ?
+      isOffline ?
+      <Offline/>
+      :
+      (
         <ScrollView>
           
           <View className="flex-1">

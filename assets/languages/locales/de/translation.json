@@ -472,6 +472,7 @@
     "numberOfAnswers": "Anzahl der Antworten"
   },
   "profileSettings": {
+    "goOnlineToEdit": "Gehe online, um deine Bildungsziele zu bearbeiten.",
     "validationCode": "Bestätigungscode",
     "verify": "Bestätigen",
     "invalidCode": "Ungültiger Aktioncode.",

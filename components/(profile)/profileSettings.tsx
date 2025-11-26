@@ -17,14 +17,13 @@ import { TextInput } from "react-native-gesture-handler";
 import { useActionCode } from "@/lib/appwriteShop";
 import { useTranslation } from "react-i18next";
 import { userDataKathegory } from "@/types/appwriteTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "@/assets/languages/i18n";
 import { handleValidationCode } from "@/lib/appwriteEmailValidation";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import Offline from "../(general)/offline";
 
 const ProfileSettings = () => {
   const { t } = useTranslation();
-  const { user, language, setNewLanguage, userUsage, setUserUsage } =
+  const { user, language, setNewLanguage, setUserUsage, isOffline } =
     useGlobalContext();
   useEffect(() => {
     if (language) {
@@ -81,8 +80,13 @@ const ProfileSettings = () => {
   ) => {
     return (
       <TouchableOpacity className="flex-1 w-full mt-2">
-        <Text className="text-gray-300 font-bold text-[13px] m-2">{title}</Text>
-        {text ? (
+        <Text className="text-gray-300 font-bold text-[13px] ">{title}</Text>
+        {
+        isOffline ?
+        <Text className="text-white font-bold mx-2">
+          {value}
+        </Text> :
+        text ? (
           <View className="m-1">
             <Text className="text-gray-300 font-bold text-[13px] ml-3">
               {value}
@@ -148,13 +152,22 @@ const ProfileSettings = () => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
+        
         <View className="flex-1 items-center justify-center p-2">
+          
           <View
             className="w-full max-w-[300px] items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600"
             style={{
               height: 200,
             }}
           >
+            {
+          isOffline ?
+          <TouchableOpacity className="flex-1 " onPress={() => setModalVisible(false)}>
+           <Offline/>
+          </TouchableOpacity>
+          :
+            <View className="flex-1 w-full">
             <Text className="text-white font-bold text-[15px] my-3">
               {t("profileSettings.actioncodeText")}
             </Text>
@@ -184,8 +197,11 @@ const ProfileSettings = () => {
                 disabled={!isFocused && firstFocus && text == ""}
               />
             </View>
+            </View>
+  }
           </View>
         </View>
+  
       </Modal>
     );
   };
@@ -310,17 +326,17 @@ const ProfileSettings = () => {
                           {user.name[0]}
                         </Text>
                       </View>
-                      {personalInput(
-                        user.name,
-                        t("profileSettings.vorname"),
-                        (text) => updateUserName(text)
-                      )}
-                      {personalInput(
-                        user.email,
-                        t("profileSettings.email"),
-                        (text) => updateUserEmail(text),
-                        true
-                      )}
+                        {personalInput(
+                          user.name,
+                          t("profileSettings.vorname"),
+                          (text) => updateUserName(text)
+                        )}
+                        {personalInput(
+                          user.email,
+                          t("profileSettings.email"),
+                          (text) => updateUserEmail(text),
+                          true
+                        )}
                       {!user.emailVerification && (verified == null ||verified === false)
                         ? (
                         <View
@@ -556,7 +572,8 @@ const ProfileSettings = () => {
                         )}
                         <View className="justify-start w-full items-start">
                           <TouchableOpacity
-                            className="mt-3 mb-1 py-1 px-2 rounded-full border border-blue-500 items-center justify-center"
+                            disabled={isOffline}
+                            className={`mt-3 mb-1 py-1 px-2 rounded-full border ${isOffline ? "border-gray-500" : "border-blue-500"} items-center justify-center`}
                             onPress={() =>
                               router.push({
                                 pathname: "/personalize",
@@ -565,10 +582,17 @@ const ProfileSettings = () => {
                                 },
                               })
                             }
-                          >
+                          > 
+                          {
+                            isOffline ?
+                            <Text className="text-gray-500 font-bold text-[12px]">
+                              {t("profileSettings.goOnlineToEdit")}
+                            </Text>
+                            :
                             <Text className="text-blue-500 font-bold">
                               {t("profileSettings.editEducationGoals")}
                             </Text>
+                          }
                           </TouchableOpacity>
                         </View>
                       </View>

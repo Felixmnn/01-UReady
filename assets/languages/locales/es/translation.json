@@ -472,6 +472,7 @@
     "numberOfAnswers": "Número de respuestas"
   },
   "profileSettings": {
+    "goOnlineToEdit": "Ve online para editar tus metas educativas.",
     "validationCode": "Código de validación",
     "verify": "Verificar",
     "invalidCode": "Código de acción no válido.",

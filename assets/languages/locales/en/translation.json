@@ -471,6 +471,7 @@
     "numberOfAnswers": "Number of answers"
   },
   "profileSettings": {
+    "goOnlineToEdit": "Go online to edit your education goals.",
     "validationCode": "Validation Code",
     "verify": "Verify",
     "invalidCode": "Invalid action code.",

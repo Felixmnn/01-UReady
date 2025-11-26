@@ -14,9 +14,12 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
 import ErrorModal from "@/components/(general)/(modal)/errorModal";
 import CustomButton from "@/components/(general)/customButton";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import Offline from "@/components/(general)/offline";
 
 const Contact = () => {
   const { t } = useTranslation();
+  const { isOffline } = useGlobalContext();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -75,6 +78,11 @@ const Contact = () => {
           setSuccess={setSuccess}
           errorMessage={errorMessage}
         />
+
+        {
+          isOffline ?
+          <Offline/>
+          :
         <View className="flex-1 items-center justify-start">
           <View className="w-full" style={{ maxWidth: 700 }}>
             <Text className="text-base mb-1 text-white">
@@ -134,6 +142,8 @@ const Contact = () => {
             )}
           </View>
         </View>
+}
+
       </ScrollView>
     </SafeAreaView>
   );

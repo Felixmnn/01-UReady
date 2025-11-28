@@ -36,11 +36,11 @@ import NewQuestionSheet from "../(bottomSheets)/newQuestionSheet";
 import NewAiQuestionsSheet from "../(bottomSheets)/newAiQuestionsSheet";
 import StartQuizSheet from "../(bottomSheets)/startQuizSheet";
 import SessionListSheet from "../(bottomSheets)/sessionListSheet";
-import { question } from "@/types/appwriteTypes";
+import { note, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/mmkv";
-import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV } from "@/lib/mmkvFunctions";
+import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV } from "@/lib/mmkvFunctions";
 
 type QuestionListItem = {
   id: string;
@@ -130,7 +130,6 @@ const SingleModule = ({
   const [selectedSession, setSelectedSession] = useState(0);
   const [questions, setQuestions] = useState<question[]>(getQuestionsFromMMKV(module.$id));
 
-  const [notes, setNotes] = useState<Note[]>([]);
   const [documents, setDocuments] = useState<AppwriteDocument[]>([]);
   const parsedSessions = Array.isArray(module.sessions)
   ? module.sessions.map((session: string) => {
@@ -145,6 +144,8 @@ const SingleModule = ({
     })
   : [];
   const [sessions, setSessions] = useState(parsedSessions);
+
+  const [notes, setNotes] = useState<note[] | []>(sessions[selectedSession].id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
   {
     /* Language and Texts */
   }
@@ -176,18 +177,14 @@ const SingleModule = ({
    */
   useEffect(() => {
     if (!module) return;
-    console.log("Wird aufgerufen")
     const locallySavedQuestionLists = getUnsavedModulesFromMMKV();
-    console.log("😩",JSON.stringify(locallySavedQuestionLists))
     let newQuestionList = typeof module.questionList[0] === "string" ? module.questionList : module.questionList.map((q: any) => JSON.stringify(q))
     if (locallySavedQuestionLists.some((qL) => qL.moduleID === module.$id)) {
     const locallySavedList = locallySavedQuestionLists.find(
       (qL) => qL.moduleID === module.$id
     );
-    console.log("✅",locallySavedList)
 
     if (locallySavedList) {
-      console.log("Found locally saved question list. Replacing with new list.");
        newQuestionList = locallySavedList.items
       
     }
@@ -296,7 +293,6 @@ const SingleModule = ({
     const allQuestions = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
     if (allQuestions === "404" || allQuestions === "400") return ;
 
-    console.log("🔴All Questions length:", allQuestions.length);
     
     /*
     SPÄTER AKTIVIEREN
@@ -315,9 +311,7 @@ const SingleModule = ({
       */
     saveQuestionsToMMKV(moduleID, allQuestions);
     const savedQuestions = getQuestionsFromMMKV(moduleID);
-    console.log("🔵 Saved Questions length:", savedQuestions ? savedQuestions.length : "No saved questions");
     if (!checkIfOldQuestionsEqualNewQuestions(questions, allQuestions)) {
-      console.log("🟢 Questions updated from fetchAllQuestions");
       setQuestions(allQuestions as unknown as question[]);
     }
     
@@ -356,6 +350,7 @@ const SingleModule = ({
    
     if (notes) {
       setNotes(notes as unknown as Note[]);
+      saveNotesToMMKV(sessionID, notes as unknown as note[])
     }
     if (documents) {
       setDocuments(documents as unknown as AppwriteDocument[]);

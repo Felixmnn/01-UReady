@@ -20,6 +20,7 @@ const CreateNote = () => {
   const [ungespeichert, setUngespeichert] = useState(false);
   const loading = false;
   async function saveChanges() {
+    
     await updateNote(noteData);
     setUngespeichert(false);
   }
@@ -106,7 +107,7 @@ const CreateNote = () => {
                     <TouchableOpacity
                       className="bg-red-600 p-2 rounded-[10px] flex-row items-center"
                       onPress={async () => {
-                        await removeNote(noteData.$id);
+                        await removeNote(noteData);
                         tryBack();
                       }}
                     >

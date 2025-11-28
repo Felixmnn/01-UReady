@@ -95,13 +95,11 @@ const Bibliothek = () => {
     
     let newModules = null;
     if (unsavedQuestionLists.length > 0) {
-    console.log("Condition met")
     newModules  = modulesLoaded?.forEach((module) => {
         const unsavedModule = unsavedQuestionLists.find(
           (unsaved) => unsaved.moduleID === module.$id
         );
         if (unsavedModule) {
-          console.log("Module old State before repair:", JSON.stringify(module.questionList));
           const repairedQuestionList = module.questionList.map((q) => {
             const question = JSON.parse(q);
             const matchingItem = unsavedModule.items.find((item) => item.id === question.id);
@@ -111,7 +109,6 @@ const Bibliothek = () => {
               status: matchingItem ? matchingItem.status : question.status, // Behalte den ursprünglichen Status bei, wenn keine Übereinstimmung gefunden wird
             });
           });
-          console.log("Module new State after repair:", JSON.stringify(repairedQuestionList));
           module.questionList = repairedQuestionList;
         }
       });
@@ -119,12 +116,10 @@ const Bibliothek = () => {
     
     resetUnsavedModulesInMMKV();
     saveModulesToMMKV(modulesLoaded as unknown as ModuleProps[]);
-    console.log("Successfully saved modules to MMKV.");
     if (modulesLoaded) {
       setModules(modulesLoaded ? (modulesLoaded as unknown as ModuleProps[]) : null);
     }
     if (newModules) {
-      console.log("Saving repaired modules to state and MMKV.");
       setModules(newModules as unknown as ModuleProps[]);
     }
 

@@ -1,7 +1,8 @@
 import { Module } from "i18next";
 import { storage } from "./mmkv";
-import { question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
+import { note, question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { ModuleProps } from "@/types/moduleTypes";
+import { uuid } from "expo-modules-core";
 
 /**
  * What will be stored in MMKV
@@ -80,17 +81,98 @@ export function getQuestionsFromMMKV(moduleID: string): question[] | [] {
 /**
  * This function saves notes for a specific module to MMKV storage.
  */
-export function saveNotesToMMKV(moduleID: string, notes: any[]) {
+export function saveNotesToMMKV(sessionID: string, notes: note[]) {
     const notesString = JSON.stringify(notes);
-    storage.set(`user.notes.${moduleID}`, notesString);
+    storage.set(`user.notes.${sessionID}`, notesString);
 }
 /**
  * This function retrieves notes for a specific module from MMKV storage.
  */
-export function getNotesFromMMKV(moduleID: string): any[] | null {
-    const notesString = storage.getString(`user.notes.${moduleID}`);
-    return notesString ? JSON.parse(notesString) : null;
+export function getNotesFromMMKV(sessionID: string): note[] | [] {
+    const notesString = storage.getString(`user.notes.${sessionID}`);
+    return notesString ? JSON.parse(notesString) : [];
 }
+
+/**
+ * This function saves a Unsaved Note
+ */
+export function addUnsavedNote(note:note) : note{
+    
+    const tempNoteId = "tmp-" + uuid.v4()
+    const unsavedNotes = getUnsavedNotes()
+    const newNote = {
+        ...note,
+        $id:tempNoteId
+    }
+    const newUnsavedNotes = [...unsavedNotes, newNote]
+    storage.set("user.unsavedNotes", JSON.stringify(newUnsavedNotes))
+    saveNoteToMMKV(note.sessionID,newNote)
+    return newNote
+}
+
+/**
+ * This function updates a Unsaved Note
+ */
+export function updateUnsavedNote(note:note){
+    const unsavedNotes = getUnsavedNotes()
+    const newUnsavedNotes = unsavedNotes.map(n => {
+        if (n.$id == note.$id){
+            return note
+        } else {
+            return n
+        }
+    })
+    storage.set("user.unsavedNotes", JSON.stringify(newUnsavedNotes))
+
+}
+
+/**
+ * This function gets the Unsaved Notes
+ */
+export function getUnsavedNotes(): note[] | [] {
+    const unsavedNotes = storage.getString("user.unsavedNotes");
+    return unsavedNotes ? JSON.parse(unsavedNotes) : []
+}
+
+/**
+ * Function that saves single Note
+ */
+export function saveNoteToMMKV(sessionID: string, note: note) {
+    const oldList = getNotesFromMMKV(sessionID);
+    let newList = [];
+
+    if (!oldList || oldList.length === 0) {
+        newList = [note];
+    } else {
+        const oldListFiltered = oldList.filter(n => n.$id !== note.$id);
+        newList = [...oldListFiltered, note];
+    }
+    const newListString = JSON.stringify(newList);
+    storage.set(`user.notes.${sessionID}`, newListString);
+    console.log("Successfully saved Note")
+}
+
+/**
+ * Removes Note from MMKV
+ */
+export function deleteNoteFromMMKV(sessionID: string, noteID: string) {
+    const oldList = getNotesFromMMKV(sessionID);
+
+    if (!oldList || oldList.length === 0) {
+        console.log("No notes found for the given sessionID.");
+        return;
+    }
+
+    const newList = oldList.filter(note => note.$id !== noteID);
+
+    const newListString = JSON.stringify(newList);
+    storage.set(`user.notes.${sessionID}`, newListString);
+
+    console.log(`Successfully deleted note with ID: ${noteID}`);
+}
+
+
+
 /**
  * This function saves user usage data to MMKV storage.
  */

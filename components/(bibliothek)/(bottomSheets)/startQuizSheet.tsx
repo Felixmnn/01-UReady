@@ -22,7 +22,6 @@ const StartQuizSheet = ({
 }) => {
   
 
-  console.log("First Question",sessionID)
   const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime">("infinite");
   const [ explainationVisible, setExplanationVisible ] = React.useState(false); 
   const [questionType, setQuestionType] = React.useState<"single" | "multiple" | "questionAnswer">("multiple");

@@ -67,6 +67,7 @@ export type question = {
 }
 
 export type note = {
+    $id?: string;
     notiz: string;
     subjectID: string | null;
     sessionID: string | null;

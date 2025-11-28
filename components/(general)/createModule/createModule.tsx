@@ -130,7 +130,6 @@ const CreateModule = ({
   }
   const [showMore, setShowMore] = useState(false);
 
-  if (isOffline) return <Offline/>;
   return (
     <ScrollView
       className={`flex-1 bg-gray-900 p-2   rounded-[10px] `}

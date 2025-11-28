@@ -51,6 +51,15 @@ export function updateModuleInMMKV(updatedModule: ModuleProps) {
 }
 
 /**
+ * Function to add a single Module
+ */
+export function addModuleToMMKV(newModule: ModuleProps) {
+    const oldModules = getModulesFromMMKV()
+    const newModules = [...oldModules, newModule]
+    saveModulesToMMKV(newModules)
+    console.log("Sucessfully added Module")
+}
+/**
  * This function updates the question list of a specific module in MMKV storage.
  */
 export function updateModuleQuestionListInMMKV(moduleID: string, questionList: string[]) {
@@ -363,4 +372,42 @@ export function getUserKategorieFromMMKV(): userDataKathegory | null {
     return userDataKategorieString ? JSON.parse(userDataKategorieString) : null;
 }
 
+/**
+ * Function to save a newModule in MMKV
+ */
+export function addCompleatlyUnsavedModuleToMMKV(module: ModuleProps) {
+    try{
+    const oldUnsavedModules = getCompleatlyUnsavedModulesFromMMKV();
+    const newUnsavedModules = [...oldUnsavedModules, module];
+    storage.set("user.unsavedModules", JSON.stringify(newUnsavedModules));
+
+    } catch (e) {
+        console.log("Compleatly invalid error ngl", e)
+    }
+    
+}
+
+/**
+ * Function to update compleatly unnsaved Modules
+ */
+export function updateCompleatlyUnsavedModuleMMKV(module:ModuleProps){
+    const oldUnsavedModules = getCompleatlyUnsavedModulesFromMMKV();
+    const newUnsavedModules = oldUnsavedModules.map(m=> {
+        if (m.$id == module.$id){
+            return module;
+        } else {
+            return m;
+        }
+    })
+    storage.set("user.unsavedModules", JSON.stringify(newUnsavedModules));
+}
+
+/**
+ * Function to get the unsaved modules from MMKV
+ */
+export function getCompleatlyUnsavedModulesFromMMKV():ModuleProps[] | []{
+    const unsavedModules = storage.getString('user.unsavedModules')
+    return unsavedModules ? JSON.parse(unsavedModules) : [];
+
+}
  

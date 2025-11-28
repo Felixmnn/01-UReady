@@ -7,9 +7,10 @@ import { getModules } from "@/lib/appwriteQuerys";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router, useLocalSearchParams } from "expo-router";
 import SkeletonListBibliothek from "@/components/(general)/(skeleton)/skeletonListBibliothek";
-import { getModulesFromMMKV, getUnsavedModulesFromMMKV, getUnsavedQuestionsFromMMKV, resetUnsavedModulesInMMKV, resetUnsavedQuestionsInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
+import { getCompleatlyUnsavedModulesFromMMKV, getModulesFromMMKV, getUnsavedModulesFromMMKV, getUnsavedQuestionsFromMMKV, resetUnsavedModulesInMMKV, resetUnsavedQuestionsInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
 import { ModuleProps } from "@/types/moduleTypes";
 import { updateQuestion } from "@/lib/appwriteEdit";
+import { addNewModule } from "@/lib/appwriteAdd";
 
 const Bibliothek = () => {
   const { user, isLoggedIn, isLoading, reloadNeeded } = useGlobalContext();
@@ -40,8 +41,20 @@ const Bibliothek = () => {
     },
   ];
   useEffect(() => {
+    saveCompleatlyUnsavedModules();
     saveUnsavedQuestions();
   }, []);
+
+
+  async function saveCompleatlyUnsavedModules(){
+    const compleatlyUnsavedModules = getCompleatlyUnsavedModulesFromMMKV()
+    if (compleatlyUnsavedModules.length === 0) return;
+    for (let i = 0; i < compleatlyUnsavedModules.length; i++) {
+      await addNewModule(compleatlyUnsavedModules[i]);
+    }
+    resetUnsavedModulesInMMKV();
+    console.log("Successfully saved compleatly unsaved modules to Appwrite and reset MMKV storage.");
+  }
 
   async function saveUnsavedQuestions(){
     const unsavedQuestionLists = getUnsavedQuestionsFromMMKV();

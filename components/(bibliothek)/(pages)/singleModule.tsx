@@ -1,5 +1,5 @@
 import { View, Text, Platform, Modal, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import RoadMap from "../(sections)/roadMap";
 import Data from "../(sections)/data";
@@ -31,7 +31,7 @@ import languages from "@/assets/exapleData/languageTabs.json";
 import { useFocusEffect } from "@react-navigation/native";
 import { loadModule } from "@/lib/appwriteDaten";
 import ChangeQuestions from "../(modals)/changeQuestion";
-import { CustomBottomSheetRef } from "../(bottomSheets)/customBottomSheet";
+import CustomBottomSheet, { CustomBottomSheetRef } from "../(bottomSheets)/customBottomSheet";
 import NewQuestionSheet from "../(bottomSheets)/newQuestionSheet";
 import NewAiQuestionsSheet from "../(bottomSheets)/newAiQuestionsSheet";
 import StartQuizSheet from "../(bottomSheets)/startQuizSheet";
@@ -41,6 +41,7 @@ import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/mmkv";
 import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV } from "@/lib/mmkvFunctions";
+import CustomButton from "@/components/(general)/customButton";
 
 type QuestionListItem = {
   id: string;
@@ -170,6 +171,10 @@ const SingleModule = ({
   const texts = languages.singleModule;
 
   //____________________________________________________________Ende der Variablen____________________________________________________________
+
+  useEffect(() => {
+    console.log("Questions updated:", questions.length);
+  },[questions])
 
   /**
    * This function updates the sessions each time the sessions change.
@@ -685,6 +690,7 @@ const SingleModule = ({
               ) : null}
               {isVertical || tab == 1 ? (
                 <View className="p-4 flex-1">
+                  
                   <Data
                     selectAi={() => aiBottomSheetRef.current?.openSheet(1)}
                     setQuestions={setQuestions}
@@ -702,7 +708,11 @@ const SingleModule = ({
                     deleteDocument={deleteDocument}
                     moduleSessions={sessions}
                     selected={selectedSession}
-                    questions={questions}
+                    questions={questions.filter(q => {
+                      if (selectedSession > sessions.length) return true;
+                      if (sessions[selectedSession].id === q.sessionID) return true;
+                      return false;
+                    })}
                     notes={notes}
                     documents={documents}
                     module={module}
@@ -737,7 +747,9 @@ const SingleModule = ({
           </View>
         )}
       </View>
-
+       
+        
+        
 {/*______________________Modals_____________________ */}
       <ModalNewQuestion
         setQuestionToEdit={setQuestionToEdit}

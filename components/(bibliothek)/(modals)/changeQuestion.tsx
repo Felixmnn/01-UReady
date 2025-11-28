@@ -33,7 +33,6 @@ const ChangeQuestions = ({
     React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>
   >;
 }) => {
-  console.log("💵Question to edit:", question);
   const { t } = useTranslation();
   const { isOffline } = useGlobalContext();
   const [questionToEdit, setQuestionToEdit] = useState({
@@ -110,7 +109,6 @@ const ChangeQuestions = ({
       }}
       backgroundStyle={{ backgroundColor: "#1F2937" }}
     >
-      { isOffline ? <Offline /> :
       <BottomSheetScrollView
         contentContainerStyle={{
           backgroundColor: "#111418ff",
@@ -139,9 +137,11 @@ const ChangeQuestions = ({
                       subjectID: module.$id !== undefined ? module.$id : null,
                       sessionID: selectedSession.id,
                     });
-
                     if (res && typeof res === "object" && "$id" in res) {
-                      setQuestions([...questions, res.answers.map((a:string)=> JSON.parse(a)) as unknown as question]);
+                      console.log("👩‍🚒👩‍🚒👩‍🚒👩‍🚒")
+                      console.log("Questions ", questions)
+                      const newQuestions = [...questions, res as unknown as question];
+                      setQuestions(newQuestions);
                     }
                     setModule({
                       ...module,
@@ -190,7 +190,9 @@ const ChangeQuestions = ({
                       }
                       return q;
                     });
+                    const newQuestions = [...questions,res as unknown as question];
                     setQuestions(updatedQuestions);
+                  
                   }
 
                   setIsVisibleEditQuestion({
@@ -312,7 +314,6 @@ const ChangeQuestions = ({
           
         </View>
       </BottomSheetScrollView>
-}
     </BottomSheet>
   );
 };

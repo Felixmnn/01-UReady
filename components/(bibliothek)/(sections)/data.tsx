@@ -11,7 +11,7 @@ import {
   RefreshControl,
   Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from "expo-router";
 import Selectable from "../selectable";
@@ -139,6 +139,7 @@ const Data = ({
     }
     return pI;
   });
+  
   const filteredData = filtered.map((item) => {
     return {
       ...item,
@@ -157,6 +158,7 @@ const Data = ({
         })(),
     };
   });
+
   //Filter the notes and documents based on the selected session
   const filteredNotes =
     selected > moduleSessions.length
@@ -273,11 +275,11 @@ const Data = ({
         
         <CounterText
           title={t("data.questio")}
-          count={filteredData.length}
+          count={questions.length}
         />
-        {filteredData ? (
+        {questions ? (
           <FlatList
-            data={filteredData}
+            data={questions}
             keyExtractor={(item, index) => `${item.$id}-${index}`}
             style={{}}
             ListHeaderComponent={() => {
@@ -399,13 +401,15 @@ const Data = ({
                       <TouchableOpacity
                         className="p-2"
                         onPress={() => {
-                          console.log("Edit Question:", item);
                           handleOptionsVisibility(item.$id);
-                          setQuestionToEdit(item)
-                          setIsVisibleEditQuestion({
+                          if (item.subjectID == module.$id){
+                            setQuestionToEdit(item)
+                            setIsVisibleEditQuestion({
                                 state: true,
                                 status: "EDIT",
                               });
+                          }
+                          
                           //handleOptionsVisibility(item.$id);
                         }}
                       >
@@ -628,6 +632,9 @@ const Data = ({
           }
         >
           <View className="flex-1">
+            <Text className="text-white text-center my-4">
+              {questions.length}
+              </Text>
             <QuestionList />
             {/*<DocumentList/>*/}
             <NoteList />

@@ -37,13 +37,13 @@ const NewQuestionSheet = ({
     const { isOffline } = useGlobalContext();
   return (
     <CustomBottomSheet ref={sheetRef}>
-      {isOffline ? <Offline /> :
       <TouchableOpacity
         className=" w-full h-full justify-center items-center"
         onPress={() => setIsVisible(false)}
       >
         <View className=" w-full  items-center justify-center bg-gray-900 rounded-xl">
           <View className="w-full p-2">
+          {!isOffline &&
             <Selectable
               icon={"robot"}
               iconColor={"#7a5af8"}
@@ -52,6 +52,7 @@ const NewQuestionSheet = ({
               empfolen={true}
               handlePress={() => selectAi()}
             />
+          }
             {/*    <Selectable   icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/> */}
             <Selectable
               icon={"file-alt"}
@@ -95,7 +96,6 @@ const NewQuestionSheet = ({
           </View>
         </View>
       </TouchableOpacity>
-      }
     </CustomBottomSheet>
   );
 };

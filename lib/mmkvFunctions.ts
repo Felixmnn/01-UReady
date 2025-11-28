@@ -62,6 +62,8 @@ export function updateModuleQuestionListInMMKV(moduleID: string, questionList: s
     }
 }
 
+
+
 /**
  * This function saves questions for a specific module to MMKV storage.
  */
@@ -71,11 +73,102 @@ export function saveQuestionsToMMKV(moduleID: string, questions: question[]) {
 }
 
 /**
+ * This function adds or creates questions for a specific module to MMKV storage.
+ */
+export function addQuestionsToMMKV(moduleID: string, questions: question[]) {
+    console.log("Adding question to MMKV")
+    const existingQuestionsString = storage.getString(`user.questions.${moduleID}`);
+    console.log("Debug 1")
+    let existingQuestions: question[] = existingQuestionsString ? JSON.parse(existingQuestionsString) : [];
+    console.log("Debug 2")
+    const combinedQuestions = [...existingQuestions, ...questions];
+    console.log("Debug 3")
+    const combinedQuestionsString = JSON.stringify(combinedQuestions);
+    console.log("Debug 4")
+    storage.set(`user.questions.${moduleID}`, combinedQuestionsString);
+    console.log("Successfully added question to MMKV")
+}
+
+/**
+ * This function adds a single question to MMKV storage.
+ */
+export function addQuestionToMMKV(moduleID: string, question: question) {
+    console.log("Adding single question to MMKV")
+    const existingQuestionsString = storage.getString(`user.questions.${moduleID}`);    
+    let existingQuestions: question[] = existingQuestionsString ? JSON.parse(existingQuestionsString) : [];
+    existingQuestions.push(question);
+    const updatedQuestionsString = JSON.stringify(existingQuestions);
+    storage.set(`user.questions.${moduleID}`, updatedQuestionsString);
+    console.log("Successfully added single question to MMKV")
+}
+
+/**
+ * This function updates a specific question for a module in MMKV storage.
+ */
+export function updateQuestionInMMKV(moduleID: string, updatedQuestion: question) {
+    const existingQuestionsString = storage.getString(`user.questions.${moduleID}`);
+    if (existingQuestionsString) {
+        let existingQuestions: question[] = JSON.parse(existingQuestionsString);
+        const questionIndex = existingQuestions.findIndex(q => q.$id === updatedQuestion.$id);
+        if (questionIndex !== -1) {
+            existingQuestions[questionIndex] = updatedQuestion;
+            const updatedQuestionsString = JSON.stringify(existingQuestions);
+            storage.set(`user.questions.${moduleID}`, updatedQuestionsString);
+        }
+    }
+}
+
+/**
  * This function retrieves questions for a specific module from MMKV storage.
  */
 export function getQuestionsFromMMKV(moduleID: string): question[] | [] {
     const questionsString = storage.getString(`user.questions.${moduleID}`);
     return questionsString ? JSON.parse(questionsString) : [];
+}
+
+/**
+ * This function saves a unsaved question to MMKV storage.
+ * All unsaved questions will be stored under 'user.unsavedQuestions'
+ */
+export function addUnsavedQuestionToMMKV(question: question) {
+    const unsavedQuestionsString = storage.getString('user.unsavedQuestions');
+    let unsavedQuestions: question[] = unsavedQuestionsString ? JSON.parse(unsavedQuestionsString) : [];
+    unsavedQuestions.push(question);
+    const updatedUnsavedQuestionsString = JSON.stringify(unsavedQuestions);
+    storage.set('user.unsavedQuestions', updatedUnsavedQuestionsString);
+    console.log("Added unsaved question to MMKV");
+}
+
+/**
+ * This function updates a unsaved question in MMKV storage.
+ */
+export function updateUnsavedQuestionInMMKV(updatedQuestion: question) {
+    const unsavedQuestionsString = storage.getString('user.unsavedQuestions');
+    if (unsavedQuestionsString) {
+        let unsavedQuestions: question[] = JSON.parse(unsavedQuestionsString);
+        const questionIndex = unsavedQuestions.findIndex(q => q.$id === updatedQuestion.$id);
+        if (questionIndex !== -1) {
+            unsavedQuestions[questionIndex] = updatedQuestion;
+            const updatedUnsavedQuestionsString = JSON.stringify(unsavedQuestions);
+            storage.set('user.unsavedQuestions', updatedUnsavedQuestionsString);
+        }
+    }
+    console.log("Updated unsaved question in MMKV");
+}
+
+/**
+ * This function retrieves unsaved questions from MMKV storage.
+ */
+export function getUnsavedQuestionsFromMMKV(): question[] | [] {
+    const unsavedQuestionsString = storage.getString('user.unsavedQuestions');
+    return unsavedQuestionsString ? JSON.parse(unsavedQuestionsString) : [];
+}
+/**
+ * This function removes all unsaved questions from MMKV storage.
+ */
+export function resetUnsavedQuestionsInMMKV() {
+    storage.remove('user.unsavedQuestions');
+    console.log("Reset unsaved questions in MMKV");
 }
 
 /**

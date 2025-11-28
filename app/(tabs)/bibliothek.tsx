@@ -7,8 +7,9 @@ import { getModules } from "@/lib/appwriteQuerys";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router, useLocalSearchParams } from "expo-router";
 import SkeletonListBibliothek from "@/components/(general)/(skeleton)/skeletonListBibliothek";
-import { getModulesFromMMKV, getUnsavedModulesFromMMKV, resetUnsavedModulesInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
+import { getModulesFromMMKV, getUnsavedModulesFromMMKV, getUnsavedQuestionsFromMMKV, resetUnsavedModulesInMMKV, resetUnsavedQuestionsInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
 import { ModuleProps } from "@/types/moduleTypes";
+import { updateQuestion } from "@/lib/appwriteEdit";
 
 const Bibliothek = () => {
   const { user, isLoggedIn, isLoading, reloadNeeded } = useGlobalContext();
@@ -38,6 +39,20 @@ const Bibliothek = () => {
       ],
     },
   ];
+  useEffect(() => {
+    saveUnsavedQuestions();
+  }, []);
+
+  async function saveUnsavedQuestions(){
+    const unsavedQuestionLists = getUnsavedQuestionsFromMMKV();
+    if (unsavedQuestionLists.length === 0) return;
+    for (let i = 0; i < unsavedQuestionLists.length; i++) {
+      const unsavedQuestion = unsavedQuestionLists[i];
+      await updateQuestion(unsavedQuestion);
+    }
+    resetUnsavedQuestionsInMMKV();
+    console.log("Successfully saved unsaved questions to Appwrite and reset MMKV storage.");
+  }
 
   const fetchModules = async () => {
     if (user == null) return;

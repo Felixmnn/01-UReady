@@ -61,6 +61,7 @@ const ModalNewQuestion = ({
                 <Icon name="times" size={20} color="white" />
               </View>
               <View className="w-full p-2">
+
                 <Selectable
                   icon={"robot"}
                   iconColor={"#7a5af8"}

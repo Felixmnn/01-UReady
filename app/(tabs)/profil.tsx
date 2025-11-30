@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router } from "expo-router";
 import Tabbar from "@/components/(tabs)/tabbar";
@@ -23,6 +23,7 @@ const profil = () => {
           <ProfileSettings />
         ) : (
           <View className="flex-1 bg-[#0c111d] rounded-[10px] p-2 border-gray-500 border-[1px]">
+            <Text>{JSON.stringify(user)}</Text>
             <SkeletonListProfile />
           </View>
         );

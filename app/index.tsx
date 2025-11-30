@@ -2,7 +2,7 @@ import { Text, View, SafeAreaView, ActivityIndicator, Image, Animated } from "re
 import { router, Redirect, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
-import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
+import { loadUserData } from "@/lib/appwriteDaten";
 import { addNewUserConfig } from "@/lib/appwriteAdd";
 import * as NavigationBar from 'expo-navigation-bar';
 import { useTranslation } from "react-i18next";
@@ -37,10 +37,13 @@ export default function Index() {
       }
       let userD = await loadUserData(user.$id);
       if (!isMounted) return; // Nur setzen, wenn noch mounted
-
+      console.log("User Data was Null",userD)
+      if (typeof userD === "object" && userD !== null) {
+        console.log(Object.keys(userD));
+      }
       if (userD != null) {
         setUserData(userD);
-      } else {
+      } else { 
         userD = await addNewUserConfig(user.$id);
         if (!isMounted) return;
         setUserData(userD);

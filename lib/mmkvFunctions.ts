@@ -411,3 +411,37 @@ export function getCompleatlyUnsavedModulesFromMMKV():ModuleProps[] | []{
 
 }
  
+
+/**
+ * Function to save a appwrite session
+ */
+
+export function setSessionInMMKV(session:any){
+    storage.set("user.session", JSON.stringify(session))
+    console.log("Successfully saved session to MMKV")
+}
+
+/**
+ * Function to get a appwrite session
+ */
+
+export function getSessionFromMMKV():any | null{
+    const session = storage.getString("user.session");
+    return session ? JSON.parse(session) : null
+}
+
+/**
+ * Function to set the user Data Config
+ */
+export function setUserDataConfigInMMKV(userDataConfig:any){
+    storage.set("user.userDataConfig", JSON.stringify(userDataConfig));
+}
+
+/**
+ * Function to get the User Data Config
+ */
+
+export function getUserDataConfigFromMMKV() :any | null {
+    const userDataConfig = storage.getString("user.userDataConfig")
+    return userDataConfig ? JSON.parse(userDataConfig) : null
+}

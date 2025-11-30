@@ -49,7 +49,11 @@ function calculatePercent(questions:string[]){
    parsedQuestions = questions.map(q => 
    {
     try {
+      if (typeof q == "object") {
+        return q
+      } else {
      return JSON.parse(q);
+      }
     } catch (error) {
       console.log("Error parsing question:", q, error);
       return { status: null }; 
@@ -76,7 +80,6 @@ function calculatePercent(questions:string[]){
     async function showCopyModuleIfAvailable() {
 
       const moduleToBeAdded = await AsyncStorage.getItem("moduleToBeAddedAfterSignUp");
-      console.log("Module to be added after sign up:", moduleToBeAdded);
       if (moduleToBeAdded) {
         await getSpecificModule(JSON.parse(moduleToBeAdded)).then((res => {
           if (res) {

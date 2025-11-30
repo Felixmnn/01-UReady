@@ -20,7 +20,6 @@ export function repairAndParseJSONStringsSessions(csvData: string[]): Session[] 
     // Hilfsfunktion, um einen String zu reparieren und in ein JSON-Objekt umzuwandeln
     try {
         let csvDataParsed = csvData.map(i=> JSON.parse(i));
-        console.log("Parsed Session List",csvDataParsed)
         return csvDataParsed;
     } catch (error) {
         // This will happen when the data comes from the csv
@@ -100,6 +99,5 @@ export function repairQuestionList(csvData: string[]): Question[] {
         newList.push({id:i, status: null})
         }
     })
-    console.log("New List", newList)
     return newList;
 }

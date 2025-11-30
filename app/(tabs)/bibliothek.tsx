@@ -7,10 +7,10 @@ import { getModules } from "@/lib/appwriteQuerys";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router, useLocalSearchParams } from "expo-router";
 import SkeletonListBibliothek from "@/components/(general)/(skeleton)/skeletonListBibliothek";
-import { getCompleatlyUnsavedModulesFromMMKV, getModulesFromMMKV, getUnsavedModulesFromMMKV, getUnsavedQuestionsFromMMKV, resetUnsavedModulesInMMKV, resetUnsavedQuestionsInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
-import { ModuleProps } from "@/types/moduleTypes";
+import { getCompleatlyUnsavedModulesFromMMKV, getModulesFromMMKV, getUnsavedModulesFromMMKV, getUnsavedQuestionsFromMMKV, removeCompleatlyUnsavedModulesFrommMMKV, removeSpecificCompleatlyUnsavedModule, removeSpecificModuleFromMMKV, removeTmpModulesFromMMKV, resetUnsavedModulesInMMKV, resetUnsavedQuestionsInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
 import { updateQuestion } from "@/lib/appwriteEdit";
 import { addNewModule } from "@/lib/appwriteAdd";
+import { module } from "@/types/appwriteTypes";
 
 const Bibliothek = () => {
   const { user, isLoggedIn, isLoading, reloadNeeded } = useGlobalContext();
@@ -28,7 +28,7 @@ const Bibliothek = () => {
   
 
   const [selected, setSelected] = useState("AllModules");
-  const [modules, setModules] = useState<ModuleProps[] | null>(getModulesFromMMKV());
+  const [modules, setModules] = useState<module[] | null>(getModulesFromMMKV());
   const [loading, setLoading] = useState(true);
 
   const exampleUnsavedChanges = [
@@ -48,12 +48,19 @@ const Bibliothek = () => {
 
   async function saveCompleatlyUnsavedModules(){
     const compleatlyUnsavedModules = getCompleatlyUnsavedModulesFromMMKV()
+    
     if (compleatlyUnsavedModules.length === 0) return;
+    console.log("💵",compleatlyUnsavedModules)
     for (let i = 0; i < compleatlyUnsavedModules.length; i++) {
       await addNewModule(compleatlyUnsavedModules[i]);
+      removeSpecificModuleFromMMKV(compleatlyUnsavedModules[i].$id ? compleatlyUnsavedModules[i].$id : "")
+      removeSpecificCompleatlyUnsavedModule(compleatlyUnsavedModules[i].$id ? compleatlyUnsavedModules[i].$id : "")
     }
-    resetUnsavedModulesInMMKV();
-    console.log("Successfully saved compleatly unsaved modules to Appwrite and reset MMKV storage.");
+    
+    //Wichtig das muss ich gleich anpassen aktuell werden so die offline Module glöscht
+    const compleatlyUnsavedModulesR = getCompleatlyUnsavedModulesFromMMKV()
+    console.log("😩",compleatlyUnsavedModulesR)
+
   }
 
   async function saveUnsavedQuestions(){
@@ -64,9 +71,8 @@ const Bibliothek = () => {
       await updateQuestion(unsavedQuestion);
     }
     resetUnsavedQuestionsInMMKV();
-    console.log("Successfully saved unsaved questions to Appwrite and reset MMKV storage.");
   }
-
+ 
   const fetchModules = async () => {
     if (user == null) return;
     setLoading(true);
@@ -91,7 +97,6 @@ const Bibliothek = () => {
           status: matchingItem ? matchingItem.status : question.status, // Behalte den ursprünglichen Status bei, wenn keine Übereinstimmung gefunden wird
         });
       });
-      console.log("Module new State after repair:", JSON.stringify(repairedQuestionList));
       module.questionList = repairedQuestionList;
     }
 
@@ -99,9 +104,8 @@ const Bibliothek = () => {
   });
 
   if (newModules) {
-    saveModulesToMMKV(newModules as unknown as ModuleProps[]);
-    console.log("Successfully saved repaired modules to MMKV.");
-    setModules(newModules as unknown as ModuleProps[]);
+    saveModulesToMMKV(newModules as unknown as module[]);
+    setModules(newModules as unknown as module[]);
   } else {
     console.error("Error: No modules to save after repair.");
   }
@@ -109,7 +113,6 @@ const Bibliothek = () => {
   setLoading(false); // Ladezustand zurücksetzen
   return;
       } else {
-        console.log("No internet connection. Loading modules from MMKV.");
         if (locallyUpdatedModules) {
           setModules(locallyUpdatedModules);
         } else {
@@ -143,12 +146,12 @@ const Bibliothek = () => {
     }
     
     resetUnsavedModulesInMMKV();
-    saveModulesToMMKV(modulesLoaded as unknown as ModuleProps[]);
+    saveModulesToMMKV(modulesLoaded as unknown as module[]);
     if (modulesLoaded) {
-      setModules(modulesLoaded ? (modulesLoaded as unknown as ModuleProps[]) : null);
+      setModules(modulesLoaded ? (modulesLoaded as unknown as module[]) : null);
     }
     if (newModules) {
-      setModules(newModules as unknown as ModuleProps[]);
+      setModules(newModules as unknown as module[]);
     }
 
     setLoading(false);

@@ -39,7 +39,6 @@ const GlobalProvider = ({ children }) => {
     loadUserDataKathegory(user?.$id).then((data) => {
       setUserCategory(data);
       saveUserKategorieToMMKV(data);
-      console.log("🔷",data)
     });
   }, [user]);
 
@@ -50,7 +49,6 @@ const GlobalProvider = ({ children }) => {
       try {
         const res = await checkSession();
         if (!isMounted) return;
-        console.log("✅",res)
         if (res) {
           setIsLoggedIn(true);
           setUser(res);

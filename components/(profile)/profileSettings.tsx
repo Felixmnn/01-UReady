@@ -350,14 +350,10 @@ const ProfileSettings = () => {
                               className="py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]"
                               onPress={async() => {
                                 const res = await handleValidationCode(user.email);
-                                console.log("res",res)
-                                console.log("Parse Res",res.code)
                                 if (res && res.code === 100) {
-                                  console.log("Email sent successfully", t("passwordReset.100"));
                                   setSuccessMessage(100);
                                   setIsSccess(true);
                                 } else {
-                                  console.log("Error sending email", t(`passwordReset.${res.code}`));
                                   setErrorMessage(res.code);
 
                                   setIsError(true);
@@ -384,12 +380,10 @@ const ProfileSettings = () => {
                               onPress={async() => {
                                 const res = await handleValidationCode(user.email, verifcationCode,user.$id);
                                if (res && res.code === 101) {
-                                  console.log("Email verified successfully", t("passwordReset.101"));
                                   setVerified(true);
                                   setSuccessMessage(101);
                                   setIsSccess(true);
                                 } else {
-                                  console.log("Error verifying email", t(`passwordReset.${res.code}`));
                                   setVerified(false);
                                   setErrorMessage(res.code);
                                   setIsError(true);

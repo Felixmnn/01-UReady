@@ -18,7 +18,6 @@ const ShareModuleIcon = ({
     const appDeepLink = Linking.createURL(`deeplink`, { queryParams: { moduleID } }); // App-based deep link
     const deepLink = `${baseUrl}?deeplink=${encodeURIComponent(appDeepLink)}`; // Web-based link with deep link as a parameter
 
-    console.log("Deep Link:", deepLink);
 
     const handleCopyToClipboard = async () => {
         try {

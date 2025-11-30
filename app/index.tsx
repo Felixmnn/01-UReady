@@ -37,10 +37,7 @@ export default function Index() {
       }
       let userD = await loadUserData(user.$id);
       if (!isMounted) return; // Nur setzen, wenn noch mounted
-      console.log("User Data was Null",userD)
-      if (typeof userD === "object" && userD !== null) {
-        console.log(Object.keys(userD));
-      }
+
       if (userD != null) {
         setUserData(userD);
       } else { 

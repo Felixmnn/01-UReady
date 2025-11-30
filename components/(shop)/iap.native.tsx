@@ -38,11 +38,6 @@ export default function SimpleStore() {
             energy: prevUsage.energy + energyToAdd,
           }));
 
-          console.log("Belohnung vergeben:", {
-            productId: purchase.productId,
-            energyGranted: energyToAdd,
-            transactionId: purchase.transactionId,
-          });
         } catch (error) {
           console.error("Fehler beim Abschließen des Kaufs:", error);
         }

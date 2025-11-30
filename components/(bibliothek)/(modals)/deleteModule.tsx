@@ -46,7 +46,6 @@ const DeleteModule = ({
     }
     try  {
       await deleteDocument(moduleID);
-    console.log("HI IM HERE",modules)
     //const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
     //setModules({ ...modules, documents: updatedModules ? updatedModules : modules });
     } catch (error) {
@@ -96,7 +95,6 @@ const DeleteModule = ({
           <View className="w-full flex-row items-center justify-between">
           <TouchableOpacity
             onPress={() => {
-              console.log("Ich werde gedrückt");
               if (savedChanges) {
                 setSelectedModule("AllModules");
               } else {

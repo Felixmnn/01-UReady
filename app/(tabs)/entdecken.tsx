@@ -159,26 +159,6 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
 
   
 
-  /* Veraltete Fetch Function kann gelöscht werden
-  async function fetchModules(filters: any) {
-    const keys = Object.keys(filters);
-    if (keys.length > 1) {
-      const modules = await searchDocuments(filters);
-      if (modules) {
-        console.log("Fetched Modules:", modules);
-        setModules(modules as module[]);
-      } else {
-        setModules([]);
-      }
-    }
-  }
-
-  useEffect(() => {
-    fetchModules(filters);
-  }, [filters]);
-  */
-
-  //_____________________________________________________________________________________
 
   /**
    * Option includes the meta data for the School, University, Education and Other Filters

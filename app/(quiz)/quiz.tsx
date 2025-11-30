@@ -39,14 +39,7 @@ const quiz = () => {
         timeLimit,
     } = useLocalSearchParams()
 
-    console.log("Local Params: ", sessionID,
-        moduleID,
-        quizType,
-        questionType,
-        questionAmount,
-        timeLimit)
 
-    
     // Unwichtig, nur für responsive Design
     const {width} = useWindowDimensions();
     const isVertical = width > 700;
@@ -201,7 +194,6 @@ const quiz = () => {
             finalStatus = "GREAT";
           }
         }
-        console.log("Final Status to be saved:", finalStatus);
         if (indexOfQuestion === -1) {
             tempQuestionList.push({ id, status: finalStatus });
         } else {
@@ -212,7 +204,6 @@ const quiz = () => {
         }
         
         setQuestionList(tempQuestionList);
-        console.log("Temp Question List after update:", tempQuestionList);
         const success = await updateModuleQuestionList(
             moduleID ? moduleID.toString() : "",
             tempQuestionList
@@ -312,7 +303,6 @@ const quiz = () => {
 
 
     const gotToNextQuestion = async (status: "GOOD" | "BAD" | "OK" | "GREAT") => {
-        console.log("New Question Status:", status);
         if (!questionsForQuiz[0].$id ) return;
         await saveQuestionStatus(
             questionsForQuiz[0].$id,

@@ -10,13 +10,9 @@ export default function KaTeXExample({ formula, fontSize, height }:{
   height?: number;
 }) {
   const [webViewHeight, setWebViewHeight] = useState(40);
-  console.log("Rendering formula:", formula);
 const justLatex = JSON.stringify(formula.replace(/(HEIGHT_NEUTRAL|HEIGHT_SMALL|HEIGHT_MEDIUM|HEIGHT_LARGE|ZOOM_IN_[123]|ZOOM_OUT_[123]|ZOOM_NEUTRAL)+$/, ''))
-  console.log("Extracted LaTeX:", justLatex); 
   const fontS = fontSize ?  fontSize : getZoom(formula);
   const heightS = height ? height : getHeight(formula);
-  console.log("Calculated font size:", fontS, fontSize);
-  console.log("Calculated height size:", heightS, height);
 
   const html = `
     <!doctype html>

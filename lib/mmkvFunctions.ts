@@ -1,7 +1,6 @@
 import { Module } from "i18next";
 import { storage } from "./mmkv";
-import { note, question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
-import { ModuleProps } from "@/types/moduleTypes";
+import { module, note, question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { uuid } from "expo-modules-core";
 
 /**
@@ -16,7 +15,7 @@ import { uuid } from "expo-modules-core";
 /**
  * This function recives modules as an array of objects and saves them to MMKV storage.
  */
-export function saveModulesToMMKV(modules: ModuleProps[]) {
+export function saveModulesToMMKV(modules: module[]) {
     const modulesString = JSON.stringify(modules);
     storage.set('user.modules', modulesString);
 }
@@ -24,7 +23,7 @@ export function saveModulesToMMKV(modules: ModuleProps[]) {
 /**
  * This function retrieves modules from MMKV storage and returns them as an array of objects.
  */
-export function getModulesFromMMKV(): ModuleProps[] | [] {
+export function getModulesFromMMKV(): module[] | [] {
     const modulesString = storage.getString('user.modules');
     return modulesString ? JSON.parse(modulesString) : [];
 }
@@ -32,7 +31,7 @@ export function getModulesFromMMKV(): ModuleProps[] | [] {
 /**
  * This function returns a specific module from MMKV storage by its ID.
  */
-export function getModuleFromMMKV(moduleID: string): ModuleProps | null {
+export function getModuleFromMMKV(moduleID: string): module | null {
     const allModules = getModulesFromMMKV();
     const module = allModules.find(m => m.$id === moduleID);
     return module || null;
@@ -41,7 +40,7 @@ export function getModuleFromMMKV(moduleID: string): ModuleProps | null {
 /**
  * This function updates a specific module in MMKV storage.
  */
-export function updateModuleInMMKV(updatedModule: ModuleProps) {
+export function updateModuleInMMKV(updatedModule: module) {
     const allModules = getModulesFromMMKV();
     const moduleIndex = allModules.findIndex(m => m.$id === updatedModule.$id);
     if (moduleIndex !== -1) {
@@ -53,12 +52,22 @@ export function updateModuleInMMKV(updatedModule: ModuleProps) {
 /**
  * Function to add a single Module
  */
-export function addModuleToMMKV(newModule: ModuleProps) {
+export function addModuleToMMKV(newModule: module) {
     const oldModules = getModulesFromMMKV()
     const newModules = [...oldModules, newModule]
     saveModulesToMMKV(newModules)
     console.log("Sucessfully added Module")
 }
+
+/**
+ * Remove All TMP Modules
+ */
+export function removeTmpModulesFromMMKV(){
+    const modulesInMMKV = getModulesFromMMKV()
+    const filteredModules = modulesInMMKV.filter(m=> !m.$id?.includes("tmp-"))
+    saveModulesToMMKV(filteredModules)
+}
+
 /**
  * This function updates the question list of a specific module in MMKV storage.
  */
@@ -355,6 +364,28 @@ export function resetUnsavedModulesInMMKV() {
     storage.remove('user.usavedModules');
 }
 
+/**
+ * Function to delete a specific Module from MMKV Storagr
+ */
+export function removeSpecificModuleFromMMKV(id:string){
+    const oldModules = getModulesFromMMKV()
+    if (oldModules.findIndex(m=> m.$id == id) != -1){
+        const newModules = oldModules.filter(m=> m.$id != id);
+        saveModulesToMMKV(newModules)
+    }
+}
+
+/**
+ * Function to delete a Module from the compleatly unsaved Modules list
+ */
+export function removeSpecificCompleatlyUnsavedModule(id:string){
+    const unsavedModules = getCompleatlyUnsavedModulesFromMMKV()
+    if (unsavedModules.findIndex(m=> m.$id == id) != -1){
+        const newUnsavedModules = unsavedModules.filter(m => m.$id != id);
+        storage.set('user.usavedModules', JSON.stringify(newUnsavedModules));
+    }
+}
+
 
 /**
  * Function to saveThe userKategorie to MMKV
@@ -375,7 +406,7 @@ export function getUserKategorieFromMMKV(): userDataKathegory | null {
 /**
  * Function to save a newModule in MMKV
  */
-export function addCompleatlyUnsavedModuleToMMKV(module: ModuleProps) {
+export function addCompleatlyUnsavedModuleToMMKV(module: module) {
     try{
     const oldUnsavedModules = getCompleatlyUnsavedModulesFromMMKV();
     const newUnsavedModules = [...oldUnsavedModules, module];
@@ -390,7 +421,7 @@ export function addCompleatlyUnsavedModuleToMMKV(module: ModuleProps) {
 /**
  * Function to update compleatly unnsaved Modules
  */
-export function updateCompleatlyUnsavedModuleMMKV(module:ModuleProps){
+export function updateCompleatlyUnsavedModuleMMKV(module:module){
     const oldUnsavedModules = getCompleatlyUnsavedModulesFromMMKV();
     const newUnsavedModules = oldUnsavedModules.map(m=> {
         if (m.$id == module.$id){
@@ -403,9 +434,16 @@ export function updateCompleatlyUnsavedModuleMMKV(module:ModuleProps){
 }
 
 /**
+ * Function to Reset the Compleatly unsaved Modules
+ */
+export function removeCompleatlyUnsavedModulesFrommMMKV(){
+    storage.remove("user.unsavedModules")
+}
+
+/**
  * Function to get the unsaved modules from MMKV
  */
-export function getCompleatlyUnsavedModulesFromMMKV():ModuleProps[] | []{
+export function getCompleatlyUnsavedModulesFromMMKV():module[] | []{
     const unsavedModules = storage.getString('user.unsavedModules')
     return unsavedModules ? JSON.parse(unsavedModules) : [];
 
@@ -445,3 +483,4 @@ export function getUserDataConfigFromMMKV() :any | null {
     const userDataConfig = storage.getString("user.userDataConfig")
     return userDataConfig ? JSON.parse(userDataConfig) : null
 }
+

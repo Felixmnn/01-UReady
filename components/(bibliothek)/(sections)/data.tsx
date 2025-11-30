@@ -397,10 +397,12 @@ const Data = ({
                     ) : null}
                     <View
                       className={` items-end pr-2 ${optionsVisible.includes(item.$id ?? "") ? "w-[50%]" : "w-full"}`}
-                    >
+                    > 
                       <TouchableOpacity
                         className="p-2"
                         onPress={() => {
+                          
+                          
                           handleOptionsVisibility(item.$id);
                           if (item.subjectID == module.$id){
                             setQuestionToEdit(item)
@@ -409,6 +411,7 @@ const Data = ({
                                 status: "EDIT",
                               });
                           }
+                            
                           
                           //handleOptionsVisibility(item.$id);
                         }}
@@ -570,13 +573,13 @@ const Data = ({
       {filteredData.length == 0 &&
       filteredDocuments.length == 0 &&
       filteredNotes.length == 0 ?
-      isOffline ?
-      <Offline/>
-      :
+      
+      
       (
         <ScrollView>
           
           <View className="flex-1">
+            { !isOffline &&
             <Selectable
               icon={"robot"}
               iconColor={"#7a5af8"}
@@ -584,7 +587,7 @@ const Data = ({
               title={t("data.aiQuiz")}
               empfolen={true}
               handlePress={() => selectAi()}
-            />
+            />}
             {/* <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/>*/}
             <Selectable
               icon={"file-alt"}
@@ -632,9 +635,7 @@ const Data = ({
           }
         >
           <View className="flex-1">
-            <Text className="text-white text-center my-4">
-              {questions.length}
-              </Text>
+            
             <QuestionList />
             {/*<DocumentList/>*/}
             <NoteList />

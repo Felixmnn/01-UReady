@@ -138,8 +138,6 @@ const ChangeQuestions = ({
                       sessionID: selectedSession.id,
                     });
                     if (res && typeof res === "object" && "$id" in res) {
-                      console.log("👩‍🚒👩‍🚒👩‍🚒👩‍🚒")
-                      console.log("Questions ", questions)
                       const newQuestions = [...questions, res as unknown as question];
                       setQuestions(newQuestions);
                     }

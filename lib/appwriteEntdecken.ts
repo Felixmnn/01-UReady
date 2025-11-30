@@ -42,27 +42,9 @@ export async function getMatchingModules({
   includeCopies?: boolean;
 
 }) {
-  console.log("Aufruf mit:", {
-    searchText,
-    offset,
-    languages,
-    eductaionType,
-    universityDegreeType,
-    universityKategorie,
-    schoolType,
-    schoolSubjects,
-    schoolGrades,
-    eductaionCategory,
-    educationSubject,
-    otherSubjects,
-    textSearchType,
-    minQuestions,
-    includeCopies,
-  }
-  )
+  
   switch (eductaionType) {
     case "UNIVERSITY":
-      console.log("UNIVERSITY");
       return await getUniversityModules({
         universityDegreeType,
         universityKategorie,
@@ -74,7 +56,6 @@ export async function getMatchingModules({
         includeCopies,
       });
     case "SCHOOL":
-      console.log("SCHOOL");
       return await getSchoolModules({
         schoolType,
         schoolSubjects,
@@ -133,12 +114,7 @@ async function getUniversityModules({
   minQuestions?: number;
   includeCopies?: boolean;
 }) {
-  console.log("Fetching University Modules with:", {
-    universityDegreeType,
-    universityKategorie,
-    offset,
-    languages
-  });
+ 
   const filters = [
     Query.equal("kategoryType", "UNIVERSITY"),
     Query.equal("public", true),
@@ -152,7 +128,6 @@ async function getUniversityModules({
   }
 
   if (languages && languages.length === 1) {
-    console.log("Singel Case")
     filters.push(Query.equal("creationLanguage", languages[0]));
   } else if (languages && languages.length > 1) {
     filters.push(Query.or(languages.map((lang) => Query.equal("creationLanguage", lang))));
@@ -193,7 +168,6 @@ async function getUniversityModules({
     filters.push(Query.equal("copy", false));
   }
 
-  console.log("Filters for University Modules:", filters);
   try {
     const response = await databases.listDocuments(
       config.databaseId,

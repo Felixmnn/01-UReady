@@ -172,9 +172,6 @@ const SingleModule = ({
 
   //____________________________________________________________Ende der Variablen____________________________________________________________
 
-  useEffect(() => {
-    console.log("Questions updated:", questions.length);
-  },[questions])
 
   /**
    * This function updates the sessions each time the sessions change.
@@ -697,7 +694,8 @@ const SingleModule = ({
                     setQuestionToEdit={setQuestionToEdit}
                     isVisibleEditQuestion={isVisibleEditQuestion}
                     setIsVisibleEditQuestion={setIsVisibleEditQuestion}
-                    setIsVisibleNewQuestion={setIsVisibleNewQuestion}
+                    setIsVisibleNewQuestion={() =>
+                bottomSheetRef.current?.openSheet(0)}
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                     texts={texts}

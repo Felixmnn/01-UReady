@@ -18,7 +18,6 @@ export async function handleValidationCode(email: string, code?: string, userId?
     );
 
     // Response parsen
-    console.log("✅ Function executed successfully:", execution);
     let response = JSON.parse(execution.responseBody || "{}");
     return response;
 

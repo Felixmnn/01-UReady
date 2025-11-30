@@ -352,14 +352,12 @@ function ZoomHeightControls() {
                   onPress={() => {
                     if (typeOfQuestion) {
                       setImageValid(isImageUrl(urlImage));
-                      console.log("‼️The Output Answer looks like this:", dataType !== "latex" ? "" : latex + height + zoom);
                       setQuestionToEdit({
                         ...questionToEdit,
                         question: text,
                         questionLatex: dataType !== "latex" ? "" : latex + height + zoom,
                         questionUrl: urlImage,
                       });
-                      console.log("Latex:", latex + height + zoom);
                     } else {
                       const updatedAnswers = [...questionToEdit.answers];
                       updatedAnswers[itemIndex] = {
@@ -367,7 +365,6 @@ function ZoomHeightControls() {
                         latex: dataType !== "latex" ? "" : latex + height + zoom,
                         image: urlImage,
                       };
-                                            console.log("Latex:", latex + height + zoom);
 
                       setQuestionToEdit({
                         ...questionToEdit,

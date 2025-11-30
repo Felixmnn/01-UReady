@@ -184,27 +184,20 @@ export async function materialToModule({
     newModuleData = resMod;
 
     let savedQuestions: any[] = [];
-    console.log("Direct Questions Length:", directQuestions.length);
-    console.log("Direct Questions:", directQuestions.map((q) => q.question));
     // Schritt 3: Fragen speichern
     const savedList = await saveQuestions({
       newModuleData,
       directQuestions,
       savedQuestions,
     });
-    console.log("👩‍🚒👩‍🚒👩‍🚒👩‍🚒Saved Questions")
-    console.log(savedList);
-    console.log("Saved Questions:",savedQuestions )
 
     // Schritt 4: Modul mit Fragen verknüpfen
 
     if (!newModuleData || !newModuleData.$id)
-    console.log("Hier komme ich hin 2")
      await updateModuleQuestionList(
       newModuleData.$id,
       savedList ? savedList.map((item) => JSON.stringify(item)) : []
     );
-    console.log("Hier komme ich hin 3")
 
     // Benutzer-Daten aktualisieren
     try {
@@ -403,7 +396,6 @@ async function saveQuestions({
               : uuid.v4(),
           status: null,
         });
-        console.log("🐞Saved Questions Length:", saveQuestionsHere.length);
       } catch (error) {
         if (__DEV__) {
           console.error("Error saving question:", error);

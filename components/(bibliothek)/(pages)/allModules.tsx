@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getSpecificModule } from '@/lib/appwriteShare';
 import { ModuleProps } from '@/types/moduleTypes';
 import AcceptShareModule from '../(components)/acceptShareModule';
+import { returnNewLastModule } from '@/functions/addLastSessionModule';
 
 const AllModules = ({
   setSelected,
@@ -33,7 +34,7 @@ const AllModules = ({
 
     const { t } = useTranslation();
 
-    const { user, userUsage } = useGlobalContext()
+    const { user, userUsage, setUserUsage } = useGlobalContext()
     
 
       
@@ -108,26 +109,22 @@ function calculatePercent(questions:string[]){
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
                 <Karteikarte
                   handlePress={async () => {
-                    await updateUserUsageModules(user.$id, {
-
+                    console.log("Old Last Modules:", userUsage.lastModules);  
+                    console.log("Selected Module ID:", item.$id);
+                    const newUserUsage = returnNewLastModule(userUsage.lastModules || [], {
                       name: item.name,
                       percent: Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0,
                       color: item.color,
                       fragen: item.questions,
                       sessions: item.sessions.length,
-                      sessionID: item.$id
+                      sessionID: item.$id ? item.$id : "",
+                    });
+                    setUserUsage({
+                      ...userUsage,
+                      lastModules: newUserUsage
                     });
                     setSelected("SingleModule");
                     const moduleSessions = item.sessions.map(s => JSON.parse(s));
-                    updateUserUsageSessions(userUsage.$id, {
-                                      name: moduleSessions[0].title,
-                                      sessionID: moduleSessions[0].id,
-                                      percent: moduleSessions[0].percent,
-                                      color: moduleSessions[0].color,
-                                      iconName: moduleSessions[0].iconName,
-                                      questions: moduleSessions[0].questions,
-                                      moduleID: item.$id
-                                    } )
                     setSelectedModule(index);
                   }}
                   farbe={item.color ?? ""}
@@ -139,7 +136,6 @@ function calculatePercent(questions:string[]){
                   creator={item.creator}
                   publicM={item.public}
                 />
-                
               </View>
             ))}
           </View>

@@ -69,16 +69,16 @@ export default function SimpleStore() {
     switch (productId) {
       case "extra_large_refill":
       case "extraLarge_refill":
-        return 1000;
+        return 7500;
       case "large_refill":
       case "large_refill_100":
-        return 200;
+        return 3000;
       case "medium_refill":
       case "medium_refill_55":
-        return 80;
+        return 1200;
       case "small_refill":
       case "small_refill_10":
-        return 20;
+        return 200;
       default:
         return 1;
     }
@@ -110,13 +110,13 @@ export default function SimpleStore() {
   // Hilfsfunktion, um Produkt-ID anhand Energy-Menge zu ermitteln
   function getProductIdByAmount(amount?: number): string {
     switch (amount) {
-      case 1000:
+      case 7500:
         return Platform.OS === "ios" ? "extraLarge_refill" : "extra_large_refill";
-      case 200:
+      case 3000:
         return Platform.OS === "ios" ? "large_refill_100" : "large_refill";
-      case 80:
+      case 1200:
         return Platform.OS === "ios" ? "medium_refill_55" : "medium_refill";
-      case 20:
+      case 200:
         return Platform.OS === "ios" ? "small_refill_10" : "small_refill";
       default:
         return "";

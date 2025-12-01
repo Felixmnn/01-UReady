@@ -9,7 +9,7 @@ import i18n from "@/assets/languages/i18n";
 import { router } from "expo-router";
 import NetInfo from "@react-native-community/netinfo";
 import CustomButton from "@/components/(general)/customButton";
-import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
+import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, resetUsavedUserUsageInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -115,6 +115,7 @@ const GlobalProvider = ({ children }) => {
     try {
       let usage = await loadUserUsage(user.$id);
       let unsavedUsage = getUsavedUserUsageFromMMKV();
+      console.log("❌❌❌Unsaved Usage from MMKV:", unsavedUsage);
       if (unsavedUsage) {
         usage = {
           ...usage,
@@ -144,7 +145,7 @@ const GlobalProvider = ({ children }) => {
       } else {
         usage = await updateUserUsage(usage);
         saveUserUsageToMMKV(usage);
-        resetUnsavedModulesInMMKV();
+        resetUsavedUserUsageInMMKV();        
       }
       setUserUsage(usage);
     } catch (err) {
@@ -157,16 +158,17 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   useEffect(() => {
     if (!userUsage) return;
-
+    console.log("🔴🔴🔴")
     const updateUsage = async () => {
       try {
 
 
-        await updateUserUsageData({
+        const res = await updateUserUsageData({
           ...userUsage
         });
+        console.log("Updated User USage", res);
         saveUserUsageToMMKV(userUsage);
-
+       console.log(" ✅✅✅")
       } catch (err) {
         saveUsavedUserUsageToMMKV(userUsage);
         if (__DEV__) console.log("Usage update error", err);
@@ -180,15 +182,15 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   // Netzwerkstatus überwachen
   // -------------------------------
-  /*
-  WICHTIG SPÄTER WIEDER AKTIVIEREN
+  
+  //WICHTIG SPÄTER WIEDER AKTIVIEREN
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsOffline(!state.isConnected);
     });
     return () => unsubscribe();
   }, []);
-  /*
+  
 
   // -------------------------------
   // App neu laden, falls kein User vorhanden ist und das Laden abgeschlossen ist

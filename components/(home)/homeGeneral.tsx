@@ -28,6 +28,7 @@ import { Session } from "@/types/moduleTypes";
 import KaTeXExample from "./katext";
 import { handleValidationCode, sendValidationCode } from "@/lib/appwriteEmailValidation";
 import Offline from "../(general)/offline";
+import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 
 type MiniModule = {
   name: string;
@@ -39,13 +40,18 @@ type MiniModule = {
 };
 
 type MiniSession = {
-  name: string;
-  percent: number;
-  color: string;
-  icon: string;
-  questions: number;
-  sessionID: string;
-};
+    sessionID: string,
+    quizType: "infinite" | "limited" | "limitedTime" | "limitedAllCorrect",
+    questionType: "single" | "multiple" | "questionAnswer",
+    questionAmount: number | null,
+    timeLimit: number | null,
+    moduleID: string,
+    name: string,
+    percent: number,
+    color: string,
+    icon: string,
+    questions: number,
+}
 
 const { width } = Dimensions.get("window");
 
@@ -142,8 +148,7 @@ const HomeGeneral = () => {
             />
           </View>
           <Text className="my-1 text-gray-300 font-semibold text-[14px]">
-            {item.fragen}
-            {t("home.questions")} • {item.sessions} {t("home.sessions")}
+            {item.fragen} {t("home.questions")} • {item.sessions} {t("home.sessions")}
           </Text>
         </View>
       </TouchableOpacity>
@@ -151,8 +156,9 @@ const HomeGeneral = () => {
   };
 
   async function startQuiz(session: MiniSession) {
-    const questions = await getSessionQuestions(session.sessionID);
+    const questions = getQuestionsFromMMKV(session.moduleID);
     if (!questions || questions.length == 0) {
+      console.log("No questions found, redirecting to library");
       router.push("/bibliothek");
       return;
     }
@@ -161,11 +167,11 @@ const HomeGeneral = () => {
       pathname: "/quiz",
       params: {
         sessionID: session.sessionID,
-        quizType: "infinite", // infinite, limited, limitedTime, limitedAllCorrect
-        questionType: "multiple", // single, multiple, questionAnswer
-        questionAmount: null, // How many questions should be in the quiz
-        timeLimit: null, // Timelimit will be in seconds
-        moduleID: questions[0].subjectID,
+        quizType: session.quizType, // infinite, limited, limitedTime, limitedAllCorrect
+        questionType: session.questionAmount, // single, multiple, questionAnswer
+        questionAmount: session.questionAmount, // How many questions should be in the quiz
+        timeLimit: session.timeLimit, // Timelimit will be in seconds
+        moduleID: session.moduleID,
       },
     });
   }

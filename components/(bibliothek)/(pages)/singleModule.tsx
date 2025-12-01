@@ -719,6 +719,8 @@ const SingleModule = ({
                 <View className="p-4 flex-1">
                   
                   <Data
+                  calculatePercent={calculatePercent}
+                  selectedSession={ sessions[selectedSession] ? sessions[selectedSession] : null}
                     selectAi={() => aiBottomSheetRef.current?.openSheet(1)}
                     setQuestions={setQuestions}
                     setQuestionToEdit={setQuestionToEdit}

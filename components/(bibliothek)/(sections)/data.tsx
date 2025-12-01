@@ -23,6 +23,8 @@ import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import Offline from "@/components/(general)/offline";
 import { removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
+import { updateModule } from "@/lib/appwriteEdit";
+import { returnNewUserUsage } from "@/functions/addLastSessionModule";
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -69,8 +71,12 @@ const Data = ({
   selectedS,
   setModule,
   setQuestions,
-  selectAi 
+  selectAi ,
+  selectedSession,
+  calculatePercent,
 }: {
+  calculatePercent: (questions:string[]) => number; 
+  selectedSession: Session | null;
   setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   setIsVisibleEditQuestion: React.Dispatch<
     React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>
@@ -102,7 +108,7 @@ const Data = ({
   setModule: React.Dispatch<React.SetStateAction<module>>;
   selectAi : () => void;
 }) => {
-  const { isOffline } = useGlobalContext()
+  const { isOffline , userUsage, setUserUsage} = useGlobalContext()
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
   function handleOptionsVisibility(id = "") {
@@ -240,6 +246,39 @@ const Data = ({
     return found?.status ?? null;
   }
 
+
+
+
+  /**
+ * Berechnet den prozentualen Bearbeitungsstatus der Fragen.
+ * @param questionList - Eine Liste von Fragen, die entweder Strings oder Objekte enthalten können.
+ * @returns number - Der Fortschritt in Prozent (0 bis 100).
+ */
+function calculateQuestionProgress(questionList: string[]): number {
+  if (!Array.isArray(questionList) || questionList.length === 0) {
+    return 0; // Kein Fortschritt, wenn die Liste leer ist
+  }
+
+  // Parse die Fragen und filtere diejenigen, die einen gültigen Status haben
+  const parsedQuestions = questionList.map((q) => {
+    try {
+      return typeof q === "string" ? JSON.parse(q) : q;
+    } catch {
+      return null; // Ignoriere ungültige Einträge
+    }
+  });
+
+  // Zähle die Fragen mit einem Status, der als "bearbeitet" gilt
+  const completedQuestions = parsedQuestions.filter(
+    (q) => q && q.status && ["BAD", "OK", "GOOD", "GREAT"].includes(q.status)
+  );
+
+  // Berechne den Fortschritt in Prozent
+  const progress = (completedQuestions.length / questionList.length) * 100;
+
+  return Math.round(progress); // Runde auf die nächste ganze Zahl
+}
+
   /**
    * Unused component to show the upload status of the file
    */
@@ -313,7 +352,25 @@ const Data = ({
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  onPress={() => router.push({ 
+                  onPress={async() => 
+                    {
+                      console.log("🤗",selectedS)
+                       
+                      const newUserUsager = returnNewUserUsage(userUsage, {
+                        sessionID: selectedS,
+                        quizType : "infinite",
+                        questionType : "multiple",
+                        questionAmount : null,
+                        timeLimit : null,
+                        moduleID: module.$id ? module.$id : "",
+                        name: selectedSession ? selectedSession.title : "Session",
+                        percent: calculateQuestionProgress(module.questionList),
+                        color: selectedSession ? selectedSession.color : "blue",
+                        icon: selectedSession ? selectedSession.iconName : "question",
+                        questions: questions.length,
+                      })
+                      setUserUsage(newUserUsager)
+                      router.push({ 
                                 pathname:"/quiz",
                                 params: {
                                   sessionID: selectedS,
@@ -322,7 +379,7 @@ const Data = ({
                                   questionAmount : null,
                                   timeLimit : null,
                                   moduleID: module.$id,
-                                }})}
+                    }})}}
                   className="p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800"
                 >
                   <View className="w-full justify-between flex-row items-center ">

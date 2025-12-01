@@ -10,9 +10,10 @@ import RewardedAdScreen from "@/components/(shop)/add";
 import SimpleStore from "@/components/(shop)/iap";
 import { useTranslation } from "react-i18next";
 import { loadAproved } from "@/lib/appwriteDaten";
+import Offline from "@/components/(general)/offline";
 
 const shop = () => {
-  const { user, isLoggedIn, isLoading, userUsage } = useGlobalContext();
+  const { user, isLoggedIn, isLoading, userUsage, isOffline } = useGlobalContext();
   const [ aproved, setAproved ] = React.useState(null);
 
   useEffect(() => {
@@ -58,6 +59,8 @@ const shop = () => {
         return (
           <View className="flex-1 items-center justify-between bg-[#0c111e] rounded-[10px]">
             <TokenHeader/>
+            { isOffline ? <Offline/> :
+
             <ScrollView className="w-full">
               <Header title={t("shop.buyEnergy")}/>
               <SimpleStore/>
@@ -66,6 +69,7 @@ const shop = () => {
                 { aproved != null && <RewardedAdScreen aproved={aproved}/> }
               </View>
             </ScrollView>
+      }
           </View>
         );
       }}

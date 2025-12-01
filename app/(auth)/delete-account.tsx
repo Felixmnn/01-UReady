@@ -7,6 +7,7 @@ import { useGlobalContext } from '@/context/GlobalProvider';
 import { deleteAllModules, deleteUserData, deleteUserDataKathegory, deleteUserUsage } from '@/lib/appwriteDelete';
 import CustomButton from '@/components/(general)/customButton';
 import { useTranslation } from 'react-i18next';
+import { resetMMKVStorage } from '@/lib/mmkvFunctions';
 
  
 const DeleteAccount = () => {
@@ -34,6 +35,7 @@ const DeleteAccount = () => {
     if (!user) {
       router.push('/sign-in');
     }
+    resetMMKVStorage()
     await deleteModules();
     await deleteData();
     const res = await deletingAccount(); 

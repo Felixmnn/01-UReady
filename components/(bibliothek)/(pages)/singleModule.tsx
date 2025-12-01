@@ -146,7 +146,7 @@ const SingleModule = ({
   : [];
   const [sessions, setSessions] = useState(parsedSessions);
 
-  const [notes, setNotes] = useState<note[] | []>(sessions[selectedSession].id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
+  const [notes, setNotes] = useState<note[] | []>(sessions && sessions.length > selectedSession && sessions[selectedSession].id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
   {
     /* Language and Texts */
   }
@@ -171,6 +171,8 @@ const SingleModule = ({
   const texts = languages.singleModule;
 
   //____________________________________________________________Ende der Variablen____________________________________________________________
+
+  
 
 
   /**
@@ -232,6 +234,34 @@ const SingleModule = ({
     const percent = Math.round((points / questions.length) * 100);
     return percent < 0 ? 0 : percent > 100 ? 100 : percent;
   }
+
+
+
+  async function repairQuestionListAndNotes() {
+    const notes = getNotesFromMMKV(module.$id);
+
+    const questions = getQuestionsFromMMKV(module.$id);
+    const parsedList = reverseToManyStringifyActions(module.questionList);
+    const listFormat = questions.map((item) => {
+      return {
+        id: item.$id,
+        status: null,
+      };
+    })
+    const listFormatFiltered = listFormat.filter((q) => parsedList.every((pl) => pl.id !== q.id));
+
+    if (listFormatFiltered.length > 0) {
+      const newQuestionList = [...parsedList, ...listFormatFiltered];
+    } 
+    await updateModuleData(module.$id, {
+      ...module,
+      questionList: [...parsedList, ...listFormatFiltered].map((item) => JSON.stringify(item)),
+      questions: questions.length,
+      notes: notes.length,
+    });
+  }
+
+  repairQuestionListAndNotes();
 
   //_____________________________________________________________When Selected Session Changes_____________________________________________________________
   /**

@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import Offline from "@/components/(general)/offline";
+import { removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -150,7 +151,7 @@ const Data = ({
               typeof question === "object" &&
               question !== null &&
               "id" in question &&
-              (question as ParsedQuestion).id === item.$id
+              (question as ParsedQuestion)?.id === item.$id
           );
           return typeof found === "object" && found !== null && "status" in found
             ? (found as ParsedQuestion).status
@@ -235,7 +236,7 @@ const Data = ({
         return { id: undefined, status: null };
       }
     });
-    const found = parsed.find(q => q.id === id);
+    const found = parsed.find(q => q?.id === id);
     return found?.status ?? null;
   }
 
@@ -361,7 +362,7 @@ const Data = ({
                                 status: "EDIT",
                               });
                              
-                            
+                              removeQuestionFromMMKV(item.$id!, module.$id!);
                               if (!module.copy) {
                                 if (item.$id) {
                                   await deleteDocument(item.$id, "question");

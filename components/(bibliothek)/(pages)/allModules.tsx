@@ -139,6 +139,7 @@ function calculatePercent(questions:string[]){
                   creator={item.creator}
                   publicM={item.public}
                 />
+                
               </View>
             ))}
           </View>

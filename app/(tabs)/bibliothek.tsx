@@ -47,19 +47,27 @@ const Bibliothek = () => {
 
 
   async function saveCompleatlyUnsavedModules(){
-    const compleatlyUnsavedModules = getCompleatlyUnsavedModulesFromMMKV()
+    let compleatlyUnsavedModules = getCompleatlyUnsavedModulesFromMMKV()
     
     if (compleatlyUnsavedModules.length === 0) return;
-    console.log("💵",compleatlyUnsavedModules)
     for (let i = 0; i < compleatlyUnsavedModules.length; i++) {
+      const id = compleatlyUnsavedModules[i].$id!;
       await addNewModule(compleatlyUnsavedModules[i]);
-      removeSpecificModuleFromMMKV(compleatlyUnsavedModules[i].$id ? compleatlyUnsavedModules[i].$id : "")
-      removeSpecificCompleatlyUnsavedModule(compleatlyUnsavedModules[i].$id ? compleatlyUnsavedModules[i].$id : "")
+      compleatlyUnsavedModules = compleatlyUnsavedModules.filter(mod => mod.$id !== id);
+      if (compleatlyUnsavedModules.length == 1) {
+        compleatlyUnsavedModules = [];
+      } else {
+        compleatlyUnsavedModules = compleatlyUnsavedModules.slice(1)
+      }
+      removeSpecificCompleatlyUnsavedModule(id);
     }
-    
+    if (compleatlyUnsavedModules.length === 0) {
+
+      removeCompleatlyUnsavedModulesFrommMMKV();
+    }
+
     //Wichtig das muss ich gleich anpassen aktuell werden so die offline Module glöscht
     const compleatlyUnsavedModulesR = getCompleatlyUnsavedModulesFromMMKV()
-    console.log("😩",compleatlyUnsavedModulesR)
 
   }
 
@@ -93,7 +101,7 @@ const Bibliothek = () => {
         const matchingItem = unsavedModule.items.find((item) => item.id === question.id);
 
         return JSON.stringify({
-          ...question,
+          ...quesction,
           status: matchingItem ? matchingItem.status : question.status, // Behalte den ursprünglichen Status bei, wenn keine Übereinstimmung gefunden wird
         });
       });

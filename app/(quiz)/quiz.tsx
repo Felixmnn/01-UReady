@@ -433,6 +433,13 @@ const {t} = useTranslation()
     
   if ( !loading && questions.length == 0 ) return (
     <SafeAreaView className='flex-1 pt-5 bg-gray-900 items-center justify-center' >
+        <Text>
+            {
+                JSON.stringify(questionList)
+            }{
+            JSON.stringify(questions)
+            }
+        </Text>
         <Text className="text-white text-center text-[15px] font-bold my-2 p-4">
             {
                 t("quiz.sorry")

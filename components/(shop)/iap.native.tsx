@@ -126,7 +126,7 @@ export default function SimpleStore() {
   return (
     <View style={{ flex: 1 }}>
       {/* Produkte */}
-      <View style={{ padding: 16 }}>
+      <View style={{ paddingHorizontal: 16, marginTop: 10 }}>
         {products.map((product) => (
           <BuyEnergy
             key={product.id}

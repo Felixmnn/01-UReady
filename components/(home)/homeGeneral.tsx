@@ -8,6 +8,7 @@ import {
   Platform,
   Modal,
   SafeAreaView,
+  Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContinueBox from "../(signUp)/(components)/continueBox";
@@ -29,6 +30,7 @@ import KaTeXExample from "./katext";
 import { handleValidationCode, sendValidationCode } from "@/lib/appwriteEmailValidation";
 import Offline from "../(general)/offline";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
+import { getUserSubscriptionStatus, triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
 
 type MiniModule = {
   name: string;
@@ -57,7 +59,7 @@ const { width } = Dimensions.get("window");
 
 const HomeGeneral = () => {
   const { t } = useTranslation();
-  const { user, userUsage,setUserUsage } = useGlobalContext();
+  const { user, userUsage,setUserUsage,subscriptionStatus } = useGlobalContext();
   const selected = "de" // Can be de, en, fr, es
 
   
@@ -279,7 +281,6 @@ const HomeGeneral = () => {
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
-     
       <ScrollView
         style={{
           height: "100%",

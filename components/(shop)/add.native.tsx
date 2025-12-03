@@ -60,7 +60,7 @@ export default function RewardedAdScreen({
     return null;
   }
   return (
-    <View key={key} className="flex-1  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
+    <View key={key} className="flex-1 w-full  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
       <Image
         source={images.COMERCIAL}
         style={{

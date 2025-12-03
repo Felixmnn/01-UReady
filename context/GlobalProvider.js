@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
-import { loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import { getUserSubscriptionStatus, loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
@@ -10,6 +10,7 @@ import { router } from "expo-router";
 import NetInfo from "@react-native-community/netinfo";
 import CustomButton from "@/components/(general)/customButton";
 import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, resetUsavedUserUsageInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
+import { initializeIapVerification } from "@/lib/appwriteFunctions";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -115,7 +116,6 @@ const GlobalProvider = ({ children }) => {
     try {
       let usage = await loadUserUsage(user.$id);
       let unsavedUsage = getUsavedUserUsageFromMMKV();
-      console.log("❌❌❌Unsaved Usage from MMKV:", unsavedUsage);
       if (unsavedUsage) {
         usage = {
           ...usage,
@@ -158,7 +158,6 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   useEffect(() => {
     if (!userUsage) return;
-    console.log("🔴🔴🔴")
     const updateUsage = async () => {
       try {
 
@@ -166,9 +165,7 @@ const GlobalProvider = ({ children }) => {
         const res = await updateUserUsageData({
           ...userUsage
         });
-        console.log("Updated User USage", res);
         saveUserUsageToMMKV(userUsage);
-       console.log(" ✅✅✅")
       } catch (err) {
         saveUsavedUserUsageToMMKV(userUsage);
         if (__DEV__) console.log("Usage update error", err);
@@ -240,6 +237,32 @@ const GlobalProvider = ({ children }) => {
     );
   }
     */
+   const [subscriptionStatus, setSubscriptionStatus] = useState("No working status");
+    async function fetchSubscriptionStatus() {
+  if (!user) return;
+
+  try {
+    const status = await getUserSubscriptionStatus(user.$id);
+    console.log("Status", status)
+    if (status) {
+      console.log("Setting status")
+      setSubscriptionStatus(status);
+      return;
+    }
+
+    const res = await initializeIapVerification();
+    setSubscriptionStatus(res);
+
+  } catch (error) {
+    console.log("Error fetching subscription status:", error);
+
+    const res = await initializeIapVerification();
+    setSubscriptionStatus(res);
+  }
+}
+  useEffect(() => {
+    fetchSubscriptionStatus();
+  }, [user]);
 
   return (
     <GlobalContext.Provider
@@ -262,7 +285,8 @@ const GlobalProvider = ({ children }) => {
         setReloadNeeded,
         userUsage,
         setUserUsage,
-        isOffline
+        isOffline,
+        subscriptionStatus
       }}
     >
       {children}

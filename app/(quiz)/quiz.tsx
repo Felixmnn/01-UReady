@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, Text, View} from 'react-native'
+import { Image, Platform, SafeAreaView, StatusBar, Text, View } from 'react-native'
 import React, { use, useEffect, useRef, useState, useTransition } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
 import { useWindowDimensions } from 'react-native';
@@ -18,13 +18,25 @@ import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { getModuleFromMMKV, getQuestionsFromMMKV } from '@/lib/mmkvFunctions';
+import { ImageBackground } from 'react-native';
 
 type QuestionItem = {
-    id: string,
-    status: string
+    id: string | null;
+    status: "OK" | "GOOD" | "GREAT" | "BAD" | null;
 }
 
+const isWeb = Platform.OS === 'web';
 
+let InterstitialAd: any, AdEventType: any, TestIds: any;
+if (!isWeb) {
+  const googleMobileAds = require('react-native-google-mobile-ads');
+  InterstitialAd = googleMobileAds.InterstitialAd;
+  AdEventType = googleMobileAds.AdEventType;
+  TestIds = googleMobileAds.TestIds;
+}
+
+const adUnitId = !isWeb && __DEV__ ? TestIds.INTERSTITIAL : !isWeb ? 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy' : null;
+const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
 const quiz = () => {
     const {user, isLoggedIn,isLoading } = useGlobalContext();
@@ -61,7 +73,48 @@ const quiz = () => {
     const [selectedQuestion, setSelectedQuestion] = useState(0)
     const [selectedAnswers, setSelectedAnswers] = useState<string[]>([])
     const [showAnsers , setShowAnswers] = useState(false)
-        const [ showSoloution, setShowSolution] = useState(false)
+    const [ showSoloution, setShowSolution] = useState(false)
+
+
+    
+
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+      if (isWeb || !interstitial) return;
+
+      const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
+        setLoaded(true);
+      });
+  
+      const unsubscribeOpened = interstitial.addAdEventListener(AdEventType.OPENED, () => {
+        if (Platform.OS === 'ios') {
+          // Prevent the close button from being unreachable by hiding the status bar on iOS
+          StatusBar.setHidden(true);
+        }
+      });
+  
+      const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+        if (Platform.OS === 'ios') {
+          StatusBar.setHidden(false);
+        }
+      });
+  
+      // Start loading the interstitial straight away
+      interstitial.load();
+  
+      // Unsubscribe from events on unmount
+      return () => {
+        unsubscribeLoaded();
+        unsubscribeOpened();
+        unsubscribeClosed();
+      };
+    }, []);
+
+
+
+
+
 
 
     async function initializeQuiz( {
@@ -274,7 +327,6 @@ const quiz = () => {
         status: "GOOD" | "BAD" | "OK" | "GREAT",
         questionsForQuiz: question[],
         setQuestionsForQuiz: React.Dispatch<React.SetStateAction<question[]>>,
-
         quizType: "infinity" | "limitedFixed" | "limitedAllCorrect" | "timed"
     }){
         if (status === "GOOD" || status === "GREAT") setAnsweredCorrectly([...answeredCorrectly, questionsForQuiz[0].question ? questionsForQuiz[0].question : ""]);
@@ -540,6 +592,8 @@ const {t} = useTranslation()
 
         {(questionsForQuiz.length == 0 && questions.length > 0) &&
             <QuizResult
+                showInterstitial={interstitial}
+                intestialIsLoaded={loaded}
                 answeredCorrectly={answeredCorrectly}   
                 answeredWrong={answeredWrong}
                 done={() => router.back()}

@@ -14,6 +14,7 @@ const images = {
     "COMERCIAL": require('./14.png'),
     "bundle1": require('./13.png'),
     "bolt": require('./bolt.png'),
+    "ads": require('./ads.png'),
 
 };
 

@@ -4,17 +4,22 @@ import CustomButton from "../(general)/customButton";
 import { useTranslation } from "react-i18next";
 import RobotWihtMessage from "../(tutorials)/robotMessage";
 import BotCenter from "../(signUp)/botCenter";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 // Memoized BotCenter component
 const MemoizedBotCenter = React.memo(BotCenter);
 
 const QuizResult = ({
+  showInterstitial,
+  intestialIsLoaded,
   answeredCorrectly,
   answeredWrong,
   tryAgain,
   tryAgainNewQuestions,
   done,
 }: {
+  showInterstitial: any;
+  intestialIsLoaded: boolean;
   answeredCorrectly: string[];
   answeredWrong: string[];
   tryAgain?: () => void;
@@ -22,7 +27,7 @@ const QuizResult = ({
   done?: () => void;
 }) => {
   const { t } = useTranslation();
-
+  const { subscriptionStatus } = useGlobalContext();
   type DisplayMode = "hidden" | "wrong_shown" | "right_shown";
   const [displayMode, setDisplayMode] = useState<DisplayMode>("hidden");
 
@@ -169,6 +174,9 @@ const QuizResult = ({
         <TouchableOpacity
           className="bg-gray-800 rounded-2xl w-full items-center justify-center mr-1 h-[50px] mt-2"
           onPress={() => {
+            if (showInterstitial && intestialIsLoaded && subscriptionStatus?.status !== "active") {
+              showInterstitial.show();
+            }
             if (done) done();
           }}
         >

@@ -11,6 +11,7 @@ import SimpleStore from "@/components/(shop)/iap";
 import { useTranslation } from "react-i18next";
 import { loadAproved } from "@/lib/appwriteDaten";
 import Offline from "@/components/(general)/offline";
+import IapAbo from "@/components/(shop)/iapAbo";
 
 const shop = () => {
   const { user, isLoggedIn, isLoading, userUsage, isOffline } = useGlobalContext();
@@ -62,6 +63,8 @@ const shop = () => {
             { isOffline ? <Offline/> :
 
             <ScrollView className="w-full">
+              <Header title="Werbung entfernen"/>
+              <IapAbo/>
               <Header title={t("shop.buyEnergy")}/>
               <SimpleStore/>
               <Header title={t("shop.freeEnergy")}/>

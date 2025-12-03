@@ -695,7 +695,7 @@ function calculateQuestionProgress(questionList: string[]): number {
           <View className="flex-1">
             
             <QuestionList />
-            {/*<DocumentList/>*/}
+            {isOffline ? null :<DocumentList/>}
             <NoteList />
           </View>
         </ScrollView>

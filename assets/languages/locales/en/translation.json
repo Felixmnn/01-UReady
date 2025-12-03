@@ -534,6 +534,7 @@
     "nothingForMe": "Nothing for me"
   },
   "singleModule": {
+    "onlyPdfSupported": "Currently only PDF files are supported.",
     "recommended": "Recommended",
     "generateModuleFor": "Generate module for",
     "energy": "Energy"

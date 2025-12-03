@@ -19,6 +19,7 @@ import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/c
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { getModuleFromMMKV, getQuestionsFromMMKV } from '@/lib/mmkvFunctions';
 import { ImageBackground } from 'react-native';
+import { loadAproved } from '@/lib/appwriteDaten';
 
 type QuestionItem = {
     id: string | null;
@@ -35,7 +36,11 @@ if (!isWeb) {
   TestIds = googleMobileAds.TestIds;
 }
 
-const adUnitId = !isWeb && __DEV__ ? TestIds.INTERSTITIAL : !isWeb ? 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy' : null;
+const [ aproved, setAproved ] = React.useState(null);
+
+
+
+const adUnitId = !isWeb && __DEV__ ? TestIds.INTERSTITIAL : !isWeb ? TestIds.INTERSTITIAL : null;
 const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
 const quiz = () => {

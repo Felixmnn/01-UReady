@@ -42,6 +42,7 @@ import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/mmkv";
 import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "@/components/(general)/customButton";
+import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 
 type QuestionListItem = {
   id: string;
@@ -525,11 +526,18 @@ const SingleModule = ({
           size: file.size,
         };
         uploadRes = await addDocumentToBucket(doc.id, fileBlob);
+        
       }
+      console.log("👩‍🚒👩‍🚒👩‍🚒Upload Response:", uploadRes);
 
       if (appwriteRes) {
         appwriteRes.uploaded = true;
-        const final = await updateDocumentConfig(appwriteRes);
+        if (uploadRes) appwriteRes.databucketID = uploadRes.$id;
+        const final = await updateDocumentConfig({
+          ...appwriteRes,
+          uploaded: true,
+          databucketID: uploadRes ? uploadRes.$id : undefined,
+        });
         if (final) {
           setDocuments((prevDocuments) => [
             ...prevDocuments,
@@ -651,7 +659,10 @@ const SingleModule = ({
   const startQuizBottomSheetRef = React.useRef<CustomBottomSheetRef>(null);
   const sessionSelectionBottomSheetRef =
     React.useRef<CustomBottomSheetRef>(null);
+  const addDocumentJobSheetRef = React.useRef<CustomBottomSheetRef>(null);
   const [showSessionList, setShowSessionList] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState<AppwriteDocument | null>(null);
 
   return (
     <View className="flex-1 rounded-[10px] items-center ">
@@ -719,6 +730,8 @@ const SingleModule = ({
                 <View className="p-4 flex-1">
                   
                   <Data
+                  addDocumentJobSheetRef={addDocumentJobSheetRef}
+                  setSelectedFile={setSelectedFile}
                   calculatePercent={calculatePercent}
                   selectedSession={ sessions[selectedSession] ? sessions[selectedSession] : null}
                     selectAi={() => aiBottomSheetRef.current?.openSheet(1)}
@@ -843,6 +856,12 @@ const SingleModule = ({
         sheetRef={sessionSelectionBottomSheetRef}
         sessions={sessions}
         setSessions={setSessions}
+      />
+      <AddDocumentJobSheet
+        sheetRef={addDocumentJobSheetRef}
+        selectedFile={selectedFile} 
+        module={module}
+        setModule={setModule}
       />
 
       <StartQuizSheet

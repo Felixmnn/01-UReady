@@ -1874,5 +1874,32 @@
     "watchAd": "Watch ad",
     "get1EnergyFree": "Get 1 energy for free",
     "watch": "Watch"
+  },
+   "document": {
+    "selectedDocument": "Selected Document:",
+    "name": "Name",
+    "fileContent": "File Content",
+    "typeText": "Text",
+    "typeQuestions": "Questions",
+    "quizSettings": "Quiz Settings",
+    
+    "answerCount": "Number of answers",
+    "choiceType": "Question type",
+    "singleChoice": "Single Choice",
+    "multipleChoice": "Multiple Choice",
+
+    "summarizeTitle": "Create Summary",
+    "convertTextQuiz": "Convert text to quiz for 10 energy",
+    "convertQuestionsQuiz": "Convert questions to quiz for 5 energy",
+    
+    "delete": "Delete Document",
+    "priorityTitle": "Priority Processing",
+    "priorityDescription": "Process this document before all others.",
+    "energyNormal": "Normal cost",
+    "energyPriority": "Priority cost",
+    "convertPriority": "Process with priority (2× energy)",
+    "remaining":" remaining",
+    "notEnoughEnergy": "You don't have enough energy."
   }
+
 }

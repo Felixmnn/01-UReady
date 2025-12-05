@@ -82,7 +82,7 @@ const Bibliothek = () => {
   }
  
   const fetchModules = async () => {
-    if (user == null) return;
+    if (!user) return;
     setLoading(true);
     const modulesLoaded = await getModules(user.$id);
     const unsavedQuestionLists = getUnsavedModulesFromMMKV();
@@ -101,7 +101,7 @@ const Bibliothek = () => {
         const matchingItem = unsavedModule.items.find((item) => item.id === question.id);
 
         return JSON.stringify({
-          ...quesction,
+          ...question,
           status: matchingItem ? matchingItem.status : question.status, // Behalte den ursprünglichen Status bei, wenn keine Übereinstimmung gefunden wird
         });
       });
@@ -176,7 +176,7 @@ const Bibliothek = () => {
   }, [reloadNeeded]);
 
   useEffect(() => {
-    if (user === null) return;
+    if (!user ) return;
     fetchModules();
   }, [user]);
 
@@ -186,7 +186,7 @@ const Bibliothek = () => {
     await fetchModules();
     setRefreshing(false);
   };
-
+  
   return (
     <Tabbar
       content={() => {

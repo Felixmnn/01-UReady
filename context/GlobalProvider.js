@@ -30,6 +30,8 @@ const GlobalProvider = ({ children }) => {
   const [reloadNeeded, setReloadNeeded] = useState([]);
   const [userUsage, setUserUsage] = useState(getUserUsageFromMMKV());
   const [isOffline, setIsOffline] = useState(true);
+     const [subscriptionStatus, setSubscriptionStatus] = useState("No working status");
+
 
   // -------------------------------
   // 1. Session-Check
@@ -237,9 +239,7 @@ const GlobalProvider = ({ children }) => {
     );
   }
     */
-   const [subscriptionStatus, setSubscriptionStatus] = useState("No working status");
     async function fetchSubscriptionStatus() {
-  if (!user) return;
 
   try {
     const status = await getUserSubscriptionStatus(user.$id);
@@ -261,6 +261,8 @@ const GlobalProvider = ({ children }) => {
   }
 }
   useEffect(() => {
+      if (!user) return;
+
     fetchSubscriptionStatus();
   }, [user]);
 

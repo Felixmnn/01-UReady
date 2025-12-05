@@ -53,6 +53,8 @@ type AppwriteDocument = {
 };
 
 const Data = ({
+  addDocumentJobSheetRef,
+  setSelectedFile,
   setIsVisibleEditQuestion,
   setQuestionToEdit,
   onRefresh,
@@ -75,6 +77,8 @@ const Data = ({
   selectedSession,
   calculatePercent,
 }: {
+  addDocumentJobSheetRef: React.RefObject<any>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<AppwriteDocument | null>>;
   calculatePercent: (questions:string[]) => number; 
   selectedSession: Session | null;
   setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
@@ -517,7 +521,9 @@ function calculateQuestionProgress(questionList: string[]): number {
             {filteredDocuments.map((item, index) => (
               <TouchableOpacity
                 key={`${item.$id}-${index}`}
-                onPress={() => {}}
+                onPress={() => {setSelectedFile(item)
+                    addDocumentJobSheetRef.current?.openSheet(0)
+                }}
                 className={`w-full flex-row justify-between p-2 ${filteredDocuments.length - 1 == index ? null : "border-b-[1px] border-gray-600"}`}
               >
                 <View className="flex-row items-start justify-start">

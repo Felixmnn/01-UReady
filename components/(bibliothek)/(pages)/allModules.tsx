@@ -143,6 +143,7 @@ function calculatePercent(questions:string[]){
       )
 
     }
+    
   return (
     <View className='flex-1 rounded-[10px] bg-[#0c111d] '>
         <TokenHeader />

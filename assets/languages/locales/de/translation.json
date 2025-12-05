@@ -1683,6 +1683,7 @@
   },
 
   "bibliothek": {
+    "addDocument": "Dokument hinzufügen",
     "notEnoughQuestionsToStart": "Nicht genügend Fragen, um das Quiz zu starten.",
     "wouldYouLikeToAddModule": "Möchtest du das Modul {{moduleName}} zu deiner Bibliothek hinzufügen?",
     "addModule": "Modul hinzufügen",
@@ -1825,5 +1826,33 @@
       "watchAd": "Werbung ansehen",
       "get1EnergyFree": "Erhalte 1 Energie kostenlos",
       "watch": "Ansehen"
-     }
+     },
+     "document": {
+  "energyCost": "Energiekosten: ",
+  "selectedDocument": "Ausgewähltes Dokument:",
+  "name": "Name",
+  "fileContent": "Dateiinhalt",
+  "typeText": "Text",
+  "typeQuestions": "Fragen",
+  "quizSettings": "Quiz-Einstellungen",
+
+  "answerCount": "Anzahl der Antworten",
+  "choiceType": "Fragetyp",
+  "singleChoice": "Einzelauswahl",
+  "multipleChoice": "Mehrfachauswahl",
+
+  "summarizeTitle": "Zusammenfassung erstellen",
+  "convertTextQuiz": "Text in Quiz umwandeln für 10 Energie",
+  "convertQuestionsQuiz": "Fragen in Quiz umwandeln für 5 Energie",
+
+  "delete": "Dokument löschen",
+  "priorityTitle": "Priorisierte Verarbeitung",
+  "priorityDescription": "Dieses Dokument vor allen anderen verarbeiten.",
+  "energyNormal": "Normaler Energieverbrauch",
+  "energyPriority": "Prioritätskosten",
+  "convertPriority": "Mit Priorität verarbeiten (2× Energie)",
+  "remaining": " übrig",
+  "notEnoughEnergy": "Du hast nicht genug Energie."
+}
+
 }

@@ -1728,6 +1728,7 @@
     }
   },
   "bibliothek": {
+    "addDocument": "Add Document",
     "notEnoughQuestionsToStart": "Not enough questions to start a quiz.",
     "wouldYouLikeToAddModule": "Would you like to add the module {{moduleName}} to your library?",
     "addModule": "Add module",
@@ -1876,6 +1877,7 @@
     "watch": "Watch"
   },
    "document": {
+    "energyCost": "Energy Cost: ",
     "selectedDocument": "Selected Document:",
     "name": "Name",
     "fileContent": "File Content",

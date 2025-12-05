@@ -248,7 +248,7 @@ const AddDocumentJobSheet = ({
               {/* Price Display */}
               <View className="mt-3 flex-row justify-between items-center">
                 <Text className="text-slate-300 text-sm">
-                  {t("document.energyCost")}: {energyCost} ⚡
+                  {t("document.energyCost")}{energyCost} ⚡
                 </Text>
 
                 <Text className="text-slate-300 text-sm">
@@ -317,13 +317,6 @@ const AddDocumentJobSheet = ({
           </View>
         )}
 
-        {/* Delete */}
-        <TouchableOpacity
-          className="w-full bg-red-700 rounded-xl p-3 justify-center items-center mt-6 shadow-md shadow-red-900/40"
-          onPress={() => console.log("Delete Document")}
-        >
-          <Text className="text-slate-100 font-bold">{t("document.delete")}</Text>
-        </TouchableOpacity>
       </View>
     </CustomBottomSheet>
   );

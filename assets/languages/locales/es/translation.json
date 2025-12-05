@@ -1815,6 +1815,7 @@
     }
   },
   "bibliothek": {
+    "addDocument": "Añadir documento",
     "notEnoughQuestionsToStart": "No hay suficientes preguntas para iniciar un cuestionario.",
     "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
 "addModule": "Añadir módulo",
@@ -1934,5 +1935,32 @@
     "watchAd": "Ver anuncio",
     "get1EnergyFree": "Obtén 1 energía gratis",
     "watch": "Ver"
-  }
+  },"document": {
+  "energyCost": "Costo de energía: ",
+  "selectedDocument": "Documento seleccionado:",
+  "name": "Nombre",
+  "fileContent": "Contenido del archivo",
+  "typeText": "Texto",
+  "typeQuestions": "Preguntas",
+  "quizSettings": "Configuración del quiz",
+
+  "answerCount": "Número de respuestas",
+  "choiceType": "Tipo de pregunta",
+  "singleChoice": "Opción única",
+  "multipleChoice": "Opción múltiple",
+
+  "summarizeTitle": "Crear resumen",
+  "convertTextQuiz": "Convertir texto en quiz por 10 de energía",
+  "convertQuestionsQuiz": "Convertir preguntas en quiz por 5 de energía",
+
+  "delete": "Eliminar documento",
+  "priorityTitle": "Procesamiento prioritario",
+  "priorityDescription": "Procesar este documento antes que todos los demás.",
+  "energyNormal": "Costo normal",
+  "energyPriority": "Costo prioritario",
+  "convertPriority": "Procesar con prioridad (2× energía)",
+  "remaining": " restante",
+  "notEnoughEnergy": "No tienes suficiente energía."
+}
+
 }

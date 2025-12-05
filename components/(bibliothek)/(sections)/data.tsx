@@ -112,6 +112,7 @@ const Data = ({
   setModule: React.Dispatch<React.SetStateAction<module>>;
   selectAi : () => void;
 }) => {
+  const { width } = useWindowDimensions();
   const { isOffline , userUsage, setUserUsage} = useGlobalContext()
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
@@ -528,9 +529,15 @@ function calculateQuestionProgress(questionList: string[]): number {
               >
                 <View className="flex-row items-start justify-start">
                   <Icon name="file" size={40} color="white" />
-                  <Text className="text-white mx-2 font-bold text-[14px]">
-                    {item.title ? item.title : t("data.unnamed")}
-                  </Text>
+                  <Text className="text-white mx-2 font-bold text-[14px]"
+                    style={{ maxWidth: width - 120 }}
+                  >
+                    {item.title
+                      ? item.title.length > 30
+                        ? `${item.title.slice(0, 30)}...${item.title.slice(-5)}`
+                        : item.title
+                      : t("data.unnamed")}
+                     </Text>
                 </View>
                 <View className="flex-row items-center justify-between">
                   {item.uploaded ? null : (
@@ -652,7 +659,15 @@ function calculateQuestionProgress(questionList: string[]): number {
               empfolen={true}
               handlePress={() => selectAi()}
             />}
-            {/* <Selectable texts={texts} selectedLanguage={selectedLanguage} icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/>*/}
+            {!isOffline &&
+            <Selectable
+               icon={"file-pdf"} 
+               iconColor={"#338723ff"} 
+               bgColor={"bg-[#89ea00ff]"} 
+               title={t("bibliothek.addDocument")} 
+               empfolen={false} 
+               handlePress={()=> {addDocument()}}/>
+          }
             <Selectable
               icon={"file-alt"}
               iconColor={"#004eea"}

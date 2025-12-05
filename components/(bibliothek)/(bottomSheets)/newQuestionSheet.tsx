@@ -19,7 +19,8 @@ const NewQuestionSheet = ({
   module,
   SwichToEditNote,
   sheetRef,
-  close
+  close,
+  addDocument,
 }: {
   isVisible: boolean;
   setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>;
@@ -32,6 +33,7 @@ const NewQuestionSheet = ({
   openSheet: (index?: number) => void;
   sheetRef: React.RefObject<any>;
   close: () => void;
+  addDocument: () => void;
 }) => {
     const { t } = useTranslation();
     const { isOffline } = useGlobalContext();
@@ -53,10 +55,18 @@ const NewQuestionSheet = ({
               handlePress={() => selectAi()}
             />
           }
-            {/*    <Selectable   icon={"file-pdf"} iconColor={"#004eea"} bgColor={"bg-[#00359e]"} title={texts[selectedLanguage].dokUpload} empfolen={false} handlePress={()=> {addDocument()}}/> */}
+          {!isOffline &&
+            <Selectable
+               icon={"file-pdf"} 
+               iconColor={"#338723ff"} 
+               bgColor={"bg-[#89ea00ff]"} 
+               title={t("bibliothek.addDocument")} 
+               empfolen={false} 
+               handlePress={()=> {addDocument()}}/>
+          }
             <Selectable
               icon={"file-alt"}
-              iconColor={"#3065cfff"}
+              iconColor={"#5178c7ff"}
               bgColor={"bg-[#00359e]"}
               title={t("bibliothek.crtQuestion")}
               empfolen={false}

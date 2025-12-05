@@ -813,6 +813,7 @@ const SingleModule = ({
         selectedLanguage={selectedLanguage}
         SwichToEditNote={SwichToEditNote}
         module={module}
+        addDocument={addDocument}
         isVisible={isVisibleNewQuestion}
         setIsVisible={setIsVisibleNewQuestion}
         openSheet={(index?: number) => bottomSheetRef.current?.openSheet(index)}

@@ -1801,6 +1801,7 @@
     }
   },
   "bibliothek": {
+    "addDocument": "Ajouter un document",
     "notEnoughQuestionsToStart": "Pas assez de questions pour démarrer une session d’apprentissage.",
     "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
 "addModule": "Añadir módulo",
@@ -1920,5 +1921,32 @@
     "watchAd": "Regarder une publicité",
     "get1EnergyFree": "Obtenez 1 énergie gratuitement",
     "watch": "Regarder"
-  }
+  },"document": {
+  "energyCost": "Coût en énergie : ",
+  "selectedDocument": "Document sélectionné :",
+  "name": "Nom",
+  "fileContent": "Contenu du fichier",
+  "typeText": "Texte",
+  "typeQuestions": "Questions",
+  "quizSettings": "Paramètres du quiz",
+
+  "answerCount": "Nombre de réponses",
+  "choiceType": "Type de question",
+  "singleChoice": "Choix unique",
+  "multipleChoice": "Choix multiple",
+
+  "summarizeTitle": "Créer un résumé",
+  "convertTextQuiz": "Convertir le texte en quiz pour 10 d'énergie",
+  "convertQuestionsQuiz": "Convertir les questions en quiz pour 5 d'énergie",
+
+  "delete": "Supprimer le document",
+  "priorityTitle": "Traitement prioritaire",
+  "priorityDescription": "Traiter ce document avant tous les autres.",
+  "energyNormal": "Coût normal",
+  "energyPriority": "Coût prioritaire",
+  "convertPriority": "Traiter en priorité (2× énergie)",
+  "remaining": " restant",
+  "notEnoughEnergy": "Vous n'avez pas assez d'énergie."
+}
+
 }

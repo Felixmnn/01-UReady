@@ -41,7 +41,6 @@ export function returnNewUserUsage(oldUsage: UserUsage, newSession: LastSession)
 
 export function returnNewLastModule(oldLastModules: string[], newModule: LastModule): string[] {
     const oldLastModulesParsed: LastModule[] = oldLastModules.map((module: any) => JSON.parse( module));
-    console.log("Old Last Modules Parsed:", oldLastModulesParsed);
     const filteredLastModules = oldLastModulesParsed.filter((lm:LastModule) => lm.sessionID !== newModule.sessionID);
     const updatedLastModules = [newModule, ...filteredLastModules].slice(0, 10); // Nur die letzten 5 Modules behalten
     const returnUpdatedLastModules = updatedLastModules.map((module: LastModule) => JSON.stringify(module));

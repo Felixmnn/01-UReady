@@ -436,7 +436,7 @@ function calculateQuestionProgress(questionList: string[]): number {
                                 );
 
                                 const res = await updateModuleQuestionList(module.$id, updatedList);
-
+                                console.log("setting questions",questions.filter((q) => q.$id !== item.$id) )
                               
                                 setQuestions(questions.filter((q) => q.$id !== item.$id));
 
@@ -699,7 +699,7 @@ function calculateQuestionProgress(questionList: string[]): number {
           }
         >
           <View className="flex-1">
-            
+
             <QuestionList />
             {isOffline ? null :<DocumentList/>}
             <NoteList />

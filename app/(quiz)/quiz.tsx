@@ -36,7 +36,6 @@ if (!isWeb) {
   TestIds = googleMobileAds.TestIds;
 }
 
-const [ aproved, setAproved ] = React.useState(null);
 
 
 
@@ -44,6 +43,7 @@ const adUnitId = !isWeb && __DEV__ ? TestIds.INTERSTITIAL : !isWeb ? TestIds.INT
 const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
 const quiz = () => {
+
     const {user, isLoggedIn,isLoading } = useGlobalContext();
     const [loading, setLoading] = useState(true);
 

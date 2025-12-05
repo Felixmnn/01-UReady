@@ -34,12 +34,14 @@ const AddDocumentJobSheet = ({
   sheetRef,
   selectedFile,
   module,
-  setModule 
+  setModule ,
+  setSessions
 }: {
   sheetRef: React.RefObject<any>;
   selectedFile: AppwriteDocument | null;
     module: module;
     setModule: React.Dispatch<React.SetStateAction<module | null>>;
+    setSessions: React.Dispatch<React.SetStateAction<any[]>>;
 }) => {
   const { t } = useTranslation();
   const { userUsage , setUserUsage, user} = useGlobalContext();
@@ -100,7 +102,10 @@ const AddDocumentJobSheet = ({
         console.log("Module after update:", updatedModule);
 
         const res = await updateModule(updatedModule);
-        if (res) setModule(res);
+        if (res) {
+          setModule(res as any as module);
+          setSessions(res.sessions.map((session: string) => JSON.parse(session)));
+        }
         
         console.log("Module updated with JOB-PENDING tag", res);
 
@@ -281,6 +286,7 @@ const AddDocumentJobSheet = ({
                 console.log("Job added:", res);
                 setUserUsage((prev: any) => prev ? { ...prev, energy: prev.energy - energyCost } : prev);
                 await updateModuleSession();
+                sheetRef.current?.closeSheet()();
               }}
               className={`w-full rounded-xl p-3 justify-center items-center 
                 ${

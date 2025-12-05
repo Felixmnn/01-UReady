@@ -43,7 +43,7 @@ const Karteikarte = ({
       await reportModule({
         moduleID: moduleID,
         moduleCreator: creator,
-        personThatReported: user.$id,
+        personThatReported: user ? user.$id : "",
         message: reason,
       });
       setModalVisible(false);

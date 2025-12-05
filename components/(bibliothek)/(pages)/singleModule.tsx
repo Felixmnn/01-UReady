@@ -155,6 +155,7 @@ const SingleModule = ({
   const { language } = useGlobalContext();
 
   const [refreshing, setRefreshing] = useState(false);
+
   async function onRefresh() {
     setRefreshing(true);
     await checkForUpdates();
@@ -325,7 +326,8 @@ const SingleModule = ({
     const parsedQuestionList = ensureQuestionListIsParsed(quesitonList);
     const allQuestions = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
     if (allQuestions === "404" || allQuestions === "400") return ;
-
+    console.log("Fragen zuvor dem Filtern:", questions.length);
+    console.log("Gefetchte Fragen:", allQuestions.length);
     
     /*
     SPÄTER AKTIVIEREN
@@ -342,7 +344,7 @@ const SingleModule = ({
       saveModulesToMMKV(newModuleList);
     }
       */
-    saveQuestionsToMMKV(moduleID, allQuestions);
+    saveQuestionsToMMKV(moduleID, allQuestions as any as question[]);
     const savedQuestions = getQuestionsFromMMKV(moduleID);
     if (!checkIfOldQuestionsEqualNewQuestions(questions, allQuestions)) {
       setQuestions(allQuestions as unknown as question[]);
@@ -382,7 +384,7 @@ const SingleModule = ({
     const documents = await getAllDocuments(sessionID);
    
     if (notes) {
-      setNotes(notes as unknown as Note[]);
+      setNotes(notes as unknown as note[]);
       saveNotesToMMKV(sessionID, notes as unknown as note[])
     }
     if (documents) {
@@ -393,41 +395,21 @@ const SingleModule = ({
   async function checkForUpdates() {
     const moduledata = await loadModule(module.$id);
     if (moduledata) {
+      console.log("Neues Modul wird fesgelegt")
       setModule(moduledata);
+      console.log("Sessions before:", sessions);
+      setSessions(moduledata.sessions.map((session: string) => JSON.parse(session)));
+      console.log("Sessions after:", moduledata.sessions.map((session: string) => JSON.parse(session)));
     }
-
-    let sessionQuestions = await getSessionQuestions(sessions[selectedSession].id);
-    // Filter questions so only those in questionList are set
-    const filteredQuestions = sessionQuestions.filter(q =>
-      module.questionList.some((mq: string) => {
-        try {
-          return JSON.parse(mq).id === q.$id;
-        } catch {
-          return false;
-        }
-      })
-    );
+    
     const notes = await getSessionNotes(sessions[selectedSession].id);
     const documents = await getAllDocuments(sessions[selectedSession].id);
     if (notes) {
-      setNotes(notes as unknown as Note[]);
+      setNotes(notes as unknown as note[]);
     }
     if (documents) {
       setDocuments(documents as unknown as AppwriteDocument[]);
     }
-    const percent = calculatePercent(filteredQuestions as unknown as question[]);
-    setSessions((prevSessions: Session[]) => {
-      return prevSessions.map((session) => {
-        if (session.id === sessions[selectedSession].id) {
-          return {
-            ...session,
-            percent: percent,
-            questions: filteredQuestions.length,
-          };
-        }
-        return session;
-      });
-    });
   }
 
   //This effect causes Questions to render
@@ -730,6 +712,7 @@ const SingleModule = ({
                 <View className="p-4 flex-1">
                   
                   <Data
+                  key={JSON.stringify(module) + questions.length + JSON.stringify(module.session)}
                   addDocumentJobSheetRef={addDocumentJobSheetRef}
                   setSelectedFile={setSelectedFile}
                   calculatePercent={calculatePercent}
@@ -862,6 +845,7 @@ const SingleModule = ({
         selectedFile={selectedFile} 
         module={module}
         setModule={setModule}
+        setSessions={setSessions}
       />
 
       <StartQuizSheet

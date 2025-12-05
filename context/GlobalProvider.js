@@ -30,9 +30,10 @@ const GlobalProvider = ({ children }) => {
   const [reloadNeeded, setReloadNeeded] = useState([]);
   const [userUsage, setUserUsage] = useState(getUserUsageFromMMKV());
   const [isOffline, setIsOffline] = useState(true);
-     const [subscriptionStatus, setSubscriptionStatus] = useState("No working status");
+  const [subscriptionStatus, setSubscriptionStatus] = useState("No working status");
+  const [userUsageInitialized, setUserUsageInitialized] = useState(false);
 
-
+  
   // -------------------------------
   // 1. Session-Check
   // -------------------------------
@@ -44,7 +45,7 @@ const GlobalProvider = ({ children }) => {
       saveUserKategorieToMMKV(data);
     });
   }, [user]);
-
+ 
   useEffect(() => {
     let isMounted = true;
 
@@ -117,6 +118,7 @@ const GlobalProvider = ({ children }) => {
   const ensureUserUsage = async () => {
     try {
       let usage = await loadUserUsage(user.$id);
+      console.log("Loaded UserUsage:", usage);
       let unsavedUsage = getUsavedUserUsageFromMMKV();
       if (unsavedUsage) {
         usage = {
@@ -146,6 +148,8 @@ const GlobalProvider = ({ children }) => {
         });
       } else {
         usage = await updateUserUsage(usage);
+        setUserUsageInitialized(true);
+        console.log("UserUsage updated:", usage);
         saveUserUsageToMMKV(usage);
         resetUsavedUserUsageInMMKV();        
       }
@@ -154,12 +158,12 @@ const GlobalProvider = ({ children }) => {
       if (__DEV__) console.log("UserUsage error", err);
     }
   };
-
+ 
   // -------------------------------
   // 4. userUsage automatische Aktualisierung bei Änderung
   // -------------------------------
   useEffect(() => {
-    if (!userUsage) return;
+    if (!userUsage || !userUsageInitialized) return;
     const updateUsage = async () => {
       try {
 
@@ -243,9 +247,7 @@ const GlobalProvider = ({ children }) => {
 
   try {
     const status = await getUserSubscriptionStatus(user.$id);
-    console.log("Status", status)
     if (status) {
-      console.log("Setting status")
       setSubscriptionStatus(status);
       return;
     }
@@ -289,7 +291,7 @@ const GlobalProvider = ({ children }) => {
         setUserUsage,
         isOffline,
         subscriptionStatus
-      }}
+      }} 
     >
       {children}
     </GlobalContext.Provider>

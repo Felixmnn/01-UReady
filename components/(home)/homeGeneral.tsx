@@ -25,6 +25,7 @@ import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
+import KaTeXExample from "./katex";
 
 type MiniModule = {
   name: string;
@@ -336,6 +337,11 @@ const HomeGeneral = () => {
                     icon: "cubes",
                     questions: 5,
                     sessionID: "default-session-1",
+                    quizType: "infinite",
+                    questionType: "single",
+                    questionAmount: 5,
+                    timeLimit: null,
+                    moduleID: "default-module-1",
                   }}
                 />
                 <Session
@@ -346,6 +352,11 @@ const HomeGeneral = () => {
                     icon: "user",
                     questions: 7,
                     sessionID: "default-session-2",
+                    quizType: "infinite",
+                    questionType: "single",
+                    questionAmount: 7,
+                    timeLimit: null,
+                    moduleID: "default-module-2",
                   }}
                 />
                 <Session
@@ -356,6 +367,11 @@ const HomeGeneral = () => {
                     icon: "user",
                     questions: 3,
                     sessionID: "default-session-3",
+                    quizType: "infinite",
+                    questionType: "single",
+                    questionAmount: 3,
+                    timeLimit: null,
+                    moduleID: "default-module-3",
                   }}
                 />
               </View>

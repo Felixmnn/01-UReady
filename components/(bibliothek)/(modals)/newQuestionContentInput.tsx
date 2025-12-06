@@ -179,6 +179,7 @@ function ZoomHeightControls() {
             {dataType === "latex" ? (
               <View className=" w-full   rounded-lg  overflow-hidden "
               >
+                
                   <KaTeXExample
                       formula={latex + zoom + height}
                       />
@@ -258,7 +259,6 @@ function ZoomHeightControls() {
                 ) : null}
                 {dataType === "latex" && !textVisible ? (
                   <View className="bg-gray-900 w-full mt-2  rounded-lg overflow-hidden"
-                   
                   >
                     <KaTeXExample
                       key={latex + zoom + height}

@@ -431,6 +431,7 @@ export async function createDocumentJob(
 }
 
 import { t } from "i18next";
+import { callThisFunction } from "@/lib/appwriteFunctions";
 
 export async function generateQuestionsFromText({
   text,
@@ -443,14 +444,7 @@ export async function generateQuestionsFromText({
   amountOfAnswers: number;
   promptType?: "createQuestionsPrompt" | "convertQuestionsPrompt" | "createQuestionsFromTextPrompt";
 }) {
-  const apiKey = process.env.EXPO_PUBLIC_API_URL;
-  const url = "https://api.openai.com/v1/chat/completions";
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
-  };
-
-  // Berechne die Beschreibung basierend auf dem questionsType
+  // Beschreibung des Frage-Typs bestimmen
   let questionTypeDescription = "";
   switch (questionsType) {
     case "MULTIPLE":
@@ -464,7 +458,7 @@ export async function generateQuestionsFromText({
       break;
   }
 
-  // Hilfsfunktion für die Interpolation aller Platzhalter
+  // Template-Interpolation
   function interpolatePrompt(template: string, vars: Record<string, string>): string {
     let result = template;
     for (const key in vars) {
@@ -473,7 +467,7 @@ export async function generateQuestionsFromText({
     return result;
   }
 
-  // Lade den i18n-Prompt und ersetze alle Platzhalter
+  // Prompt generieren
   const promptTemplate = interpolatePrompt(t(`prompts.${promptType}`), {
     instruction: t("prompts.instruction"),
     instruction_convert: t("prompts.instruction_convert"),
@@ -491,42 +485,35 @@ export async function generateQuestionsFromText({
     questionTypeDescription: questionTypeDescription,
   });
 
-  const body = JSON.stringify({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: promptTemplate }],
-  });
-
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers,
-      body,
-    });
+    // Statt fetch → Appwrite Function benutzen
+    const exec = await callThisFunction(promptTemplate);
 
-    if (!res.ok) {
-      throw new Error(`Fehler: ${res.status}`);
+    if (!exec.responseBody) {
+      throw new Error("Function returned empty responseBody");
     }
 
-    const data = await res.json();
-    const textResponse = data.choices[0].message.content.trim();
+    const data = JSON.parse(exec.responseBody);
+
+const textResponse = data.completion.trim();
 
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");
 
     if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
       const jsonString = textResponse.substring(startIndex, endIndex + 1);
-      const parsedData = JSON.parse(jsonString);
-      return parsedData;
+      return JSON.parse(jsonString);
     }
 
     return [];
   } catch (error) {
     if (__DEV__) {
-    console.error("Error fetching OpenAI API:", error);
+      console.error("Error fetching questions via function:", error);
     }
     return [];
   }
 }
+
 
 
 
@@ -539,6 +526,74 @@ function interpolatePrompt(template: string, vars: Record<string, string>): stri
   return result;
 }
 
+export async function questionFromTopic({
+  text,
+  questionsType,
+  amountOfAnswers,
+}: {
+  text: string;
+  questionsType: "MULTIPLE" | "SINGLE" | "QA";
+  amountOfAnswers: number;
+}) {
+  let questionTypeDescription = "";
+  switch (questionsType) {
+    case "MULTIPLE":
+      questionTypeDescription = t("prompts.multipleChoiceDescription");
+      break;
+    case "SINGLE":
+      questionTypeDescription = t("prompts.singleChoiceDescription");
+      break;
+    case "QA":
+      questionTypeDescription = t("prompts.openQuestionDescription");
+      break;
+  }
+
+  // Prompt generieren
+  const promptTemplate = interpolatePrompt(
+    t("prompts.createQuestionsFromTextPrompt"),
+    {
+      instruction_text: t("prompts.instruction_text"),
+      standaloneRule: t("prompts.standaloneRule"),
+      important: t("prompts.important"),
+      outputFormat: t("prompts.outputFormat"),
+      questionStructure: t("prompts.questionStructure"),
+      structureExample: t("prompts.structureExample"),
+      rules_text: t("prompts.rules_text"),
+      text: text,
+      numberOfAnswers: amountOfAnswers.toString(),
+      questionTypeDescription: questionTypeDescription,
+    }
+  );
+
+  try {
+    // Statt fetch → Appwrite Function
+    const exec = await callThisFunction(promptTemplate);
+
+    if (!exec.responseBody) {
+      throw new Error("Function returned empty responseBody");
+    }
+
+    const data = JSON.parse(exec.responseBody);
+
+    const textResponse = data.completion.trim();
+    const startIndex = textResponse.indexOf("[");
+    const endIndex = textResponse.lastIndexOf("]");
+
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      const jsonString = textResponse.substring(startIndex, endIndex + 1);
+      return JSON.parse(jsonString);
+    }
+
+    return [];
+  } catch (error) {
+    if (__DEV__) {
+      console.error("Error fetching questions from topic:", error);
+    }
+    return [];
+  }
+}
+
+
 export async function generateQuestionsFromQuestions({
   text,
   questionsType,
@@ -548,13 +603,6 @@ export async function generateQuestionsFromQuestions({
   questionsType: "MULTIPLE" | "SINGLE" | "QA";
   amountOfAnswers: number;
 }) {
-  const apiKey = process.env.EXPO_PUBLIC_API_URL;
-  const url = "https://api.openai.com/v1/chat/completions";
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
-  };
-
   let questionTypeDescription = "";
   switch (questionsType) {
     case "MULTIPLE":
@@ -581,87 +629,14 @@ export async function generateQuestionsFromQuestions({
     questionTypeDescription: questionTypeDescription,
   });
 
-  const body = JSON.stringify({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: promptTemplate }],
-  });
-
   try {
-    const res = await fetch(url, { method: "POST", headers, body });
-    if (!res.ok) throw new Error(`Fehler: ${res.status}`);
+    //const res = await fetch(url, { method: "POST", headers, body });
+    const exec  =  await callThisFunction(promptTemplate);
+    //if (!res.ok) throw new Error(`Fehler: ${res.status}`);
 
-    const data = await res.json();
-    const textResponse = data.choices[0].message.content.trim();
-    const startIndex = textResponse.indexOf("[");
-    const endIndex = textResponse.lastIndexOf("]");
+    const data = JSON.parse(exec.responseBody);
 
-    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-      const jsonString = textResponse.substring(startIndex, endIndex + 1);
-      return JSON.parse(jsonString);
-    }
-
-    return [];
-  } catch (error) {
-    if (__DEV__) {
-    console.error("Error fetching OpenAI API:", error);
-    }
-    return [];
-  }
-}
-
-export async function questionFromTopic({
-  text,
-  questionsType,
-  amountOfAnswers,
-}: {
-  text: string;
-  questionsType: "MULTIPLE" | "SINGLE" | "QA";
-  amountOfAnswers: number;
-}) {
-  const apiKey = process.env.EXPO_PUBLIC_API_URL;
-  const url = "https://api.openai.com/v1/chat/completions";
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
-  };
-
-  let questionTypeDescription = "";
-  switch (questionsType) {
-    case "MULTIPLE":
-      questionTypeDescription = t("prompts.multipleChoiceDescription");
-      break;
-    case "SINGLE":
-      questionTypeDescription = t("prompts.singleChoiceDescription");
-      break;
-    case "QA":
-      questionTypeDescription = t("prompts.openQuestionDescription");
-      break;
-  }
-
-  const promptTemplate = interpolatePrompt(t("prompts.createQuestionsFromTextPrompt"), {
-    instruction_text: t("prompts.instruction_text"),
-    standaloneRule: t("prompts.standaloneRule"),
-    important: t("prompts.important"),
-    outputFormat: t("prompts.outputFormat"),
-    questionStructure: t("prompts.questionStructure"),
-    structureExample: t("prompts.structureExample"),
-    rules_text: t("prompts.rules_text"),
-    text: text,
-    numberOfAnswers: amountOfAnswers.toString(),
-    questionTypeDescription: questionTypeDescription,
-  });
-
-  const body = JSON.stringify({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: promptTemplate }],
-  });
-
-  try {
-    const res = await fetch(url, { method: "POST", headers, body });
-    if (!res.ok) throw new Error(`Fehler: ${res.status}`);
-
-    const data = await res.json();
-    const textResponse = data.choices[0].message.content.trim();
+const textResponse = data.completion.trim();
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");
 

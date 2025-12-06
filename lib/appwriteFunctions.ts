@@ -85,3 +85,19 @@ export async function initializeIapVerification() {
     console.log("Function Response:", response);
     return response;
 }
+
+
+export async function callThisFunction(prompt: string) {
+  const functionId = "67fb209600235031156e";
+
+  console.log("Calling Function...");
+
+  const response = await functions.createExecution(
+    functionId,
+    JSON.stringify({ prompt }) // payload als JSON
+  );
+
+  console.log("Function Response:", response);
+
+  return response; // wichtig: NICHT response.responseBody zurückgeben!
+}

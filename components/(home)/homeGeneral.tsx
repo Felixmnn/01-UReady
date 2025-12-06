@@ -25,7 +25,8 @@ import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
-import KaTeXExample from "./katex";
+import CustomButton from "../(general)/customButton";
+import { callThisFunction } from "@/lib/appwriteFunctions";
 
 type MiniModule = {
   name: string;

@@ -1,8 +1,7 @@
 import { getHeight, getZoom } from '@/functions/editQuestion';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function KaTeXExample({ formula, fontSize, height }:{
   formula: string;
@@ -10,7 +9,7 @@ export default function KaTeXExample({ formula, fontSize, height }:{
   height?: number;
 }) {
   const [webViewHeight, setWebViewHeight] = useState(40);
-const justLatex = JSON.stringify(formula.replace(/(HEIGHT_NEUTRAL|HEIGHT_SMALL|HEIGHT_MEDIUM|HEIGHT_LARGE|ZOOM_IN_[123]|ZOOM_OUT_[123]|ZOOM_NEUTRAL)+$/, ''))
+  const justLatex = JSON.stringify(formula.replace(/(HEIGHT_NEUTRAL|HEIGHT_SMALL|HEIGHT_MEDIUM|HEIGHT_LARGE|ZOOM_IN_[123]|ZOOM_OUT_[123]|ZOOM_NEUTRAL)+$/, ''))
   const fontS = fontSize ?  fontSize : getZoom(formula);
   const heightS = height ? height : getHeight(formula);
 

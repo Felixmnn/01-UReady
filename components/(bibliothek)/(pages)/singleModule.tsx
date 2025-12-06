@@ -36,11 +36,11 @@ import NewQuestionSheet from "../(bottomSheets)/newQuestionSheet";
 import NewAiQuestionsSheet from "../(bottomSheets)/newAiQuestionsSheet";
 import StartQuizSheet from "../(bottomSheets)/startQuizSheet";
 import SessionListSheet from "../(bottomSheets)/sessionListSheet";
-import { note, question } from "@/types/appwriteTypes";
+import { documentConfig, note, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/mmkv";
-import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV } from "@/lib/mmkvFunctions";
+import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV, addDocumentConfigToMMKV, saveDocumentConfigsToMMKV, getDocumentConfigsFromMMKV, removeDocumentConfigFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "@/components/(general)/customButton";
 import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 
@@ -131,8 +131,7 @@ const SingleModule = ({
   });
   const [selectedSession, setSelectedSession] = useState(0);
   const [questions, setQuestions] = useState<question[]>(getQuestionsFromMMKV(module.$id));
-
-  const [documents, setDocuments] = useState<AppwriteDocument[]>([]);
+  
   const parsedSessions = Array.isArray(module.sessions)
   ? module.sessions.map((session: string) => {
       try {
@@ -148,6 +147,8 @@ const SingleModule = ({
   const [sessions, setSessions] = useState(parsedSessions);
 
   const [notes, setNotes] = useState<note[] | []>(sessions && sessions.length > selectedSession && sessions[selectedSession].id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
+  const [documents, setDocuments] = useState<AppwriteDocument[]>(sessions && sessions.length > selectedSession && sessions[selectedSession].id ? getDocumentConfigsFromMMKV(sessions[selectedSession].id) : []);
+
   {
     /* Language and Texts */
   }
@@ -389,6 +390,7 @@ const SingleModule = ({
     }
     if (documents) {
       setDocuments(documents as unknown as AppwriteDocument[]);
+      saveDocumentConfigsToMMKV(sessionID, documents as unknown as AppwriteDocument[]);
     }
   }
 
@@ -487,6 +489,7 @@ const SingleModule = ({
         uploaded: false,
       };
 
+
       // Step 2 - Save the config
       const appwriteRes = await addDocumentConfig(doc);
 
@@ -520,6 +523,7 @@ const SingleModule = ({
           uploaded: true,
           databucketID: uploadRes ? uploadRes.$id : undefined,
         });
+          addDocumentConfigToMMKV(sessions[selectedSession].id,final as any as AppwriteDocument);
         if (final) {
           setDocuments((prevDocuments) => [
             ...prevDocuments,
@@ -545,6 +549,7 @@ const SingleModule = ({
       if (type === "document") {
         setDocuments(documents.filter((document) => document.$id !== id));
         removeDocumentConfig(id);
+        removeDocumentConfigFromMMKV(sessions[selectedSession].id, id);
       } else if (type === "question") {
         const updatedQuestions = questions.filter(
           (q: question | null) => q && q.$id !== id

@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Platform, Alert } from 'react-native'
 import React, { useEffect } from 'react'
 import images from "@/assets/shopItems/itemConfig";
 import { useTranslation } from 'react-i18next';
@@ -38,34 +38,33 @@ export default function IapAbo () {
   };
 
  useEffect(() => {
-  const update = purchaseUpdatedListener(async (purchase) => {
-    console.log("📥 Purchase received:", purchase);
+  const processed = new Set();
+  let output = '';
 
+  const update = purchaseUpdatedListener(async (purchase) => {
+    output += JSON.stringify(purchase) + '\n\n';
+    if (!purchase.purchaseToken) return;
+    if (processed.has(purchase.purchaseToken)) {
+      return;
+    }
+    processed.add(purchase.purchaseToken);
+    
     try {
+
       const response = await triggerSubscriptionVerification(
         purchase.productId,
         purchase.purchaseToken
       );
-
-      const json = await response.json();
-      console.log("🔎 Backend verification result:", json);
-
-      if (!response.ok) {
-        console.log("❌ Backend responded with error");
-        console.log(json);
-        return; // Wichtig!
-      }
-
-      if (!json.status || json.status !== "active") {
-        console.log("❌ Subscription NOT active, aborting transaction finish.");
+      if (!response.success) {
+        output += "❌ Backend responded with error\n\n";
+        Alert.alert(output)
         return;
       }
-
-      console.log("✅ Subscription verified. Finishing transaction…");
-      await finishTransaction(purchase);
-
+      await finishTransaction({purchase});
+      output += "✅ Transaction finished.\n\n";  
+      Alert.alert(output);
     } catch (error) {
-      console.log("❌ Error during purchase verification:", error);
+      Alert.alert(output)
       return; 
     }
   });

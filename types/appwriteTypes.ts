@@ -129,7 +129,17 @@ export type documentConfig = {
     seitenanzahl: number;
     filetype: string;
     uploaded: boolean;
+    $id?: string;
 }
+
+export type AppwriteDocument = {
+  $id: string;
+  title: string;
+  type: string;
+  subjectID: string;
+  sessionID: string;
+  uploaded: boolean;
+};
 
 
 

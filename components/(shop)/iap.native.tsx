@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
+import { View, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
 import { purchaseUpdatedListener, useIAP } from "react-native-iap";
 import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -28,9 +28,6 @@ export default function SimpleStore() {
     const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
       if (purchase && purchase.transactionId) {
         try {
-          // Kauf abschließen
-          await finishTransaction({ purchase, isConsumable: true });
-
           // Belohnung vergeben
           const energyToAdd = getEnergyAmount(purchase.productId);
           setUserUsage((prevUsage:any) => ({
@@ -38,7 +35,13 @@ export default function SimpleStore() {
             energy: prevUsage.energy + energyToAdd,
           }));
 
+
+          // Kauf abschließen
+          await finishTransaction({ purchase, 
+            isConsumable: true });
+
         } catch (error) {
+          Alert.alert(JSON.stringify(error));
           console.error("Fehler beim Abschließen des Kaufs:", error);
         }
       }

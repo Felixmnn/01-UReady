@@ -4,6 +4,7 @@ import {
   questionFromTopic,
 } from "./materialToModule";
 import { addQUestion } from "@/lib/appwriteEdit";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 interface MaterialItem {
   type: "PEN" | "TOPIC";
@@ -29,6 +30,8 @@ export async function materialToQuestion(
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   module: Module
 ): Promise<any[]> {
+    const {user} = useGlobalContext();
+  
   setLoading(true);
   let directQuestions: any[] = [];
   try {

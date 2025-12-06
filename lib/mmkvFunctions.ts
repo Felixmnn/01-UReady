@@ -1,6 +1,6 @@
 import { Module } from "i18next";
 import { storage } from "./mmkv";
-import { module, note, question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
+import { AppwriteDocument, documentConfig, module, note, question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { uuid } from "expo-modules-core";
 
 /**
@@ -262,6 +262,59 @@ export function resetUnsavedQuestionsInMMKV() {
     console.log("Reset unsaved questions in MMKV");
 }
 
+
+
+
+/**
+ * This function saves all document configs to MMKV storage.
+ */
+export function saveDocumentConfigsToMMKV(sessionID: string, documentConfig: AppwriteDocument[]) {
+    const documentConfigString = JSON.stringify(documentConfig);
+    storage.set(`user.documentConfigs.${sessionID}`, documentConfigString);
+}
+
+/**
+ * This function adds a document config to MMKV storage.
+ */
+export function addDocumentConfigToMMKV(sessionID: string, documentConfig: AppwriteDocument) {
+    const documentConfigString = storage.getString(`user.documentConfigs.${sessionID}`);
+    let documentConfigs: AppwriteDocument[] = documentConfigString ? JSON.parse(documentConfigString) : [];
+    documentConfigs.push(documentConfig);   
+    const updatedDocumentConfigsString = JSON.stringify(documentConfigs);
+    storage.set(`user.documentConfigs.${sessionID}`, updatedDocumentConfigsString);
+    console.log("Successfully added document config to MMKV");
+}
+
+/**
+ * This function retrieves document configs from MMKV storage.
+ */
+export function getDocumentConfigsFromMMKV(sessionID: string): AppwriteDocument[] | [] {
+    const documentConfigString = storage.getString(`user.documentConfigs.${sessionID}`);
+    return documentConfigString ? JSON.parse(documentConfigString) : [];
+}
+
+/**
+ * This function removes a specific document config from MMKV storage.
+ */
+export function removeDocumentConfigFromMMKV(sessionID: string, documentID: string) {
+    const documentConfigString = storage.getString(`user.documentConfigs.${sessionID}`);
+    if (documentConfigString) {
+        let documentConfigs: documentConfig[] = JSON.parse(documentConfigString);
+        const updatedDocumentConfigs = documentConfigs.filter(doc => doc.$id !== documentID);
+        const updatedDocumentConfigsString = JSON.stringify(updatedDocumentConfigs);
+        storage.set(`user.documentConfigs.${sessionID}`, updatedDocumentConfigsString);
+        console.log("Successfully removed document config from MMKV");
+    }
+}
+
+
+    
+
+
+
+//------------------ Notes Functions ------------------ //
+
+
 /**
  * This function saves notes for a specific module to MMKV storage.
  */
@@ -290,7 +343,11 @@ export function addUnsavedNote(note:note) : note{
     }
     const newUnsavedNotes = [...unsavedNotes, newNote]
     storage.set("user.unsavedNotes", JSON.stringify(newUnsavedNotes))
-    saveNoteToMMKV(note.sessionID,newNote)
+    if (note.sessionID) {
+        saveNoteToMMKV(note.sessionID, newNote);
+    } else {
+        console.error("Cannot save note: sessionID is null");
+    }
     return newNote
 }
 
@@ -354,6 +411,9 @@ export function deleteNoteFromMMKV(sessionID: string, noteID: string) {
 
     console.log(`Successfully deleted note with ID: ${noteID}`);
 }
+
+
+//------------------ User Usage Functions ------------------ //
 
 
 

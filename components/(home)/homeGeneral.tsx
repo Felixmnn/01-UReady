@@ -28,6 +28,7 @@ import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
 import { callThisFunction } from "@/lib/appwriteFunctions";
 import DisplayImage from "../(quiz)/(renderImage)/displayImage";
+import UploadImage from "../(quiz)/(renderImage)/uploadImage";
 
 type MiniModule = {
   name: string;
@@ -274,12 +275,22 @@ const HomeGeneral = () => {
     }, 2000);
   };
 
+  const [imageUri, setImageUri] = useState<string | null>("693676fa003079b84e13");
+
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
       <DisplayImage
         imageId="693676fa003079b84e13"
       />
+      {/*
+      Vor Developent Build reaktiviern verwendet Native Module und funktionier deshalb noch nicht im aktuellen build
+      <UploadImage
+        setImageUrl={(url: string) => {
+          setImageUri(url);
+        }}
+      />
+      */}
       <ScrollView
         style={{
           height: "100%",

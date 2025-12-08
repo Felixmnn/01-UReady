@@ -3,6 +3,7 @@ import React from "react";
 import { isColor } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import KaTeXExample from "../(home)/katext";
+import DisplayImage from "./(renderImage)/displayImage";
 
 const AnswerComponent = ({
   index,
@@ -78,15 +79,10 @@ const AnswerComponent = ({
           </View>
         ) : image && image.length > 0 ? (
           <View className="w-full rounded-lg overflow-hidden min-h-10 items-center">
-            <Image
-              source={{ uri: image }}
-              style={{
-                width: 200,
-                aspectRatio: 1.5,
-                borderRadius: 10,
-              }}
-              resizeMode="cover"
-            />
+            <DisplayImage
+              imageId={image}
+              />
+
           </View>
         ) : (
           <Text className="text-white text-center font-bold text-[18px]">

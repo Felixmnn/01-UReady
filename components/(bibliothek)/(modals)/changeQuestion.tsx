@@ -98,6 +98,7 @@ const ChangeQuestions = ({
     sheetRef.current?.snapToIndex(0);
   }, [isVisibleEditQuestion]);
 
+  const [selectedImageUri, setSelectedImageUri] = useState<string | null>("6936e42b0008772a4f1e");
 
   return (
     <BottomSheet
@@ -136,6 +137,8 @@ const ChangeQuestions = ({
                       ),
                       subjectID: module.$id !== undefined ? module.$id : null,
                       sessionID: selectedSession.id,
+                      questionUrl: selectedImageUri ?? null,
+                      
                     });
                     if (res && typeof res === "object" && "$id" in res) {
                       const newQuestions = [...questions, res as unknown as question];
@@ -146,6 +149,7 @@ const ChangeQuestions = ({
                       questionList: [
                         ...module.questionList,
                         JSON.stringify({id:res && res.$id ? res.$id : "",status:null})
+
                       ],
                     });
                     
@@ -206,6 +210,8 @@ const ChangeQuestions = ({
               {t("editQuestion.editQuestion")}
             </Text>
             <ContentInput
+              selectedImageUri={selectedImageUri}
+              setSelectedImageUri={setSelectedImageUri}
               typeOfQuestion={true}
               title={questionToEdit.question}
               dataTmp={
@@ -231,6 +237,8 @@ const ChangeQuestions = ({
             </Text>
             {questionToEdit.answers.map((q, index) => (
               <ContentInput
+              selectedImageUri={selectedImageUri}
+              setSelectedImageUri={setSelectedImageUri}
                 key={index}
                 title={q.title}
                 dataTmp={

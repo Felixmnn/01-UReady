@@ -94,10 +94,10 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
 
   // Erfolg → Bild anzeigen
   return (
-    <View className='w-full items-center justify-center p-4'>
+    <View className='w-full items-center justify-center p-2'>
       <Image
         source={{ uri: localUri }}
-        style={{ width: 200, height: 200, borderRadius: 8 }}
+        style={{ width: "100%", height:200, borderRadius: 8 }}
       />
     </View>
   );

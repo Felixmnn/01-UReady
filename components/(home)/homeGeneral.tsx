@@ -302,11 +302,7 @@ const HomeGeneral = () => {
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
-      <DisplayAllImage
-        imageConfigs={imageConfigs}
-        selectedImageUri={imageUri}
-        setSelectedImageUri={setImageUri}
-      />
+    
       {/*
       Vor Developent Build reaktiviern verwendet Native Module und funktionier deshalb noch nicht im aktuellen build
       <UploadImage

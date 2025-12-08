@@ -4,6 +4,7 @@ import AnswerComponent from "./answerComponent";
 import { BlockMath } from "react-katex";
 import { maybeParseJSON } from "@/functions/(quiz)/helper";
 import KaTeXExample from "../(home)/katext";
+import DisplayImage from "./(renderImage)/displayImage";
 
 const Question = ({
   question,
@@ -58,15 +59,8 @@ const Question = ({
           </View>
       ) : question.questionUrl?.length > 0 ? (
         <View className="w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4">
-          <Image
-            source={{ uri: question.questionUrl }}
-            style={{
-              width: "100%", // feste Breite
-              aspectRatio: 1.5, // Breite / Höhe → z.B. 3:2
-              borderRadius: 10,
-              resizeMode: "contain",
-            }}
-            resizeMode="cover"
+          <DisplayImage
+            imageId={question.questionUrl}
           />
         </View>
       ) : null}

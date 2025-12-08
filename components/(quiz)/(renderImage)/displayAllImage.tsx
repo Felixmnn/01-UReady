@@ -1,8 +1,10 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
 import { documentConfig } from '@/types/appwriteTypes';
+import DeleteImage from './deleteImage';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 const DisplayAllImage = ({
   imageConfigs,
@@ -11,11 +13,10 @@ const DisplayAllImage = ({
 }: {
   imageConfigs: documentConfig[];
   selectedImageUri: string | null;
-  setSelectedImageUri: (uri: string | null) => void;
+  setSelectedImageUri: (id: string | null) => void; // Updated to accept only the Question ID
 }) => {
-
   const [loading, setLoading] = React.useState(false);
-  const [localUris, setLocalUris] = React.useState<string[]>([]);
+  const [localUris, setLocalUris] = React.useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
 
   const checkIfExistsLocally = async ({
@@ -39,15 +40,14 @@ const DisplayAllImage = ({
       const exists = await checkIfExistsLocally({ localFilePath });
 
       if (exists) {
-        setLocalUris((prev) => [...prev, localFilePath]);
+        setLocalUris((prev) => ({ ...prev, [imageId]: localFilePath }));
         return;
       }
 
       const remoteUrl = await downloadImageFromBackend({ imageId });
       const localPath = await saveImageLocally({ remoteUrl, localFilePath });
 
-      setLocalUris((prev) => [...prev, localPath]);
-
+      setLocalUris((prev) => ({ ...prev, [imageId]: localPath }));
     } catch (e) {
       console.log("Fehler beim Laden von Bild:", imageId, e);
     }
@@ -56,8 +56,12 @@ const DisplayAllImage = ({
   const getAllImages = async () => {
     setLoading(true);
     for (const config of imageConfigs) {
-      if (localUris.some(uri => uri.includes(config.databucketID))) continue;
+      if (localUris[config.databucketID]) continue;
       await loadImage({ imageId: config.databucketID });
+    }
+    if (selectedImageUri) {
+      const index = imageConfigs.findIndex(config => config.databucketID === selectedImageUri);
+      setSelectedIndex(index !== -1 ? index : 0);
     }
     setLoading(false);
   };
@@ -75,14 +79,14 @@ const DisplayAllImage = ({
   }
 
   return (
-    <View className="w-full items-center justify-center p-4">
+    <View className="w-full items-center justify-center p-4 bg-gray-900 rounded-lg mt-2">
 
       {/* MAIN PREVIEW IMAGE */}
-      {localUris[selectedIndex] && (
+      {imageConfigs[selectedIndex] && localUris[imageConfigs[selectedIndex].databucketID] && (
         <View
           style={{
-            width: 320,
-            height: 320,
+            height: 200,
+            width: '100%',
             borderRadius: 20,
             backgroundColor: '#fff',
             overflow: 'hidden',
@@ -91,74 +95,80 @@ const DisplayAllImage = ({
             shadowOpacity: 0.15,
             shadowRadius: 12,
             shadowOffset: { width: 0, height: 6 },
-            marginBottom: 20,
+            marginBottom: 10,
           }}
         >
           <Image
-            source={{ uri: localUris[selectedIndex] }}
+            source={{ uri: localUris[imageConfigs[selectedIndex].databucketID] }}
             style={{ width: '100%', height: '100%' }}
             resizeMode="cover"
           />
         </View>
       )}
-      <View className='w-full flex-row justify-between px-4'>
-          <Text className='text-white font-medium'>
-            Dein Bilder:
-          </Text>
-          <Text className='text-white font-medium'>
-            {localUris.length}/50
-          </Text>
-        </View>
       {/* IMAGE thumbnails grid */}
-      <View className="flex-row flex-wrap justify-center mt-2">
+      <BottomSheetScrollView
+          horizontal
+          nestedScrollEnabled
+          showsHorizontalScrollIndicator={false}
+          className="w-full m-4"
 
-        {localUris.map((uri, index) => (
+      >
+        <View style={{ flexDirection: 'row' }}>
+          {/* ADD BUTTON (IMAGE PICKER) */}
           <TouchableOpacity
-            key={index}
-            onPress={() => {
-              setSelectedIndex(index);
-              setSelectedImageUri(uri);
-            }}
+            activeOpacity={0.7}
+            onPress={() => console.log("Pick image")}
             style={{
-              margin: 6,
+              marginRight: 12,
+              width: 100,
+              height: 100,
               borderRadius: 16,
-              overflow: 'hidden',
-              borderWidth: selectedIndex === index ? 3 : 1,
-              borderColor: selectedIndex === index ? '#3b82f6' : '#e5e7eb',
-              elevation: selectedIndex === index ? 5 : 1,
-              shadowColor: selectedIndex === index ? '#3b82f6' : '#000',
-              shadowOpacity: selectedIndex === index ? 0.3 : 0.1,
-              shadowRadius: selectedIndex === index ? 10 : 4,
+              borderWidth: 2,
+              borderColor: '#d1d5db',
+              borderStyle: 'dashed',
+              backgroundColor: '#2e2f31ff',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            <Image
-              source={{ uri }}
-              style={{ width: 95, height: 95, borderRadius: 12 }}
-              resizeMode="cover"
-            />
+            <Text style={{ fontSize: 34, color: '#9ca3af' }}>+</Text>
           </TouchableOpacity>
-        ))}
-        {/* ADD BUTTON (IMAGE PICKER) */}
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => console.log("Pick image")}
-          style={{
-            width: 95,
-            height: 95,
-            margin: 6,
-            borderRadius: 16,
-            borderWidth: 2,
-            borderColor: '#d1d5db',
-            borderStyle: 'dashed',
-            backgroundColor: '#2e2f31ff',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text style={{ fontSize: 34, color: '#9ca3af' }}>+</Text>
-        </TouchableOpacity>
-
-      </View>
+          {imageConfigs.map((config, index) => (
+            <TouchableOpacity
+              key={config.databucketID}
+              onPress={() => {
+                setSelectedIndex(index);
+                setSelectedImageUri(config.databucketID); // Set only the Question ID
+              }}
+              style={{
+                marginRight: 12,
+                borderRadius: 16,
+                overflow: 'hidden',
+                borderWidth: selectedIndex === index ? 3 : 0,
+                borderColor: selectedIndex === index ? '#3b82f6' : '#e5e7eb',
+              }}
+            >
+              {localUris[config.databucketID] && (
+                <Image
+                  source={{ uri: localUris[config.databucketID] }}
+                  style={{ 
+                      width: selectedIndex !== index ? 100 : 95,
+                      height: selectedIndex !== index ? 100 : 95,
+                      borderRadius: 12 
+                    }}
+                  resizeMode="cover"
+                />
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
+      </BottomSheetScrollView>
+      <View className='w-full flex-row items-center justify-between'>
+          <Text className='text-white font-medium'>
+            {"Dein Bilder: "}{Object.keys(localUris).length}/50
+          </Text>
+          <DeleteImage/>
+        </View>
     </View>
   );
 };

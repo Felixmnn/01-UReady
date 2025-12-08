@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ToggleSwitch from '@/components/(general)/toggleSwich';
 import { extractHeightFromLatex, extractZoomFromLatex, returnHeight, returnTextSize } from '@/functions/editQuestion';
+import DisplayImage from '@/components/(quiz)/(renderImage)/displayImage';
+import DisplayAllImage from '@/components/(quiz)/(renderImage)/displayAllImage';
+import { documentConfig } from '@/types/appwriteTypes';
 
 const ContentInput = ({
     questionToEdit,
@@ -17,6 +20,9 @@ const ContentInput = ({
     imageTmp = "",
     correctAnswerTmp = false,
     typeOfQuestion = false,
+    selectedImageUri, 
+    setSelectedImageUri
+    
   }: {
     questionToEdit: any;
     setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>;
@@ -27,6 +33,8 @@ const ContentInput = ({
     imageTmp: string;
     correctAnswerTmp: boolean;
     typeOfQuestion?: boolean;
+    selectedImageUri: string | null;
+    setSelectedImageUri: (id: string | null) => void;
   }) => {
     const { t } = useTranslation()
     const [text, setText] = useState(title);
@@ -157,7 +165,29 @@ function ZoomHeightControls() {
 }
 
 
-
+const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
+    {
+      title: "Beispielbild",
+      sessionID: "693676fa003079b84e13",
+      subjectID: "693676f9c1d6e4b2f4d5",
+      databucketID: "693676fa003079b84e13",
+      seitenanzahl: 1,
+      filetype: "jpg",
+      uploaded: true,
+      creator:" user.$id"
+    },
+    {
+      title: "Beispielbild",
+      sessionID: "693676fa003079b84e13",
+      subjectID: "693676f9c1d6e4b2f4d5",
+      databucketID: "6936e42b0008772a4f1e",
+      seitenanzahl: 1,
+      filetype: "jpg",
+      uploaded: true,
+      creator:" user.$id"
+    },
+    
+  ]);
 
 
     return (
@@ -185,31 +215,19 @@ function ZoomHeightControls() {
                       />
               </View>
             ) : dataType === "image" ? (
-              <View className="w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center px-4">
-                {imageValid ? (
-                  <Image
-                    source={{ uri: urlImage }}
-                    style={{
-                      width: 200, // feste Breite
-                      aspectRatio: 1.5, // Breite / Höhe → z.B. 3:2
-                      borderRadius: 10,
-                      resizeMode: "contain",
-                    }}
-                    resizeMode="cover"
+              <View className="w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center ">
+                  <DisplayImage
+                    imageId={selectedImageUri ? selectedImageUri : "6936e42b0008772a4f1e"}
                   />
-                ) : (
-                  <Text className="text-red-500 mt-2">
-                    {t("editQuestion.invaidImageURL")} {urlImage}
-                  </Text>
-                )}
+               
               </View>
             ) : null}
           </TouchableOpacity>
         ) : (
           <View
-            className={`flex-col w-full items-start justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg px-4 py-2`}
+            className={`flex-col w-full items-start justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg py-2`}
           >
-            <View className="w-full items-center  mb-2"
+            <View className="w-full items-center  mb-2 px-2"
               style={{
                 minHeight: dataType === "text" ? 60 : textVisible ? 140 : 40,
               }}
@@ -230,7 +248,7 @@ function ZoomHeightControls() {
               />
               <View className="flex-1 flex-row w-full  justify-between items-center"
               >
-                {textVisible && (dataType == "latex" || dataType == "image") ? (
+                {textVisible && (dataType == "latex") ? (
                   <TextInput
                     className="flex-1 w-full bg-gray-900 p-2 text-white rounded-lg mt-2"
                     placeholder={
@@ -256,7 +274,14 @@ function ZoomHeightControls() {
                       textAlignVertical: "top",
                     }}
                   />
-                ) : null}
+                ) : textVisible && (dataType == "image") ? 
+                <DisplayAllImage
+                  imageConfigs={imageConfigs}
+                  selectedImageUri={selectedImageUri ? selectedImageUri : "693676fa003079b84e13"}
+                  setSelectedImageUri={setSelectedImageUri}
+                />
+                 : null}
+                <View className="flex-1" />
                 {dataType === "latex" && !textVisible ? (
                   <View className="bg-gray-900 w-full mt-2  rounded-lg overflow-hidden"
                   >
@@ -270,28 +295,15 @@ function ZoomHeightControls() {
                   </View>
                 ) : dataType === "image" && !textVisible ? (
                   <View className="bg-gray-900 w-full mt-2 rounded-lg overflow-hidden min-h-10 p-2 items-center">
-                    {imageValid ? (
-                      <Image
-                        source={{ uri: urlImage }}
-                        style={{
-                          width: "100%", // feste Breite
-                          aspectRatio: 1.5, // Breite / Höhe → z.B. 3:2
-                          borderRadius: 10,
-                          resizeMode: "contain",
-                        }}
-                        resizeMode="cover"
+                      <DisplayImage
+                        imageId={selectedImageUri ? selectedImageUri : "6936e42b0008772a4f1e"}
                       />
-                    ) : (
-                      <Text className="text-red-500 mt-2">
-                        {t("editQuestion.invaidImageURL")} {urlImage}
-                      </Text>
-                    )}
                   </View>
                 ) : null}
               </View>
             </View>
 
-            <View className="w-full  flex-row items-center justify-between">
+            <View className="w-full  flex-row items-center justify-between px-2">
               <View className="flex-row items-center space-x-2">
                 <View className="flex-row items-center bg-gray-900 rounded-full h-8 ">
                   <Selectable
@@ -374,6 +386,7 @@ function ZoomHeightControls() {
                           : questionToEdit.answerIndex.filter(
                               (index: number) => index !== itemIndex
                             ),
+                        questionUrl: selectedImageUri,
                       });
                     }
                     setDetailsHidden(true);

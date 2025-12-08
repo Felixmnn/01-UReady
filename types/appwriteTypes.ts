@@ -129,6 +129,7 @@ export type documentConfig = {
     seitenanzahl: number;
     filetype: string;
     uploaded: boolean;
+    creator?: string;
     $id?: string;
 }
 
@@ -140,6 +141,7 @@ export type AppwriteDocument = {
   sessionID: string;
   uploaded: boolean;
 };
+
 
 
 

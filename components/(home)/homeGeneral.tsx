@@ -23,12 +23,13 @@ import TokenHeader from "../(general)/tokenHeader";
 import AddAiBottomSheet from "../(general)/(modal)/addAiBttomSheet";
 import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
-import { module, UserUsage } from "@/types/appwriteTypes";
+import { AppwriteDocument, documentConfig, module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
 import { callThisFunction } from "@/lib/appwriteFunctions";
 import DisplayImage from "../(quiz)/(renderImage)/displayImage";
 import UploadImage from "../(quiz)/(renderImage)/uploadImage";
+import DisplayAllImage from "../(quiz)/(renderImage)/displayAllImage";
 
 type MiniModule = {
   name: string;
@@ -276,12 +277,35 @@ const HomeGeneral = () => {
   };
 
   const [imageUri, setImageUri] = useState<string | null>("693676fa003079b84e13");
-
+  const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
+    {
+      title: "Beispielbild",
+      sessionID: "693676fa003079b84e13",
+      subjectID: "693676f9c1d6e4b2f4d5",
+      databucketID: "693676fa003079b84e13",
+      seitenanzahl: 1,
+      filetype: "jpg",
+      uploaded: true,
+      creator: user.$id
+    },
+    {
+      title: "Beispielbild",
+      sessionID: "693676fa003079b84e13",
+      subjectID: "693676f9c1d6e4b2f4d5",
+      databucketID: "6936e42b0008772a4f1e",
+      seitenanzahl: 1,
+      filetype: "jpg",
+      uploaded: true,
+      creator: user.$id
+    },
+  ]);
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
-      <DisplayImage
-        imageId="693676fa003079b84e13"
+      <DisplayAllImage
+        imageConfigs={imageConfigs}
+        selectedImageUri={imageUri}
+        setSelectedImageUri={setImageUri}
       />
       {/*
       Vor Developent Build reaktiviern verwendet Native Module und funktionier deshalb noch nicht im aktuellen build

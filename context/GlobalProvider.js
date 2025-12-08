@@ -118,7 +118,6 @@ const GlobalProvider = ({ children }) => {
   const ensureUserUsage = async () => {
     try {
       let usage = await loadUserUsage(user.$id);
-      console.log("Loaded UserUsage:", usage);
       let unsavedUsage = getUsavedUserUsageFromMMKV();
       if (unsavedUsage) {
         usage = {
@@ -149,7 +148,6 @@ const GlobalProvider = ({ children }) => {
       } else {
         usage = await updateUserUsage(usage);
         setUserUsageInitialized(true);
-        console.log("UserUsage updated:", usage);
         saveUserUsageToMMKV(usage);
         resetUsavedUserUsageInMMKV();        
       }

@@ -27,6 +27,7 @@ import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
 import { callThisFunction } from "@/lib/appwriteFunctions";
+import DisplayImage from "../(quiz)/(renderImage)/displayImage";
 
 type MiniModule = {
   name: string;
@@ -276,6 +277,9 @@ const HomeGeneral = () => {
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
+      <DisplayImage
+        imageId="693676fa003079b84e13"
+      />
       <ScrollView
         style={{
           height: "100%",

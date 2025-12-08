@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { functions } from "./appwrite";
 
 
@@ -46,12 +47,14 @@ export async function triggerSubscriptionVerification(
     console.log("Function Response:", response);
 
     // Fehler erkennen
+    /*
     if (response.status !== "completed") {
       return {
         success: false,
         error: response.stdout || "Unknown function error",
       };
     }
+      */
 
     let parsedOutput = {};
     try {
@@ -66,7 +69,10 @@ export async function triggerSubscriptionVerification(
     };
   } catch (err: any) {
     console.log("triggerSubscriptionVerification ERROR:", err);
-
+    Alert.alert(
+      "Verification Error",
+      "An error occurred during subscription verification. Please try again later."
+    );
     return {
       success: false,
       error: err?.message ?? "Unknown error during verification",

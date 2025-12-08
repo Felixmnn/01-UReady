@@ -312,7 +312,7 @@ const quiz = () => {
     1. Infinity Mode
         - Question is answered correctly: Frage ans Ende der Liste
         - Question is answered wrong: Frage in die Mitte der Liste und an das Ende der Liste
-    2. Limited Questions Fixed - also feste anzahl und man will prüfen wie viele richtig
+    2. Limited Questions Fixed - also feste anzahl und man will prüfen wie viele ransichtig
         - Einfach nur nächste Frage
     3. Limited Questions until all correct - also feste anzahl an Fragen 
         - Question is aswered correctly: Frage wird entfernt, Antworten werden geshuffelt
@@ -322,6 +322,11 @@ const quiz = () => {
     */
    const [answeredCorrectly, setAnsweredCorrectly] = useState<string[]>([]);
    const [answeredWrong, setAnsweredWrong] = useState<string[]>([]);
+   type answerStatus = {
+    question : string;
+    newStatus : "GOOD" | "BAD" | "OK" | "GREAT";
+   }
+   const [answers, setAnswers] = useState<answerStatus[]>([]);
 
     async function nextQuestion({
         status,
@@ -334,6 +339,10 @@ const quiz = () => {
         setQuestionsForQuiz: React.Dispatch<React.SetStateAction<question[]>>,
         quizType: "infinity" | "limitedFixed" | "limitedAllCorrect" | "timed"
     }){
+        setAnswers([...answers, {
+            question: questionsForQuiz[0].question ? questionsForQuiz[0].question : "",
+            newStatus: status
+        }]);
         if (status === "GOOD" || status === "GREAT") setAnsweredCorrectly([...answeredCorrectly, questionsForQuiz[0].question ? questionsForQuiz[0].question : ""]);
         if (status === "BAD" || status === "OK") setAnsweredWrong([...answeredWrong, questionsForQuiz[0].question ? questionsForQuiz[0].question : ""]);
         if (quizType === "infinity"){

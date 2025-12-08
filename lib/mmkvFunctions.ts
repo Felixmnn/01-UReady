@@ -611,7 +611,6 @@ export function getCompleatlyUnsavedModulesFromMMKV():module[] | []{
 
 export function setSessionInMMKV(session:any){
     storage.set("user.session", JSON.stringify(session))
-    console.log("Successfully saved session to MMKV")
 }
 
 /**

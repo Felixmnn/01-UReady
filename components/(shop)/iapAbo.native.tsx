@@ -10,7 +10,7 @@ export default function IapAbo () {
   
   const { t } = useTranslation(); 
   const {connected, subscriptions, fetchProducts, requestPurchase} = useIAP();
-
+  const [output, setOutput] = React.useState('');
   // 1) Fetch subscription products
   useEffect(() => {
     if (connected) {
@@ -37,47 +37,62 @@ export default function IapAbo () {
     });
   };
 
- useEffect(() => {
+useEffect(() => {
   const processed = new Set();
-  let output = '';
-
+  let purchaseDetails = ''; // Für Kaufdetails
+  let verificationDetails = ''; // Für Verifizierungsdetails
+  let transactionDetails = ''; // Für Transaktionsdetails
+  let newOutput = ''; // Gesamt-Ausgabe
+  
   const update = purchaseUpdatedListener(async (purchase) => {
-    output += JSON.stringify(purchase) + '\n\n';
+    purchaseDetails += JSON.stringify(purchase) + '\n\n';
+    
+    // Wenn der Kauf-Token nicht vorhanden ist, keine Verarbeitung
     if (!purchase.purchaseToken) return;
+    
+    // Verhindere doppelte Verarbeitung des gleichen Kaufs
     if (processed.has(purchase.purchaseToken)) {
       return;
     }
     processed.add(purchase.purchaseToken);
     
     try {
-
+      // Verifiziere das Abo (oder die Transaktion) über den Backend-Server
       const response = await triggerSubscriptionVerification(
         purchase.productId,
         purchase.purchaseToken
       );
+      
       if (!response.success) {
-        output += "❌ Backend responded with error\n\n";
-        Alert.alert(output)
+        verificationDetails += "❌ Backend responded with error\n\n";
+        newOutput = purchaseDetails + verificationDetails; // Kombiniere bis hierhin
+        setOutput(newOutput);
         return;
       }
-      await finishTransaction({purchase});
-      output += "✅ Transaction finished.\n\n";  
-      Alert.alert(output);
+      
+      // Wenn die Verifizierung erfolgreich war, beende die Transaktion
+      const res = await finishTransaction({ purchase });
+      
+      // Transaktionsdetails
+      transactionDetails += "✅ Transaction finished.\n\n";
+      newOutput = purchaseDetails + verificationDetails + transactionDetails; // Kombiniere alle Details
+      setOutput(newOutput);
+      
     } catch (error) {
-      Alert.alert(output)
-      return; 
+      // Fehlerfall (optional: Logge Fehler, falls nötig)
+      console.error("Fehler während der Verarbeitung:", error);
+      newOutput = purchaseDetails + verificationDetails + "❌ Error during processing.\n\n"; // Fehler-Ausgabe
+      setOutput(newOutput);
+      return; // Bei Fehler nichts weiter tun
     }
   });
 
-  const error = purchaseErrorListener((e) => {
-    console.log("❌ Purchase error", e);
-  });
-
+  // Aufräumen des Listeners bei Verlassen des Components
   return () => {
-    update.remove();
-    error.remove();
+    update.remove(); // Entfernt den Listener bei Unmount
   };
 }, []);
+
 
 
 

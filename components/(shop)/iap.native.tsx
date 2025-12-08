@@ -4,12 +4,15 @@ import { purchaseUpdatedListener, useIAP } from "react-native-iap";
 import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import images from "@/assets/shopItems/itemConfig";
+import CustomButton from "../(general)/customButton";
+import { updateUserUsageData } from "@/lib/appwriteUpdate";
+import { UserUsage } from "@/types/appwriteTypes";
 
 export default function SimpleStore() {
   const { userUsage, setUserUsage } = useGlobalContext();
   const { connected, products, fetchProducts, requestPurchase, finishTransaction } = useIAP();
   const { t } = useTranslation();
-
+  const [output, setOutput] = React.useState('');
   // Produkt-IDs je Plattform
   const productIds = Platform.select({
     ios: [ "small_refill_10","medium_refill_55","large_refill_100","extraLarge_refill"],
@@ -23,27 +26,57 @@ export default function SimpleStore() {
     }
   }, [connected]);
 
-  // Listener für abgeschlossene Käufe
-  useEffect(() => {
-    const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
-      if (purchase && purchase.transactionId) {
-        try {
-          // Belohnung vergeben
-          const energyToAdd = getEnergyAmount(purchase.productId);
+
+  function simulatePurchase (productId: string) {
+    try {
+      const energyToAdd = getEnergyAmount(productId);
+      console.log(`Simulating purchase of ${productId}, adding ${energyToAdd} energy.`);
           setUserUsage((prevUsage:any) => ({
             ...prevUsage,
             energy: prevUsage.energy + energyToAdd,
           }));
+      console.log("New user usage should be:", {
+        ...userUsage,
+        energy: userUsage.energy + energyToAdd,
+      });
+        } catch (error) {
+          console.error("Simulation failed:", error);
+        }
+    }
 
+  // Listener für abgeschlossene Käufe
+  useEffect(() => {
+    let newOutput = 'Starting purchase listener...\n\n';
+
+    const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
+      newOutput += JSON.stringify(purchase) + '\n\n';
+      if (purchase && purchase.transactionId) {
+        try {
+          // Belohnung vergeben
+          const energyToAdd = getEnergyAmount(purchase.productId);
+          const userUsageRes = await updateUserUsageData({
+                    ...userUsage,
+                    energy: userUsage.energy + energyToAdd,
+                  });
+          
+          newOutput += `✅ Added ${userUsageRes} energy successfully.\n\n`;
 
           // Kauf abschließen
-          await finishTransaction({ purchase, 
+          const res = await finishTransaction({ purchase, 
             isConsumable: true });
+          newOutput += `Finished transaction: ${JSON.stringify(res)}\n\n`;
+          newOutput += `✅ Transaction finished.\n\n`;
+
+          setUserUsage((prevUsage:UserUsage) => ({
+              ...prevUsage,
+              energy: prevUsage.energy + energyToAdd,
+            }));
 
         } catch (error) {
-          Alert.alert(JSON.stringify(error));
           console.error("Fehler beim Abschließen des Kaufs:", error);
+          newOutput += `❌ Error finishing transaction: ${error}\n\n`;
         }
+        setOutput(newOutput);
       }
     });
 

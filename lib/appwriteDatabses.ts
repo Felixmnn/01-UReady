@@ -40,7 +40,7 @@ export async function uploadImageToAppwrite(
       "unique()", 
       file,
       [
-        `delete('user:${user.$id}')`,
+        `delete("user:${user.$id}")` // Schreibberechtigung für den Benutzer
       ]
     );
 
@@ -65,7 +65,7 @@ export async function uploadImageToAppwrite(
       }
     }
 
-    return view.href;
+    return fileId;
   } catch (err) {
     console.error("Appwrite Upload Error:", err);
     throw err;

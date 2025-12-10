@@ -31,14 +31,14 @@ const UploadImage = ({
         const rendered = await manipulator.renderAsync();
 
         const manipulated = await rendered.saveAsync({
-          format: SaveFormat.PNG,
+          format: SaveFormat.JPEG,
           compress: 0.5,
         });
 
         setLocalPreview(manipulated.uri);
 
-        const url = await uploadImageToAppwrite(manipulated.uri, imageConfigs, setImageConfigs);
-        setImageUrl(manipulated.uri);
+        const fileId = await uploadImageToAppwrite(manipulated.uri, imageConfigs, setImageConfigs);
+        setImageUrl(fileId);
 
       } catch (err) {
         console.error("Upload error:", err);

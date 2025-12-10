@@ -12,6 +12,7 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
   /** ------------------------------------
    *  1) Local: Prüfen ob schon vorhanden
    ------------------------------------ */
+
   const getLocalFilePath = () =>
     `${FileSystem.documentDirectory}${imageId}.jpg`;
 

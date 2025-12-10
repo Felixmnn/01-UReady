@@ -1,23 +1,39 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { use, useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
 import { documentConfig } from '@/types/appwriteTypes';
 import DeleteImage from './deleteImage';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import UploadImage from './uploadImage';
+import { getImageConfigsFromMMKV } from '@/lib/mmkvFunctions';
+import { getAllImageConfigs } from '@/lib/appwriteQuerys';
+import { useGlobalContext } from '@/context/GlobalProvider';
 
 const DisplayAllImage = ({
-  imageConfigs,
   selectedImageUri,
   setSelectedImageUri,
 }: {
-  imageConfigs: documentConfig[];
   selectedImageUri: string | null;
   setSelectedImageUri: (id: string | null) => void; // Updated to accept only the Question ID
 }) => {
+  const {user} = useGlobalContext()
+
   const [loading, setLoading] = React.useState(false);
   const [localUris, setLocalUris] = React.useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
+
+  const [imageConfigs, setImageConfigs] = React.useState<documentConfig[]>(getImageConfigsFromMMKV());
+
+  async function getConfigs(){
+    const configs = (await getAllImageConfigs(user.$id)).reverse();
+    setImageConfigs(configs as any as documentConfig[]);
+  }
+
+  useEffect(() => {
+    getConfigs();
+  } ,[]);
+
 
   const checkIfExistsLocally = async ({
     localFilePath,
@@ -68,7 +84,7 @@ const DisplayAllImage = ({
 
   useEffect(() => {
     getAllImages();
-  }, []);
+  }, [imageConfigs.length]);
 
   if (loading) {
     return (
@@ -115,24 +131,14 @@ const DisplayAllImage = ({
       >
         <View style={{ flexDirection: 'row' }}>
           {/* ADD BUTTON (IMAGE PICKER) */}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => console.log("Pick image")}
-            style={{
-              marginRight: 12,
-              width: 100,
-              height: 100,
-              borderRadius: 16,
-              borderWidth: 2,
-              borderColor: '#d1d5db',
-              borderStyle: 'dashed',
-              backgroundColor: '#2e2f31ff',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ fontSize: 34, color: '#9ca3af' }}>+</Text>
-          </TouchableOpacity>
+          { imageConfigs.length < 50 &&
+          <UploadImage
+            setImageUrl={setSelectedImageUri}
+            imageConfigs={imageConfigs}
+            setImageConfigs={setImageConfigs}
+            />
+          }
+          
           {imageConfigs.map((config, index) => (
             <TouchableOpacity
               key={config.databucketID}
@@ -167,7 +173,12 @@ const DisplayAllImage = ({
           <Text className='text-white font-medium'>
             {"Dein Bilder: "}{Object.keys(localUris).length}/50
           </Text>
-          <DeleteImage/>
+          <DeleteImage
+            imageId={imageConfigs[selectedIndex]?.databucketID}
+            imageConfigs={imageConfigs}
+            setImageConfigs={setImageConfigs}
+            documentId={imageConfigs[selectedIndex]?.$id}
+          />
         </View>
     </View>
   );

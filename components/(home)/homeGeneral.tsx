@@ -302,15 +302,6 @@ const HomeGeneral = () => {
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
-    
-      {/*
-      Vor Developent Build reaktiviern verwendet Native Module und funktionier deshalb noch nicht im aktuellen build
-      <UploadImage
-        setImageUrl={(url: string) => {
-          setImageUri(url);
-        }}
-      />
-      */}
       <ScrollView
         style={{
           height: "100%",

@@ -1,6 +1,9 @@
 import { storage } from "./appwrite";
 import * as FileSystem from "expo-file-system";
 import { ID } from "appwrite";
+import { addImageConfig } from "./appwriteAdd";
+import { addImageConfigToMMKV, getSessionFromMMKV } from "./mmkvFunctions";
+import { documentConfig } from "@/types/appwriteTypes";
 
 export const downloadImageFromBackend = async ({
     imageId,
@@ -15,7 +18,8 @@ export const downloadImageFromBackend = async ({
 
 export async function uploadImageToAppwrite(
   fileUri: string,
-  bucketId: string = "67dc11e000003ae76023"
+  imageConfigs?: documentConfig[],
+  setImageConfigs?: (configs: documentConfig[]) => void
 ) {
   try {
     const fileId = ID.unique();
@@ -30,9 +34,37 @@ export async function uploadImageToAppwrite(
       size: fileInfo.exists && "size" in fileInfo && typeof fileInfo.size === "number" ? fileInfo.size : 0,
     };
 
-    await storage.createFile(bucketId, "unique()", file);
+    const user = await getSessionFromMMKV(); // Hole die aktuelle Benutzersession
+    const res = await storage.createFile(
+      "67dc11e000003ae76023", 
+      "unique()", 
+      file,
+      [
+        `delete('user:${user.$id}')`,
+      ]
+    );
 
-    const view = storage.getFileView(bucketId, fileId);
+    const view = storage.getFileView("67dc11e000003ae76023", fileId);
+    const config = await addImageConfig({
+      databucketID: res.$id,
+      title: file.name,
+      sessionID: "-",
+      subjectID: "-",
+      seitenanzahl: 1,
+      fileType: "jpg",
+      uploaded: true,
+      creator: user ? user.$id : undefined,
+    })
+    console.log("✂️Coniffigging")
+    if (config) {
+      console.log("Image config added:", config);
+      addImageConfigToMMKV(config as any as  documentConfig);
+      if (imageConfigs && setImageConfigs) {
+        console.log("Updating imageConfigs state");
+        setImageConfigs([ config as any as documentConfig,...imageConfigs]);
+      }
+    }
+
     return view.href;
   } catch (err) {
     console.error("Appwrite Upload Error:", err);

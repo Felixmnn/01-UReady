@@ -646,3 +646,42 @@ export function getUserDataConfigFromMMKV() :any | null {
 export function resetMMKVStorage(){
     storage.clearAll()
 }
+
+
+/**
+ * This function saves a single Image Config to MMKV storage.
+ */
+export function addImageConfigToMMKV(imageConfig: documentConfig) {
+    const imageConfigs = getImageConfigsFromMMKV();
+    const newImageConfigs = [...imageConfigs, imageConfig];
+    const imageConfigsString = JSON.stringify(newImageConfigs);
+    storage.set('user.imageConfigs', imageConfigsString);
+}
+
+/**
+ * This function retrieves all Image Configs from MMKV storage.
+ */
+export function getImageConfigsFromMMKV(): documentConfig[] | [] {
+    const imageConfigsString = storage.getString('user.imageConfigs');
+    return imageConfigsString ? JSON.parse(imageConfigsString) : [];
+}
+
+/**
+ * This function removes a specific Image Config from MMKV storage.
+ */
+export function removeImageConfigFromMMKV(imageID: string) {
+    const imageConfigs = getImageConfigsFromMMKV();
+    console.log(imageConfigs.length)
+    const updatedImageConfigs = imageConfigs.filter(config => config.databucketID !== imageID);
+    console.log(updatedImageConfigs.length)
+    const updatedImageConfigsString = JSON.stringify(updatedImageConfigs);
+    storage.set('user.imageConfigs', updatedImageConfigsString);
+}
+
+/**
+ * This function sets a list of Image Configs to MMKV storage.
+ */
+export function setImageConfigsToMMKV(imageConfigs: documentConfig[]) {
+    const imageConfigsString = JSON.stringify(imageConfigs);
+    storage.set('user.imageConfigs', imageConfigsString);
+}

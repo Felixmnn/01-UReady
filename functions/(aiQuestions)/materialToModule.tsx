@@ -13,6 +13,8 @@ import { module } from "@/types/appwriteTypes";
 import { ModuleProps, Session } from "@/types/moduleTypes";
 import { router } from "expo-router";
 import uuid from "react-native-uuid";
+import { t } from "i18next";
+import { callThisFunction } from "@/lib/appwriteFunctions";
 
 export async function addNewQuestionToModule({
   material,
@@ -39,6 +41,7 @@ export async function addNewQuestionToModule({
   setModule: React.Dispatch<React.SetStateAction<any>>;
 }) {
   setLoading(true);
+  console.log("Starting to add new questions to module...");
   //Schritt 1: Fragen generieren
   const newQuestions = await generateQuestions({
     material,
@@ -50,6 +53,7 @@ export async function addNewQuestionToModule({
       amountOfAnswers: 4,
     },
   });
+  console.log("Step 1 - Generated Questions:", newQuestions.length);
   //Schritt 2: Fragen speichern
   let savedQuestions: any[] = [];
   for (let i = 0; i < newQuestions.length; i++) {
@@ -69,15 +73,18 @@ export async function addNewQuestionToModule({
       }
     }
   }
+  console.log("Step 2 - Saved Questions:", savedQuestions.length);
   //Schritt 3: Modul mit Fragen verknüpfen
   if (!module || !module.$id) {
 
     return;
   }
+  console.log("Step 3 - Updating Module with Questions");
+
   const oldList = module.questionList
     ? module.questionList.map((item: string) => JSON.parse(item))
     : [];
-
+  console.log("Old Question List Length:", oldList.length);
   const newList = [
   ...oldList,
   ...savedQuestions.map((i) => {
@@ -183,6 +190,7 @@ export async function materialToModule({
 
     newModuleData = resMod;
 
+
     let savedQuestions: any[] = [];
     // Schritt 3: Fragen speichern
     const savedList = await saveQuestions({
@@ -193,22 +201,25 @@ export async function materialToModule({
 
     // Schritt 4: Modul mit Fragen verknüpfen
 
-    if (!newModuleData || !newModuleData.$id)
-     await updateModuleQuestionList(
+    if (newModuleData && newModuleData.$id)
+      await updateModuleQuestionList(
       newModuleData.$id,
       savedList ? savedList.map((item) => JSON.stringify(item)) : []
     );
-
+    console.log("Step 4 - Updated Module Question List", savedList ? savedList.map((item) => JSON.stringify(item)) : []);
     // Benutzer-Daten aktualisieren
+
     try {
       if (!user) throw new Error("User ID is undefined");
       const resp = await setUserDataSetup(user.$id);
     } catch (error) {
       if (__DEV__) {
+        console.log("Error updating user data:", error);
       }
     }
   } catch (error) {
     if (__DEV__) {
+      console.log("Error in materialToModule:", error);
     }
   } finally {
     setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
@@ -299,6 +310,7 @@ export async function generateQuestions({
 
 }
         */
+       console.log("Results from material item:", res);
         res = res.map((r: any) => {
           return {
             sessionID: material[i].sessionID,
@@ -431,9 +443,6 @@ export async function createDocumentJob(
   });
 }
 
-import { t } from "i18next";
-import { callThisFunction } from "@/lib/appwriteFunctions";
-
 export async function generateQuestionsFromText({
   text,
   questionsType,
@@ -485,17 +494,15 @@ export async function generateQuestionsFromText({
     numberOfAnswers: amountOfAnswers.toString(),
     questionTypeDescription: questionTypeDescription,
   });
-
+  let exec;
   try {
     // Statt fetch → Appwrite Function benutzen
-    const exec = await callThisFunction(promptTemplate);
+    exec = await callThisFunction(promptTemplate);
     if (!exec.responseBody) {
       throw new Error("Function returned empty responseBody");
     }
-
     const data = JSON.parse(exec.responseBody);
-
-      const textResponse = data.completion.trim();
+    const textResponse = data;
 
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");
@@ -508,14 +515,12 @@ export async function generateQuestionsFromText({
     return [];
   } catch (error) {
     if (__DEV__) {
-      console.error("Error fetching questions via function:", error);
+
+      console.error("Error fetching questions via function:", error,exec?.responseBody );
     }
     return [];
   }
 }
-
-
-
 
 // Hilfsfunktion zum Ersetzen verschachtelter Platzhalter
 function interpolatePrompt(template: string, vars: Record<string, string>): string {
@@ -592,7 +597,6 @@ export async function questionFromTopic({
     return [];
   }
 }
-
 
 export async function generateQuestionsFromQuestions({
   text,

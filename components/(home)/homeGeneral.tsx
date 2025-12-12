@@ -23,13 +23,9 @@ import TokenHeader from "../(general)/tokenHeader";
 import AddAiBottomSheet from "../(general)/(modal)/addAiBttomSheet";
 import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
-import { AppwriteDocument, documentConfig, module, UserUsage } from "@/types/appwriteTypes";
+import { documentConfig, module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
-import CustomButton from "../(general)/customButton";
-import { callThisFunction } from "@/lib/appwriteFunctions";
-import DisplayImage from "../(quiz)/(renderImage)/displayImage";
-import UploadImage from "../(quiz)/(renderImage)/uploadImage";
-import DisplayAllImage from "../(quiz)/(renderImage)/displayAllImage";
+
 
 type MiniModule = {
   name: string;

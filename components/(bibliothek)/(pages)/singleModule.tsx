@@ -21,9 +21,8 @@ import {
   getAllDocuments,
   getAllQuestionsByIds,
   getSessionNotes,
-  getSessionQuestions,
 } from "@/lib/appwriteQuerys";
-import { updateModuleData, updateModuleQuestionList } from "@/lib/appwriteUpdate";
+import { updateModuleData } from "@/lib/appwriteUpdate";
 import ModalNewQuestion from "../(modals)/newQuestion";
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -36,7 +35,7 @@ import NewQuestionSheet from "../(bottomSheets)/newQuestionSheet";
 import NewAiQuestionsSheet from "../(bottomSheets)/newAiQuestionsSheet";
 import StartQuizSheet from "../(bottomSheets)/startQuizSheet";
 import SessionListSheet from "../(bottomSheets)/sessionListSheet";
-import { documentConfig, note, question } from "@/types/appwriteTypes";
+import {  note, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/mmkv";
@@ -660,6 +659,8 @@ const SingleModule = ({
         ) : (
           <View className="flex-1">
             <Header
+              module={module}
+              setModule={setModule}
               moduleUsers={module.tags}
               moduleID={module.$id}
               moduleName={module.name}

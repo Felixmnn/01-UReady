@@ -34,6 +34,8 @@ const Header = ({
   openQuizSheet,
   openSessionSheet,
   moduleUsers,
+  module,
+  setModule,
 }: {
   setSelectedScreen: React.Dispatch<React.SetStateAction<ScreenType>>;
   selected: number;
@@ -52,6 +54,8 @@ const Header = ({
   openQuizSheet: () => void;
   openSessionSheet: () => void;
   moduleUsers: string[];
+  module: any;
+  setModule: React.Dispatch<React.SetStateAction<any>>;
 }) => {
   const { width } = useWindowDimensions();
   const [deleteModuleVisible, setDeleteModuleVisible] = useState(false);
@@ -81,6 +85,8 @@ const Header = ({
         setModules={setModules}
         description={moduleDescription}
         setSelectedScreen={setSelectedScreen}
+        setModule={setModule} 
+        module={module} 
       />
       <View className="flex-row w-full justify-between p-4 items-center">
         <TouchableOpacity className="flex-row items-center gap-2" onPress={() => setSelectedScreen("AllModules")}>

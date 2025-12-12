@@ -604,7 +604,9 @@ const {t} = useTranslation()
             />
         }
 
-        {(questionsForQuiz.length == 0 && questions.length > 0) &&
+        {
+        (questionsForQuiz.length == 0 && questions.length > 0 || remainingPercent <= 0) 
+        &&
             <QuizResult
                 showInterstitial={interstitial}
                 intestialIsLoaded={loaded}

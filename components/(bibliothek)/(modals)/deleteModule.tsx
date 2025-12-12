@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import ShareModuleIcon from '../(components)/shareModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import Offline from '@/components/(general)/offline';
+import { deleteModuleFromMMKV } from '@/lib/mmkvFunctions';
 
 
 //Name might be missleading - this modal is for editing module data and also for deleting the module
@@ -21,6 +22,8 @@ const DeleteModule = ({
   modules,
   setModules,
   setSelectedScreen,
+  setModule,
+  module
 }: {
   moduleID: string,
   moduleName: string,
@@ -31,6 +34,8 @@ const DeleteModule = ({
   modules: any,
   setModules: React.Dispatch<React.SetStateAction<any>>,
   setSelectedScreen: React.Dispatch<React.SetStateAction<string>>,
+  setModule: React.Dispatch<React.SetStateAction<any>>,
+  module: any,
 }) => {
   const [showWarning, setShowWarning] = React.useState(false);  
   const [savedChanges, setSavedChanges] = React.useState(false);
@@ -45,9 +50,11 @@ const DeleteModule = ({
       return;
     }
     try  {
+      
+      deleteModuleFromMMKV(module.name);
       await deleteDocument(moduleID);
-    //const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
-    //setModules({ ...modules, documents: updatedModules ? updatedModules : modules });
+    const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
+    setModules({ ...modules, documents: updatedModules ? updatedModules : modules });
     } catch (error) {
       if (__DEV__) {  
         console.error("Error deleting module:", error);
@@ -72,6 +79,27 @@ const DeleteModule = ({
         description: newModuleDescription,
         tags: newTags,
       })
+      setModules((prevModules: any) => {
+        return prevModules.map((mod: any) => {
+          if (mod.$id === moduleID) {
+            return {
+              ...mod,
+              name: newModuleName,
+              description: newModuleDescription,
+              tags: newTags,
+            };
+          }
+          return mod;
+        }); 
+      });
+      setModule((prevModule: any) => {
+        return {
+          ...prevModule,
+          name: newModuleName,
+          description: newModuleDescription,
+          tags: newTags,
+        };
+      });
       } catch (error) {
         if (__DEV__) {
         console.error(error);
@@ -95,11 +123,12 @@ const DeleteModule = ({
         
         {/* Header */}
         <View className="w-full flex-row justify-between items-center mb-6">
-          <View className="w-full flex-row items-center justify-between">
+          <View className=" flex-row items-center justify-between">
           <TouchableOpacity
+          className='mr-2'
             onPress={() => {
               if (savedChanges) {
-                setSelectedModule("AllModules");
+                setIsVisible(false);
               } else {
                 setIsVisible(false);
               }
@@ -108,7 +137,6 @@ const DeleteModule = ({
           >
             <Icon name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
-          <ShareModuleIcon moduleID={moduleID} />
           </View>
 
           { (newModuleName !== moduleName || newModuleDescription !== description) && !savedChanges ? (
@@ -122,6 +150,8 @@ const DeleteModule = ({
           ) : (
             <View />
           )}
+                    <ShareModuleIcon moduleID={moduleID} />
+
         </View>
 
         {/* Content */}

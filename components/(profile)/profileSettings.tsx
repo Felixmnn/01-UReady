@@ -641,23 +641,32 @@ const ProfileSettings = () => {
                         iconName={"shield-alt"}
                         handlePress={() => router.push("/policys")}
                       />
+                      { isOffline ? null :
                       <SettingsOption
                         title={t("profileSettings.actioncode")}
                         iconName={"bolt"}
                         item={modal()}
                         handlePress={() => setModalVisible(true)}
                       />
+                }
+                      {
+                        isOffline ? null :
                       <SettingsOption
                         title={t("profileSettings.logout")}
-                        iconName={"sign-out"}
+                        iconName={"sign-out-alt"}
                         handlePress={() => router.push("/sign-out")}
                       />
+                      }
+                      {
+                        isOffline ? null :
                       <SettingsOption
                         title={t("profileSettings.deleteAccount")}
                         iconName="trash"
                         bottom={true}
                         handlePress={() => router.push("/delete-account")}
                       />
+                }
+                
                     </View>
                   );
                 }}

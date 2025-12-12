@@ -51,8 +51,10 @@ const ChangeQuestions = ({
       };
     }),
   });
+  const [revision, setRevision] = useState(0);
 
   useEffect(() => {
+    console.log("Question to edit changed:", question.question);
   setQuestionToEdit({
     ...question,
     answers: question.answers.map((a) => {
@@ -69,6 +71,8 @@ const ChangeQuestions = ({
       };
     }),
   });
+    setRevision((r) => r + 1);
+
 }, [question]);
 
   const sheetRef = useRef<BottomSheet>(null);
@@ -98,7 +102,10 @@ const ChangeQuestions = ({
     sheetRef.current?.snapToIndex(0);
   }, [isVisibleEditQuestion]);
 
-  const [selectedImageUri, setSelectedImageUri] = useState<string | null>("6936e42b0008772a4f1e");
+  const [selectedImageUri, setSelectedImageUri] = useState<string | null>(question.questionUrl);
+  useEffect(() => {
+    setSelectedImageUri(question.questionUrl);
+  }, [question.questionUrl]);
 
   return (
     <BottomSheet
@@ -126,20 +133,26 @@ const ChangeQuestions = ({
               title={t("editQuestion.save")}
               handlePress={async () => {
                 if (validateNewQuestion()) {
+                  console.log("Question Validated successfully");
                   //Modul Conifg
                   //Question Locally
                   //Question In Database
                   if (questionToEdit?.$id === undefined) {
                     const res = await addQUestion({
                       ...questionToEdit,
-                      answers: questionToEdit.answers.map((a) =>
-                        JSON.stringify(a)
+                      answers: questionToEdit.answers.map((a) =>{
+                        if (typeof a !== "string") {
+                        return  JSON.stringify(a)
+                      } else {
+                        return a
+                      }}
                       ),
                       subjectID: module.$id !== undefined ? module.$id : null,
                       sessionID: selectedSession.id,
-                      questionUrl: selectedImageUri ?? null,
+                      questionUrl: questionToEdit.questionUrl,
                       
                     });
+                    console.log("Question added successfully:", res);
                     if (res && typeof res === "object" && "$id" in res) {
                       const newQuestions = [...questions, res as unknown as question];
                       setQuestions(newQuestions);
@@ -172,27 +185,42 @@ const ChangeQuestions = ({
                     });
                     
                   } else {
+                    console.log("Editing existing question:", questionToEdit.questionUrl);
                     const res = await updateDocument({
                       ...questionToEdit,
-                      answers: questionToEdit.answers.map((a) =>
-                        JSON.stringify(a)
+                      answers: questionToEdit.answers.map((a) => {
+                        if (typeof a !== "string") {
+                        return JSON.stringify(a)
+                      } else {
+                        return a
+                      }
+                      }
                       ),
+                      questionUrl: questionToEdit.questionUrl,
                     });
+                    console.log("Question updated successfully:", res);
                     const updatedQuestions = questions.map((q) => {
-                      if (q.$id === questionToEdit.$id) {
+                      if (res && q.$id === res.$id) {
+                        console.log("Found")
                         return {
                           ...questionToEdit,
-                          answers: questionToEdit.answers.map((a) =>
-                            JSON.stringify(a)
+                          answers: res?.answers.map((a:any) =>{
+                            if (typeof a !== "string") {
+                            return JSON.stringify(a)
+                          } else {
+                            return a
+                          }
+                        }
                           ),
-                          question: questionToEdit.question,
-                          questionUrl: questionToEdit.questionUrl,
-                          questionLatex: questionToEdit.questionLatex,
+                          question: res?.question,
+                          questionUrl: res?.questionUrl,
+                          questionLatex: res?.questionLatex,
                         };
                       }
                       return q;
                     });
-                    const newQuestions = [...questions,res as unknown as question];
+
+                    console.log("New Questions List:", updatedQuestions[0]);
                     setQuestions(updatedQuestions);
                   
                   }
@@ -210,6 +238,7 @@ const ChangeQuestions = ({
               {t("editQuestion.editQuestion")}
             </Text>
             <ContentInput
+              key={`q-${revision}`}
               selectedImageUri={selectedImageUri}
               setSelectedImageUri={setSelectedImageUri}
               typeOfQuestion={true}

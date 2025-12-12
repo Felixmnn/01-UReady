@@ -483,7 +483,7 @@
     "universityCategories": "Studiengangkathegorien",
 
     "editEducationGoals": "Bildungsziele bearbeiten",
-    "vorname": "Vorname",
+    "vorname": "Nutzername",
     "email": "Email",
     "emailvalid": "Bitte bestätige deine Email-Adresse über den Link in der Email, die wir dir gesendet haben.",
     "emailvalid2": "Email-Adresse bestätigt",
@@ -1853,6 +1853,13 @@
   "convertPriority": "Mit Priorität verarbeiten (2× Energie)",
   "remaining": " übrig",
   "notEnoughEnergy": "Du hast nicht genug Energie."
+}, "images":{
+  "deleteImage": "Bild löschen",
+  "loadingError": "Fehler beim Laden des Bildes",
+  "error": "Fehler:",
+  "imagesLoading": "Bilder werden geladen...",
+  "more": "Mehr",
+  "yourImages": "Deine Bilder"
 }
 
 }

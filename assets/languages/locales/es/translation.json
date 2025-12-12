@@ -482,7 +482,7 @@
     "universityEducationGoals": "Meta de titulación",
     "universityCategories": "Categorías de carrera",
     "editEducationGoals": "Editar metas educativas",
-    "vorname": "Nombre",
+    "vorname": "Nombre de usuario",
     "email": "Correo electrónico",
     "emailvalid": "Por favor confirma tu dirección de correo a través del enlace que te hemos enviado.",
     "emailvalid2": "Dirección de correo confirmada",
@@ -1961,6 +1961,14 @@
   "convertPriority": "Procesar con prioridad (2× energía)",
   "remaining": " restante",
   "notEnoughEnergy": "No tienes suficiente energía."
-}
+},
+"images": {
+      "deleteImage": "Eliminar imagen",
+      "loadingError": "Error al cargar la imagen",
+      "error": "Error:",
+      "imagesLoading": "Cargando imágenes...",
+      "more": "Más",
+      "yourImages": "Tus imágenes"
+    }
 
 }

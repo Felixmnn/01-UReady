@@ -465,15 +465,19 @@ function calculateQuestionProgress(questionList: string[]): number {
                         className="p-2"
                         onPress={() => {
                           
-                          
+                          console.log("1");
                           handleOptionsVisibility(item.$id);
+                          console.log("2");
                           if (item.subjectID == module.$id){
+                            console.log("3");
                             setQuestionToEdit(item)
+                            console.log("4");
                             setIsVisibleEditQuestion({
                                 state: true,
                                 status: "EDIT",
                               });
                           }
+
                             
                           
                           //handleOptionsVisibility(item.$id);

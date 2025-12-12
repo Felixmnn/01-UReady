@@ -256,7 +256,7 @@ const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
                         ? t("editQuestion.enterLatex")
                         : t("editQuestion.enterImageURL")
                     }
-                    value={dataType === "latex" ? latex : urlImage}
+                    value={dataType === "latex" ? latex : selectedImageUri ?? ""}
                     onChangeText={(text) => {
                       if (dataType === "latex") {
                         setLatex(text);
@@ -276,7 +276,7 @@ const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
                   />
                 ) : textVisible && (dataType == "image") ? 
                 <DisplayAllImage
-                  imageConfigs={imageConfigs}
+                  
                   selectedImageUri={selectedImageUri ? selectedImageUri : "693676fa003079b84e13"}
                   setSelectedImageUri={setSelectedImageUri}
                 />
@@ -362,20 +362,22 @@ const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
                 )}
                 <TouchableOpacity
                   onPress={() => {
+                    console.log("Selected Image URI:", selectedImageUri);
+                    if (typeof selectedImageUri !== "string") return;
                     if (typeOfQuestion) {
-                      setImageValid(isImageUrl(urlImage));
+                      setImageValid(isImageUrl(selectedImageUri));
                       setQuestionToEdit({
                         ...questionToEdit,
                         question: text,
                         questionLatex: dataType !== "latex" ? "" : latex + height + zoom,
-                        questionUrl: urlImage,
+                        questionUrl: selectedImageUri,
                       });
                     } else {
                       const updatedAnswers = [...questionToEdit.answers];
                       updatedAnswers[itemIndex] = {
                         title: text,
                         latex: dataType !== "latex" ? "" : latex + height + zoom,
-                        image: urlImage,
+                        image: selectedImageUri,
                       };
 
                       setQuestionToEdit({

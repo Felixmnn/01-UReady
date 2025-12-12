@@ -486,7 +486,7 @@
     "universityCategories": "Catégories d’études",
 
     "editEducationGoals": "Modifier les objectifs éducatifs",
-    "vorname": "Prénom",
+    "vorname": "Nom d’utilisateur",
     "email": "E-mail",
     "emailvalid": "Veuillez confirmer votre adresse e-mail via le lien que nous vous avons envoyé.",
     "emailvalid2": "Adresse e-mail confirmée",
@@ -1947,6 +1947,13 @@
   "convertPriority": "Traiter en priorité (2× énergie)",
   "remaining": " restant",
   "notEnoughEnergy": "Vous n'avez pas assez d'énergie."
-}
+},"images": {
+      "deleteImage": "Supprimer l'image",
+      "loadingError": "Erreur lors du chargement de l'image",
+      "error": "Erreur :",
+      "imagesLoading": "Chargement des images...",
+      "more": "Plus",
+      "yourImages": "Vos images"
+    }
 
 }

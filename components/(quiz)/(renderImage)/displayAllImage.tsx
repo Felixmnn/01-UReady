@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React, { use, useEffect } from 'react';
+import React, { use, useEffect, useTransition } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
 import { documentConfig } from '@/types/appwriteTypes';
@@ -9,6 +9,7 @@ import UploadImage from './uploadImage';
 import { getImageConfigsFromMMKV } from '@/lib/mmkvFunctions';
 import { getAllImageConfigs } from '@/lib/appwriteQuerys';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { useTranslation } from 'react-i18next';
 
 const DisplayAllImage = ({
   selectedImageUri,
@@ -18,13 +19,13 @@ const DisplayAllImage = ({
   setSelectedImageUri: (id: string | null) => void; // Updated to accept only the Question ID
 }) => {
   const {user} = useGlobalContext()
-
+  const {t} = useTranslation()
   const [loading, setLoading] = React.useState(false);
   const [localUris, setLocalUris] = React.useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
 
   const [imageConfigs, setImageConfigs] = React.useState<documentConfig[]>(getImageConfigsFromMMKV());
-
+  const [limitAmoutTo, setLimitAmoutTo] = React.useState<number>(10);
   async function getConfigs(){
     const configs = (await getAllImageConfigs(user.$id)).reverse();
     setImageConfigs(configs as any as documentConfig[]);
@@ -89,7 +90,9 @@ const DisplayAllImage = ({
   if (loading) {
     return (
       <View className="w-full items-center py-10">
-        <Text className="text-gray-500 text-lg">Bilder werden geladen…</Text>
+        <Text className="text-gray-500 text-lg">
+          {t("images.imagesLoading")}          
+          </Text>
       </View>
     );  
   }
@@ -122,14 +125,7 @@ const DisplayAllImage = ({
         </View>
       )}
       {/* IMAGE thumbnails grid */}
-      <BottomSheetScrollView
-          horizontal
-          nestedScrollEnabled
-          showsHorizontalScrollIndicator={false}
-          className="w-full m-4"
-
-      >
-        <View style={{ flexDirection: 'row' }}>
+      <View className='flex-1 flex-row flex-wrap items-center justify-start'>
           {/* ADD BUTTON (IMAGE PICKER) */}
           { imageConfigs.length < 50 &&
           <UploadImage
@@ -139,7 +135,7 @@ const DisplayAllImage = ({
             />
           }
           
-          {imageConfigs.map((config, index) => (
+          {imageConfigs.slice(0,limitAmoutTo).map((config, index) => (
             <TouchableOpacity
               key={config.databucketID}
               onPress={() => {
@@ -147,10 +143,11 @@ const DisplayAllImage = ({
                 setSelectedImageUri(config.databucketID); // Set only the Question ID
               }}
               style={{
-                marginRight: 12,
-                borderRadius: 16,
+                marginRight: 8,
+                marginBottom: 8,
+                borderRadius: 10,
                 overflow: 'hidden',
-                borderWidth: selectedIndex === index ? 3 : 0,
+                borderWidth: selectedIndex === index ? 2 : 0,
                 borderColor: selectedIndex === index ? '#3b82f6' : '#e5e7eb',
               }}
             >
@@ -158,20 +155,30 @@ const DisplayAllImage = ({
                 <Image
                   source={{ uri: localUris[config.databucketID] }}
                   style={{ 
-                      width: selectedIndex !== index ? 100 : 95,
-                      height: selectedIndex !== index ? 100 : 95,
-                      borderRadius: 12 
+                      width: selectedIndex !== index ? 50 : 45,
+                      height: selectedIndex !== index ? 50 : 45,
+                      borderRadius: 4
                     }}
                   resizeMode="cover"
                 />
               )}
             </TouchableOpacity>
           ))}
-        </View>
-      </BottomSheetScrollView>
+          {
+            limitAmoutTo < imageConfigs.length &&
+          <TouchableOpacity onPress={() => {
+            if (limitAmoutTo >= imageConfigs.length) return;
+            setLimitAmoutTo((prev) => prev + 10);
+          }} className='ml-3 items-center justify-center overflow-hidden'>
+            <Text className='text-gray-400'>
+              {t("images.more")}
+            </Text>
+          </TouchableOpacity>
+          }
+      </View>
       <View className='w-full flex-row items-center justify-between'>
           <Text className='text-white font-medium'>
-            {"Dein Bilder: "}{Object.keys(localUris).length}/50
+            {t("images.yourImages")}: {Object.keys(localUris).length}/50
           </Text>
           <DeleteImage
             imageId={imageConfigs[selectedIndex]?.databucketID}

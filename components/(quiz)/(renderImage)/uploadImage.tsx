@@ -66,7 +66,11 @@ const UploadImage = ({
   return (
     <Pressable
       onPress={handleUpload}
-      className="w-[100px] h-[100px] mr-2 rounded-2xl border-2 border-gray-300 items-center justify-center overflow-hidden"
+      className="w-[50px] h-[50px] mr-2 rounded-xl border-2 border-gray-300 items-center justify-center overflow-hidden"
+      style={{
+        width: 50,
+        height: 50,
+      }}
     >
       {loading ? (
         <ActivityIndicator />

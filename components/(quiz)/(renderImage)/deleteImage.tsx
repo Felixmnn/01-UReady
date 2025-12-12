@@ -1,10 +1,11 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { use } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { documentConfig } from '@/types/appwriteTypes';
 import { getImageConfigsFromMMKV, removeImageConfigFromMMKV } from '@/lib/mmkvFunctions';
 import * as Filesystem from 'expo-file-system';
 import { deleteDocument, deleteFile, delteDocumentConfig } from '@/lib/appwriteDelete';
+import { useTranslation } from 'react-i18next';
 
 /**
  * This component lets a user delete a Image on the Backend and locally
@@ -20,18 +21,16 @@ const DeleteImage = ({
   setImageConfigs: (configs: documentConfig[]) => void;
   documentId?: string;
 }) => {
+  const { t } = useTranslation();
   const handleDelete = async () => {
     try {
       removeImageConfigFromMMKV(imageId);
       setImageConfigs(getImageConfigsFromMMKV().reverse());
       const localFilePath = `${Filesystem.documentDirectory}${imageId}.jpg`;
       const fileInfo = await Filesystem.getInfoAsync(localFilePath);
-      console.log("Local file info:", fileInfo);
       if (fileInfo.exists) {
         await Filesystem.deleteAsync(localFilePath);
-        console.log("Locally deleted:", localFilePath);
       }
-      console.log("Document ID to delete:", documentId);
       await delteDocumentConfig(documentId)
       await deleteFile(imageId);
     } catch (err) {
@@ -43,7 +42,8 @@ const DeleteImage = ({
       onPress={handleDelete}
     >
       <Text className='text-white font-medium'>
-        Delete Image</Text>
+        {t("images.deleteImage")}
+      </Text>
       <Icon name='trash' size={16} color='#fff' className='ml-2'/>
     </TouchableOpacity>
   )

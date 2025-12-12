@@ -481,7 +481,7 @@
     "universityEducationGoals": "Degree Goal",
     "universityCategories": "Study Program Categories",
     "editEducationGoals": "Edit Education Goals",
-    "vorname": "First Name",
+    "vorname": "Username",
     "email": "Email",
     "emailvalid": "Please confirm your email address via the link we sent you.",
     "emailvalid2": "Email confirmed",
@@ -1902,6 +1902,13 @@
     "convertPriority": "Process with priority (2× energy)",
     "remaining":" remaining",
     "notEnoughEnergy": "You don't have enough energy."
-  }
+  },"images": {
+      "deleteImage": "Delete image",
+      "loadingError": "Error loading image",
+      "error": "Error:",
+      "imagesLoading": "Loading images...",
+      "more": "More",
+      "yourImages": "Your images"
+    }
 
 }

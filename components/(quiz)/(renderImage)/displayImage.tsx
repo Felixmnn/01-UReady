@@ -2,9 +2,11 @@ import { View, Image, ActivityIndicator, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
+import { useTranslation } from 'react-i18next';
 
 
 const DisplayImage = ({ imageId }: { imageId: string }) => {
+  const {t} = useTranslation();
   const [localUri, setLocalUri] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,9 +30,7 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
   const saveImageLocally = async (remoteUrl: string): Promise<string> => {
     const localPath = getLocalFilePath();
     const downloaded = await FileSystem.downloadAsync(remoteUrl, localPath);
-    console.log("SAVED:", downloaded);
     const info = await FileSystem.getInfoAsync(downloaded.uri);
-    console.log("INFO:", info);
 
     return downloaded.uri;
   };
@@ -55,14 +55,13 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
       const remoteUrl = await downloadImageFromBackend({
         imageId,
       });
-      console.log("REMOTE URL:", remoteUrl);
 
 
       // 3. Lokal speichern
       const localPath = await saveImageLocally(remoteUrl);
       setLocalUri(localPath);
     } catch (e: any) {
-      setError(e.message ?? "Fehler beim Laden");
+      setError(e.message ?? t("images.loadingError"));
     } finally {
       setLoading(false);
     }
@@ -88,7 +87,7 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
   if (error || !localUri) {
     return (
       <View style={{ padding: 20 }}>
-        <Text>Fehler: {error}</Text>
+        <Text>{t("images.error")} {error}</Text>
       </View>
     );
   }

@@ -7,7 +7,7 @@ export const getUserSubscriptionStatus = async () => {
     const response = await functions.createExecution(functionId, JSON.stringify({
 
     }));
-    console.log("Function Response:", response);
+    
 }
 
 export interface IapVerificationSuccess {
@@ -44,7 +44,7 @@ export async function triggerSubscriptionVerification(
       JSON.stringify(payload)
     );
 
-    console.log("Function Response:", response);
+    
 
     // Fehler erkennen
     /*
@@ -88,7 +88,7 @@ export async function initializeIapVerification() {
       productId: "initializing",
       purchaseToken: "initializing"
     }));
-    console.log("Function Response:", response);
+    
     return response;
 }
 
@@ -103,7 +103,7 @@ export async function callThisFunction(prompt: string) {
     JSON.stringify({ prompt }) // payload als JSON
   );
 
-  console.log("Function Response:", response);
+  
 
   return response; // wichtig: NICHT response.responseBody zurückgeben!
 }

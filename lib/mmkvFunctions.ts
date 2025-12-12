@@ -86,10 +86,8 @@ export function updateModuleQuestionListInMMKV(moduleID: string, questionList: s
  * Function to ad a single question to a module's question list
  */
 export function addQuestionToModuleQuestionListInMMKV(moduleID: string, questionID: string) {
-    console.log("Module", moduleID, questionID)
     const allModules = getModulesFromMMKV();
     const moduleIndex = allModules.findIndex(m => m.$id === moduleID);
-    console.log("Module Index", moduleIndex)
     if (moduleIndex !== -1) {
         const newItem = {
             id: questionID,
@@ -152,18 +150,12 @@ export function addQuestionsToMMKV(moduleID: string, questions: question[]) {
  * This function adds a single question to MMKV storage.
  */
 export function addQuestionToMMKV(moduleID: string, question: question) {
-    console.log("question", question)
-    console.log("moduleID", moduleID)
-    console.log("Adding single question to MMKV")
     const existingQuestionsString = storage.getString(`user.questions.${moduleID}`);    
     let existingQuestions: question[] = existingQuestionsString ? JSON.parse(existingQuestionsString) : [];
     existingQuestions.push(question);
     const updatedQuestionsString = JSON.stringify(existingQuestions);
     storage.set(`user.questions.${moduleID}`, updatedQuestionsString);
-    console.log("Successfully added single question to MMKV")
-    console.log("Module ID", moduleID, question.$id)
     addQuestionToModuleQuestionListInMMKV(moduleID, question.$id!);
-    console.log("Successfully added single question to Module Question List in MMKV")
 }
 
 /**

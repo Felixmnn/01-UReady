@@ -20,7 +20,7 @@ const DeleteModule = ({
   setIsVisible,
   modules,
   setModules,
-  setSelectedModule,
+  setSelectedScreen,
 }: {
   moduleID: string,
   moduleName: string,
@@ -30,7 +30,7 @@ const DeleteModule = ({
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>,
   modules: any,
   setModules: React.Dispatch<React.SetStateAction<any>>,
-  setSelectedModule: React.Dispatch<React.SetStateAction<string>>,
+  setSelectedScreen: React.Dispatch<React.SetStateAction<string>>,
 }) => {
   const [showWarning, setShowWarning] = React.useState(false);  
   const [savedChanges, setSavedChanges] = React.useState(false);
@@ -53,9 +53,12 @@ const DeleteModule = ({
         console.error("Error deleting module:", error);
       }
     }
-    setSelectedModule("AllModules");
-    setIsVisible(false);
-    router.push("/bibliothek");
+    const modulesFiltered = modules.filter((mod:any) => mod.$id !== moduleID);
+    setModules(modulesFiltered);
+        setIsVisible(false);
+
+    setSelectedScreen("AllModules");
+
   }
 
   async function handleSaveChanges() {

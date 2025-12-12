@@ -286,7 +286,7 @@ const HomeGeneral = () => {
       seitenanzahl: 1,
       filetype: "jpg",
       uploaded: true,
-      creator: user.$id
+      creator: user?.$id
     },
     {
       title: "Beispielbild",
@@ -296,7 +296,7 @@ const HomeGeneral = () => {
       seitenanzahl: 1,
       filetype: "jpg",
       uploaded: true,
-      creator: user.$id
+      creator: user?.$id
     },
   ]);
   return (

@@ -252,6 +252,7 @@ export async function generateQuestions({
             questionsType: questionOptions.questionsType,
             amountOfAnswers: questionOptions.amountOfAnswers,
           });
+
         } else if (material[i].type === "TOPIC") {
           res = await questionFromTopic({
             text: material[i].content,
@@ -488,14 +489,13 @@ export async function generateQuestionsFromText({
   try {
     // Statt fetch → Appwrite Function benutzen
     const exec = await callThisFunction(promptTemplate);
-
     if (!exec.responseBody) {
       throw new Error("Function returned empty responseBody");
     }
 
     const data = JSON.parse(exec.responseBody);
 
-const textResponse = data.completion.trim();
+      const textResponse = data.completion.trim();
 
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");

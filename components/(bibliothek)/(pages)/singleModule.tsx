@@ -397,11 +397,8 @@ const SingleModule = ({
   async function checkForUpdates() {
     const moduledata = await loadModule(module.$id);
     if (moduledata) {
-      console.log("Neues Modul wird fesgelegt")
       setModule(moduledata);
-      console.log("Sessions before:", sessions);
       setSessions(moduledata.sessions.map((session: string) => JSON.parse(session)));
-      console.log("Sessions after:", moduledata.sessions.map((session: string) => JSON.parse(session)));
     }
     
     const notes = await getSessionNotes(sessions[selectedSession].id);
@@ -715,7 +712,7 @@ const SingleModule = ({
               ) : null}
               {isVertical || tab == 1 ? (
                 <View className="p-4 flex-1">
-                  
+                 
                   <Data
                   key={JSON.stringify(module) + questions.length + JSON.stringify(module.session)}
                   addDocumentJobSheetRef={addDocumentJobSheetRef}

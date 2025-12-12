@@ -79,8 +79,8 @@ const Header = ({
         setIsVisible={setDeleteModuleVisible}
         modules={modules}
         setModules={setModules}
-        setSelectedModule={setSelectedModule}
         description={moduleDescription}
+        setSelectedScreen={setSelectedScreen}
       />
       <View className="flex-row w-full justify-between p-4 items-center">
         <TouchableOpacity className="flex-row items-center gap-2" onPress={() => setSelectedScreen("AllModules")}>

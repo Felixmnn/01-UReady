@@ -112,6 +112,8 @@ const QuizResult = ({
 
   return (
     <View className="flex-1 bg-gray-900 p-2">
+      {/* Example Gradient */}
+   
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {/* Übersicht */}
         <View className="p-4">
@@ -190,53 +192,3 @@ const QuizResult = ({
 };
 
 export default QuizResult;
-
-/*
-<View className="bg-gray-800 rounded-2xl p-2 mb-2 shadow">
-          <Text className="text-lg text-white font-semibold mb-2">
-            {t("quiz.answeredCorrectly")} {answeredCorrectly.length}
-          </Text>
-          {answeredCorrectly.map((q, i) => (
-            <Text
-              key={i}
-              className="text-gray-300 ml-1 bg-green-900 p-1"
-              style={{
-                borderBottomLeftRadius:
-                  i === answeredCorrectly.length - 1 ||
-                  answeredCorrectly.length == 1
-                    ? 10
-                    : 0,
-                borderBottomRightRadius:
-                  i === answeredCorrectly.length - 1 ||
-                  answeredCorrectly.length == 1
-                    ? 10
-                    : 0,
-                borderTopLeftRadius: i === 0 ? 10 : 0,
-                borderTopRightRadius: i === 0 ? 10 : 0,
-              }}
-            >
-              • {q}
-            </Text>
-          ))}
-        </View>
-    <View className="bg-gray-800 rounded-2xl p-2 mb-2 shadow">
-          <Text className="text-lg text-white font-semibold mb-2">
-            {t("quiz.answeredWrong")} {answeredWrong.length}
-          </Text>
-          {answeredWrong.map((q, i) => (
-            <Text
-              key={i}
-              className="text-gray-300 ml-1 bg-red-900 p-1"
-              style={{
-                borderBottomLeftRadius: i === answeredWrong.length - 1 ? 10 : 0,
-                borderBottomRightRadius:
-                  i === answeredWrong.length - 1 ? 10 : 0,
-                borderTopLeftRadius: i === 0 ? 10 : 0,
-                borderTopRightRadius: i === 0 ? 10 : 0,
-              }}
-            >
-              • {q}
-            </Text>
-          ))}
-        </View>
-*/

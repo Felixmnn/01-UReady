@@ -25,7 +25,8 @@ const DeleteImage = ({
   const handleDelete = async () => {
     try {
       removeImageConfigFromMMKV(imageId);
-      setImageConfigs(getImageConfigsFromMMKV().reverse());
+      console.log("Updated Image Configs after deletion:", getImageConfigsFromMMKV());
+      setImageConfigs(getImageConfigsFromMMKV());
       const localFilePath = `${Filesystem.documentDirectory}${imageId}.jpg`;
       const fileInfo = await Filesystem.getInfoAsync(localFilePath);
       if (fileInfo.exists) {

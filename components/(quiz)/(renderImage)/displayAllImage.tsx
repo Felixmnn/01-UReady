@@ -30,6 +30,8 @@ const DisplayAllImage = ({
     const configs = (await getAllImageConfigs(user.$id)).reverse();
     setImageConfigs(configs as any as documentConfig[]);
   }
+  
+  
 
   useEffect(() => {
     getConfigs();

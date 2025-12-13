@@ -13,6 +13,7 @@
     "errorMessage": "Bitte fülle alle Felder aus."
   },
   "info": {
+    "goOnlineToUploadNewImages": "Gehe online, um neue Bilder hochzuladen.",
     "thisOnlyWorksIfYouAreOnline": "Diese Funktion funktioniert leider nur, wenn du online bist.",
     "title": "AGB",
     "policys": {

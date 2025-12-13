@@ -8,7 +8,7 @@ import { module } from "@/types/appwriteTypes";
  */
 export function compareModules(loaclModule:module, remoteModule:module):module | null {
     // First the Question List
-    console.log("Comparing Modules:", {loaclModule, remoteModule});
+    console.log("🔴Comparing Modules:", loaclModule.questionList,"🟦", remoteModule.questionList);
     const localQuestionList = loaclModule.questionList.map((q)=> JSON.parse(q));
     const remoteQuestionList = remoteModule.questionList.map((q)=> JSON.parse(q));
 

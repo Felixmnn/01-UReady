@@ -3,6 +3,8 @@ import { View, Pressable, ActivityIndicator, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { uploadImageToAppwrite } from "@/lib/appwriteDatabses";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { useTranslation } from "react-i18next";
 
 const UploadImage = ({ 
   setImageUrl,
@@ -13,9 +15,11 @@ const UploadImage = ({
   imageConfigs: any[];
   setImageConfigs: (configs: any[]) => void;
  }) => {
+  const {isOffline} = useGlobalContext()
   const [loading, setLoading] = useState(false);
   const [localPreview, setLocalPreview] = useState<string | null>(null);
   const [selectedUri, setSelectedUri] = useState<string >("null");
+  const {t} = useTranslation();
 
   // Hook immer oben – bekommt aktuelle URI bei jedem Render
   const manipulator = useImageManipulator(selectedUri);
@@ -49,6 +53,10 @@ const UploadImage = ({
   }, [selectedUri]);
 
   const handleUpload = async () => {
+    if (isOffline) {
+      alert(t("info.goOnlineToUploadNewImages"));
+      return;
+    }
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) return;
 

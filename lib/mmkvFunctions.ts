@@ -42,7 +42,6 @@ export function getModuleFromMMKV(moduleID: string): module | null {
  */
 export function updateModuleInMMKV(updatedModule: module) {
     const allModules = getModulesFromMMKV();
-    console.log("All Modules in MMKV:", allModules);
     const moduleIndex = allModules.findIndex(m => m.$id === updatedModule.$id);
     if (moduleIndex !== -1) {
         allModules[moduleIndex] = updatedModule;

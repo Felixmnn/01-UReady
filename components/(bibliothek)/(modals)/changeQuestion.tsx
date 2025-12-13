@@ -54,7 +54,6 @@ const ChangeQuestions = ({
   const [revision, setRevision] = useState(0);
 
   useEffect(() => {
-    console.log("Question to edit changed:", question.question);
   setQuestionToEdit({
     ...question,
     answers: question.answers.map((a) => {
@@ -133,7 +132,6 @@ const ChangeQuestions = ({
               title={t("editQuestion.save")}
               handlePress={async () => {
                 if (validateNewQuestion()) {
-                  console.log("Question Validated successfully");
                   //Modul Conifg
                   //Question Locally
                   //Question In Database
@@ -152,7 +150,6 @@ const ChangeQuestions = ({
                       questionUrl: questionToEdit.questionUrl,
                       
                     });
-                    console.log("Question added successfully:", res);
                     if (res && typeof res === "object" && "$id" in res) {
                       const newQuestions = [...questions, res as unknown as question];
                       setQuestions(newQuestions);
@@ -185,7 +182,6 @@ const ChangeQuestions = ({
                     });
                     
                   } else {
-                    console.log("Editing existing question:", questionToEdit.questionUrl);
                     const res = await updateDocument({
                       ...questionToEdit,
                       answers: questionToEdit.answers.map((a) => {
@@ -198,10 +194,8 @@ const ChangeQuestions = ({
                       ),
                       questionUrl: questionToEdit.questionUrl,
                     });
-                    console.log("Question updated successfully:", res);
                     const updatedQuestions = questions.map((q) => {
                       if (res && q.$id === res.$id) {
-                        console.log("Found")
                         return {
                           ...questionToEdit,
                           answers: res?.answers.map((a:any) =>{
@@ -220,7 +214,6 @@ const ChangeQuestions = ({
                       return q;
                     });
 
-                    console.log("New Questions List:", updatedQuestions[0]);
                     setQuestions(updatedQuestions);
                   
                   }

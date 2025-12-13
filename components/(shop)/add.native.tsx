@@ -29,14 +29,12 @@ export default function RewardedAdScreen({
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("AdUnitId:", adUnitId);
   const unsubscribeLoaded = rewarded.addAdEventListener(
     RewardedAdEventType.LOADED,
     () => {
       setLoaded(true);
     }
   );
-  console.log("Rewarded Ad Object:", rewarded);
   const unsubscribeEarned = rewarded.addAdEventListener(
     RewardedAdEventType.EARNED_REWARD,
     (reward) => {

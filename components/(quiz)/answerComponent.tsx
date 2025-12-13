@@ -42,6 +42,18 @@ const AnswerComponent = ({
     if (text.includes("']")){
       text = text.slice(0, -2);
     }
+    if(text[0] == '"' ){
+      text = text.slice(1);
+    }
+    if(text[text.length -1] == '"'){
+      text = text.slice(0, -1);
+    }
+    if (text.includes('{"')){
+      text = text.replace('{"', '');
+    }
+    if (text.includes('"}')){
+      text = text.replace('"}', '');
+    }
     return text;
 
   }

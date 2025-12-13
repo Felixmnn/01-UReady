@@ -326,8 +326,6 @@ const SingleModule = ({
     const parsedQuestionList = ensureQuestionListIsParsed(quesitonList);
     const allQuestions = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
     if (allQuestions === "404" || allQuestions === "400") return ;
-    console.log("Fragen zuvor dem Filtern:", questions.length);
-    console.log("Gefetchte Fragen:", allQuestions.length);
     
     /*
     SPÄTER AKTIVIEREN
@@ -509,7 +507,6 @@ const SingleModule = ({
         uploadRes = await addDocumentToBucket(doc.id, fileBlob);
         
       }
-      console.log("👩‍🚒👩‍🚒👩‍🚒Upload Response:", uploadRes);
 
       if (appwriteRes) {
         appwriteRes.uploaded = true;

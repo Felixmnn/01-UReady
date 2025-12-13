@@ -30,15 +30,11 @@ export default function SimpleStore() {
   function simulatePurchase (productId: string) {
     try {
       const energyToAdd = getEnergyAmount(productId);
-      console.log(`Simulating purchase of ${productId}, adding ${energyToAdd} energy.`);
           setUserUsage((prevUsage:any) => ({
             ...prevUsage,
             energy: prevUsage.energy + energyToAdd,
           }));
-      console.log("New user usage should be:", {
-        ...userUsage,
-        energy: userUsage.energy + energyToAdd,
-      });
+
         } catch (error) {
           console.error("Simulation failed:", error);
         }

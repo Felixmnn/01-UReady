@@ -61,12 +61,6 @@ const EudcationFilters = ({
           options={eduSubList}
           selectedOptions={filters.educationSubject}
           handlePress={(option) => {
-            console.log("option", filters.educationSubject &&
-                  filters.educationSubject.length > 0
-                    ? filters.educationSubject.filter(
-                        (item: string) => item !== option
-                      )
-                    : [],);
             if (
               filters.educationSubject &&
               filters.educationSubject.includes(option)

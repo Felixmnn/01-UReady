@@ -359,7 +359,6 @@ function calculateQuestionProgress(questionList: string[]): number {
                 <TouchableOpacity
                   onPress={async() => 
                     {
-                      console.log("🤗",selectedS)
                        
                       const newUserUsager = returnNewUserUsage(userUsage, {
                         sessionID: selectedS,
@@ -437,7 +436,6 @@ function calculateQuestionProgress(questionList: string[]): number {
                                 );
 
                                 const res = await updateModuleQuestionList(module.$id, updatedList);
-                                console.log("setting questions",questions.filter((q) => q.$id !== item.$id) )
                               
                                 setQuestions(questions.filter((q) => q.$id !== item.$id));
 
@@ -465,13 +463,9 @@ function calculateQuestionProgress(questionList: string[]): number {
                         className="p-2"
                         onPress={() => {
                           
-                          console.log("1");
                           handleOptionsVisibility(item.$id);
-                          console.log("2");
                           if (item.subjectID == module.$id){
-                            console.log("3");
                             setQuestionToEdit(item)
-                            console.log("4");
                             setIsVisibleEditQuestion({
                                 state: true,
                                 status: "EDIT",

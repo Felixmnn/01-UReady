@@ -154,7 +154,6 @@ const HomeGeneral = () => {
   async function startQuiz(session: MiniSession) {
     const questions = getQuestionsFromMMKV(session.moduleID);
     if (!questions || questions.length == 0) {
-      console.log("No questions found, redirecting to library");
       router.push("/bibliothek");
       return;
     }

@@ -64,7 +64,6 @@ const AddDocumentJobSheet = ({
   const hasEnoughEnergy = userUsage?.energy >= energyCost;
 
  async function updateModuleSession() {
-    console.log("Module before update:", module);
 
     try {
         const newSessions = module.sessions.map((session: any) => {
@@ -90,8 +89,6 @@ const AddDocumentJobSheet = ({
             return session; // unverändert zurückgeben
         });
         
-        console.log("😩New Session lenthgth:", newSessions.length);
-        console.log("🫡New Sessions:", module.sessions.length);
         // Modul aktualisieren
         const updatedModule = {
             ...module,
@@ -99,7 +96,6 @@ const AddDocumentJobSheet = ({
         };
 
 
-        console.log("Module after update:", updatedModule);
 
         const res = await updateModule(updatedModule);
         if (res) {
@@ -107,7 +103,6 @@ const AddDocumentJobSheet = ({
           setSessions(res.sessions.map((session: string) => JSON.parse(session)));
         }
         
-        console.log("Module updated with JOB-PENDING tag", res);
 
     } catch (error) {
         console.error("Error updating module session:", error);
@@ -281,9 +276,7 @@ const AddDocumentJobSheet = ({
                     createdBy: user?.$id || "",
                 };
 
-                console.log("Adding job:", jobConfig);
                 const res = await addDocumentJob(jobConfig);
-                console.log("Job added:", res);
                 setUserUsage((prev: any) => prev ? { ...prev, energy: prev.energy - energyCost } : prev);
                 await updateModuleSession();
                 sheetRef.current?.closeSheet()();

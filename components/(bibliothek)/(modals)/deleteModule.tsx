@@ -53,8 +53,8 @@ const DeleteModule = ({
       
       deleteModuleFromMMKV(module.name);
       await deleteDocument(moduleID);
-    const updatedModules = modules.documents.filter((module:any) => module.$id !== moduleID);
-    setModules({ ...modules, documents: updatedModules ? updatedModules : modules });
+    const updatedModules = modules.filter((module:any) => module.$id !== moduleID);
+    setModules({ updatedModules });
     } catch (error) {
       if (__DEV__) {  
         console.error("Error deleting module:", error);

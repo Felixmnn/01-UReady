@@ -41,7 +41,6 @@ export async function addNewQuestionToModule({
   setModule: React.Dispatch<React.SetStateAction<any>>;
 }) {
   setLoading(true);
-  console.log("Starting to add new questions to module...");
   //Schritt 1: Fragen generieren
   const newQuestions = await generateQuestions({
     material,
@@ -53,7 +52,6 @@ export async function addNewQuestionToModule({
       amountOfAnswers: 4,
     },
   });
-  console.log("Step 1 - Generated Questions:", newQuestions.length);
   //Schritt 2: Fragen speichern
   let savedQuestions: any[] = [];
   for (let i = 0; i < newQuestions.length; i++) {
@@ -73,18 +71,15 @@ export async function addNewQuestionToModule({
       }
     }
   }
-  console.log("Step 2 - Saved Questions:", savedQuestions.length);
   //Schritt 3: Modul mit Fragen verknüpfen
   if (!module || !module.$id) {
 
     return;
   }
-  console.log("Step 3 - Updating Module with Questions");
 
   const oldList = module.questionList
     ? module.questionList.map((item: string) => JSON.parse(item))
     : [];
-  console.log("Old Question List Length:", oldList.length);
   const newList = [
   ...oldList,
   ...savedQuestions.map((i) => {
@@ -206,7 +201,6 @@ export async function materialToModule({
       newModuleData.$id,
       savedList ? savedList.map((item) => JSON.stringify(item)) : []
     );
-    console.log("Step 4 - Updated Module Question List", savedList ? savedList.map((item) => JSON.stringify(item)) : []);
     // Benutzer-Daten aktualisieren
 
     try {
@@ -310,7 +304,6 @@ export async function generateQuestions({
 
 }
         */
-       console.log("Results from material item:", res);
         res = res.map((r: any) => {
           return {
             sessionID: material[i].sessionID,

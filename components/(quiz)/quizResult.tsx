@@ -176,7 +176,14 @@ const QuizResult = ({
         <TouchableOpacity
           className="bg-gray-800 rounded-2xl w-full items-center justify-center mr-1 h-[50px] mt-2"
           onPress={() => {
-            if (showInterstitial && intestialIsLoaded && subscriptionStatus?.status !== "active") {
+            const expiry = subscriptionStatus?.expiry;
+            const now = new Date();
+            const isActive = 
+              !!expiry &&
+              new Date(expiry) > now &&
+              subscriptionStatus?.status === "active";
+            console.log("🕵️🕵️🕵️Subscription active:", isActive, showInterstitial, intestialIsLoaded);
+            if (showInterstitial && intestialIsLoaded && !isActive) {
               showInterstitial.show();
             }
             if (done) done();

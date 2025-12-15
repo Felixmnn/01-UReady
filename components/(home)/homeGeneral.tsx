@@ -270,30 +270,6 @@ const HomeGeneral = () => {
       setRefreshing(false);
     }, 2000);
   };
-
-  const [imageUri, setImageUri] = useState<string | null>("693676fa003079b84e13");
-  const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
-    {
-      title: "Beispielbild",
-      sessionID: "693676fa003079b84e13",
-      subjectID: "693676f9c1d6e4b2f4d5",
-      databucketID: "693676fa003079b84e13",
-      seitenanzahl: 1,
-      filetype: "jpg",
-      uploaded: true,
-      creator: user?.$id
-    },
-    {
-      title: "Beispielbild",
-      sessionID: "693676fa003079b84e13",
-      subjectID: "693676f9c1d6e4b2f4d5",
-      databucketID: "6936e42b0008772a4f1e",
-      seitenanzahl: 1,
-      filetype: "jpg",
-      uploaded: true,
-      creator: user?.$id
-    },
-  ]);
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>

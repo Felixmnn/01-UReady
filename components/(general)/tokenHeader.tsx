@@ -129,10 +129,6 @@ const TokenHeader = ({
             className="flex-row mx-5"
             onPress={() => setMoreVisible(!moreVisible)}
           >
-            <Icon name="microchip" size={20} color={"white"} />
-            <Text className="text-white font-bold text-[15px] ml-2">
-              {userUsage?.microchip}
-            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="flex-row"

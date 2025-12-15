@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
 import { consumePurchaseAndroid, getAvailablePurchases, purchaseUpdatedListener, useIAP } from "react-native-iap";
 import { useTranslation } from "react-i18next";
@@ -7,21 +7,26 @@ import images from "@/assets/shopItems/itemConfig";
 import CustomButton from "../(general)/customButton";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
 import { UserUsage } from "@/types/appwriteTypes";
+import { triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
 
 export default function SimpleStore() {
   const { userUsage, setUserUsage } = useGlobalContext();
   const { connected, products, fetchProducts, requestPurchase, finishTransaction,  } = useIAP();
   const { t } = useTranslation();
-  const [output, setOutput] = React.useState('');
   // Produkt-IDs je Plattform
   const productIds = Platform.select({
     ios: [ "small_refill_10","medium_refill_55","large_refill_100","extraLarge_refill"],
     android: ["small_refill","medium_refill","large_refill","extra_large_refill"],
   });
+  useEffect(() => {
+    if (connected) {
+      fetchProducts({ skus: productIds || [], type: "in-app" });
+      recoverAndConsume();
+    }
+  }, [connected]);
 
   const recoverAndConsume = async () => {
   const purchases = await getAvailablePurchases();
-
   for (const p of purchases) {
     if (Platform.OS === 'android' && p.purchaseToken) {
       await consumePurchaseAndroid(p.purchaseToken );
@@ -37,25 +42,11 @@ export default function SimpleStore() {
   }, [connected]);
 
 
-  function simulatePurchase (productId: string) {
-    try {
-      const energyToAdd = getEnergyAmount(productId);
-          setUserUsage((prevUsage:any) => ({
-            ...prevUsage,
-            energy: prevUsage.energy + energyToAdd,
-          }));
-
-        } catch (error) {
-          console.error("Simulation failed:", error);
-        }
-    }
 
   // Listener für abgeschlossene Käufe
   useEffect(() => {
-    let newOutput = 'Starting purchase listener...\n\n';
 
     const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
-      newOutput += JSON.stringify(purchase) + '\n\n';
       if (purchase && purchase.transactionId) {
         try {
           // Belohnung vergeben
@@ -64,8 +55,11 @@ export default function SimpleStore() {
                     ...userUsage,
                     energy: userUsage.energy + energyToAdd,
                   });
+          const res = await triggerSubscriptionVerification(
+            purchase.productId,
+            purchase.purchaseToken || "",
+          )
           
-          newOutput += `✅ Added ${userUsageRes} energy successfully.\n\n`;
 
           // Kauf abschließen
          if (Platform.OS === 'android') {
@@ -78,7 +72,6 @@ export default function SimpleStore() {
           purchase,
           isConsumable: false, // WICHTIG!
         });
-          newOutput += `✅ Transaction finished.\n\n`;
 
           setUserUsage((prevUsage:UserUsage) => ({
               ...prevUsage,
@@ -87,9 +80,7 @@ export default function SimpleStore() {
 
         } catch (error) {
           console.error("Fehler beim Abschließen des Kaufs:", error);
-          newOutput += `❌ Error finishing transaction: ${error}\n\n`;
         }
-        setOutput(newOutput);
       }
     });
 

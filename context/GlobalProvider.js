@@ -249,9 +249,8 @@ const GlobalProvider = ({ children }) => {
     if (status) {
       const expiry = new Date(status.expiryDate);
       const now = new Date();
-      if (expiry > now && status.isActive) {
-        setSubscriptionStatus(status);
-      } else {
+      console.log("Current time:", now);
+      if ( status.isActive == "active" && expiry > now) {
         console.log(status.productId)
         console.log("Purchase Token", status.linkedPurchaseToken);
         
@@ -264,6 +263,8 @@ const GlobalProvider = ({ children }) => {
         console.log("Subscription verification result:", res.data.subscriptionDocument);
         
         setSubscriptionStatus(res.data.subscriptionDocument);
+      } else {
+        setSubscriptionStatus(status);
       }
       return;
     }

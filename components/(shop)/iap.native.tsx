@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
-import { purchaseUpdatedListener, useIAP } from "react-native-iap";
+import { consumePurchaseAndroid, getAvailablePurchases, purchaseUpdatedListener, useIAP } from "react-native-iap";
 import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import images from "@/assets/shopItems/itemConfig";
@@ -10,7 +10,7 @@ import { UserUsage } from "@/types/appwriteTypes";
 
 export default function SimpleStore() {
   const { userUsage, setUserUsage } = useGlobalContext();
-  const { connected, products, fetchProducts, requestPurchase, finishTransaction } = useIAP();
+  const { connected, products, fetchProducts, requestPurchase, finishTransaction,  } = useIAP();
   const { t } = useTranslation();
   const [output, setOutput] = React.useState('');
   // Produkt-IDs je Plattform
@@ -18,6 +18,16 @@ export default function SimpleStore() {
     ios: [ "small_refill_10","medium_refill_55","large_refill_100","extraLarge_refill"],
     android: ["small_refill","medium_refill","large_refill","extra_large_refill"],
   });
+
+  const recoverAndConsume = async () => {
+  const purchases = await getAvailablePurchases();
+
+  for (const p of purchases) {
+    if (Platform.OS === 'android' && p.purchaseToken) {
+      await consumePurchaseAndroid(p.purchaseToken );
+    }
+  }
+};
 
   // Produkte laden
   useEffect(() => {
@@ -58,9 +68,16 @@ export default function SimpleStore() {
           newOutput += `✅ Added ${userUsageRes} energy successfully.\n\n`;
 
           // Kauf abschließen
-          const res = await finishTransaction({ purchase, 
-            isConsumable: true });
-          newOutput += `Finished transaction: ${JSON.stringify(res)}\n\n`;
+         if (Platform.OS === 'android') {
+          await consumePurchaseAndroid(
+            purchase.purchaseToken ? purchase.purchaseToken : '',
+          );
+        }
+
+        await finishTransaction({
+          purchase,
+          isConsumable: false, // WICHTIG!
+        });
           newOutput += `✅ Transaction finished.\n\n`;
 
           setUserUsage((prevUsage:UserUsage) => ({
@@ -119,6 +136,7 @@ export default function SimpleStore() {
   // Komponente für ein einzelnes Produkt
   const BuyEnergy = ({ price, amount }: { price?: number; amount?: number }) => {
     return (
+      
       <View style={{ flex: 1, height: 80, backgroundColor: "#0560a5", borderRadius: 10, padding: 8, flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
         <Image
           source={images.bolt}

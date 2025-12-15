@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
-import { getUserSubscriptionStatus, loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import {  loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
@@ -10,7 +10,8 @@ import { router } from "expo-router";
 import NetInfo from "@react-native-community/netinfo";
 import CustomButton from "@/components/(general)/customButton";
 import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, resetUsavedUserUsageInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
-import { initializeIapVerification } from "@/lib/appwriteFunctions";
+import { initializeIapVerification, triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
+import { getUserSubscriptionStatus } from "@/lib/appwriteQuerys";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -30,7 +31,7 @@ const GlobalProvider = ({ children }) => {
   const [reloadNeeded, setReloadNeeded] = useState([]);
   const [userUsage, setUserUsage] = useState(getUserUsageFromMMKV());
   const [isOffline, setIsOffline] = useState(true);
-  const [subscriptionStatus, setSubscriptionStatus] = useState("No working status");
+  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [userUsageInitialized, setUserUsageInitialized] = useState(false);
 
   
@@ -246,7 +247,24 @@ const GlobalProvider = ({ children }) => {
   try {
     const status = await getUserSubscriptionStatus(user.$id);
     if (status) {
-      setSubscriptionStatus(status);
+      const expiry = new Date(status.expiryDate);
+      const now = new Date();
+      if (expiry > now && status.isActive) {
+        setSubscriptionStatus(status);
+      } else {
+        console.log(status.productId)
+        console.log("Purchase Token", status.linkedPurchaseToken);
+        
+        const res = await triggerSubscriptionVerification(
+          status.productId,
+          status.linkedPurchaseToken,
+        );
+
+        
+        console.log("Subscription verification result:", res.data.subscriptionDocument);
+        
+        setSubscriptionStatus(res.data.subscriptionDocument);
+      }
       return;
     }
 

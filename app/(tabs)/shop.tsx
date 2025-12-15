@@ -14,7 +14,8 @@ import Offline from "@/components/(general)/offline";
 import IapAbo from "@/components/(shop)/iapAbo";
 
 const shop = () => {
-  const { user, isLoggedIn, isLoading, userUsage, isOffline } = useGlobalContext();
+  
+  const { user, isLoggedIn, isLoading, userUsage, isOffline, subscriptionStatus } = useGlobalContext();
   const [ aproved, setAproved ] = React.useState(null);
 
   useEffect(() => {
@@ -63,14 +64,25 @@ const shop = () => {
             { isOffline ? <Offline/> :
 
             <ScrollView className="w-full">
-              <Header title="Werbung entfernen"/>
-              <IapAbo/>
+              { 
+              subscriptionStatus && subscriptionStatus.isActive && <View >
+                <Header title="Werbung entfernen"/>
+                <IapAbo/>
+              </View>
+              }
               <Header title={t("shop.buyEnergy")}/>
               <SimpleStore/>
               <Header title={t("shop.freeEnergy")}/>
               <View className="p-4">
-                { aproved != null && <RewardedAdScreen aproved={aproved}/> }
+                <RewardedAdScreen aproved={false}/>
               </View>
+              {
+              subscriptionStatus && !subscriptionStatus.isActive &&
+              <View>
+                <Header title="Werbung entfernen"/>
+                <IapAbo/>
+              </View>
+              }
             </ScrollView>
       }
           </View>

@@ -5,22 +5,17 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import images from "@/assets/shopItems/itemConfig";
 import TokenHeader from "@/components/(general)/tokenHeader";
-import { setUserData } from "@/lib/appwriteEdit";
 import RewardedAdScreen from "@/components/(shop)/add";
 import SimpleStore from "@/components/(shop)/iap";
 import { useTranslation } from "react-i18next";
-import { loadAproved } from "@/lib/appwriteDaten";
 import Offline from "@/components/(general)/offline";
 import IapAbo from "@/components/(shop)/iapAbo";
 
 const shop = () => {
   
   const { user, isLoggedIn, isLoading, userUsage, isOffline, subscriptionStatus } = useGlobalContext();
-  const [ aproved, setAproved ] = React.useState(null);
 
-  useEffect(() => {
-    loadAproved().then((res) => setAproved(res)); 
-  }, []);
+ 
 
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {

@@ -1,5 +1,5 @@
-import { View, Text, Platform, Modal, TouchableOpacity } from "react-native";
-import React, { use, useEffect, useState } from "react";
+import { View, Text, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import RoadMap from "../(sections)/roadMap";
 import Data from "../(sections)/data";
@@ -23,24 +23,20 @@ import {
   getSessionNotes,
 } from "@/lib/appwriteQuerys";
 import { updateModuleData } from "@/lib/appwriteUpdate";
-import ModalNewQuestion from "../(modals)/newQuestion";
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import languages from "@/assets/exapleData/languageTabs.json";
 import { useFocusEffect } from "@react-navigation/native";
 import { loadModule } from "@/lib/appwriteDaten";
 import ChangeQuestions from "../(modals)/changeQuestion";
-import CustomBottomSheet, { CustomBottomSheetRef } from "../(bottomSheets)/customBottomSheet";
+import { CustomBottomSheetRef } from "../(bottomSheets)/customBottomSheet";
 import NewQuestionSheet from "../(bottomSheets)/newQuestionSheet";
 import NewAiQuestionsSheet from "../(bottomSheets)/newAiQuestionsSheet";
 import StartQuizSheet from "../(bottomSheets)/startQuizSheet";
 import SessionListSheet from "../(bottomSheets)/sessionListSheet";
-import {  note, question } from "@/types/appwriteTypes";
+import {  AppwriteDocument, note, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
-import { storage } from "@/lib/mmkv";
 import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV, addDocumentConfigToMMKV, saveDocumentConfigsToMMKV, getDocumentConfigsFromMMKV, removeDocumentConfigFromMMKV } from "@/lib/mmkvFunctions";
-import CustomButton from "@/components/(general)/customButton";
 import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 
 type QuestionListItem = {
@@ -48,22 +44,8 @@ type QuestionListItem = {
   status: null | "BAD" | "OK" | "GOOD" | "GREAT";
 }
 
-type Note = {
-  $id?: string;
-  title: string;
-  notiz: string;
-  sessionID: string;
-  subjectID: string;
-};
 
-type AppwriteDocument = {
-  $id: string;
-  title: string;
-  type: string;
-  subjectID: string;
-  sessionID: string;
-  uploaded: boolean;
-};
+
 
 /**
  * The SingleModule Component is responsible for rendering the deatils of a single module.
@@ -170,7 +152,6 @@ const SingleModule = ({
     }
   }, [language]);
 
-  const texts = languages.singleModule;
 
   //____________________________________________________________Ende der Variablen____________________________________________________________
 
@@ -661,8 +642,6 @@ const SingleModule = ({
               moduleUsers={module.tags}
               moduleID={module.$id}
               moduleName={module.name}
-              texts={texts}
-              selectedLanguage={selectedLanguage}
               setIsVisibleNewQuestion={() =>
                 bottomSheetRef.current?.openSheet(0)
               }
@@ -680,7 +659,6 @@ const SingleModule = ({
               openSessionSheet={() =>
                 sessionSelectionBottomSheetRef.current?.openSheet(0)
               }
-              setSelectedModule={() => {}} // Add this line or pass the actual function if available
             />
             {!isVertical ? (
               <SwichTab
@@ -715,7 +693,6 @@ const SingleModule = ({
                   key={JSON.stringify(module) + questions.length + JSON.stringify(module.session)}
                   addDocumentJobSheetRef={addDocumentJobSheetRef}
                   setSelectedFile={setSelectedFile}
-                  calculatePercent={calculatePercent}
                   selectedSession={ sessions[selectedSession] ? sessions[selectedSession] : null}
                     selectAi={() => aiBottomSheetRef.current?.openSheet(1)}
                     setQuestions={setQuestions}
@@ -726,7 +703,6 @@ const SingleModule = ({
                 bottomSheetRef.current?.openSheet(0)}
                     refreshing={refreshing}
                     onRefresh={onRefresh}
-                    texts={texts}
                     selectedLanguage={selectedLanguage}
                     SwichToEditNote={SwichToEditNote}
                     setIsVisibleAI={setIsVisibleAI}
@@ -777,21 +753,6 @@ const SingleModule = ({
         
         
 {/*______________________Modals_____________________ */}
-      <ModalNewQuestion
-        setQuestionToEdit={setQuestionToEdit}
-        setIsVisibleEditQuestion={setIsVisibleEditQuestion}
-        texts={texts}
-        selectedLanguage={selectedLanguage}
-        SwichToEditNote={SwichToEditNote}
-        addDocument={addDocument}
-        module={module}
-        isVisible={isVisibleNewQuestion}
-        setIsVisible={setIsVisibleNewQuestion}
-        selectAi={() => {
-          setIsVisibleNewQuestion(false);
-          setIsVisibleAI(true);
-        }}
-      />
 
       {isVisibleEditQuestion.state && (
         <ChangeQuestions
@@ -831,10 +792,8 @@ const SingleModule = ({
         sheetRef={aiBottomSheetRef}
         selectedSession={sessions[selectedSession] || null}
         module={module}
-        questions={questions}
         setQuestions={setQuestions}
         setSessions={setSessions}
-        sessions={sessions}
       />
       <SessionListSheet
         sheetRef={sessionSelectionBottomSheetRef}

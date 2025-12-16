@@ -4,7 +4,6 @@ import PageAiCreate from "@/components/(getting-started)/pageAiCreate";
 import { loadUserDataKathegory } from "@/lib/appwriteDaten";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { module, userDataKathegory } from "@/types/appwriteTypes";
-import { userData } from "@/types/moduleTypes";
 
 const AddAiBottomSheet = ({
   isVisibleAiModule = false,
@@ -19,10 +18,7 @@ const AddAiBottomSheet = ({
 
   useEffect(() => {
     if (isVisibleAiModule) {
-      setIsOpen(true);
       sheetRef.current?.snapToIndex(0);
-    } else {
-      setIsOpen(false);
     }
   }, [isVisibleAiModule]);
 
@@ -111,7 +107,6 @@ const AddAiBottomSheet = ({
       snapPoints={snapPoints}
       enablePanDownToClose={true}
       onClose={() => {
-        setIsOpen(false);
         setIsVisibleAiModule(false);
       }}
       backgroundStyle={{ backgroundColor: "#1F2937" }}
@@ -132,9 +127,7 @@ const AddAiBottomSheet = ({
             setIsVisibleModal={setIsVisibleAiModule}
             newModule={newModule}
             setNewModule={setNewModule}
-            setUserChoices={() => {
-              setIsOpen(false);
-            }}
+            setUserChoices={() => {}}
             userData={userData}
           />
         )}

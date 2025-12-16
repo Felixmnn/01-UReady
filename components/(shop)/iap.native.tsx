@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
 import { consumePurchaseAndroid, getAvailablePurchases, purchaseUpdatedListener, useIAP } from "react-native-iap";
 import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import images from "@/assets/shopItems/itemConfig";
-import CustomButton from "../(general)/customButton";
-import { updateUserUsageData } from "@/lib/appwriteUpdate";
-import { UserUsage } from "@/types/appwriteTypes";
 import { triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
 
 export default function SimpleStore() {
-  const { userUsage, setUserUsage } = useGlobalContext();
+  const { setUserUsage } = useGlobalContext();
   const { connected, products, fetchProducts, requestPurchase, finishTransaction,  } = useIAP();
   const { t } = useTranslation();
   // Produkt-IDs je Plattform
@@ -52,7 +49,7 @@ export default function SimpleStore() {
         const res = await triggerSubscriptionVerification(
             purchase.productId,
             purchase.purchaseToken || "",
-          )
+          ) 
           if (res.data.data == undefined) return;
           setUserUsage((prev:any) => ({
           ...prev,

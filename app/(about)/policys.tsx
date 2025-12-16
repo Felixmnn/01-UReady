@@ -5,6 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from "expo-router";
 
+
+/*
+* Policys Page 
+*/
 const Policys = () => {
   const { t } = useTranslation();
   type PolicySection = {

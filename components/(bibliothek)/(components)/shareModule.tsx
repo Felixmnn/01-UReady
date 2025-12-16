@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, ToastAndroid } from 'react-native';
+import { TouchableOpacity, ToastAndroid } from 'react-native';
 import React from 'react';
 import * as Clipboard from 'expo-clipboard';
 import * as Linking from 'expo-linking';
@@ -14,7 +14,6 @@ const ShareModuleIcon = ({
 }) => {
     // Generate a web-based or app-based deep link
     const baseUrl = 'https://qready-app.de/deeplinkButton.html';
-    const isApp = typeof navigator !== 'undefined' && navigator.product === 'ReactNative';
     const appDeepLink = Linking.createURL(`deeplink`, { queryParams: { moduleID } }); // App-based deep link
     const deepLink = `${baseUrl}?deeplink=${encodeURIComponent(appDeepLink)}`; // Web-based link with deep link as a parameter
 

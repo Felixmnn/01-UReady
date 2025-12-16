@@ -1,24 +1,6 @@
 import { module } from "@/types/appwriteTypes";
 
 
-function reverseToManyStringifyActions(question:string): any {
-    let output = question
-    while (true) {
-        try {
-            if (typeof output === 'string') {
-                output = JSON.parse(output);
-            } else {
-                return output;
-            }
-            break;
-        } catch (error) {
-            // Entferne das letzte Zeichen und versuche es erneut
-            console.log("Output")
-            return output;
-        }
-}
-}
-
 /**
  * !!not all attributes are compared yet!!
  * This function compares two modules and returns the one with more complete data

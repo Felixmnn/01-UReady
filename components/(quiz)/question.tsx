@@ -1,8 +1,6 @@
 import { View, Text, ScrollView, Image } from "react-native";
 import React from "react";
 import AnswerComponent from "./answerComponent";
-import { BlockMath } from "react-katex";
-import { maybeParseJSON } from "@/functions/(quiz)/helper";
 import KaTeXExample from "../(home)/katext";
 import DisplayImage from "./(renderImage)/displayImage";
 

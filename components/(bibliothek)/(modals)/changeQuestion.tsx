@@ -1,16 +1,12 @@
-import { View, Text, TouchableOpacity, TextInput, Image, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import ToggleSwitch from "@/components/(general)/toggleSwich";
 import { addQUestion, updateDocument } from "@/lib/appwriteEdit";
 import { module, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
 import CustomButton from "@/components/(general)/customButton";
-import KaTeXExample from "@/components/(home)/katext";
 import ContentInput from "./newQuestionContentInput";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import Offline from "@/components/(general)/offline";
 
 const ChangeQuestions = ({
   question,

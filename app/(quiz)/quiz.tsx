@@ -1,5 +1,5 @@
 import { Image, Platform, SafeAreaView, StatusBar, Text, View } from 'react-native'
-import React, { use, useEffect, useRef, useState, useTransition } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
 import { useWindowDimensions } from 'react-native';
 import { useGlobalContext } from '@/context/GlobalProvider';
@@ -18,8 +18,6 @@ import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { getModuleFromMMKV, getQuestionsFromMMKV } from '@/lib/mmkvFunctions';
-import { ImageBackground } from 'react-native';
-import { loadAproved } from '@/lib/appwriteDaten';
 
 type QuestionItem = {
     id: string | null;
@@ -245,10 +243,10 @@ const quiz = () => {
         }
 
         const indexOfQuestion = tempQuestionList.findIndex(q => q.id === id);
-        let finalStatus = newStatus;
+        let finalStatus: "OK" | "GOOD" | "GREAT" | "BAD" | null = newStatus as "OK" | "GOOD" | "GREAT" | "BAD" | null;
         if (indexOfQuestion !== -1) {
           const prevStatus = tempQuestionList[indexOfQuestion].status;
-          if (prevStatus === "GOOD" && newStatus === "GOOD" || prevStatus === "GREAT" && newStatus === "GREAT") {
+          if ((prevStatus === "GOOD" && newStatus === "GOOD") || (prevStatus === "GREAT" && newStatus === "GREAT")) {
             finalStatus = "GREAT";
           }
         }

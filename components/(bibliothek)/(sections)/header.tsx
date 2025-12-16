@@ -23,14 +23,11 @@ const Header = ({
   questions,
   moduleSessions,
   setIsVisibleNewQuestion,
-  texts,
-  selectedLanguage,
   moduleName,
   moduleDescription,
   moduleID,
   modules,
   setModules,
-  setSelectedModule,
   openQuizSheet,
   openSessionSheet,
   moduleUsers,
@@ -43,14 +40,11 @@ const Header = ({
   questions: any[];
   moduleSessions: any[];
   setIsVisibleNewQuestion: React.Dispatch<React.SetStateAction<boolean>>;
-  texts: any;
-  selectedLanguage: string;
   moduleName: string;
   moduleDescription: string;
   moduleID: string;
   modules: any;
   setModules: React.Dispatch<React.SetStateAction<any>>;
-  setSelectedModule: React.Dispatch<React.SetStateAction<string>>;
   openQuizSheet: () => void;
   openSessionSheet: () => void;
   moduleUsers: string[];

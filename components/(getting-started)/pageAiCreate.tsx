@@ -18,7 +18,6 @@ import {
   addDocumentConfig,
   addDocumentToBucket,
   addDocumentToBucketWeb,
-  setUserData,
 } from "@/lib/appwriteEdit";
 import TutorialFirstAIModule from "../(tutorials)/tutorialFirstAIModule";
 import { Session } from "@/types/moduleTypes";
@@ -30,8 +29,6 @@ import ErrorModal from "./aiComponents/errorModal";
 import QuestionSettings from "./aiComponents/questionSettings";
 import {
   module,
-  userData,
-  userDataKathegory,
   UserUsage,
 } from "@/types/appwriteTypes";
 import Offline from "../(general)/offline";

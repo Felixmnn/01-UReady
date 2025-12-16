@@ -3,9 +3,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Image,
   ActivityIndicator,
-  FlatList,
   Platform,
 } from "react-native";
 import React, { useRef, useState, useEffect, use } from "react";
@@ -19,14 +17,11 @@ import EudcationFilters from "@/components/(entdecken)/education";
 import OtherFilters from "@/components/(entdecken)/other";
 import { router } from "expo-router";
 import { adddModule } from "@/lib/appwriteAdd";
-import languages from "@/assets/exapleData/languageTabs.json";
 import TokenHeader from "@/components/(general)/tokenHeader";
 import BottomSheet, {
   BottomSheetScrollView,
-  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import RenderResults from "@/components/(entdecken)/renderResults";
-import { searchDocuments } from "@/lib/appwriteQuerySerach";
 import { loadAllModules } from "@/lib/appwriteDaten";
 import { useTranslation } from "react-i18next";
 import { getMatchingModules } from "@/lib/appwriteEntdecken";

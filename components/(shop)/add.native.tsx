@@ -4,7 +4,6 @@ import images from "@/assets/shopItems/itemConfig";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { RewardedAd, RewardedAdEventType, TestIds } from "react-native-google-mobile-ads"
 import { useTranslation } from "react-i18next";
-import { loadAproved } from "@/lib/appwriteDaten";
 
 export default function RewardedAdScreen({
     aproved

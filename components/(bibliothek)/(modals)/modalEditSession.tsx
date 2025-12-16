@@ -1,24 +1,20 @@
 import {
   View,
   Text,
-  TouchableOpacity,
   TextInput,
   useWindowDimensions,
 } from "react-native";
 import React, { useState } from "react";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import ColorPicker from "@/components/(general)/colorPicker";
 import IconPicker from "@/components/(general)/iconPicker";
 import { useTranslation } from "react-i18next";
 
 const ModalEditSession = ({
   session,
-  sessions,
   index,
   setSessions,
 }: {
   session: any;
-  sessions: any[];
   index: number;
   setSessions: React.Dispatch<React.SetStateAction<any[]>>;
 }) => {

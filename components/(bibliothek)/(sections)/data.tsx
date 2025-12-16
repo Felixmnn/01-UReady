@@ -11,19 +11,17 @@ import {
   RefreshControl,
   Platform,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { router } from "expo-router";
 import Selectable from "../selectable";
 import SmileyStatus from "../(components)/smileyStatus";
 import { Session } from "@/types/moduleTypes";
-import { module, question } from "@/types/appwriteTypes";
+import { module, note, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
 import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import Offline from "@/components/(general)/offline";
 import { removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
-import { updateModule } from "@/lib/appwriteEdit";
 import { returnNewUserUsage } from "@/functions/addLastSessionModule";
 type ScreenType =
   | "CreateQuestion"
@@ -75,11 +73,9 @@ const Data = ({
   setQuestions,
   selectAi ,
   selectedSession,
-  calculatePercent,
 }: {
   addDocumentJobSheetRef: React.RefObject<any>;
   setSelectedFile: React.Dispatch<React.SetStateAction<AppwriteDocument | null>>;
-  calculatePercent: (questions:string[]) => number; 
   selectedSession: Session | null;
   setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   setIsVisibleEditQuestion: React.Dispatch<
@@ -95,7 +91,7 @@ const Data = ({
   selected: number;
   moduleSessions: Session[];
   questions: question[];
-  notes: Note[];
+  notes: note[];
   documents: AppwriteDocument[];
   deleteDocument: (
     id: string,
@@ -106,7 +102,6 @@ const Data = ({
   setIsVisibleNewQuestion: React.Dispatch<React.SetStateAction<boolean>>;
   setIsVisibleAI: React.Dispatch<React.SetStateAction<boolean>>;
   SwichToEditNote: (noteID: string | null) => void;
-  texts: { [key: string]: { [key: string]: string } };
   selectedLanguage: string;
   selectedSessionID: string;
   setModule: React.Dispatch<React.SetStateAction<module>>;

@@ -1,8 +1,6 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
-import CustomButton from "../(general)/customButton";
 import { useTranslation } from "react-i18next";
-import RobotWihtMessage from "../(tutorials)/robotMessage";
 import BotCenter from "../(signUp)/botCenter";
 import { useGlobalContext } from "@/context/GlobalProvider";
 

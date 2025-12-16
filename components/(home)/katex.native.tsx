@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import Katex from "react-native-katex";
-import { getHeight, getZoom } from "@/functions/editQuestion";
+import { getHeight } from "@/functions/editQuestion";
 
 export default function KaTeXExample({
   formula,

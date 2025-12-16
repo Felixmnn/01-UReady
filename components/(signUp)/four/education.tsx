@@ -1,8 +1,7 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView } from "react-native";
 import React, { useState } from "react";
 import BotBottomLeft from "../botBottomLeft";
 import ProgressBar from "../(components)/progressBar";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
 import TouchSquare from "../(components)/touchSquare";
 
@@ -59,7 +58,7 @@ const Education = ({
               text={
                 typeof item.name[i18n.language] === "string"
                   ? item.name[i18n.language]
-                  : item.name
+                  : Object.values(item.name)[0] || ""
               }
               icon={item.icon}
               key={item.id}

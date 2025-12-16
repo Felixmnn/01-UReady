@@ -1,5 +1,5 @@
-import { View, FlatList, Animated } from "react-native";
-import React, { use, useEffect, useState } from "react";
+import { View } from "react-native";
+import React, { useEffect, useState } from "react";
 import Tabbar from "@/components/(tabs)/tabbar";
 import AllModules from "@/components/(bibliothek)/(pages)/allModules";
 import SingleModule from "@/components/(bibliothek)/(pages)/singleModule";
@@ -87,7 +87,7 @@ const Bibliothek = () => {
     const modulesLoaded = await getModules(user.$id);
     const unsavedQuestionLists = getUnsavedModulesFromMMKV();
 
-    if (modulesLoaded === "404") {
+    if (modulesLoaded as any === "404") {
       const locallyUpdatedModules = getModulesFromMMKV();
       if (unsavedQuestionLists.length > 0) {
   const newModules = locallyUpdatedModules?.map((module) => {
@@ -139,7 +139,7 @@ const Bibliothek = () => {
           (unsaved) => unsaved.moduleID === module.$id
         );
         if (unsavedModule) {
-          const repairedQuestionList = module.questionList.map((q) => {
+          const repairedQuestionList = module.questionList.map((q:any) => {
             const question = JSON.parse(q);
             const matchingItem = unsavedModule.items.find((item) => item.id === question.id);
 

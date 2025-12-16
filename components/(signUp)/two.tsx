@@ -1,6 +1,5 @@
-import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
 import React, { useState } from "react";
-import CountryFlag from "react-native-country-flag";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import GratisPremiumButton from "../(general)/gratisPremiumButton";
 import ProgressBar from "./(components)/progressBar";
@@ -22,18 +21,16 @@ const StepTwo = ({
   languages,
   userData,
   setUserData,
-  name,
 }: {
   selectedLanguage: number | null;
   setSelectedLanguage: React.Dispatch<React.SetStateAction<number | null>>;
   languages: Array<{ label: string; value: string; enum: string }>;
   userData: userData;
   setUserData: React.Dispatch<React.SetStateAction<userData | undefined>>;
-  name: string;
 }) => {
   const [isActive, setIsActive] = useState(false);
   const { t } = useTranslation();
-  const { user, language, setNewLanguage, userUsage, setUserUsage } = useGlobalContext();
+  const { user, setNewLanguage } = useGlobalContext();
   const languageoptions = [
       { label: "Deutsch", value: "de" },
       { label: "English", value: "en" },

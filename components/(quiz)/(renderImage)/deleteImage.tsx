@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React, { use } from 'react'
+import { Text, TouchableOpacity } from 'react-native'
+import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { documentConfig } from '@/types/appwriteTypes';
 import { getImageConfigsFromMMKV, removeImageConfigFromMMKV } from '@/lib/mmkvFunctions';
 import * as Filesystem from 'expo-file-system';
-import { deleteDocument, deleteFile, delteDocumentConfig } from '@/lib/appwriteDelete';
+import { deleteFile, delteDocumentConfig } from '@/lib/appwriteDelete';
 import { useTranslation } from 'react-i18next';
 
 /**

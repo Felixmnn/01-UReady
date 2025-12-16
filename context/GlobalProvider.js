@@ -1,14 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { checkSession } from "../lib/appwrite";
-import {  loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
 import { addUserUsage } from "@/lib/appwriteAdd";
 import { updateUserUsageData } from "@/lib/appwriteUpdate";
 import * as NavigationBar from "expo-navigation-bar";
 import i18n from "@/assets/languages/i18n";
-import { router } from "expo-router";
 import NetInfo from "@react-native-community/netinfo";
-import CustomButton from "@/components/(general)/customButton";
 import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, resetUsavedUserUsageInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
 import { initializeIapVerification, triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
 import { getUserSubscriptionStatus } from "@/lib/appwriteQuerys";
@@ -210,38 +208,8 @@ const GlobalProvider = ({ children }) => {
   }, [user, isLoading]);
 
   // -------------------------------
-  // Exportierte Werte
-  // -------------------------------
-  /*
-  if (isOffline) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#111418" }}>
-        
-        <Image
-          source={require("../assets/Uncertain.gif")}
-          style={{ width: 150, height: 150, marginBottom: 20 }}
-          resizeMode="contain"
-        />
-        <Text style={{ color: "white", fontSize: 20, textAlign: "center", margin: 20 }}>
-          {i18n.t("provider.noNetworkConnection")}
-        </Text>
-        <CustomButton
-          title={i18n.t("provider.tryAgain")}
-          handlePress={() => {
-            NetInfo.fetch().then(state => {
-              if (state.isConnected) {
-                setIsOffline(false);
-                router.reload();
-              }
-            });
-          }}
-          
-          containerStyles="bg-blue-600 px-6 py-3 rounded-md"
-        />
-      </View>
-    );
-  }
-    */
+ 
+    
     async function fetchSubscriptionStatus() {
 
   try {

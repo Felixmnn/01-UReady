@@ -1,5 +1,3 @@
-import { getHeight, getZoom } from '@/functions/editQuestion';
-import React from 'react';
 import { Platform } from 'react-native';
 import katexWeb from "./katex.web";
 import katexNative from "./katex.native";

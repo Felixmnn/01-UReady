@@ -3,7 +3,6 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Image,
   Platform,
 } from "react-native";
 import React, { useState } from "react";
@@ -16,13 +15,11 @@ const School = ({
   userData,
   setUserData,
   setSchool,
-  Sonstige,
   groupedData,
 }: {
   userData: any;
   setUserData: React.Dispatch<React.SetStateAction<any>>;
   setSchool: React.Dispatch<React.SetStateAction<any>>;
-  Sonstige: any;
   groupedData: any[];
 }) => {
   const { t } = useTranslation();
@@ -32,9 +29,6 @@ const School = ({
     <ScrollView className="w-full ">
       <BotBottomLeft
         message={t("personalizeFour.whichSchool")}
-        imageSource="Location"
-        spechBubbleStyle="bg-blue-500"
-        spBCStyle="max-w-[200px]"
         isVisible={isVisible}
         setIsVisible={setIsVisible}
       />

@@ -33,9 +33,6 @@ const University = ({
     <View className="h-full  w-full justify-between items-center py-5">
       <BotBottomLeft
         message={t("personalizeFour.whichUniversity")}
-        imageSource="Location"
-        spechBubbleStyle="bg-blue-500"
-        spBCStyle="max-w-[200px]"
         isVisible={isVisible}
         setIsVisible={setIsVisible}
       />

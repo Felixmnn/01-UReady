@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { View, Text } from "react-native";
+import React, { useEffect, useState } from "react";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { useTranslation } from "react-i18next";

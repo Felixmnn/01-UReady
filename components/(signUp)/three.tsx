@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import BotCenter from "./botCenter";
 import { useTranslation } from "react-i18next";
 import TouchSquare from "./(components)/touchSquare";
@@ -12,15 +12,12 @@ import CountryPicker from "./(components)/countryPicker";
  * Selction of Education Category and his Country
  */
 const StepThree = ({
-  selectedCountry,
   setSelectedCountry,
-  countryList,
   setSelectedKathegorie,
   userData,
   setUserData,
   editing,
 }: {
-  selectedCountry: { id: string; name: string; code: string };
   setSelectedCountry: React.Dispatch<
     React.SetStateAction<{
       name: string;
@@ -32,15 +29,16 @@ const StepThree = ({
       educationSubjectListID: string;
     }>
   >;
-  countryList: Array<{ id: string; name: string; code: string }>;
   setSelectedKathegorie: React.Dispatch<React.SetStateAction<string>>;
   userData: userData;
   setUserData: React.Dispatch<React.SetStateAction<any>>;
   editing?: boolean;
 }) => {
   const { t } = useTranslation();
-  const [isActive, setIsActive] = useState(false);
 
+  /**
+   * This section lets a user select wich education kathegorie he/she is attending
+   */
   const textIcons = [
     [
       {
@@ -79,6 +77,7 @@ const StepThree = ({
       },
     ],
   ];
+
   return (
     <View className="h-full  w-full justify-between items-center py-5">
       <ProgressBar
@@ -96,65 +95,6 @@ const StepThree = ({
           message={t("personalizeThree.whereDoYouStudy")}
           imageSource="Location"
         />
-        {/*
-        <View style={{ position: "relative", zIndex: 10 }}>
-          <TouchableOpacity
-            onPress={() => setIsActive(!isActive)}
-            className="flex-row w-[180px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] py-2 px-3 my-2 items-center justify-center mx-1"
-          >
-            <CountryFlag
-              isoCode={selectedCountry.code}
-              size={18}
-              style={{ width: 30, height: 18 }}
-            />
-            <Text className="text-gray-300 font-semibold text-center mx-2 mt-[1px]">
-              {selectedCountry.name}
-            </Text>
-            <Icon
-              name={!isActive ? "caret-down" : "caret-up"}
-              size={20}
-              color="#4B5563"
-            />
-          </TouchableOpacity>
-          {isActive ? (
-            <View
-              className="absolute top-[48px] left-1 w-[180px] max-h-[300px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 shadow-lg"
-              style={{ zIndex: 10, elevation: 10 }}
-            >
-              <FlatList
-                data={countryList}
-                className="z-100"
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelectedCountry({
-                        ...item,
-                        schoolListID: "",
-                        universityListID: "",
-                        educationListID: "",
-                        educationSubjectListID: "",
-                      });
-                      setIsActive(false);
-                    }}
-                    className="flex-row justify-start items-center p-2 rounded-lg m-1"
-                  >
-                    <CountryFlag
-                      isoCode={item.code}
-                      size={18}
-                      style={{ width: 30, height: 18 }}
-                    />
-                    <Text className="text-gray-300 font-semibold text-center ml-2 mt-[1px] ">
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-          ) : null}
-        </View>
-        */}
-        
             <CountryPicker onSelect={(country:{id:string,name:string,code:string}) =>setSelectedCountry({
               ...country,
               schoolListID: "",

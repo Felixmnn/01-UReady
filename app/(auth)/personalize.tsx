@@ -4,7 +4,6 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { loadUserData, loadUserDataKathegory } from "@/lib/appwriteDaten";
 import { router } from "expo-router";
 import StepZero from "@/components/(signUp)/zero";
-import StepOne from "@/components/(signUp)/one";
 import StepTwo from "@/components/(signUp)/two";
 import StepFour from "@/components/(signUp)/four/four";
 import StepThree from "@/components/(signUp)/three";
@@ -20,7 +19,6 @@ import { updateUserData } from "@/lib/appwriteUpdate";
 import { useTranslation } from "react-i18next";
 import { useLocalSearchParams, useSearchParams } from "expo-router/build/hooks";
 import { userDataKathegory, userData } from "@/types/appwriteTypes";
-import { reloadAsync } from "expo-updates";
 import * as Updates from "expo-updates";
 
 
@@ -289,9 +287,7 @@ const personalize = () => {
           userData={userData}
           setUserData={setUserData}
           setSelectedKathegorie={setSelectedKathegorie}
-          selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}
-          countryList={countryList}
           editing={editEducationGoals ? true : false}
         />
       ) : null}

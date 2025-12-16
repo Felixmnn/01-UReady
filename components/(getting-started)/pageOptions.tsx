@@ -1,16 +1,12 @@
-import { View, Text, Image, Dimensions } from "react-native";
-import React, { useEffect, useState, useTransition } from "react";
+import { View, Dimensions } from "react-native";
+import React from "react";
 import ContinueBox from "../(signUp)/(components)/continueBox";
-import languages from "@/assets/exapleData/languageTabs.json";
-import { useGlobalContext } from "@/context/GlobalProvider";
 import BotCenter from "../(signUp)/botCenter";
 import { useTranslation } from "react-i18next";
 
 const PageOptions = ({
-  userChoices,
   setUserChoices,
 }: {
-  userChoices: string | null;
   setUserChoices: React.Dispatch<
     React.SetStateAction<"GENERATE" | "DISCOVER" | "CREATE" | null>
   >;

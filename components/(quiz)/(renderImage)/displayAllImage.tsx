@@ -1,10 +1,9 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React, { use, useEffect, useTransition } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
 import { documentConfig } from '@/types/appwriteTypes';
 import DeleteImage from './deleteImage';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import UploadImage from './uploadImage';
 import { getImageConfigsFromMMKV } from '@/lib/mmkvFunctions';
 import { getAllImageConfigs } from '@/lib/appwriteQuerys';

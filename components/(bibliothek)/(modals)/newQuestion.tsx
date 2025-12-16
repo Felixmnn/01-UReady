@@ -3,11 +3,6 @@ import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Selectable from "../selectable";
 
-type EditQuestionState = {
-  state: boolean;
-  status: "ADD" | "EDIT";
-};
-
 type Props = {
   question: any;
   questions: any[];

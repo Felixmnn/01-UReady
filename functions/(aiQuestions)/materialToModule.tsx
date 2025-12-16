@@ -1,6 +1,5 @@
 import {
   addDocumentJob,
-  addNewModule,
   addNewModuleWithID,
 } from "@/lib/appwriteAdd";
 import {

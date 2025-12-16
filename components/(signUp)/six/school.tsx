@@ -1,9 +1,8 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import BotBottomLeft from "../botBottomLeft";
 import ProgressBar from "../(components)/progressBar";
 import SearchList from "../(components)/searchList";
-import GratisPremiumButton from "@/components/(general)/gratisPremiumButton";
 import { useTranslation } from "react-i18next";
 import CustomButton from "@/components/(general)/customButton";
 

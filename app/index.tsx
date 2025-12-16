@@ -1,14 +1,12 @@
-import { Text, View, SafeAreaView, ActivityIndicator, Image, Animated } from "react-native";
+import { Text, View, SafeAreaView, Image } from "react-native";
 import { router, Redirect, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
 import { loadUserData } from "@/lib/appwriteDaten";
 import { addNewUserConfig } from "@/lib/appwriteAdd";
 import * as NavigationBar from 'expo-navigation-bar';
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import i18n from "@/assets/languages/i18n";
-import { copyModule } from "@/lib/appwriteShare";
 
 
 export default function Index() {

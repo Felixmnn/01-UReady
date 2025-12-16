@@ -1,4 +1,4 @@
-import { FlatList, Animated, Dimensions, View } from "react-native";
+import { Animated, Dimensions, View } from "react-native";
 import React, { useEffect } from "react";
 
 const SkeletonListBibliothek = () => {

@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 /**

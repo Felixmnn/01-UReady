@@ -1,9 +1,8 @@
 import { View, Text, TouchableOpacity, Modal, TextInput } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import VektorCircle from "./vektorCircle";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import languages from "@/assets/exapleData/languageTabs.json";
 import { reportModule } from "@/lib/appwriteAdd";
 import { useTranslation } from "react-i18next";
 const Karteikarte = ({

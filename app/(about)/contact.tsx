@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Modal,
   SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -17,6 +16,9 @@ import CustomButton from "@/components/(general)/customButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import Offline from "@/components/(general)/offline";
 
+/**
+ * Standalone Contact Page
+ */
 const Contact = () => {
   const { t } = useTranslation();
   const { isOffline } = useGlobalContext();

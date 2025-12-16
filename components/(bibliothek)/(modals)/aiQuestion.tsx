@@ -3,19 +3,17 @@ import {
   Text,
   Modal,
   TouchableOpacity,
-  Touchable,
   ActivityIndicator,
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import GratisPremiumButton from "@/components/(general)/gratisPremiumButton";
 import uuid from "react-native-uuid";
 import { materialToQuestion } from "@/functions/(aiQuestions)/materialToQuestions";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { addDocumentJob } from "@/lib/appwriteAdd";
-import languages from "@/assets/exapleData/languageTabs.json";
 import { Animated } from "react-native";
 import { useTranslation } from "react-i18next";
 import { module, question } from "@/types/appwriteTypes";

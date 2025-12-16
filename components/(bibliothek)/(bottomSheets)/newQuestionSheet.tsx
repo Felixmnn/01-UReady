@@ -1,14 +1,9 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React, { use } from "react";
+import { View, TouchableOpacity } from "react-native";
+import React from "react";
 import CustomBottomSheet from "./customBottomSheet";
 import Selectable from "../selectable";
 import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import Offline from "@/components/(general)/offline";
-type EditQuestionState = {
-  state: boolean;
-  status: "ADD" | "EDIT";
-};
 
 const NewQuestionSheet = ({
   setQuestionToEdit,

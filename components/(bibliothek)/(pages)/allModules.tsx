@@ -4,7 +4,6 @@ import Karteikarte from '@/components/(karteimodul)/karteiKarte';
 import { useWindowDimensions } from 'react-native';
 import React, {   useEffect, useState } from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { updateUserUsageModules, updateUserUsageSessions } from '@/lib/appwriteUpdate';
 import TokenHeader from '@/components/(general)/tokenHeader';
 import AddAiBottomSheet from '@/components/(general)/(modal)/addAiBttomSheet';
 import AddModuleBottomSheet from '@/components/(general)/(modal)/addModuleBottomSheet';
@@ -84,7 +83,7 @@ function calculatePercent(questions:string[]){
       if (moduleToBeAdded) {
         await getSpecificModule(JSON.parse(moduleToBeAdded)).then((res => {
           if (res) {
-            setModuleToBeAdded(res as  ModuleProps);
+            setModuleToBeAdded(res as any as ModuleProps);
           }
       }))
     }

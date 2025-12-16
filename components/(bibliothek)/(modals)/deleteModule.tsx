@@ -1,7 +1,6 @@
 import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 import { deleteDocument } from '@/lib/appwriteDelete'; 
-import { router } from 'expo-router'; 
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { updateModuleData } from '@/lib/appwriteUpdate';
 import { useTranslation } from 'react-i18next';

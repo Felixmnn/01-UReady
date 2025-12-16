@@ -1,14 +1,12 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, FlatList, Image } from "react-native";
 import React from "react";
 import Karteikarte from "../(karteimodul)/karteiKarte";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { module } from "@/types/appwriteTypes";
 const RenderResults = ({
   modules,
   selectedModules,
   setSelectedModules,
   numColumns,
-  searchBarText,
   getModules,
   setLoadingMore,
   loading,
@@ -18,7 +16,6 @@ const RenderResults = ({
   selectedModules: string[];
   setSelectedModules: React.Dispatch<React.SetStateAction<string[]>>;
   numColumns: number;
-  searchBarText: string;
   getModules: ({ loadingMore }: { loadingMore: boolean }) => void;
   setLoadingMore: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;

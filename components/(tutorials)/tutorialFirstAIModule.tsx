@@ -1,8 +1,6 @@
 import { Modal, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import RobotWihtMessage from "./robotMessage";
-import languages from "@/assets/exapleData/languageTabs.json";
-import { useGlobalContext } from "@/context/GlobalProvider";
 import { useTranslation } from "react-i18next";
 
 const TutorialFirstAIModule = ({

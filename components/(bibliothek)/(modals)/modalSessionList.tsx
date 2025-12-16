@@ -132,7 +132,6 @@ const ModalSessionList = ({
                   {expandedIndex === index && (
                     <ModalEditSession
                       session={session}
-                      sessions={sessions}
                       index={index}
                       setSessions={setSessions}
                     />

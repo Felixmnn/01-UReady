@@ -1,4 +1,3 @@
-import { Query } from "appwrite";
 import { databases, config } from "./appwrite";
 import { adddModule } from "./appwriteAdd";
 import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";

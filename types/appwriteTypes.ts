@@ -143,5 +143,3 @@ export type AppwriteDocument = {
 };
 
 
-
-

@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import KaTeXExample from '@/components/(home)/katext';
-import { Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ToggleSwitch from '@/components/(general)/toggleSwich';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, ActivityIndicator, Image } from "react-native";
+import { View, Pressable, ActivityIndicator } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { uploadImageToAppwrite } from "@/lib/appwriteDatabses";
@@ -17,7 +17,6 @@ const UploadImage = ({
  }) => {
   const {isOffline} = useGlobalContext()
   const [loading, setLoading] = useState(false);
-  const [localPreview, setLocalPreview] = useState<string | null>(null);
   const [selectedUri, setSelectedUri] = useState<string >("null");
   const {t} = useTranslation();
 
@@ -39,7 +38,6 @@ const UploadImage = ({
           compress: 0.5,
         });
 
-        setLocalPreview(manipulated.uri);
 
         const fileId = await uploadImageToAppwrite(manipulated.uri, imageConfigs, setImageConfigs);
         setImageUrl(fileId);

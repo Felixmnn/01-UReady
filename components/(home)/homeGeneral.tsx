@@ -6,9 +6,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Platform,
-  Modal,
   SafeAreaView,
-  Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContinueBox from "../(signUp)/(components)/continueBox";
@@ -16,14 +14,13 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import VektorCircle from "../(karteimodul)/vektorCircle";
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { getModules, getSessionQuestions } from "@/lib/appwriteQuerys";
-import languages from "@/assets/exapleData/languageTabs.json";
+import { getModules } from "@/lib/appwriteQuerys";
 import { returnColor } from "@/functions/returnColor";
 import TokenHeader from "../(general)/tokenHeader";
 import AddAiBottomSheet from "../(general)/(modal)/addAiBttomSheet";
 import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
-import { documentConfig, module, UserUsage } from "@/types/appwriteTypes";
+import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 
 
@@ -80,7 +77,6 @@ const HomeGeneral = () => {
 
   const { language} = useGlobalContext();
   const [selectedLanguage, setSelectedLanguage] = useState("DEUTSCH");
-  const texts = languages.home;
   useEffect(() => {
     count++;
     if (language) {

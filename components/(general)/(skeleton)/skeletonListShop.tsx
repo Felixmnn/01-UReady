@@ -1,4 +1,4 @@
-import { View, Text, Animated, ScrollView, Dimensions } from "react-native";
+import { View, Animated, Dimensions } from "react-native";
 import React, { useEffect } from "react";
 
 const SkeletonListShop = () => {

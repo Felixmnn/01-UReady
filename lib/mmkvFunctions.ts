@@ -1,6 +1,5 @@
-import { Module } from "i18next";
 import { storage } from "./mmkv";
-import { AppwriteDocument, documentConfig, module, note, question, userData, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
+import { AppwriteDocument, documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { uuid } from "expo-modules-core";
 
 /**

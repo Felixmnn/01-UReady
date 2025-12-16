@@ -1,6 +1,5 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { isColor } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import KaTeXExample from "../(home)/katext";
 import DisplayImage from "./(renderImage)/displayImage";

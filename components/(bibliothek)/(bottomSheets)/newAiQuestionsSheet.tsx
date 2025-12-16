@@ -19,16 +19,13 @@ type Items = {
 }[];
 
 const NewAiQuestionsSheet = ({
-  sessions,
   setSessions,
   sheetRef,
   selectedSession,
   module,
-  questions,
   setQuestions,
   setModule,
 }: {
-  sessions: any[];
   setSessions: React.Dispatch<React.SetStateAction<any[]>>;
   sheetRef: React.RefObject<any>;
   selectedSession: {
@@ -40,7 +37,6 @@ const NewAiQuestionsSheet = ({
     updatedAt: string;
   } | null;
   module: any;
-  questions: any[];
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
   setModule: React.Dispatch<React.SetStateAction<any>>;
 }) => {

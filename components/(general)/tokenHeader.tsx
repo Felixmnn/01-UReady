@@ -2,10 +2,7 @@ import { View, Text, TouchableOpacity, Modal, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
-import GlobalProvider, { useGlobalContext } from "@/context/GlobalProvider";
-import { UserUsage } from "@/types/appwriteTypes";
-import { loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
-import * as Updates from "expo-updates";
+import  { useGlobalContext } from "@/context/GlobalProvider";
 
 
 

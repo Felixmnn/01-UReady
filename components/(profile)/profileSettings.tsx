@@ -6,7 +6,7 @@ import { useWindowDimensions } from "react-native";
 import SettingsOption from "../(tabs)/settingsOption";
 import { useState } from "react";
 import CustomButton from "../(general)/customButton";
-import { updateUserEmail, updateUserName, validateEmail } from "@/lib/appwrite";
+import { updateUserEmail, updateUserName } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import CustomTextInput1 from "../(general)/customTextInput1";

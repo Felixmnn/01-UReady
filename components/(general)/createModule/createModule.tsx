@@ -18,7 +18,6 @@ import { useTranslation } from "react-i18next";
 import { Session, UserData } from "@/types/moduleTypes";
 import CustomButton from "../customButton";
 import { module } from "@/types/appwriteTypes";
-import Offline from "../offline";
 
 const CreateModule = ({
   newModule,

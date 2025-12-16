@@ -1,16 +1,15 @@
-import { View, Text, Platform, TextInput, useWindowDimensions, TouchableOpacity, Linking } from 'react-native'
+import { View, Text, TextInput, useWindowDimensions, TouchableOpacity, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ErrorPopup from '@/components/(general)/(modal)/errorPopup';
-import { resetPassword, updatePassword } from '@/lib/appwrite';
 import { router } from 'expo-router';
-import LoginButton from '@/components/(auth)/loginButton';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '@/components/(general)/customButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { handleValidationCode } from '@/lib/appwriteEmailValidation';
 
 const ResetPassword = () => {
+    
     const { t } = useTranslation(); 
     const [ codeRequested, setCodeRequested ] = useState(false);
     useEffect(() => {

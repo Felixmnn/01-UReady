@@ -3,34 +3,23 @@ import {
   Text,
   ActivityIndicator,
   ScrollView,
-  Image,
   TouchableOpacity,
   useWindowDimensions,
   SafeAreaView,
-  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getSepcificModules } from "@/lib/appwriteQuerys";
 import Karteikarte from "../(karteimodul)/karteiKarte";
-import GratisPremiumButton from "../(general)/gratisPremiumButton";
 import { addNewModule } from "@/lib/appwriteAdd";
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { setUserDataSetup } from "@/lib/appwriteEdit";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ContinueBox from "../(signUp)/(components)/continueBox";
-import {
-  recommendationSearch,
-  searchDocuments,
-} from "@/lib/appwriteQuerySerach";
-import languages from "@/assets/exapleData/languageTabs.json";
 import BotCenter from "../(signUp)/botCenter";
 import { userData } from "@/types/moduleTypes";
 import { module } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
-import { getMatchingModules } from "@/lib/appwriteEntdecken";
 import CustomButton from "../(general)/customButton";
-import germanTranslation from "@/assets/languages/locales/de/translation.json"
 
 const PageDiscover = ({
   setUserChoices,

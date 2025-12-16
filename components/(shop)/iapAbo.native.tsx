@@ -2,10 +2,9 @@ import { View, Text, Image, TouchableOpacity, Platform, Alert, Linking } from 'r
 import React, { useEffect } from 'react'
 import images from "@/assets/shopItems/itemConfig";
 import { useTranslation } from 'react-i18next';
-import { finishTransaction, purchaseErrorListener, purchaseUpdatedListener, useIAP } from 'react-native-iap';
+import { finishTransaction, purchaseUpdatedListener, useIAP } from 'react-native-iap';
 import { triggerSubscriptionVerification } from '@/lib/appwriteFunctions';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import CustomButton from '../(general)/customButton';
 
 
 export default function IapAbo () {

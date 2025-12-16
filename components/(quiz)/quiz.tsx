@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { use } from "react";
+import React from "react";
 import SmileyStatus from "../(bibliothek)/(components)/smileyStatus";
 import Question from "./question";
 import Icon from "react-native-vector-icons/FontAwesome5";

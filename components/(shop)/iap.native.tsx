@@ -47,51 +47,35 @@ export default function SimpleStore() {
   useEffect(() => {
 
     const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
-      if (purchase && purchase.transactionId) {
-        try {
-          // Belohnung vergeben
-          const energyToAdd = getEnergyAmount(purchase.productId);
-          const userUsageRes = await updateUserUsageData({
-                    ...userUsage,
-                    energy: userUsage.energy + energyToAdd,
-                  });
-          const res = await triggerSubscriptionVerification(
+        if (!purchase.purchaseToken) return;
+        
+        const res = await triggerSubscriptionVerification(
             purchase.productId,
             purchase.purchaseToken || "",
           )
-          
-
-          // Kauf abschließen
-         if (Platform.OS === 'android') {
+          if (res.data.data == undefined) return;
+          setUserUsage((prev:any) => ({
+          ...prev,
+          energy: res.data.data.energy,
+        }));
+        if (Platform.OS === 'android') {
           await consumePurchaseAndroid(
             purchase.purchaseToken ? purchase.purchaseToken : '',
           );
         }
-
         await finishTransaction({
           purchase,
-          isConsumable: false, // WICHTIG!
+          isConsumable: false,
         });
-
-          setUserUsage((prevUsage:UserUsage) => ({
-              ...prevUsage,
-              energy: prevUsage.energy + energyToAdd,
-            }));
-
-        } catch (error) {
-          console.error("Fehler beim Abschließen des Kaufs:", error);
-        }
-      }
-    });
-
-    // Aufräumen
+      });
     return () => {
       purchaseUpdateSubscription.remove();
     };
-  }, [finishTransaction, setUserUsage]);
+  }, []);
 
   const handlePurchase = async (productId: string) => {
     try {
+      console.log("Starte Kauf für Produkt:", productId);
       await requestPurchase({
         request: {
           ios: { sku: productId, quantity: 1 },
@@ -173,7 +157,7 @@ export default function SimpleStore() {
             key={product.id}
             amount={getEnergyAmount(product.id)}
             price={parseFloat(String(product.price ?? "0"))}
-          />
+          />  
         ))}
       </View>
     </View>

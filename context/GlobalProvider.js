@@ -247,10 +247,10 @@ const GlobalProvider = ({ children }) => {
   try {
     const status = await getUserSubscriptionStatus(user.$id);
     if (status) {
-      const expiry = new Date(status.expiryDate);
+      const expiry = new Date(status.expiry);
       const now = new Date();
-      console.log("Current time:", now);
-      if ( status.isActive == "active" && expiry > now) {
+      if ( status.status == "active" && expiry < now) {
+        console.log("Abo abgelaufen, versuche zu verifizieren:");
         console.log(status.productId)
         console.log("Purchase Token", status.linkedPurchaseToken);
         
@@ -264,6 +264,7 @@ const GlobalProvider = ({ children }) => {
         
         setSubscriptionStatus(res.data.subscriptionDocument);
       } else {
+        console.log("Abo aktiv und gültig:", status.status,status.isActive == "active", expiry , now);
         setSubscriptionStatus(status);
       }
       return;
@@ -307,7 +308,8 @@ const GlobalProvider = ({ children }) => {
         userUsage,
         setUserUsage,
         isOffline,
-        subscriptionStatus
+        subscriptionStatus,
+        setSubscriptionStatus
       }} 
     >
       {children}

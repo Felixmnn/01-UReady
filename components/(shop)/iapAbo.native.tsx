@@ -11,7 +11,7 @@ import CustomButton from '../(general)/customButton';
 export default function IapAbo () {
   
   const { t } = useTranslation(); 
-  const { subscriptionStatus, setSubscriptionSatus } = useGlobalContext();
+  const { subscriptionStatus, setSubscriptionStatus } = useGlobalContext();
   const {connected, subscriptions, fetchProducts, requestPurchase} = useIAP();
   const [output, setOutput] = React.useState('');
   useEffect(() => {
@@ -79,7 +79,7 @@ export default function IapAbo () {
     });
   };
 
-useEffect(() => {
+useEffect(() => { 
   const processed = new Set();
 
   const update = purchaseUpdatedListener(async (purchase) => {
@@ -98,11 +98,17 @@ useEffect(() => {
         purchase.productId,
         purchase.purchaseToken
       );
-      if (response.success) {
-        setSubscriptionSatus(response.data.subscriptionDocument);
+      if (response.data.data != undefined) {
+        return ;
       }
+     
 
+      if (!response.success) {
+        console.log('❌ Verification failed – NOT finishing transaction');
+        return;
+      }    
       const res = await finishTransaction({ purchase });
+      if (response.data.subscriptionDocument) setSubscriptionStatus(response.data.subscriptionDocument);
 
     } catch (error) {
       return; // Bei Fehler nichts weiter tun

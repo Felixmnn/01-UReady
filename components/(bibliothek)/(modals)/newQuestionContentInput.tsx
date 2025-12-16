@@ -361,7 +361,6 @@ const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
                 )}
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("Selected Image URI:", selectedImageUri);
                     if (typeof selectedImageUri !== "string") return;
                     if (typeOfQuestion) {
                       setImageValid(isImageUrl(selectedImageUri));

@@ -10,8 +10,6 @@ import { module } from "@/types/appwriteTypes";
 export function compareModules(loaclModule:module, remoteModule:module):module | null {
     // First the Question List
     const localLocalModule = loaclModule
-    console.log("💵Local List:", loaclModule.questionList);
-    console.log("💵Remote List:", remoteModule.questionList);
     const localQuestionList = loaclModule.questionList.map((q)=> JSON.parse(q));
     const remoteQuestionList = remoteModule.questionList.map((q)=> JSON.parse(q));
 
@@ -25,18 +23,15 @@ export function compareModules(loaclModule:module, remoteModule:module):module |
             t.id === q.id
         ))
     );
-    console.log("💵No Dublicates", removedDuplicates)
 
     const mergedListStringified = removedDuplicates.map((q)=> JSON.stringify(q));
 
 
     // Now the Session Lists are compared
    
-    console.log("📚Remote Sessions:", remoteModule.sessions);
     const localSessionList = loaclModule.sessions.map((s)=> JSON.parse(s));
     const remoteSessionList = remoteModule.sessions.map((s)=> JSON.parse(s));
 
-    console.log("📚Parsed Local Sessions:", localSessionList)
     const updatedSessionState = localSessionList.map((ls)=> {
         const matchingRemote = remoteSessionList.find((rs)=> rs.id === ls.id);
         if(matchingRemote){
@@ -54,7 +49,6 @@ export function compareModules(loaclModule:module, remoteModule:module):module |
     });
 
     const mergedSessionList = [...updatedSessionState, ...filteredRemoteSessionList];
-    console.log("📚Merged Sessions:", mergedSessionList)
     const mergedSessionListStringified = mergedSessionList.map((s)=> JSON.stringify(s));
 
     

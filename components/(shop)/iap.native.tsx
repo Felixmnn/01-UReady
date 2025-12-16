@@ -72,7 +72,6 @@ export default function SimpleStore() {
 
   const handlePurchase = async (productId: string) => {
     try {
-      console.log("Starte Kauf für Produkt:", productId);
       await requestPurchase({
         request: {
           ios: { sku: productId, quantity: 1 },

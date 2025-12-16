@@ -218,9 +218,6 @@ const GlobalProvider = ({ children }) => {
       const expiry = new Date(status.expiry);
       const now = new Date();
       if ( status.status == "active" && expiry < now) {
-        console.log("Abo abgelaufen, versuche zu verifizieren:");
-        console.log(status.productId)
-        console.log("Purchase Token", status.linkedPurchaseToken);
         
         const res = await triggerSubscriptionVerification(
           status.productId,
@@ -228,11 +225,9 @@ const GlobalProvider = ({ children }) => {
         );
 
         
-        console.log("Subscription verification result:", res.data.subscriptionDocument);
         
         setSubscriptionStatus(res.data.subscriptionDocument);
       } else {
-        console.log("Abo aktiv und gültig:", status.status,status.isActive == "active", expiry , now);
         setSubscriptionStatus(status);
       }
       return;

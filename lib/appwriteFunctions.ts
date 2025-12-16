@@ -96,7 +96,6 @@ export async function initializeIapVerification() {
 export async function callThisFunction(prompt: string) {
   const functionId = "67fb209600235031156e";
 
-  console.log("Calling Function...");
 
   const response = await functions.createExecution(
     functionId,

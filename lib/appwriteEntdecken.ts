@@ -42,9 +42,7 @@ export async function getMatchingModules({
   includeCopies?: boolean;
 
 }) {
-  console.log("Fetching modules with parameters:", {
-    eductaionType,
-    languages})
+ 
   switch (eductaionType) {
     case "UNIVERSITY":
       return await getUniversityModules({
@@ -262,7 +260,6 @@ async function getSchoolModules({
   }
 
   try {
-    console.log("Query: ", filters);
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,

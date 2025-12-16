@@ -66,7 +66,6 @@ export function addModuleToMMKV(newModule: module) {
     const oldModules = getModulesFromMMKV()
     const newModules = [...oldModules, newModule]
     saveModulesToMMKV(newModules)
-    console.log("Sucessfully added Module")
 }
 
 /**
@@ -141,17 +140,11 @@ export function saveQuestionsToMMKV(moduleID: string, questions: question[]) {
  * This function adds or creates questions for a specific module to MMKV storage.
  */
 export function addQuestionsToMMKV(moduleID: string, questions: question[]) {
-    console.log("Adding question to MMKV")
     const existingQuestionsString = storage.getString(`user.questions.${moduleID}`);
-    console.log("Debug 1")
     let existingQuestions: question[] = existingQuestionsString ? JSON.parse(existingQuestionsString) : [];
-    console.log("Debug 2")
     const combinedQuestions = [...existingQuestions, ...questions];
-    console.log("Debug 3")
     const combinedQuestionsString = JSON.stringify(combinedQuestions);
-    console.log("Debug 4")
     storage.set(`user.questions.${moduleID}`, combinedQuestionsString);
-    console.log("Successfully added question to MMKV")
 }
 
 /**
@@ -200,9 +193,7 @@ export function removeQuestionFromMMKV(moduleID: string, questionID: string) {
         const updatedQuestions = existingQuestions.filter(q => q.$id !== questionID);
         const updatedQuestionsString = JSON.stringify(updatedQuestions);
         storage.set(`user.questions.${moduleID}`, updatedQuestionsString);
-        console.log("Successfully removed question from MMKV")
         removeQuestionFromModuleQuestionListInMMKV(moduleID, questionID);
-        console.log("Successfully removed question from Module Question List in MMKV")
     }
     //If a question exists in the unsaved questions, remove it too
     const unsavedQuestionsString = storage.getString('user.unsavedQuestions');
@@ -211,7 +202,6 @@ export function removeQuestionFromMMKV(moduleID: string, questionID: string) {
         const updatedUnsavedQuestions = unsavedQuestions.filter(q => q.$id !== questionID);
         const updatedUnsavedQuestionsString = JSON.stringify(updatedUnsavedQuestions);
         storage.set('user.unsavedQuestions', updatedUnsavedQuestionsString);
-        console.log("Successfully removed question from Unsaved Questions in MMKV")
     }
 
 }
@@ -221,13 +211,11 @@ export function removeQuestionFromMMKV(moduleID: string, questionID: string) {
  * All unsaved questions will be stored under 'user.unsavedQuestions'
  */
 export function addUnsavedQuestionToMMKV(question: question) {
-    console.log("Question", question)
     const unsavedQuestionsString = storage.getString('user.unsavedQuestions');
     let unsavedQuestions: question[] = unsavedQuestionsString ? JSON.parse(unsavedQuestionsString) : [];
     unsavedQuestions.push(question);
     const updatedUnsavedQuestionsString = JSON.stringify(unsavedQuestions);
     storage.set('user.unsavedQuestions', updatedUnsavedQuestionsString);
-    console.log("Added unsaved question to MMKV");
 }
 
 /**
@@ -244,7 +232,6 @@ export function updateUnsavedQuestionInMMKV(updatedQuestion: question) {
             storage.set('user.unsavedQuestions', updatedUnsavedQuestionsString);
         }
     }
-    console.log("Updated unsaved question in MMKV");
 }
 
 /**
@@ -259,7 +246,6 @@ export function getUnsavedQuestionsFromMMKV(): question[] | [] {
  */
 export function resetUnsavedQuestionsInMMKV() {
     storage.remove('user.unsavedQuestions');
-    console.log("Reset unsaved questions in MMKV");
 }
 
 
@@ -282,7 +268,6 @@ export function addDocumentConfigToMMKV(sessionID: string, documentConfig: Appwr
     documentConfigs.push(documentConfig);   
     const updatedDocumentConfigsString = JSON.stringify(documentConfigs);
     storage.set(`user.documentConfigs.${sessionID}`, updatedDocumentConfigsString);
-    console.log("Successfully added document config to MMKV");
 }
 
 /**
@@ -303,7 +288,6 @@ export function removeDocumentConfigFromMMKV(sessionID: string, documentID: stri
         const updatedDocumentConfigs = documentConfigs.filter(doc => doc.$id !== documentID);
         const updatedDocumentConfigsString = JSON.stringify(updatedDocumentConfigs);
         storage.set(`user.documentConfigs.${sessionID}`, updatedDocumentConfigsString);
-        console.log("Successfully removed document config from MMKV");
     }
 }
 
@@ -390,7 +374,6 @@ export function saveNoteToMMKV(sessionID: string, note: note) {
     }
     const newListString = JSON.stringify(newList);
     storage.set(`user.notes.${sessionID}`, newListString);
-    console.log("Successfully saved Note")
 }
 
 /**
@@ -400,7 +383,6 @@ export function deleteNoteFromMMKV(sessionID: string, noteID: string) {
     const oldList = getNotesFromMMKV(sessionID);
 
     if (!oldList || oldList.length === 0) {
-        console.log("No notes found for the given sessionID.");
         return;
     }
 
@@ -409,7 +391,6 @@ export function deleteNoteFromMMKV(sessionID: string, noteID: string) {
     const newListString = JSON.stringify(newList);
     storage.set(`user.notes.${sessionID}`, newListString);
 
-    console.log(`Successfully deleted note with ID: ${noteID}`);
 }
 
 
@@ -503,9 +484,7 @@ export function resetUnsavedModulesInMMKV() {
 export function removeSpecificModuleFromMMKV(id:string){
     const oldModules = getModulesFromMMKV()
     if (oldModules.findIndex(m=> m.$id == id) != -1){
-        console.log("Found module to remove")
         const newModules = oldModules.filter(m=> m.$id != id);
-        console.log("💵",newModules)
         saveModulesToMMKV(newModules)
     }
 }
@@ -514,31 +493,21 @@ export function removeSpecificModuleFromMMKV(id:string){
  * Function to delete a Module from the compleatly unsaved Modules list
  */
 export function removeSpecificCompleatlyUnsavedModule(id: string) {
-    console.log("Removing specific compleatly unsaved module from MMKV", id);
     const unsavedModules = getCompleatlyUnsavedModulesFromMMKV();
-    console.log("Current unsaved modules:", unsavedModules);
 
     if (unsavedModules.some(m => m.$id === id)) {
-        console.log("Found compleatly unsaved module to remove");
         const newUnsavedModules = unsavedModules.filter(m => m.$id !== id);
 
         if (newUnsavedModules.length === 0) {
             storage.remove('user.usavedModules');
-            console.log("All unsaved modules removed from storage");
         } else {
             storage.set('user.usavedModules', JSON.stringify(newUnsavedModules));
-            console.log("Updated unsaved modules:", newUnsavedModules);
-        }
+       }
 
         // Überprüfe, ob die Daten korrekt gespeichert wurden
         const storedModules = storage.getString('user.usavedModules');
-        console.log("Stored unsaved modules after update:", storedModules);
-    } else {
-        console.log("No module found with the given ID:", id);
     }
-
     // Überprüfe die Rückgabe der Funktion
-    console.log("Unsaved modules after removal:", getCompleatlyUnsavedModulesFromMMKV());
 }
 
 
@@ -671,9 +640,7 @@ export function getImageConfigsFromMMKV(): documentConfig[] | [] {
  */
 export function removeImageConfigFromMMKV(imageID: string) {
     const imageConfigs = getImageConfigsFromMMKV();
-    console.log(imageConfigs.length)
     const updatedImageConfigs = imageConfigs.filter(config => config.databucketID !== imageID);
-    console.log(updatedImageConfigs.length)
     const updatedImageConfigsString = JSON.stringify(updatedImageConfigs);
     storage.set('user.imageConfigs', updatedImageConfigsString);
 }

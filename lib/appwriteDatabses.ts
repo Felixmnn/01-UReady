@@ -55,12 +55,9 @@ export async function uploadImageToAppwrite(
       uploaded: true,
       creator: user ? user.$id : undefined,
     })
-    console.log("✂️Coniffigging")
     if (config) {
-      console.log("Image config added:", config);
       addImageConfigToMMKV(config as any as  documentConfig);
       if (imageConfigs && setImageConfigs) {
-        console.log("Updating imageConfigs state");
         setImageConfigs([ config as any as documentConfig,...imageConfigs]);
       }
     }

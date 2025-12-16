@@ -180,7 +180,6 @@ const QuizResult = ({
               !!expiry &&
               new Date(expiry) > now &&
               subscriptionStatus?.status === "active";
-            console.log("🕵️🕵️🕵️Subscription active:", isActive, showInterstitial, intestialIsLoaded);
             if (showInterstitial && intestialIsLoaded && !isActive) {
               showInterstitial.show();
             }

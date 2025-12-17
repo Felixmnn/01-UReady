@@ -38,6 +38,7 @@ import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
 import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV, addDocumentConfigToMMKV, saveDocumentConfigsToMMKV, getDocumentConfigsFromMMKV, removeDocumentConfigFromMMKV } from "@/lib/mmkvFunctions";
 import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
+import { checkMMKVNoteDocumentListRefreshTimestampExpiry, checkMMKVQuestionListRefreshTimestampExpiry, setMMKVLastNoteDocumentListRefreshTimestamp, setMMKVLastQuestionListRefreshTimestamp } from "@/lib/mmkvUpdateTimestamps";
 
 type QuestionListItem = {
   id: string;
@@ -140,7 +141,6 @@ const SingleModule = ({
 
   async function onRefresh() {
     setRefreshing(true);
-    await checkForUpdates();
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -301,30 +301,25 @@ const SingleModule = ({
    * From now on, the questions will only be fetched from the QuestionList.
    * This ensures that only the questions that are actually in the module are loaded.
    * This function recives the Object form of the questionList.
+   * Compleat refresh is triggerd when the user pulls to refresh or every 60 Minutes.
    */
-  async function fetchAllQuestions(quesitonList: QuestionListItem[], moduleID: string) {
+  async function fetchAllQuestions(quesitonList: QuestionListItem[], moduleID: string, mandatory = false) {
     try {
+    let allQuestions = null;
     const parsedQuestionList = ensureQuestionListIsParsed(quesitonList);
-    const allQuestions = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
-    if (allQuestions === "404" || allQuestions === "400") return ;
-    
-    /*
-    SPÄTER AKTIVIEREN
-    if (allQuestions.length < quesitonList.length) {
-      // Some questions are missing, thus we need to update the questionList
-      const newQuestionList = quesitonList.filter(ql => allQuestions.some(aq => aq.$id === ql.id));
-      await updateModuleData(moduleID, {
-        questionList: newQuestionList.map((item) => JSON.stringify(item)),
-        questions: newQuestionList.length,
-        progress: calculatePercent(allQuestions as unknown as question[]),
-      });
-      const newModule = {...module, questionList: newQuestionList};
-      const newModuleList = modules.map((m: any) => m.$id === newModule.$id ? newModule : m);
-      saveModulesToMMKV(newModuleList);
+    const totalRefreshNeeded = checkMMKVQuestionListRefreshTimestampExpiry(moduleID) || mandatory ;
+    if (totalRefreshNeeded) {
+      setMMKVLastQuestionListRefreshTimestamp(moduleID);
+      const res = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
+      if (res === "404" || res === "400") {
+        allQuestions = getQuestionsFromMMKV(moduleID);
+      } else {
+        allQuestions = res;
+        saveQuestionsToMMKV(moduleID, allQuestions as any as question[]);
+      }
+    } else {
+      allQuestions = getQuestionsFromMMKV(moduleID);
     }
-      */
-    saveQuestionsToMMKV(moduleID, allQuestions as any as question[]);
-    const savedQuestions = getQuestionsFromMMKV(moduleID);
     if (!checkIfOldQuestionsEqualNewQuestions(questions, allQuestions)) {
       setQuestions(allQuestions as unknown as question[]);
     }
@@ -335,33 +330,65 @@ const SingleModule = ({
       }
   }}
 
+
   useEffect(() => {
     if (!module) return;
-    fetchAllQuestions(module.questionList, module.$id);
+    if (!refreshing ) return;
+    fetchAllQuestions(module.questionList, module.$id,true);
   }, [refreshing]);
 
-  async function fetchQuestions(sessionID: string) {
-    /*
-    let sessionQuestions = await getSessionQuestions(sessionID);
-    // Filter questions so only those in questionList are set
-    const filteredQuestions = sessionQuestions.filter(q =>
-      module.questionList.some((mq: string) => {
-        try {
-          return JSON.parse(mq).id === q.$id;
-        } catch {
-          return false;
-        }
-      })
-    );
-    setQuestionLoadedSessions([...questionLoadedSessions, sessionID]);
-    
-    const percent = calculatePercent(filteredQuestions as unknown as question[]);
-    await updateSessionData(sessionID, percent, filteredQuestions.length);
-    */
+  useEffect(() => {
+    if (!module) return;
+    fetchAllQuestions(module.questionList, module.$id, false);
+  }, []);
 
-    const notes = await getSessionNotes(sessionID);
-    const documents = await getAllDocuments(sessionID);
-   
+
+  async function fetchNotesDocumentsForSession(
+      sessionID: string,
+      mandatory = false
+    ): Promise<{
+      notes: note[] | null;
+      documents: AppwriteDocument[] | null;
+    }> {
+    let notes = null;
+    let documents = null;
+    const totalRefreshNeeded = checkMMKVNoteDocumentListRefreshTimestampExpiry(sessionID) || mandatory ;
+    if (totalRefreshNeeded) {
+      setMMKVLastNoteDocumentListRefreshTimestamp(sessionID);
+       notes = await getSessionNotes(sessionID);
+       documents = await getAllDocuments(sessionID);
+
+    } else {
+      notes = getNotesFromMMKV(sessionID);
+      documents = getDocumentConfigsFromMMKV(sessionID);
+    }
+    
+    return { 
+      notes: notes,
+      documents: documents
+    }
+  }
+
+
+  async function fetchQuestions(sessionID: string, moduleID: string, mandatory = false) {
+    if (sessionID === "ALL") {
+      
+      const allNotes = [];
+      const allDocuments = [];
+      for (const session of sessions) {
+        const { notes, documents } = await fetchNotesDocumentsForSession(session.id, mandatory);
+        if (notes) {
+          allNotes.push(...notes);
+        } 
+        if (documents) {
+          allDocuments.push(...documents);
+        }
+      }
+      setNotes(allNotes as unknown as note[]);
+      setDocuments(allDocuments as unknown as AppwriteDocument[]);
+    } else {
+    const { notes, documents } = await fetchNotesDocumentsForSession(sessionID, mandatory);
+
     if (notes) {
       setNotes(notes as unknown as note[]);
       saveNotesToMMKV(sessionID, notes as unknown as note[])
@@ -369,6 +396,7 @@ const SingleModule = ({
     if (documents) {
       setDocuments(documents as unknown as AppwriteDocument[]);
       saveDocumentConfigsToMMKV(sessionID, documents as unknown as AppwriteDocument[]);
+    }
     }
   }
 
@@ -391,24 +419,13 @@ const SingleModule = ({
 
   //This effect causes Questions to render
   useEffect(() => {
-    if (sessions == undefined || selectedSession > sessions.length) {
-      if (selectedSession > sessions.length) {
-        for (let i = 0; i < sessions.length; i++) {
-          if (!questionLoadedSessions.includes(sessions[i].id)) {
-            fetchQuestions(sessions[i].id);
-            setQuestionLoadedSessions([
-              ...questionLoadedSessions,
-              sessions[i].id,
-            ]);
-          }
-        }
-      }
+    if (sessions && sessions.length > selectedSession) {
+        fetchQuestions(sessions[selectedSession].id, module.$id, refreshing);
     } else {
-      if (sessions[selectedSession])
-        fetchQuestions(sessions[selectedSession].id);
+        fetchQuestions("ALL", module.$id, refreshing);
     }
     setLoading(false);
-  }, [sessions, selectedSession, refreshing]);
+  }, [ selectedSession, refreshing]);
 
   //_____________________________________________________________General Functions_____________________________________________________________
 

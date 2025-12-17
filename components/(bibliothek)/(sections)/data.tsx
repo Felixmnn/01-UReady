@@ -506,10 +506,12 @@ function calculateQuestionProgress(questionList: string[]): number {
           minHeight: 130,
         }}
       >
+        {
+          filteredDocuments.length === 0 && selectedS == "ALL" ? null :
         <CounterText
           title={t("data.file")}
           count={filteredDocuments.length}
-        />
+        />}
         {documents ? (
           <View className="w-full">
             {filteredDocuments.map((item, index) => (
@@ -545,6 +547,7 @@ function calculateQuestionProgress(questionList: string[]): number {
                     >
                       <Icon name="trash" size={15} color="white" />
                     </TouchableOpacity>
+
                   ) : (
                     <TouchableOpacity
                       className="ml-2"
@@ -560,6 +563,8 @@ function calculateQuestionProgress(questionList: string[]): number {
             ))}
           </View>
         ) : (
+          selectedS == "ALL" ? null :
+
           <AddData
             title={t("data.fileH")}
             subTitle={t("data.fileSH")}
@@ -567,6 +572,8 @@ function calculateQuestionProgress(questionList: string[]): number {
           />
         )}
         {filteredDocuments.length == 0 ? (
+          selectedS == "ALL" ? null :
+
           <AddData
             title={t("data.fileH")}
             subTitle={t("data.fileSH")}
@@ -584,10 +591,13 @@ function calculateQuestionProgress(questionList: string[]): number {
   const NoteList = () => {
     return (
       <View className="flex-1">
+        {
+          filteredNotes.length === 0 && selectedS == "ALL" ? null :
         <CounterText
           title={t("data.note")}
           count={filteredNotes.length}
         />
+        }
         {notes ? (
           <View className=" w-full">
             {filteredNotes.map((item, index) => (
@@ -611,6 +621,8 @@ function calculateQuestionProgress(questionList: string[]): number {
             ))}
           </View>
         ) : (
+
+          selectedS == "ALL" ? null :
           <AddData
             title={t("data.noteH")}
             subTitle={t("data.noteSH")}
@@ -619,6 +631,7 @@ function calculateQuestionProgress(questionList: string[]): number {
           />
         )}
         {filteredNotes.length == 0 ? (
+          selectedS == "ALL" ? null :
           <AddData
             handlePress={() => SwichToEditNote(null)}
             title={t("data.noteH")}

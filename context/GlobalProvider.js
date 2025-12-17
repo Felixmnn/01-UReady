@@ -161,6 +161,7 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   useEffect(() => {
     if (!userUsage || !userUsageInitialized) return;
+    console.log("🟦🟪🟧User Usage Change")
     const updateUsage = async () => {
       try {
 

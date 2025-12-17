@@ -262,7 +262,8 @@ const quiz = () => {
         setQuestionList(tempQuestionList);
         const success = await updateModuleQuestionList(
             moduleID ? moduleID.toString() : "",
-            tempQuestionList
+            tempQuestionList,
+            answers.length % 20 !== 0
         );
 
         if (!success) {

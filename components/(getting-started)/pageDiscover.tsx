@@ -10,6 +10,8 @@ import {
 import React, { useEffect, useState } from "react";
 import Karteikarte from "../(karteimodul)/karteiKarte";
 import { addNewModule } from "@/lib/appwriteAdd";
+import { adddModule } from "@/lib/appwriteAdd";
+
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { setUserDataSetup } from "@/lib/appwriteEdit";
@@ -20,6 +22,9 @@ import { userData } from "@/types/moduleTypes";
 import { module } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
 import CustomButton from "../(general)/customButton";
+import { getUserDataConfigFromMMKV, getUserKategorieFromMMKV } from "@/lib/mmkvFunctions";
+import { getMatchingModulesForGettingStarted } from "@/lib/appwriteQuerys";
+import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
 
 const PageDiscover = ({
   setUserChoices,
@@ -41,10 +46,13 @@ const PageDiscover = ({
   const numColumns = Math.floor(width / 300);
 
   useEffect(() => {
-    if (userData == null) return;
     async function fetchModules() {
-      router.replace("/home")
-      
+        const userDataHere = getUserKategorieFromMMKV();
+        const res = await  getMatchingModulesForGettingStarted(userDataHere)
+        console.log("Samba")
+        console.log("Length der Module:", res.length);
+        setMatchingModules(res);
+        setLoading(false);
     }
     fetchModules();
   }, [userData]);
@@ -52,7 +60,7 @@ const PageDiscover = ({
   async function add(mod: any) {
     setLoading(true);
     try {
-      const res = await addNewModule(mod);
+      const res = await adddModule(mod);
       setLoading(false);
       setUserChoices(null);
     } catch (error) {
@@ -64,23 +72,13 @@ const PageDiscover = ({
   }
 
 
-
+  const userDataKategory = getUserKategorieFromMMKV();
 
 
 
   return (
     <SafeAreaView className="w-full h-full p-4">
       <View>
-        <Text className="text-white">
-          {
-            JSON.stringify(userData)
-          }
-        </Text>
-        <CustomButton
-          title={"Entdecken"}
-          handlePress={()=> {router.push("/entdecken")}}
-
-          />       
            <Icon
           name="arrow-left"
           size={20}
@@ -89,7 +87,7 @@ const PageDiscover = ({
             setUserChoices(null);
           }}
         />
-      </View>
+      </View> 
 
       <BotCenter
         message={
@@ -204,37 +202,24 @@ const PageDiscover = ({
                     const mod = {
                       name: module.name + " (Kopie)",
                       subject: module.subject,
-                      questions: module.questions,
+                      questions: module.questionList.length,
                       notes: module.notes,
                       documents: module.documents,
                       public: false,
                       progress: 0,
                       creator: user.$id,
                       color: module.color,
-                      sessions: module.sessions,
+                      sessions: repairAndParseJSONStringsSessions(module.sessions).map(s=> JSON.stringify(s)),
                       tags: module.tags,
                       description: module.description,
                       releaseDate: new Date(),
                       connectedModules: [],
                       qualityScore: module.qualityScore,
-                      duration: 0,
-                      upvotes: 0,
-                      downVotes: 0,
-                      creationCountry: null,
-                      creationUniversity: null,
-                      creationUniversityProfession: null,
-                      creationRegion: null,
-                      creationUniversitySubject: [],
-                      creationSubject: [],
-                      creationEducationSubject: null,
-                      creationUniversityFaculty: [],
-                      creationSchoolForm: null,
-                      creationKlassNumber: null,
-                      creationLanguage: null,
-                      creationEducationKathegory: null,
                       copy: true,
                       synchronization: false,
+                      questionList: repairQuestionList(module.questionList).map(q => JSON.stringify(q))
                     };
+  
                     add(mod);
                   }
                 });

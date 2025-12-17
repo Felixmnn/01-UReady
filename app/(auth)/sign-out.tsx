@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import { signOut } from "@/lib/appwrite";
 import * as Updates from "expo-updates";
 import { useTranslation } from "react-i18next";
+import { resetMMKVStorage } from "@/lib/mmkvFunctions";
 
 const SignOut = () => {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ const SignOut = () => {
     const signOutUser = async () => {
       setIsLoading(true);
       try {
+        resetMMKVStorage(); // Clear local storage
         await signOut(); // Logout from Appwrite
         setUser(undefined);
         setIsLoggedIn(false);

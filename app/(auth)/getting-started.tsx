@@ -10,21 +10,25 @@ import { ModuleProps, Session, userData } from "@/types/moduleTypes";
 import TutorialFirstModule from "@/components/(tutorials)/tutorialFirstModule";
 import { View } from "react-native";
 import CreateModule from "@/components/(general)/createModule/createModule";
-import { updateUserData } from "@/lib/appwriteUpdate";
 import { setUserDataSetup } from "@/lib/appwriteEdit";
+import { getUserDataConfigFromMMKV } from "@/lib/mmkvFunctions";
 
 const gettingStarted = () => {
-  router.replace("/home")
-  const [userChoices, setUserChoices] = useState<
-    "GENERATE" | "DISCOVER" | "CREATE" | null
-  >(null);
+  const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
   
-  
+  const userData = getUserDataConfigFromMMKV();
+ 
+
 
   const { user, isLoggedIn, isLoading } = useGlobalContext();
   useEffect(() => {
+
     setUserDataSetup(user.$id);
   }, []);
+
+
+
+
   const [sessions, setSessions] = useState<Session[]>([
     {
       title: "S1",
@@ -157,6 +161,12 @@ const gettingStarted = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
+  /*
+  Später wieder aktivieren, wenn der Flow gefixt ist
+  if (userData.signInProcessStep == "DONE"){
+    return router.replace("/home");
+  }
+    */
   return (
     <SafeAreaView
       className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]    items-center justify-center"
@@ -166,7 +176,6 @@ const gettingStarted = () => {
     >
       {userChoices == null ? (
         <PageOptions
-          userChoices={userChoices}
           setUserChoices={setUserChoices}
         />
       ) : userChoices == "GENERATE" && userDataP ? (

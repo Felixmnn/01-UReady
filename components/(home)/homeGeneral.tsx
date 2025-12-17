@@ -22,6 +22,7 @@ import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
+import CustomButton from "../(general)/customButton";
 
 
 type MiniModule = {
@@ -47,11 +48,12 @@ type MiniSession = {
     questions: number,
 }
 
-const { width } = Dimensions.get("window");
 
 const HomeGeneral = () => {
+
   const { t } = useTranslation();
   const { user, userUsage } = useGlobalContext();
+
 
   
       
@@ -269,6 +271,10 @@ const HomeGeneral = () => {
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
+      <CustomButton
+        title="Fix Getting Started"
+        handlePress={()=> router.push("/getting-started")}
+      />
       <ScrollView
         style={{
           height: "100%",

@@ -115,6 +115,19 @@ const quiz = () => {
     }, []);
 
 
+    useEffect   (() => {
+        async function saveWhenQuizEnds() {
+        if (questionsForQuiz.length === 0 && questions.length > 0) {
+            await updateModuleQuestionList(
+            moduleID ? moduleID.toString() : "",
+            questionList,
+        );}
+        }
+        saveWhenQuizEnds();
+
+    },[questionsForQuiz.length])
+
+
 
 
 
@@ -387,6 +400,9 @@ const quiz = () => {
         })
    }
 
+
+
+
  
 interface Answer {
   title: string;
@@ -519,7 +535,12 @@ const {t} = useTranslation()
         }} />
         <CustomButton
             title={t("editNote.back")}
-            handlePress={() => router.back()}
+            handlePress={async () => {
+                await updateModuleQuestionList(
+                    moduleID ? (Array.isArray(moduleID) ? moduleID[0] : moduleID) : "",
+                    questionList,
+                );
+                router.back()}}
             containerStyles='mt-5 w-full max-w-[200px] px-10 bg-blue-600 rounded-full'
         />
     </SafeAreaView>

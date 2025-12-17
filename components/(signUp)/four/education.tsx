@@ -58,7 +58,7 @@ const Education = ({
               text={
                 typeof item.name[i18n.language] === "string"
                   ? item.name[i18n.language]
-                  : Object.values(item.name)[0] || ""
+                  : Object.values(item.name) || ""
               }
               icon={item.icon}
               key={item.id}

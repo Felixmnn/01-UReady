@@ -130,7 +130,7 @@ const GlobalProvider = ({ children }) => {
           streak: 0,
           streakActive: false,
           streakLastUpdate: new Date(),
-          energy: 30,
+          energy: 50,
           microchip: 0,
           boostActive: false,
           boostActivation: new Date(),
@@ -161,7 +161,6 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   useEffect(() => {
     if (!userUsage || !userUsageInitialized) return;
-    console.log("🟦🟪🟧User Usage Change")
     const updateUsage = async () => {
       try {
 

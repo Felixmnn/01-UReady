@@ -28,7 +28,6 @@ export function compareModules(loaclModule:module, remoteModule:module):module |
 
 
     // Now the Session Lists are compared
-   
     const localSessionList = loaclModule.sessions.map((s)=> JSON.parse(s));
     const remoteSessionList = remoteModule.sessions.map((s)=> JSON.parse(s));
 

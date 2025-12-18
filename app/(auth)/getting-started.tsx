@@ -3,7 +3,7 @@ import PageOptions from "@/components/(getting-started)/pageOptions";
 import PageAiCreate from "@/components/(getting-started)/pageAiCreate";
 import PageDiscover from "@/components/(getting-started)/pageDiscover";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { loadUserData, loadUserDataKathegory } from "@/lib/appwriteDaten";
+import { loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { ModuleProps, Session, userData } from "@/types/moduleTypes";
@@ -12,6 +12,7 @@ import { View } from "react-native";
 import CreateModule from "@/components/(general)/createModule/createModule";
 import { setUserDataSetup } from "@/lib/appwriteEdit";
 import { getUserDataConfigFromMMKV } from "@/lib/mmkvFunctions";
+import { checkSession } from "@/lib/appwrite";
 
 const gettingStarted = () => {
   const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
@@ -20,13 +21,28 @@ const gettingStarted = () => {
  
 
 
-  const { user, isLoggedIn, isLoading } = useGlobalContext();
+  const { user, setUser, isLoggedIn, isLoading, setUserUsage,userUsage } = useGlobalContext();
+  
   useEffect(() => {
-
-    setUserDataSetup(user.$id);
-  }, []);
-
-
+    if(!user) {
+      checkSession().then((res) => {
+        if(!res) {
+          router.replace("/");
+        } else {
+          setUser(res);
+          loadUserUsage(res.$id).then((usage) => {
+            setUserUsage(usage);
+          })}
+        });
+    } else {
+      if (!userUsage) {
+        loadUserUsage(user.$id).then((usage) => {
+          setUserUsage(usage);
+        });
+      }
+    }
+  }, [user, userUsage]);
+  
 
 
   const [sessions, setSessions] = useState<Session[]>([
@@ -81,16 +97,18 @@ const gettingStarted = () => {
     synchronization: false,
   });
 
+  /*
   useEffect(() => {
     if (!user) return;
     async function fetchUserDataKathegory() {
       const res = await loadUserData(user.$id);
       if (res && res.signInProcessStep == "FINISHED") {
-        router.push("/home");
+        router.push("/personalize");
       }
     }
     fetchUserDataKathegory();
   }, [user]);
+  */
 
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
@@ -161,12 +179,11 @@ const gettingStarted = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
-  /*
-  Später wieder aktivieren, wenn der Flow gefixt ist
+  
   if (userData.signInProcessStep == "DONE"){
     return router.replace("/home");
   }
-    */
+  
   return (
     <SafeAreaView
       className=" flex-1 bg-gradient-to-b from-blue-900 to-[#0c111d]    items-center justify-center"

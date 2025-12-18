@@ -549,6 +549,7 @@ const SingleModule = ({
         const parsedList = reverseToManyStringifyActions(module.questionList);
         const updatedQuestionList = parsedList.filter((q) => q.id !== id);
         const res = await updateModuleData(module.$id, {
+          ...module,
           questionList: updatedQuestionList.map((item) => JSON.stringify(item)),
           questions: updatedQuestionList.length,
           progress: calculatePercent(
@@ -589,6 +590,7 @@ const SingleModule = ({
         module.questions !== noDuplicates.length
       ) {
         const res = await updateModuleData(module.$id, {
+          ...module,
           questionList: noDuplicates.map((item) => JSON.stringify(item)),
           questions: noDuplicates.length,
           progress: calculatePercent(

@@ -10,11 +10,11 @@ import {
   Image,
   Modal,
 } from "react-native";
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
-import { createUser, loginWithGoogle } from "@/lib/appwrite";
+import { createUser } from "@/lib/appwrite";
 import ErrorPopup from "@/components/(general)/(modal)/errorPopup";
 import { loginWithOAuth } from "@/lib/appwriteOAuth";
 import Policys from "../(about)/policys";

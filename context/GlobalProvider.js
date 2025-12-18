@@ -7,7 +7,7 @@ import { updateUserUsageData } from "@/lib/appwriteUpdate";
 import * as NavigationBar from "expo-navigation-bar";
 import i18n from "@/assets/languages/i18n";
 import NetInfo from "@react-native-community/netinfo";
-import { getUsavedUserUsageFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, resetUsavedUserUsageInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
+import { getUsavedUserUsageFromMMKV, getUserDataConfigFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, resetUnsavedModulesInMMKV, resetUsavedUserUsageInMMKV, saveUsavedUserUsageToMMKV, saveUserKategorieToMMKV, saveUserUsageToMMKV } from "@/lib/mmkvFunctions";
 import { initializeIapVerification, triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
 import { getUserSubscriptionStatus } from "@/lib/appwriteQuerys";
 
@@ -24,7 +24,7 @@ const GlobalProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [colorScheme, setColorScheme] = useState("light");
   const [language, setNewLanguage] = useState("DEUTSCH");
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(getUserDataConfigFromMMKV());
   const [userCathegory, setUserCategory] = useState(getUserKategorieFromMMKV());
   const [reloadNeeded, setReloadNeeded] = useState([]);
   const [userUsage, setUserUsage] = useState(getUserUsageFromMMKV());

@@ -4,13 +4,11 @@ import HomeGeneral from "@/components/(home)/homeGeneral";
 import { View } from "react-native";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
-import { updateUserUsage } from "@/functions/(userUsage)/updateUserUsage";
-import { loadUserData, loadUserUsage } from "@/lib/appwriteDaten";
-import * as Updates from "expo-updates";
+import { loadUserData } from "@/lib/appwriteDaten";
 
 const home = () => {
   const [selected, setSelected] = useState("HomeGeneral");
-  const { user, isLoggedIn, isLoading} = useGlobalContext();
+  const { user, isLoggedIn, isLoading, userData } = useGlobalContext();
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
       router.replace("/"); // oder "/sign-in"
@@ -18,13 +16,13 @@ const home = () => {
   }, [user, isLoggedIn, isLoading]);
 
    useEffect(() => {
-    if(!user) return;
-        loadUserData(user?.$id).then((data) => {
-          if (data?.signInProcessStep === "DONE") return;
-          if (data?.signInProcessStep === "FINISHED") return; 
-          else {router.replace("/personalize")}
-        });
-    }, [user]);
+    if(!userData) return;
+        if (userData?.signInProcessStep === "DONE") return;
+        if (userData?.signInProcessStep === "FINISHED") {
+          router.replace("/getting-started");
+        }
+        else {router.replace("/personalize")}
+    }, [userData]);
  
 
 

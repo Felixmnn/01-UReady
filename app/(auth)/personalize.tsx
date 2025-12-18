@@ -102,7 +102,7 @@ const personalize = () => {
       userData?.signInProcessStep === "FINISHED" &&
       !editEducationGoals
     ) {
-       Updates.reloadAsync();
+       router.replace("/getting-started")
     }
   }, [userData]);
 

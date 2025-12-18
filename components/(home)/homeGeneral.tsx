@@ -271,10 +271,7 @@ const HomeGeneral = () => {
   return (
     <SafeAreaView className="h-full w-full ">
       <TokenHeader/>
-      <CustomButton
-        title="Fix Getting Started"
-        handlePress={()=> router.push("/getting-started")}
-      />
+      
       <ScrollView
         style={{
           height: "100%",

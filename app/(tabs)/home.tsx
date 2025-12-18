@@ -4,7 +4,6 @@ import HomeGeneral from "@/components/(home)/homeGeneral";
 import { View } from "react-native";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
-import { loadUserData } from "@/lib/appwriteDaten";
 
 const home = () => {
   const [selected, setSelected] = useState("HomeGeneral");
@@ -17,12 +16,10 @@ const home = () => {
 
    useEffect(() => {
     if(!userData) return;
-    console.log("UserData im Home:", userData);
-        if (userData?.signInProcessStep === "DONE") return;
-        if (userData?.signInProcessStep === "FINISHED") {
-          router.replace("/getting-started");
-        }
-        else {router.replace("/personalize")}
+    if (userData?.signInProcessStep === "DONE") return;
+    if (userData?.signInProcessStep === "FINISHED") {
+      router.replace("/getting-started");
+    }
     }, [userData]);
  
 

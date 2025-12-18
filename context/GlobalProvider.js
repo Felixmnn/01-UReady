@@ -163,12 +163,11 @@ const GlobalProvider = ({ children }) => {
     if (!userUsage || !userUsageInitialized) return;
     const updateUsage = async () => {
       try {
-
-
+        console.log("Usser Usage energy:", userUsage.energy);
         const res = await updateUserUsageData({
-          ...userUsage
+          ...userUsage,
         });
-        saveUserUsageToMMKV(userUsage);
+        saveUserUsageToMMKV(res);
       } catch (err) {
         saveUsavedUserUsageToMMKV(userUsage);
         if (__DEV__) console.log("Usage update error", err);

@@ -37,6 +37,7 @@ const TokenHeader = ({
     }
 
     if (userUsage.energy < 10 && hoursPassed >= 2) {
+      console.log("🟪🟪🟪🟪🟪🟪")
       const steps = Math.floor(hoursPassed / 2);
       const newEnergy = Math.min(10, userUsage.energy + steps);
 

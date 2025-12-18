@@ -25,6 +25,7 @@ import CustomButton from "../(general)/customButton";
 import { getUserDataConfigFromMMKV, getUserKategorieFromMMKV } from "@/lib/mmkvFunctions";
 import { getMatchingModulesForGettingStarted } from "@/lib/appwriteQuerys";
 import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
+import { loadUserDataKathegory } from "@/lib/appwriteDaten";
 
 const PageDiscover = ({
   setUserChoices,
@@ -39,23 +40,30 @@ const PageDiscover = ({
 }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
-  const { user } = useGlobalContext();
+  const { user, userCathegory, setUserCategory } = useGlobalContext();
   const [matchingModules, setMatchingModules] = useState<module[]>([]);
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const { width } = useWindowDimensions();
   const numColumns = Math.floor(width / 300);
 
   useEffect(() => {
+    if (!user) return;
     async function fetchModules() {
-        const userDataHere = getUserKategorieFromMMKV();
-        const res = await  getMatchingModulesForGettingStarted(userDataHere)
-        console.log("Samba")
-        console.log("Length der Module:", res.length);
-        setMatchingModules(res);
-        setLoading(false);
+        if (!userCathegory) {
+          const res = loadUserDataKathegory(user.$id);
+          setUserCategory(res);
+          const modules = await getMatchingModulesForGettingStarted(res);
+          setMatchingModules(modules);
+          setLoading(false);
+
+        } else {
+          const res = await  getMatchingModulesForGettingStarted(userCathegory)
+          setMatchingModules(res);
+          setLoading(false);
+        }
     }
     fetchModules();
-  }, [userData]);
+  }, [user]);
 
   async function add(mod: any) {
     setLoading(true);

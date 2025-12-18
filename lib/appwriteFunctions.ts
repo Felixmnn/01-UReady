@@ -32,7 +32,7 @@ export async function triggerSubscriptionVerification(
   purchaseToken: string
 ): Promise<IapVerificationResponse> {
   const functionId = "692e779d0011cf896e95";
-
+  console.log("Triggering subscription verification for:", { productId, purchaseToken });
   try {
     const payload = {
       productId,

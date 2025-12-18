@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import PageOptions from "@/components/(getting-started)/pageOptions";
 import PageAiCreate from "@/components/(getting-started)/pageAiCreate";
 import PageDiscover from "@/components/(getting-started)/pageDiscover";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { loadUserData, loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
+import {  loadUserDataKathegory, loadUserUsage } from "@/lib/appwriteDaten";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import {  router } from "expo-router";
 import { ModuleProps, Session, userData } from "@/types/moduleTypes";
 import TutorialFirstModule from "@/components/(tutorials)/tutorialFirstModule";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import CreateModule from "@/components/(general)/createModule/createModule";
-import { setUserDataSetup } from "@/lib/appwriteEdit";
 import { getUserDataConfigFromMMKV } from "@/lib/mmkvFunctions";
 import { checkSession } from "@/lib/appwrite";
 
 const gettingStarted = () => {
+  console.log("Getting Started Component Rendered");
   const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
   
   const userData = getUserDataConfigFromMMKV();
  
 
 
-  const { user, setUser, isLoggedIn, isLoading, setUserUsage,userUsage } = useGlobalContext();
+  const { user, setUser, isLoggedIn, isLoading, setUserUsage,userUsage, userCathegory, setUserCategory } = useGlobalContext();
   
   useEffect(() => {
     if(!user) {
@@ -35,14 +35,31 @@ const gettingStarted = () => {
           })}
         });
     } else {
+      console.log("User vorhanden im GS");
       if (!userUsage) {
         loadUserUsage(user.$id).then((usage) => {
+          console.log("Geladene UserUsage im GS:", usage);
           setUserUsage(usage);
         });
       }
+      console.log(" UserUsage vorhanden");
+      console.log("UserKathegory im GS:", userCathegory);
+      if (!userCathegory) {
+        loadUserDataKathegory(user.$id).then((dataKat) => {
+          console.log("Geladene UserKathegory im GS:", dataKat);
+          setUserCategory(dataKat);
+        });
+      }
+      console.log(" UserKathegory vorhanden");
     }
-  }, [user, userUsage]);
+  }, [user]);
   
+   useEffect(() => {
+    if (!userCathegory) return;
+    if (userCathegory.signInProcessStep == "DONE"){ 
+      router.replace("/home");
+    } 
+  }, [userCathegory]);
 
 
   const [sessions, setSessions] = useState<Session[]>([
@@ -109,80 +126,44 @@ const gettingStarted = () => {
     fetchUserDataKathegory();
   }, [user]);
   */
-
+  /*
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
       router.replace("/");
     }
   }, [user, isLoggedIn, isLoading]);
-
-  const [userDataP, setUserData] = useState<userData>();
+  */
 
   useEffect(() => {
-    if (userDataP == null) return;
+    if (userCathegory == null) return;
     setNewModule({
       ...newModule,
       releaseDate: new Date(),
-      creator: userDataP.$id,
-      creationCountry: userDataP.country,
-      creationUniversity: userDataP.university,
-      creationUniversityProfession: userDataP.studiengangZiel,
-      creationRegion: userDataP.region,
-      creationUniversitySubject: userDataP.studiengang,
-      creationSubject: userDataP.schoolSubjects,
-      creationEducationSubject: userDataP.educationSubject,
-      creationUniversityFaculty: userDataP.faculty,
-      creationSchoolForm: userDataP.schoolType,
-      creationKlassNumber: userDataP.schoolGrade,
-      creationLanguage: userDataP.language,
-      creationEducationKathegory: userDataP.educationKathegory,
-      studiengangKathegory: userDataP.studiengangKathegory,
-      kategoryType: userDataP.kategoryType,
+      creator: userCathegory.$id,
+      creationCountry: userCathegory.country,
+      creationUniversity: userCathegory.university,
+      creationUniversityProfession: userCathegory.studiengangZiel,
+      creationRegion: userCathegory.region,
+      creationUniversitySubject: userCathegory.studiengang,
+      creationSubject: userCathegory.schoolSubjects,
+      creationEducationSubject: userCathegory.educationSubject,
+      creationUniversityFaculty: userCathegory.faculty,
+      creationSchoolForm: userCathegory.schoolType,
+      creationKlassNumber: userCathegory.schoolGrade,
+      creationLanguage: userCathegory.language,
+      creationEducationKathegory: userCathegory.educationKathegory,
+      studiengangKathegory: userCathegory.studiengangKathegory,
+      kategoryType: userCathegory.kategoryType,
     });
-  }, [userDataP]);
+  }, [userCathegory]);
 
-  useEffect(() => {
-    if (user == null) return;
-    async function fetchUserData() {
-      const res = await loadUserDataKathegory(user.$id);
-      if (res) {
-        // Map or cast the Document to userData type
-        const mappedUserData: userData = {
-          $id: res.$id,
-          country: res.country,
-          university: res.university,
-          studiengangZiel: res.studiengangZiel,
-          region: res.region,
-          studiengang: res.studiengang,
-          schoolSubjects: res.schoolSubjects,
-          educationSubject: res.educationSubject,
-          faculty: res.faculty,
-          schoolType: res.schoolType,
-          schoolGrade: res.schoolGrade,
-          language: res.language,
-          educationKathegory: res.educationKathegory,
-          studiengangKathegory: res.studiengangKathegory,
-          kategoryType: res.kategoryType,
-          tutorialCompleted: res.tutorialCompleted ?? false,
-          signInProcessStep: res.signInProcessStep ?? "",
-          createdAt: res.createdAt ?? "",
-          updatedAt: res.updatedAt ?? "",
-        };
-        setUserData(mappedUserData);
-      }
-    }
-    fetchUserData();
-  }, [user]);
 
   const [tutorialStepAI, setTutorialStepAI] = useState(0);
   const [tuturialStep, setTutorialStep] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
-  
-  if (userData.signInProcessStep == "DONE"){
-    return router.replace("/home");
-  }
+ 
   
   return (
     <SafeAreaView
@@ -190,12 +171,13 @@ const gettingStarted = () => {
       style={{
         backgroundColor: "#0c111d",
       }}
-    >
+    > 
+    
       {userChoices == null ? (
         <PageOptions
           setUserChoices={setUserChoices}
         />
-      ) : userChoices == "GENERATE" && userDataP ? (
+      ) : userChoices == "GENERATE" && userCathegory ? (
         <PageAiCreate
           tutorialStep={tutorialStepAI}
           setTutorialStep={setTutorialStepAI}
@@ -203,10 +185,11 @@ const gettingStarted = () => {
           setUserChoices={setUserChoices}
           newModule={newModule}
           setNewModule={setNewModule}
-          userData={userDataP}
+          userData={userCathegory}
+          isGettingStarted={true} 
         />
-      ) : userChoices == "DISCOVER" && userDataP ? (
-        <PageDiscover setUserChoices={setUserChoices} userData={userDataP} nothingForMe={() => setUserChoices("CREATE")}/>
+      ) : userChoices == "DISCOVER" && userCathegory ? (
+        <PageDiscover setUserChoices={setUserChoices} userData={userCathegory} nothingForMe={() => setUserChoices("CREATE")}/>
       ) : userChoices == "CREATE" ? (
         <View className="flex-1 w-full">
           <TutorialFirstModule

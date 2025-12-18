@@ -5,12 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { finishTransaction, purchaseUpdatedListener, useIAP } from 'react-native-iap';
 import { triggerSubscriptionVerification } from '@/lib/appwriteFunctions';
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { getUserSubscriptionStatus } from '@/lib/appwriteDaten';
 
 
 export default function IapAbo () {
   
   const { t } = useTranslation(); 
-  const { subscriptionStatus, setSubscriptionStatus } = useGlobalContext();
+  const { subscriptionStatus, setSubscriptionStatus, user } = useGlobalContext();
   const {connected, subscriptions, fetchProducts, requestPurchase} = useIAP();
   const [output, setOutput] = React.useState('');
   useEffect(() => {
@@ -93,6 +94,11 @@ useEffect(() => {
     processed.add(purchase.purchaseToken);
     
     try {
+      if (purchase.productId !== 'no_ads' && purchase.productId !== 'no_ads_12') {
+        await finishTransaction({ purchase });
+        return;
+      };
+       
       const response = await triggerSubscriptionVerification(
         purchase.productId,
         purchase.purchaseToken
@@ -100,6 +106,8 @@ useEffect(() => {
       if (response.data.data != undefined) {
         return ;
       }
+
+      
      
 
       if (!response.success) {
@@ -107,8 +115,11 @@ useEffect(() => {
         return;
       }    
       const res = await finishTransaction({ purchase });
-      if (response.data.subscriptionDocument) setSubscriptionStatus(response.data.subscriptionDocument);
 
+      const subscriptionStatus = await getUserSubscriptionStatus(user.$id);
+      if (subscriptionStatus) {
+      setSubscriptionStatus(subscriptionStatus);
+      }
     } catch (error) {
       return; // Bei Fehler nichts weiter tun
     }

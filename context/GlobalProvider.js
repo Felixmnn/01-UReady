@@ -218,7 +218,7 @@ const GlobalProvider = ({ children }) => {
       const expiry = new Date(status.expiry);
       const now = new Date();
       if ( status.status == "active" && expiry < now) {
-        
+        console.log("Here")
         const res = await triggerSubscriptionVerification(
           status.productId,
           status.linkedPurchaseToken,

@@ -68,8 +68,8 @@ const shop = () => {
               <Header title={t("shop.buyEnergy")}/>
               <SimpleStore/>
               <Header title={t("shop.freeEnergy")}/>
-              <View className="p-4">
-                <RewardedAdScreen aproved={false}/>
+              <View className="flex-1 p-4">
+                <RewardedAdScreen />
               </View>
               {
               subscriptionStatus && !subscriptionStatus.isActive &&

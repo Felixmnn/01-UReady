@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import images from "@/assets/shopItems/itemConfig";
 import { triggerSubscriptionVerification } from "@/lib/appwriteFunctions";
+import { loadUserUsage } from "@/lib/appwriteDaten";
 
 export default function SimpleStore() {
-  const { setUserUsage } = useGlobalContext();
+  const { setUserUsage,user } = useGlobalContext();
   const { connected, products, fetchProducts, requestPurchase, finishTransaction,  } = useIAP();
   const { t } = useTranslation();
   // Produkt-IDs je Plattform
@@ -38,37 +39,40 @@ export default function SimpleStore() {
     }
   }, [connected]);
 
+  const processedPurchaseTokens = new Set<string>();
 
 
   // Listener für abgeschlossene Käufe
-  useEffect(() => {
-
-    const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
-        if (!purchase.purchaseToken) return;
-        
+    useEffect(() => {
+      const purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase) => {
+        const token = purchase.purchaseToken;
+        if (!token || processedPurchaseTokens.has(token)) return;
+        processedPurchaseTokens.add(token);
+        console.log("Verarbeite Kauf:", purchase.productId);
         const res = await triggerSubscriptionVerification(
-            purchase.productId,
-            purchase.purchaseToken || "",
-          ) 
-          if (res.data.data == undefined) return;
-          setUserUsage((prev:any) => ({
-          ...prev,
-          energy: res.data.data.energy,
-        }));
+          purchase.productId,
+          token,
+        );
+        if (res.data.data == undefined) return;
+
+        const newUserSage = await loadUserUsage(user.$id);
+        if (newUserSage) {
+          setUserUsage(newUserSage);
+        }
+
         if (Platform.OS === 'android') {
-          await consumePurchaseAndroid(
-            purchase.purchaseToken ? purchase.purchaseToken : '',
-          );
+          await consumePurchaseAndroid(token);
         }
         await finishTransaction({
           purchase,
           isConsumable: false,
         });
       });
-    return () => {
-      purchaseUpdateSubscription.remove();
-    };
-  }, []);
+
+      return () => {
+        purchaseUpdateSubscription.remove();
+      };
+    }, []);
 
   const handlePurchase = async (productId: string) => {
     try {

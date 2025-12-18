@@ -54,11 +54,7 @@ export default function RewardedAdScreen({
 }, [key]); // <--- key als Dependency
 
   if (!loaded) {
-    <View key={key} className="flex-1 w-full  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2"
-    style={{
-      height: 70,
-    }}
-    >
+    return <View key={key} className="flex-1 w-full  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center mb-2">
       <Image
         source={images.COMERCIAL}
         style={{
@@ -72,11 +68,7 @@ export default function RewardedAdScreen({
     </View>
   }
   return (
-    <View key={key} className="flex-1 w-full  bg-[#294a67] rounded-[10px] p-2 flex-row items-center "
-      style={{
-        height: 70,
-      }}
-    >
+    <View key={key} className="flex-1 w-full  h-20 bg-[#294a67] rounded-[10px] p-2 flex-row items-center ">
       <Image
         source={images.COMERCIAL}
         style={{

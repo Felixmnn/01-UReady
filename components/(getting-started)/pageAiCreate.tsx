@@ -18,6 +18,7 @@ import {
   addDocumentConfig,
   addDocumentToBucket,
   addDocumentToBucketWeb,
+  setUserDataSetup,
 } from "@/lib/appwriteEdit";
 import TutorialFirstAIModule from "../(tutorials)/tutorialFirstAIModule";
 import { Session } from "@/types/moduleTypes";
@@ -51,6 +52,7 @@ const PageAiCreate = ({
   setTutorialStep = null,
   goBackVisible = true,
   calculatePrice = false,
+  isGettingStarted = false,
 }: {
   newModule: module;
   userData: UserUsage | null;
@@ -61,11 +63,12 @@ const PageAiCreate = ({
   setTutorialStep?: any;
   goBackVisible?: boolean;
   calculatePrice?: boolean;
+  isGettingStarted?: boolean;
 }) => {
   // Lokale
   const { t } = useTranslation();
 
-  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline, setUserData } = useGlobalContext();
   const [questions, setQuestions] = useState<any[]>([]);
   const [sessions, setSessions] = useState<Session[]>([
     {
@@ -213,6 +216,7 @@ const PageAiCreate = ({
   }
 
   async function generateModule() {
+
     if (newModule.name.length < 2) {
       setErrorMessage(t("createModule.errorMissingName"));
       setIsError(true);
@@ -285,6 +289,10 @@ const PageAiCreate = ({
               energy: userUsage.energy - calculateTotalPrice(),
             });
     }
+    console.log("🟧🟧🟧isGettingStarted:", isGettingStarted);
+    const res = await setUserDataSetup(user.$id)
+    if (res) setUserData(res);
+    console.log("🟧🟧🟧UserDataSetup gesetzt",res);
   }
 
   const addItem = () => {

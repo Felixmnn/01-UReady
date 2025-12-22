@@ -1866,12 +1866,21 @@
     "tryAgain": "Try again"
   },
   "shop": {
-    "refillXEnergy": "Refill {{amount}} energy",
-    "getXEnergyForY": "Get {{amount}} energy for {{price}}€",
-    "buy": "Buy",
-    "buyEnergy": "Buy energy",
-    "freeEnergy": "Free energy"
-  },
+    "loadingAds": "Loading ads...",
+  "removeAds": "Remove Ads",
+  "aYearWithoutAds": "A year without ads",
+  "aMonthWithoutAds": "A month without ads",
+  "disableAdsFor12MonthsFor": "Disable ads for 12 months for {{price}}",
+  "disableAdsFor1MonthFor": "Disable ads for 1 month for {{price}}",
+  "refillXEnergy": "Refill {{amount}} energy",
+  "getXEnergyForY": "Get {{amount}} energy for {{price}}€",
+  "upgrade": "Upgrade",
+  "active": "Active",
+  "subscribe": "Subscribe",
+  "buy": "Buy",
+  "buyEnergy": "Buy energy",
+  "freeEnergy": "Free energy"
+},
   "ad": {
     "watchAd": "Watch ad",
     "get1EnergyFree": "Get 1 energy for free",

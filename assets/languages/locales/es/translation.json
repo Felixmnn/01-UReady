@@ -1927,12 +1927,22 @@
     "noNetworkConnection": "Sin conexión de red",
     "tryAgain": "Intentar de nuevo"
   },"shop": {
-    "refillXEnergy": "Recargar {{amount}} de energía",
-    "getXEnergyForY": "Obtén {{amount}} de energía por {{price}}€",
-    "buy": "Comprar",
-    "buyEnergy": "Comprar energía",
-    "freeEnergy": "Energía gratis"
-  },"ad": {
+    "loadingAds": "Cargando anuncios...",
+  "removeAds": "Eliminar anuncios",
+  "aYearWithoutAds": "Un año sin anuncios",
+  "aMonthWithoutAds": "Un mes sin anuncios",
+  "disableAdsFor12MonthsFor": "Desactivar anuncios durante 12 meses por {{price}}",
+  "disableAdsFor1MonthFor": "Desactivar anuncios durante 1 mes por {{price}}",
+  "refillXEnergy": "Recargar {{amount}} de energía",
+  "getXEnergyForY": "Obtén {{amount}} de energía por {{price}}€",
+  "upgrade": "Mejorar",
+  "active": "Activo",
+  "subscribe": "Suscribirse",
+  "buy": "Comprar",
+  "buyEnergy": "Comprar energía",
+  "freeEnergy": "Energía gratis"
+}
+,"ad": {
     "watchAd": "Ver anuncio",
     "get1EnergyFree": "Obtén 1 energía gratis",
     "watch": "Ver"

@@ -50,7 +50,12 @@ const shop = () => {
                 </Text>
               </View>)
   }
-  return (
+
+  
+
+
+
+    return (
     <Tabbar
       content={() => {
         return (
@@ -61,7 +66,7 @@ const shop = () => {
             <ScrollView className="w-full">
               { 
               subscriptionStatus && subscriptionStatus.isActive && <View >
-                <Header title="Werbung entfernen"/>
+                <Header title={t("shop.removeAds")}/>
                 <IapAbo/>
               </View>
               }
@@ -74,7 +79,8 @@ const shop = () => {
               {
               subscriptionStatus && !subscriptionStatus.isActive &&
               <View>
-                <Header title="Werbung entfernen"/>
+                <Header title={t("shop.removeAds")}
+                />
                 <IapAbo/>
               </View>
               }

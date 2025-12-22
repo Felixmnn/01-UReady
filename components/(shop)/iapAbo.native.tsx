@@ -165,9 +165,18 @@ useEffect(() => {
           style={{ height: 50, width: 50, resizeMode: "contain", marginRight: 10 }}
         />
         <View style={{ flex: 1 }}>
-          <Text style={{ color: "white", fontWeight: "bold" }}>A moth without Ads</Text>
-          <Text style={{ color: "#ccc" }}>Disable ads for {duration} month for {price}€
-
+          <Text style={{ color: "white", fontWeight: "bold" }}>{
+            subscription.id === 'no_ads_12' 
+            ? t("shop.aYearWithoutAds") :
+            t("shop.aMonthWithoutAds")
+          }</Text>
+          <Text style={{ color: "#ccc" }}>
+            {
+              subscription.id === 'no_ads_12'
+            ? t("shop.disableAdsFor12MonthsFor", { price })
+            :
+            t("shop.disableAdsFor1MonthFor", { price })
+            }
           </Text>
         </View>
         <TouchableOpacity
@@ -183,8 +192,8 @@ useEffect(() => {
           className="ml-2"
         >
           <Text style={{ color: "white", fontWeight: "bold" }}>{
-            otherIsActive ? "Upgrade" :
-            isActive ? "Active" : "Subscribe"
+            otherIsActive ? t("shop.upgrade") :
+            isActive ? t("shop.active") : t("shop.subscribe")
         }</Text>
         </TouchableOpacity>
       </View>

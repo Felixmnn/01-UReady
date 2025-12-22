@@ -64,7 +64,7 @@ export default function RewardedAdScreen({
           marginRight: 10,
         }}
       />
-      <Text className="text-white font-bold">{t("ad.loadingAd")}</Text>
+      <Text className="text-white font-bold">{t("shop.loadingAd")}</Text>
     </View>
   }
   return (

@@ -1818,8 +1818,17 @@
       "tryAgain": "Erneut versuchen"
      },
      "shop":{
+      "loadingAds": "Werbung wird geladen...",
+      "removeAds": "Werbung entfernen",
+      "aYearWithoutAds": "Ein Jahr ohne Werbung",
+      "aMonthWithoutAds": "Ein Monat ohne Werbung",
+      "disableAdsFor12MonthsFor": "Deaktiviere Werbung für 12 Monate für {{price}}",
+      "disableAdsFor1MonthFor" : "Deaktiviere Werbung für 1 Monat für {{price}}",
        "refillXEnergy": "Energie um {{amount}} auffüllen",
        "getXEnergyForY" : "Erhalte {{amount}} Energie für {{price}}€",
+       "upgrade": "Upgrade",
+       "active": "Aktiv",
+       "subscribe": "Abonnieren",
        "buy": "Kaufen",
        "buyEnergy": "Energie kaufen",
        "freeEnergy": "Kostenlose Energie"

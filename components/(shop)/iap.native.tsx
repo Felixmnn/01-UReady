@@ -114,8 +114,14 @@ export default function SimpleStore() {
       
       <View style={{ flex: 1, height: 80, backgroundColor: "#0560a5", borderRadius: 10, padding: 8, flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
         <Image
-          source={images.bolt}
-          style={{ height: 50, width: 50, resizeMode: "contain", marginRight: 10 }}
+          source={
+            amount == 7500 ? images.bolt_7500
+            : amount == 3000 ? images.bolt_3000
+            : amount == 1200 ? images.bolt_1200
+            : amount == 200 ? images.bolt_200
+            : images.bolt
+          }
+          style={{ height: 50, width: 50, resizeMode: "contain", marginRight: 10, borderRadius: 5 }}
         />
         <View style={{ flex: 1 }}>
           <Text style={{ color: "white", fontWeight: "bold" }}>{t("shop.refillXEnergy", { amount })}</Text>

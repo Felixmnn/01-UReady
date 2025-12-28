@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Modal, ScrollView, Platform } from "react-native";
 import React, { useEffect } from "react";
 import InfoModule from "../(tabs)/infoModule";
 import OptionSelector from "../(tabs)/optionSelector";
@@ -641,7 +641,7 @@ const ProfileSettings = () => {
                         iconName={"shield-alt"}
                         handlePress={() => router.push("/policys")}
                       />
-                      { isOffline ? null :
+                      { isOffline || Platform.OS == "ios" ? null :
                       <SettingsOption
                         title={t("profileSettings.actioncode")}
                         iconName={"bolt"}

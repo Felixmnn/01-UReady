@@ -60,12 +60,12 @@ export default function Index() {
 
 
   // Solange geladen wird oder es noch keine userData gibt, zeigen wir einen Ladescreen
-  if (isLoading) {
+  if (isLoading ) {
     return (
-      <SafeAreaView className="flex-1 bg-[#0c111d]">
+      <SafeAreaView className="flex-1 bg-[#008dd2]">
       <View className="flex-1 justify-center items-center">
         <Image
-          source={require("../assets/images/adaptive-icon.png")} // dein Icon als PNG/SVG
+          source={require("../assets/images/splash-icon.png")} // dein Icon als PNG/SVG
           style={{ width: 200, height: 200, marginBottom: 20 }}
           resizeMode="contain"
         />

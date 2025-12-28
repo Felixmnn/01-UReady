@@ -1,5 +1,5 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import { View, Text, Image, ScrollView, TouchableOpacity, Platform, Linking } from "react-native";
+import React, { use, useEffect } from "react";
 import Tabbar from "@/components/(tabs)/tabbar";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
@@ -10,6 +10,7 @@ import SimpleStore from "@/components/(shop)/iap";
 import { useTranslation } from "react-i18next";
 import Offline from "@/components/(general)/offline";
 import IapAbo from "@/components/(shop)/iapAbo";
+import { checkAprovedAdd } from "@/lib/appwriteDaten";
 
 const shop = () => {
   
@@ -51,6 +52,13 @@ const shop = () => {
               </View>)
   }
 
+  const [aprovedAdd, setAprovedAdd] = React.useState(false);
+
+  useEffect(() => {
+    checkAprovedAdd().then((res) => {
+      setAprovedAdd(res);
+    });
+  }, []);
   
 
 
@@ -64,26 +72,31 @@ const shop = () => {
             { isOffline ? <Offline/> :
 
             <ScrollView className="w-full">
-              { 
-              subscriptionStatus && subscriptionStatus.isActive && <View >
-                <Header title={t("shop.removeAds")}/>
-                <IapAbo/>
-              </View>
-              }
               <Header title={t("shop.buyEnergy")}/>
               <SimpleStore/>
               <Header title={t("shop.freeEnergy")}/>
               <View className="flex-1 p-4">
-                <RewardedAdScreen />
+                <RewardedAdScreen
+                  aproved={aprovedAdd}
+                 />
               </View>
-              {
-              subscriptionStatus && !subscriptionStatus.isActive &&
+             
               <View>
                 <Header title={t("shop.removeAds")}
                 />
                 <IapAbo/>
+                {
+                  (Platform.OS === "ios" ) &&
+                  <TouchableOpacity onPress={async() => {
+                    const res = await Linking.openURL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/");
+                  }}>
+                    <Text className="text-center text-blue-300 italic mb-4">
+                      EULA
+                    </Text>
+                  </TouchableOpacity>
+                }
               </View>
-              }
+             
             </ScrollView>
       }
           </View>

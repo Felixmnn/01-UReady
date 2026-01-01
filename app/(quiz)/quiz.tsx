@@ -37,7 +37,9 @@ if (!isWeb) {
 
 
 
-const adUnitId = !isWeb && __DEV__ ? TestIds.INTERSTITIAL : !isWeb ? TestIds.INTERSTITIAL : null;
+const adUnitId = !isWeb && __DEV__ ? Platform.OS == "android" ?
+"ca-app-pub-9834411851111627/5048162176" : TestIds.INTERSTITIAL :TestIds.INTERSTITIAL;
+
 const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
 const quiz = () => {

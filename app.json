@@ -3,7 +3,6 @@
     "name": "QReady",
     "slug": "node-ready",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "node-ready",
     "userInterfaceStyle": "automatic",

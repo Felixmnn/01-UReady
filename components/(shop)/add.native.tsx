@@ -16,9 +16,7 @@ export default function RewardedAdScreen({
 
   // Dynamically require to avoid bundling on web
 
-  const adUnitId = !aproved
-    ? TestIds.REWARDED
-    : Platform.OS == "android" ? "ca-app-pub-9834411851111627/7624634683"
+  const adUnitId = Platform.OS == "android" ? "ca-app-pub-9834411851111627/7624634683"
     :  "ca-app-pub-9834411851111627/7503014052"
 
   let rewarded = useRef(

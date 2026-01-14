@@ -21,8 +21,10 @@ import { module, note, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
 import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
+import { getQuestionsFromMMKV, removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
 import { returnNewUserUsage } from "@/functions/addLastSessionModule";
+import BotCenter from "@/components/(signUp)/botCenter";
+import BotWaiting from "@/components/(signUp)/botWaiting";
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -108,6 +110,7 @@ const Data = ({
   selectAi : () => void;
 }) => {
   const { width } = useWindowDimensions();
+  const questionsInMMKV = module.$id ? getQuestionsFromMMKV(module.$id ? module.$id : "").length : -1
   const { isOffline , userUsage, setUserUsage} = useGlobalContext()
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
@@ -645,7 +648,7 @@ function calculateQuestionProgress(questionList: string[]): number {
 
   return (
     <View className="flex-1">
-      
+    
       <NichtUnterstuzterDateityp />
       {filteredData.length == 0 &&
       filteredDocuments.length == 0 &&
@@ -654,6 +657,15 @@ function calculateQuestionProgress(questionList: string[]): number {
       
       (
         <ScrollView>
+          
+          {
+            !isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
+            <BotWaiting 
+            message={".."}
+            amountOfQuestions={module.questionList.length}
+          />
+          :
+
           
           <View className="flex-1">
             { !isOffline &&
@@ -698,6 +710,9 @@ function calculateQuestionProgress(questionList: string[]): number {
               }}
             />
           </View>
+          }
+
+
         </ScrollView>
       ) : (
         <ScrollView

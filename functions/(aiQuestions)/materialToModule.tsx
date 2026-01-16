@@ -486,15 +486,21 @@ export async function generateQuestionsFromText({
     numberOfAnswers: amountOfAnswers.toString(),
     questionTypeDescription: questionTypeDescription,
   });
-  let exec;
+  let data;
   try {
     // Statt fetch → Appwrite Function benutzen
-    exec = await callThisFunction(promptTemplate);
-    if (!exec.responseBody) {
-      throw new Error("Function returned empty responseBody");
+    // callThisFunction gibt jetzt direkt JSON zurück
+    data = await callThisFunction(promptTemplate);
+
+    // Optional: Prüfen, falls nichts zurückkommt
+    if (!data) {
+      throw new Error("Server returned empty response");
     }
-    const data = JSON.parse(exec.responseBody);
-    const textResponse = data;
+
+    // Zugriff wie gewohnt
+    console.log(data);
+
+    const textResponse = data.text;
 
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");
@@ -508,7 +514,7 @@ export async function generateQuestionsFromText({
   } catch (error) {
     if (__DEV__) {
 
-      console.error("Error fetching questions via function:", error,exec?.responseBody );
+      console.error("Error fetching questions via function:", error, data );
     }
     return [];
   }
@@ -561,18 +567,22 @@ export async function questionFromTopic({
       questionTypeDescription: questionTypeDescription,
     }
   );
-
+  let data;
   try {
     // Statt fetch → Appwrite Function
-    const exec = await callThisFunction(promptTemplate);
+      // Statt fetch → Appwrite Function benutzen
+    data = await callThisFunction(promptTemplate);
 
-    if (!exec.responseBody) {
-      throw new Error("Function returned empty responseBody");
+    // Optional: Prüfen, falls nichts zurückkommt
+    if (!data) {
+      throw new Error("Server returned empty response");
     }
 
-    const data = JSON.parse(exec.responseBody);
+    // Zugriff wie gewohnt
+    console.log(data);
 
-    const textResponse = data.completion.trim();
+    const textResponse = data.text;
+
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");
 
@@ -584,7 +594,7 @@ export async function questionFromTopic({
     return [];
   } catch (error) {
     if (__DEV__) {
-      console.error("Error fetching questions from topic:", error);
+      console.error("Error fetching questions from topic:", error, data);
     }
     return [];
   }
@@ -624,15 +634,16 @@ export async function generateQuestionsFromQuestions({
     numberOfAnswers: amountOfAnswers.toString(),
     questionTypeDescription: questionTypeDescription,
   });
-
+  let data;
   try {
-    //const res = await fetch(url, { method: "POST", headers, body });
-    const exec  =  await callThisFunction(promptTemplate);
-    //if (!res.ok) throw new Error(`Fehler: ${res.status}`);
+     // Statt fetch → Appwrite Function benutzen
+     console.log("😕😕😕😕😕")
+    data = await callThisFunction(promptTemplate);
+    if (!data) {
+      throw new Error("Server returned empty response");
+    }
+    const textResponse = data.text;
 
-    const data = JSON.parse(exec.responseBody);
-
-const textResponse = data.completion.trim();
     const startIndex = textResponse.indexOf("[");
     const endIndex = textResponse.lastIndexOf("]");
 
@@ -644,7 +655,7 @@ const textResponse = data.completion.trim();
     return [];
   } catch (error) {
     if (__DEV__) {
-    console.error("Error fetching OpenAI API:", error);
+    console.error("Error fetching OpenAI API:", error, data );
     }
     return [];
   }

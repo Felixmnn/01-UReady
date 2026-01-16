@@ -93,6 +93,7 @@ export async function initializeIapVerification() {
 }
 
 
+/*
 export async function callThisFunction(prompt: string) {
   const functionId = "67fb209600235031156e";
 
@@ -105,4 +106,29 @@ export async function callThisFunction(prompt: string) {
   
 
   return response; // wichtig: NICHT response.responseBody zurückgeben!
+}
+  */
+
+export async function callThisFunction(prompt: string) {
+  // ngrok URL deines lokalen Servers
+  const NGROK_URL = "https://craniological-lawson-synecdochically.ngrok-free.dev";
+
+  try {
+    const response = await fetch(`${NGROK_URL}/gpt`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
+    console.log("Response from local GPT server:", response);
+
+    // Ganze JSON-Antwort zurückgeben, wie bei Appwrite
+    const data = await response.json();
+    console.log("Parsed JSON data:", data);
+    return data;
+  } catch (err) {
+    console.error("Error calling local GPT server:", err);
+    throw err;
+  }
 }

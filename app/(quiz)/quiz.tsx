@@ -39,8 +39,9 @@ if (!isWeb) {
 
 const adUnitId = !isWeb && __DEV__ ? Platform.OS == "android" ?
 "ca-app-pub-9834411851111627/5048162176" : TestIds.INTERSTITIAL :TestIds.INTERSTITIAL;
+    const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
-const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
+//const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
 const quiz = () => {
 
@@ -85,7 +86,24 @@ const quiz = () => {
 
     const [loaded, setLoaded] = useState(false);
 
+    function loadInterstitial() {
+  const interstitial = InterstitialAd.createAdUnitId("DEIN_AD_UNIT_ID");
+
+  interstitial.addAdEventListener(AdEventType.LOADED, () => {
+    console.log("Ad geladen!");
+  });
+
+  interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+    console.log("Ad geschlossen, neu laden...");
+    // Optional: direkt neue Instanz erzeugen
+    loadInterstitial();
+  });
+
+  interstitial.load(); // start loading
+}
+
     useEffect(() => {
+
       if (isWeb || !interstitial) return;
 
       const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
@@ -103,6 +121,10 @@ const quiz = () => {
         if (Platform.OS === 'ios') {
           StatusBar.setHidden(false);
         }
+        setLoaded(false);
+        const interstitial = InterstitialAd.createAdUnitId("ca-app-pub-9834411851111627/5048162176");
+
+        interstitial.load();
       });
   
       // Start loading the interstitial straight away

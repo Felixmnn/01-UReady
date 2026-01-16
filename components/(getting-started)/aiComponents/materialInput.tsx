@@ -149,46 +149,54 @@ const MaterialInput = ({
       </View>
       {/* Section containing inputs relvant for creating a Topic */}
       {selectedMaterialType === "TOPIC" && (
-        <View className="flex-row items-center justify-start">
-          <View className="items-center justify-between mt-2 mb-2 ml-2">
-            <PlusIcon
-              typeText={true}
-              newitem={newitem}
-              addItem={addItem}
-              handleFileUpload={handleFileUpload}
-            />
-            <TrashIcon
-              handlePress={() => handleDeleteItem(newitem.id)}
-              newitem={newitem}
+        <View className="w-full">
+          <View className="flex-row items-center justify-start">
+            <View className="items-center justify-between mt-2 mb-2 ml-2">
+              <PlusIcon
+                typeText={true}
+                newitem={newitem}
+                addItem={addItem}
+                handleFileUpload={handleFileUpload}
+              />
+              <TrashIcon
+                handlePress={() => handleDeleteItem(newitem.id)}
+                newitem={newitem}
+              />
+            </View>
+            <TextInput
+              maxLength={20000}
+              onChangeText={(text) =>
+                setNewItem({
+                  ...newitem,
+                  content: text,
+                  sessionID: newitem.sessionID ?? "",
+                })
+              }
+              value={newitem.content}
+              placeholder={t("createModule.aNewKathegorie")}
+              className="flex-1 text-white  bg-[#0c111d] p-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] ml-2"
+              placeholderTextColor={"#AAAAAA"}
+              textAlignVertical="top"
+              multiline={true}
+              style={{
+                height: 75,
+                textAlign: "left",
+                textAlignVertical: "top",
+                justifyContent: "flex-start",
+              }}
             />
           </View>
-          <TextInput
-            maxLength={2000}
-            onChangeText={(text) =>
-              setNewItem({
-                ...newitem,
-                content: text,
-                sessionID: newitem.sessionID ?? "",
-              })
-            }
-            value={newitem.content}
-            placeholder={t("createModule.aNewKathegorie")}
-            className="flex-1 text-white  bg-[#0c111d] p-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] ml-2"
-            placeholderTextColor={"#AAAAAA"}
-            textAlignVertical="top"
-            multiline={true}
-            style={{
-              height: 75,
-              textAlign: "left",
-              textAlignVertical: "top",
-              justifyContent: "flex-start",
-            }}
-          />
-        </View>
+          <View className="w-full justify-center items-end pr-4">
+            <Text className=" text-gray-400">
+              {newitem.content.length}/20000
+            </Text>
+            </View>
+          </View>
       )}
 
       {/* Section containing inputs for text based creation */}
       {selectedMaterialType === "PEN" && (
+        <View>
         <View className="flex-row items-start ">
           <View className="items-center justify-between mt-2 mb-2 ml-2">
             <PlusIcon
@@ -225,10 +233,17 @@ const MaterialInput = ({
             }}
           />
         </View>
+        <View className="w-full justify-center items-end pr-4">
+            <Text className=" text-gray-400">
+              {newitem.content.length}/2000
+            </Text>
+            </View>
+        </View>
       )}
 
       {/* Fragen aus Fragen */}
       {selectedMaterialType === "QUESTION" && (
+        <View>
         <View className="flex-row w-full items-start ">
           <View className="items-center justify-between mt-2 mb-2 ml-2">
             <PlusIcon
@@ -243,7 +258,7 @@ const MaterialInput = ({
             />
           </View>
           <TextInput
-            maxLength={2000}
+            maxLength={20000}
             onChangeText={(text) =>
               setNewItem({
                 ...newitem,
@@ -264,6 +279,12 @@ const MaterialInput = ({
               justifyContent: "flex-start",
             }}
           />
+        </View>
+        <View className="w-full justify-center items-end pr-4">
+            <Text className=" text-gray-400">
+              {newitem.content.length}/20000
+            </Text>
+            </View>
         </View>
       )}
 

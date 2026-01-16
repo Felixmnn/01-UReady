@@ -1981,5 +1981,26 @@
       "more": "Más",
       "yourImages": "Tus imágenes"
     }
+,"funFacts": {
+    "items": [
+      "Después de cargar las preguntas, puedes estudiar completamente sin conexión.",
+      "Descubre nuevos contenidos de aprendizaje de otros usuarios en Explorar.",
+      "Organiza tus conjuntos de aprendizaje de forma clara con la función de mapa.",
+      "Compartir conjuntos de aprendizaje no consume energía.",
+      "Inicia un cuestionario con ▶ y elige entre 4 modos de aprendizaje.",
+      "En Explorar puedes buscar por títulos, descripciones y usuarios.",
+      "Cuando tu energía se agota, se recarga 1 punto cada 2 horas.",
+      "QReady no tiene límites para contenidos no generados por IA.",
+      "Otros usuarios pueden encontrar los conjuntos de aprendizaje públicos.",
+      "QReady está disponible en alemán, inglés, francés y español.",
+      "Si usas la app en inglés, la IA también genera preguntas en inglés.",
+      "Descubre más de 10.000 conjuntos de aprendizaje de otros usuarios.",
+      "Define objetivos de aprendizaje individuales para cada conjunto.",
+      "Utiliza texto, imágenes y fórmulas en tus conjuntos.",
+      "Las imágenes y fórmulas descargadas también están disponibles sin conexión.",
+      "Tus preguntas se seleccionan de una lista de casi un millón de preguntas."
+    ],
+        "loading": "Dame un momento para cargar tus {{amountOfQuestions}} preguntas del cuestionario."
 
+  }
 }

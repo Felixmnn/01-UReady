@@ -1870,6 +1870,30 @@
   "imagesLoading": "Bilder werden geladen...",
   "more": "Mehr",
   "yourImages": "Deine Bilder"
-}
+},
+  "funFacts": {
+    "items": [
+      "Nach dem Laden der Fragen kannst du komplett offline lernen.",
+      "Entdecke neue Lerninhalte von anderen Nutzern über die Entdecken-Funktion.",
+      "Strukturiere deine Lernsets übersichtlich mit der Map-Funktion.",
+      "Das direkte Teilen von Lernsets kostet keine Energie.",
+      "Starte ein Quiz über ▶ und wähle aus 4 Lernmodi.",
+      "In der Entdecken-Funktion kannst du nach Titeln, Beschreibungen und Nutzern suchen.",
+      "Ist deine Energie leer, lädt sie sich alle 2 Stunden um 1 Punkt auf.",
+      "Bei QReady gibt es keine Ratelimits für nicht KI-generierte Inhalte.",
+      "Öffentliche Lernsets können von anderen Nutzern gefunden werden.",
+      "QReady ist auf Deutsch, Englisch, Französisch und Spanisch verfügbar.",
+      "Bei englischer App-Sprache erzeugt die KI auch englische Fragen.",
+      "Entdecke über 10.000 Lernsets von anderen Nutzern.",
+      "Lege für jedes Lernset individuelle Lernziele fest.",
+      "Nutze Texte, Bilder und Formeln in deinen Lernsets.",
+      "Geladene Bilder und Formeln sind auch offline verfügbar.",
+      "Deine Fragen werden aus einer Liste von beinahe 1 Million Fragen herausgesucht."
+    ],    
+    "loading": "Gib mir einen Moment, um deine {{amountOfQuestions}} Quizfragen zu laden."
+
+  }
+
+
 
 }

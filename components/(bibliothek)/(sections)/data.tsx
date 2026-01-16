@@ -416,6 +416,7 @@ function calculateQuestionProgress(questionList: string[]): number {
                         <TouchableOpacity className="p-2 items-center justify-center" 
                         
                         onPress={async () => {
+                          console.log("Lösche Frage mit ID:", item.$id);
                               setIsVisibleEditQuestion({
                                 state: false,
                                 status: "EDIT",
@@ -659,7 +660,8 @@ function calculateQuestionProgress(questionList: string[]): number {
         <ScrollView>
           
           {
-            !isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
+            //!isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
+            true?
             <BotWaiting 
             message={".."}
             amountOfQuestions={module.questionList.length}

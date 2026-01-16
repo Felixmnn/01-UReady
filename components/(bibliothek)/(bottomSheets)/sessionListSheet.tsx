@@ -14,6 +14,7 @@ import ColorPicker from "@/components/(general)/colorPicker";
 import IconPicker from "@/components/(general)/iconPicker";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import Offline from "@/components/(general)/offline";
+import CustomButton from "@/components/(general)/customButton";
 
 const SessionListSheet = ({
   sheetRef,
@@ -29,6 +30,34 @@ const SessionListSheet = ({
   const { t } = useTranslation();
   const { isOffline } = useGlobalContext();
 
+  // Draft state: collect changes locally and commit on button press
+  const [drafts, setDrafts] = React.useState<Record<string, {
+    title: string;
+    description: string;
+    color: string | null;
+    iconName: string;
+  }>>({});
+
+  // Initialize drafts when sessions change
+  React.useEffect(() => {
+    const next: Record<string, {
+      title: string;
+      description: string;
+      color: string | null;
+      iconName: string;
+    }> = {};
+    sessions?.forEach((s, i) => {
+      const key = (s?.id ? String(s.id) : String(i));
+      next[key] = {
+        title: s?.title ?? "",
+        description: s?.description ?? "",
+        color: (s?.color ?? null) as string | null,
+        iconName: s?.iconName ?? "question",
+      };
+    });
+    setDrafts(next);
+  }, [sessions]);
+
   return (
     <CustomBottomSheet ref={sheetRef}>
       {isOffline ? <Offline /> :
@@ -37,9 +66,12 @@ const SessionListSheet = ({
         style={{ backgroundColor: "rgba(17, 24, 39,0.7)" }}
       >
         <View className="rounded-xl w-full">
-          {sessions?.map((session, index) => (
+          {sessions?.map((session, index) => {
+            const itemKey = (session?.id ? String(session.id) : String(index));
+            const draft = drafts[itemKey];
+            return (
             <View
-              key={session.id || index}
+              key={itemKey}
               className="mt-2 bg-gray-900 rounded-xl border-gray-600 border-[1px]"
             >
               {/* Session Header */}
@@ -127,16 +159,15 @@ const SessionListSheet = ({
                   <TextInput
                     className="text-white rounded-[10px] p-2 my-2 ml-2 border-blue-700 border-[1px] bg-[#0c111d]"
                     style={{ height: 40 }}
-                    value={session.title}
+                    value={draft?.title ?? session.title ?? ""}
                     maxLength={50}
                     placeholder={t("editSession.placeholderSessions")}
                     placeholderTextColor={"#9CA3AF"}
                     onChangeText={(e) =>
-                      setSessions((prev) => {
-                        const updated = [...prev];
-                        updated[index] = { ...updated[index], title: e };
-                        return updated;
-                      })
+                      setDrafts((prev) => ({
+                        ...prev,
+                        [itemKey]: { ...(prev[itemKey] ?? drafts[itemKey] ?? {}), title: e },
+                      }))
                     }
                   />
 
@@ -145,59 +176,73 @@ const SessionListSheet = ({
                     {t("editSession.description")}
                   </Text>
                   <TextInput
-                    value={session.description}
+                    value={draft?.description ?? session.description ?? ""}
                     maxLength={150}
                     placeholderTextColor={"#9CA3AF"}
                     placeholder={t("editSession.placeholderDescription")}
                     className="text-white rounded-[10px] p-2 my-2 ml-2 border-blue-700 border-[1px] bg-[#0c111d]"
                     style={{ height: 40 }}
                     onChangeText={(e) =>
-                      setSessions((prev) => {
-                        const updated = [...prev];
-                        updated[index] = { ...updated[index], description: e };
-                        return updated;
-                      })
+                      setDrafts((prev) => ({
+                        ...prev,
+                        [itemKey]: { ...(prev[itemKey] ?? drafts[itemKey] ?? {}), description: e },
+                      }))
                     }
                   />
 
                   {/* Color & Icon Picker */}
                   <View style={{ width: width > 600 ? 500 : width - 60 }}>
                     <ColorPicker
-                      selectedColor={session.color}
+                      selectedColor={draft?.color ?? session.color}
                       changeColor={(newColor) =>
-                        setSessions((prev) => {
-                          const updated = [...prev];
-                          updated[index] = {
-                            ...updated[index],
-                            color: newColor,
-                          };
-                          return updated;
-                        })
+                        setDrafts((prev) => ({
+                          ...prev,
+                          [itemKey]: { ...(prev[itemKey] ?? drafts[itemKey] ?? {}), color: newColor },
+                        }))
                       }
                       title={t("editSession.color")}
                       indexItem={index}
                     />
                     <IconPicker
-                      selectedIcon={session.iconName}
+                      selectedIcon={draft?.iconName ?? session.iconName}
                       setSelectedIcon={(newIcon) =>
+                        setDrafts((prev) => ({
+                          ...prev,
+                          [itemKey]: { ...(prev[itemKey] ?? drafts[itemKey] ?? {}), iconName: newIcon },
+                        }))
+                      }
+                      title={t("editSession.icons")}
+                      selectedColor={draft?.color ?? session.color}
+                      indexItem={index}
+                    />
+                    
+                      <TouchableOpacity
+                        onPress={() => {
+                        const d = drafts[itemKey];
+                        if (!d) return;
                         setSessions((prev) => {
                           const updated = [...prev];
                           updated[index] = {
                             ...updated[index],
-                            iconName: newIcon,
+                            title: d.title,
+                            description: d.description,
+                            color: d.color,
+                            iconName: d.iconName,
                           };
                           return updated;
-                        })
-                      }
-                      title={t("editSession.icons")}
-                      selectedColor={session.color}
-                      indexItem={index}
-                    />
+                        });
+                      }}
+                        className="flex-row items-center justify-center p-2 mb-2 border-blue-600 bg-blue-700 border-[1px] rounded-xl mt-2"
+                      >
+                        <Text className="text-white">{t("deleteModule.saveChanges")}</Text>
+                      </TouchableOpacity>
                   </View>
+                 
                 </View>
               )}
+              
             </View>
-          ))}
+          )})}
 
           {/* Neue Session hinzufügen */}
           <TouchableOpacity

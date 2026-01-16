@@ -390,7 +390,7 @@
     "delete": "Löschen"
   },
   "editSession": {
-    "color": "Sessopm Farbe",
+    "color": "Session Farbe",
     "title": "Session bearbeiten",
     "name": "Session Name",
     "description": "Session Beschreibung",

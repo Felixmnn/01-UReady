@@ -660,8 +660,7 @@ function calculateQuestionProgress(questionList: string[]): number {
         <ScrollView>
           
           {
-            //!isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
-            true?
+            !isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
             <BotWaiting 
             message={".."}
             amountOfQuestions={module.questionList.length}

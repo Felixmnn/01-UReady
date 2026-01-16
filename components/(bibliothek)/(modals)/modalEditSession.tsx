@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import ColorPicker from "@/components/(general)/colorPicker";
 import IconPicker from "@/components/(general)/iconPicker";
 import { useTranslation } from "react-i18next";
+import CustomButton from "@/components/(general)/customButton";
 
 const ModalEditSession = ({
   session,
@@ -96,7 +97,9 @@ const ModalEditSession = ({
           selectedColor={selectedColor}
           indexItem={index}
         />
+        
       </View>
+      
     </View>
   );
 };

@@ -42,7 +42,7 @@ const NewAiQuestionsSheet = ({
 }) => {
   const [moreOptions, setMoreOptions] = React.useState(false);
   const { t } = useTranslation();
-  const { userUsage } = useGlobalContext();
+  const { userUsage, setUserUsage } = useGlobalContext();
   const [items, setItems] = useState<Items>([]);
   const [loading, setLoading] = useState(false);
 
@@ -172,9 +172,10 @@ const NewAiQuestionsSheet = ({
           loading={loading}
           containerStyles="w-full rounded-lg   bg-blue-700 mb-2"
           title={
+           
             userUsage?.energy > calculateTotalPrice()
-              ? t("bibliothek.generateQuestions", { price: calculateTotalPrice() })
-              : t("bibliothek.notEnoughEnergy")
+              ?   t("bibliothek.generateQuestions", { price: calculateTotalPrice() }) 
+              :    t("bibliothek.notEnoughEnergy")
           }
           handlePress={async () => {
             await addNewQuestionToModule({
@@ -186,6 +187,13 @@ const NewAiQuestionsSheet = ({
               setSessions: setSessions,
               selectedSession: selectedSession,
             });
+            console.log("😅😅😅");
+            setItems([]);
+            setUserUsage({
+              ...userUsage,
+              energy: userUsage.energy - calculateTotalPrice(),
+            });
+            
             
             sheetRef.current?.closeSheet();
           }}

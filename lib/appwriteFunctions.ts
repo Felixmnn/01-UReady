@@ -111,10 +111,10 @@ export async function callThisFunction(prompt: string) {
 
 export async function callThisFunction(prompt: string) {
   // ngrok URL deines lokalen Servers
-  const NGROK_URL = "https://craniological-lawson-synecdochically.ngrok-free.dev";
+  const NGROK_URL = "  https://qready-app.de/gpt";
 
   try {
-    const response = await fetch(`${NGROK_URL}/gpt`, {
+    const response = await fetch(`https://qready-app.de/gpt`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -10,7 +10,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function Index() {
-  console.log("Index Component Rendered");
   //This paramters may be trasmitted via deeplinks
   const { moduleID } = useLocalSearchParams();
 

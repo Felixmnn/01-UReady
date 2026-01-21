@@ -1967,22 +1967,22 @@
       "yourImages": "Vos images"
     },"funFacts": {
     "items": [
-      "Après le chargement des questions, tu peux apprendre entièrement hors ligne.",
-      "Découvre de nouveaux contenus créés par d'autres utilisateurs via Découvrir.",
-      "Organise clairement tes ensembles d’apprentissage avec la fonction carte.",
-      "Partager des ensembles d’apprentissage ne consomme pas d’énergie.",
-      "Lance un quiz via ▶ et choisis parmi 4 modes d’apprentissage.",
-      "Dans Découvrir, tu peux rechercher par titre, description et utilisateur.",
-      "Lorsque ton énergie est vide, elle se recharge de 1 point toutes les 2 heures.",
-      "QReady n’impose aucune limite pour les contenus non générés par l’IA.",
-      "Les ensembles publics peuvent être trouvés par d’autres utilisateurs.",
-      "QReady est disponible en allemand, anglais, français et espagnol.",
-      "Si l’application est en anglais, l’IA génère aussi les questions en anglais.",
-      "Découvre plus de 10 000 ensembles d’apprentissage créés par d’autres utilisateurs.",
-      "Définis des objectifs d’apprentissage individuels pour chaque ensemble.",
-      "Utilise du texte, des images et des formules dans tes ensembles.",
-      "Les images et formules téléchargées sont aussi disponibles hors ligne.",
-      "Tes questions sont sélectionnées parmi près d’un million de questions."
+      "Le savais-tu ? Après avoir téléchargé les questions, tu peux apprendre entièrement hors ligne.",
+      "Le savais-tu ? Tu peux découvrir de nouveaux contenus créés par d’autres utilisateurs grâce à la fonction Découvrir.",
+      "Petit conseil : Utilise la fonction Carte pour organiser clairement tes ensembles d’apprentissage.",
+      "Le savais-tu ? Partager des ensembles d’apprentissage ne consomme aucune énergie.",
+      "Conseil pour toi : Lance un quiz avec ▶ et choisis parmi 4 modes d’apprentissage.",
+      "Le savais-tu ? Dans la fonction Découvrir, tu peux rechercher par titre, description et utilisateur.",
+      "Bon à savoir : Si ton énergie est vide, tu récupères automatiquement 1 point toutes les 2 heures.",
+      "Le savais-tu ? QReady n’impose aucune limite pour les contenus non générés par l’IA.",
+      "Conseil : Les ensembles d’apprentissage publics peuvent être trouvés par d’autres utilisateurs.",
+      "Le savais-tu ? QReady est disponible en allemand, anglais, français et espagnol.",
+      "Le savais-tu ? Lorsque l’application est en anglais, l’IA génère aussi des questions en anglais.",
+      "Fun fact : Tu peux découvrir plus de 10 000 ensembles d’apprentissage créés par d’autres utilisateurs.",
+      "Conseil : Définis des objectifs d’apprentissage individuels pour chaque ensemble.",
+      "Le savais-tu ? Tu peux utiliser des textes, des images et des formules dans tes ensembles d’apprentissage.",
+      "Bon à savoir : Les images et formules téléchargées sont aussi disponibles hors ligne.",
+      "Fun fact : Tes questions sont sélectionnées parmi près d’un million de questions."
     ],    "loading": "Donne-moi un instant pour charger tes {{amountOfQuestions}} questions de quiz."
 
   }

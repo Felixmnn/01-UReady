@@ -416,7 +416,6 @@ function calculateQuestionProgress(questionList: string[]): number {
                         <TouchableOpacity className="p-2 items-center justify-center" 
                         
                         onPress={async () => {
-                          console.log("Lösche Frage mit ID:", item.$id);
                               setIsVisibleEditQuestion({
                                 state: false,
                                 status: "EDIT",

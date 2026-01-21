@@ -498,7 +498,6 @@ export async function generateQuestionsFromText({
     }
 
     // Zugriff wie gewohnt
-    console.log(data);
 
     const textResponse = data.text;
 
@@ -579,7 +578,6 @@ export async function questionFromTopic({
     }
 
     // Zugriff wie gewohnt
-    console.log(data);
 
     const textResponse = data.text;
 
@@ -637,7 +635,6 @@ export async function generateQuestionsFromQuestions({
   let data;
   try {
      // Statt fetch → Appwrite Function benutzen
-     console.log("😕😕😕😕😕")
     data = await callThisFunction(promptTemplate);
     if (!data) {
       throw new Error("Server returned empty response");

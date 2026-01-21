@@ -14,7 +14,6 @@ import { getUserDataConfigFromMMKV } from "@/lib/mmkvFunctions";
 import { checkSession } from "@/lib/appwrite";
 
 const gettingStarted = () => {
-  console.log("Getting Started Component Rendered");
   const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
   
   const userData = getUserDataConfigFromMMKV();
@@ -35,22 +34,16 @@ const gettingStarted = () => {
           })}
         });
     } else {
-      console.log("User vorhanden im GS");
       if (!userUsage) {
         loadUserUsage(user.$id).then((usage) => {
-          console.log("Geladene UserUsage im GS:", usage);
           setUserUsage(usage);
         });
       }
-      console.log(" UserUsage vorhanden");
-      console.log("UserKathegory im GS:", userCathegory);
       if (!userCathegory) {
         loadUserDataKathegory(user.$id).then((dataKat) => {
-          console.log("Geladene UserKathegory im GS:", dataKat);
           setUserCategory(dataKat);
         });
       }
-      console.log(" UserKathegory vorhanden");
     }
   }, [user]);
   

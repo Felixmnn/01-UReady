@@ -289,10 +289,8 @@ const PageAiCreate = ({
               energy: userUsage.energy - calculateTotalPrice(),
             });
     }
-    console.log("🟧🟧🟧isGettingStarted:", isGettingStarted);
     const res = await setUserDataSetup(user.$id)
     if (res) setUserData(res);
-    console.log("🟧🟧🟧UserDataSetup gesetzt",res);
   }
 
   const addItem = () => {

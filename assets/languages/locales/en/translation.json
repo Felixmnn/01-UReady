@@ -1921,22 +1921,22 @@
       "yourImages": "Your images"
     },"funFacts": {
     "items": [
-      "After loading the questions, you can study completely offline.",
-      "Discover new learning content from other users via Explore.",
-      "Organize your learning sets clearly using the map feature.",
-      "Sharing learning sets directly does not cost any energy.",
-      "Start a quiz via ▶ and choose from 4 learning modes.",
-      "In Explore, you can search by titles, descriptions, and users.",
-      "When your energy is empty, it refills by 1 point every 2 hours.",
-      "QReady has no rate limits for non-AI-generated content.",
-      "Public learning sets can be found by other users.",
-      "QReady is available in German, English, French, and Spanish.",
-      "When using the app in English, AI-generated questions are also created in English.",
-      "Discover over 10,000 learning sets from other users.",
-      "Set individual learning goals for each learning set.",
-      "Use text, images, and formulas in your learning sets.",
-      "Downloaded images and formulas are also available offline.",
-      "Your questions are selected from a pool of nearly 1 million questions."
+      "Did you know you can study completely offline after downloading the questions?",
+      "Did you know you can discover new learning content from other users via the Discover feature?",
+      "Quick tip: Use the Map feature to organize your learning sets more clearly.",
+      "Did you know sharing learning sets directly does not cost any energy?",
+      "Tip for you: Start a quiz via ▶ and choose from 4 different learning modes.",
+      "Did you know you can search for titles, descriptions, and users in the Discover feature?",
+      "Good to know: If your energy is empty, you automatically regain 1 point every 2 hours.",
+      "Did you know there are no rate limits for non-AI-generated content on QReady?",
+      "Tip: Public learning sets can be found and used by other users.",
+      "Did you know QReady is available in German, English, French, and Spanish?",
+      "Did you know that when the app language is set to English, the AI also generates English questions?",
+      "Fun fact: You can discover over 10,000 learning sets created by other users.",
+      "Tip: Set individual learning goals for each learning set to stay focused.",
+      "Did you know you can use texts, images, and formulas in your learning sets?",
+      "Good to know: Downloaded images and formulas are also available offline.",
+      "Fun fact: Your questions are selected from a pool of nearly 1 million questions."
     ],
         "loading": "Give me a moment to load your {{amountOfQuestions}} quiz questions."
 

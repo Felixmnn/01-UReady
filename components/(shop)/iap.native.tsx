@@ -48,7 +48,6 @@ export default function SimpleStore() {
         const token = purchase.purchaseToken;
         if (!token || processedPurchaseTokens.has(token)) return;
         processedPurchaseTokens.add(token);
-        console.log("Verarbeite Kauf:", purchase.productId);
         const res = await triggerSubscriptionVerification(
           purchase.productId,
           token,

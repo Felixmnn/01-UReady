@@ -90,11 +90,9 @@ const quiz = () => {
   const interstitial = InterstitialAd.createAdUnitId("DEIN_AD_UNIT_ID");
 
   interstitial.addAdEventListener(AdEventType.LOADED, () => {
-    console.log("Ad geladen!");
   });
 
   interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-    console.log("Ad geschlossen, neu laden...");
     // Optional: direkt neue Instanz erzeugen
     loadInterstitial();
   });

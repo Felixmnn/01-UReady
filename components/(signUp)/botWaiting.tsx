@@ -1,5 +1,5 @@
 import { View, Text, Image, Animated } from "react-native";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const BotWaiting = ({ message = "", amountOfQuestions = 0 }) => {
@@ -7,72 +7,63 @@ const BotWaiting = ({ message = "", amountOfQuestions = 0 }) => {
     
             const {t} = useTranslation();
 
-
-
-    const FunFacts = ({
-        amountOfQuestions
-    }: {
-        amountOfQuestions: number;
-    }) => {
-            const [funFact, setFunFact] = useState("...");
-            const [ usedFunFacts, setUsedFunFacts ] = useState<Number[]>([]);
-
-            const funFacts: any  = t("funFacts.items", {
-                returnObjects: true,
-                });
-
-       useEffect(() => {
-        const interval = setInterval(() => {
-           
-                const randomIndex = Math.floor(Math.random() * funFacts.length);
-                if (usedFunFacts.includes(randomIndex)) {
-                    const randomIndex = Math.floor(Math.random() * funFacts.length);
-                    setFunFact(funFacts[randomIndex]);
-                    setUsedFunFacts((prev) => [...prev, randomIndex]);
-                } else {
-                    setFunFact(funFacts[randomIndex]);
-                    setUsedFunFacts((prev) => [...prev, randomIndex]);
-                }
-            
-        },8000)
-        return () => clearInterval(interval);
-    }, []);
-
-        return <Text className="text-gray-300 mt-2 text-center ">{funFact}</Text>;
-
-    }
-
    
    
 
   const TypewriterText = ({
-    text,
+    initialText,
+    funFacts,
     speed = 50,
+    pauseBetweenFacts = 3000,
   }: {
-    text: string;
+    initialText: string;
+    funFacts: string[];
     speed?: number;
+    pauseBetweenFacts?: number;
   }) => {
     const [displayedText, setDisplayedText] = useState("");
 
     useEffect(() => {
-      let index = 0;
-      let isCancelled = false;
+      let cancelled = false;
 
-      const typeNext = () => {
-        if (index < text.length -1) {
-          setDisplayedText((prev) => prev + text[index]);
-          index++;
-          setTimeout(typeNext, speed);
+      const sleep = (ms: number) =>
+        new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+      const typeText = async (text: string) => {
+        setDisplayedText("");
+        for (let i = 0; i < text.length; i++) {
+          if (cancelled) return;
+          setDisplayedText((prev) => prev + text[i]);
+          await sleep(speed);
         }
       };
 
-      typeNext();
-      TypewriterText
+      const run = async () => {
+        // Type the initial/loading text first
+        await typeText(initialText ?? "");
+        await sleep(1000);
+
+        // Then cycle through fun facts, avoiding repeats until all are shown
+        let used: number[] = [];
+        const total = funFacts?.length ?? 0;
+
+        while (!cancelled && total > 0) {
+          let idx = Math.floor(Math.random() * total);
+          if (used.length >= total) used = [];
+          while (used.includes(idx)) idx = Math.floor(Math.random() * total);
+          used.push(idx);
+
+          await typeText(funFacts[idx]);
+          await sleep(pauseBetweenFacts);
+        }
+      };
+
+      run();
 
       return () => {
-        isCancelled = true;
+        cancelled = true;
       };
-    }, [text]);
+    }, [initialText, funFacts, speed, pauseBetweenFacts]);
 
     return (
       <Text style={{ color: "white", fontSize: 18 }}>{displayedText}</Text>
@@ -83,7 +74,7 @@ const BotWaiting = ({ message = "", amountOfQuestions = 0 }) => {
     const [estimatedSeconds, setEstimatedSeconds] = useState<number | null>(null);
 
     useEffect(() => {
-      const totalDuration = amountOfQuestions * 200; 
+      const totalDuration = amountOfQuestions * 400; 
       const estimatedTime = Math.ceil(totalDuration / 1000);
       setEstimatedSeconds(estimatedTime);
         Animated.timing(progressWidth, {
@@ -94,7 +85,7 @@ const BotWaiting = ({ message = "", amountOfQuestions = 0 }) => {
     }, [amountOfQuestions]);
 
   return (
-    <View className="items-center justiy-center p-5 bg-gray-900">
+    <View className="items-center justify-center p-5 bg-gray-900">
       <View 
         className="bg-blue-500 p-4 rounded-lg shadow-lg"
         style={{
@@ -106,8 +97,12 @@ const BotWaiting = ({ message = "", amountOfQuestions = 0 }) => {
           bottom: 10,
         }}
       >
-
-        <TypewriterText text={t("funFacts.loading", { amountOfQuestions })[0] + t("funFacts.loading", { amountOfQuestions })} speed={40} />
+        <TypewriterText 
+          initialText={t("funFacts.loading", { amountOfQuestions }) as unknown as string}
+          funFacts={t("funFacts.items", { returnObjects: true }) as unknown as string[]}
+          speed={40}
+          pauseBetweenFacts={5000}
+        />
         <View
           style={{
             position: "absolute",
@@ -148,7 +143,6 @@ const BotWaiting = ({ message = "", amountOfQuestions = 0 }) => {
           />
         </View>
       </View>
-      <FunFacts amountOfQuestions={amountOfQuestions} />
     </View>
   );
 };

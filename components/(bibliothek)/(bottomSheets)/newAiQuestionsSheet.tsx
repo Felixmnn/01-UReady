@@ -187,7 +187,6 @@ const NewAiQuestionsSheet = ({
               setSessions: setSessions,
               selectedSession: selectedSession,
             });
-            console.log("😅😅😅");
             setItems([]);
             setUserUsage({
               ...userUsage,

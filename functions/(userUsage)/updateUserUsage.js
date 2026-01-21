@@ -13,7 +13,6 @@ const boostTypes = {
  * - then it checks if the boost is still active
  */
 export async function updateUserUsage(userUsage) {
-    console.log("🟦🟦🟦Updating User Usage in updateUserUsage()", userUsage);
     let newUserUsage = userUsage;
     const now = new Date();
     userUsage.streakLastUpdate = new Date(userUsage.streakLastUpdate);

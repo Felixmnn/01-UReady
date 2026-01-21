@@ -1983,22 +1983,22 @@
     }
 ,"funFacts": {
     "items": [
-      "Después de cargar las preguntas, puedes estudiar completamente sin conexión.",
-      "Descubre nuevos contenidos de aprendizaje de otros usuarios en Explorar.",
-      "Organiza tus conjuntos de aprendizaje de forma clara con la función de mapa.",
-      "Compartir conjuntos de aprendizaje no consume energía.",
-      "Inicia un cuestionario con ▶ y elige entre 4 modos de aprendizaje.",
-      "En Explorar puedes buscar por títulos, descripciones y usuarios.",
-      "Cuando tu energía se agota, se recarga 1 punto cada 2 horas.",
-      "QReady no tiene límites para contenidos no generados por IA.",
-      "Otros usuarios pueden encontrar los conjuntos de aprendizaje públicos.",
-      "QReady está disponible en alemán, inglés, francés y español.",
-      "Si usas la app en inglés, la IA también genera preguntas en inglés.",
-      "Descubre más de 10.000 conjuntos de aprendizaje de otros usuarios.",
-      "Define objetivos de aprendizaje individuales para cada conjunto.",
-      "Utiliza texto, imágenes y fórmulas en tus conjuntos.",
-      "Las imágenes y fórmulas descargadas también están disponibles sin conexión.",
-      "Tus preguntas se seleccionan de una lista de casi un millón de preguntas."
+      "¿Sabías que puedes estudiar completamente sin conexión después de descargar las preguntas?",
+      "¿Sabías que puedes descubrir nuevos contenidos de aprendizaje de otros usuarios a través de la función Explorar?",
+      "Consejo rápido: Usa la función Mapa para organizar tus conjuntos de aprendizaje de forma clara.",
+      "¿Sabías que compartir conjuntos de aprendizaje no consume energía?",
+      "Consejo para ti: Inicia un cuestionario con ▶ y elige entre 4 modos de aprendizaje.",
+      "¿Sabías que en la función Explorar puedes buscar por títulos, descripciones y usuarios?",
+      "Bueno saberlo: Si tu energía se agota, recuperas automáticamente 1 punto cada 2 horas.",
+      "¿Sabías que QReady no tiene límites de uso para contenido no generado por IA?",
+      "Consejo: Los conjuntos de aprendizaje públicos pueden ser encontrados por otros usuarios.",
+      "¿Sabías que QReady está disponible en alemán, inglés, francés y español?",
+      "¿Sabías que cuando la app está en inglés, la IA también genera preguntas en inglés?",
+      "Dato curioso: Puedes descubrir más de 10.000 conjuntos de aprendizaje creados por otros usuarios.",
+      "Consejo: Define objetivos de aprendizaje individuales para cada conjunto.",
+      "¿Sabías que puedes usar textos, imágenes y fórmulas en tus conjuntos de aprendizaje?",
+      "Bueno saberlo: Las imágenes y fórmulas descargadas también están disponibles sin conexión.",
+      "Dato curioso: Tus preguntas se seleccionan de una lista de casi 1 millón de preguntas."
     ],
         "loading": "Dame un momento para cargar tus {{amountOfQuestions}} preguntas del cuestionario."
 

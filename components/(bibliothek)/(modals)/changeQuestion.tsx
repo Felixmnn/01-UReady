@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import CustomButton from "@/components/(general)/customButton";
 import ContentInput from "./newQuestionContentInput";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { updateQuestionInMMKV } from "@/lib/mmkvFunctions";
 
 const ChangeQuestions = ({
   question,
@@ -209,7 +210,7 @@ const ChangeQuestions = ({
                       }
                       return q;
                     });
-
+                    if (res && res.subjectID) updateQuestionInMMKV(res.subjectID ? res.subjectID : "", res)
                     setQuestions(updatedQuestions);
                   
                   }

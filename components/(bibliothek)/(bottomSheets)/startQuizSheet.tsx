@@ -26,7 +26,7 @@ const StartQuizSheet = ({
   //Changes Here
   const [questionStates, setQuestionStates] = React.useState<("BAD" | "OK" | "GOOD" | "GREAT" | "NONE")[]>(["BAD" , "OK" , "GOOD" , "GREAT", "NONE"]);
 
-  const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" | "textInput">("infinite");
+  const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" >("infinite");
   const [ explainationVisible, setExplanationVisible ] = React.useState(false); 
   const [questionType, setQuestionType] = React.useState<"single" | "multiple" | "questionAnswer">("multiple");
   const [questionAmount, setQuestionAmount] = React.useState<number>(1);
@@ -80,7 +80,7 @@ const StartQuizSheet = ({
           </TouchableOpacity>
         </View>
         <View className="flex-row flex-wrap gap-2 mb-4">
-          {["infinite" , "limitedFixed" , "limitedAllCorrect" , "limitedTime" , "textInput"].map((type) => (
+          {["infinite" , "limitedFixed" , "limitedAllCorrect" , "limitedTime"].map((type) => (
             <Pressable
               key={type}
               onPress={() => setQuizType(type as any)}
@@ -220,7 +220,6 @@ const StartQuizSheet = ({
           { quizType === "limitedFixed" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.limitedFixedExplanation")}</Text>}
           { quizType === "limitedAllCorrect" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.limitedAllCorrectExplanation")}</Text>}
           { quizType === "limitedTime" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.limitedTimeExplanation")}</Text>}
-          { quizType === "textInput" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.textInputExplanation")}</Text>}
         </View>
         }
       </View>

@@ -222,7 +222,6 @@ const quiz = () => {
           }
         })
 
-        console.log("States", JSON.parse(status), questionList)
         const states = JSON.parse(status as string);
         questions = questions.filter((question) => {
             

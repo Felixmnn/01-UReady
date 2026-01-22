@@ -1816,6 +1816,7 @@
     }
   },
   "bibliothek": {
+    "filterByStatus": "Filtrar por estado",
     "addDocument": "Añadir documento",
     "notEnoughQuestionsToStart": "No hay suficientes preguntas para iniciar un cuestionario.",
     "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
@@ -1837,6 +1838,8 @@
     "limitedFixedExplanation": "Responde un número fijo de preguntas y recibe tu resultado.",
     "limitedAllCorrectExplanation": "Sigue respondiendo hasta que todas las preguntas del conjunto sean correctas.",
     "limitedTimeExplanation": "Responde un número fijo de preguntas dentro de un límite de tiempo.",
+      "textInputExplanation": "You enter an answer and then decide whether the answer was good, average, or poor."
+,
     "minMaxQuestions": "Por favor, introduce un número de preguntas entre {{min}} y {{max}}.",
       "minTimeLimit": "El límite de tiempo debe ser de al menos {{min}} segundos.",
       "generateQuestions": "Generar preguntas por {{price}}⚡",

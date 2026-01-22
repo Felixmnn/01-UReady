@@ -1684,6 +1684,7 @@
   },
 
   "bibliothek": {
+    "filterByStatus": "Nach Status filtern",
     "addDocument": "Dokument hinzufügen",
     "notEnoughQuestionsToStart": "Nicht genügend Fragen, um das Quiz zu starten.",
     "wouldYouLikeToAddModule": "Möchtest du das Modul {{moduleName}} zu deiner Bibliothek hinzufügen?",
@@ -1704,6 +1705,7 @@
     "limitedFixedExplanation": "Beantworte eine feste Anzahl an Fragen und erhalte dein Ergebnis.",
     "limitedAllCorrectExplanation": "Beantworte alle Fragen richtig, bis die feste Anzahl erreicht ist.",
     "limitedTimeExplanation": "Beantworte eine feste Anzahl an Fragen innerhalb eines Zeitlimits.",
+    "textInputExplanation": "Du gibst eine Antwort ein und bestimmst dann ob die Antwort gut, mittelmäßig oder schlecht war.",
     "minMaxQuestions": "Bitte gib eine Anzahl zwischen {{min}} und {{max}} Fragen ein.",
       "minTimeLimit": "Das Zeitlimit muss mindestens {{min}} Sekunden betragen.",
       "generateQuestions": "Fragen für {{price}}⚡ generieren",

@@ -12,37 +12,54 @@ const StartQuizSheet = ({
   moduleID,
   sessionID,
   maxQuestions,
-  questions
+  questions,
+  questionList
 }:{
   sheetRef: React.RefObject<any>,
   moduleID: string,
   sessionID: string,
   maxQuestions: number,
-  questions: question[]
+  questions: question[],
+  questionList: {id: string; status: string}[]
 }) => {
   
+  //Changes Here
+  const [questionStates, setQuestionStates] = React.useState<("BAD" | "OK" | "GOOD" | "GREAT" | "NONE")[]>(["BAD" , "OK" , "GOOD" , "GREAT", "NONE"]);
 
-  const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime">("infinite");
+  const [quizType, setQuizType] = React.useState<"infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" | "textInput">("infinite");
   const [ explainationVisible, setExplanationVisible ] = React.useState(false); 
   const [questionType, setQuestionType] = React.useState<"single" | "multiple" | "questionAnswer">("multiple");
   const [questionAmount, setQuestionAmount] = React.useState<number>(1);
   const [timeLimit, setTimeLimit] = React.useState<number | null>(60); // in seconds
   const { t } = useTranslation();
 
+  function getStatusOfQuestion (questionID: string) {
+    const qStatus = questionList.find(ql => ql.id === questionID)?.status;
+    return qStatus == null || qStatus === undefined ? "NONE" : qStatus
+  }
 
+  //Changes Here
   function calculateMaximumQuestionAmount () {
     let amount = maxQuestions
+    let filteredQuestions = questions
     if (sessionID !== "ALL") {
       if (questionType == "single") {
-        amount = questions.filter(q => q.sessionID === sessionID && q.answerIndex.length === 1).length
+        filteredQuestions = questions.filter(q => q.sessionID === sessionID && q.answerIndex.length === 1)
       } else {
-      amount = questions.filter(q => q.sessionID === sessionID).length
+      filteredQuestions = questions.filter(q => q.sessionID === sessionID)
       }
     } else {
       if (questionType == "single") {
-        amount = questions.filter(q => q.answerIndex.length === 1).length 
+        filteredQuestions = questions.filter(q => q.answerIndex.length === 1) 
       }
     }
+    filteredQuestions = filteredQuestions.filter(q => {
+      const status = getStatusOfQuestion(q.$id ? q.$id : "")
+      return questionStates.includes(status as any)
+    })
+
+    amount = filteredQuestions.length
+
     
     return amount
   }
@@ -63,7 +80,7 @@ const StartQuizSheet = ({
           </TouchableOpacity>
         </View>
         <View className="flex-row flex-wrap gap-2 mb-4">
-          {["infinite" , "limitedFixed" , "limitedAllCorrect" , "limitedTime"].map((type) => (
+          {["infinite" , "limitedFixed" , "limitedAllCorrect" , "limitedTime" , "textInput"].map((type) => (
             <Pressable
               key={type}
               onPress={() => setQuizType(type as any)}
@@ -91,6 +108,40 @@ const StartQuizSheet = ({
               <Text className="text-white capitalize">{type}</Text>
             </Pressable>
           ))}
+        </View>
+
+        <View>
+          <Text className='text-gray-300 mb-2'>
+            {t("bibliothek.filterByStatus")}
+          </Text>
+          <View className="flex-row flex-wrap gap-2 mb-4">
+            {[
+              ["BAD", "frown","bg-red-700"],
+              ["OK", "meh","bg-yellow-500"],
+              ["GOOD", "smile","bg-green-500"],
+              ["GREAT", "grin","bg-blue-500"],
+              ["NONE", "ban","bg-gray-500"],
+            ].map(([status, icon, color]) => (
+              <TouchableOpacity
+                key={status}
+                onPress={() => {
+                  if (questionStates.includes(status as any)) {
+                    setQuestionStates(prev => prev.filter(s => s !== status))
+                  } else {
+                    setQuestionStates(prev => [...prev, status as any])
+                  } 
+                }}
+
+                className={` ${color} ${questionStates.includes(status as any)? "" : "opacity-30"}  px-2 py-2 rounded-xl flex-row items-center rounded-full items-center justify-center`}
+                >
+
+                  <View className={`${color} h-[25px] w-[25px] rounded-full items-center justify-center`}>
+                    <Icon name={icon as string} size={16} color="white" />
+                  </View>
+              </TouchableOpacity>
+            
+            ))}
+        </View>
         </View>
 
         {/* Question Amount */}
@@ -150,7 +201,8 @@ const StartQuizSheet = ({
               questionType : questionType,
               questionAmount : questionAmount,
               timeLimit : timeLimit,
-              moduleID: moduleID
+              moduleID: moduleID,
+              status: JSON.stringify(questionStates),
             }
           })}
           disabled={(quizType !== "infinite" && (questionAmount < 1 || questionAmount > maxQuestions)) ||
@@ -168,6 +220,7 @@ const StartQuizSheet = ({
           { quizType === "limitedFixed" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.limitedFixedExplanation")}</Text>}
           { quizType === "limitedAllCorrect" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.limitedAllCorrectExplanation")}</Text>}
           { quizType === "limitedTime" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.limitedTimeExplanation")}</Text>}
+          { quizType === "textInput" && <Text className="text-gray-300 mt-4 ml-2">{t("bibliothek.textInputExplanation")}</Text>}
         </View>
         }
       </View>

@@ -426,6 +426,7 @@
 
   },
   "tabbar": {
+    
     "home": "Accueil",
     "bibliothek": "Bibliothèque",
     "entdecken": "Découvrir",
@@ -1802,6 +1803,7 @@
     }
   },
   "bibliothek": {
+    "filterByStatus": "Filtrer par statut",
     "addDocument": "Ajouter un document",
     "notEnoughQuestionsToStart": "Pas assez de questions pour démarrer une session d’apprentissage.",
     "wouldYouLikeToAddModule": "¿Te gustaría añadir el módulo {{moduleName}} a tu biblioteca?",
@@ -1823,6 +1825,8 @@
     "limitedFixedExplanation": "Réponds à un nombre fixe de questions et reçois ton résultat.",
     "limitedAllCorrectExplanation": "Continue à répondre jusqu’à ce que toutes les questions du lot soient correctes.",
     "limitedTimeExplanation": "Réponds à un nombre fixe de questions dans un temps limité.",
+      "textInputExplanation": "You enter an answer and then decide whether the answer was good, average, or poor."
+,
     "minMaxQuestions": "Veuillez saisir un nombre de questions compris entre {{min}} et {{max}}.",
       "minTimeLimit": "La limite de temps doit être d’au moins {{min}} secondes.",
       "generateQuestions": "Générer des questions pour {{price}}⚡",

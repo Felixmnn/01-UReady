@@ -55,7 +55,19 @@ const quiz = () => {
         questionType,
         questionAmount,
         timeLimit,
+        status
     } = useLocalSearchParams()
+
+    console.log("Quiz Params: ", {
+        sessionID,
+        moduleID,
+        quizType,
+        questionType,
+        questionAmount,
+        timeLimit,
+        status
+    }
+    )
 
 
     // Unwichtig, nur für responsive Design
@@ -87,7 +99,7 @@ const quiz = () => {
     const [loaded, setLoaded] = useState(false);
 
     function loadInterstitial() {
-  const interstitial = InterstitialAd.createAdUnitId("DEIN_AD_UNIT_ID");
+  const interstitial = InterstitialAd.createAdUnitId("ca-app-pub-9834411851111627/5048162176");
 
   interstitial.addAdEventListener(AdEventType.LOADED, () => {
   });
@@ -152,7 +164,11 @@ const quiz = () => {
 
 
 
+    function getQuestionStatus(questionID: string , questionList: QuestionItem[]) {
 
+        const qStatus = questionList.find(ql => ql.id === questionID)?.status;
+        return qStatus == null || qStatus === undefined ? "NONE" : qStatus
+    }
 
 
     async function initializeQuiz( {
@@ -195,7 +211,32 @@ const quiz = () => {
         let questions: question[] = Array.isArray(questionsRaw)
             ? questionsRaw.map(q => q as unknown as question)
             : [];
-        //Step 2: The Question Answers get shuffled
+        
+
+        //Step 2: The Question List gets loaded
+        let questionList = module?.questionList.map((q:string) => {
+          try {
+            return JSON.parse(q);
+          } catch (e) {
+            return { id: null, status: null };
+          }
+        })
+
+        console.log("States", JSON.parse(status), questionList)
+        const states = JSON.parse(status as string);
+        questions = questions.filter((question) => {
+            
+            const questionStatus = getQuestionStatus(question.$id ? question.$id : "", questionList ? questionList : []);
+            if (states.includes(questionStatus) || states.length === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        )
+    
+
+        //Step 3: The Question Answers get shuffled
         questions = questions.map((question) => {
             const answersWithIndex = question.answers.map((answer, index) => ({ answer, index }));
             const randomizedAnswers = answersWithIndex.sort(() => Math.random() - 0.5);
@@ -209,14 +250,7 @@ const quiz = () => {
                 answerIndex: newAnswerIndex,
             };
         })
-        //Step 3: The Question List gets loaded
-        let questionList = module?.questionList.map((q:string) => {
-          try {
-            return JSON.parse(q);
-          } catch (e) {
-            return { id: null, status: null };
-          }
-        })
+        
         //Step 4: Depending on the Quiz Mode more filters get Applied
         if (quizType !== "infinite"){
             //Step 4.1: The Questions get Shuffled

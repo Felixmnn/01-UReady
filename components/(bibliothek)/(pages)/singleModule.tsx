@@ -828,6 +828,7 @@ const SingleModule = ({
       />
 
       <StartQuizSheet
+        questionList={module.questionList ? module.questionList.map((i:string)=> typeof i == "string" ? JSON.parse(i) : i) : []}
         sheetRef={startQuizBottomSheetRef}
         moduleID={module.$id}
         sessionID={

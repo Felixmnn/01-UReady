@@ -1729,6 +1729,7 @@
     }
   },
   "bibliothek": {
+    "filterByStatus": "Filter by status",
     "addDocument": "Add Document",
     "notEnoughQuestionsToStart": "Not enough questions to start a quiz.",
     "wouldYouLikeToAddModule": "Would you like to add the module {{moduleName}} to your library?",
@@ -1749,6 +1750,8 @@
     "limitedFixedExplanation": "Answer a fixed number of questions and get your result.",
     "limitedAllCorrectExplanation": "Keep answering until all questions in the set are correct.",
     "limitedTimeExplanation": "Answer a fixed number of questions within a time limit.",
+      "textInputExplanation": "You enter an answer and then decide whether the answer was good, average, or poor."
+,
     "minMaxQuestions": "Please enter a number of questions between {{min}} and {{max}}.",
     "minTimeLimit": "The time limit must be at least {{min}} seconds.",
     "generateQuestions": "Generate questions for {{price}}⚡",

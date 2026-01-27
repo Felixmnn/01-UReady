@@ -381,6 +381,7 @@ function calculateQuestionProgress(questionList: string[]): number {
                                   questionAmount : null,
                                   timeLimit : null,
                                   moduleID: module.$id,
+                                  status:JSON.stringify(["BAD", "OK", "GOOD", "GREAT","NONE"])
                     }})}}
                   className="p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800"
                 >

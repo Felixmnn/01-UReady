@@ -17,12 +17,14 @@ const Quiz = ({
   nextQuestion,
   correctAnswers,
   setShowSolution,
+  showSolution,
   sheetRef,
   quizType,
   questionList,
   showHint,
   showExplanation
 }: {
+  showSolution: boolean;  
   questions: any[];
   selectedAnswers: string[];
   setSelectedAnswers: React.Dispatch<React.SetStateAction<string[]>>;
@@ -94,7 +96,8 @@ const Quiz = ({
               className={`${true ? "justify-start" : "justify-between flex-row"}  items-center w-full bg-gray-800 p-4 rounded-b-[10px] `}
             >
               <View className="w-full justify-start">
-                {quizType == "questionAnswer" ? null : correctAnswers() == "GOOD" ? (
+                {quizType == "questionAnswer" ? null : showSolution ? null :  correctAnswers() == "GOOD"  ? 
+                (
                   <View className="flex-row items-center gap-2">
                     <Icon name="check-circle" size={20} color={"green"} />
                     <Text className="text-green-500">{t("quiz.right")}</Text>
@@ -127,8 +130,8 @@ const Quiz = ({
                   <CustomButton
                     title={t("quiz.next")}
                     handlePress={() => {
-                      nextQuestion(correctAnswers() == "GOOD" ? "GOOD" : correctAnswers() == "OK" ? "OK" : "BAD", 1);
-                      setSelectedAnswers([]);
+                      
+                      nextQuestion(correctAnswers() == "GOOD" ? "GOOD": correctAnswers() == "OK" ? "OK" : "BAD", 1);
                     }}
                     containerStyles="w-full bg-blue-700 rounded-lg"
                   />

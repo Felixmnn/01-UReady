@@ -39,7 +39,8 @@ if (!isWeb) {
 
 const adUnitId = !isWeb && __DEV__ ? Platform.OS == "android" ?
 "ca-app-pub-9834411851111627/5048162176" : TestIds.INTERSTITIAL :TestIds.INTERSTITIAL;
-    const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
+
+const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
 //const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
@@ -98,19 +99,7 @@ const quiz = () => {
 
     const [loaded, setLoaded] = useState(false);
 
-    function loadInterstitial() {
-  const interstitial = InterstitialAd.createAdUnitId("ca-app-pub-9834411851111627/5048162176");
-
-  interstitial.addAdEventListener(AdEventType.LOADED, () => {
-  });
-
-  interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-    // Optional: direkt neue Instanz erzeugen
-    loadInterstitial();
-  });
-
-  interstitial.load(); // start loading
-}
+    
 
     useEffect(() => {
 
@@ -314,7 +303,7 @@ const quiz = () => {
         let finalStatus: "OK" | "GOOD" | "GREAT" | "BAD" | null = newStatus as "OK" | "GOOD" | "GREAT" | "BAD" | null;
         if (indexOfQuestion !== -1) {
           const prevStatus = tempQuestionList[indexOfQuestion].status;
-          if ((prevStatus === "GOOD" && newStatus === "GOOD") || (prevStatus === "GREAT" && newStatus === "GREAT")) {
+          if ((prevStatus === "GOOD" && newStatus === "GOOD") || (prevStatus === "GREAT" && newStatus === "GOOD")) {
             finalStatus = "GREAT";
           }
         }
@@ -436,7 +425,11 @@ const quiz = () => {
 
 
     const gotToNextQuestion = async (status: "GOOD" | "BAD" | "OK" | "GREAT") => {
+
         if (!questionsForQuiz[0].$id ) return;
+        setShowSolution(false);
+
+        setShowAnswers(false);
         await saveQuestionStatus(
             questionsForQuiz[0].$id,
             status,
@@ -444,15 +437,14 @@ const quiz = () => {
             setQuestionList,
             moduleID ? (Array.isArray(moduleID) ? moduleID[0] : moduleID) : ""
         );
-        setShowAnswers(false);
-        setShowSolution(false);
-        setSelectedAnswers([]);
         await nextQuestion({
             status,
             questionsForQuiz,
             setQuestionsForQuiz,
             quizType: quizType === "infinity" || quizType === "limitedFixed" || quizType === "limitedAllCorrect" || quizType === "timed" ? (Array.isArray(quizType) ? quizType[0] : quizType) : "limitedFixed"
         })
+        setSelectedAnswers([]);
+
    }
 
 
@@ -636,6 +628,7 @@ const {t} = useTranslation()
         
         &&
         <Quiz
+            showSolution={showSoloution}
             questionList={questionList}
             questions={questionsForQuiz}
             nextQuestion={gotToNextQuestion}

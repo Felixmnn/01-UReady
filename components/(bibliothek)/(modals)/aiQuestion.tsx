@@ -18,6 +18,7 @@ import { Animated } from "react-native";
 import { useTranslation } from "react-i18next";
 import { module, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
+import FileToText from "../(components)/fileToText";
 
 type SelectedFile = {
   $id: string;

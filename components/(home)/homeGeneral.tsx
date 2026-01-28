@@ -165,6 +165,7 @@ const HomeGeneral = () => {
         questionAmount: session.questionAmount, // How many questions should be in the quiz
         timeLimit: session.timeLimit, // Timelimit will be in seconds
         moduleID: session.moduleID,
+        status: JSON.stringify(["BAD", "OK", "GOOD", "GREAT","NONE"])
       },
     });
   }

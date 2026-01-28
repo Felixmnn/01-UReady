@@ -653,3 +653,33 @@ export function setImageConfigsToMMKV(imageConfigs: documentConfig[]) {
     const imageConfigsString = JSON.stringify(imageConfigs);
     storage.set('user.imageConfigs', imageConfigsString);
 }
+
+type QuestionItem = {
+    id: string | null;
+    status: "OK" | "GOOD" | "GREAT" | "BAD" | null;
+}
+
+/**
+ * This Function creates a List of unsynced Questions
+ */
+
+export function addUnsyncedListToMMKV(tempQuestionList: QuestionItem[], moduleID:string){
+    const unsyncedQuestionsString = JSON.stringify( tempQuestionList);
+    storage.set(`user.unsyncedQuestionList.${moduleID}`, unsyncedQuestionsString);
+}
+
+/**
+ * This Function gets a List of unsynced Questions
+ */
+export function getUnsyncedListFromMMKV(moduleID:string): QuestionItem[] | [] {
+    const unsyncedQuestionsString = storage.getString(`user.unsyncedQuestionList.${moduleID}`);
+    console.log("Retrieved unsynced questions string:", unsyncedQuestionsString);
+    return unsyncedQuestionsString ? JSON.parse(unsyncedQuestionsString) : [];
+}
+
+/**
+ * This Function removes a List of unsynced Questions
+ */
+export function removeUnsyncedListFromMMKV(moduleID:string){
+    storage.remove(`user.unsyncedQuestionList.${moduleID}`);
+}

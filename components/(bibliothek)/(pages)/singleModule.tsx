@@ -400,11 +400,51 @@ const SingleModule = ({
     }
   }
 
+  function calculatePercentForSession(questionList:QuestionListItem[]){
+    let total = 0;
+    for (let i = 0; i < questionList.length; i++) {
+      if (questionList[i].status == "BAD") {
+        total -= 1;
+      } else if (questionList[i].status == "GOOD") {
+        total += 1;
+      } else if (questionList[i].status == "GREAT") {
+        total += 1.5;
+      } else if (questionList[i].status == "OK") {
+        total += 0.25;
+      } else {
+        total += 0;
+      }
+    }
+    const percent = Math.round((total / questionList.length) * 100);
+    return percent < 0 ? 0 : percent > 100 ? 100 : percent;
+  }
+
+  function updateSessionProgress(sessions: Session[], questions: question[], questionList: QuestionListItem[]) {
+    const newSessions = sessions.map((session: Session) => {
+      const sessionQuestionList = questionList.filter(
+        (q) => {
+          const question = questions.find((quest) => quest.$id === q.id);
+          return question && question.sessionID === session.id;
+        }
+      );
+      const percent = calculatePercentForSession(sessionQuestionList);
+      return {
+        ...session,
+        percent: percent,
+        questions: sessionQuestionList.length,
+      }
+    });
+    return newSessions;
+  }
+
   async function checkForUpdates() {
     const moduledata = await loadModule(module.$id);
     if (moduledata) {
       setModule(moduledata);
-      setSessions(moduledata.sessions.map((session: string) => JSON.parse(session)));
+
+      const sessions = moduledata.sessions.map((session: string) => JSON.parse(session));
+      const newSessions = updateSessionProgress(sessions, questions, ensureQuestionListIsParsed(moduledata.questionList));
+      setSessions(newSessions);
     }
     
     const notes = await getSessionNotes(sessions[selectedSession].id);

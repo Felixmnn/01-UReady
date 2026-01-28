@@ -63,13 +63,14 @@ function calculatePercent(questions:string[]){
   let sum = 0;
     for (let i = 0; i < parsedQuestions.length; i++) {
       if (parsedQuestions[i].status =="BAD") sum -= 1;
-      if (parsedQuestions[i].status =="OK") sum += 0;
+      if (parsedQuestions[i].status =="OK") sum += 0.25;
       if (parsedQuestions[i].status =="GOOD") sum += 1;
-      if (parsedQuestions[i].status =="GREAT") sum += 2;
+      if (parsedQuestions[i].status =="GREAT") sum += 1.5;
 
   }    
-  
-  return Math.floor((sum / (questions.length * 2)) * 100);
+  const percent = Math.floor((sum / (questions.length * 2)) * 100)
+  console.log("Calculated percent:", percent, "from sum:", sum, "and questions length:", questions.length);
+  return percent;
 
 }
 

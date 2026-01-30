@@ -4,8 +4,10 @@ import CustomBottomSheet from "./customBottomSheet";
 import { useTranslation } from "react-i18next";
 import { addDocumentJob } from "@/lib/appwriteDaten";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { module } from "@/types/appwriteTypes";
+import { module, question } from "@/types/appwriteTypes";
 import { updateModule } from "@/lib/appwriteEdit";
+import { addNewQuestionToModule } from "@/functions/(aiQuestions)/materialToModule";
+import { uuid } from "expo-modules-core";
 
 type AppwriteDocument = {
   $id: string;
@@ -15,6 +17,8 @@ type AppwriteDocument = {
   sessionID: string;
   uploaded: boolean;
   databucketID: string;
+  status: string;
+  textChunks?: string[];  
 };
 
 type DocumentJobConfig = {
@@ -34,285 +38,214 @@ const AddDocumentJobSheet = ({
   sheetRef,
   selectedFile,
   module,
+  sessionID,
   setModule ,
-  setSessions
+  setSessions,
+  questions,
+  setQuestions,
+  selectedSession,
 }: {
   sheetRef: React.RefObject<any>;
   selectedFile: AppwriteDocument | null;
     module: module;
+    sessionID: string;  
     setModule: React.Dispatch<React.SetStateAction<module | null>>;
     setSessions: React.Dispatch<React.SetStateAction<any[]>>;
+    questions: question[];
+    setQuestions: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedSession: {
+    id: string;
+    title: string;
+    description: string;
+    moduleID: string | null;
+    createdAt: string;
+    updatedAt: string;
+  } | null;   
 }) => {
   const { t } = useTranslation();
   const { userUsage , setUserUsage, user} = useGlobalContext();
 
-  const [fileContent, setFileContent] =
-    useState<"text" | "fragen" | null>(null);
-  const [answerCount, setAnswerCount] = useState<number>(4);
-  const [choiceType, setChoiceType] = useState<"single" | "multiple">("single");
-  const [priority, setPriority] = useState<boolean>(false);
+  const [fileContent, setFileContent] =useState<"text" | "fragen" | null>(null);
+
 
   // -----------------------------------------
   // 🔥 Energie-Berechnung
   // -----------------------------------------
   const energyCost = (() => {
-    if (!fileContent) return 0;
-    const base = fileContent === "text" ? 10 : 5;
-    return priority ? base * 2 : base;
-  })();
-
-  const hasEnoughEnergy = userUsage?.energy >= energyCost;
-
- async function updateModuleSession() {
-
-    try {
-        const newSessions = module.sessions.map((session: any) => {
-            // Session ist ein STRING → muss geparst werden
-            if (typeof session === "string") {
-                const parsed = JSON.parse(session);
-
-                if (parsed.id === selectedFile?.sessionID) {
-                    parsed.tags = [...(parsed.tags ?? []), "JOB-PENDING"];
-                }
-
-                return JSON.stringify(parsed);
-            }
-
-            // Session ist ein Objekt
-            if (session.id === selectedFile?.sessionID) {
-                return {
-                    ...session,
-                    tags: [...(session.tags ?? []), "JOB-PENDING"]
-                };
-            }
-
-            return session; // unverändert zurückgeben
-        });
-        
-        // Modul aktualisieren
-        const updatedModule = {
-            ...module,
-            sessions: newSessions
-        };
-
-
-
-        const res = await updateModule(updatedModule);
-        if (res) {
-          setModule(res as any as module);
-          setSessions(res.sessions.map((session: string) => JSON.parse(session)));
-        }
-        
-
-    } catch (error) {
-        console.error("Error updating module session:", error);
+    if (selectedFile?.textChunks) {
+      let costPerChunk = 1; // Standardkosten pro Chunk
+      if (fileContent === "fragen") {
+        costPerChunk = 1; // Kosten pro Chunk, wenn Fragen generiert werden
+      } else {
+        costPerChunk = 1; // Kosten pro Chunk, wenn nur Text verarbeitet wird
+      }
+      const totalCost = selectedFile.textChunks.length * costPerChunk;
+    return totalCost;
     }
-}
+    return 0;
+  })();
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const totalDuration =
+    selectedFile?.textChunks?.length
+      ? selectedFile.textChunks.length * 20 * 1000 // ms
+      : 0;
+  const startProgress = () => {
+  setProgress(0);
+  const start = Date.now();
+
+  const interval = setInterval(() => {
+    const elapsed = Date.now() - start;
+    const value = Math.min(elapsed / totalDuration, 1);
+    setProgress(value);
+
+    if (value >= 1) {
+      clearInterval(interval);
+    }
+  }, 100);
+
+  return interval;
+};
 
 
 
-  return (
-    <CustomBottomSheet ref={sheetRef}>
-      <View className="flex-1 p-4">
-        {/* Title */}
-        <Text className="text-xl font-bold text-slate-100 mb-2">
-          {t("document.selectedDocument")}
+
+return (
+  <CustomBottomSheet ref={sheetRef}>
+    <View className="flex-1 p-5 bg-gray-900">
+
+      {/* Header */}
+      <Text className="text-2xl font-bold text-white mb-1">
+        {t("document.selectedDocument")}
+      </Text>
+      <Text className="text-gray-400 text-sm mb-4">
+        Wähle aus, wie das Dokument verarbeitet werden soll
+      </Text>
+
+      {/* Dokument */}
+      <View className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
+        <Text className="text-gray-400 text-xs mb-1">
+          {t("document.name")}
         </Text>
-
-        {/* Name */}
-        <Text className="text-slate-200 mb-3 text-lg font-semibold ml-1">
+        <Text className="text-white text-lg font-semibold">
           {selectedFile?.title}
         </Text>
+      </View>
 
-        {/* File content */}
-        <Text className="text-lg font-bold text-slate-100 mb-2">
+      {/* Auswahl */}
+      <View className="mb-6">
+        <Text className="text-white font-semibold mb-3">
           {t("document.fileContent")}
         </Text>
 
-        {/* Type selection */}
-        <View className="flex-row w-full mb-4">
+        <View className="flex-row gap-3">
+          {/* Text */}
           <TouchableOpacity
             onPress={() => setFileContent("text")}
-            className={`flex-1 p-3 mr-2 rounded-xl ${
+            className={`flex-1 rounded-xl p-4 mr-1 border ${
               fileContent === "text"
-                ? "bg-blue-600"
-                : "bg-[#161B22] border border-[#30363D]"
+                ? "bg-blue-600 border-blue-500"
+                : "bg-gray-800 border-gray-700"
             }`}
           >
-            <Text className="text-slate-100 font-semibold text-center">
+            <Text className="text-white font-semibold mb-1">
               {t("document.typeText")}
+            </Text>
+            <Text className="text-gray-300 text-xs">
+              Fragen auf Basis eines Textes erstellen
             </Text>
           </TouchableOpacity>
 
+          {/* Fragen */}
           <TouchableOpacity
             onPress={() => setFileContent("fragen")}
-            className={`flex-1 p-3 rounded-xl ${
+            className={`flex-1 rounded-xl p-4 ml-1 border ${
               fileContent === "fragen"
-                ? "bg-blue-600"
-                : "bg-[#161B22] border border-[#30363D]"
+                ? "bg-blue-600 border-blue-500"
+                : "bg-gray-800 border-gray-700"
             }`}
           >
-            <Text className="text-slate-100 font-semibold text-center">
+            <Text className="text-white font-semibold mb-1">
               {t("document.typeQuestions")}
+            </Text>
+            <Text className="text-gray-300 text-xs">
+              Gegebene Fragen umwandeln
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
 
-        {/* Quiz Settings */}
-        {fileContent && (
-          <View className="w-full">
-            {/* Quiz Settings Title */}
-            <Text className="text-lg font-bold text-slate-100 mb-3">
-              {t("document.quizSettings")}
-            </Text>
+      {/* CTA */}
+      {fileContent && (
+          <TouchableOpacity
+            disabled={loading || userUsage?.energy < energyCost}
+            className={`rounded-2xl overflow-hidden ${
+              loading || userUsage?.energy < energyCost
+                ? "bg-gray-700"
+                : "bg-blue-600"
+            }`}
+            onPress={async () => {
+              if (!totalDuration) return;
 
-            {/* Answer Count */}
-            <Text className="text-slate-300 font-semibold mb-1">
-              {t("document.answerCount")}
-            </Text>
+              setLoading(true);
+              const timer = startProgress();
 
-            <View className="flex-row mb-4">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <TouchableOpacity
-                  key={n}
-                  onPress={() => setAnswerCount(n)}
-                  className={`flex-1 p-2 mx-1 rounded-lg ${
-                    answerCount === n
-                      ? "bg-blue-600"
-                      : "bg-[#161B22] border border-[#30363D]"
-                  }`}
-                >
-                  <Text className="text-center text-slate-100 font-bold">{n}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+              try {
 
-            {/* Choice Type */}
-            <Text className="text-slate-300 font-semibold mb-1">
-              {t("document.choiceType")}
-            </Text>
+                if (!selectedFile) return;
+                await addNewQuestionToModule({
+                  material: selectedFile.textChunks!.map((string) => {
+                    return {
+                      type: fileContent == "fragen" ? "QUESTION" : "PEN",
+                      content: string,
+                      uri: null,
+                      sessionID: sessionID,
+                      id: uuid.v4(),
+                    }}),
+                  module: module,
+                  setModule: setModule,
+                  setQuestions: setQuestions,
+                  setLoading: ()=> {},
+                  setSessions: setSessions,
+                  selectedSession: selectedSession,
+                });
+                
+                sheetRef.current?.closeSheet();
+              } finally {
+                clearInterval(timer);
+                setProgress(1);
+                setLoading(false);
+              }
+            }}
+          >
+            {/* Progress Bar */}
+            {loading && (
+              <View
+                className="absolute left-0 top-0 bottom-0 bg-blue-500"
+                style={{ width: `${progress * 100}%` }}
+              />
+            )}
 
-            <View className="flex-row mb-6">
-              <TouchableOpacity
-                onPress={() => setChoiceType("single")}
-                className={`flex-1 p-3 mr-2 rounded-xl ${
-                  choiceType === "single"
-                    ? "bg-blue-600"
-                    : "bg-[#161B22] border border-[#30363D]"
-                }`}
-              >
-                <Text className="text-center text-slate-100 font-semibold">
-                  {t("document.singleChoice")}
-                </Text>
-              </TouchableOpacity>
+            {/* Content */}
+            <View className="py-4 items-center">
+              <Text className="text-white font-semibold text-base">
+                {loading
+                  ? `Verarbeitung… ${Math.round(progress * 100)}%`
+                  : `${t("document.energyCost")} ${energyCost}⚡`}
+              </Text>
 
-              <TouchableOpacity
-                onPress={() => setChoiceType("multiple")}
-                className={`flex-1 p-3 rounded-xl ${
-                  choiceType === "multiple"
-                    ? "bg-blue-600"
-                    : "bg-[#161B22] border border-[#30363D]"
-                }`}
-              >
-                <Text className="text-center text-slate-100 font-semibold">
-                  {t("document.multipleChoice")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Priority Toggle */}
-            <View className="w-full mb-6 bg-[#161B22] border border-[#30363D] rounded-xl p-4">
-              <View className="flex-row justify-between items-center">
-                <View className="w-3/4">
-                  <Text className="text-slate-100 font-semibold text-lg">
-                    {t("document.priorityTitle")}
-                  </Text>
-                  <Text className="text-slate-400 text-sm mt-1">
-                    {t("document.priorityDescription")}
-                  </Text>
-                </View>
-
-                <Switch
-                  value={priority}
-                  onValueChange={setPriority}
-                  trackColor={{ false: "#6B7280", true: "#3B82F6" }}
-                  thumbColor={priority ? "#FBBF24" : "#E5E7EB"}
-                />
-              </View>
-
-              {/* Price Display */}
-              <View className="mt-3 flex-row justify-between items-center">
-                <Text className="text-slate-300 text-sm">
-                  {t("document.energyCost")}{energyCost} ⚡
-                </Text>
-
-                <Text className="text-slate-300 text-sm">
-                  {t("document.remaining")}: {userUsage?.energy ?? 0} ⚡
-                </Text>
-              </View>
-
-              {!hasEnoughEnergy && (
-                <Text className="text-red-500 text-sm mt-2 font-semibold">
-                  {t("document.notEnoughEnergy")}
+              {!loading && (
+                <Text className="text-white text-xs opacity-80 mt-1">
+                  Dauer: ca. {totalDuration / 1000}s
                 </Text>
               )}
             </View>
-
-            {/* Convert Button */}
-            <TouchableOpacity
-              disabled={!hasEnoughEnergy}
-              onPress={async () => {
-                if (!hasEnoughEnergy) return;
-
-                const jobConfig: DocumentJobConfig = {
-                    databucketID: selectedFile?.databucketID || "",
-                    sessionID: selectedFile?.sessionID || "",
-                    subjectID: selectedFile?.subjectID || "",
-                    numberAnswers: answerCount as 1 | 2 | 3 | 4 | 5,
-                    questionType:
-                    choiceType === "multiple" ? "MULTIPLE" : "SINGLE",
-                    hasPriority: priority,
-                    fileContent: fileContent === "text" ? "TEXT" : "QUESTIONS",
-                    createdBy: user?.$id || "",
-                };
-
-                const res = await addDocumentJob(jobConfig);
-                setUserUsage((prev: any) => prev ? { ...prev, energy: prev.energy - energyCost } : prev);
-                await updateModuleSession();
-                sheetRef.current?.closeSheet()();
-              }}
-              className={`w-full rounded-xl p-3 justify-center items-center 
-                ${
-                  !hasEnoughEnergy
-                    ? "bg-gray-700 opacity-50"
-                    : priority
-                    ? "bg-[#FBBF24]"
-                    : "bg-blue-600"
-                }
-              `}
-            >
-              <Text
-                className={`font-bold ${
-                  !hasEnoughEnergy
-                    ? "text-gray-300"
-                    : priority
-                    ? "text-black"
-                    : "text-slate-100"
-                }`}
-              >
-                {priority
-                  ? t("document.convertPriority")
-                  : fileContent === "text"
-                  ? t("document.convertTextQuiz")
-                  : t("document.convertQuestionsQuiz")}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         )}
 
-      </View>
-    </CustomBottomSheet>
-  );
+    </View>
+  </CustomBottomSheet>
+);
 };
 
 export default AddDocumentJobSheet;

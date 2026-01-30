@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV, addDocumentConfigToMMKV, saveDocumentConfigsToMMKV, getDocumentConfigsFromMMKV, removeDocumentConfigFromMMKV } from "@/lib/mmkvFunctions";
 import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 import { checkMMKVNoteDocumentListRefreshTimestampExpiry, checkMMKVQuestionListRefreshTimestampExpiry, setMMKVLastNoteDocumentListRefreshTimestamp, setMMKVLastQuestionListRefreshTimestamp } from "@/lib/mmkvUpdateTimestamps";
+import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
 
 type QuestionListItem = {
   id: string;
@@ -509,7 +510,7 @@ const SingleModule = ({
 
       const file = res.assets[0];
       if (file.mimeType !== "application/pdf") {
-        alert(t(""));
+        alert(t("invalidFileType"));
         return;
       }
       const doc = {
@@ -519,11 +520,15 @@ const SingleModule = ({
         id: uuid.v4(),
         type: file.mimeType || "application/octet-stream",
         uploaded: false,
+        status:"PENDING"
       };
+      //TAGTAG
 
 
       // Step 2 - Save the config
       const appwriteRes = await addDocumentConfig(doc);
+      
+
 
       // Step 3 - Read the file differently based on platform
       let fileBlob;
@@ -553,8 +558,17 @@ const SingleModule = ({
           ...appwriteRes,
           uploaded: true,
           databucketID: uploadRes ? uploadRes.$id : undefined,
+          status:"PENDING"
         });
-          addDocumentConfigToMMKV(sessions[selectedSession].id,final as any as AppwriteDocument);
+
+        console.log("Appwrite document config created:", appwriteRes);
+        if (appwriteRes?.$id) {
+          sendTextExtractionRequest(appwriteRes?.$id)
+        }
+
+        addDocumentConfigToMMKV(sessions[selectedSession].id,final as any as AppwriteDocument);
+
+
         if (final) {
           setDocuments((prevDocuments) => [
             ...prevDocuments,
@@ -865,6 +879,15 @@ const SingleModule = ({
         module={module}
         setModule={setModule}
         setSessions={setSessions}
+        sessionID={sessions[selectedSession].id}
+        selectedSession={sessions[selectedSession]}
+        questions={questions}
+        setQuestions={setQuestions}
+        
+
+        
+
+
       />
 
       <StartQuizSheet

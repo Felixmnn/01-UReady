@@ -18,7 +18,6 @@ import { callThisFunction } from "@/lib/appwriteFunctions";
 export async function addNewQuestionToModule({
   material,
   module,
-
   setQuestions,
   setLoading,
   setSessions,
@@ -39,7 +38,17 @@ export async function addNewQuestionToModule({
   selectedSession: any;
   setModule: React.Dispatch<React.SetStateAction<any>>;
 }) {
+  console.log("🚀🚀🚀 Starting addNewQuestionToModule with:")
+
   setLoading(true);
+  console.log("👍👍👍")
+  console.log("Data:,",{
+    material,
+    module,
+    selectedSession,
+  })
+  console.log("👍👍👍")
+
   //Schritt 1: Fragen generieren
   const newQuestions = await generateQuestions({
     material,
@@ -190,7 +199,6 @@ export async function materialToModule({
     const savedList = await saveQuestions({
       newModuleData,
       directQuestions,
-      savedQuestions,
     });
 
     // Schritt 4: Modul mit Fragen verknüpfen
@@ -378,11 +386,9 @@ async function saveModule({
 async function saveQuestions({
   newModuleData,
   directQuestions,
-  savedQuestions,
 }: {
   newModuleData: any;
   directQuestions: any[];
-  savedQuestions: any[];
 }) {
   // Schritt 3: Fragen speichern
   let saveQuestionsHere = []
@@ -658,3 +664,76 @@ export async function generateQuestionsFromQuestions({
   }
 }
 
+
+
+//Späert nochmall prüfen ob das so funktioniert wie gewünscht
+export async function documentToQuestions({ 
+  documentContent,
+  fileContentType,
+  module,
+  setModule,
+  questions,
+  setQuestions,
+  sessionID 
+}: {
+
+  documentContent: string[];
+  fileContentType: "TEXT" | "QUESTIONS";
+  module: module;
+  setModule: React.Dispatch<React.SetStateAction<module | null>>;
+  questions: any[];
+  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
+  sessionID: string;
+}) {
+  let generatedQuestions: any[] = [];
+  for (let i = 0; i < documentContent.length; i++) {
+    let newQuestions = [];
+    if (fileContentType === "TEXT") {
+      newQuestions = await generateQuestionsFromText({
+        text: documentContent[i],
+        questionsType: "MULTIPLE",
+        amountOfAnswers: 4,
+      });
+    } else if (fileContentType === "QUESTIONS") {
+      newQuestions = await generateQuestionsFromQuestions({
+        text: documentContent[i],
+        questionsType: "MULTIPLE",
+        amountOfAnswers: 4,
+      });
+    }
+    generatedQuestions = [...generatedQuestions, ...newQuestions];
+  }
+  let newModuleData;
+  // Schritt 2: Modul speichern
+  const resMod = await saveModule({
+    newModule: module,
+    moduleID: module.$id as string,
+    sessions: module.sessions
+      ? module.sessions.map((item: string) => JSON.parse(item))
+      : [],
+    directQuestions: generatedQuestions,
+    newModuleData,
+  });
+
+    newModuleData = resMod;
+
+
+    let savedQuestions: any[] = [];
+    // Schritt 3: Fragen speichern
+    const savedList = await saveQuestions({
+      newModuleData,
+      directQuestions: generatedQuestions,
+    });
+
+    // Schritt 4: Modul mit Fragen verknüpfen
+
+    if (newModuleData && newModuleData.$id)
+      await updateModuleQuestionList(
+      newModuleData.$id,
+      savedList ? savedList.map((item) => JSON.stringify(item)) : []
+    );
+
+    setModule(newModuleData);
+    setQuestions((prev) => [...generatedQuestions, ...prev]);
+  console.log("Generated Questions:", generatedQuestions);
+}

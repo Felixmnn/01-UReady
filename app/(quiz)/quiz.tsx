@@ -17,7 +17,7 @@ import CustomButton from '@/components/(general)/customButton';
 import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
-import { getModuleFromMMKV, getQuestionsFromMMKV } from '@/lib/mmkvFunctions';
+import { addUnsyncedListToMMKV, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
 
 type QuestionItem = {
     id: string | null;
@@ -59,16 +59,8 @@ const quiz = () => {
         status
     } = useLocalSearchParams()
 
-    console.log("Quiz Params: ", {
-        sessionID,
-        moduleID,
-        quizType,
-        questionType,
-        questionAmount,
-        timeLimit,
-        status
-    }
-    )
+    
+    
 
 
     // Unwichtig, nur für responsive Design
@@ -282,7 +274,10 @@ const quiz = () => {
         setQuestionList: React.Dispatch<React.SetStateAction<QuestionItem[]>>,
         moduleID: string
         ) {
-        const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
+        //const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
+        const res = getUnsyncedListFromMMKV(moduleID);
+        //console.log("MMKV List" , res ?  res2?.slice(0,5) : "No MMKV List");
+
         let tempQuestionList = [...questionList];
 
         if (res) {
@@ -324,12 +319,16 @@ const quiz = () => {
         );
 
         if (!success) {
+            /*
             await AsyncStorage.setItem(
             `unsyncedModuleList${moduleID}`,
             JSON.stringify(tempQuestionList)
             );
+            */
+            addUnsyncedListToMMKV(tempQuestionList,moduleID ? moduleID.toString() : "");
         } else {
-            await AsyncStorage.removeItem(`unsyncedModuleList${moduleID}`);
+            //await AsyncStorage.removeItem(`unsyncedModuleList${moduleID}`);
+            removeUnsyncedListFromMMKV(moduleID ? moduleID.toString() : "");
         }
     }
 
@@ -339,9 +338,11 @@ const quiz = () => {
     }, [moduleID]);
 
     async function syncUnsyncedData(moduleID: string, questionList: QuestionItem[]) {
-        const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
+        //const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
+        const res = getUnsyncedListFromMMKV(moduleID);
+        //console.log("Syncing unsynced data from MMKV:", res2 ? res2.slice(0,5) : "No MMKV data");
         if (res) {
-            const parsedList = JSON.parse(res) as QuestionItem[];
+            const parsedList = res as QuestionItem[];
             const mergedList = [...questionList];
             parsedList.forEach(q => {
                 const index = mergedList.findIndex(item => item.id === q.id);
@@ -357,7 +358,8 @@ const quiz = () => {
             });
             const success = await updateModuleQuestionList(moduleID, mergedList);
             if (success) {
-                await AsyncStorage.removeItem(`unsyncedModuleList${moduleID}`);
+                //await AsyncStorage.removeItem(`unsyncedModuleList${moduleID}`);
+                removeUnsyncedListFromMMKV(moduleID);
                 setQuestionList(mergedList);
             }
         }

@@ -69,7 +69,6 @@ function calculatePercent(questions:string[]){
 
   }    
   const percent = Math.floor((sum / (questions.length * 2)) * 100)
-  console.log("Calculated percent:", percent, "from sum:", sum, "and questions length:", questions.length);
   return percent;
 
 }

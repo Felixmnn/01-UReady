@@ -178,6 +178,7 @@ const NewAiQuestionsSheet = ({
               :    t("bibliothek.notEnoughEnergy")
           }
           handlePress={async () => {
+            console.log("✅✅✅✅✅✅✅✅")
             await addNewQuestionToModule({
               material: items,
               module: module,

@@ -671,10 +671,9 @@ export function addUnsyncedListToMMKV(tempQuestionList: QuestionItem[], moduleID
 /**
  * This Function gets a List of unsynced Questions
  */
-export function getUnsyncedListFromMMKV(moduleID:string): QuestionItem[] | [] {
+export function getUnsyncedListFromMMKV(moduleID:string): QuestionItem[] | null {
     const unsyncedQuestionsString = storage.getString(`user.unsyncedQuestionList.${moduleID}`);
-    console.log("Retrieved unsynced questions string:", unsyncedQuestionsString);
-    return unsyncedQuestionsString ? JSON.parse(unsyncedQuestionsString) : [];
+    return unsyncedQuestionsString ? JSON.parse(unsyncedQuestionsString) : null;
 }
 
 /**

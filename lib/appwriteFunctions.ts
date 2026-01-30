@@ -132,3 +132,26 @@ export async function callThisFunction(prompt: string) {
     throw err;
   }
 }
+
+export async function sendTextExtractionRequest(documentID: string) {
+  const url = "https://craniological-lawson-synecdochically.ngrok-free.dev/process_document";
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      api_key: "1234",
+      document_id: documentID,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Request failed: ${response.status} – ${errorText}`);
+  }
+
+  return await response.json();
+}
+

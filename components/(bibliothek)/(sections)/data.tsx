@@ -25,6 +25,7 @@ import { getQuestionsFromMMKV, removeQuestionFromMMKV } from "@/lib/mmkvFunction
 import { returnNewUserUsage } from "@/functions/addLastSessionModule";
 import BotCenter from "@/components/(signUp)/botCenter";
 import BotWaiting from "@/components/(signUp)/botWaiting";
+import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -50,6 +51,7 @@ type AppwriteDocument = {
   subjectID: string;
   sessionID: string;
   uploaded: boolean;
+  status?: string;  
 };
 
 const Data = ({
@@ -538,30 +540,74 @@ function calculateQuestionProgress(questionList: string[]): number {
                       : t("data.unnamed")}
                      </Text>
                 </View>
-                <View className="flex-row items-center justify-between">
-                  {item.uploaded ? null : (
-                    <ActivityIndicator size="small" color="#1E90ff" />
-                  )}
-                  {item.uploaded ? (
-                    <TouchableOpacity
-                      className="mr-2"
-                      onPress={() => {
-                        deleteDocument(item.$id);
-                      }}
-                    >
-                      <Icon name="trash" size={15} color="white" />
-                    </TouchableOpacity>
+                <View className="flex-row items-center justify-center">
+                  {/* Upload Status Anzeige */}
+                  <View className="flex-row items-center justify-between mr-2">
+                    {item.status === "PENDING" && (
+                      <View className="px-2 py-0.5 rounded-full bg-yellow-100">
+                        <Text className="text-yellow-700 text-xs font-medium">
+                          Processing
+                        </Text>
+                      </View>
+                    )}
 
-                  ) : (
-                    <TouchableOpacity
-                      className="ml-2"
-                      onPress={() => {
-                        deleteDocument(item.$id);
-                      }}
-                    >
-                      <Icon name="times" size={15} color="white" />
-                    </TouchableOpacity>
-                  )}
+                    {item.status === "EXTRACTED" && (
+                      <View className="px-2 py-0.5 rounded-full bg-green-100">
+                        <Text className="text-green-700 text-xs font-medium">
+                          Ready
+                        </Text>
+                      </View>
+                    )}
+
+                    {item.status === "EXTRACTIONFAILED" && (
+                      <TouchableOpacity className="px-2 py-0.5 rounded-full bg-red-100"
+                        onPress={async () => {
+                                    const res = await sendTextExtractionRequest(item.$id)
+                                    //TODO: Handle response 
+                                  }}
+                          
+                      >
+                        <Text className="text-red-700 text-xs font-semibold">
+                          Retry
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+
+                    {item.status === "STATUS_EXTRACTION_NOT_POSSIBLE" && (
+                      <View className="px-2 py-0.5 rounded-full bg-gray-100">
+                        <Text className="text-gray-500 text-xs font-medium">
+                          Broken file
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                  {/* Delete Button */}
+                  <View className="flex-row items-center justify-between">
+                    {item.uploaded ? null : (
+                      <ActivityIndicator size="small" color="#1E90ff" />
+                    )}
+                    {item.uploaded ? 
+                    (
+                      <TouchableOpacity
+                        className="mr-2"
+                        onPress={() => {
+                          deleteDocument(item.$id);
+                        }}
+                      >
+                        <Icon name="trash" size={15} color="white" />
+                      </TouchableOpacity>
+
+                    ) : (
+                      <TouchableOpacity
+                        className="ml-2"
+                        onPress={() => {
+                          deleteDocument(item.$id);
+                        }}
+                      >
+                        <Icon name="times" size={15} color="white" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </View>
               </TouchableOpacity>
             ))}

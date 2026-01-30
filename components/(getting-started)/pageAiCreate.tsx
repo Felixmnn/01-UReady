@@ -261,7 +261,6 @@ const PageAiCreate = ({
     await materialToModule({
       user,
       newModule,
-
       material: items,
       sessions: sessions.map((session) => ({
         ...session,

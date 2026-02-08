@@ -79,6 +79,7 @@ const SingleModule = ({
   {
     /* Dimensions and Window Measurements */
   }
+  const [loadingQuestionsDone, setLoadingQuestionsDone] = useState(false);
   const { width } = useWindowDimensions();
   const isVertical = width > 700;
   const [tab, setTab] = useState(0);
@@ -129,8 +130,8 @@ const SingleModule = ({
   : [];
   const [sessions, setSessions] = useState(parsedSessions);
 
-  const [notes, setNotes] = useState<note[] | []>(sessions && sessions.length > selectedSession && sessions[selectedSession].id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
-  const [documents, setDocuments] = useState<AppwriteDocument[]>(sessions && sessions.length > selectedSession && sessions[selectedSession].id ? getDocumentConfigsFromMMKV(sessions[selectedSession].id) : []);
+  const [notes, setNotes] = useState<note[] | []>(sessions && sessions.length > selectedSession && sessions[selectedSession]?.id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
+  const [documents, setDocuments] = useState<AppwriteDocument[]>(sessions && sessions.length > selectedSession && sessions[selectedSession]?.id ? getDocumentConfigsFromMMKV(sessions[selectedSession].id) : []);
 
   {
     /* Language and Texts */
@@ -216,7 +217,7 @@ const SingleModule = ({
       }
     }
     const percent = Math.round((points / questions.length) * 100);
-    return percent < 0 ? 0 : percent > 100 ? 100 : percent;
+    return isNaN(percent) ? 0 : percent < 0 ? 0 : percent > 100 ? 100 : percent;
   }
 
 
@@ -248,36 +249,7 @@ const SingleModule = ({
   repairQuestionListAndNotes();
 
   //_____________________________________________________________When Selected Session Changes_____________________________________________________________
-  /**
-   * This function is called when the Page is reopened or the module is changed.
-   */
-  async function updateSessionData(
-    sessionID = "",
-    percent = 0,
-    amountQuestions = 0
-  ) {
-    sessions.forEach((session: Session) => {
-      if (
-        session.id === sessionID &&
-        (session.percent !== percent || session.questions !== amountQuestions)
-      ) {
-        setSessions((prevSessions: Session[]) => {
-          const updatedSessions = [...prevSessions];
-          const index = updatedSessions.findIndex((s) => s.id === sessionID);
-
-          if (index !== -1) {
-            updatedSessions[index] = {
-              ...updatedSessions[index],
-              percent: percent,
-              questions: amountQuestions,
-            };
-          }
-
-          return updatedSessions;
-        });
-      }
-    });
-  }
+ 
 
 
   function ensureQuestionListIsParsed(questionList: string[] | QuestionListItem[]): QuestionListItem[] {
@@ -311,16 +283,21 @@ const SingleModule = ({
     const totalRefreshNeeded = checkMMKVQuestionListRefreshTimestampExpiry(moduleID) || mandatory ;
     if (totalRefreshNeeded) {
       setMMKVLastQuestionListRefreshTimestamp(moduleID);
+      setLoadingQuestionsDone(false);
       const res = await getAllQuestionsByIds(parsedQuestionList.map(q => q.id));
       if (res === "404" || res === "400") {
         allQuestions = getQuestionsFromMMKV(moduleID);
+
       } else {
+        
         allQuestions = res;
         saveQuestionsToMMKV(moduleID, allQuestions as any as question[]);
       }
     } else {
       allQuestions = getQuestionsFromMMKV(moduleID);
     }
+      setLoadingQuestionsDone(true);
+
     if (!checkIfOldQuestionsEqualNewQuestions(questions, allQuestions)) {
       setQuestions(allQuestions as unknown as question[]);
     }
@@ -447,9 +424,15 @@ const SingleModule = ({
       const newSessions = updateSessionProgress(sessions, questions, ensureQuestionListIsParsed(moduledata.questionList));
       setSessions(newSessions);
     }
-    
-    const notes = await getSessionNotes(sessions[selectedSession].id);
-    const documents = await getAllDocuments(sessions[selectedSession].id);
+    let notes = null;
+    let documents = null;
+    if (sessions && sessions.length > selectedSession) {
+       notes = await getSessionNotes(sessions[selectedSession].id);
+       documents = await getAllDocuments(sessions[selectedSession].id);
+    } else {
+      notes = await getSessionNotes("ALL");
+      documents = await getAllDocuments("ALL");
+    }
     if (notes) {
       setNotes(notes as unknown as note[]);
     }
@@ -516,7 +499,7 @@ const SingleModule = ({
       const doc = {
         title: file.name,
         subjectID: module.$id,
-        sessionID: sessions[selectedSession].id,
+        sessionID: sessions[selectedSession]?.id || "ALL",
         id: uuid.v4(),
         type: file.mimeType || "application/octet-stream",
         uploaded: false,
@@ -566,7 +549,7 @@ const SingleModule = ({
           sendTextExtractionRequest(appwriteRes?.$id)
         }
 
-        addDocumentConfigToMMKV(sessions[selectedSession].id,final as any as AppwriteDocument);
+        addDocumentConfigToMMKV(sessions[selectedSession]?.id || "ALL",final as any as AppwriteDocument);
 
 
         if (final) {
@@ -594,7 +577,7 @@ const SingleModule = ({
       if (type === "document") {
         setDocuments(documents.filter((document) => document.$id !== id));
         removeDocumentConfig(id);
-        removeDocumentConfigFromMMKV(sessions[selectedSession].id, id);
+        removeDocumentConfigFromMMKV(sessions[selectedSession]?.id || "ALL", id);
       } else if (type === "question") {
         const updatedQuestions = questions.filter(
           (q: question | null) => q && q.$id !== id
@@ -763,6 +746,7 @@ const SingleModule = ({
                 <View className="p-4 flex-1">
                  
                   <Data
+                  loadingQuestionsDone={loadingQuestionsDone}
                   key={JSON.stringify(module) + questions.length + JSON.stringify(module.session)}
                   addDocumentJobSheetRef={addDocumentJobSheetRef}
                   setSelectedFile={setSelectedFile}
@@ -879,7 +863,7 @@ const SingleModule = ({
         module={module}
         setModule={setModule}
         setSessions={setSessions}
-        sessionID={sessions[selectedSession].id}
+        sessionID={sessions[selectedSession]?.id || "ALL"}
         selectedSession={sessions[selectedSession]}
         questions={questions}
         setQuestions={setQuestions}

@@ -164,31 +164,6 @@ function ZoomHeightControls() {
 }
 
 
-const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
-    {
-      title: "Beispielbild",
-      sessionID: "693676fa003079b84e13",
-      subjectID: "693676f9c1d6e4b2f4d5",
-      databucketID: "693676fa003079b84e13",
-      seitenanzahl: 1,
-      filetype: "jpg",
-      uploaded: true,
-      creator:" user.$id"
-    },
-    {
-      title: "Beispielbild",
-      sessionID: "693676fa003079b84e13",
-      subjectID: "693676f9c1d6e4b2f4d5",
-      databucketID: "6936e42b0008772a4f1e",
-      seitenanzahl: 1,
-      filetype: "jpg",
-      uploaded: true,
-      creator:" user.$id"
-    },
-    
-  ]);
-
-
     return (
       <View className="w-full ml-1 py-2 ">
         {detailsHidden ? (
@@ -309,7 +284,33 @@ const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
                     name="font"
                     title="Text"
                     isSelected={dataType === "text"}
-                    handlePress={() => setDataType("text")}
+                    handlePress={() => {
+                      setDataType("text")
+                      if (typeOfQuestion == false) {
+                        const newAnswer = {
+                          title: text,
+                          latex: "",
+                          image: "",
+                        }
+                        const oldAnswers = questionToEdit.answers
+                        const newAnswers = oldAnswers.map((a: string | { title: string; latex: string; image: string }, i: number) => {
+                          if (i === itemIndex) {
+                            return newAnswer;
+                          }
+                          return a;
+                        })
+                        const newQuestionToEdit = {
+                          ...questionToEdit,
+                          answers: newAnswers,
+                        }
+                        setQuestionToEdit({
+                          ...questionToEdit,
+                          answers: newAnswers,
+                        })
+                      }}
+                      }
+                   
+                  
                   />
                   <Selectable
                     name="code"
@@ -372,12 +373,25 @@ const [imageConfigs, setImageConfigs] = useState<documentConfig[]>([
                       });
                     } else {
                       const updatedAnswers = [...questionToEdit.answers];
-                      updatedAnswers[itemIndex] = {
-                        title: text,
-                        latex: dataType !== "latex" ? "" : latex + height + zoom,
-                        image: selectedImageUri,
-                      };
-
+                      if (dataType === "text") {
+                        updatedAnswers[itemIndex] = {
+                          title: text,
+                          latex: "",
+                          image: "",
+                        };
+                      } else if (dataType === "latex") {
+                        updatedAnswers[itemIndex] = {
+                          title: text,
+                          latex: latex + height + zoom,
+                          image: "",
+                        };
+                      } else if (dataType === "image") {
+                        updatedAnswers[itemIndex] = {
+                          title: text,
+                          latex: "",
+                          image: selectedImageUri,
+                        };
+                      }
                       setQuestionToEdit({
                         ...questionToEdit,
                         answers: updatedAnswers,

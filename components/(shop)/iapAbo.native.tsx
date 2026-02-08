@@ -1,4 +1,5 @@
-import { View, Text, Image, TouchableOpacity, Platform, Alert, Linking } from 'react-native'
+
+/*import { View, Text, Image, TouchableOpacity, Platform, Alert, Linking } from 'react-native'
 import React, { useEffect } from 'react'
 import images from "@/assets/shopItems/itemConfig";
 import { useTranslation } from 'react-i18next';
@@ -221,3 +222,4 @@ useEffect(() => {
   )
 }
 
+*/

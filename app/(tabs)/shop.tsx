@@ -6,10 +6,10 @@ import { router } from "expo-router";
 import images from "@/assets/shopItems/itemConfig";
 import TokenHeader from "@/components/(general)/tokenHeader";
 import RewardedAdScreen from "@/components/(shop)/add";
-import SimpleStore from "@/components/(shop)/iap";
+//import SimpleStore from "@/components/(shop)/iap";
 import { useTranslation } from "react-i18next";
 import Offline from "@/components/(general)/offline";
-import IapAbo from "@/components/(shop)/iapAbo";
+//import IapAbo from "@/components/(shop)/iapAbo";
 import { checkAprovedAdd } from "@/lib/appwriteDaten";
 
 const shop = () => {
@@ -72,8 +72,8 @@ const shop = () => {
             { isOffline ? <Offline/> :
 
             <ScrollView className="w-full">
-              <Header title={t("shop.buyEnergy")}/>
-              <SimpleStore/>
+               {/*<Header title={t("shop.buyEnergy")}/>
+                 <SimpleStore/> */}
               <Header title={t("shop.freeEnergy")}/>
               <View className="flex-1 p-4">
                 <RewardedAdScreen
@@ -82,9 +82,10 @@ const shop = () => {
               </View>
              
               <View>
-                <Header title={t("shop.removeAds")}
-                />
-                <IapAbo/>
+               {/* <Header title={t("shop.removeAds")}/> */}
+                
+                {/* <IapAbo/> */}
+                {/*
                 {
                   (Platform.OS === "ios" ) &&
                   <TouchableOpacity onPress={async() => {
@@ -95,6 +96,7 @@ const shop = () => {
                     </Text>
                   </TouchableOpacity>
                 }
+                  */}
               </View>
              
             </ScrollView>

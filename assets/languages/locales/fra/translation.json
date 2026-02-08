@@ -521,6 +521,9 @@
     "excellent": "Excellent ! Vous avez fait un excellent travail !",
     "goodJob": "Bon travail ! Continuez comme ça !",
     "notBad": "Pas mal ! Vous pouvez faire encore mieux !",
+    "resultsTitle": "Résultats",
+    "wrongAnswers": "Réponses incorrectes :",
+    "rightAnswers": "Réponses correctes :",
     "newAttempt": "Nouvelle tentative",
     "otherQuestions": "Autres questions",
     "finishQuiz": "Terminer le quiz"
@@ -1968,7 +1971,8 @@
       "error": "Erreur :",
       "imagesLoading": "Chargement des images...",
       "more": "Plus",
-      "yourImages": "Vos images"
+      "yourImages": "Vos images",
+      "requireOnlineOnce": "Pour afficher l’image, vous devez avoir répondu à cette question en ligne au moins une fois."
     },"funFacts": {
     "items": [
       "Le savais-tu ? Après avoir téléchargé les questions, tu peux apprendre entièrement hors ligne.",

@@ -29,6 +29,7 @@ const RootLayout = () => {
         tabBarShowLabel: false,
         tabBarStyle: Platform.select({
           ios: {
+            display: isVertical ? "none" : "flex",
             position: "absolute",
             backgroundColor: "#1e1e1e",
             borderTopWidth: 0,

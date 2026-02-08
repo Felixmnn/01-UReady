@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, ActivityIndicator } from "react-native";
+import { View, Pressable, ActivityIndicator, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { useImageManipulator, SaveFormat } from "expo-image-manipulator";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import { uploadImageToAppwrite } from "@/lib/appwriteDatabses";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { useTranslation } from "react-i18next";
@@ -17,27 +17,20 @@ const UploadImage = ({
  }) => {
   const {isOffline} = useGlobalContext()
   const [loading, setLoading] = useState(false);
-  const [selectedUri, setSelectedUri] = useState<string >("null");
+  const [selectedUri, setSelectedUri] = useState<string >("");
   const {t} = useTranslation();
-
-  // Hook immer oben – bekommt aktuelle URI bei jedem Render
-  const manipulator = useImageManipulator(selectedUri);
 
   useEffect(() => {
     if (!selectedUri) return;
-
     (async () => {
       try {
         setLoading(true);
-        if (selectedUri === "null") return;
-        // render ohne Parameter, weil Hook uri kennt
-        const rendered = await manipulator.renderAsync();
-
-        const manipulated = await rendered.saveAsync({
-          format: SaveFormat.JPEG,
-          compress: 0.5,
-        });
-
+        // iOS kann HEIC liefern – manipulator konvertiert explizit zu JPEG
+        const manipulated = await manipulateAsync(
+          selectedUri,
+          [],
+          { format: SaveFormat.JPEG, compress: 0.5 }
+        );
 
         const fileId = await uploadImageToAppwrite(manipulated.uri, imageConfigs, setImageConfigs);
         setImageUrl(fileId);
@@ -59,9 +52,13 @@ const UploadImage = ({
     if (!perm.granted) return;
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
+      // iOS: Konvertiert HEIC automatisch zu JPEG, reduziert Abstürze
+      imageExportPreset: Platform.OS === "ios" 
+        ? ImagePicker.ImageExportPreset.JPEG 
+        : ImagePicker.ImageExportPreset.Automatic,
     });
 
     if (!result.canceled) {

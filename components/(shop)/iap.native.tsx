@@ -1,3 +1,4 @@
+/*
 import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
 import { consumePurchaseAndroid, getAvailablePurchases, purchaseUpdatedListener, useIAP } from "react-native-iap";
@@ -155,7 +156,7 @@ export default function SimpleStore() {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Produkte */}
+      
       <View style={{ paddingHorizontal: 16, marginTop: 10 }}>
         {products.map((product) => (
           <BuyEnergy
@@ -168,3 +169,4 @@ export default function SimpleStore() {
     </View>
   );
 }
+*/

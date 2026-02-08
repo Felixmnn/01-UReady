@@ -77,6 +77,7 @@ const Data = ({
   setQuestions,
   selectAi ,
   selectedSession,
+  loadingQuestionsDone
 }: {
   addDocumentJobSheetRef: React.RefObject<any>;
   setSelectedFile: React.Dispatch<React.SetStateAction<AppwriteDocument | null>>;
@@ -110,6 +111,7 @@ const Data = ({
   selectedSessionID: string;
   setModule: React.Dispatch<React.SetStateAction<module>>;
   selectAi : () => void;
+  loadingQuestionsDone: boolean;
 }) => {
   const { width } = useWindowDimensions();
   const questionsInMMKV = module.$id ? getQuestionsFromMMKV(module.$id ? module.$id : "").length : -1
@@ -706,6 +708,7 @@ function calculateQuestionProgress(questionList: string[]): number {
         <ScrollView>
           
           {
+            loadingQuestionsDone == false &&
             !isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
             <BotWaiting 
             message={".."}

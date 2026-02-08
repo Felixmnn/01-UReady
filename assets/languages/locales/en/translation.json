@@ -515,6 +515,9 @@
     "excellent": "Excellent! You did great!",
     "goodJob": "Good job! Keep it up!",
     "notBad": "Not bad! You can do even better!",
+    "resultsTitle": "Results",
+    "wrongAnswers": "Wrong answers:",
+    "rightAnswers": "Correct answers:",
     "newAttempt": "New attempt",
     "otherQuestions": "Other questions",
     "finishQuiz": "Finish quiz"
@@ -1921,7 +1924,8 @@
       "error": "Error:",
       "imagesLoading": "Loading images...",
       "more": "More",
-      "yourImages": "Your images"
+      "yourImages": "Your images",
+      "requireOnlineOnce": "To display the image, you need to have answered this question online at least once."
     },"funFacts": {
     "items": [
       "Did you know you can study completely offline after downloading the questions?",

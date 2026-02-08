@@ -103,7 +103,7 @@ function calculatePercent(questions:string[]){
      }) => {
       return (
         <View className={` mb-4`}>
-          <View className={`flex-1 flex-row flex-wrap py-2`}>
+          <View className={`flex-1 flex-row flex-wrap py-2 mb-[65px]`}>
             {items.map((item:module, index) => (
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
                 <Karteikarte

@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
+  Platform,
 } from "react-native";
 import React from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -88,7 +89,7 @@ const RoadMap = ({
  
 
   return (
-    <ScrollView className={`${width > 700 ? "" : null} `}>
+    <ScrollView className={` ${Platform.OS === "ios" ? "mb-[65px]" : null} `}>
       {moduleSessions.map((module, index) => {
         return (
           <TouchableOpacity

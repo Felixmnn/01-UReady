@@ -19,6 +19,11 @@ const TokenHeader = ({
   // prüft, wie viel Energie refilled werden soll
   const refillEnergy = () => {
     if (!userUsage || !setUserUsage) return;
+    // If energy is already full, do not attempt any refill logic
+    if (userUsage.energy >= 10) {
+      setTimeLeft(null);
+      return;
+    }
     const now = new Date();
     const lastUpdate = new Date(userUsage.streakLastUpdate);
     const diffInMs = now.getTime() - lastUpdate.getTime();

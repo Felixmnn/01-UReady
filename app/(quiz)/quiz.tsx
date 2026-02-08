@@ -18,6 +18,7 @@ import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { addUnsyncedListToMMKV, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
+import BotCenter from '@/components/(signUp)/botCenter';
 
 type QuestionItem = {
     id: string | null;
@@ -37,8 +38,8 @@ if (!isWeb) {
 
 
 
-const adUnitId = !isWeb && __DEV__ ? Platform.OS == "android" ?
-"ca-app-pub-9834411851111627/5048162176" : TestIds.INTERSTITIAL :TestIds.INTERSTITIAL;
+const adUnitId = Platform.OS == "android" ?
+"ca-app-pub-9834411851111627/5048162176" : TestIds.INTERSTITIAL;
 
 const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 
@@ -602,6 +603,7 @@ const {t} = useTranslation()
       <View className={`flex-1  w-full bg-[#0c111d]  ${isVertical ? "rounded-[10px] border-[1px] border-gray-600" : ""}`}>
 
         <Navigation
+            amountAnswered={answeredCorrectly.length + answeredWrong.length}
             quizType={ (Array.isArray(quizType) ? quizType[0] : quizType) }
             timeLimit={timeLimit ? (Array.isArray(timeLimit) ? parseInt(timeLimit[0]) : parseInt(timeLimit)) : undefined}
             startTime={startTime}
@@ -613,7 +615,11 @@ const {t} = useTranslation()
             remainingPercent={remainingPercent}
             setRemainingPercent={setPercent}
             setPercent={setPercent}
+
+            showInterstitial={interstitial}    
             
+            subscriptionStatus={user ? user.subscriptionStatus : undefined}
+            intestialIsLoaded={loaded}
             
         
         />

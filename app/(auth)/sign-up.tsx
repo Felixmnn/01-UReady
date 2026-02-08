@@ -127,7 +127,7 @@ const SingnUp = () => {
       <TouchableOpacity
         className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
         style={{
-          width: Platform.OS === "web" ? null : width - 60,
+          
           height: 50,
           backgroundColor: "#1e3a8a",
           opacity:
@@ -231,7 +231,7 @@ const SingnUp = () => {
             <TextInput
               className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800 "
               style={{
-                width: Platform.OS === "web" ? null : width - 60,
+                
                 height: 50,
                 borderColor:
                   signUpForm.username.length > 4 ? "#1e3a8a" : "gray",
@@ -247,7 +247,7 @@ const SingnUp = () => {
             <TextInput
               className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
               style={{
-                width: Platform.OS === "web" ? null : width - 60,
+                
                 height: 50,
                 borderColor: isValidEmail(signUpForm.email)
                   ? "#1e3a8a"
@@ -264,7 +264,7 @@ const SingnUp = () => {
             <TextInput
               className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
               style={{
-                width: Platform.OS === "web" ? null : width - 60,
+                
                 height: 50,
                 borderColor:
                   signUpForm.password.length > 7 ? "#1e3a8a" : "gray",
@@ -281,7 +281,7 @@ const SingnUp = () => {
             <TextInput
               className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
               style={{
-                width: Platform.OS === "web" ? null : width - 60,
+                
                 height: 50,
                 borderColor:
                   signUpForm.passwordConfirm.length > 7 &&

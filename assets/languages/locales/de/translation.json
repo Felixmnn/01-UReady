@@ -517,6 +517,9 @@
     "excellent": "Ausgezeichnet! Du hast großartig abgeschnitten!",
     "goodJob": "Gut gemacht! Weiter so!",
     "notBad": "Nicht schlecht! Du kannst es noch besser machen!",
+    "resultsTitle": "Ergebnisse",
+    "wrongAnswers": "Falsche Antworten:",
+    "rightAnswers": "Richtige Antworten:",
     "newAttempt": "Neuer Versuch",
     "otherQuestions": "Andere Fragen",
     "finishQuiz": "Quiz beenden"
@@ -1872,6 +1875,8 @@
   "imagesLoading": "Bilder werden geladen...",
   "more": "Mehr",
   "yourImages": "Deine Bilder"
+  ,
+  "requireOnlineOnce": "Damit das Bild angezeigt werden kann, musst du diese Frage einmal online beantwortet haben."
 },
   "funFacts": {
     "items": [

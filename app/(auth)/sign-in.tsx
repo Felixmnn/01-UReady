@@ -153,8 +153,7 @@ const SignIn = () => {
         disabled={isSubmitting}
         className=" p-2 w-full rounded-[10px] mt-2 items-center justify-center"
         style={{
-          width: Platform.OS === "web" ? null : width - 60,
-          height: 50,
+          maxHeight: 50,
           backgroundColor: "#1e3a8a",
           opacity:
             isValidEmail(form.email) && form.password.length > 7 ? 1 : 0.5,
@@ -200,15 +199,14 @@ const SignIn = () => {
               width: 300,
             }}
           >
-            <View className="w-full items-center justify-center">
+            <View className="flex-1 w-full items-center justify-center">
               <Text className="text-white font-bold text-3xl">
                 {t("signIn.title")}
               </Text>
               <TextInput
-                className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800  "
+                className="text-white w-full p-2 rounded-[10px] flex-1 mt-2 bg-gray-800  "
                 style={{
-                  width: Platform.OS === "web" ? null : width - 60,
-                  height: 50,
+                  maxHeight: 50,
                   borderColor: isValidEmail(form.email) ? "#1e3a8a" : "gray",
                   borderWidth: 2,
                 }}
@@ -220,10 +218,9 @@ const SignIn = () => {
                 }}
               />
               <TextInput
-                className="text-white p-2 rounded-[10px] w-full mt-2 bg-gray-800"
+                className="text-white w-full p-2 rounded-[10px] flex-1 mt-2 bg-gray-800"
                 style={{
-                  width: Platform.OS === "web" ? null : width - 60,
-                  height: 50,
+                  maxHeight: 50,
                   borderColor: form.password.length > 7 ? "#1e3a8a" : "gray",
                   borderWidth: 2,
                 }}

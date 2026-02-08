@@ -516,6 +516,9 @@
     "excellent": "¡Excelente! ¡Lo hiciste genial!",
     "goodJob": "¡Buen trabajo! ¡Sigue así!",
     "notBad": "¡Nada mal! ¡Puedes hacerlo aún mejor!",
+    "resultsTitle": "Resultados",
+    "wrongAnswers": "Respuestas incorrectas:",
+    "rightAnswers": "Respuestas correctas:",
     "newAttempt": "Nuevo intento",
     "otherQuestions": "Otras preguntas",
     "finishQuiz": "Terminar el cuestionario"
@@ -1982,7 +1985,8 @@
       "error": "Error:",
       "imagesLoading": "Cargando imágenes...",
       "more": "Más",
-      "yourImages": "Tus imágenes"
+      "yourImages": "Tus imágenes",
+      "requireOnlineOnce": "Para mostrar la imagen, debes haber respondido esta pregunta en línea al menos una vez."
     }
 ,"funFacts": {
     "items": [

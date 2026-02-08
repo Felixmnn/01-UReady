@@ -62,7 +62,9 @@ const AnswerComponent = ({
       key={index}
       disabled={showAnsers}
       onPress={() => selectAnswer(JSON.stringify(parsedItem))}
-      className={`${width > 900 ? "w-[48%] mr-2 mt-2" : "w-full"} flex-1 items-center justify-center border-[1px] p-2 rounded-[10px] mb-2 
+      className={`${width > 900 ? 
+        " mr-2 mt-2 max-w-[48%]"
+        : ""} flex-1 items-center justify-center border-[1px] p-2 rounded-[10px] mb-2 
         ${
           showAnsers
             ? isCorrect

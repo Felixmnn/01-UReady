@@ -316,7 +316,7 @@ const ProfileSettings = () => {
             className={`flex-1 w-full  rounded-[10px] bg-gray-900 ${isVertical ? "border-gray-500 border-[1px]" : null} `}
           >
             <View className="mt-2" />
-            <ScrollView className="bg-gray-900">
+            <ScrollView className={` bg-gray-900 ${Platform.OS === "ios" ? "mb-[65px]" : null} `}>
               <InfoModule
                 content={() => {
                   return (

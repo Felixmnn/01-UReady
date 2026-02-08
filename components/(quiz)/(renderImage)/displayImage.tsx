@@ -87,7 +87,9 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
   if (error || !localUri) {
     return (
       <View style={{ padding: 20 }}>
-        <Text>{t("images.error")} {error}</Text>
+        <Text>
+          {t("images.requireOnlineOnce")}
+        </Text>
       </View>
     );
   }

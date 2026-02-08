@@ -13,7 +13,11 @@ const Navigation = ({
   amountOfAnsweredQuestions,
   totalAmountOfQuestions,
   remainingPercent,
-  setPercent  
+  setPercent  ,
+  subscriptionStatus,
+  showInterstitial,
+  intestialIsLoaded,
+  amountAnswered
 }: {
   quizType: "infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" ;
   timeLimit?: number;
@@ -23,6 +27,14 @@ const Navigation = ({
   totalAmountOfQuestions: number;
   remainingPercent: number;
   setPercent: React.Dispatch<React.SetStateAction<number>>;
+  amountAnswered: number; 
+  subscriptionStatus?: {
+    status: "active" | "inactive";  
+    expiry: string;
+  } | null;
+  showInterstitial: any;
+  intestialIsLoaded: boolean;
+
 
 }) => {
   const { t } = useTranslation();
@@ -73,7 +85,7 @@ const Navigation = ({
   }, [timeLimit, startTime]);
 
 
-  const done = 
+  const doneQuiz = 
     (quizType == "limitedTime" && remainingPercent <= 0) || 
     (quizType == "limitedTime" &&  amountOfAnsweredQuestions ==  0) ||
     ( quizType == "limitedFixed" && amountOfAnsweredQuestions == 0) ||
@@ -105,11 +117,26 @@ const Navigation = ({
       <View className="flex-row items-center justify-between w-full">
 
         <View className="flex-row items-center justify-between w-full">
-          <TouchableOpacity className="items-center justify-center" onPress={() => tryBack(router)}>
+          <TouchableOpacity className="items-center justify-center" onPress={() => {
+            if (amountAnswered < 5) {
+              tryBack(router)
+              return;
+            }
+            const expiry = subscriptionStatus?.expiry;
+            const now = new Date();
+            const isActive = 
+              !!expiry &&
+              new Date(expiry) > now &&
+              subscriptionStatus?.status === "active";
+            if (showInterstitial && intestialIsLoaded && !isActive) {
+              showInterstitial.show();
+            }          
+            tryBack(router)
+          }}>
             <Icon name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
           {
-            !done && (quizType == "limitedFixed" || quizType == "limitedAllCorrect") && (
+            !doneQuiz && (quizType == "limitedFixed" || quizType == "limitedAllCorrect") && (
               <Text className="text-white font-bold">
                 {amountOfAnsweredQuestions}/{totalAmountOfQuestions} {t("quiz.remaining")}
               </Text>            
@@ -121,7 +148,7 @@ const Navigation = ({
 
 
       {
-      done ? (
+      doneQuiz ? (
         <Text className="text-2xl font-bold text-gray-300 text-center">
           {t("quiz.results")}
         </Text>

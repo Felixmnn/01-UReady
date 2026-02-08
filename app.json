@@ -11,7 +11,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.felix08.nodeready",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Die Kamera wird benötigt, um QR-Codes zu scannen und Inhalte zu erfassen.",
+        "NSPhotoLibraryUsageDescription": "Zugriff auf die Fotomediathek wird benötigt, um Bilder auszuwählen.",
+        "NSPhotoLibraryAddUsageDescription": "Zugriff wird benötigt, um Bilder in deiner Mediathek zu speichern."
       }
     },
     "android": {
@@ -19,8 +22,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.felix08.nodeready",
-      "permissions": ["BILLING"]
+      "package": "com.felix08.nodeready"
     },
     "web": {
       "bundler": "metro",
@@ -53,7 +55,6 @@
           "iosAppId": "ca-app-pub-9834411851111627~5284044824"
         }
       ],
-      "react-native-iap",
       [
         "expo-build-properties",
         {

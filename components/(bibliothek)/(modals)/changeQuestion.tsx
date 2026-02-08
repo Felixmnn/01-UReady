@@ -49,7 +49,7 @@ const ChangeQuestions = ({
     }),
   });
   const [revision, setRevision] = useState(0);
-
+/*
   useEffect(() => {
   setQuestionToEdit({
     ...question,
@@ -70,6 +70,7 @@ const ChangeQuestions = ({
     setRevision((r) => r + 1);
 
 }, [question]);
+*/
 
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
@@ -103,6 +104,7 @@ const ChangeQuestions = ({
     setSelectedImageUri(question.questionUrl);
   }, [question.questionUrl]);
 
+  
   return (
     <BottomSheet
       ref={sheetRef}
@@ -133,6 +135,7 @@ const ChangeQuestions = ({
                   //Question Locally
                   //Question In Database
                   if (questionToEdit?.$id === undefined) {
+
                     const res = await addQUestion({
                       ...questionToEdit,
                       answers: questionToEdit.answers.map((a) =>{

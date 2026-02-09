@@ -49,7 +49,7 @@ const ChangeQuestions = ({
     }),
   });
   const [revision, setRevision] = useState(0);
-/*
+
   useEffect(() => {
   setQuestionToEdit({
     ...question,
@@ -70,7 +70,7 @@ const ChangeQuestions = ({
     setRevision((r) => r + 1);
 
 }, [question]);
-*/
+
 
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);

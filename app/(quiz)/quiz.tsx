@@ -17,7 +17,7 @@ import CustomButton from '@/components/(general)/customButton';
 import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
-import { addUnsyncedListToMMKV, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
+import { addUnsyncedListToMMKV, getIOSAddStatus, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
 import BotCenter from '@/components/(signUp)/botCenter';
 
 type QuestionItem = {
@@ -39,7 +39,10 @@ if (!isWeb) {
 
 
 const adUnitId = Platform.OS == "android" ?
-"ca-app-pub-9834411851111627/5048162176" : TestIds.INTERSTITIAL;
+"ca-app-pub-9834411851111627/5048162176" : 
+"ca-app-pub-9834411851111627/1214113239"
+
+
 
 const interstitial = !isWeb && adUnitId ? InterstitialAd.createForAdRequest(adUnitId) : null;
 

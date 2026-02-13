@@ -133,6 +133,7 @@ const ChangeQuestions = ({
                   //Modul Conifg
                   //Question Locally
                   //Question In Database
+                  console.log("Question to Edit", questionToEdit.answers)
                   if (questionToEdit?.$id === undefined) {
 
                     const res = await addQUestion({
@@ -162,25 +163,10 @@ const ChangeQuestions = ({
                       ],
                     });
                     
-                    setQuestionToEdit({
-                      $id: undefined,
-                      question: "",
-                      questionUrl: "",
-                      questionLatex: "",
-                      questionSVG: "",
-                      answers: [],
-                      answerIndex: [],
-                      public: false,
-                      aiGenerated: false,
-                      status: "",
-                      tags: [],
-                      sessionID: selectedSession.id,
-                      subjectID: module.$id !== undefined ? module.$id : null,
-                      explaination: "",
-                      hint: null,
-                    });
+                    
                     
                   } else {
+
                     const res = await updateDocument({
                       ...questionToEdit,
                       answers: questionToEdit.answers.map((a) => {
@@ -216,6 +202,23 @@ const ChangeQuestions = ({
                     setQuestions(updatedQuestions);
                   
                   }
+                  setQuestionToEdit({
+                      $id: undefined,
+                      question: "",
+                      questionUrl: "",
+                      questionLatex: "",
+                      questionSVG: "",
+                      answers: [],
+                      answerIndex: [],
+                      public: false,
+                      aiGenerated: false,
+                      status: "",
+                      tags: [],
+                      sessionID: selectedSession.id,
+                      subjectID: module.$id !== undefined ? module.$id : null,
+                      explaination: "",
+                      hint: null,
+                    });
 
                   setIsVisibleEditQuestion({
                     state: false,
@@ -256,28 +259,46 @@ const ChangeQuestions = ({
             <Text className="text-white text-[16px] font-semibold mb-2">
               {t("editQuestion.answers")}
             </Text>
-            {questionToEdit.answers.map((q, index) => (
-              <ContentInput
-              selectedImageUri={selectedImageUri}
-              setSelectedImageUri={setSelectedImageUri}
-                key={index}
-                title={q.title}
-                dataTmp={
-                  q.latex == null || q.latex.length == 0
-                    ? q.image == null || q.image.length == 0
-                      ? "text"
-                      : "image"
-                    : "latex"
+            {
+              questionToEdit.answers.map((q, index) => {
+                let objectOutput 
+                if (typeof q == "string") {
+                  try {
+                     objectOutput = JSON.parse(q)
+                  } catch (e)  {
+                    objectOutput = {
+                      latex : "",
+                      text : "",
+                      imageUrl : ""
+                    }
+                  }
+                } else  {
+                  objectOutput = q
                 }
-                latexTmp={q.latex}
-                imageTmp={q.image}
-                correctAnswerTmp={questionToEdit.answerIndex.includes(index)}
-                questionToEdit={questionToEdit}
-                setQuestionToEdit={setQuestionToEdit}
-                typeOfQuestion={false}
-                itemIndex={index}
-              />
-            ))}
+
+                return (
+                <ContentInput
+                selectedImageUri={objectOutput.image}
+                setSelectedImageUri={setSelectedImageUri}
+                  key={index}
+                  title={q.title}
+                  dataTmp={
+                    q.latex == null || q.latex.length == 0
+                      ? q.image == null || q.image.length == 0
+                        ? "text"
+                        : "image"
+                      : "latex"
+                  }
+                  latexTmp={ objectOutput.latex}
+                  imageTmp={objectOutput.image}
+                  correctAnswerTmp={questionToEdit.answerIndex.includes(index)}
+                  questionToEdit={questionToEdit}
+                  setQuestionToEdit={setQuestionToEdit}
+                  typeOfQuestion={false}
+                  itemIndex={index}
+                />
+              )})
+            }
             <TouchableOpacity
               onPress={() => {
                 const newAnswer = {

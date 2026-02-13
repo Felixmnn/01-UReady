@@ -4,6 +4,7 @@ import images from "@/assets/shopItems/itemConfig";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { RewardedAd, RewardedAdEventType, TestIds } from "react-native-google-mobile-ads"
 import { useTranslation } from "react-i18next";
+import { getIOSAddStatus } from "@/lib/mmkvFunctions";
 
 export default function RewardedAdScreen({
     aproved
@@ -15,9 +16,12 @@ export default function RewardedAdScreen({
   const [key, setKey] = useState(0); // <--- Neu
 
   // Dynamically require to avoid bundling on web
-
+  const addIDAproved = getIOSAddStatus();
+  
   const adUnitId = Platform.OS == "android" ? "ca-app-pub-9834411851111627/7624634683"
-    :  TestIds.REWARDED;
+    :  "ca-app-pub-9834411851111627/7503014052"
+    
+    
 
   let rewarded = useRef(
     RewardedAd.createForAdRequest(adUnitId)

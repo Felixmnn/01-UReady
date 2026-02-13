@@ -27,7 +27,7 @@ const AnswerComponent = ({
   latex: string;
   image: string;
 }) => {
-
+  console.log(parsedItem)
   function diceUpText(text:string){
     if (text[0] == "'") {
       text = text.slice(1);
@@ -53,7 +53,8 @@ const AnswerComponent = ({
     if (text.includes('"}')){
       text = text.replace('"}', '');
     }
-    return text;
+    
+    return text.replace("❌","").replace("✅","");
 
   }
 
@@ -80,37 +81,12 @@ const AnswerComponent = ({
         padding: 10,
       }}
     >
-      <View className="flex-1 items-center justify-center">
-        { latex && latex.length > 0 ? (
-          <View className="w-full rounded-lg overflow-hidden"
-          >
-          
-            <KaTeXExample
-              formula={latex}
-              />
+      <Text className="text-white text-center font-bold text-[18px]">
+        {diceUpText(text)}
+      </Text>
+        { image && image.length > 0 && <DisplayImage imageId={image} /> }
+        { latex && latex.length > 0 && <KaTeXExample formula={latex} />}
 
-          </View>
-        ) : image && image.length > 0 ? (
-          <View className="w-full rounded-lg overflow-hidden min-h-10 items-center">
-            <DisplayImage
-              imageId={image}
-              />
-
-          </View>
-        ) : (
-          <Text className="text-white text-center font-bold text-[18px]">
-            {diceUpText(text)}
-          </Text>
-        )}
-
-        {showAnsers &&
-          isSelected &&
-          (isCorrect ? (
-            <Icon name="check" size={15} color="green" />
-          ) : (
-            <Icon name="times" size={15} color="red" />
-          ))}
-      </View>
     </TouchableOpacity>
   );
 };

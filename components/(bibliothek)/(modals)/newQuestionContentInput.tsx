@@ -7,7 +7,7 @@ import ToggleSwitch from '@/components/(general)/toggleSwich';
 import { extractHeightFromLatex, extractZoomFromLatex, returnHeight, returnTextSize } from '@/functions/editQuestion';
 import DisplayImage from '@/components/(quiz)/(renderImage)/displayImage';
 import DisplayAllImage from '@/components/(quiz)/(renderImage)/displayAllImage';
-import { documentConfig } from '@/types/appwriteTypes';
+import { documentConfig, question } from '@/types/appwriteTypes';
 
 const ContentInput = ({
     questionToEdit,
@@ -23,7 +23,7 @@ const ContentInput = ({
     setSelectedImageUri
     
   }: {
-    questionToEdit: any;
+    questionToEdit: question;
     setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>;
     itemIndex?: number;
     title: string;
@@ -44,7 +44,7 @@ const ContentInput = ({
     //Zomm in steuert später die Textsize im LaTeX Viewport
     const zoomOptions = ["ZOOM_OUT_3", "ZOOM_OUT_2", "ZOOM_OUT_1" ,"ZOOM_NEUTRAL","ZOOM_IN_1", "ZOOM_IN_2", "ZOOM_IN_3"] as const;
     const heightOptions = ["HEIGHT_NEUTRAL","HEIGHT_SMALL", "HEIGHT_MEDIUM", "HEIGHT_LARGE"] as const;
-
+    console.log("asa",imageTmp)
     const [urlImage, setUrlImage] = useState(imageTmp);
     const [imageValid, setImageValid] = useState(true);
     const [correctAnswer, setCorrectAnswer] = useState(correctAnswerTmp);
@@ -169,7 +169,16 @@ function ZoomHeightControls() {
         {detailsHidden ? (
           <TouchableOpacity
             className={`w-full items-center justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg`}
-            onPress={() => setDetailsHidden(false)}
+            onPress={() => {
+              setDetailsHidden(false)
+              /*
+              if (typeOfQuestion) {
+                setLatex(questionToEdit.questionLatex ? questionToEdit.questionLatex : "" )
+                setUrlImage(questionToEdit.questionUrl ? questionToEdit.questionUrl : "" )
+              }
+                */
+              console.log("Question To Edit", latex, urlImage, title )
+            }}
           >
             <Text
               className="text-white text-[15px] text-center font-semibold"
@@ -183,7 +192,6 @@ function ZoomHeightControls() {
             {dataType === "latex" ? (
               <View className=" w-full   rounded-lg  overflow-hidden "
               >
-                
                   <KaTeXExample
                       formula={latex + zoom + height}
                       />
@@ -369,7 +377,7 @@ function ZoomHeightControls() {
                         ...questionToEdit,
                         question: text,
                         questionLatex: dataType !== "latex" ? "" : latex + height + zoom,
-                        questionUrl: selectedImageUri,
+                        questionUrl: dataType != "image" ? "" : selectedImageUri,
                       });
                     } else {
                       const updatedAnswers = [...questionToEdit.answers];
@@ -400,9 +408,9 @@ function ZoomHeightControls() {
                           : questionToEdit.answerIndex.filter(
                               (index: number) => index !== itemIndex
                             ),
-                        questionUrl: selectedImageUri,
                       });
                     }
+                    
                     setDetailsHidden(true);
                   }}
                   className="bg-blue-500 ml-2 rounded-lg h-6 w-6 items-center justify-center  flex-row" 

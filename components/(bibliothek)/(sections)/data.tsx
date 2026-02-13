@@ -410,8 +410,8 @@ function calculateQuestionProgress(questionList: string[]): number {
                     />
                   </View>
                   <Text className="text-white">
-                    {item.question.length < 150
-                      ? item.question.slice(0, 80) + "..."
+                    {item.question.length > 90
+                      ? item.question.slice(0, 90) + "..."
                       : item.question}{" "}
                   </Text>
                   <View className="border-b-[1px] border-gray-600 my-4 w-full" />

@@ -682,3 +682,37 @@ export function getUnsyncedListFromMMKV(moduleID:string): QuestionItem[] | null 
 export function removeUnsyncedListFromMMKV(moduleID:string){
     storage.remove(`user.unsyncedQuestionList.${moduleID}`);
 }
+
+
+
+
+/**
+ * Set IOS Add Status
+ */
+
+export function setIOSAddStatus(status: "APROVED" | "PENDING") {
+    storage.set("user.iosAddStatus", status);
+}
+
+/**
+ * Get IOS Add Status
+ */
+export function getIOSAddStatus(): "APROVED" | "PENDING" {
+    const status = storage.getString("user.iosAddStatus");
+    return status ? (status as "APROVED" | "PENDING") : "PENDING";
+}
+
+
+/**
+ * Set NGROK URL
+ */
+export function setNgrokURL(url: string) {
+    storage.set("app.ngrokURL", url);
+}
+
+/**
+ * Get NGROK URL
+ */
+export function getNgrokURL(): string | null {
+    return storage.getString("app.ngrokURL") || null;
+}

@@ -67,6 +67,7 @@ const Question = ({
           <View />
         ) : (
           question.answers.map((item: string, index: number) => {
+            
             const parsedItem = parseIfIncludesLatex(item);
             const isCorrect = question.answerIndex.includes(index);
             const isSelected = selectedAnswers.includes(

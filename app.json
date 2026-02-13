@@ -2,7 +2,7 @@
   "expo": {
     "name": "QReady",
     "slug": "node-ready",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "./assets/images/icon.png",
     "scheme": "node-ready",
     "userInterfaceStyle": "automatic",

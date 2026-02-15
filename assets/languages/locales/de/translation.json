@@ -1899,6 +1899,18 @@
   ],
     "loading": "Gib mir einen Moment, um deine {{amountOfQuestions}} Quizfragen zu laden."
 
+  },
+  "katexTemplate": {
+    "title": "Formelsammlung",
+    "categories": {
+      "Math": "Mathematik",
+      "Physics": "Physik",
+      "Chemistry": "Chemie",
+      "Biology": "Biologie",
+      "ComputerScience": "Informatik",
+      "Tables": "Tabellen",
+      "Symbols": "Symbole"
+    }
   }
 
 

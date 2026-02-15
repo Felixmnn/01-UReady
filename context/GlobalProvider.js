@@ -116,6 +116,7 @@ const GlobalProvider = ({ children }) => {
   // -------------------------------
   const ensureUserUsage = async () => {
     try {
+
       let usage = await loadUserUsage(user.$id);
       let unsavedUsage = getUsavedUserUsageFromMMKV();
       if (unsavedUsage) {
@@ -163,7 +164,6 @@ const GlobalProvider = ({ children }) => {
     if (!userUsage || !userUsageInitialized) return;
     const updateUsage = async () => {
       try {
-        console.log("Usser Usage energy:", userUsage.energy);
         const res = await updateUserUsageData({
           ...userUsage,
         });

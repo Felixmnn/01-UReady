@@ -31,14 +31,17 @@ export default function KaTeXExample({
     else sizeCommand = "\\Huge";
   }
 
+  
+
   // Weißen Text setzen
-  const formulaWithStyle = `\\color{white} ${sizeCommand} ${cleaned}`;
+  const formulaWithStyle = `\\color{white} \\Huge ${cleaned}`;
 
   return (
-    <View style={{ width: "100%", minHeight: heightS }}>
+    <View style={{ width: "100%", minHeight: 100 }}>
       <Katex
         expression={formulaWithStyle}
         displayMode
+
         throwOnError={false}
         style={{ backgroundColor: "transparent" }}
       />

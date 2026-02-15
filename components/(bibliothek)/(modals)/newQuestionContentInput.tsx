@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import KaTeXExample from '@/components/(home)/katext';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { extractHeightFromLatex, extractZoomFromLatex, returnHeight, returnTextS
 import DisplayImage from '@/components/(quiz)/(renderImage)/displayImage';
 import DisplayAllImage from '@/components/(quiz)/(renderImage)/displayAllImage';
 import { documentConfig, question } from '@/types/appwriteTypes';
+import KatexTemplateModal from './katexTemplateModal';
 
 const ContentInput = ({
     questionToEdit,
@@ -44,7 +45,6 @@ const ContentInput = ({
     //Zomm in steuert später die Textsize im LaTeX Viewport
     const zoomOptions = ["ZOOM_OUT_3", "ZOOM_OUT_2", "ZOOM_OUT_1" ,"ZOOM_NEUTRAL","ZOOM_IN_1", "ZOOM_IN_2", "ZOOM_IN_3"] as const;
     const heightOptions = ["HEIGHT_NEUTRAL","HEIGHT_SMALL", "HEIGHT_MEDIUM", "HEIGHT_LARGE"] as const;
-    console.log("asa",imageTmp)
     const [urlImage, setUrlImage] = useState(imageTmp);
     const [imageValid, setImageValid] = useState(true);
     const [correctAnswer, setCorrectAnswer] = useState(correctAnswerTmp);
@@ -163,22 +163,20 @@ function ZoomHeightControls() {
   );
 }
 
+const [isVisible, setIsVisible] = useState(false)
+
 
     return (
       <View className="w-full ml-1 py-2 ">
+        <KatexTemplateModal
+          visible={isVisible}
+          onClose={()=>{setIsVisible(false)}}
+        />
         {detailsHidden ? (
           <TouchableOpacity
             className={`w-full items-center justify-between ${typeOfQuestion ? "bg-gray-800" : correctAnswer ? "bg-green-900" : "bg-red-900"} rounded-lg`}
-            onPress={() => {
-              setDetailsHidden(false)
-              /*
-              if (typeOfQuestion) {
-                setLatex(questionToEdit.questionLatex ? questionToEdit.questionLatex : "" )
-                setUrlImage(questionToEdit.questionUrl ? questionToEdit.questionUrl : "" )
-              }
-                */
-              console.log("Question To Edit", latex, urlImage, title )
-            }}
+            onPress={() => setDetailsHidden(false)}
+
           >
             <Text
               className="text-white text-[15px] text-center font-semibold"
@@ -199,7 +197,7 @@ function ZoomHeightControls() {
             ) : dataType === "image" ? (
               <View className="w-full   rounded-lg overflow-hidden min-h-10 p-2 items-center ">
                   <DisplayImage
-                    imageId={selectedImageUri ? selectedImageUri : "6936e42b0008772a4f1e"}
+                    imageId={selectedImageUri ? selectedImageUri : ""}
                   />
                
               </View>
@@ -221,6 +219,7 @@ function ZoomHeightControls() {
                 onChangeText={(text) => setText(text)}
                 placeholderTextColor="#9CA3AF"
                 multiline
+                maxLength={499}
                 numberOfLines={2}
                 style={{
                   minHeight: 60,
@@ -231,8 +230,9 @@ function ZoomHeightControls() {
               <View className="flex-1 flex-row w-full  justify-between items-center"
               >
                 {textVisible && (dataType == "latex") ? (
+                  <View className='flex-row items-center'>
                   <TextInput
-                    className="flex-1 w-full bg-gray-900 p-2 text-white rounded-lg mt-2"
+                    className="flex-1 w-full bg-gray-900 p-2  text-white rounded-lg mt-2 border-gray-700 border-[1px]"
                     placeholder={
                       dataType === "latex"
                         ? t("editQuestion.enterLatex")
@@ -256,10 +256,20 @@ function ZoomHeightControls() {
                       textAlignVertical: "top",
                     }}
                   />
+                  <View className='h-[80px] w-[80px] bg-gray-800 mt-2  ml-1 border-gray-700 border-[1px] rounded-lg  ' >
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={()=> setIsVisible(true)}
+                    className="bg-gray-900 h-[78px] w-[78px] rounded-lg items-center justify-center"
+                  >
+                    <Icon name="book" size={30} color="white" />
+                  </TouchableOpacity>
+                  </View>
+                  </View>
                 ) : textVisible && (dataType == "image") ? 
                 <DisplayAllImage
                   
-                  selectedImageUri={selectedImageUri ? selectedImageUri : "693676fa003079b84e13"}
+                  selectedImageUri={selectedImageUri ? selectedImageUri : ""}
                   setSelectedImageUri={setSelectedImageUri}
                 />
                  : null}
@@ -273,12 +283,12 @@ function ZoomHeightControls() {
                       fontSize={returnTextSize(zoom)}
                       height={returnHeight(height)} 
                       />
-                    <ZoomHeightControls />
+                    {/*<ZoomHeightControls /> Will be reactivated later*/}
                   </View>
                 ) : dataType === "image" && !textVisible ? (
                   <View className="bg-gray-900 w-full mt-2 rounded-lg overflow-hidden min-h-10 p-2 items-center">
                       <DisplayImage
-                        imageId={selectedImageUri ? selectedImageUri : "6936e42b0008772a4f1e"}
+                        imageId={selectedImageUri ? selectedImageUri : ""}
                       />
                   </View>
                 ) : null}
@@ -370,9 +380,11 @@ function ZoomHeightControls() {
                 )}
                 <TouchableOpacity
                   onPress={() => {
+                    console.log("🐋",selectedImageUri)
                     if (typeof selectedImageUri !== "string") return;
                     if (typeOfQuestion) {
                       setImageValid(isImageUrl(selectedImageUri));
+                      console.log("Image Uri", selectedImageUri)
                       setQuestionToEdit({
                         ...questionToEdit,
                         question: text,
@@ -381,6 +393,7 @@ function ZoomHeightControls() {
                       });
                     } else {
                       const updatedAnswers = [...questionToEdit.answers];
+
                       if (dataType === "text") {
                         updatedAnswers[itemIndex] = {
                           title: text,
@@ -394,12 +407,14 @@ function ZoomHeightControls() {
                           image: "",
                         };
                       } else if (dataType === "image") {
+                        console.log("Selected Image URI:", selectedImageUri);
                         updatedAnswers[itemIndex] = {
                           title: text,
                           latex: "",
                           image: selectedImageUri,
                         };
                       }
+                      console.log("ABC")
                       setQuestionToEdit({
                         ...questionToEdit,
                         answers: updatedAnswers,
@@ -409,6 +424,7 @@ function ZoomHeightControls() {
                               (index: number) => index !== itemIndex
                             ),
                       });
+                      console.log("DEFG")
                     }
                     
                     setDetailsHidden(true);

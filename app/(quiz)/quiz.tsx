@@ -117,7 +117,7 @@ const quiz = () => {
           StatusBar.setHidden(false);
         }
         setLoaded(false);
-        const interstitial = InterstitialAd.createAdUnitId("ca-app-pub-9834411851111627/5048162176");
+        const interstitial = InterstitialAd.createAdUnitId(adUnitId);
 
         interstitial.load();
       });

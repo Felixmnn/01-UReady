@@ -1947,7 +1947,21 @@
     ],
         "loading": "Give me a moment to load your {{amountOfQuestions}} quiz questions."
 
+  },
+  "katexTemplate": {
+    "title": "Formula Library",
+    "categories": {
+      "Math": "Mathematics",
+      "Physics": "Physics",
+      "Chemistry": "Chemistry",
+      "Biology": "Biology",
+      "ComputerScience": "Computer Science",
+      "Tables": "Tables",
+      "Symbols": "Symbols"
+    }
   }
+
+
 
 
 }

@@ -18,15 +18,22 @@ export async function updateUserUsage(userUsage) {
     userUsage.streakLastUpdate = new Date(userUsage.streakLastUpdate);
     userUsage.boostActivation = userUsage.boostActivation ? new Date(userUsage.boostActivation) : null;
 
-    if (userUsage && userUsage.energy < 10) {
-        const div = differenceInHours(userUsage.streakLastUpdate, now);
+    // Energy refill: +1 every 2 hours, capped at 10
+    if (userUsage && userUsage.energy <= 10) {
+        console.log("‼️🐋‼️");
+        const diffInMs = now.getTime() - userUsage.streakLastUpdate.getTime();
+        const twoHoursMs = 2 * 60 * 60 * 1000;
+        const steps = Math.floor(diffInMs / twoHoursMs);
 
-        if (div > 1) {
-            newUserUsage.energy += Math.floor(div / 1);
-            if (newUserUsage.energy > 10) {
-                newUserUsage.energy = 10;
-            }
-            newUserUsage.streakLastUpdate = now;
+        if (steps > 0) {
+            const updatedEnergy = Math.min(10, newUserUsage.energy + steps);
+            newUserUsage.energy = updatedEnergy;
+
+            // Advance last update by exact 2h blocks to preserve remaining time
+            const newLastUpdate = new Date(
+                userUsage.streakLastUpdate.getTime() + steps * twoHoursMs
+            );
+            newUserUsage.streakLastUpdate = newLastUpdate;
         }
     }
     if (userUsage.streakUpdate.length > 0) {
@@ -66,7 +73,6 @@ export async function updateUserUsage(userUsage) {
         }
     }
     } 
-
     return newUserUsage;
 }
 

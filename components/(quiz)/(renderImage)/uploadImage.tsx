@@ -45,10 +45,12 @@ const UploadImage = ({
 
   const handleUpload = async () => {
     if (isOffline) {
+
       alert(t("info.goOnlineToUploadNewImages"));
       return;
     }
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
     if (!perm.granted) return;
 
     const result = await ImagePicker.launchImageLibraryAsync({

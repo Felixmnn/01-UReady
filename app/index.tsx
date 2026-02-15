@@ -7,9 +7,11 @@ import { addNewUserConfig } from "@/lib/appwriteAdd";
 import * as NavigationBar from 'expo-navigation-bar';
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUserUsageFromMMKV } from "@/lib/mmkvFunctions";
 
 
 export default function Index() {
+ 
   //This paramters may be trasmitted via deeplinks
   const { moduleID } = useLocalSearchParams();
 

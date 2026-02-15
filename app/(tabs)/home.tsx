@@ -7,7 +7,7 @@ import { router } from "expo-router";
 
 const home = () => {
   const [selected, setSelected] = useState("HomeGeneral");
-  const { user, isLoggedIn, isLoading, userData } = useGlobalContext();
+  const { user, isLoggedIn, isLoading, userData, userUsage } = useGlobalContext();
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {
       router.replace("/"); // oder "/sign-in"
@@ -26,7 +26,6 @@ const home = () => {
 
       
     
-
 
   return (
     <Tabbar

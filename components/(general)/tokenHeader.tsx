@@ -40,23 +40,6 @@ const TokenHeader = ({
     } else {
       setTimeLeft(null);
     }
-
-    if (userUsage.energy < 10 && hoursPassed >= 2) {
-      const steps = Math.floor(hoursPassed / 2);
-      const newEnergy = Math.min(10, userUsage.energy + steps);
-
-      const newLastUpdate = new Date(
-        lastUpdate.getTime() + steps * 2 * 60 * 60 * 1000
-      );
-      if (!setUserUsage) return;
-      setUserUsage({
-        ...userUsage,
-        energy: newEnergy,
-        streakLastUpdate: newLastUpdate.toISOString(),
-        
-        
-      });
-    }
   };
 
 

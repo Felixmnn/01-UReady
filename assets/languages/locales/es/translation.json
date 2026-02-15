@@ -2009,5 +2009,14 @@
     ],
         "loading": "Dame un momento para cargar tus {{amountOfQuestions}} preguntas del cuestionario."
 
+  },"katexTemplate": {
+    "title": "Colección de fórmulas",
+    "categories": {
+      "Math": "Matemáticas",
+      "Physics": "Física",
+      "Chemistry": "Química",
+      "Biology": "Biología",
+      "ComputerScience": "Informática"
+    }
   }
 }

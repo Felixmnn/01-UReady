@@ -259,6 +259,7 @@ const ChangeQuestions = ({
             <Text className="text-white text-[16px] font-semibold mb-2">
               {t("editQuestion.answers")}
             </Text>
+           
             {
               questionToEdit.answers.map((q, index) => {
                 let objectOutput 
@@ -278,7 +279,7 @@ const ChangeQuestions = ({
 
                 return (
                 <ContentInput
-                selectedImageUri={objectOutput.image}
+                selectedImageUri={objectOutput.image ? objectOutput.image : selectedImageUri}
                 setSelectedImageUri={setSelectedImageUri}
                   key={index}
                   title={q.title}

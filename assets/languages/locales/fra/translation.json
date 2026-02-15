@@ -1993,6 +1993,18 @@
       "Fun fact : Tes questions sont sélectionnées parmi près d’un million de questions."
     ],    "loading": "Donne-moi un instant pour charger tes {{amountOfQuestions}} questions de quiz."
 
+  },"katexTemplate": {
+  "title": "Collection de Formules",
+  "categories": {
+    "Math": "Mathématiques",
+    "Physics": "Physique",
+    "Chemistry": "Chimie",
+    "Biology": "Biologie",
+    "ComputerScience": "Informatique",
+    "Tables": "Tables",
+    "Symbols": "Symboles"
+
   }
+}
 
 }

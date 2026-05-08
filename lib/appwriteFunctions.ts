@@ -134,6 +134,7 @@ export async function callThisFunction(prompt: string) {
 }
 
 export async function sendTextExtractionRequest(documentID: string) {
+  console.log("🐋🐋🐋")
   const url = "https://craniological-lawson-synecdochically.ngrok-free.dev/process_document";
 
   const response = await fetch(url, {
@@ -146,7 +147,7 @@ export async function sendTextExtractionRequest(documentID: string) {
       document_id: documentID,
     }),
   });
-
+  console.log("Response from text extraction server:", response);
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Request failed: ${response.status} – ${errorText}`);

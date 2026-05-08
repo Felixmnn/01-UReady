@@ -526,7 +526,11 @@ function calculateQuestionProgress(questionList: string[]): number {
               <TouchableOpacity
                 key={`${item.$id}-${index}`}
                 onPress={() => {setSelectedFile(item)
+                  if (item.status === "EXTRACTED") {
                     addDocumentJobSheetRef.current?.openSheet(0)
+                  } else {
+                     sendTextExtractionRequest(item?.$id)
+                  }
                 }}
                 className={`w-full flex-row justify-between p-2 ${filteredDocuments.length - 1 == index ? null : "border-b-[1px] border-gray-600"}`}
               >

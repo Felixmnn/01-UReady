@@ -51,16 +51,17 @@ const UploadImage = ({
     }
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
-    if (!perm.granted) return;
+    if (!perm.granted ) {
+      alert(t("info.permissionRequiredToUpload"));
+      return;
+    }
+    console.log("Permission granted, opening image picker...");
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
-      // iOS: Konvertiert HEIC automatisch zu JPEG, reduziert Abstürze
-      imageExportPreset: Platform.OS === "ios" 
-        ? ImagePicker.ImageExportPreset.JPEG 
-        : ImagePicker.ImageExportPreset.Automatic,
+      
     });
 
     if (!result.canceled) {

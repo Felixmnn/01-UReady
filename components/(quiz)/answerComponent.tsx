@@ -27,7 +27,6 @@ const AnswerComponent = ({
   latex: string;
   image: string;
 }) => {
-  console.log(parsedItem)
   function diceUpText(text:string){
     if (text[0] == "'") {
       text = text.slice(1);

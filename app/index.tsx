@@ -79,7 +79,6 @@ export default function Index() {
   if (userData?.signInProcessStep === "ZERO") {
     return <Redirect href="/personalize" />;
   }
-  console.log("‼️‼️‼️‼️", userData);
   if (userData?.signInProcessStep === "DONE") {
     return <Redirect href="/getting-started" />;
   }

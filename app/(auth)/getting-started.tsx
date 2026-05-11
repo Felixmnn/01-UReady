@@ -16,7 +16,6 @@ const gettingStarted = () => {
   const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
 
   const { user, setUser, setUserUsage,userUsage, userCathegory, setUserCategory,userData } = useGlobalContext();
-  console.log("✅User Cathegory: ", userData);
   useEffect(() => {
     if(!user) {
       checkSession().then((res) => {

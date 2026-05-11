@@ -280,7 +280,6 @@ const quiz = () => {
         ) {
         //const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
         const res = getUnsyncedListFromMMKV(moduleID);
-        //console.log("MMKV List" , res ?  res2?.slice(0,5) : "No MMKV List");
 
         let tempQuestionList = [...questionList];
 
@@ -344,7 +343,6 @@ const quiz = () => {
     async function syncUnsyncedData(moduleID: string, questionList: QuestionItem[]) {
         //const res = await AsyncStorage.getItem(`unsyncedModuleList${moduleID}`);
         const res = getUnsyncedListFromMMKV(moduleID);
-        //console.log("Syncing unsynced data from MMKV:", res2 ? res2.slice(0,5) : "No MMKV data");
         if (res) {
             const parsedList = res as QuestionItem[];
             const mergedList = [...questionList];

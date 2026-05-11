@@ -38,16 +38,13 @@ export async function addNewQuestionToModule({
   selectedSession: any;
   setModule: React.Dispatch<React.SetStateAction<any>>;
 }) {
-  console.log("🚀🚀🚀 Starting addNewQuestionToModule with:")
 
   setLoading(true);
-  console.log("👍👍👍")
   console.log("Data:,",{
     material,
     module,
     selectedSession,
   })
-  console.log("👍👍👍")
 
   //Schritt 1: Fragen generieren
   const newQuestions = await generateQuestions({

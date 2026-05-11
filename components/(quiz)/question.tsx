@@ -19,7 +19,6 @@ const Question = ({
   width: number;
   quizType: "single" | "multiple" | "questionAnswer";
 }) => {
-  console.log("Question ", question);
   function selectAnswer(answer: string) {
     if (quizType === "single") {
       setSelectedAnswers([answer]);

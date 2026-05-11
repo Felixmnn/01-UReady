@@ -121,11 +121,9 @@ export async function callThisFunction(prompt: string) {
       },
       body: JSON.stringify({ prompt }),
     });
-    console.log("Response from local GPT server:", response);
 
     // Ganze JSON-Antwort zurückgeben, wie bei Appwrite
     const data = await response.json();
-    console.log("Parsed JSON data:", data);
     return data;
   } catch (err) {
     console.error("Error calling local GPT server:", err);

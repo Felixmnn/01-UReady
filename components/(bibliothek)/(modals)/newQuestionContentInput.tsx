@@ -380,11 +380,9 @@ const [isVisible, setIsVisible] = useState(false)
                 )}
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("🐋",selectedImageUri)
                     if (typeof selectedImageUri !== "string") return;
                     if (typeOfQuestion) {
                       setImageValid(isImageUrl(selectedImageUri));
-                      console.log("Image Uri", selectedImageUri)
                       setQuestionToEdit({
                         ...questionToEdit,
                         question: text,
@@ -407,14 +405,12 @@ const [isVisible, setIsVisible] = useState(false)
                           image: "",
                         };
                       } else if (dataType === "image") {
-                        console.log("Selected Image URI:", selectedImageUri);
                         updatedAnswers[itemIndex] = {
                           title: text,
                           latex: "",
                           image: selectedImageUri,
                         };
                       }
-                      console.log("ABC")
                       setQuestionToEdit({
                         ...questionToEdit,
                         answers: updatedAnswers,
@@ -424,7 +420,6 @@ const [isVisible, setIsVisible] = useState(false)
                               (index: number) => index !== itemIndex
                             ),
                       });
-                      console.log("DEFG")
                     }
                     
                     setDetailsHidden(true);

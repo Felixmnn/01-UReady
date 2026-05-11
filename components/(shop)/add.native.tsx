@@ -6,11 +6,7 @@ import { RewardedAd, RewardedAdEventType, TestIds } from "react-native-google-mo
 import { useTranslation } from "react-i18next";
 import { getIOSAddStatus } from "@/lib/mmkvFunctions";
 
-export default function RewardedAdScreen({
-    aproved
-}:{
-    aproved: boolean
-  }) {
+export default function RewardedAdScreen() {
   const { t } = useTranslation();
   const { userUsage, setUserUsage } = useGlobalContext();
   const [key, setKey] = useState(0); // <--- Neu

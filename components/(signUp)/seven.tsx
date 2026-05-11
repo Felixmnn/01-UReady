@@ -34,7 +34,6 @@ const StepSeven = () => {
       fetchUserData();
     }
     if (userData?.signInProcessStep === "FINISHED") {
-            console.log("🤨🤨🤨🤨🤨🤨")
 
       router.replace("/getting-started");
     }

@@ -10,7 +10,6 @@ import RewardedAdScreen from "@/components/(shop)/add";
 import { useTranslation } from "react-i18next";
 import Offline from "@/components/(general)/offline";
 //import IapAbo from "@/components/(shop)/iapAbo";
-import { checkAprovedAdd } from "@/lib/appwriteDaten";
 
 const shop = () => {
   
@@ -52,17 +51,6 @@ const shop = () => {
               </View>)
   }
 
-  const [aprovedAdd, setAprovedAdd] = React.useState(false);
-
-  useEffect(() => {
-    checkAprovedAdd().then((res) => {
-      setAprovedAdd(res);
-    });
-  }, []);
-  
-
-
-
     return (
     <Tabbar
       content={() => {
@@ -76,9 +64,7 @@ const shop = () => {
                  <SimpleStore/> */}
               <Header title={t("shop.freeEnergy")}/>
               <View className="flex-1 p-4">
-                <RewardedAdScreen
-                  aproved={aprovedAdd}
-                 />
+                <RewardedAdScreen/>
               </View>
              
               <View>

@@ -94,7 +94,6 @@ const personalize = () => {
 
   // Navigation & User Data
   useEffect(() => {
-    console.log("Edit Education Goals: ", editEducationGoals);
     if (userData?.signInProcessStep === "SEVEN" && !editEducationGoals) {
       saveUserData().then(() => {
         router.push("/");
@@ -208,7 +207,6 @@ const personalize = () => {
       educationSubject: "other",
       educationKathegory: "BAU&HANDWERK",
     };
-    console.log("💀💀💀Fast Onboarding with data: ", newUserData);
      try {
       await addUserDatakathegory(user.$id, newUserData);
       const updatedUserData = {
@@ -225,14 +223,12 @@ const personalize = () => {
       };
 
       const res = await updateUserData(user.$id, updatedUserData);
-      console.log("User data updated successfully", res);
       if (editEducationGoals) router.replace("/profil");
     } catch (error) {
       console.warn("Adding user data failed, trying update...", error);
 
       try {
         const res = await updateUserDatakathegory(user.$id, newUserData);
-        console.log("User data kathegory updated successfully", res);
       } catch (error) {
         console.error("Error saving user data", error);
       }
@@ -282,9 +278,7 @@ const personalize = () => {
     };
 
     try {
-      console.log("💀💀💀")
       await addUserDatakathegory(user.$id, newUserData);
-      console.log("💀✅💀")
       const updatedUserData = {
         birthday: userData?.birthday,
         city: userData?.city,
@@ -299,14 +293,12 @@ const personalize = () => {
       };
 
       const res = await updateUserData(user.$id, updatedUserData);
-      console.log("User data updated successfully", res);
       if (editEducationGoals) router.replace("/profil");
     } catch (error) {
       console.warn("Adding user data failed, trying update...", error);
 
       try {
         const res = await updateUserDatakathegory(user.$id, newUserData);
-        console.log("User data kathegory updated successfully", res);
       } catch (error) {
         console.error("Error saving user data", error);
       }

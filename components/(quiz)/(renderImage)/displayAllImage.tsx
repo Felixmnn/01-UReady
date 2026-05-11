@@ -140,7 +140,6 @@ const DisplayAllImage = ({
             <TouchableOpacity
               key={config.databucketID}
               onPress={() => {
-                console.log("Selected Image ID:", config.databucketID);
                 setSelectedIndex(index);
                 setSelectedImageUri(config.databucketID); // Set only the Question ID
               }}

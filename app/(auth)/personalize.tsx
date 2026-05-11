@@ -94,6 +94,7 @@ const personalize = () => {
 
   // Navigation & User Data
   useEffect(() => {
+    console.log("Edit Education Goals: ", editEducationGoals);
     if (userData?.signInProcessStep === "SEVEN" && !editEducationGoals) {
       saveUserData().then(() => {
         router.push("/");
@@ -185,57 +186,30 @@ const personalize = () => {
     }
     fetchUserData();
   }, [user]);
+  
 
-  const saveUserData = async () => {
-    
-    const newUserData = {
+  async function fastOnboarding({
+    kategoryType,
+  }:{
+    kategoryType: "SCHOOL" | "UNIVERSITY" | "EDUCATION" | "OTHER";
+  }) {
+     const newUserData = {
       country: selectedCountry ? selectedCountry.code.toUpperCase() : "DE",
-      region: "",
-      kategoryType: selectedKathegorie ? selectedKathegorie : null, // Kategorytype steht für wahl ob School, University, Education
-      language: selectedLanguage
-        ? languages[selectedLanguage].value
-        : languages[0].value,
-
-      //University
+      kategoryType: kategoryType,
+      language: selectedLanguage ? languages[selectedLanguage].value: languages[0].value,
       university: "NONE",
       faculty: [""],
       studiengang: [""],
-      studiengangZiel:
-        selectedKathegorie == "UNIVERSITY" && degree && degree.id
-          ? degree.id.toUpperCase()
-          : null,
-      studiengangKathegory:
-        selectedKathegorie == "UNIVERSITY" && selectedSubjects
-          ? selectedSubjects.map((item) => item.id)
-          : null,
-
-      //School
-      schoolType:
-        selectedKathegorie == "SCHOOL" && school
-          ? school.id.toUpperCase()
-          : null,
-      schoolGrade:
-        selectedKathegorie == "SCHOOL" && classNumber ? classNumber : null,
-      schoolSubjects:
-        (selectedKathegorie == "SCHOOL" ||
-          selectedKathegorie == "OTHER" ||
-          selectedKathegorie == "UNIVERSITY") &&
-        selectedSubjects
-          ? selectedSubjects.map((item) => item.id)
-          : null, // Wird auch bei Other genutzt
-
-      //Education
-      educationSubject:
-        selectedKathegorie == "EDUCATION" && selectedSubjects
-          ? selectedSubjects[0].id
-          : null,
-      educationKathegory:
-        selectedKathegorie == "EDUCATION" && ausbildungKathegorie
-          ? ausbildungKathegorie.id
-          : null,
+      studiengangZiel:"BACHELOR",
+      studiengangKathegory:["OTHER"],
+      schoolType: "GYMNASIUM",
+      schoolGrade: 13,
+      schoolSubjects: ["other"],
+      educationSubject: "other",
+      educationKathegory: "BAU&HANDWERK",
     };
-
-    try {
+    console.log("💀💀💀Fast Onboarding with data: ", newUserData);
+     try {
       await addUserDatakathegory(user.$id, newUserData);
       const updatedUserData = {
         birthday: userData?.birthday,
@@ -249,13 +223,90 @@ const personalize = () => {
         university: "NONE",
         signInProcessStep: "FINISHED",
       };
-      await updateUserData(user.$id, updatedUserData);
+
+      const res = await updateUserData(user.$id, updatedUserData);
+      console.log("User data updated successfully", res);
       if (editEducationGoals) router.replace("/profil");
     } catch (error) {
       console.warn("Adding user data failed, trying update...", error);
 
       try {
-        await updateUserDatakathegory(user.$id, newUserData);
+        const res = await updateUserDatakathegory(user.$id, newUserData);
+        console.log("User data kathegory updated successfully", res);
+      } catch (error) {
+        console.error("Error saving user data", error);
+      }
+    }
+    setUserData({
+      ...userData!,
+      signInProcessStep: "FINISHED",
+    })
+    }
+  
+
+  const saveUserData = async () => {
+    const newUserData = {
+      country: selectedCountry ? selectedCountry.code.toUpperCase() : "DE",
+      region: "",
+      kategoryType: selectedKathegorie ? selectedKathegorie : null, // Kategorytype steht für wahl ob School, University, Education
+      language: selectedLanguage
+        ? languages[selectedLanguage].value
+        : languages[0].value,
+
+      //University
+      university: "NONE",
+      faculty: [""],
+      studiengang: [""],
+      studiengangZiel:selectedKathegorie == "UNIVERSITY" && degree && degree.id? degree.id.toUpperCase(): null,
+      studiengangKathegory:selectedKathegorie == "UNIVERSITY" && selectedSubjects? selectedSubjects.map((item) => item.id): null,
+      schoolType: selectedKathegorie == "SCHOOL" && school
+          ? school.id.toUpperCase()
+          : null,
+          
+      schoolGrade:  selectedKathegorie == "SCHOOL" && classNumber ? classNumber : null,
+      schoolSubjects:
+        (selectedKathegorie == "SCHOOL" ||
+          selectedKathegorie == "OTHER" ||
+          selectedKathegorie == "UNIVERSITY") &&
+        selectedSubjects
+          ? selectedSubjects.map((item) => item.id)
+          : null, // Wird auch bei Other genutzt
+
+      //Education
+      educationSubject: selectedKathegorie == "EDUCATION" && selectedSubjects
+          ? selectedSubjects[0].id
+          : null,
+      educationKathegory: selectedKathegorie == "EDUCATION" && ausbildungKathegorie
+          ? ausbildungKathegorie.id
+          : null,
+    };
+
+    try {
+      console.log("💀💀💀")
+      await addUserDatakathegory(user.$id, newUserData);
+      console.log("💀✅💀")
+      const updatedUserData = {
+        birthday: userData?.birthday,
+        city: userData?.city,
+        country: selectedCountry ? selectedCountry.code.toUpperCase() : "DE",
+        darkmode: userData?.darkmode,
+        language: userData?.language,
+        profilePicture: userData?.profilePicture,
+        subscription: userData?.subscription,
+        uid: userData?.uid,
+        university: "NONE",
+        signInProcessStep: "FINISHED",
+      };
+
+      const res = await updateUserData(user.$id, updatedUserData);
+      console.log("User data updated successfully", res);
+      if (editEducationGoals) router.replace("/profil");
+    } catch (error) {
+      console.warn("Adding user data failed, trying update...", error);
+
+      try {
+        const res = await updateUserDatakathegory(user.$id, newUserData);
+        console.log("User data kathegory updated successfully", res);
       } catch (error) {
         console.error("Error saving user data", error);
       }
@@ -266,15 +317,11 @@ const personalize = () => {
     })
   };
 
+
   return (
     <SafeAreaView className="flex-1 p-4  bg-gradient-to-b from-blue-900 to-[#0c111d] bg-[#0c111d] items-center justify-center">
-      {userData !== null && userData?.signInProcessStep == "ZERO" ? (
-        <StepZero userData={userData} setUserData={setUserData} />
-      ) : null}
-      
-      {(userData !== null && userData?.signInProcessStep == "TWO") || userData !== null && userData?.signInProcessStep == "ONE" ? (
+      {(userData !== null && userData?.signInProcessStep == "TWO") || userData !== null && userData?.signInProcessStep == "ONE" || userData?.signInProcessStep == "ZERO" ? (
         <StepTwo
-          name={name}
           selectedLanguage={selectedLanguage}
           languages={languages}
           userData={userData}
@@ -289,6 +336,8 @@ const personalize = () => {
           setSelectedKathegorie={setSelectedKathegorie}
           setSelectedCountry={setSelectedCountry}
           editing={editEducationGoals ? true : false}
+          addDetails={editEducationGoals ? true : false}
+          fastOnboarding={fastOnboarding}
         />
       ) : null}
       {userData !== null && userData?.signInProcessStep == "FOUR" ? (
@@ -325,7 +374,7 @@ const personalize = () => {
           saveUserData={saveUserData}
         />
       ) : null}
-      {userData == null || userData?.signInProcessStep == "SEVEN" ? (
+      {!editEducationGoals && (userData == null || userData?.signInProcessStep == "SEVEN") ? (
         <StepSeven />
       ) : null}
     </SafeAreaView>

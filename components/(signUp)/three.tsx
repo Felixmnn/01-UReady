@@ -17,6 +17,8 @@ const StepThree = ({
   userData,
   setUserData,
   editing,
+  fastOnboarding,
+  addDetails,
 }: {
   setSelectedCountry: React.Dispatch<
     React.SetStateAction<{
@@ -33,6 +35,8 @@ const StepThree = ({
   userData: userData;
   setUserData: React.Dispatch<React.SetStateAction<any>>;
   editing?: boolean;
+  fastOnboarding?: (params: { kategoryType: "SCHOOL" | "UNIVERSITY" | "EDUCATION" | "OTHER" }) => Promise<void>;
+  addDetails?: boolean;
 }) => {
   const { t } = useTranslation();
 
@@ -44,17 +48,29 @@ const StepThree = ({
       {
         text: t("personalizeThree.school"),
         icon: "school",
-        handlePress: () => {
-          (setSelectedKathegorie("SCHOOL"),
-            setUserData({ ...userData, signInProcessStep: "FOUR" }));
+        handlePress: async() => {
+          if (!addDetails) {
+              fastOnboarding ? await fastOnboarding({ kategoryType: "SCHOOL" }) : null,
+              setSelectedKathegorie("SCHOOL"),
+              setUserData({ ...userData, signInProcessStep: "SEVEN" })
+          } else {
+            setSelectedKathegorie("SCHOOL"),
+            setUserData({ ...userData, signInProcessStep: "FOUR" })
+          }
         },
       },
       {
         text: t("personalizeThree.university"),
         icon: "university",
-        handlePress: () => {
-          (setSelectedKathegorie("UNIVERSITY"),
-            setUserData({ ...userData, signInProcessStep: "FIVE" }));
+        handlePress: async () => {
+          if (!addDetails) {
+            fastOnboarding ? await fastOnboarding({ kategoryType: "UNIVERSITY" }) : null,
+            setSelectedKathegorie("UNIVERSITY"),
+            setUserData({ ...userData, signInProcessStep: "SEVEN" })
+          } else {
+            setSelectedKathegorie("UNIVERSITY"),
+            setUserData({ ...userData, signInProcessStep: "FIVE" })
+          }
         },
       },
     ],
@@ -62,17 +78,29 @@ const StepThree = ({
       {
         text: t("personalizeThree.education"),
         icon: "tools",
-        handlePress: () => {
-          (setSelectedKathegorie("EDUCATION"),
-            setUserData({ ...userData, signInProcessStep: "FOUR" }));
+        handlePress:async () => {
+          if (!addDetails) {
+            fastOnboarding ? await fastOnboarding({ kategoryType: "EDUCATION" }) : null,
+            setSelectedKathegorie("EDUCATION"),
+            setUserData({ ...userData, signInProcessStep: "SEVEN" })
+          } else {
+             setSelectedKathegorie("EDUCATION"),
+            setUserData({ ...userData, signInProcessStep: "FOUR" })
+          }
         },
       },
       {
         text: t("personalizeThree.other"),
         icon: "ellipsis-h",
-        handlePress: () => {
-          (setSelectedKathegorie("OTHER"),
-            setUserData({ ...userData, signInProcessStep: "SIX" }));
+        handlePress: async() => {
+          if (!addDetails) {
+            fastOnboarding ? await fastOnboarding({ kategoryType: "OTHER" }) : null,
+            setSelectedKathegorie("OTHER"),
+            setUserData({ ...userData, signInProcessStep: "SEVEN" })
+          } else {
+             setSelectedKathegorie("OTHER"),
+            setUserData({ ...userData, signInProcessStep: "SIX" })
+          }
         },
       },
     ],

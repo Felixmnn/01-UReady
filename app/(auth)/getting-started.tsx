@@ -10,18 +10,13 @@ import { ModuleProps, Session, userData } from "@/types/moduleTypes";
 import TutorialFirstModule from "@/components/(tutorials)/tutorialFirstModule";
 import { Text, View } from "react-native";
 import CreateModule from "@/components/(general)/createModule/createModule";
-import { getUserDataConfigFromMMKV } from "@/lib/mmkvFunctions";
 import { checkSession } from "@/lib/appwrite";
 
 const gettingStarted = () => {
   const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
-  
-  const userData = getUserDataConfigFromMMKV();
- 
 
-
-  const { user, setUser, isLoggedIn, isLoading, setUserUsage,userUsage, userCathegory, setUserCategory } = useGlobalContext();
-  
+  const { user, setUser, setUserUsage,userUsage, userCathegory, setUserCategory,userData } = useGlobalContext();
+  console.log("✅User Cathegory: ", userData);
   useEffect(() => {
     if(!user) {
       checkSession().then((res) => {
@@ -49,7 +44,8 @@ const gettingStarted = () => {
   
    useEffect(() => {
     if (!userCathegory) return;
-    if (userCathegory.signInProcessStep == "DONE"){ 
+    console.log("User Cathegory: ", userCathegory);
+    if (userCathegory.signInProcessStep == "DONE" ) { 
       router.replace("/home");
     } 
   }, [userCathegory]);

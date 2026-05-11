@@ -79,10 +79,11 @@ export default function Index() {
   if (userData?.signInProcessStep === "ZERO") {
     return <Redirect href="/personalize" />;
   }
-  if (userData?.signInProcessStep === "FINISHED") {
+  console.log("‼️‼️‼️‼️", userData);
+  if (userData?.signInProcessStep === "DONE") {
     return <Redirect href="/getting-started" />;
   }
-  if (userData?.signInProcessStep === "DONE") {
+  if (userData?.signInProcessStep === "FINISHED") {
     return <Redirect href="/home" />;
   }
 

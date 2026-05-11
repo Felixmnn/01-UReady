@@ -15,9 +15,10 @@ const home = () => {
   }, [user, isLoggedIn, isLoading]);
 
    useEffect(() => {
-    if(!userData) return;
-    if (userData?.signInProcessStep === "DONE") return;
-    if (userData?.signInProcessStep === "FINISHED") {
+    if(!userData) return;7
+    console.log("❌User Data: ", userData); 
+    if (userData?.signInProcessStep === "FINISHED") return;
+    if (userData?.signInProcessStep === "DONE") {
       router.replace("/getting-started");
     }
     }, [userData]);

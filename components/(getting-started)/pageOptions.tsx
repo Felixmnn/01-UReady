@@ -23,13 +23,6 @@ const PageOptions = ({
       handlePress: () => setUserChoices("GENERATE"),
     },
     {
-      text: t("gettingStarted.comilitones"),
-      colorBorder: "#20c1e1",
-      colorBG: "#0d2d3a",
-      iconName: "search",
-      handlePress: () => setUserChoices("DISCOVER"),
-    },
-    {
       text: t("gettingStarted.createSet"),
       colorBorder: "#4f9c19",
       colorBG: "#2b5314",
@@ -42,7 +35,7 @@ const PageOptions = ({
     <View className="flex-1 w-full items-center justify-center ">
       {/* Überschrift */}
       {width < 700 ? (
-        <View className="flex-1 w-full">
+        <View className="flex-1 w-full items-center justify-center ">
           <View
             className="items-center justify-center "
             style={{
@@ -92,6 +85,7 @@ const PageOptions = ({
               handlePress={() => setUserChoices("GENERATE")}
               selected={true}
             />
+            {/*}
             <ContinueBox
               text={t("gettingStarted.comilitones")}
               colorBorder={"#20c1e1"}
@@ -99,7 +93,7 @@ const PageOptions = ({
               iconName={"search"}
               handlePress={() => setUserChoices("DISCOVER")}
               selected={true}
-            />
+            />*/}
             <ContinueBox
               text={t("gettingStarted.createSet")}
               colorBorder={"#4f9c19"}

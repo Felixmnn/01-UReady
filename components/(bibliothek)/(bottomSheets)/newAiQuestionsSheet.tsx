@@ -130,7 +130,7 @@ const NewAiQuestionsSheet = ({
           fileList={[]} // Provide your actual file list if available
           setItems={setItems} // Pass the setItems state setter
         />
-
+        {/*}
         {moreOptions && (
           <QuestionSettings
             questionOptions={questionOptions}
@@ -148,7 +148,7 @@ const NewAiQuestionsSheet = ({
               : t("createModule.moreOptions")}
           </Text>
         </TouchableOpacity>
-
+        */}
         <RenderMaterial
           items={items}
           selectedSession={

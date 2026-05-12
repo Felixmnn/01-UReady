@@ -161,7 +161,7 @@ const gettingStarted = () => {
       }}
     > 
     
-      {userChoices == null ? (
+      {userChoices == null || false ? (
         <PageOptions
           setUserChoices={setUserChoices}
         />

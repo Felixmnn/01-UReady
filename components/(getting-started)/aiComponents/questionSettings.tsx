@@ -34,6 +34,7 @@ const QuestionSettings = ({
 
   return (
     <View className="mb-2">
+      
       {/* Header */}
       <Text className="text-gray-300 text-lg font-semibold">
         {t("createModule.settings")}

@@ -20,7 +20,7 @@ const TutorialFirstAIModule = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={isVisible && tutorialStep < 2}
+      visible={isVisible && tutorialStep < 1}
       onRequestClose={() => {
         setIsVisible(false);
       }}

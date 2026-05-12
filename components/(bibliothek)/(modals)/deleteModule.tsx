@@ -8,9 +8,14 @@ import ShareModuleIcon from '../(components)/shareModule';
 import { useGlobalContext } from '@/context/GlobalProvider';
 import Offline from '@/components/(general)/offline';
 import { deleteModuleFromMMKV } from '@/lib/mmkvFunctions';
+import { module } from '@/types/appwriteTypes';
+import ColorPicker from '@/components/(general)/colorPicker';
 
 
-//Name might be missleading - this modal is for editing module data and also for deleting the module
+/*Name might be missleading - this modal is for 
+  ‼️editing the module 
+  data and also for deleting the module
+*/
 const DeleteModule = ({
   moduleID = "id",
   moduleName = "Name",
@@ -30,11 +35,11 @@ const DeleteModule = ({
   tags: string[],
   isVisible: boolean, 
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>,
-  modules: any,
-  setModules: React.Dispatch<React.SetStateAction<any>>,
+  modules: module[],
+  setModules: React.Dispatch<React.SetStateAction<module[]>>,
   setSelectedScreen: React.Dispatch<React.SetStateAction<string>>,
-  setModule: React.Dispatch<React.SetStateAction<any>>,
-  module: any,
+  setModule: React.Dispatch<React.SetStateAction<module>>,
+  module: module,
 }) => {
   const [showWarning, setShowWarning] = React.useState(false);  
   const [savedChanges, setSavedChanges] = React.useState(false);
@@ -42,7 +47,13 @@ const DeleteModule = ({
 
   const [newModuleName, setNewModuleName] = React.useState(moduleName);
   const [newModuleDescription, setNewModuleDescription] = React.useState(description);
+  const [newModuleColor, setNewModuleColor] = React.useState<string | null>(module?.color ?? null);
   const [newTags, setNewTags] = React.useState(tags);
+
+  function changeColor(newColor: string) {
+    setNewModuleColor(newColor === "" ? null : newColor);
+    setSavedChanges(false);
+  }
   async function handleDelete() {
     if (!showWarning) {
       setShowWarning(true);
@@ -52,14 +63,14 @@ const DeleteModule = ({
       
       deleteModuleFromMMKV(module.name);
       await deleteDocument(moduleID);
-    const updatedModules = modules.filter((module:any) => module.$id !== moduleID);
-    setModules({ updatedModules });
+    const updatedModules = modules.filter((module:module) => module.$id !== moduleID);
+    setModules(updatedModules);
     } catch (error) {
       if (__DEV__) {  
         console.error("Error deleting module:", error);
       }
     }
-    const modulesFiltered = modules.filter((mod:any) => mod.$id !== moduleID);
+    const modulesFiltered = modules.filter((mod:module) => mod.$id !== moduleID);
     setModules(modulesFiltered);
         setIsVisible(false);
 
@@ -68,7 +79,7 @@ const DeleteModule = ({
   }
 
   async function handleSaveChanges() {
-    if ((newModuleName === moduleName && newModuleDescription === description)) {
+    if ((newModuleName === moduleName && newModuleDescription === description && newModuleColor === (module?.color ?? null))) {
       setIsVisible(false);
       return;
     } else {
@@ -76,6 +87,7 @@ const DeleteModule = ({
       await updateModuleData(moduleID , {
         name: newModuleName,
         description: newModuleDescription,
+        color: newModuleColor?.toUpperCase(),
         tags: newTags,
       })
       setModules((prevModules: any) => {
@@ -85,6 +97,7 @@ const DeleteModule = ({
               ...mod,
               name: newModuleName,
               description: newModuleDescription,
+              color: newModuleColor?.toUpperCase(),
               tags: newTags,
             };
           }
@@ -96,6 +109,7 @@ const DeleteModule = ({
           ...prevModule,
           name: newModuleName,
           description: newModuleDescription,
+          color: newModuleColor?.toUpperCase(),
           tags: newTags,
         };
       });
@@ -138,7 +152,7 @@ const DeleteModule = ({
           </TouchableOpacity>
           </View>
 
-          { (newModuleName !== moduleName || newModuleDescription !== description) && !savedChanges ? (
+          { (newModuleName !== moduleName || newModuleDescription !== description || newModuleColor !== (module?.color ?? null)) && !savedChanges ? (
             <TouchableOpacity onPress={handleSaveChanges} className="bg-blue-600 rounded-lg px-4 py-2">
               <Text className="text-white font-semibold">{t("deleteModule.saveChanges")}</Text>
             </TouchableOpacity>
@@ -176,6 +190,13 @@ const DeleteModule = ({
             placeholderTextColor="gray"
             value={newModuleDescription}
             onChangeText={(text) => { setNewModuleDescription(text); setSavedChanges(false); }}
+          />
+
+          <ColorPicker
+            selectedColor={newModuleColor}
+            changeColor={(newColor) => changeColor(newColor)}
+            indexItem={0}
+            title={t("createModule.color")}
           />
 
           {/* In einer andren Verison

@@ -123,6 +123,7 @@ const StepThree = ({
           message={t("personalizeThree.whereDoYouStudy")}
           imageSource="Location"
         />
+        {/*
             <CountryPicker onSelect={(country:{id:string,name:string,code:string}) =>setSelectedCountry({
               ...country,
               schoolListID: "",
@@ -130,6 +131,7 @@ const StepThree = ({
               educationListID: "",
               educationSubjectListID: "",
             })}/>
+            */}
 
         <View className="p-2 my-2 items-center justify-center mx-1">
           {textIcons.map((itextIconList, index) => (

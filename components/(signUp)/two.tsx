@@ -1,6 +1,5 @@
-import { View, Text, TouchableOpacity, Platform } from "react-native";
-import React, { useState } from "react";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
 import GratisPremiumButton from "../(general)/gratisPremiumButton";
 import ProgressBar from "./(components)/progressBar";
 import BotCenter from "./botCenter";
@@ -28,7 +27,6 @@ const StepTwo = ({
   userData: userData;
   setUserData: React.Dispatch<React.SetStateAction<userData | undefined>>;
 }) => {
-  const [isActive, setIsActive] = useState(false);
   const { t } = useTranslation();
   const { user, setNewLanguage } = useGlobalContext();
   const languageoptions = [
@@ -56,52 +54,36 @@ const StepTwo = ({
           setUserData({ ...userData, signInProcessStep: "ONE" })
         }
       />
-      <View className="items-center justiy-center">
+      <View className="items-center justify-center">
         <BotCenter
           message={t("personalizeTwo.niceToMeetYou", { name: "" })}
           imageSource="Language"
         />
 
-        <View>
-          <TouchableOpacity
-            onPress={() => setIsActive(!isActive)}
-            className="flex-row w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 my-2 items-center justify-between mx-1"
-          >
-            <Text className="text-gray-300 font-semibold text-center mx-2 mt-[1px]">
-              {selectedLanguage == null
-                ? "Deutsch"
-                : languages[selectedLanguage].label}
-            </Text>
-            <Icon
-              name={!isActive ? "caret-down" : "caret-up"}
-              size={20}
-              color="#4B5563"
-            />
-          </TouchableOpacity>
-
-          {isActive ? (
-            <View
-              className={`${Platform.OS == "web" ? "" : "absolute top-[48px]"}  left-1 w-[150px] bg-gray-900 border-gray-800 border-[1px] rounded-[10px] p-2 z-50 shadow-lg`}
-            >
-              {languages.map((language, index) => (
+        <View className="   rounded-[10px] p-2 my-2">
+          <View className="flex-row flex-wrap justify-center">
+            {languages.map((language, index) => {
+              const isSelected = selectedLanguage === index;
+              return (
                 <TouchableOpacity
-                  key={index}
+                  key={language.value}
                   onPress={async () => {
-                    
                     await updateLanguage(language.label);
-                   
                     setSelectedLanguage(index);
-                    setIsActive(false);
                   }}
-                  className="flex-row justify-start items-center p-2 rounded-lg m-1"
+                  className={`w-[110px] p-2 rounded-lg m-1 items-center border ${
+                    isSelected
+                      ? "bg-gray-700 border-gray-500"
+                      : "bg-gray-900 border-gray-800"
+                  }`}
                 >
-                  <Text className="text-gray-300 font-semibold text-center mt-[1px] ">
+                  <Text className="text-gray-300 font-semibold text-center mt-[1px]">
                     {language.label}
                   </Text>
                 </TouchableOpacity>
-              ))}
-            </View>
-          ) : null}
+              );
+            })}
+          </View>
         </View>
       </View>
       <View className="w-full max-w-[200px] z-0">
@@ -113,7 +95,6 @@ const StepTwo = ({
               setSelectedLanguage(0);
             }
             setUserData({ ...userData, signInProcessStep: "THREE" });
-            setIsActive(false);
           }}
         >
           <Text className="text-gray-100 font-semibold text-[15px]">

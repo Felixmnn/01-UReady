@@ -396,7 +396,7 @@ const PageAiCreate = ({
             }))}
           setItems={setItems}
         />
-
+        {/*}
         {moreOptions && (
           <QuestionSettings
             questionOptions={questionOptions}
@@ -414,7 +414,7 @@ const PageAiCreate = ({
               : t("createModule.moreOptions")}
           </Text>
         </TouchableOpacity>
-
+        */}
         <RenderMaterial
           items={items}
           selectedSession={selectedSession}

@@ -74,13 +74,13 @@ export default function Index() {
     </SafeAreaView>
     );
   }
-
+  console.log("User:", userData);
   // Falls eine Session vorliegt, leiten wir basierend auf signInProcessStep weiter
   if (userData?.signInProcessStep === "ZERO") {
     return <Redirect href="/personalize" />;
   }
-  if (userData?.signInProcessStep === "DONE") {
-    return <Redirect href="/getting-started" />;
+  if (userData?.signInProcessStep === "DONE" ) {
+    return <Redirect href="/home" />;
   }
   if (userData?.signInProcessStep === "FINISHED") {
     return <Redirect href="/home" />;

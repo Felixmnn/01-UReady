@@ -16,11 +16,11 @@ const home = () => {
 
    useEffect(() => {
     if(!userData) return;
-    //router.push("/getting-started"); return;
+    /*
     if (userData?.signInProcessStep === "FINISHED") return;
     if (userData?.signInProcessStep === "DONE") {
       router.replace("/getting-started");
-    }
+    }*/
     }, [userData]);
  
 

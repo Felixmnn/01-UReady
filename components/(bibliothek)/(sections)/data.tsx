@@ -23,9 +23,22 @@ import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { getQuestionsFromMMKV, removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
 import { returnNewUserUsage } from "@/functions/addLastSessionModule";
-import BotCenter from "@/components/(signUp)/botCenter";
 import BotWaiting from "@/components/(signUp)/botWaiting";
 import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
+
+
+type AppwriteDocument = {
+  $id: string;
+  title: string;
+  fileType: string;
+  subjectID: string;
+  sessionID: string;
+  uploaded: boolean;
+  databucketID: string;
+  status: string;
+  textChunks?: string[];  
+};
+
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -35,24 +48,6 @@ type ScreenType =
   | "CreateModule"
   | "AiModule"
   | "AiQuiz";
-
-type Note = {
-  $id?: string;
-  title: string;
-  notiz: string;
-  sessionID: string;
-  subjectID: string;
-};
-
-type AppwriteDocument = {
-  $id: string;
-  title: string;
-  type: string;
-  subjectID: string;
-  sessionID: string;
-  uploaded: boolean;
-  status?: string;  
-};
 
 const Data = ({
   addDocumentJobSheetRef,
@@ -149,7 +144,7 @@ const Data = ({
     try {
       pI = JSON.parse(i) as ParsedQuestion;
     } catch (e) {
-      pI = { id: undefined, status: null };
+      pI = { id: undefined, status: undefined };
     }
     return pI;
   });

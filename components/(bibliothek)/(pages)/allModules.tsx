@@ -15,6 +15,16 @@ import { ModuleProps } from '@/types/moduleTypes';
 import AcceptShareModule from '../(components)/acceptShareModule';
 import { returnNewLastModule } from '@/functions/addLastSessionModule';
 
+type ScreenType =
+  | "CreateQuestion"
+  | "CreateNote"
+  | "Data"
+  | "AllModules"
+  | "SingleModule"
+  | "CreateModule"
+  | "AiModule"
+  | "AiQuiz";
+  
 const AllModules = ({
   setSelected,
   modules,
@@ -23,12 +33,12 @@ const AllModules = ({
   refreshing,
   setModules  
 }:{
-  setSelected: React.Dispatch<React.SetStateAction<"AllModules" | "SingleModule" | "CreateModule" | "AiModule">>,
-  modules: module[],
-  setSelectedModule: React.Dispatch<React.SetStateAction<number>>,
+  setSelected: React.Dispatch<React.SetStateAction<ScreenType>>,
+  modules: module[] | null,
+  setSelectedModule: React.Dispatch<React.SetStateAction<number | null>>,
   onRefresh: () => void,
   refreshing: boolean,
-  setModules: React.Dispatch<React.SetStateAction<module[]>>
+  setModules: React.Dispatch<React.SetStateAction<module[] | []>>
 }) => {
 
     const { t } = useTranslation();
@@ -182,26 +192,11 @@ function calculatePercent(questions:string[]){
                   setModules={setModules}
                   />
             }
+            {modules && modules.length > 0 && (
           <ModuleList
             items={modules}
-          />
+          />)}
           </View>
-          {/*
-          { modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30)).length > 0 ? (
-        <ModuleList
-          items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 7, 30))}
-          header={texts[selectedLanguage].last30}
-        />
-        ):null}
-        { modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 30, 365)).length > 0 ? (
-        <ModuleList
-          items={modules.documents.filter(i => isBetweenNDaysAgo(i.$updatedAt, 30, 365))}
-          header={"365"}
-        />
-        ):null}*/}
-        
-        
-
         </ScrollView>
         { isVisibleAI ?
         <AddAiBottomSheet isVisibleAiModule={isVisibleAI} setIsVisibleAiModule={setIsVisibleAI}/>

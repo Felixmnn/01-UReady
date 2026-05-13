@@ -5,6 +5,7 @@ import {
 } from "./materialToModule";
 import { addQUestion } from "@/lib/appwriteEdit";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { module, question } from "@/types/appwriteTypes";
 
 interface MaterialItem {
   type: "PEN" | "TOPIC";
@@ -25,19 +26,19 @@ export async function materialToQuestion(
   material: MaterialItem[],
   sessionID: string,
   subjectID: string,
-  questions: any[],
-  setQuestions: React.Dispatch<React.SetStateAction<any[]>>,
+  questions: question[],
+  setQuestions: React.Dispatch<React.SetStateAction<question[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  module: Module
-): Promise<any[]> {
+  module: module
+): Promise<question[]> {
     const {user} = useGlobalContext();
   
   setLoading(true);
-  let directQuestions: any[] = [];
+  let directQuestions: question[] = [];
   try {
     for (let i = 0; i < material.length; i++) {
       try {
-        let res: any;
+        let res: question[] | undefined;
         if (material[i].type == "PEN") {
           res = await generateQuestionsFromText({
             text: material[i].content,
@@ -51,7 +52,7 @@ export async function materialToQuestion(
             amountOfAnswers: 5, // or any number you want between 3 and 10
           });
         }
-        if (typeof res == "object" && Array.isArray(res)) {
+        if (res && typeof res == "object" && Array.isArray(res)) {
           directQuestions = [...directQuestions, ...res];
         }
       } catch (error) {

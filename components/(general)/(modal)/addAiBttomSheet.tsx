@@ -13,7 +13,6 @@ const AddAiBottomSheet = ({
   setIsVisibleAiModule: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const sheetRef = useRef<BottomSheet>(null);
-  const [isOpen, setIsOpen] = useState(true);
   const snapPoints = ["20%", "60%", "90%"];
 
   useEffect(() => {
@@ -22,9 +21,9 @@ const AddAiBottomSheet = ({
     }
   }, [isVisibleAiModule]);
 
-  const { user } = useGlobalContext();
+  const { user, userData } = useGlobalContext();
   // Replace 'any' with the actual type if available, e.g., UserDataType
-  const [userData, setUserData] = useState<userDataKathegory | null>(null);
+  const [userDataKategory, setUserDataKategory] = useState<userDataKathegory | null>(null);
   const [newModule, setNewModule] = useState<module>({
     name: "",
     subject: "",
@@ -69,37 +68,37 @@ const AddAiBottomSheet = ({
     async function fetchUserData() {
       const res = await loadUserDataKathegory(user.$id);
       // Cast or map the result to userDataKathegory type
-      setUserData(res as unknown as userDataKathegory);
+      setUserDataKategory(res as unknown as userDataKathegory);
     }
     fetchUserData();
   }, [user]);
 
   useEffect(() => {
-    if (userData == null) return;
+    if (userDataKategory == null) return;
     setNewModule({
       ...newModule,
       releaseDate: new Date().toISOString(),
-      creator: userData.$id ?? "",
-      creationCountry: userData.country ?? "",
-      creationUniversity: userData.university,
-      creationUniversityProfession: userData.studiengangZiel,
-      creationRegion: userData.region,
-      creationUniversitySubject: userData.studiengang,
-      creationSubject: userData.schoolSubjects,
-      creationEducationSubject: userData.educationSubject,
-      creationUniversityFaculty: userData.faculty,
-      creationSchoolForm: userData.schoolType,
-      creationKlassNumber: userData.schoolGrade,
-      creationLanguage: userData.language,
-      creationEducationKathegory: userData.educationKathegory,
-      studiengangKathegory: Array.isArray(userData.studiengangKathegory)
-        ? userData.studiengangKathegory
-        : userData.studiengangKathegory
-          ? [userData.studiengangKathegory]
+      creator: userDataKategory.$id ?? "",
+      creationCountry: userDataKategory.country ?? "",
+      creationUniversity: userDataKategory.university,
+      creationUniversityProfession: userDataKategory.studiengangZiel,
+      creationRegion: userDataKategory.region,
+      creationUniversitySubject: userDataKategory.studiengang,
+      creationSubject: userDataKategory.schoolSubjects,
+      creationEducationSubject: userDataKategory.educationSubject,
+      creationUniversityFaculty: userDataKategory.faculty,
+      creationSchoolForm: userDataKategory.schoolType,
+      creationKlassNumber: userDataKategory.schoolGrade,
+      creationLanguage: userDataKategory.language,
+      creationEducationKathegory: userDataKategory.educationKathegory,
+      studiengangKathegory: Array.isArray(userDataKategory.studiengangKathegory)
+        ? userDataKategory.studiengangKathegory
+        : userDataKategory.studiengangKathegory
+          ? [userDataKategory.studiengangKathegory]
           : [],
-      kategoryType: userData.kategoryType ?? "",
+      kategoryType: userDataKategory.kategoryType ?? "",
     });
-  }, [userData]);
+  }, [userDataKategory]);
 
   return (
     <BottomSheet
@@ -120,7 +119,7 @@ const AddAiBottomSheet = ({
         className={"bg-gray-900 "}
         showsVerticalScrollIndicator={false}
       >
-        {userData && (
+        {userDataKategory && (
           <PageAiCreate
             calculatePrice={true}
             goBackVisible={false}
@@ -129,6 +128,8 @@ const AddAiBottomSheet = ({
             setNewModule={setNewModule}
             setUserChoices={() => {}}
             userData={userData}
+            tutorialStep={10}
+            setTutorialStep={() => {}}
           />
         )}
       </BottomSheetScrollView>

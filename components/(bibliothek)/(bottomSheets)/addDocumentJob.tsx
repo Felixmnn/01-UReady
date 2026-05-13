@@ -1,13 +1,12 @@
-import { View, Text, TouchableOpacity, Switch } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import CustomBottomSheet from "./customBottomSheet";
 import { useTranslation } from "react-i18next";
-import { addDocumentJob } from "@/lib/appwriteDaten";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { module, question } from "@/types/appwriteTypes";
-import { updateModule } from "@/lib/appwriteEdit";
 import { addNewQuestionToModule } from "@/functions/(aiQuestions)/materialToModule";
 import { uuid } from "expo-modules-core";
+import { Session } from "@/types/moduleTypes";
 
 type AppwriteDocument = {
   $id: string;
@@ -19,19 +18,6 @@ type AppwriteDocument = {
   databucketID: string;
   status: string;
   textChunks?: string[];  
-};
-
-type DocumentJobConfig = {
-  databucketID: string;
-  sessionID: string;
-  subjectID: string;
-
-  fileContent?: "TEXT" | "QUESTIONS" | null;
-  numberAnswers?: 1 | 2 | 3 | 4 | 5 | null;
-  questionType?: "SINGLE" | "MULTIPLE" | null;
-
-  hasPriority?: boolean;
-  createdBy?: string;
 };
 
 const AddDocumentJobSheet = ({
@@ -50,9 +36,9 @@ const AddDocumentJobSheet = ({
     module: module;
     sessionID: string;  
     setModule: React.Dispatch<React.SetStateAction<module | null>>;
-    setSessions: React.Dispatch<React.SetStateAction<any[]>>;
+    setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
     questions: question[];
-    setQuestions: React.Dispatch<React.SetStateAction<string[]>>;
+    setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   selectedSession: {
     id: string;
     title: string;
@@ -63,7 +49,7 @@ const AddDocumentJobSheet = ({
   } | null;   
 }) => {
   const { t } = useTranslation();
-  const { userUsage , setUserUsage, user} = useGlobalContext();
+  const { userUsage} = useGlobalContext();
 
   const [fileContent, setFileContent] =useState<"text" | "fragen" | null>(null);
 

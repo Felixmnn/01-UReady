@@ -132,14 +132,16 @@ export type documentConfig = {
     creator?: string;
     $id?: string;
 }
-
 export type AppwriteDocument = {
   $id: string;
   title: string;
-  type: string;
+  fileType: string;
   subjectID: string;
   sessionID: string;
   uploaded: boolean;
+  databucketID: string;
+  status: string;
+  textChunks?: string[];  
 };
 
 

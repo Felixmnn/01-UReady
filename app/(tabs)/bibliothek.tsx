@@ -12,6 +12,16 @@ import { updateQuestion } from "@/lib/appwriteEdit";
 import { addNewModule } from "@/lib/appwriteAdd";
 import { module } from "@/types/appwriteTypes";
 
+type ScreenType =
+  | "CreateQuestion"
+  | "CreateNote"
+  | "Data"
+  | "AllModules"
+  | "SingleModule"
+  | "CreateModule"
+  | "AiModule"
+  | "AiQuiz";
+
 const Bibliothek = () => {
   const { user, isLoggedIn, isLoading, reloadNeeded } = useGlobalContext();
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
@@ -27,19 +37,11 @@ const Bibliothek = () => {
   }, [selectedModuleIndex]);
   
 
-  const [selected, setSelected] = useState("AllModules");
-  const [modules, setModules] = useState<module[] | null>(getModulesFromMMKV());
+  const [selected, setSelected] = useState<ScreenType>("AllModules");
+  const [modules, setModules] = useState<module[] | []>(getModulesFromMMKV());
   const [loading, setLoading] = useState(true);
 
-  const exampleUnsavedChanges = [
-    {
-      moduleID: "69184a26ca546a443bf1",
-      items: [
-        { id: "4ddbd2ac-d406-5fad-99f5-48f6185cb725", status: "GREAT" },
-        { id: "281cb046-685b-5baf-35c8-59a6176bcbb4", status: "GREAT" },
-      ],
-    },
-  ];
+ 
   useEffect(() => {
     saveCompleatlyUnsavedModules();
     saveUnsavedQuestions();
@@ -156,7 +158,7 @@ const Bibliothek = () => {
     resetUnsavedModulesInMMKV();
     saveModulesToMMKV(modulesLoaded as unknown as module[]);
     if (modulesLoaded) {
-      setModules(modulesLoaded ? (modulesLoaded as unknown as module[]) : null);
+      setModules(modulesLoaded ? (modulesLoaded as unknown as module[]) : []);
     }
     if (newModules) {
       setModules(newModules as unknown as module[]);

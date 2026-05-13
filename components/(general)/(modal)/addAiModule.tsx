@@ -12,8 +12,8 @@ const AddAiModule = ({
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { user } = useGlobalContext();
-  const [userData, setUserData] = useState<userDataKathegory | null>(null);
+  const { user,userData } = useGlobalContext();
+  const [userDataKategory, setUserDataKategory] = useState<userDataKathegory | null>(null);
   const [newModule, setNewModule] = useState<module>({
     name: "",
     subject: "",
@@ -57,7 +57,7 @@ const AddAiModule = ({
     if (user == null) return;
     async function fetchUserData() {
       const res = await loadUserDataKathegory(user.$id);
-      setUserData(res as unknown as userDataKathegory);
+      setUserDataKategory(res as unknown as userDataKathegory);
     }
     fetchUserData();
   }, [user]);
@@ -67,31 +67,31 @@ const AddAiModule = ({
   };
 
   useEffect(() => {
-    if (userData == null) return;
+    if (userDataKategory == null) return;
     setNewModule({
       ...newModule,
       releaseDate: new Date().toISOString(),
-      creator: userData.$id ?? "",
-      creationCountry: userData.country ?? "",
-      creationUniversity: userData.university,
-      creationUniversityProfession: userData.studiengangZiel,
-      creationRegion: userData.region,
-      creationUniversitySubject: userData.studiengang,
-      creationSubject: userData.schoolSubjects,
-      creationEducationSubject: userData.educationSubject,
-      creationUniversityFaculty: userData.faculty,
-      creationSchoolForm: userData.schoolType,
-      creationKlassNumber: userData.schoolGrade,
-      creationLanguage: userData.language,
-      creationEducationKathegory: userData.educationKathegory,
-      studiengangKathegory: Array.isArray(userData.studiengangKathegory)
-        ? userData.studiengangKathegory
-        : userData.studiengangKathegory
-          ? [userData.studiengangKathegory]
+      creator: userDataKategory.$id ?? "",
+      creationCountry: userDataKategory.country ?? "",
+      creationUniversity: userDataKategory.university,
+      creationUniversityProfession: userDataKategory.studiengangZiel,
+      creationRegion: userDataKategory.region,
+      creationUniversitySubject: userDataKategory.studiengang,
+      creationSubject: userDataKategory.schoolSubjects,
+      creationEducationSubject: userDataKategory.educationSubject,
+      creationUniversityFaculty: userDataKategory.faculty,
+      creationSchoolForm: userDataKategory.schoolType,
+      creationKlassNumber: userDataKategory.schoolGrade,
+      creationLanguage: userDataKategory.language,
+      creationEducationKathegory: userDataKategory.educationKathegory,
+      studiengangKathegory: Array.isArray(userDataKategory.studiengangKathegory)
+        ? userDataKategory.studiengangKathegory
+        : userDataKategory.studiengangKathegory
+          ? [userDataKategory.studiengangKathegory]
           : [],
-      kategoryType: userData.kategoryType ?? "",
+      kategoryType: userDataKategory.kategoryType ?? "",
     });
-  }, [userData]);
+  }, [userDataKategory]);
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
@@ -124,6 +124,8 @@ const AddAiModule = ({
                   setIsVisible(false);
                 }}
                 userData={userData}
+                tutorialStep={10}
+                setTutorialStep={() => {}}
               />
             </View>
           </TouchableWithoutFeedback>

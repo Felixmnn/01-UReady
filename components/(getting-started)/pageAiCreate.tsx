@@ -4,7 +4,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Platform,
-  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -27,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import RenderMaterial from "./aiComponents/renderMaterial";
 import MaterialInput from "./aiComponents/materialInput";
 import ErrorModal from "./aiComponents/errorModal";
-import QuestionSettings from "./aiComponents/questionSettings";
 import {
   module,
   UserUsage,
@@ -49,27 +47,24 @@ const PageAiCreate = ({
   setUserChoices,
   setIsVisibleModal,
   tutorialStep = 10,
-  setTutorialStep = null,
+  setTutorialStep,
   goBackVisible = true,
   calculatePrice = false,
-  isGettingStarted = false,
 }: {
   newModule: module;
   userData: UserUsage | null;
-  setNewModule: any;
-  setUserChoices: any;
-  setIsVisibleModal: any;
+  setNewModule: React.Dispatch<React.SetStateAction<module>>;
+  setUserChoices: React.Dispatch<React.SetStateAction<"GENERATE" | "DISCOVER" | "CREATE" | null>>;
+  setIsVisibleModal: React.Dispatch<React.SetStateAction<boolean>>;
   tutorialStep?: number;
-  setTutorialStep?: any;
+  setTutorialStep: React.Dispatch<React.SetStateAction<number>>;
   goBackVisible?: boolean;
   calculatePrice?: boolean;
-  isGettingStarted?: boolean;
 }) => {
   // Lokale
   const { t } = useTranslation();
 
   const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline, setUserData } = useGlobalContext();
-  const [questions, setQuestions] = useState<any[]>([]);
   const [sessions, setSessions] = useState<Session[]>([
     {
       title: "S1",
@@ -242,22 +237,6 @@ const PageAiCreate = ({
       setIsError(true);
       return;
     }
-    // Map local question type to expected type for materialToModule
-    const mapQuestionType = (
-      type: "MULTIPLE_CHOICE" | "SINGLE_CHOICE" | "TEXT"
-    ): "MULTIPLE" | "SINGLE" | "QA" => {
-      switch (type) {
-        case "MULTIPLE_CHOICE":
-          return "MULTIPLE";
-        case "SINGLE_CHOICE":
-          return "SINGLE";
-        case "TEXT":
-          return "QA";
-        default:
-          return "MULTIPLE";
-      }
-    };
-
     await materialToModule({
       user,
       newModule,
@@ -274,12 +253,8 @@ const PageAiCreate = ({
       setReloadNeeded,
       setIsVisibleModal,
       questionOptions: {
-        questionsType: mapQuestionType(questionOptions.questionsType),
-        amountOfAnswers: [2, 3, 4, 5, 6].includes(
-          questionOptions.amountOfAnswers
-        )
-          ? (questionOptions.amountOfAnswers as 2 | 3 | 4 | 5 | 6)
-          : 4,
+        questionsType: "MULTIPLE",
+        amountOfAnswers: 4
       },
     });
     if (userData) {
@@ -306,15 +281,6 @@ const PageAiCreate = ({
     setNewItem({ ...newitem, content: "", sessionID: selectedSession.id });
   };
 
-  const [moreOptions, setMoreOptions] = useState(false);
-
-  const [questionOptions, setQuestionOptions] = useState<{
-    questionsType: "MULTIPLE_CHOICE" | "SINGLE_CHOICE" | "TEXT";
-    amountOfAnswers: number;
-  }>({
-    questionsType: "MULTIPLE_CHOICE",
-    amountOfAnswers: 4,
-  });
 
 
   if (isOffline) return <Offline/>
@@ -396,25 +362,6 @@ const PageAiCreate = ({
             }))}
           setItems={setItems}
         />
-        {/*}
-        {moreOptions && (
-          <QuestionSettings
-            questionOptions={questionOptions}
-            setQuestionOptions={setQuestionOptions}
-          />
-        )}
-
-        <TouchableOpacity>
-          <Text
-            className="text-gray-400 font-semibold text-[15px] mb-2"
-            onPress={() => setMoreOptions(!moreOptions)}
-          >
-            {moreOptions
-              ? t("createModule.lessOptions")
-              : t("createModule.moreOptions")}
-          </Text>
-        </TouchableOpacity>
-        */}
         <RenderMaterial
           items={items}
           selectedSession={selectedSession}

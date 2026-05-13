@@ -16,9 +16,8 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { addDocumentJob } from "@/lib/appwriteAdd";
 import { Animated } from "react-native";
 import { useTranslation } from "react-i18next";
-import { module, question } from "@/types/appwriteTypes";
+import { AppwriteDocument, module, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
-import FileToText from "../(components)/fileToText";
 
 type SelectedFile = {
   $id: string;
@@ -48,13 +47,13 @@ const AiQuestion = ({
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedModule: any;
-  selectedSession: any;
-  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedModule: module;
+  selectedSession: Session | null;
+  setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   questions: question[];
-  documents: any[];
+  documents: AppwriteDocument[];
   sessions: Session[];
-  setSessions: React.Dispatch<React.SetStateAction<any[]>>;
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
   uploadDocument: () => void;
 }) => {
   const { userUsage, setUserUsage } = useGlobalContext();
@@ -266,7 +265,7 @@ const AiQuestion = ({
         (session) => session.id === targetSessionId
       );
       if (sessionIndex !== -1) {
-        newSessions[sessionIndex].tags = "JOB-PENDING";
+        newSessions[sessionIndex].tags = ["JOB-PENDING"];
       }
       return newSessions;
     });
@@ -280,7 +279,7 @@ const AiQuestion = ({
   type Item = {
     id: string | null;
     sessionID: any;
-    type: string;
+    type: "PEN" | "TOPIC";
     content: string;
     uri: any;
   };
@@ -411,7 +410,7 @@ const AiQuestion = ({
                         items
                           .filter((item) =>
                             item.sessionID == selectedSession
-                              ? selectedSession.id
+                              ? selectedSession?.id
                               : sessions[0].id
                           )
                           .map((item, index) => {
@@ -485,16 +484,16 @@ const AiQuestion = ({
                           }
                           const res = await materialToQuestion(
                             items.filter((item) =>
-                              item.sessionID == selectedSession
-                                ? selectedSession.id
+                              item.sessionID == selectedSession?.id
+                                ? selectedSession?.id
                                 : sessions[0].id
                             ),
                             selectedSession
-                              ? selectedSession.id
+                              ? selectedSession?.id
                               : sessions[0].id,
-                            selectedModule.$id,
-                            setQuestions,
+                            selectedModule.$id ? selectedModule.$id : "",
                             questions,
+                            setQuestions,
                             setIsLoading,
                             module
                           );
@@ -576,7 +575,7 @@ const AiQuestion = ({
                         items
                           .filter((item) =>
                             item.sessionID == selectedSession
-                              ? selectedSession.id
+                              ? selectedSession?.id
                               : sessions[0].id
                           )
                           .map((item, index) => {
@@ -651,15 +650,15 @@ const AiQuestion = ({
                           const res = await materialToQuestion(
                             items.filter((item) =>
                               item.sessionID == selectedSession
-                                ? selectedSession.id
+                                ? selectedSession?.id
                                 : sessions[0].id
                             ),
                             selectedSession
                               ? selectedSession.id
                               : sessions[0].id,
-                            selectedModule.$id,
-                            setQuestions,
+                            selectedModule.$id ? selectedModule.$id : "",
                             questions,
+                            setQuestions,
                             setIsLoading,
                             module
                           );

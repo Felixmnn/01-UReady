@@ -11,6 +11,7 @@ import TutorialFirstModule from "@/components/(tutorials)/tutorialFirstModule";
 import { Text, View } from "react-native";
 import CreateModule from "@/components/(general)/createModule/createModule";
 import { checkSession } from "@/lib/appwrite";
+import { module } from "@/types/appwriteTypes";
 
 const gettingStarted = () => {
   const [userChoices, setUserChoices] = useState<"GENERATE" | "DISCOVER" | "CREATE" | null>(null);
@@ -64,7 +65,7 @@ const gettingStarted = () => {
     },
   ]);
   const [selectedColor, setSelectedColor] = useState<string>("blue");
-  const [newModule, setNewModule] = useState<ModuleProps>({
+  const [newModule, setNewModule] = useState<module>({
     name: "",
     subject: "",
     questions: 0,
@@ -77,13 +78,13 @@ const gettingStarted = () => {
     sessions: [],
     tags: [],
     description: "",
-    releaseDate: null,
+    releaseDate: new Date().toISOString(),
     connectedModules: [],
     qualityScore: 0,
     duration: 0,
     upvotes: 0,
     downVotes: 0,
-    creationCountry: null,
+    creationCountry: "DE",
     creationUniversity: null,
     creationUniversityProfession: null,
     creationRegion: null,
@@ -95,7 +96,7 @@ const gettingStarted = () => {
     creationKlassNumber: null,
     creationLanguage: null,
     creationEducationKathegory: "",
-    studiengangKathegory: "",
+    studiengangKathegory: [""],
     kategoryType: "",
     copy: false,
     questionList: [],
@@ -126,7 +127,7 @@ const gettingStarted = () => {
     if (userCathegory == null) return;
     setNewModule({
       ...newModule,
-      releaseDate: new Date(),
+      releaseDate: new Date().toISOString(),
       creator: userCathegory.$id,
       creationCountry: userCathegory.country,
       creationUniversity: userCathegory.university,
@@ -169,12 +170,11 @@ const gettingStarted = () => {
         <PageAiCreate
           tutorialStep={tutorialStepAI}
           setTutorialStep={setTutorialStepAI}
-          setIsVisibleModal={null}
+          setIsVisibleModal={()=> {}}
           setUserChoices={setUserChoices}
           newModule={newModule}
           setNewModule={setNewModule}
           userData={userCathegory}
-          isGettingStarted={true} 
         />
       ) : userChoices == "DISCOVER" && userCathegory ? (
         <PageDiscover setUserChoices={setUserChoices} userData={userCathegory} nothingForMe={() => setUserChoices("CREATE")}/>
@@ -195,7 +195,6 @@ const gettingStarted = () => {
             setSessions={setSessions}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
-            selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
           />
         </View>

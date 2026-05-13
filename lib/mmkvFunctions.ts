@@ -1,7 +1,19 @@
 import { storage } from "./mmkv";
-import { AppwriteDocument, documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
+import {  documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { uuid } from "expo-modules-core";
 
+
+type AppwriteDocument = {
+  $id: string;
+  title: string;
+  fileType: string;
+  subjectID: string;
+  sessionID: string;
+  uploaded: boolean;
+  databucketID: string;
+  status: string;
+  textChunks?: string[];  
+};
 /**
  * What will be stored in MMKV
  - Modules      | user.modules

@@ -33,7 +33,7 @@ import NewQuestionSheet from "../(bottomSheets)/newQuestionSheet";
 import NewAiQuestionsSheet from "../(bottomSheets)/newAiQuestionsSheet";
 import StartQuizSheet from "../(bottomSheets)/startQuizSheet";
 import SessionListSheet from "../(bottomSheets)/sessionListSheet";
-import {  AppwriteDocument, note, question } from "@/types/appwriteTypes";
+import {  note, question } from "@/types/appwriteTypes";
 import { Session } from "@/types/moduleTypes";
 import { useTranslation } from "react-i18next";
 import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, saveNotesToMMKV, getNotesFromMMKV, addDocumentConfigToMMKV, saveDocumentConfigsToMMKV, getDocumentConfigsFromMMKV, removeDocumentConfigFromMMKV } from "@/lib/mmkvFunctions";
@@ -45,8 +45,17 @@ type QuestionListItem = {
   id: string;
   status: null | "BAD" | "OK" | "GOOD" | "GREAT";
 }
-
-
+type AppwriteDocument = {
+  $id: string;
+  title: string;
+  fileType: string;
+  subjectID: string;
+  sessionID: string;
+  uploaded: boolean;
+  databucketID: string;
+  status: string;
+  textChunks?: string[];  
+};
 
 
 /**
@@ -342,9 +351,9 @@ const SingleModule = ({
     }
     
     return { 
-      notes: notes,
-      documents: documents
-    }
+      notes: notes as note[],
+      documents: documents as AppwriteDocument[]
+    } 
   }
 
 
@@ -677,7 +686,6 @@ const SingleModule = ({
   const sessionSelectionBottomSheetRef =
     React.useRef<CustomBottomSheetRef>(null);
   const addDocumentJobSheetRef = React.useRef<CustomBottomSheetRef>(null);
-  const [showSessionList, setShowSessionList] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState<AppwriteDocument | null>(null);
 

@@ -2,9 +2,12 @@ import { makeRedirectUri } from 'expo-auth-session';
 import { account } from './appwrite'; // korrekt initialisierter Appwrite-Client
 import { openAuthSessionAsync } from 'expo-web-browser';
 import * as Updates from 'expo-updates';
+import type { Models } from 'appwrite';
 
 
-export const loginWithOAuth = async ({setUserData,setUser}) => {
+export const loginWithOAuth = async ({setUser}:{
+  setUser: (user: Models.User<Models.Preferences>) => void;
+}) => {
     let redirectScheme = makeRedirectUri({ preferLocalhost: true });
     //redirectScheme = "node-ready:///"
 
@@ -14,7 +17,7 @@ export const loginWithOAuth = async ({setUserData,setUser}) => {
     }
     //redirectScheme = "exp://10.0.10.209:8081/"
     redirectScheme = "node-ready:///"
-    const url = account.createOAuth2Token("google", redirectScheme); 
+    const url = account.createOAuth2Token("google" as any, redirectScheme); 
     // It should never return void but the types say so that needs a fix on the SDK
     if (!url) return;
 

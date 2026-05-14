@@ -46,7 +46,7 @@ const functions = new Functions(client);
 
 export { client, databases, storage,functions,account };
 
-export const createUser = async (email, password, username) => {
+export const createUser = async (email:string, password: string, username: string) => {
     
     try {
 
@@ -71,17 +71,17 @@ export const createUser = async (email, password, username) => {
     } catch (error) {
         return {
             success: false,
-            error: error.message || "Unbekannter Fehler bei der Registrierung"
+            error: error instanceof Error ? error.message : "Unbekannter Fehler bei der Registrierung"
         };
 }}
 
-export const signIn = async(email, password) => {
+export const signIn = async(email: string, password: string) => {
     try {
         const session = await account.createEmailPasswordSession(email,password)
         
         return { success: true, data: session };
     }  catch (error) {
-        return { success: false, error: error.message || "Unbekannter Fehler beim Login" };
+        return { success: false, error: error instanceof Error ? error.message : "Unbekannter Fehler beim Login" };
     }
 }
 
@@ -89,7 +89,7 @@ export const signOut = async ()=> {
     try {
         await account.deleteSession('current');
     }
-    catch {
+    catch (error) {
         if (__DEV__) {
         console.log(error)
         }
@@ -122,11 +122,11 @@ export const loginWithGoogle = () => {
     const redirectUrl = "http://localhost:8081/personalize"; // Stelle sicher, dass diese URL in Google OAuth registriert ist
     const redirectUrlExpo = "https://auth.expo.io/@felix08/node-ready"
     const redirectUrlFail = "http://localhost:8081/"; // Stelle sicher, dass diese URL in Google OAuth registriert ist
-    const authUrl = account.createOAuth2Session("google", redirectUrl, redirectUrlFail);
-    Linking.openURL(authUrl);
+    const authUrl = account.createOAuth2Session("google" as any, redirectUrl, redirectUrlFail);
+    Linking.openURL(authUrl as any);
 };
 
-export async function updateUserName (newName){
+export async function updateUserName (newName: string){
     try {
         const res = await account.updateName(newName)
         return res;
@@ -136,8 +136,8 @@ export async function updateUserName (newName){
         }
     }
 }
-
-export async function updateUserEmail (newEmail){
+{/*}
+export async function updateUserEmail (newEmail: string){
     try {
         const res = await account.updateEmail(newEmail)
         return res;
@@ -146,11 +146,11 @@ export async function updateUserEmail (newEmail){
         console.log("Error updating email", error)
         }
     }
-}
+}*/}
 
 export async function deletingAccount (){
     try {
-        const res = await account.updateStatus('inactive');
+        const res = await account.updateStatus();
         return res;
     } catch (error) {
         if (__DEV__) {
@@ -169,7 +169,7 @@ export async function validateEmail  (){
     }
 }
 
-export async function enterResponse (secret, userId){
+export async function enterResponse (secret: string, userId: string){
     try {
        
         const res = await account.updateVerification(userId, secret);
@@ -181,7 +181,7 @@ export async function enterResponse (secret, userId){
     }
 }
 
-export async function resetPassword (email){
+export async function resetPassword (email: string){
     try {
         const res = await account.createRecovery(email, 'https://qready-app.com/reset-password');
     } catch (error) {
@@ -191,7 +191,7 @@ export async function resetPassword (email){
     }
 }
 
-export async function updatePassword (userId, secret, newPassword){
+export async function updatePassword (userId: string, secret: string, newPassword: string){
     try {
         const res = await account.updateRecovery(userId, secret, newPassword);
         return res;

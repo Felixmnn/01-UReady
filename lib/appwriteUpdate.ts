@@ -4,7 +4,7 @@ import { loadModule, loadUserUsage } from './appwriteDaten';
 import { addUnsavedModuleToMMKV, getSessionFromMMKV, saveUserUsageToMMKV, updateModuleInMMKV, updateModuleQuestionListInMMKV } from './mmkvFunctions';
 import { AppwriteModule, AppwriteUserData, AppwriteUserUsage, module, question, userData, UserUsage } from '@/types/appwriteTypes';
 
-export async function updateUserData (id:string, data:userData) {
+export async function updateUserData (id:string, data:Partial<userData>) {
     try {
         const res = await databases.updateDocument<AppwriteUserData>(
             config.databaseId,

@@ -1,7 +1,7 @@
 import { databases,config } from './appwrite';
 
 
-export async function useActionCode(actionCodeID){
+export async function useActionCode(actionCodeID:string){
     try {
         const response = await databases.getDocument(
             config.databaseId,

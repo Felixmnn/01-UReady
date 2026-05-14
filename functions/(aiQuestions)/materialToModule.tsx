@@ -9,7 +9,7 @@ import {
 } from "@/lib/appwriteEdit";
 import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
 import { module } from "@/types/appwriteTypes";
-import { ModuleProps, Session } from "@/types/moduleTypes";
+import { Session } from "@/types/moduleTypes";
 import { router } from "expo-router";
 import uuid from "react-native-uuid";
 import { t } from "i18next";
@@ -425,7 +425,7 @@ export async function createDocumentJob(
     subjectID: moduleID,
     sessionID: sessionID,
   };
-  const res = await addDocumentJob(job);
+  const res = await addDocumentJob(job as any);
   setSessions((prevSessions) => {
     const newSessions = [...prevSessions];
     const sessionIndex = newSessions.findIndex(

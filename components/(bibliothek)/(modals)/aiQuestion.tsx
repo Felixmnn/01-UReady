@@ -255,7 +255,7 @@ const AiQuestion = ({
       setIsError(true);
       return;
     }
-    await addDocumentJob(job);
+    await addDocumentJob(job as any);
     setSessions((prevSessions) => {
       const newSessions = [...prevSessions];
       const targetSessionId = selectedSession
@@ -278,10 +278,10 @@ const AiQuestion = ({
 
   type Item = {
     id: string | null;
-    sessionID: any;
+    sessionID: string | null;
     type: "PEN" | "TOPIC";
     content: string;
-    uri: any;
+    uri: string | null;
   };
 
   const [items, setItems] = useState<Item[]>([]);
@@ -409,7 +409,7 @@ const AiQuestion = ({
                       {items.length > 0 ? (
                         items
                           .filter((item) =>
-                            item.sessionID == selectedSession
+                            item.sessionID == selectedSession?.id
                               ? selectedSession?.id
                               : sessions[0].id
                           )
@@ -574,7 +574,7 @@ const AiQuestion = ({
                       {items.length > 0 ? (
                         items
                           .filter((item) =>
-                            item.sessionID == selectedSession
+                            item.sessionID == selectedSession?.id
                               ? selectedSession?.id
                               : sessions[0].id
                           )
@@ -649,7 +649,7 @@ const AiQuestion = ({
                           }
                           const res = await materialToQuestion(
                             items.filter((item) =>
-                              item.sessionID == selectedSession
+                              item.sessionID == selectedSession?.id
                                 ? selectedSession?.id
                                 : sessions[0].id
                             ),

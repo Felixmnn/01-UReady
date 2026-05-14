@@ -1,5 +1,5 @@
 import { storage } from "./mmkv";
-import {  AppwriteDocumentConfig, AppwriteModule, AppwriteUserKategorie, AppwriteUserUsage, documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
+import {  AppwriteDocumentConfig, AppwriteModule, AppwriteQuestion, AppwriteUserKategorie, AppwriteUserUsage, documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { uuid } from "expo-modules-core";
 
 
@@ -249,7 +249,7 @@ export function updateUnsavedQuestionInMMKV(updatedQuestion: question) {
 /**
  * This function retrieves unsaved questions from MMKV storage.
  */
-export function getUnsavedQuestionsFromMMKV(): question[] | [] {
+export function getUnsavedQuestionsFromMMKV(): AppwriteQuestion[] | [] {
     const unsavedQuestionsString = storage.getString('user.unsavedQuestions');
     return unsavedQuestionsString ? JSON.parse(unsavedQuestionsString) : [];
 }

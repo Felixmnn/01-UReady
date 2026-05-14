@@ -9,15 +9,16 @@ import ColorPicker from "@/components/(general)/colorPicker";
 import IconPicker from "@/components/(general)/iconPicker";
 import { useTranslation } from "react-i18next";
 import CustomButton from "@/components/(general)/customButton";
+import { Session } from "@/types/moduleTypes";
 
 const ModalEditSession = ({
   session,
   index,
   setSessions,
 }: {
-  session: any;
+  session: Session;
   index: number;
-  setSessions: React.Dispatch<React.SetStateAction<any[]>>;
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
 }) => {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();

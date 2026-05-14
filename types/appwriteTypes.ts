@@ -291,4 +291,30 @@ export type AppwriteDocument = {
   textChunks?: string[];  
 };*/
 
+export type contact = {
+    name: string;
+    email: string;
+    message: string;
+    compleated: boolean;
+}
 
+export interface AppwriteContact extends Models.Document {
+    name: string;
+    email: string;
+    message: string;
+    compleated: boolean;
+}
+
+export type report = {
+    moduleID: string;
+    moduleCreator: string;
+    personThatReported: string;
+    message: string;
+}
+
+export interface AppwriteReport extends Models.Document {
+    moduleID: string;
+    moduleCreator: string;
+    personThatReported: string;
+    message: string;
+}

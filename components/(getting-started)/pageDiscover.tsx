@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Karteikarte from "../(karteimodul)/karteiKarte";
-import { addNewModule } from "@/lib/appwriteAdd";
 import { adddModule } from "@/lib/appwriteAdd";
 
 import { router } from "expo-router";

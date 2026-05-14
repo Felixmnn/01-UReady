@@ -10,7 +10,7 @@ import SkeletonListBibliothek from "@/components/(general)/(skeleton)/skeletonLi
 import { getCompleatlyUnsavedModulesFromMMKV, getModulesFromMMKV, getUnsavedModulesFromMMKV, getUnsavedQuestionsFromMMKV, removeCompleatlyUnsavedModulesFrommMMKV, removeSpecificCompleatlyUnsavedModule, removeSpecificModuleFromMMKV, removeTmpModulesFromMMKV, resetUnsavedModulesInMMKV, resetUnsavedQuestionsInMMKV, saveModulesToMMKV } from "@/lib/mmkvFunctions";
 import { updateQuestion } from "@/lib/appwriteEdit";
 import { addNewModule } from "@/lib/appwriteAdd";
-import { module } from "@/types/appwriteTypes";
+import { module, question } from "@/types/appwriteTypes";
 
 type ScreenType =
   | "CreateQuestion"
@@ -54,7 +54,7 @@ const Bibliothek = () => {
     if (compleatlyUnsavedModules.length === 0) return;
     for (let i = 0; i < compleatlyUnsavedModules.length; i++) {
       const id = compleatlyUnsavedModules[i].$id!;
-      await addNewModule(compleatlyUnsavedModules[i]);
+      await addNewModule(compleatlyUnsavedModules[i],user.$id);
       compleatlyUnsavedModules = compleatlyUnsavedModules.filter(mod => mod.$id !== id);
       if (compleatlyUnsavedModules.length == 1) {
         compleatlyUnsavedModules = [];
@@ -78,7 +78,7 @@ const Bibliothek = () => {
     if (unsavedQuestionLists.length === 0) return;
     for (let i = 0; i < unsavedQuestionLists.length; i++) {
       const unsavedQuestion = unsavedQuestionLists[i];
-      await updateQuestion(unsavedQuestion);
+      await updateQuestion(unsavedQuestion );
     }
     resetUnsavedQuestionsInMMKV();
   }

@@ -9,12 +9,14 @@ import { useTranslation } from "react-i18next";
 import CustomButton from "@/components/(general)/customButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { addNewQuestionToModule } from "@/functions/(aiQuestions)/materialToModule";
+import { Session } from "@/types/moduleTypes";
+import { module, question } from "@/types/appwriteTypes";
 
 type Items = {
   type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
   content: string;
   uri: string | null;
-  sessionID: string;
+  sessionID: string | null;
   id: string | null;
 }[];
 
@@ -26,7 +28,7 @@ const NewAiQuestionsSheet = ({
   setQuestions,
   setModule,
 }: {
-  setSessions: React.Dispatch<React.SetStateAction<any[]>>;
+  setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
   sheetRef: React.RefObject<any>;
   selectedSession: {
     id: string;
@@ -36,9 +38,9 @@ const NewAiQuestionsSheet = ({
     createdAt: string;
     updatedAt: string;
   } | null;
-  module: any;
-  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
-  setModule: React.Dispatch<React.SetStateAction<any>>;
+  module: module;
+  setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
+  setModule: React.Dispatch<React.SetStateAction<module>>;
 }) => {
   const [moreOptions, setMoreOptions] = React.useState(false);
   const { t } = useTranslation();

@@ -27,7 +27,6 @@ const AddDocumentJobSheet = ({
   sessionID,
   setModule ,
   setSessions,
-  questions,
   setQuestions,
   selectedSession,
 }: {
@@ -37,7 +36,6 @@ const AddDocumentJobSheet = ({
     sessionID: string;  
     setModule: React.Dispatch<React.SetStateAction<module | null>>;
     setSessions: React.Dispatch<React.SetStateAction<Session[]>>;
-    questions: question[];
     setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
   selectedSession: {
     id: string;

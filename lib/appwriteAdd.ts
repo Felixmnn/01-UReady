@@ -1,26 +1,47 @@
 import { uuid } from 'expo-modules-core';
 import { databases,config } from './appwrite';
-import { addCompleatlyUnsavedModuleToMMKV, addModuleToMMKV, addUnsavedModuleToMMKV, getSessionFromMMKV } from './mmkvFunctions';
+import { addCompleatlyUnsavedModuleToMMKV, addModuleToMMKV, addUnsavedModuleToMMKV, getSessionFromMMKV, saveUserKategorieToMMKV } from './mmkvFunctions';
 import { Permission, Role } from 'appwrite';
+import { AppwriteContact, AppwriteModule, AppwriteReport, AppwriteUserKategorie, contact, documentConfig, module, report, userData, UserUsage } from '@/types/appwriteTypes';
 
-export async function addNewModule(data) {
+type UserKategoriePayload = {
+    country?: string | null;
+    university?: string | null;
+    region?: string | null;
+    studiengangZiel?: string | null;
+    schoolType?: string | null;
+    kategoryType?: string | null;
+    schoolSubjects?: Array<string | undefined> | null;
+    schoolGrade?: number | string | null;
+    educationSubject?: string | null;
+    educationKathegory?: string | null;
+    language?: string | null;
+    faculty?: string[] | null;
+    studiengang?: string[] | null;
+    studiengangKathegory?: Array<string | undefined> | null;
+};
+
+const hasErrorCode = (error: unknown): error is { code: number } =>
+    typeof error === 'object' && error !== null && 'code' in error;
+
+export async function addNewModule(data:module,id:string) {
     const dupDataID = data.$id;
     try {
         if (data.$id) {
             delete data.$id
         }
         let permissions = [
-            Permission.delete(Role.user(creator)), 
-            Permission.update(Role.user(creator)),
-            Permission.write(Role.user(creator)),
+            Permission.delete(Role.user(id)), 
+            Permission.update(Role.user(id)),
+            Permission.write(Role.user(id)),
         ];
         if (data.public) permissions.push(
             Permission.read(Role.any())
         );
         else permissions.push(
-            Permission.read(Role.user(creator))
+            Permission.read(Role.user(id))
         );
-        const newModule = await databases.createDocument(
+        const newModule = await databases.createDocument<AppwriteModule>(
             config.databaseId,
             config.collectionId,
             "unique()",
@@ -28,12 +49,11 @@ export async function addNewModule(data) {
             permissions
             
         );
-        console.log("✅✅✅Module added with ID:", newModule)
         addModuleToMMKV(newModule)
 
         return newModule;
     } catch (error) {
-        console.error("❌Error while creating a Module", error.message);
+        console.error("❌Error while creating a Module", error instanceof Error ? error.message : String(error));
         if (dupDataID) {
             return {
                 ...data,
@@ -45,13 +65,12 @@ export async function addNewModule(data) {
             ...data,
             $id:tmpID
         }
-        addUnsavedModuleToMMKV(newModule)
         addModuleToMMKV(newModule)
         return newModule
 
     }
 }
-export async function addNewModuleWithID(data, id) {
+export async function addNewModuleWithID(data:module, id:string) {
     let user = getSessionFromMMKV()
     try {
         let userID = ""
@@ -77,11 +96,11 @@ export async function addNewModuleWithID(data, id) {
         );
         return newModule;
     } catch (error) {
-        console.error("❌Error while creating a Module", error.message);
+        console.error("❌Error while creating a Module", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function addNewUserConfig(id){
+export async function addNewUserConfig(id:string) {
     try {
         const newUserConfig = await databases.createDocument(
             config.databaseId,
@@ -108,14 +127,14 @@ export async function addNewUserConfig(id){
         );
         return newUserConfig;
     } catch (error) {
-        console.error("❌Error while creating User Data Config", error.message);
+        console.error("❌Error while creating User Data Config", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function addUserDatakathegory(id, newUserData) {
+export async function addUserDatakathegory(id:string, newUserData:UserKategoriePayload) {
   try {
     // Versuche neues Dokument zu erstellen
-    const response = await databases.createDocument(
+    const response = await databases.createDocument<AppwriteUserKategorie>(
       config.databaseId,
       config.userKathegoryCollectionId,
       id,
@@ -133,7 +152,7 @@ export async function addUserDatakathegory(id, newUserData) {
     return response;
   } catch (error) {
     // Falls das Dokument schon existiert → update statt create
-    if (error.code === 409) {
+    if (hasErrorCode(error) && error.code === 409) {
       try {
         const updateResponse = await databases.updateDocument(
           config.databaseId,
@@ -144,13 +163,15 @@ export async function addUserDatakathegory(id, newUserData) {
         return updateResponse;
 
       } catch (updateError) {
-        console.error("❌ Fehler beim Aktualisieren des Dokuments:", updateError.message);
+        console.error("❌ Fehler beim Aktualisieren des Dokuments:", updateError instanceof Error ? updateError.message : String(updateError));
       }
-    }}
-    console.log("❌Error while creating user data kathegory", error.message);
+    } else {
+      console.log("❌Error while creating user data kathegory", error instanceof Error ? error.message : String(error));
+    }
+  }
 }
 
-export async function updateUserDatakathegory(id,newUSerData) {
+export async function updateUserDatakathegory(id:string,newUSerData:UserKategoriePayload) {
     try {
         const response = await databases.createDocument(
             config.databaseId,
@@ -161,11 +182,11 @@ export async function updateUserDatakathegory(id,newUSerData) {
         );
 
     } catch (error){
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function addUserUsage(id, newUserUsageData) {
+export async function addUserUsage(id:string, newUserUsageData:UserUsage) {
     try {
         const response = await databases.createDocument(
             config.databaseId,
@@ -180,11 +201,11 @@ export async function addUserUsage(id, newUserUsageData) {
             ]
         );
     } catch (error) {
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function addDocumentJob(job){
+export async function addDocumentJob(job:documentConfig){
     try {
         const res = await databases.createDocument(
             config.databaseId,
@@ -193,13 +214,13 @@ export async function addDocumentJob(job){
             job
         )
     } catch (error) {
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function addContact(contact) {
+export async function addContact(contact:contact) {
     try {
-        const res = await databases.createDocument(
+        const res = await databases.createDocument<AppwriteContact>(
             config.databaseId,
             config.contactCollectionId,
             "unique()",
@@ -207,13 +228,13 @@ export async function addContact(contact) {
         );
         return res;
     } catch (error) {
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function reportModule(data) {
+export async function reportModule(data:report) {
     try {
-        const res = await databases.createDocument(
+        const res = await databases.createDocument<AppwriteReport>(
             config.databaseId,
             config.reportModuleCollectionId,
             "unique()",
@@ -221,7 +242,7 @@ export async function reportModule(data) {
         );
         return res;
     } catch (error) {
-        console.error("❌Error while reporting a Module", error.message);
+        console.error("❌Error while reporting a Module", error instanceof Error ? error.message : String(error));
     }
 }
 /**
@@ -300,7 +321,7 @@ export async function adddModule({
     creationLanguage= null,
     creationEducationKathegory=null,
     id= "unique()",
-    kategoryType,
+    kategoryType = "",
     publicAcess = true
 }) {
     const appwriteSafeModule ={
@@ -339,6 +360,7 @@ export async function adddModule({
             creationKlassNumber: creationKlassNumber,
             creationLanguage: creationLanguage,
             creationEducationKathegory: creationEducationKathegory,
+            studiengangKathegory: creationEducationKathegory,
             copy: copy,
             questionList: questionList,
             synchronization: synchronization,
@@ -357,7 +379,7 @@ export async function adddModule({
         else permissions.push(
             Permission.read(Role.user(creator))
         );
-        const res = await databases.createDocument(
+        const res = await databases.createDocument<AppwriteModule>(
             config.databaseId,
             config.moduleCollectionId,
             id,
@@ -369,24 +391,22 @@ export async function adddModule({
         return res;
 
     } catch (error) {
-        console.log("✅",kategoryType)
-        console.error("❌Error but no Problem", error.message, kategoryType);
+        console.error("❌Error but no Problem", error instanceof Error ? error.message : String(error), kategoryType);
         const tmpID = "tmp-" + uuid.v4()
         console.log(tmpID)
         const newModule = {
             ...appwriteSafeModule,
             $id:tmpID
         }
-        console.log("New Module", newModule)
-        addCompleatlyUnsavedModuleToMMKV(newModule)
-        addModuleToMMKV(newModule)
+        addCompleatlyUnsavedModuleToMMKV(newModule as unknown as module)
+        addModuleToMMKV(newModule as unknown as module)
         return newModule
 
     }
 }
 
 
-export async function addImageConfig(imageConfig){
+export async function addImageConfig(imageConfig: documentConfig){
     try {
         const res = await databases.createDocument(
             config.databaseId,
@@ -397,6 +417,6 @@ export async function addImageConfig(imageConfig){
         return res;
     } 
     catch (error) {
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }   
 }

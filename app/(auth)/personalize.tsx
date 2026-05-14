@@ -111,7 +111,7 @@ const personalize = () => {
     async function fetchUserData() {
       try {
         let userD = await loadUserData(user.$id);
-        const mapToUserData = (doc: any): userData => ({
+        const mapToUserData = (doc: userData): userData => ({
           birthday: doc?.birthday ?? "",
           city: doc?.city ?? "",
           country: doc?.country ?? "",
@@ -125,7 +125,7 @@ const personalize = () => {
         });
 
         if (!userD) {
-          userD = await addNewUserConfig(user.$id);
+          await addNewUserConfig(user.$id);
           await someDelayOrRefetch(); // Warte kurz oder rufe loadUserData erneut auf
           userD = await loadUserData(user.$id);
           setUserData(userD ? mapToUserData(userD) : undefined);
@@ -152,7 +152,7 @@ const personalize = () => {
               language: userDK?.language ?? "",
               faculty: userDK?.faculty ?? [],
               studiengang: userDK?.studiengang ?? [],
-              studiengangKathegory: userDK?.studiengangKathegory ?? [],
+              studiengangKathegory: userDK?.studiengangKathegory ?? "",
             };
             setUserDataKathegory(userDKTyped);
             setUserData({

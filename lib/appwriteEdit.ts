@@ -3,7 +3,108 @@ import { databases,config, storage, account } from './appwrite';
 import { addQuestionToMMKV, addUnsavedNote, addUnsavedQuestionToMMKV, deleteNoteFromMMKV, getSessionFromMMKV, saveNoteToMMKV, setSessionInMMKV, updateUnsavedNote } from './mmkvFunctions';
 import { Permission } from 'react-native-appwrite';
 import { Role } from 'appwrite';
-import { AppwriteModule, AppwriteNote, AppwriteQuestion, module, question } from '@/types/appwriteTypes';
+import { AppwriteModule, AppwriteNote, AppwriteQuestion, module, note, question } from '@/types/appwriteTypes';
+
+type DocumentConfigInput = {
+    title: string;
+    subjectID: string;
+    sessionID: string;
+    id: string;
+    type: string;
+    uploaded?: boolean;
+    status?: string;
+};
+
+type WebBucketInput = {
+    id: string;
+    file: Blob;
+};
+
+type NativeFileInput = {
+    name: string;
+    type: string;
+    size: number;
+    uri: string;
+};
+
+type NativeFileInputLike = {
+    name: string;
+    type: string;
+    size?: number;
+    uri: string;
+};
+
+type LegacyBucketInput = {
+    fileID: string;
+    fileBlob: Blob | NativeFileInputLike;
+};
+
+type UpdateDocumentConfigInput = {
+    $id: string;
+    title?: string;
+    subjectID?: string;
+    sessionID?: string;
+    databucketID?: string;
+    fileType?: string;
+    type?: string;
+    uploaded?: boolean;
+    status?: string;
+};
+
+type UserDataUpdateInput = {
+    name: string;
+    email: string;
+    password: string;
+    profilePic: string | null;
+    public: boolean;
+    role: string;
+};
+
+type AddNoteInput = {
+    $id?: string;
+    notiz: string;
+    subjectID: string | null;
+    sessionID: string | null;
+    title: string | null;
+    public?: boolean;
+};
+
+const getErrorMessage = (error: unknown): string =>
+    error instanceof Error ? error.message : String(error);
+
+const isNativeFileInputLike = (file: Blob | NativeFileInputLike): file is NativeFileInputLike =>
+    typeof file === "object" &&
+    file !== null &&
+    "uri" in file &&
+    "name" in file &&
+    "type" in file &&
+    !("arrayBuffer" in file);
+
+const toStorageFileInput = (fileId: string, file: Blob | NativeFileInputLike): { file: NativeFileInput; objectUrl?: string } => {
+    if (isNativeFileInputLike(file)) {
+        return {
+            file: {
+                ...file,
+                size: file.size ?? 0,
+            },
+        };
+    }
+
+    if (typeof URL === "undefined" || typeof URL.createObjectURL !== "function") {
+        throw new Error("Blob upload requires URL.createObjectURL support");
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    return {
+        file: {
+            name: `${fileId}.pdf`,
+            type: file.type || "application/pdf",
+            size: file.size ?? 0,
+            uri: objectUrl,
+        },
+        objectUrl,
+    };
+};
 
 /*
 Missleading name since a question is updated
@@ -159,7 +260,7 @@ export async function addQUestion(newQuestion:AppwriteQuestion){
             setSessionInMMKV(session);
             user = session;
         }
-        const response = await databases.createDocument(
+        const response = await databases.createDocument<AppwriteQuestion>(
             config.databaseId,
             config.questionCollectionId,
             "unique()",
@@ -171,12 +272,12 @@ export async function addQUestion(newQuestion:AppwriteQuestion){
                 Permission.read(Role.any())
             ]
         );
-        addQuestionToMMKV(newQuestion.subjectID, response)
+        if (typeof newQuestion.subjectID === "string") addQuestionToMMKV(newQuestion.subjectID, response)
         return response;
     } catch (error){
         console.error("❌Error while creating a new Question", error instanceof Error ? error.message : String(error));
         const tempID = "tmp-" + uuid.v4();
-        addQuestionToMMKV(newQuestion.subjectID,{
+        if (typeof newQuestion.subjectID === "string") addQuestionToMMKV(newQuestion.subjectID,{
             ...data,
             $id:tempID
         })
@@ -193,11 +294,14 @@ export async function addQUestion(newQuestion:AppwriteQuestion){
     }
 }
 
-export async function addNote(newNote:AppwriteNote){
-    const data = newNote;
+export async function addNote(newNote:AddNoteInput) :Promise<AppwriteNote | note>{
+    const data: note = {
+        ...newNote,
+        public: newNote.public ?? false,
+    };
     try {
         
-        const response = await databases.createDocument(
+        const response = await databases.createDocument<AppwriteNote>(
             config.databaseId,
             config.noteCollectionId,
             "unique()",
@@ -213,10 +317,10 @@ export async function addNote(newNote:AppwriteNote){
     } catch (error){
         console.error("❌Error while creating a new Note", error instanceof Error ? error.message : String(error));
         if (newNote.$id) {
-            updateUnsavedNote(newNote)
-            return newNote
+            updateUnsavedNote(data)
+            return data
         } else {
-            return addUnsavedNote(newNote)
+            return addUnsavedNote(data) as note
         }
     }
 }
@@ -228,7 +332,7 @@ export async function updateNote (data:AppwriteNote){
         if (data.$id.includes("tmp-")){
             const res = await addNote(data);
             
-            saveNoteToMMKV(res.sessionID, res)
+            if (res.sessionID) saveNoteToMMKV(res.sessionID, res)
             return;
         }
         const updatedData = {
@@ -247,11 +351,11 @@ export async function updateNote (data:AppwriteNote){
         );
 
     } catch (error){
-        console.error("❌Error", error.message);
+        console.error("❌Error", (error as Error).message);
     }
 }
 
-export async function addDocumentConfig(data) {
+export async function addDocumentConfig(data: DocumentConfigInput) {
     const user = getSessionFromMMKV()
     const newConfig = {
         title: data.title,
@@ -260,7 +364,7 @@ export async function addDocumentConfig(data) {
         databucketID: data.id,
         fileType: data.type,
         uploaded:false,
-        creator: user.$id,
+        creator: user?.$id ?? "",
         status: "PENDING",
     };
     try {
@@ -272,51 +376,68 @@ export async function addDocumentConfig(data) {
         );
         return response;
     } catch (error){
-        console.error("❌Error while creating a new Note", error.message);
+        console.error("❌Error while creating a new Note", getErrorMessage(error));
         return null;
     }
 }
 
-export async function addDocumentToBucketWeb(data){
+export async function addDocumentToBucketWeb(data: WebBucketInput){
+    let objectUrl: string | undefined;
     try {
-        const response = await storage.createFile(config.documentsBucketId, data.id, data.file);
+        const normalized = toStorageFileInput(data.id, data.file);
+        objectUrl = normalized.objectUrl;
+        const response = await storage.createFile(config.documentsBucketId, data.id, normalized.file);
         return response;
     } catch (error){
-        console.error("❌Error while creating a new Document", error.message);
+        console.error("❌Error while creating a new Document", getErrorMessage(error));
         return null;
+    } finally {
+        if (objectUrl && typeof URL !== "undefined" && typeof URL.revokeObjectURL === "function") {
+            URL.revokeObjectURL(objectUrl);
+        }
     }
 }
 
-export async function addDocumentToBucket(data,fileData){
+export async function addDocumentToBucket(data: string | LegacyBucketInput, fileData?: NativeFileInputLike){
+    let objectUrl: string | undefined;
     try {
+        const fileId = typeof data === "string" ? data : data.fileID;
+        const filePayload = fileData ?? (typeof data === "string" ? null : data.fileBlob);
+
+        if (!filePayload) {
+            throw new Error("Missing file payload for bucket upload");
+        }
+
+        const normalized = toStorageFileInput(fileId, filePayload);
+        objectUrl = normalized.objectUrl;
+
         const response = await storage.createFile(
             config.documentsBucketId, 
-            "unique()", 
-            {
-                name: fileData.name,
-                type: fileData.type,
-                size: fileData.size,
-                uri: fileData.uri,
-            }
+            fileId,
+            normalized.file
         );
         return response;
     } catch (error){
-        console.error("❌Error while creating a new Document", error.message);
+        console.error("❌Error while creating a new Document", getErrorMessage(error));
         return null;
+    } finally {
+        if (objectUrl && typeof URL !== "undefined" && typeof URL.revokeObjectURL === "function") {
+            URL.revokeObjectURL(objectUrl);
+        }
     }
 }
 
-export async function updateDocumentConfig(data){
+export async function updateDocumentConfig(data: UpdateDocumentConfigInput){
     try {
         const user = getSessionFromMMKV()
         const updatedData = {
-            title: data.title,
-            subjectID: data.subjectID,
-            sessionID: data.sessionID,
+            title: data.title ?? "",
+            subjectID: data.subjectID ?? "",
+            sessionID: data.sessionID ?? "",
             databucketID: data.databucketID,
-            fileType: data.fileType,
-            uploaded: data.uploaded,
-            creator: user.$id,
+            fileType: data.fileType ?? data.type ?? "",
+            uploaded: data.uploaded ?? false,
+            creator: user?.$id ?? "",
         };
         const response = await databases.updateDocument(
             config.databaseId,
@@ -327,11 +448,11 @@ export async function updateDocumentConfig(data){
         );
         return response;
     } catch (error){
-        console.error("❌Error", error.message);
+        console.error("❌Error", getErrorMessage(error));
     }
 }
 
-export async function removeDocumentConfig(id){
+export async function removeDocumentConfig(id: string){
     try {
         const response = await databases.deleteDocument(
             config.databaseId,
@@ -340,11 +461,11 @@ export async function removeDocumentConfig(id){
         );
 
     } catch (error){
-        console.error("❌Error", error.message);
+        console.error("❌Error", getErrorMessage(error));
     }
 }
 
-export async function setUserData(id,newUSerData){
+export async function setUserData(id: string, newUSerData: UserDataUpdateInput){
     try {
         const updatedData = {
             name: newUSerData.name,
@@ -363,11 +484,11 @@ export async function setUserData(id,newUSerData){
         );
 
     } catch (error){
-        console.error("❌Error while updating User Data setUserData()", error.message);
+        console.error("❌Error while updating User Data setUserData()", getErrorMessage(error));
     }
 }
 
-export async function setUserDataSetup(id){
+export async function setUserDataSetup(id: string){
     try {
         const res = await databases.updateDocument(
             config.databaseId,
@@ -378,11 +499,11 @@ export async function setUserDataSetup(id){
         );
         return res;
     } catch (error){
-        console.error("❌Error while updating User Data  setUserDataSetup()", error.message);
+        console.error("❌Error while updating User Data  setUserDataSetup()", getErrorMessage(error));
     }
 }
 
-export async function setColorMode(id,colorMod){
+export async function setColorMode(id: string,colorMod: boolean){
     try {
         const res = await databases.updateDocument(
             config.databaseId,
@@ -393,11 +514,11 @@ export async function setColorMode(id,colorMod){
         );
 
     } catch (error){
-        console.error("❌Error ", error.message);
+        console.error("❌Error ", getErrorMessage(error));
     }
 }
 
-export async function setLanguage(id,newLanguage){
+export async function setLanguage(id: string,newLanguage: string){
     try {
         const res = await databases.updateDocument(
             config.databaseId,
@@ -405,7 +526,7 @@ export async function setLanguage(id,newLanguage){
             id,
             { language: newLanguage })
     } catch (error){
-        console.log("❌Error", error.message);
+        console.log("❌Error", getErrorMessage(error));
     }
 
 }

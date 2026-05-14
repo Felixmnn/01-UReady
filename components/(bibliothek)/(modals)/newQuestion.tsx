@@ -2,19 +2,9 @@ import { View, Text, Modal, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Selectable from "../selectable";
+import { question } from "@/types/appwriteTypes";
 
-type Props = {
-  question: any;
-  questions: any[];
-  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
-  module: any;
-  setModule: React.Dispatch<React.SetStateAction<any>>;
-  selectedSession: any;
-  isVisibleEditQuestion: { state: boolean; status: "ADD" | "EDIT" };
-  setIsVisibleEditQuestion: React.Dispatch<
-    React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>
-  >;
-};
+
 
 const ModalNewQuestion = ({
   isVisible,
@@ -29,7 +19,7 @@ const ModalNewQuestion = ({
   selectedLanguage,
 }: {
   isVisible: boolean;
-  setQuestionToEdit: React.Dispatch<React.SetStateAction<any>>;
+  setQuestionToEdit: React.Dispatch<React.SetStateAction<question>>;
  setIsVisibleEditQuestion: React.Dispatch<React.SetStateAction<{ state: boolean; status: "ADD" | "EDIT" }>>;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   selectAi: () => void;
@@ -94,7 +84,10 @@ const ModalNewQuestion = ({
                       sessionID: null,
                       subjectID: module.$id,
                       aiGenerated: false,
-                      status: null,
+                      status: "OK",
+                      questionSVG: null,
+                      explaination: null,
+                      hint: null,
                     });
                     setIsVisibleEditQuestion({
                       state: true,

@@ -6,7 +6,7 @@ import { useWindowDimensions } from "react-native";
 import SettingsOption from "../(tabs)/settingsOption";
 import { useState } from "react";
 import CustomButton from "../(general)/customButton";
-import { updateUserEmail, updateUserName } from "@/lib/appwrite";
+import { updateUserName } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import CustomTextInput1 from "../(general)/customTextInput1";
@@ -16,7 +16,7 @@ import SkeletonListProfile from "../(general)/(skeleton)/skeletonListProfile";
 import { TextInput } from "react-native-gesture-handler";
 import { useActionCode } from "@/lib/appwriteShop";
 import { useTranslation } from "react-i18next";
-import { userDataKathegory } from "@/types/appwriteTypes";
+import { AppwriteUserData, userDataKathegory } from "@/types/appwriteTypes";
 import i18n from "@/assets/languages/i18n";
 import { handleValidationCode } from "@/lib/appwriteEmailValidation";
 import Offline from "../(general)/offline";
@@ -31,7 +31,7 @@ const ProfileSettings = () => {
     }
   }, [language]);
 
-  const [userData, setUserData] = useState<any | null | undefined>(null);
+  const [userData, setUserData] = useState<AppwriteUserData | null | undefined>(null);
   const [userDataKathegory, setUserDataKathegory] =
     useState<userDataKathegory>();
   const [loading, setLoading] = useState(true);
@@ -248,7 +248,7 @@ const ProfileSettings = () => {
           >
             <Text className="text-white font-bold text-gray-300">
              {
-              isSuccess && typeof successMessage === "number" ? codes[successMessage] : isSuccess && typeof successMessage === "string" ? successMessage : isError && typeof errorMessage === "number" ? codes[errorMessage] : isError && typeof errorMessage === "string" ? errorMessage : null
+              isSuccess && typeof successMessage === "number" ? codes[successMessage as keyof typeof codes] : isSuccess && typeof successMessage === "string" ? successMessage : isError && typeof errorMessage === "number" ? codes[errorMessage as keyof typeof codes] : isError && typeof errorMessage === "string" ? errorMessage : null
             }
             </Text>
           </View>
@@ -331,12 +331,13 @@ const ProfileSettings = () => {
                           t("profileSettings.vorname"),
                           (text) => updateUserName(text)
                         )}
+                        {/*
                         {personalInput(
                           user.email,
                           t("profileSettings.email"),
                           (text) => updateUserEmail(text),
                           true
-                        )}
+                        )}*/}
                       {!user.emailVerification && (verified == null ||verified === false)
                         ? (
                         <View

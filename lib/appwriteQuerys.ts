@@ -2,90 +2,22 @@ import { Query } from "appwrite";
 import { databases, config } from "./appwrite";
 import { getImageConfigsFromMMKV, getModulesFromMMKV, getNotesFromMMKV, setImageConfigsToMMKV } from "./mmkvFunctions";
 import germanTranslation from "@/assets/languages/locales/de/translation.json"
+import { AppwriteDocument, AppwriteDocumentConfig, AppwriteModule, AppwriteNote, AppwriteQuestion, module, note, question, userDataKathegory } from "@/types/appwriteTypes";
 
 
 
-
-export async function getSepcificModules(userData) {
-    const uniQuery = {
-        creationCountry: userData.country,
-        creationUniversity: userData.university,
-        creationUniversityFaculty: userData.faculty,
-        creationUniversitySubject: userData.studiengang
-    }
-    const schoolQuery = {
-        creationCountry: userData.country,
-        region: userData.region,
-        creationSchoolForm: userData.schoolForm,
-        creationKlassNumber: userData.klassNumber,
-        creationSubject: userData.subject
-    }
-    const educationQuery = {
-        creationCountry: userData.country,
-        creationEducationKathegory: userData.educationKathegory,
-        creationEducationSubject: userData.educationSubject
-    }
-    const otherQuery = {
-        creationCountry: userData.country,
-        creationSubject: userData.subject
-    }
-   try {
-        let res = []
-        let query ;
-        if (userData.kategoryType === "UNIVERSITY") {
-            query = uniQuery;
-        } else if (userData.kategoryType === "SCHOOL") {
-            query = schoolQuery;
-        } else if (userData.kategoryType === "EDUCATION") {
-            query = educationQuery;
-        } else {
-            query = otherQuery;
-        } 
-            const entries = Object.entries(query);
-            let i = entries.length;
-            while ( i > 0 ) {
-                try {
-                    const partialEntries = entries.slice(0, i);
-                    const partialQuery = Object.fromEntries(partialEntries);
-                    if (userData.kategoryType === "UNIVERSITY") {
-                        res = await universityQuery(partialQuery)
-                    } else if (userData.kategoryType === "SCHOOL") {
-                        res = await schoolQuery(partialQuery)
-                    } else if (userData.kategoryType === "EDUCATION") {
-                        res = await educationQuery(partialQuery)
-                    } else {
-                        res = await otherQuery(partialQuery)
-                    }
-                    if (res.documents > 0) {
-                        res = res.documents;
-                        break;
-                    }
-                } catch (error) {
-                    if (__DEV__) {
-                    console.log("Fehler bei der Anfrage", error)
-                    }
-                }
-                i--;
-            }
-        return res;
-   } catch (error) {
-    if (__DEV__) {
-        console.log("Fehler bei der Anfrage", error)
-    }
-    }
-}
 /**
  * Function returns all Modules for User Id
  * 404 means, no Internet Connection
  */
-export async function getModules(id) {
+export async function getModules(id:string): Promise<AppwriteModule[]> {
     const LIMIT = 100; // Appwrite max
     let offset = 0;
-    let allModules = [];
+    let allModules = <AppwriteModule[]>[];
 
     try {
         while (true) {
-            const response = await databases.listDocuments(
+            const response = await databases.listDocuments<AppwriteModule>(
                 config.databaseId,
                 config.moduleCollectionId,
                 [
@@ -116,26 +48,10 @@ export async function getModules(id) {
 }
 
 
-export async function getAllQuestions(id) {
-    try {
-        const response = await databases.listDocuments(
-            config.databaseId,
-            config.questionCollectionId,
-            [
-                    Query.equal("subjectID", id),
-            ]
-        );
-        return response;
-    } catch (error) {
-        if (__DEV__) {
-        console.log("Fehler bei der Anfrage",error)
-        }
-    }
-}
 
-export async function getSessionNotes(sessionID) {
+export async function getSessionNotes(sessionID:string): Promise<note[]> {
     try {
-        const firstResponse = await databases.listDocuments(
+        const firstResponse = await databases.listDocuments<AppwriteNote>(
             config.databaseId,
             config.noteCollectionId,
             [
@@ -147,7 +63,7 @@ export async function getSessionNotes(sessionID) {
         const total = firstResponse.total;
         const documents = [...firstResponse.documents];
         if (documents.length < total) {
-            const secondResponse = await databases.listDocuments(
+            const secondResponse = await databases.listDocuments<AppwriteNote>(
                 config.databaseId,
                 config.noteCollectionId,
                 [
@@ -169,9 +85,9 @@ export async function getSessionNotes(sessionID) {
     }
 }
 
-export async function getAllDocuments(sessionID) {
+export async function getAllDocuments(sessionID:string): Promise<AppwriteDocument[]> {
     try {
-        const firstResponse = await databases.listDocuments(
+        const firstResponse = await databases.listDocuments<AppwriteDocument>(
             config.databaseId,
             config.documentCollectionId,
             [
@@ -183,7 +99,7 @@ export async function getAllDocuments(sessionID) {
         const total = firstResponse.total;
         const documents = [...firstResponse.documents];
         if (documents.length < total) {
-            const secondResponse = await databases.listDocuments(
+            const secondResponse = await databases.listDocuments<AppwriteDocument>(
                 config.databaseId,
                 config.documentCollectionId,
                 [
@@ -209,7 +125,7 @@ export async function getAllDocuments(sessionID) {
  * Errorcode 401 means, that the document does not exist
  * Errorcode 400 means, that the id is not valid
  */
-export async function getAllQuestionsByIds(ids) {
+export async function getAllQuestionsByIds(ids:string[]): Promise<question[] | "400" | "404"> {
   if (!ids || ids.length === 0) return "400";
  console.log("IDS at 0", ids[0]);
   const idsFiltered = ids.filter(Boolean);
@@ -217,12 +133,12 @@ export async function getAllQuestionsByIds(ids) {
     const CHUNK_SIZE = 40;
 
     try {
-        let allDocuments = [];
+        let allDocuments = [] as question[];
         console.log("Total IDs to fetch:", idsFiltered.length);
         for (let i = 0; i < idsFiltered.length; i += CHUNK_SIZE) {
             console.log("Starting")
             const chunk = idsFiltered.slice(i, i + CHUNK_SIZE);
-            const response = await databases.listDocuments(
+            const response = await databases.listDocuments<AppwriteQuestion>(
                 config.databaseId,
                 config.questionCollectionId,
                 [
@@ -230,8 +146,6 @@ export async function getAllQuestionsByIds(ids) {
                     Query.limit(chunk.length),
                 ]
             );
-            console.log("Response for chunk:", response.documents.length);
-
             if (response && Array.isArray(response.documents) && response.documents.length) {
                 allDocuments = allDocuments.concat(response.documents);
             }
@@ -241,7 +155,7 @@ export async function getAllQuestionsByIds(ids) {
         const seen = new Set();
         const deduped = [];
         for (const doc of allDocuments) {
-            const docId = doc.$id || doc.id;
+            const docId = doc.$id || doc.$id;
             if (!seen.has(docId)) {
                 seen.add(docId);
                 deduped.push(doc);
@@ -258,9 +172,9 @@ export async function getAllQuestionsByIds(ids) {
 
 
 
-export async function getAllImageConfigs(userId) {
+export async function getAllImageConfigs(userId:string): Promise<AppwriteDocumentConfig[]> {
     try {
-        const response = await databases.listDocuments(
+        const response = await databases.listDocuments<AppwriteDocumentConfig>(
             config.databaseId,
             config.documentCollectionId,
             [
@@ -279,7 +193,7 @@ export async function getAllImageConfigs(userId) {
     }
 }
 
-export async function getUserSubscriptionStatus(userId) {
+export async function getUserSubscriptionStatus(userId:string): Promise<string | undefined> {
     try {
         const response = await databases.listDocuments(
             config.databaseId,
@@ -288,7 +202,7 @@ export async function getUserSubscriptionStatus(userId) {
                 Query.equal("userID", userId),
             ]
         );
-        return response.documents[0];
+        return response.documents[0]?.status;
     } catch (error) {
         if (__DEV__) {
         console.log("Error fetching subscription status:", error);
@@ -296,7 +210,7 @@ export async function getUserSubscriptionStatus(userId) {
     }
 }
 
-export async function getMatchingModulesForGettingStarted(userKategory) {
+export async function getMatchingModulesForGettingStarted(userKategory:userDataKathegory): Promise<AppwriteModule[]> {
     try {
         console.log("User Kategory:", userKategory);
         /*
@@ -335,17 +249,17 @@ export async function getMatchingModulesForGettingStarted(userKategory) {
             if (studiengaenge.length > 0) {
                 console.log("Studiengänge length:", studiengaenge.length);
                 if (studiengaenge.length === 1) {
-                    query.push(Query.contains("subject", germanTranslation["universityCategories"]["universitySubjects"][studiengaenge[0]].name));
+                    query.push(Query.contains("subject", germanTranslation["universityCategories"]["universitySubjects"][studiengaenge[0] as keyof typeof germanTranslation["universityCategories"]["universitySubjects"]].name));
                 } else {
                 const orQuery = []
                 for (let i = 0; i < studiengaenge.length; i++) {
-                    orQuery.push(Query.contains("subject", germanTranslation["universityCategories"]["universitySubjects"][studiengaenge[i]].name));
+                    orQuery.push(Query.contains("subject", germanTranslation["universityCategories"]["universitySubjects"][studiengaenge[i] as keyof typeof germanTranslation["universityCategories"]["universitySubjects"]].name));
                 }
                 query.push(Query.or(orQuery));
                 }
                 
             }
-            const res = await databases.listDocuments(
+            const res = await databases.listDocuments<AppwriteModule>(
                 config.databaseId,
                 config.moduleCollectionId,
                 query
@@ -354,7 +268,7 @@ export async function getMatchingModulesForGettingStarted(userKategory) {
 
         } else if (userKategory.kategoryType === "SCHOOL") {
             const language = userKategory.language || "en";
-            const schoolForm = userKategory.schoolForm || "GYMNASIUM"; 
+            const schoolForm = userKategory.schoolType || "GYMNASIUM"; 
             const subject = userKategory.schoolSubjects || [];
             const schoolKlass = userKategory.schoolGrade || 10;
 
@@ -367,16 +281,16 @@ export async function getMatchingModulesForGettingStarted(userKategory) {
 
             if (subject.length > 0) {
                 if (subject.length === 1) {
-                    query.push(Query.contains("subject", germanTranslation.school.subjects[subject[0]].name));
+                    query.push(Query.contains("subject", germanTranslation.school.subjects[subject[0] as keyof typeof germanTranslation.school.subjects].name));
                 } else {
                 const orQuery = []
                 for (let i = 0; i < subject.length; i++) {
-                    orQuery.push(Query.contains("subject", germanTranslation.school.subjects[subject[i]].name));
+                    orQuery.push(Query.contains("subject", germanTranslation.school.subjects[subject[i] as keyof typeof germanTranslation.school.subjects].name));
                 }
                 query.push(Query.or(orQuery));
             }
             }
-            const res = await databases.listDocuments(
+            const res = await databases.listDocuments<AppwriteModule>(
                 config.databaseId,
                 config.moduleCollectionId,
                 query
@@ -394,7 +308,7 @@ export async function getMatchingModulesForGettingStarted(userKategory) {
                 Query.equal("creationEducationSubject", educationSubject),
             ]
 
-            const res = await databases.listDocuments(
+            const res = await databases.listDocuments<AppwriteModule>(
                 config.databaseId,
                 config.moduleCollectionId,
                 query
@@ -411,16 +325,16 @@ export async function getMatchingModulesForGettingStarted(userKategory) {
             ]
             if (subject.length > 0) {
                 if (subject.length === 1) {
-                     query.push(Query.contains("subject", germanTranslation.school.subjects[subject[0]].name));
+                     query.push(Query.contains("subject", germanTranslation.school.subjects[subject[0] as keyof typeof germanTranslation.school.subjects].name));
                 } else {
                 const orQuery = []
                 for (let i = 0; i < subject.length; i++) {
-                    orQuery.push(Query.contains("subject", germanTranslation.school.subjects[subject[i]].name));
+                    orQuery.push(Query.contains("subject", germanTranslation.school.subjects[subject[i] as keyof typeof germanTranslation.school.subjects].name));
                 }
                 query.push(Query.or(orQuery));
             }
             }
-            const res = await databases.listDocuments(
+            const res = await databases.listDocuments<AppwriteModule>(
                 config.databaseId,
                 config.moduleCollectionId,
                 query

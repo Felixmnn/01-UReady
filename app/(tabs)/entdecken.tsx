@@ -123,7 +123,7 @@ const entdecken = () => {
     })
   }, [userCathegory]);
 
-const [selectedLanguages, setSelectedLanguage] = useState<string[] | []>([]);
+const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
   const sheetRef = useRef<BottomSheet>(null);
   const [isOpen, setIsOpen] = useState(true);
   const snapPoints = ["40%", "60%", "90%"];
@@ -549,9 +549,9 @@ const educationSubject = (() => {
         universityDegreeType:
           indexOfDegreeType?.map((i) => universityDegreeTypeKeys[i]) || null,
         universityKategorie:
-          indexOfUniversitySubjects?.map((i) =>germanTranslation["universityCategories"]["universitySubjects"][uisSubsKeys[i]].name) || null,
+          indexOfUniversitySubjects?.map((i) =>germanTranslation["universityCategories"]["universitySubjects"][uisSubsKeys[i] as keyof typeof germanTranslation["universityCategories"]["universitySubjects"]].name) || null,
         schoolType: indexesOfSchoolTypes?.map((i) => schoolTypesRaw[i]) || null,
-        schoolSubjects: indexesOfSubjects?.map((i) => germanTranslation["school"]["subjects"][subjectKeys[i]].name) || null,
+        schoolSubjects: indexesOfSubjects?.map((i) => germanTranslation["school"]["subjects"][subjectKeys[i] as keyof typeof germanTranslation["school"]["subjects"]].name) || null,
         schoolGrades:
           realFilters.schoolGrades?.map((grade) => Number(grade)) || null,
         eductaionCategory: indexOfEduKat?.map((i) => eduKatKeys[i]) || null,
@@ -681,7 +681,6 @@ if (loadingMore) {
               selectedModules={selectedModules}
               setSelectedModules={setSelectedModules}
               numColumns={numColumns}
-              searchBarText={searchBarText}
               getModules={getModules}
               setLoadingMore={setLoadingMore}
               loading={loading}

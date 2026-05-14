@@ -1,11 +1,12 @@
+import { AppwriteModule, AppwriteUserData, AppwriteUserKategorie, AppwriteUserUsage, documentJob } from '@/types/appwriteTypes';
 import { databases,config } from './appwrite';
 import { getUserDataConfigFromMMKV, getUserKategorieFromMMKV, getUserUsageFromMMKV, setUserDataConfigInMMKV, updateModuleInMMKV } from './mmkvFunctions';
 
 
 
-export const loadModule = async (moduleId) => {
+export const loadModule = async (moduleId:string):Promise<AppwriteModule | null> => {
     try {
-        const response = await databases.getDocument(config.databaseId, config.moduleCollectionId, moduleId);
+        const response = await databases.getDocument<AppwriteModule>(config.databaseId, config.moduleCollectionId, moduleId);
         updateModuleInMMKV(response)
         return response;
     } catch (error) {
@@ -17,9 +18,9 @@ export const loadModule = async (moduleId) => {
 }
 
 
-export const loadUserData = async (userId) => {
+export const loadUserData = async (userId:string):Promise<AppwriteUserData | null> => {
     try {
-        const response = await databases.getDocument(config.databaseId, config.userDataCollectionId, userId);
+        const response = await databases.getDocument<AppwriteUserData>(config.databaseId, config.userDataCollectionId, userId);
         setUserDataConfigInMMKV(response)
         return response; 
     } catch (error) {
@@ -31,9 +32,9 @@ export const loadUserData = async (userId) => {
     }
 }
 
-export const loadUserDataKathegory = async (userId) => {
+export const loadUserDataKathegory = async (userId:string):Promise<AppwriteUserKategorie | null> => {
     try {
-        const response = await databases.getDocument(config.databaseId, config.userKathegoryCollectionId, userId);
+        const response = await databases.getDocument<AppwriteUserKategorie>(config.databaseId, config.userKathegoryCollectionId, userId);
         
         return response;
     } catch (error) {
@@ -47,9 +48,9 @@ export const loadUserDataKathegory = async (userId) => {
     }
 }
 
-export const loadUserUsage = async (userId) => {
+export const loadUserUsage = async (userId:string):Promise<AppwriteUserUsage | null> => {
     try {
-        const response = await databases.getDocument(config.databaseId, config.userUsageCollectionId, userId);
+        const response = await databases.getDocument<AppwriteUserUsage>(config.databaseId, config.userUsageCollectionId, userId);
         return response;
     } catch (error) {
         const response = getUserUsageFromMMKV()
@@ -60,9 +61,9 @@ export const loadUserUsage = async (userId) => {
     }
 }
 
-export async function loadAllModules() {
+export async function loadAllModules(): Promise<{modules: AppwriteModule[], total: number} | null | undefined> {
     try {
-        const response = await databases.listDocuments(config.databaseId, config.moduleCollectionId);
+        const response = await databases.listDocuments<AppwriteModule>(config.databaseId, config.moduleCollectionId);
         return {modules: response.documents, total: response.total};
     } catch (error) {
         if (__DEV__) {
@@ -71,7 +72,7 @@ export async function loadAllModules() {
     }
 }
 
-export async function getUserSubscriptionStatus(userId) {
+export async function getUserSubscriptionStatus(userId: string) {
     try {
         const response = await databases.getDocument(
             config.databaseId,
@@ -86,7 +87,7 @@ export async function getUserSubscriptionStatus(userId) {
         return null; 
     }}
 
-export async function addDocumentJob(documentJob) {
+export async function addDocumentJob(documentJob:documentJob) {
     try {
         const response = await databases.createDocument(
             config.databaseId,
@@ -99,21 +100,6 @@ export async function addDocumentJob(documentJob) {
         if (__DEV__) {
         console.log("Error adding document job:", error);
         }
-        return null;
-    }
-}
-
-
-export async function getADDIDStatus(){
-    try {
-        const response = await databases.getDocument(
-            config.databaseId,
-            "aproved",
-            "addIDsAproved"
-        );
-        console.log("Add ID Status response:", response);
-        return response.status; 
-    } catch (error) {
         return null;
     }
 }

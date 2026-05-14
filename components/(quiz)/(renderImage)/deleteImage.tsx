@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import { documentConfig } from '@/types/appwriteTypes';
 import { getImageConfigsFromMMKV, removeImageConfigFromMMKV } from '@/lib/mmkvFunctions';
 import * as Filesystem from 'expo-file-system';
-import { deleteFile, delteDocumentConfig } from '@/lib/appwriteDelete';
+import { deleteFile, deleteDocumentConfig } from '@/lib/appwriteDelete';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -12,12 +12,10 @@ import { useTranslation } from 'react-i18next';
  */
 const DeleteImage = ({
   imageId,
-  imageConfigs,
   setImageConfigs,
   documentId
 }:{
   imageId: string;
-  imageConfigs: documentConfig[];
   setImageConfigs: (configs: documentConfig[]) => void;
   documentId?: string;
 }) => {
@@ -31,7 +29,8 @@ const DeleteImage = ({
       if (fileInfo.exists) {
         await Filesystem.deleteAsync(localFilePath);
       }
-      await delteDocumentConfig(documentId)
+      if (!documentId) return;
+      await deleteDocumentConfig(documentId)
       await deleteFile(imageId);
     } catch (err) {
       console.error("Delete error:", err);

@@ -3,11 +3,12 @@ import { databases,config, storage, account } from './appwrite';
 import { addQuestionToMMKV, addUnsavedNote, addUnsavedQuestionToMMKV, deleteNoteFromMMKV, getSessionFromMMKV, saveNoteToMMKV, setSessionInMMKV, updateUnsavedNote } from './mmkvFunctions';
 import { Permission } from 'react-native-appwrite';
 import { Role } from 'appwrite';
+import { AppwriteModule, AppwriteNote, AppwriteQuestion, module, question } from '@/types/appwriteTypes';
 
 /*
 Missleading name since a question is updated
 */
-export const updateDocument = async (data) => {
+export const updateDocument = async (data:AppwriteQuestion) => {
     
     try {
         const updatedData = {
@@ -36,12 +37,12 @@ export const updateDocument = async (data) => {
         );
         return response;
     } catch (error){
-        console.error("❌Error while updating Document oder so", error.message);
+        console.error("❌Error while updating Document oder so", error instanceof Error ? error.message : String(error));
         return null;
     }
 }
 
-export async function updateQuestion(data){
+export async function updateQuestion(data:AppwriteQuestion){
     try {
         if (data.$id.includes("tmp-")){
             const res = await addQUestion(data);
@@ -71,11 +72,11 @@ export async function updateQuestion(data){
         );
         return response;
     } catch (error){
-        console.error("❌Error while updating Question", error.message);
+        console.error("❌Error while updating Question", error instanceof Error ? error.message : String(error));
     }
 }
 
-export const updateModule = async (data) => {
+export const updateModule = async (data:AppwriteModule) => {
     try {
         const updatedData = {
             name: data.name,
@@ -101,12 +102,12 @@ export const updateModule = async (data) => {
         );
         return response;
     } catch (error){
-        console.error("❌Error while creating Module", error.message);
+        console.error("❌Error while creating Module", error instanceof Error ? error.message : String(error));
     }
 }
 
 
-export async function removeQuestion(id){
+export async function removeQuestion(id:string){
     try {
         const response = await databases.deleteDocument(
             config.databaseId,
@@ -115,24 +116,25 @@ export async function removeQuestion(id){
         );
 
     } catch (error){
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function removeNote(note){
+export async function removeNote(note:AppwriteNote){
     try {
         const response = await databases.deleteDocument(
             config.databaseId,
             config.noteCollectionId,
             note.$id
         );
+        if (!note.sessionID) return;
         deleteNoteFromMMKV(note.sessionID, note.$id)
     } catch (error){
-        console.error("❌Error", error.message);
+        console.error("❌Error", error instanceof Error ? error.message : String(error));
     }
 }
 
-export async function addQUestion(newQuestion){
+export async function addQUestion(newQuestion:AppwriteQuestion){
     let user = getSessionFromMMKV()
     const data = {
         aiGenerated: newQuestion.aiGenerated ? newQuestion.aiGenerated : false,
@@ -172,7 +174,7 @@ export async function addQUestion(newQuestion){
         addQuestionToMMKV(newQuestion.subjectID, response)
         return response;
     } catch (error){
-        console.error("❌Error while creating a new Question", error.message);
+        console.error("❌Error while creating a new Question", error instanceof Error ? error.message : String(error));
         const tempID = "tmp-" + uuid.v4();
         addQuestionToMMKV(newQuestion.subjectID,{
             ...data,
@@ -191,7 +193,7 @@ export async function addQUestion(newQuestion){
     }
 }
 
-export async function addNote(newNote){
+export async function addNote(newNote:AppwriteNote){
     const data = newNote;
     try {
         
@@ -209,7 +211,7 @@ export async function addNote(newNote){
         );
         return response;
     } catch (error){
-        console.error("❌Error while creating a new Note", error.message);
+        console.error("❌Error while creating a new Note", error instanceof Error ? error.message : String(error));
         if (newNote.$id) {
             updateUnsavedNote(newNote)
             return newNote
@@ -219,12 +221,13 @@ export async function addNote(newNote){
     }
 }
 
-export async function updateNote (data){
-    saveNoteToMMKV(data.sessionID,data)
+export async function updateNote (data:AppwriteNote){
+    if (data.sessionID) saveNoteToMMKV(data.sessionID,data)
 
     try {
         if (data.$id.includes("tmp-")){
             const res = await addNote(data);
+            
             saveNoteToMMKV(res.sessionID, res)
             return;
         }

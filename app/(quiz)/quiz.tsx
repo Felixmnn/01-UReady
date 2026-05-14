@@ -10,7 +10,6 @@ import Navigation from '@/components/(quiz)/navigation';
 import Quiz from '@/components/(quiz)/quiz';
 import {  randomizeArray } from '@/functions/(quiz)/helper';
 import { question } from '@/types/appwriteTypes';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import QuizResult from '@/components/(quiz)/quizResult';
 import { useTranslation } from 'react-i18next';
 import CustomButton from '@/components/(general)/customButton';
@@ -18,7 +17,6 @@ import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { addUnsyncedListToMMKV, getIOSAddStatus, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
-import BotCenter from '@/components/(signUp)/botCenter';
 
 type QuestionItem = {
     id: string | null;

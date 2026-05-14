@@ -21,21 +21,18 @@ import BotCenter from "../(signUp)/botCenter";
 import { userData } from "@/types/moduleTypes";
 import { module } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
-import CustomButton from "../(general)/customButton";
-import { getUserDataConfigFromMMKV, getUserKategorieFromMMKV } from "@/lib/mmkvFunctions";
+import { getUserKategorieFromMMKV } from "@/lib/mmkvFunctions";
 import { getMatchingModulesForGettingStarted } from "@/lib/appwriteQuerys";
 import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
 import { loadUserDataKathegory } from "@/lib/appwriteDaten";
 
 const PageDiscover = ({
   setUserChoices,
-  userData,
   nothingForMe = () => {},
 }: {
   setUserChoices: React.Dispatch<
     React.SetStateAction<"GENERATE" | "DISCOVER" | "CREATE" | null>
   >;
-  userData: userData;
   nothingForMe?: () => void;
 }) => {
   const { t } = useTranslation();
@@ -45,13 +42,17 @@ const PageDiscover = ({
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const { width } = useWindowDimensions();
   const numColumns = Math.floor(width / 300);
-
+  
   useEffect(() => {
     if (!user) return;
     async function fetchModules() {
         if (!userCathegory) {
-          const res = loadUserDataKathegory(user.$id);
+          const res = await loadUserDataKathegory(user.$id);
           setUserCategory(res);
+          if (!res) {
+            setLoading(false);
+            return;
+          }
           const modules = await getMatchingModulesForGettingStarted(res);
           setMatchingModules(modules);
           setLoading(false);

@@ -2,10 +2,11 @@ import { compareModules } from '@/functions/checkDataIntegrity';
 import { databases,config } from './appwrite';
 import { loadModule, loadUserUsage } from './appwriteDaten';
 import { addUnsavedModuleToMMKV, getSessionFromMMKV, saveUserUsageToMMKV, updateModuleInMMKV, updateModuleQuestionListInMMKV } from './mmkvFunctions';
+import { AppwriteModule, AppwriteUserData, AppwriteUserUsage, module, question, userData, UserUsage } from '@/types/appwriteTypes';
 
-export async function updateUserData (id, data) {
+export async function updateUserData (id:string, data:userData) {
     try {
-        const res = await databases.updateDocument(
+        const res = await databases.updateDocument<AppwriteUserData>(
             config.databaseId,
             config.userDataCollectionId,
             id,
@@ -14,13 +15,13 @@ export async function updateUserData (id, data) {
         return res;
     } catch (error) {
         if (__DEV__) {
-        console.error("❌Error while updating User Data updateUserData()", error.message);
+        console.error("❌Error while updating User Data updateUserData()", error instanceof Error ? error.message : String(error));
         }
     }
         
 }
 
-export async function updateModuleData (id, data) {
+export async function updateModuleData (id:string, data:AppwriteModule) {
     try {
         if (!data || !id) return;
         const currentSate = await loadModule(id)
@@ -31,8 +32,8 @@ export async function updateModuleData (id, data) {
             ...data
         };
         const comparedModule = compareModules(mergedLocalState, currentSate);
-
-        const res = await databases.updateDocument(
+        if (!comparedModule) return;
+        const res = await databases.updateDocument<AppwriteModule>(
             config.databaseId,
             config.moduleCollectionId,
             id,
@@ -42,13 +43,13 @@ export async function updateModuleData (id, data) {
         return res;
     } catch (error) {
         if (__DEV__) {
-        console.error("❌Error while updating Module compleatly ", error.message);
+        console.error("❌Error while updating Module compleatly ", error instanceof Error ? error.message : String(error));
         }
     }
         
 }
 
-export async function updateModuleQuestionList (id, data, onlyLocal = false) {
+    export async function updateModuleQuestionList (id:string, data:string[], onlyLocal = false) {
     try {
         if (onlyLocal) {
             updateModuleQuestionListInMMKV(id, data);
@@ -56,13 +57,13 @@ export async function updateModuleQuestionList (id, data, onlyLocal = false) {
         }
         const currentState = await loadModule(id)
         const mergedQuestionList = [
-            ...currentState.questionList,
+            ...currentState?.questionList || [],
             ...data
         ];
         const mergedNoDuplicates = mergedQuestionList.filter((item, index) => {
             return mergedQuestionList.indexOf(item) === index;
         });
-        const res = await databases.updateDocument(
+        const res = await databases.updateDocument<AppwriteModule>(
             config.databaseId,
             config.moduleCollectionId,
             id,
@@ -74,12 +75,12 @@ export async function updateModuleQuestionList (id, data, onlyLocal = false) {
         return true;
     } catch (error) {
         if (__DEV__) {
-        console.log("❌Error while updating Module Data", error.message);
+        console.log("❌Error while updating Module Data", error instanceof Error ? error.message : String(error));
         }
         updateModuleQuestionListInMMKV(id, data);        
         addUnsavedModuleToMMKV({
             moduleID: id,
-            items: data
+            items: data as any[]
         });
 
         return true;
@@ -87,46 +88,29 @@ export async function updateModuleQuestionList (id, data, onlyLocal = false) {
         
 }
 
-export async function updateUserUsageData (data) {
-    const user = getSessionFromMMKV()
-    const userUsage =  {
-               boostActivation: data.boostActivation,
-                boostActive: data.boostActive,
-                boostType: data.boostType,
-                energy: data.energy,
-                lastModules: data?.lastModules,
-                lastSessions: data.lastSessions,
-                microchip: data.microchip,
-                recharges: data.recharges,
-                streak: data.streak,
-                streakActive: data.streakActive,
-                streakLastUpdate:data.streakLastUpdate,
-                supercharges: data.supercharges,
-                watchedComercials: data.watchedComericals,
-                purcharses: data.purcharses,
-                streakUpdate: data.streakUpdate,
-                watchedComercials: data.watchedComercials,
-            }
+export async function updateUserUsageData (data:AppwriteUserUsage):Promise<AppwriteUserUsage | void> {
+   
     try {
-        const res = await databases.updateDocument(
+        const res = await databases.updateDocument<AppwriteUserUsage>(
             config.databaseId,
             config.userUsageCollectionId,
             data.$id,
-            userUsage
+            data
         )
         return res;
     } catch (error) {
-        saveUserUsageToMMKV(userUsage)
+        saveUserUsageToMMKV(data)
         if (__DEV__) {
-        console.log("❌Error while updating User Data uodateUserUsageData()", error.message);
+        console.log("❌Error while updating User Data uodateUserUsageData()", error instanceof Error ? error.message : String(error));
         }
     }
         
 }
 
-export async function updateUserUsageSessions(id, newSession) {
+export async function updateUserUsageSessions(id: string, newSession: any): Promise<any | void> {
     try {
         const oldUserUsage = await loadUserUsage(id);
+        if (!oldUserUsage) return;
         const parsedOldSessions = oldUserUsage.lastSessions?.map((session) => (
             JSON.parse(session)
         ))
@@ -138,7 +122,7 @@ export async function updateUserUsageSessions(id, newSession) {
         const parsedSessions = updatedSessions.map((session) => (
             JSON.stringify(session)
         ))
-        const res = await databases.updateDocument(
+        const res = await databases.updateDocument<AppwriteUserUsage>(
             config.databaseId,
             config.userUsageCollectionId,
             id,
@@ -149,15 +133,16 @@ export async function updateUserUsageSessions(id, newSession) {
       return res;
     } catch (error) {
         if (__DEV__) {
-      console.error("❌ Fehler beim Update der User-Daten:", error.message);
+      console.error("❌ Fehler beim Update der User-Daten:", error instanceof Error ? error.message : String(error));
         }
     }
   }
   
 
-  export async function updateUserUsageModules(id, newModule) {
+  export async function updateUserUsageModules(id:string, newModule: any): Promise<void> {
     try {
         const oldUserUsage = await loadUserUsage(id);
+        if (!oldUserUsage) return;
         const lastModules = oldUserUsage.lastModules?.map((module) => (
             JSON.parse(module)
         ))
@@ -169,7 +154,7 @@ export async function updateUserUsageSessions(id, newSession) {
         const parsedModules = updatedModules.map((module) => (
             JSON.stringify(module)
         ))
-        const res = await databases.updateDocument(
+        const res = await databases.updateDocument<AppwriteUserUsage>(
             config.databaseId,
             config.userUsageCollectionId,
             id,
@@ -181,7 +166,7 @@ export async function updateUserUsageSessions(id, newSession) {
       
     } catch (error) {
         if (__DEV__) {
-      console.error("❌ Error while updating User Data updateUserUsageModules()", error.message);
+      console.error("❌ Error while updating User Data updateUserUsageModules()", error instanceof Error ? error.message : String(error));
         }
     }
   }

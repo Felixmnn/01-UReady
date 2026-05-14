@@ -1,5 +1,5 @@
 import { storage } from "./mmkv";
-import {  documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
+import {  AppwriteDocumentConfig, AppwriteModule, AppwriteUserKategorie, AppwriteUserUsage, documentConfig, module, note, question, userDataKathegory, UserUsage } from "@/types/appwriteTypes";
 import { uuid } from "expo-modules-core";
 
 
@@ -34,7 +34,7 @@ export function saveModulesToMMKV(modules: module[]) {
 /**
  * This function retrieves modules from MMKV storage and returns them as an array of objects.
  */
-export function getModulesFromMMKV(): module[] | [] {
+export function getModulesFromMMKV(): AppwriteModule[] | [] {
     const modulesString = storage.getString('user.modules');
     return modulesString ? JSON.parse(modulesString) : [];
 }
@@ -42,7 +42,7 @@ export function getModulesFromMMKV(): module[] | [] {
 /**
  * This function returns a specific module from MMKV storage by its ID.
  */
-export function getModuleFromMMKV(moduleID: string): module | null {
+export function getModuleFromMMKV(moduleID: string): AppwriteModule | null {
     const allModules = getModulesFromMMKV();
     const module = allModules.find(m => m.$id === moduleID);
     return module || null;
@@ -51,7 +51,7 @@ export function getModuleFromMMKV(moduleID: string): module | null {
 /**
  * This function updates a specific module in MMKV storage.
  */
-export function updateModuleInMMKV(updatedModule: module) {
+export function updateModuleInMMKV(updatedModule: AppwriteModule) {
     const allModules = getModulesFromMMKV();
     const moduleIndex = allModules.findIndex(m => m.$id === updatedModule.$id);
     if (moduleIndex !== -1) {
@@ -413,14 +413,14 @@ export function deleteNoteFromMMKV(sessionID: string, noteID: string) {
 /**
  * This function saves user usage data to MMKV storage.
  */
-export function saveUserUsageToMMKV(usage: UserUsage) {
+export function saveUserUsageToMMKV(usage: AppwriteUserUsage) {
     const usageString = JSON.stringify(usage);
     storage.set('user.usage', usageString);
 }
 /**
  * This function retrieves user usage data from MMKV storage.
  */ 
-export function getUserUsageFromMMKV(): UserUsage | null {
+export function getUserUsageFromMMKV(): AppwriteUserUsage | null {
     const usageString = storage.getString('user.usage');
     return usageString ? JSON.parse(usageString) : null;
 }
@@ -429,7 +429,7 @@ export function getUserUsageFromMMKV(): UserUsage | null {
  * This function ensures offine userUsage updates work
  */
 
-export function saveUsavedUserUsageToMMKV(usage: UserUsage){
+export function saveUsavedUserUsageToMMKV(usage: AppwriteUserUsage){
     const usageString = JSON.stringify(usage);
     storage.set('user.usavedUsage', usageString);
 } 
@@ -437,7 +437,7 @@ export function saveUsavedUserUsageToMMKV(usage: UserUsage){
 /**
  * This function retrieves unsaved user usage data from MMKV storage.
  */
-export function getUsavedUserUsageFromMMKV(): UserUsage | null {
+export function getUsavedUserUsageFromMMKV(): AppwriteUserUsage | null {
     const usageString = storage.getString('user.usavedUsage');
     return usageString ? JSON.parse(usageString) : null;
 }
@@ -534,7 +534,7 @@ export function saveUserKategorieToMMKV(userDataKategorie: userDataKathegory) {
 /**
  * Function to get The userKategorie from MMKV
  */
-export function getUserKategorieFromMMKV(): userDataKathegory | null {
+export function getUserKategorieFromMMKV(): AppwriteUserKategorie | null {
     const userDataKategorieString = storage.getString('user.userDataKategorie');
     return userDataKategorieString ? JSON.parse(userDataKategorieString) : null;
 }
@@ -643,7 +643,7 @@ export function addImageConfigToMMKV(imageConfig: documentConfig) {
 /**
  * This function retrieves all Image Configs from MMKV storage.
  */
-export function getImageConfigsFromMMKV(): documentConfig[] | [] {
+export function getImageConfigsFromMMKV(): AppwriteDocumentConfig[] | [] {
     const imageConfigsString = storage.getString('user.imageConfigs');
     return imageConfigsString ? JSON.parse(imageConfigsString) : [];
 }

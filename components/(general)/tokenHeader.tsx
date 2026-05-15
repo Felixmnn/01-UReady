@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
 import  { useGlobalContext } from "@/context/GlobalProvider";
+import RewardedAdScreen from "@/components/(shop)/add";
 
 
 
@@ -94,7 +95,12 @@ const TokenHeader = ({
   );
 
   return (
-    <View className="w-full justify-between">
+    <TouchableOpacity
+      activeOpacity={1}
+      disabled={!moreVisible}
+      onPress={() => setMoreVisible(false)}
+      className="w-full justify-between"
+    >
       <View className="w-full flex-row justify-between">
         <ModalStreak />
         {/* Streak */}
@@ -127,12 +133,13 @@ const TokenHeader = ({
         </View>
       </View>
 
-      {moreVisible && (
-        <TouchableOpacity className="w-full px-4  justify-center items-center p-2"
-          onPress={()=> setMoreVisible(!moreVisible)}
-        >
-          {
-            userUsage && userUsage.energy < 10 &&
+      <View
+        className={`w-full px-4 items-stretch overflow-hidden ${
+          moreVisible ? "p-2" : "h-0 p-0"
+        }`}
+        pointerEvents={moreVisible ? "auto" : "none"}
+      >
+        {userUsage && userUsage.energy < 10 && (
           <View className="w-full flex-row justify-between max-w-[200px]">
             {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
               <Icon
@@ -143,19 +150,24 @@ const TokenHeader = ({
               />
             ))}
           </View>
-          }
-          <View>
-            <Text className="text-white text-center mt-2 font-semibold">
+        )}
+        
+        <View className={`w-full min-h-[88px] ${moreVisible ? "" : "h-0 mt-0"}`}>
+          <RewardedAdScreen />
+        </View>
+        <View className={moreVisible ? "" : "h-0"}>
+          {moreVisible && (
+            <Text className="text-white text-center  font-semibold">
               {userUsage?.energy >= 10
                 ? t("tokenHeader.energyFull")
                 : `${timeLeft ?? "…"} ${t("tokenHeader.minutesLeft")}`}
             </Text>
-          </View>
-        </TouchableOpacity>
-      )}
+          )}
+        </View>
+      </View>
 
       <View className="w-full border-t-[1px]  border-gray-700 mb-2" />
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -57,7 +57,6 @@ const Tabbar = ({
               {tabbarIcon("home", 25, "white", "home", "/home")}
               {tabbarIcon("book", 25, "white", "bibliothek", "/bibliothek")}
               {tabbarIcon("search", 25, "white", "entdecken", "/entdecken")}
-              {tabbarIcon("store", 25, "white", "shop", "/shop")}
               {tabbarIcon("user", 25, "white", "profil", "/profil")}
             </View>
             <View className="items-center my-1">

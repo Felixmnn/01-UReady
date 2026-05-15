@@ -51,7 +51,6 @@ const RootLayout = () => {
           let iconName: string | undefined;
           if (route.name === "home") iconName = "home";
           else if (route.name === "bibliothek") iconName = "book";
-          else if (route.name === "shop") iconName = "store";
           else if (route.name === "entdecken") iconName = "search";
           else if (route.name === "profil") iconName = "user";
 
@@ -65,9 +64,8 @@ const RootLayout = () => {
         },
       })}
     >
-      <Tabs.Screen name="shop" options={{ headerShown: false }} />
-      <Tabs.Screen name="bibliothek" options={{ headerShown: false }} />
       <Tabs.Screen name="home" options={{ headerShown: false }} />
+      <Tabs.Screen name="bibliothek" options={{ headerShown: false }} />
       <Tabs.Screen name="entdecken" options={{ headerShown: false }} />
       <Tabs.Screen name="profil" options={{ headerShown: false }} />
     </Tabs>

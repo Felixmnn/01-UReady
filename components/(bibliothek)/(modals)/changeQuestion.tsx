@@ -8,6 +8,7 @@ import CustomButton from "@/components/(general)/customButton";
 import ContentInput from "./newQuestionContentInput";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { updateQuestionInMMKV } from "@/lib/mmkvFunctions";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const ChangeQuestions = ({
   question,
@@ -321,34 +322,49 @@ const ChangeQuestions = ({
                 {t("editQuestion.addNewAnswer")}
               </Text>
             </TouchableOpacity>
-            { moreOptionsVisible &&
-            <View className="p-2">
-              <Text className="text-white text-[14px] mt-2">
-                {t("editQuestion.headerExplanation")}
-              </Text>
-              <TextInput
-                className="w-full text-white bg-gray-900 rounded-lg p-2 mt-2 border-blue-500 border-[1px] ml-2"
-                placeholder={t("editQuestion.enterAExplanaition")}
-                value={questionToEdit.explaination ?? ""}
-                placeholderTextColor="#9CA3AF"
-                multiline
-                numberOfLines={2}
-                style={{ minHeight: 40, maxHeight: 40, textAlignVertical: "top" }}
-                onChangeText={(text) => setQuestionToEdit({ ...questionToEdit, explaination: text })}
-              />
-              <Text className="text-white text-[14px] mt-2">
-                {t("editQuestion.headerHint")}
-              </Text>
-              <TextInput  
-                className="w-full text-white bg-gray-900 rounded-lg p-2 mt-2 border-blue-500 border-[1px] ml-2"
-                placeholder={t("editQuestion.enterAHint")}
-                value={questionToEdit.hint ?? ""}
-                placeholderTextColor="#9CA3AF"
-                multiline
-                numberOfLines={2}
-                style={{ minHeight: 40, maxHeight: 40, textAlignVertical: "top" }}
-                onChangeText={(text) => setQuestionToEdit({ ...questionToEdit, hint: text })}
-              />
+            {moreOptionsVisible &&
+            <View className="p-2 gap-3">
+              <View className="bg-[#0c111d] border border-blue-900 rounded-xl p-3">
+                <View className="flex-row items-center mb-2">
+                  <View className="h-7 w-7 rounded-full bg-blue-900/40 items-center justify-center mr-2">
+                    <Icon name="info-circle" size={14} color="#60a5fa" />
+                  </View>
+                  <Text className="text-blue-100 text-[14px] font-semibold">
+                    {t("editQuestion.headerExplanation")}
+                  </Text>
+                </View>
+                <TextInput
+                  className="w-full text-white bg-gray-900 rounded-lg p-3 border-blue-500 border-[1px]"
+                  placeholder={t("editQuestion.enterAExplanaition")}
+                  value={questionToEdit.explaination ?? ""}
+                  placeholderTextColor="#9CA3AF"
+                  multiline
+                  numberOfLines={3}
+                  style={{ minHeight: 72, maxHeight: 120, textAlignVertical: "top" }}
+                  onChangeText={(text) => setQuestionToEdit({ ...questionToEdit, explaination: text })}
+                />
+              </View>
+
+              <View className="bg-[#0c111d] border border-indigo-900 rounded-xl p-3">
+                <View className="flex-row items-center mb-2">
+                  <View className="h-7 w-7 rounded-full bg-indigo-900/40 items-center justify-center mr-2">
+                    <Icon name="lightbulb" size={14} color="#a5b4fc" />
+                  </View>
+                  <Text className="text-indigo-100 text-[14px] font-semibold">
+                    {t("editQuestion.headerHint")}
+                  </Text>
+                </View>
+                <TextInput
+                  className="w-full text-white bg-gray-900 rounded-lg p-3 border-indigo-500 border-[1px]"
+                  placeholder={t("editQuestion.enterAHint")}
+                  value={questionToEdit.hint ?? ""}
+                  placeholderTextColor="#9CA3AF"
+                  multiline
+                  numberOfLines={3}
+                  style={{ minHeight: 72, maxHeight: 120, textAlignVertical: "top" }}
+                  onChangeText={(text) => setQuestionToEdit({ ...questionToEdit, hint: text })}
+                />
+              </View>
             </View>
             }
             <TouchableOpacity

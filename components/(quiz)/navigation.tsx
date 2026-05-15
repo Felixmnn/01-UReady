@@ -149,9 +149,7 @@ const Navigation = ({
 
       {
       doneQuiz ? (
-        <Text className="text-2xl font-bold text-gray-300 text-center">
-          {t("quiz.results")}
-        </Text>
+        <View/>
       ) : quizType == "infinite" ? (
 
         <View className="rounded-full h-[5px] w-full bg-gray-700 mt-4 mb-2 flex-row"

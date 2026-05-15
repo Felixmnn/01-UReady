@@ -2,7 +2,6 @@ import {
   View,
   Text,
   ScrollView,
-  ActivityIndicator,
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -26,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import RenderMaterial from "./aiComponents/renderMaterial";
 import MaterialInput from "./aiComponents/materialInput";
 import ErrorModal from "./aiComponents/errorModal";
+import LoadingProgressBar from "@/components/(general)/loadingProgressBar";
 import {
   module,
   UserUsage,
@@ -374,8 +374,8 @@ const PageAiCreate = ({
           active={false}
         >
           
-          {loading ? (
-            <ActivityIndicator size="small" color="#4B5563" />
+          {loading ? ( 
+            <LoadingProgressBar active={loading} />
           ) : !calculatePrice ? (
             <Text className="text-gray-300 font-semibold text-[15px]">
               {t("createModule.generateModule")}

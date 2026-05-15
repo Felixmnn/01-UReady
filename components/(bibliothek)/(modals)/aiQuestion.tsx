@@ -3,13 +3,13 @@ import {
   Text,
   Modal,
   TouchableOpacity,
-  ActivityIndicator,
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import GratisPremiumButton from "@/components/(general)/gratisPremiumButton";
+import LoadingProgressBar from "@/components/(general)/loadingProgressBar";
 import uuid from "react-native-uuid";
 import { materialToQuestion } from "@/functions/(aiQuestions)/materialToQuestions";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -198,7 +198,7 @@ const AiQuestion = ({
               }}
             >
               {isLoading ? (
-                <ActivityIndicator size="small" color="#00ff00" />
+                <LoadingProgressBar active={isLoading} />
               ) : (
                 <View className="flex-row relative items-center">
                   <Text className="text-white font-semibold text-[15px] mb-1">
@@ -211,7 +211,7 @@ const AiQuestion = ({
                 </View>
               )}
             </GratisPremiumButton>
-            {flashing ? (
+            {flashing ? ( 
               <>
                 <Animated.View
                   className=" absolute  w-full bg-red-500 rounded-full"
@@ -508,7 +508,7 @@ const AiQuestion = ({
                         }}
                       >
                         {isLoading ? (
-                          <ActivityIndicator size="small" color="#00ff00" />
+                          <LoadingProgressBar active={isLoading} />
                         ) : (
                           <View className="flex-row items-center">
                             <Text className="text-white  font-semibold text-[15px] mb-1">
@@ -672,7 +672,7 @@ const AiQuestion = ({
                         }}
                       >
                         {isLoading ? (
-                          <ActivityIndicator size="small" color="#00ff00" />
+                          <LoadingProgressBar active={isLoading} />
                         ) : (
                           <View className="flex-row items-center">
                             <Text className="text-white  font-semibold text-[15px] mb-1">

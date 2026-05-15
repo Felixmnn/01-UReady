@@ -1,6 +1,7 @@
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import LoadingProgressBar from "./loadingProgressBar";
 
 const CustomButton = ({
   title,
@@ -36,8 +37,8 @@ const CustomButton = ({
     > 
     {
       loading ?
-      <View className="flex-row items-center">
-        <ActivityIndicator size="small" color="#fff" />
+      <View className="w-full items-center justify-center">
+        <LoadingProgressBar active={true} durationMs={5000} barClassName="bg-white" trackClassName="bg-gray-600" />
         {
           loadingMessage ?
           <Text className={`text-white font-semibold ml-2 ${textStyles}`}>

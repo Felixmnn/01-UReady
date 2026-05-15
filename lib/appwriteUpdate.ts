@@ -3,6 +3,7 @@ import { databases,config } from './appwrite';
 import { loadModule, loadUserUsage } from './appwriteDaten';
 import { addUnsavedModuleToMMKV, getSessionFromMMKV, saveUserUsageToMMKV, updateModuleInMMKV, updateModuleQuestionListInMMKV } from './mmkvFunctions';
 import { AppwriteModule, AppwriteUserData, AppwriteUserUsage, module, question, userData, UserUsage } from '@/types/appwriteTypes';
+import { Session } from '@/types/moduleTypes';
 
 export async function updateUserData (id:string, data:Partial<userData>) {
     try {
@@ -114,7 +115,7 @@ export async function updateUserUsageSessions(id: string, newSession: any): Prom
         const parsedOldSessions = oldUserUsage.lastSessions?.map((session) => (
             JSON.parse(session)
         ))
-        const noDublicates = parsedOldSessions.filter((session) => session.sessionID !== newSession.sessionID);
+        const noDublicates = parsedOldSessions.filter((session) => session.sessionID !== newSession.id);
         const updatedSessions = [
             newSession,
             ...noDublicates
@@ -139,7 +140,7 @@ export async function updateUserUsageSessions(id: string, newSession: any): Prom
   }
   
 
-  export async function updateUserUsageModules(id:string, newModule: any): Promise<void> {
+  export async function updateUserUsageModules(id:string, newModule: AppwriteModule): Promise<void> {
     try {
         const oldUserUsage = await loadUserUsage(id);
         if (!oldUserUsage) return;

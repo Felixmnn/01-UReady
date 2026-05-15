@@ -6,11 +6,13 @@ const GratisPremiumButton = ({
   aditionalStyles,
   handlePress,
   active,
+  disabled,
 }: {
   children?: React.ReactNode;
   aditionalStyles?: string;
   handlePress?: () => void;
   active?: boolean;
+  disabled?: boolean;
 }) => {
   const [isPressed, setIsPressed] = useState(false);
   return (
@@ -18,11 +20,11 @@ const GratisPremiumButton = ({
       activeOpacity={1}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
-      disabled={active ? !active : false}
+      disabled={disabled ?? (active ? !active : false)}
       onPress={() => {
         handlePress ? handlePress() : null;
       }}
-      className="items-center justify-center rounded-full h-[30px] "
+      className="items-center justify-center rounded-full "
       style={{
         transform: [{ translateY: isPressed ? 2 : 0 }],
         shadowColor: "#1e3a8a",

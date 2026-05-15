@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import React, { useState } from "react";
 import MaterialInput from "@/components/(getting-started)/aiComponents/materialInput";
 import QuestionSettings from "@/components/(getting-started)/aiComponents/questionSettings";
@@ -6,7 +6,8 @@ import RenderMaterial from "@/components/(getting-started)/aiComponents/renderMa
 import CustomBottomSheet from "./customBottomSheet";
 import { uuid } from "expo-modules-core";
 import { useTranslation } from "react-i18next";
-import CustomButton from "@/components/(general)/customButton";
+import LoadingProgressBar from "@/components/(general)/loadingProgressBar";
+import GratisPremiumButton from "@/components/(general)/gratisPremiumButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { addNewQuestionToModule } from "@/functions/(aiQuestions)/materialToModule";
 import { Session } from "@/types/moduleTypes";
@@ -170,14 +171,16 @@ const NewAiQuestionsSheet = ({
           newitem={newitem}
         />
 
-        <CustomButton
-          loading={loading}
-          containerStyles="w-full rounded-lg   bg-blue-700 mb-2"
-          title={
-           
-            userUsage?.energy > calculateTotalPrice()
-              ?   t("bibliothek.generateQuestions", { price: calculateTotalPrice() }) 
-              :    t("bibliothek.notEnoughEnergy")
+        <GratisPremiumButton
+          aditionalStyles={`w-full rounded-lg bg-blue-700 mb-2 h-[40px] overflow-hidden ${
+            items.length < 1 || loading || userUsage?.energy < calculateTotalPrice()
+              ? "opacity-50"
+              : ""
+          }`}
+          disabled={
+            items.length < 1 ||
+            loading ||
+            userUsage?.energy < calculateTotalPrice()
           }
           handlePress={async () => {
             await addNewQuestionToModule({
@@ -194,16 +197,22 @@ const NewAiQuestionsSheet = ({
               ...userUsage,
               energy: userUsage.energy - calculateTotalPrice(),
             });
-            
-            
+
             sheetRef.current?.closeSheet();
           }}
-          disabled={
-            items.length < 1 ||
-            loading ||
-            userUsage?.energy < calculateTotalPrice()
-          }
-        />
+        >
+          {loading ? (
+            <LoadingProgressBar active={loading} barClassName="bg-white" trackClassName="bg-blue-900" />
+          ) : (
+            <Text className="text-white font-semibold text-[15px] px-2
+            
+            " >
+              {userUsage?.energy > calculateTotalPrice()
+                ? t("bibliothek.generateQuestions", { price: calculateTotalPrice() })
+                : t("bibliothek.notEnoughEnergy")}
+            </Text>
+          )}
+        </GratisPremiumButton>
       </View>
     </CustomBottomSheet>
   );

@@ -84,7 +84,11 @@ export function repairAndParseJSONStringsSessions(csvData: string[]): Session[] 
 export function repairQuestionList(csvData: string[]): Question[] {
     try {
         let csvDataParsed = csvData.map(i=> JSON.parse(i));
-        return csvDataParsed;
+        //Status auf null setzen, da man ja noch nicht weiß, ob die Fragen gut, schlecht oder ok sind
+        let newCsvDataParsed = csvDataParsed.map(i=> {
+            return {...i, status: null}
+        })
+        return newCsvDataParsed;
     } catch (error) {
         // This will happen when the data comes from the csv
     }

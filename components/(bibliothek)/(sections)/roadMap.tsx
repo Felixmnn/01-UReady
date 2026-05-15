@@ -134,7 +134,7 @@ const RoadMap = ({
                   module.color == null ? "blue" : module.color,
                   currentModule.color
                 )}
-                percentage={module.percent}
+                percentage={module.percent ? module.percent : 0}
                 icon={module.iconName}
                 strokeColor={returnColor(
                   module.color == null ? "blue" : module.color,

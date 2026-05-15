@@ -91,7 +91,9 @@ export async function addNewModuleWithID(data:module, id:string) {
             config.databaseId,
             config.collectionId,
             id,
-            data,
+            {...data,
+                kategoryType: "OTHER"
+            },
             permissions
         );
         return newModule;
@@ -364,7 +366,7 @@ export async function adddModule({
             copy: copy,
             questionList: questionList,
             synchronization: synchronization,
-            kategoryType: kategoryType
+            kategoryType: "OTHER"
         }
     try {
         console.log("Adding Module with ID:", creationUniversityProfession);

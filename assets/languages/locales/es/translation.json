@@ -550,7 +550,9 @@
     "onlyPdfSupported": "Actualmente solo se admiten archivos PDF.",
     "recommended": "Recomendado",
     "generateModuleFor": "Generar módulo para",
-    "energy": "Energía"
+    "energy": "Energía",
+    "map": "Mapa",
+    "questions": "Preguntas"
   },
   "school": {
     "type": {

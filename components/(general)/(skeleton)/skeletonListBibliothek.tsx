@@ -56,7 +56,7 @@ const SkeletonListBibliothek = () => {
         height={30}
         padding={10}
       />
-      <SkeletonItem width={width > 800 ? width - 100 : width} height={5} />
+      <SkeletonItem width={width > 800 ? width - 120 : width} height={5} />
       {[1, 2, 3, 4, 5].map((item, index) => (
         <SkeletonItem
           key={index}

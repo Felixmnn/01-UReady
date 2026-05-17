@@ -555,7 +555,9 @@
     "onlyPdfSupported": "Seuls les fichiers PDF sont actuellement pris en charge.",
     "recommended": "Recommandé",
     "generateModuleFor": "Générer un module pour",
-    "energy": "Énergie"
+    "energy": "Énergie",
+    "map": "Carte",
+    "questions": "Questions"
   },
   "school": {
     "type": {

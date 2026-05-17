@@ -549,7 +549,9 @@
     "onlyPdfSupported": "Currently only PDF files are supported.",
     "recommended": "Recommended",
     "generateModuleFor": "Generate module for",
-    "energy": "Energy"
+    "energy": "Energy",
+    "map": "Map",
+    "questions": "Questions"
   },
   "school": {
     "type": {

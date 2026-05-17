@@ -1,5 +1,5 @@
-import React from "react";
-import { View } from "react-native";
+import React, { use } from "react";
+import { View, Platform, useWindowDimensions } from "react-native";
 import Katex from "react-native-katex";
 import { getHeight } from "@/functions/editQuestion";
 
@@ -18,30 +18,50 @@ export default function KaTeXExample({
     ""
   );
 
+  const widthScreen = useWindowDimensions().width;
+  const heightScreen = useWindowDimensions().height;
+
+  function isIpad() {
+    return (
+      (Platform.OS === "ios" && Platform.isPad) ||  (Platform.OS === "android" && (widthScreen >= 768 && heightScreen >= 768))
+    )
+    }
+
+const isIPad = isIpad();
+  const ipadScale = 0.75; // vorher 0.8
+
+
+  // Für iPad etwas kleiner rechnen
+  const effectiveFontSize =
+    fontSize != null ? (isIPad ? fontSize * ipadScale : fontSize) : undefined;
+
   const heightS = height ?? getHeight(formula);
-  // Mappe fontSize auf KaTeX LaTeX-Größenbefehle
+  const effectiveHeight = isIPad ? (heightS ?? 100) * ipadScale : (heightS ?? 100);
+
   let sizeCommand = "\\normalsize";
-  if (fontSize) {
-    if (fontSize <= 8) sizeCommand = "\\small";
-    else if (fontSize <= 10) sizeCommand = "\\normalsize";
-    else if (fontSize <= 12) sizeCommand = "\\large";
-    else if (fontSize <= 16) sizeCommand = "\\Large";
-    else if (fontSize <= 18) sizeCommand = "\\LARGE";
-    else if (fontSize <= 20) sizeCommand = "\\huge";
+  if (effectiveFontSize) {
+    if (effectiveFontSize <= 8) sizeCommand = "\\small";
+    else if (effectiveFontSize <= 10) sizeCommand = "\\normalsize";
+    else if (effectiveFontSize <= 12) sizeCommand = "\\large";
+    else if (effectiveFontSize <= 16) sizeCommand = "\\Large";
+    else if (effectiveFontSize <= 18) sizeCommand = "\\LARGE";
+    else if (effectiveFontSize <= 20) sizeCommand = "\\huge";
     else sizeCommand = "\\Huge";
   }
 
-  
+  // iPad: eine Stufe kleiner
+  if (isIPad) {
+    sizeCommand = "\\small";
+  }
 
-  // Weißen Text setzen
-  const formulaWithStyle = `\\color{white} \\Huge ${cleaned}`;
+  // Wichtig: NICHT mehr hart auf \Huge setzen
+  const formulaWithStyle = `\\color{white} ${sizeCommand} ${cleaned}`;
 
   return (
-    <View style={{ width: "100%", minHeight: 100 }}>
+    <View style={{ width: "100%", minHeight: effectiveHeight }}>
       <Katex
         expression={formulaWithStyle}
         displayMode
-
         throwOnError={false}
         style={{ backgroundColor: "transparent" }}
       />

@@ -728,8 +728,8 @@ const SingleModule = ({
               <SwichTab
                 setTab={setTab}
                 tab={tab}
-                tab1={"Map"}
-                tab2={"Fragen"}
+                tab1={t("singleModule.map")}
+                tab2={t("singleModule.questions")}
                 change={change ? true : false}
               />
             ) : null}

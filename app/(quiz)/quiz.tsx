@@ -17,11 +17,14 @@ import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { addUnsyncedListToMMKV, getIOSAddStatus, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
-
+import { SAMPLE_US_MATH_QUESTION } from '../../lib/exampleData';
 type QuestionItem = {
     id: string | null;
     status: "OK" | "GOOD" | "GREAT" | "BAD" | null;
 }
+
+
+const SHOW_SAMPLE_US_QUESTION_ON_OPEN = true;
 
 const isWeb = Platform.OS === 'web';
 
@@ -216,6 +219,25 @@ const quiz = () => {
             }
         }
         )
+
+        if (SHOW_SAMPLE_US_QUESTION_ON_OPEN) {
+            const sampleAlreadyIncluded = questions.some((q) => q.$id === SAMPLE_US_MATH_QUESTION.$id);
+            if (!sampleAlreadyIncluded) {
+                const sampleQuestion: question = {
+                    ...SAMPLE_US_MATH_QUESTION,
+                    sessionID: sessionID || SAMPLE_US_MATH_QUESTION.sessionID,
+                    subjectID: moduleID || SAMPLE_US_MATH_QUESTION.subjectID,
+                };
+                questions = [sampleQuestion, ...questions];
+            }
+        }
+
+        const forceSampleQuestionFirst = (list: question[]) => {
+            if (!SHOW_SAMPLE_US_QUESTION_ON_OPEN) return list;
+            const sample = list.find((q) => q.$id === SAMPLE_US_MATH_QUESTION.$id);
+            if (!sample) return list;
+            return [sample, ...list.filter((q) => q.$id !== SAMPLE_US_MATH_QUESTION.$id)];
+        };
     
 
         //Step 3: The Question Answers get shuffled
@@ -245,14 +267,25 @@ const quiz = () => {
                 randomized = randomized.filter((q) => q.answerIndex.length <= 2)
             }
             randomized = randomized.slice(0, amount);
+
+            if (SHOW_SAMPLE_US_QUESTION_ON_OPEN) {
+                const sample = questions.find((q) => q.$id === SAMPLE_US_MATH_QUESTION.$id);
+                if (sample && !randomized.some((q) => q.$id === SAMPLE_US_MATH_QUESTION.$id)) {
+                    randomized = [sample, ...randomized.slice(0, Math.max(amount - 1, 0))];
+                }
+            }
+            randomized = forceSampleQuestionFirst(randomized);
+
             //This ensures we can later use the options newQuestions/tryAgain
             setQuestionsForQuiz(randomized);
             setQuestions(randomized);
             setQuestionList(questionList ? questionList : [])
             setQuestionListOriginal(questionList ? questionList : [])
     } else {
-        setQuestions(questions ? questions : []);
-        setQuestionsForQuiz(questions ? randomizeArray(questions) : []);
+        const baseQuestions = questions ? forceSampleQuestionFirst(questions) : [];
+        const randomizedQuizQuestions = questions ? forceSampleQuestionFirst(randomizeArray(questions)) : [];
+        setQuestions(baseQuestions);
+        setQuestionsForQuiz(randomizedQuizQuestions);
         setQuestionList(questionList ? questionList : [])
         setQuestionListOriginal(questionList ? questionList : [])
     }

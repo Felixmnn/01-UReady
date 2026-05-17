@@ -40,6 +40,7 @@ import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, s
 import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 import { checkMMKVNoteDocumentListRefreshTimestampExpiry, checkMMKVQuestionListRefreshTimestampExpiry, setMMKVLastNoteDocumentListRefreshTimestamp, setMMKVLastQuestionListRefreshTimestamp } from "@/lib/mmkvUpdateTimestamps";
 import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
+import { templateQuestionsCA,templateNotesCA,templateDocumentsCA,sessionDataTitle,moduleData } from '@/lib/exampleData';
 
 type QuestionListItem = {
   id: string;
@@ -141,6 +142,35 @@ const SingleModule = ({
 
   const [notes, setNotes] = useState<note[] | []>(sessions && sessions.length > selectedSession && sessions[selectedSession]?.id ? getNotesFromMMKV(sessions[selectedSession].id) : []);
   const [documents, setDocuments] = useState<AppwriteDocument[]>(sessions && sessions.length > selectedSession && sessions[selectedSession]?.id ? getDocumentConfigsFromMMKV(sessions[selectedSession].id) : []);
+
+  const useScreenshotTemplateCA = true;
+  const screenshotSessionId = sessions[selectedSession]?.id || "ALL";
+  const screenshotModuleId = module?.$id || "demo-module-ca-1";
+  const algebraSessionId = sessions[0]?.id || screenshotSessionId;
+  const analysisSessionId = sessions[1]?.id || screenshotSessionId;
+  const stochastikSessionId = sessions[2]?.id || screenshotSessionId;
+
+  console.log(sessions[selectedSession]?.id, module?.$id,sessions[0]?.id,sessions[1]?.id, )
+
+  const displayQuestions = useScreenshotTemplateCA ? templateQuestionsCA : questions;
+  const displayNotes = useScreenshotTemplateCA ? templateNotesCA : notes;
+  const displayDocuments = useScreenshotTemplateCA ? templateDocumentsCA : documents;
+  const displayModule = useScreenshotTemplateCA
+    ? {
+        ...module,
+        name: moduleData.name,
+        description: moduleData.description,
+      }
+    : module;
+  const displaySessions = useScreenshotTemplateCA
+    ? sessions.map((session: Session, index: number) => ({
+        ...session,
+        title:
+          sessionDataTitle[
+            index
+          ] || `Lernsitzung ${index + 1}`,
+      }))
+    : sessions;
 
   {
     /* Language and Texts */
@@ -701,22 +731,22 @@ const SingleModule = ({
         ) : (
           <View className="flex-1">
             <Header
-              module={module}
+              module={displayModule}
               setModule={setModule}
-              moduleUsers={module.tags}
-              moduleID={module.$id}
-              moduleName={module.name}
+              moduleUsers={displayModule.tags}
+              moduleID={displayModule.$id}
+              moduleName={displayModule.name}
               setIsVisibleNewQuestion={() =>
                 bottomSheetRef.current?.openSheet(0)
               }
-              moduleSessions={sessions}
+              moduleSessions={displaySessions}
               questions={questions}
               setSelectedScreen={setSelectedScreen}
               selected={selectedSession}
-              sessions={sessions}
+              sessions={displaySessions}
               modules={modules}
               setModules={setModules}
-              moduleDescription={module.description}
+              moduleDescription={displayModule.description}
               openQuizSheet={() =>
                 startQuizBottomSheetRef.current?.openSheet(0)
               }
@@ -741,12 +771,12 @@ const SingleModule = ({
               {tab == 0 ? (
                 <View className="h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[500px]">
                   <RoadMap
-                    moduleSessions={sessions}
+                    moduleSessions={displaySessions}
                     selected={selectedSession}
                     setSelected={setSelectedSession}
                     questions={questions}
-                    currentModule={module}
-                    moduleDescription={moduleEntry.description}
+                    currentModule={displayModule}
+                    moduleDescription={displayModule.description}
                   />
                 </View>
               ) : null}
@@ -758,7 +788,7 @@ const SingleModule = ({
                   key={JSON.stringify(module) + questions.length + JSON.stringify(module.session)}
                   addDocumentJobSheetRef={addDocumentJobSheetRef}
                   setSelectedFile={setSelectedFile}
-                  selectedSession={ sessions[selectedSession] ? sessions[selectedSession] : null}
+                  selectedSession={ displaySessions[selectedSession] ? displaySessions[selectedSession] : null}
                     selectAi={() => aiBottomSheetRef.current?.openSheet(1)}
                     setQuestions={setQuestions}
                     setQuestionToEdit={setQuestionToEdit}
@@ -773,43 +803,27 @@ const SingleModule = ({
                     setIsVisibleAI={setIsVisibleAI}
                     addDocument={addDocument}
                     deleteDocument={deleteDocument}
-                    moduleSessions={sessions}
+                    moduleSessions={displaySessions}
                     selected={selectedSession}
-                    questions={questions.filter(q => {
-                      if (selectedSession > sessions.length) return true;
-                      if (sessions[selectedSession].id === q.sessionID) return true;
+                    questions={displayQuestions.filter(q => {
+                      if (!displaySessions[selectedSession]?.id) return true;
+                      if (displaySessions[selectedSession].id === q.sessionID) return true;
                       return false;
                     })}
-                    notes={notes}
-                    documents={documents}
-                    module={module}
+                    notes={displayNotes}
+                    documents={displayDocuments}
+                    module={displayModule}
                     setSelectedScreen={setSelectedScreen}
                     selectedSessionID={
-                      sessions[selectedSession]
-                        ? sessions[selectedSession].id
+                      displaySessions[selectedSession]
+                        ? displaySessions[selectedSession].id
                         : "ALL"
                     }
                     setModule={setModule}
                   />
                 </View>
               ) : null}
-              {isVertical ? (
-                <View
-                  className="h-full flex-1 border-gray-600 border-l-[1px] p-4 max-w-[500px]"
-                  style={{
-                    maxWidth: 400,
-                  }}
-                >
-                  <RoadMap
-                    moduleDescription={moduleEntry.description}
-                    moduleSessions={sessions}
-                    selected={selectedSession}
-                    setSelected={setSelectedSession}
-                    questions={questions}
-                    currentModule={module}
-                  />
-                </View>
-              ) : null}
+              
             </View>
           </View>
         )}
@@ -873,7 +887,6 @@ const SingleModule = ({
         setSessions={setSessions}
         sessionID={sessions[selectedSession]?.id || "ALL"}
         selectedSession={sessions[selectedSession]}
-        questions={questions}
         setQuestions={setQuestions}
         
 
@@ -889,8 +902,8 @@ const SingleModule = ({
         sessionID={
           sessions[selectedSession] ? sessions[selectedSession].id : "ALL"
         }
-        maxQuestions={questions ? questions.length : 0}
-        questions={questions}
+        maxQuestions={displayQuestions ? displayQuestions.length : 0}
+        questions={displayQuestions}
       />
     </View>
   );

@@ -153,7 +153,7 @@ const Quiz = ({
                         }}
                       >
                         <Text className="text-white font-bold text-[16px] mr-2">
-                          {status == "GOOD" ? "Gewusst" : "Nicht gewusst"}
+                          {status == "GOOD" ? "Got it" : "Didn't know"}
                         </Text>
                         <Icon
                           name={status == "GOOD" ? "thumbs-up" : "thumbs-down"}

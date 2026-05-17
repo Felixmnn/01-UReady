@@ -14,6 +14,7 @@ import { getSpecificModule } from '@/lib/appwriteShare';
 import { ModuleProps } from '@/types/moduleTypes';
 import AcceptShareModule from '../(components)/acceptShareModule';
 import { returnNewLastModule } from '@/functions/addLastSessionModule';
+import { moduleItems } from '@/lib/exampleData';
 
 type ScreenType =
   | "CreateQuestion"
@@ -51,6 +52,11 @@ const AllModules = ({
     const isVertical = width > 700;
     const [isVisibleNewModule, setIsVisibleNewModule] = useState(false);
     const numColumns = Math.floor(width / 300);
+
+    const demoQuestionList = (statuses: string[]) =>
+      statuses.map((status) => JSON.stringify({ status }));
+
+    
 
   
 
@@ -192,9 +198,9 @@ function calculatePercent(questions:string[]){
                   setModules={setModules}
                   />
             }
-            {modules && modules.length > 0 && (
+            {moduleItems.length > 0 && (
           <ModuleList
-            items={modules}
+            items={moduleItems}
           />)}
           </View>
         </ScrollView>

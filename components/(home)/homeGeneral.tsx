@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
+import { exampleSessions, exampleModules } from '@/lib/exampleData';
 
 
 type MiniModule = {
@@ -299,21 +300,16 @@ const HomeGeneral = () => {
 
           <Header title={t("home.lastModules")} />
           <ScrollView horizontal={true} className="flex-row">
-            {!userUsageP || userUsageP.lastModules.length == 0 ? (
-              <View className="flex-1">
-                <Module
-                  item={{
-                    name: t("home.firstModule"),
-                    percent: 100,
-                    color: "blue",
-                    fragen: 10,
-                    sessions: 7,
-                    sessionID: "default-module-1",
-                  }}
-                />
+            {!userUsageP || userUsageP.lastModules.length == 0 || true ? (
+              <View className="flex-row">
+                {
+                  exampleModules.map((item, index) => {
+                    return <Module key={index} item={item} />
+                  })
+                }
               </View>
             ) : (
-              userUsageP.lastModules
+              (userUsageP?.lastModules ?? [])
               .map((item, index) => {
                 const miniModule: MiniModule =
                   typeof item === "string" ? JSON.parse(item) : item;
@@ -323,58 +319,15 @@ const HomeGeneral = () => {
           </ScrollView>
           <Header title={t("home.lastSessions")} />
           <ScrollView horizontal={true} className="flex-row">
-            {!userUsageP  || userUsageP.lastSessions
-              .map((s) => (typeof s === "string" ? JSON.parse(s) : s))
-              .filter((s) => s.questions > 0).length == 0 ? (
+            {!userUsageP || userUsageP.lastSessions.length == 0 || true ? (
               <View className="flex-row">
-                <Session
-                  item={{
-                    name: t("home.firstModule"),
-                    percent: 100,
-                    color: "blue",
-                    icon: "cubes",
-                    questions: 5,
-                    sessionID: "default-session-1",
-                    quizType: "infinite",
-                    questionType: "single",
-                    questionAmount: 5,
-                    timeLimit: null,
-                    moduleID: "default-module-1",
-                  }}
-                />
-                <Session
-                  item={{
-                    name: t("home.personalziedProfile"),
-                    percent: 100,
-                    color: "red",
-                    icon: "user",
-                    questions: 7,
-                    sessionID: "default-session-2",
-                    quizType: "infinite",
-                    questionType: "single",
-                    questionAmount: 7,
-                    timeLimit: null,
-                    moduleID: "default-module-2",
-                  }}
-                />
-                <Session
-                  item={{
-                    name: t("home.signUp"),
-                    percent: 100,
-                    color: "green",
-                    icon: "user",
-                    questions: 3,
-                    sessionID: "default-session-3",
-                    quizType: "infinite",
-                    questionType: "single",
-                    questionAmount: 3,
-                    timeLimit: null,
-                    moduleID: "default-module-3",
-                  }}
-                />
+                {exampleSessions.map((item, index) => {
+                  return <Session key={index} item={item} />
+                })}
+               
               </View>
             ) : (
-              userUsageP.lastSessions
+              (userUsageP?.lastSessions ?? [])
                 .map((s) => (typeof s === "string" ? JSON.parse(s) : s))
                 .filter((s) => s.questions > 0)
                 .map((item, index) => {

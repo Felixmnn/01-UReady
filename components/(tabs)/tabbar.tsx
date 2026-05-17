@@ -34,8 +34,9 @@ const Tabbar = ({
         onPress={() => router.push(route as any)}
         style={{
           opacity: disabled ? 0.5 : 1,
+          width: 90,
         }}
-        className={`m-2 items-center ${pageName === page.toLowerCase() ? "w-[80px] bg-gray-800 border border-gray-600 border-[1px]" : ""} rounded-md p-2 `}
+        className={`m-2 items-center ${pageName === page.toLowerCase() ? "w-[90px] bg-gray-800 border border-gray-600 border-[1px]" : ""} rounded-md p-2 `}
       >
         <Icon name={name} size={size} color={color} />
         <Text className="text-white text-[12px] ">
@@ -52,7 +53,7 @@ const Tabbar = ({
                     edges={["top", "left", "right"]} // ⬅️ 'bottom' entfernt
 
         >
-          <View className="bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[110px] items-center justify-between">
+          <View className="bg-gradient-to-b from-blue-800 to-[#0c111d] h-full w-[120px] items-center justify-between">
             <View className="items-center my-1">
               {tabbarIcon("home", 25, "white", "home", "/home")}
               {tabbarIcon("book", 25, "white", "bibliothek", "/bibliothek")}

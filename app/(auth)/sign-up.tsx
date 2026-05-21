@@ -6,7 +6,6 @@ import {
   Platform,
   ActivityIndicator,
   useWindowDimensions,
-  SafeAreaView,
   Image,
   Modal,
 } from "react-native";
@@ -19,6 +18,7 @@ import ErrorPopup from "@/components/(general)/(modal)/errorPopup";
 import { loginWithOAuth } from "@/lib/appwriteOAuth";
 import Policys from "../(about)/policys";
 import { useTranslation } from "react-i18next";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingnUp = () => {
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { Text, View, SafeAreaView, Image } from "react-native";
+import { Text, View, Image } from "react-native";
 import { router, Redirect, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { useGlobalContext } from "../context/GlobalProvider";
@@ -8,6 +8,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserUsageFromMMKV } from "@/lib/mmkvFunctions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function Index() {

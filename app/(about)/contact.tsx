@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
@@ -15,6 +14,7 @@ import ErrorModal from "@/components/(general)/(modal)/errorModal";
 import CustomButton from "@/components/(general)/customButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import Offline from "@/components/(general)/offline";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
  * Standalone Contact Page

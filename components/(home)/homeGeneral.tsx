@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   RefreshControl,
   Platform,
-  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContinueBox from "../(signUp)/(components)/continueBox";
@@ -23,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { module, UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 type MiniModule = {

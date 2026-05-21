@@ -5,7 +5,6 @@ import {
   ScrollView,
   TouchableOpacity,
   useWindowDimensions,
-  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Karteikarte from "../(karteimodul)/karteiKarte";
@@ -24,6 +23,7 @@ import { getUserKategorieFromMMKV } from "@/lib/mmkvFunctions";
 import { getMatchingModulesForGettingStarted } from "@/lib/appwriteQuerys";
 import { repairAndParseJSONStringsSessions, repairQuestionList } from "@/functions/(entdecken)/transformData";
 import { loadUserDataKathegory } from "@/lib/appwriteDaten";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const PageDiscover = ({
   setUserChoices,

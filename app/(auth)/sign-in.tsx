@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   TextInput,
   ActivityIndicator,
   Platform,
@@ -20,6 +19,7 @@ import { loginWithOAuth } from "@/lib/appwriteOAuth";
 import { loadUserData } from "@/lib/appwriteDaten";
 import { useTranslation } from "react-i18next";
 import * as Updates from "expo-updates";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignIn = () => {
   const { t } = useTranslation();

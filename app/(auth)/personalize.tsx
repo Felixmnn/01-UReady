@@ -1,4 +1,3 @@
-import { SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { loadUserData, loadUserDataKathegory } from "@/lib/appwriteDaten";
@@ -20,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { useLocalSearchParams, useSearchParams } from "expo-router/build/hooks";
 import { userDataKathegory, userData } from "@/types/appwriteTypes";
 import * as Updates from "expo-updates";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const personalize = () => {

@@ -1,4 +1,4 @@
-import { Image, Platform, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import { Image, Platform, StatusBar, Text, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { router,useLocalSearchParams } from "expo-router"
 import { useWindowDimensions } from 'react-native';
@@ -17,6 +17,7 @@ import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
 import { addUnsyncedListToMMKV, getIOSAddStatus, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type QuestionItem = {
     id: string | null;

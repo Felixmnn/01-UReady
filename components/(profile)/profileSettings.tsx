@@ -20,6 +20,13 @@ import { AppwriteUserData, userDataKathegory } from "@/types/appwriteTypes";
 import i18n from "@/assets/languages/i18n";
 import { handleValidationCode } from "@/lib/appwriteEmailValidation";
 import Offline from "../(general)/offline";
+import ToggleSwitch from "../(general)/toggleSwich";
+import {
+  AppwritePublicProfile,
+  createEmptyPublicProfile,
+  getPublicProfile,
+  updatePublicProfile,
+} from "@/lib/collections/publicProfile";
 
 const ProfileSettings = () => {
   const { t } = useTranslation();
@@ -35,6 +42,7 @@ const ProfileSettings = () => {
   const [userDataKathegory, setUserDataKathegory] =
     useState<userDataKathegory>();
   const [loading, setLoading] = useState(true);
+  const [publicProfile, setPublicProfile] = useState<AppwritePublicProfile | null>(null);
   const [selectedColorMode, setSelectedColorMode] = useState<string | null>(
     "Darstellung"
   );
@@ -65,10 +73,31 @@ const ProfileSettings = () => {
       );
 
       setUserDataKathegory(userDataKathegoryTyped);
+
+      const loadedPublicProfile = await getPublicProfile(user.$id, {
+        name: user.name,
+        educationKathegory: userDataKathegoryTyped?.educationKathegory || null,
+      });
+      setPublicProfile(loadedPublicProfile);
       setLoading(false);
     }
     fetchUserData();
   }, [user]);
+
+  const updatePublicProfileField = async (
+    updates: Partial<Pick<AppwritePublicProfile, "bio" | "isPublic" | "name">>
+  ) => {
+    if (!publicProfile) return;
+    const nextProfile: AppwritePublicProfile = {
+      ...publicProfile,
+      ...updates,
+    };
+    setPublicProfile(nextProfile);
+    const saved = await updatePublicProfile(nextProfile);
+    if (saved) {
+      setPublicProfile(saved);
+    }
+  };
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -321,16 +350,46 @@ const ProfileSettings = () => {
                 content={() => {
                   return (
                     <View className="flex-1 items-center ">
+
                       <View className="bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center">
                         <Text className="text-2xl text-gray-300 font-bold">
                           {user.name[0]}
                         </Text>
                       </View>
-                        {personalInput(
-                          user.name,
+                      <View className="w-full mt-3 px-1 flex-row items-center justify-between pr-3">
+                          <Text className="text-gray-300 font-bold text-[13px]">
+                            {t("profileSettings.publicProfileIsPublic")}
+                          </Text>
+                          <ToggleSwitch
+                            isOn={publicProfile?.isPublic || false}
+                            onToggle={(newValue) =>
+                              updatePublicProfileField({ isPublic: newValue })
+                            }
+                          />
+                        </View>
+                       {personalInput(
+                          publicProfile?.name || user.name,
                           t("profileSettings.vorname"),
-                          (text) => updateUserName(text)
+                          async (text) => {
+                            await updateUserName(text);
+                            await updatePublicProfileField({ name: text });
+                          }
                         )}
+                        {personalInput(
+                          publicProfile?.bio || "",
+                          t("profileSettings.bio"),
+                          (text) => updatePublicProfileField({ bio: text })
+                        )}
+
+                    </View>
+                  )}}
+                  hideHead={true}
+                  header=""
+              />
+              <InfoModule
+                content={() => {
+                  return (
+                    <View className="flex-1 items-center ">
                         {/*
                         {personalInput(
                           user.email,

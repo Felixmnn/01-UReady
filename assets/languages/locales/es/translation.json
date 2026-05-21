@@ -492,6 +492,8 @@
     "universityCategories": "Categorías de carrera",
     "editEducationGoals": "Editar metas educativas",
     "vorname": "Nombre de usuario",
+    "bio": "Biografia",
+    "publicProfileIsPublic": "Perfil publico",
     "email": "Correo electrónico",
     "emailvalid": "Por favor confirma tu dirección de correo a través del enlace que te hemos enviado.",
     "emailvalid2": "Dirección de correo confirmada",

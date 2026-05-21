@@ -491,6 +491,8 @@
     "universityCategories": "Study Program Categories",
     "editEducationGoals": "Edit Education Goals",
     "vorname": "Username",
+    "bio": "Bio",
+    "publicProfileIsPublic": "Public profile",
     "email": "Email",
     "emailvalid": "Please confirm your email address via the link we sent you.",
     "emailvalid2": "Email confirmed",

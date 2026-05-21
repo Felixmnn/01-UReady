@@ -497,6 +497,8 @@
 
     "editEducationGoals": "Modifier les objectifs éducatifs",
     "vorname": "Nom d’utilisateur",
+    "bio": "Bio",
+    "publicProfileIsPublic": "Profil public",
     "email": "E-mail",
     "emailvalid": "Veuillez confirmer votre adresse e-mail via le lien que nous vous avons envoyé.",
     "emailvalid2": "Adresse e-mail confirmée",

@@ -318,3 +318,15 @@ export interface AppwriteReport extends Models.Document {
     personThatReported: string;
     message: string;
 }
+
+
+
+export interface AppwritePublicProfile extends Models.Document {
+    avatar: string,
+    isPublic: boolean,
+    name: string,
+    modules: string[],
+    bio:string | null,
+    educationKathegory: string | null;
+    badges: string[];
+}

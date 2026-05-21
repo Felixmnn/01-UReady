@@ -23,7 +23,7 @@ export const config = {
     commercialCollectionId : "6829f8a0000a0326c8b8",
     aktionsCodesCollectionId : "68465ff800292a506a23",
     subscriptionsCollectionId : "subscriptions",
-
+    publicprofile:"publicprofile",
 
     reportModuleCollectionId : "684936f900361725e602",
     functionID:"68def3d80003c2647922"

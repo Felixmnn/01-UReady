@@ -674,7 +674,7 @@ if (loadingMore) {
                   </Text>
                   </View>
                 )}
-              </View>
+              </View> 
             </View>
             <RenderResults
               modules={modules.filter((m: any) => m.public == true)}

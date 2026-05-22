@@ -8,6 +8,7 @@ import { deleteAllModules, deleteUserData, deleteUserDataKathegory, deleteUserUs
 import CustomButton from '@/components/(general)/customButton';
 import { useTranslation } from 'react-i18next';
 import { resetMMKVStorage } from '@/lib/mmkvFunctions';
+import { deletePublicProfile } from '@/lib/collections/publicProfile';
 
  
 const DeleteAccount = () => {
@@ -29,6 +30,7 @@ const DeleteAccount = () => {
     await deleteUserData(user.$id);
     await deleteUserUsage(user.$id);
     await deleteUserDataKathegory(user.$id);
+    await deletePublicProfile(user.$id);
     return true;
   }
   async function handleDelete () {

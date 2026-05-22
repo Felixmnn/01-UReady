@@ -25,9 +25,8 @@ const hasErrorCode = (error: unknown): error is { code: number } =>
     typeof error === 'object' && error !== null && 'code' in error;
 
 export async function addNewModule(data:module,id:string) {
-    const dupDataID = data.$id;
     try {
-        if (data.$id) {
+        if (data?.$id) {
             delete data.$id
         }
         let permissions = [
@@ -45,7 +44,10 @@ export async function addNewModule(data:module,id:string) {
             config.databaseId,
             config.collectionId,
             "unique()",
-            data,
+            {
+                ...data,
+                studiengangKathegory: Array.isArray(data.creationEducationKathegory) ? data.creationEducationKathegory : [],
+            },
             permissions
             
         );
@@ -54,10 +56,10 @@ export async function addNewModule(data:module,id:string) {
         return newModule;
     } catch (error) {
         console.error("❌Error while creating a Module", error instanceof Error ? error.message : String(error));
-        if (dupDataID) {
+        if (data?.$id) {
             return {
                 ...data,
-                $id:dupDataID
+                $id:data.$id
             }
         }
         const tmpID = "tmp-"+uuid.v4()
@@ -135,6 +137,7 @@ export async function addNewUserConfig(id:string) {
 
 export async function addUserDatakathegory(id:string, newUserData:UserKategoriePayload) {
   try {
+    console.log("Adding user data kathegory for user ID:", id, "with data:", newUserData);  
     // Versuche neues Dokument zu erstellen
     const response = await databases.createDocument<AppwriteUserKategorie>(
       config.databaseId,
@@ -362,14 +365,14 @@ export async function adddModule({
             creationKlassNumber: creationKlassNumber,
             creationLanguage: creationLanguage,
             creationEducationKathegory: creationEducationKathegory,
-            studiengangKathegory: creationEducationKathegory,
+            studiengangKathegory: Array.isArray(creationEducationKathegory) ? creationEducationKathegory : [],
             copy: copy,
             questionList: questionList,
             synchronization: synchronization,
             kategoryType: "OTHER"
         }
     try {
-        console.log("Adding Module with ID:", creationUniversityProfession);
+        console.log("Adding Module with ID:", appwriteSafeModule.studiengangKathegory);
         let permissions = [
             Permission.delete(Role.user(creator)), 
             Permission.update(Role.user(creator)),

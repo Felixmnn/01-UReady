@@ -14,6 +14,7 @@ import { getSpecificModule } from '@/lib/appwriteShare';
 import { ModuleProps } from '@/types/moduleTypes';
 import AcceptShareModule from '../(components)/acceptShareModule';
 import { returnNewLastModule } from '@/functions/addLastSessionModule';
+import { getPublicProfile, updatePublicProfile } from '@/lib/collections/publicProfile';
 
 type ScreenType =
   | "CreateQuestion"
@@ -101,6 +102,35 @@ function calculatePercent(questions:string[]){
     showCopyModuleIfAvailable();
   
   }, []);
+
+  useEffect(() => {
+    if (!user || !modules) return;
+
+    async function syncPublicProfileModules() {
+      const moduleList: module[] = modules ?? [];
+      const publicModuleIds = moduleList
+        .filter((mod) => mod.public && mod.creator === user.$id)
+        .map((mod) => mod.$id)
+        .filter((id): id is string => typeof id === "string");
+
+      const profile = await getPublicProfile(user.$id, { name: user.name });
+      if (!profile) return;
+
+      const currentModuleIds = profile.modules || [];
+      const unchanged =
+        currentModuleIds.length === publicModuleIds.length &&
+        currentModuleIds.every((id, index) => id === publicModuleIds[index]);
+
+      if (unchanged) return;
+
+      await updatePublicProfile({
+        ...profile,
+        modules: publicModuleIds,
+      });
+    }
+
+    syncPublicProfileModules();
+  }, [modules, user]);
 
 
 

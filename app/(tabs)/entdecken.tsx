@@ -88,6 +88,7 @@ const entdecken = () => {
       includeCopies: false,
     });
   // Currently loading all Modules later edit to only load personalized Modules
+  /*
   useEffect(() => {
     if (!userCathegory) return;
     async function fetchAllModules() {
@@ -122,6 +123,7 @@ const entdecken = () => {
       
     })
   }, [userCathegory]);
+  */
 
 const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
   const sheetRef = useRef<BottomSheet>(null);
@@ -306,7 +308,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
             setUserUsage({
               ...userUsage,
               energy: userUsage.energy - calculateEnergyCost(),
-            });
+            }); 
             }
             setRel(!rel);
             setSelectedModules([]);
@@ -423,7 +425,9 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
   async function getModules({
     loadingMore = false,
   }) {
-    
+    console.log("Step 1")
+    try {
+      console.log("Step 2", hasMore , loadingMore, loading)
     if (loading || (!hasMore && loadingMore)) return;
     setLoading(true);
 
@@ -526,7 +530,7 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
       }
     );
 
-    try {
+    
       const isSearchTextLonger = searchBarText.length > searchBarTextOld.length;
       const allModulesMatch = modules.every(m => m.name.includes(searchBarText));
       
@@ -561,6 +565,7 @@ const educationSubject = (() => {
         minQuestions: realFilters.minQuestions,
         includeCopies: realFilters.includeCopies || false,
       });
+      console.log("Received modules:", resOBJ);
       setAmountOfModules(resOBJ ? resOBJ.total : 0);
       let res = resOBJ ? resOBJ.modules : [];
 
@@ -580,6 +585,7 @@ const educationSubject = (() => {
 
 if (loadingMore) {
   // Pagination: alte Module + neue Module
+  console.log("Pagination: alte Module + neue Module");
   setHasMore(resOBJ ? modules.length + res.length < resOBJ.total : false);
 } else {
   // Neue Suche: nur das aktuelle Ergebnis zählt
@@ -591,6 +597,7 @@ if (loadingMore) {
   }
 
   useEffect(() => {
+    console.log("Filters changed, fetching modules...");
     getModules({
       loadingMore: false,
     });

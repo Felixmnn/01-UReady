@@ -54,7 +54,7 @@ const Bibliothek = () => {
     if (compleatlyUnsavedModules.length === 0) return;
     for (let i = 0; i < compleatlyUnsavedModules.length; i++) {
       const id = compleatlyUnsavedModules[i].$id!;
-      await addNewModule(compleatlyUnsavedModules[i],user.$id);
+      await addNewModule(compleatlyUnsavedModules[i],user?.$id);
       compleatlyUnsavedModules = compleatlyUnsavedModules.filter(mod => mod.$id !== id);
       if (compleatlyUnsavedModules.length == 1) {
         compleatlyUnsavedModules = [];

@@ -1,10 +1,25 @@
-import { View, Text, TouchableOpacity, Modal, TextInput } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  GestureResponderEvent,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import VektorCircle from "./vektorCircle";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { reportModule } from "@/lib/appwriteAdd";
 import { useTranslation } from "react-i18next";
+import {
+  AppwritePublicProfile,
+  getCachedPublicProfileNameByID,
+  getPublicProfileByID,
+  subscribePublicProfileCacheByID,
+} from "@/lib/collections/publicProfile";
+import { useRouter } from "expo-router";
+import CreatorProfileModal from "./creatorProfileModal";
 const Karteikarte = ({
   titel,
   studiengang,
@@ -33,8 +48,107 @@ const Karteikarte = ({
   // Studiengang ist jetz Beschreibung
   const { t } = useTranslation();
   const { user } = useGlobalContext();
+  const router = useRouter();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [creatorProfileModalVisible, setCreatorProfileModalVisible] =
+    useState(false);
+  const [creatorProfile, setCreatorProfile] =
+    useState<AppwritePublicProfile | null>(null);
+  const [creatorName, setCreatorName] = useState("Anonym");
+  const [creatorHasDoerTag, setCreatorHasDoerTag] = useState(false);
+  const [isCreatorProfileLoading, setIsCreatorProfileLoading] =
+    useState(false);
+  const [profileHintVisible, setProfileHintVisible] = useState(false);
+  const [profileHintMessage, setProfileHintMessage] = useState("");
+
+  useEffect(() => {
+    if (user && creator == user.$id) {
+      setCreatorName(t("karteikarte.you"));
+      return;
+    }
+
+    const cachedName = getCachedPublicProfileNameByID(creator);
+    setCreatorName(cachedName || "Anonym");
+  }, [creator, user, t]);
+
+  useEffect(() => {
+    if (user && creator == user.$id) return;
+
+    const unsubscribe = subscribePublicProfileCacheByID(creator, (snapshot) => {
+      if (!snapshot.isFresh || snapshot.status !== "public") {
+        setCreatorName("Anonym");
+        return;
+      }
+
+      setCreatorName(snapshot.name || "Anonym");
+    });
+
+    return unsubscribe;
+  }, [creator, user]);
+
+  useEffect(() => {
+    if (user && creator == user.$id) {
+      setCreatorHasDoerTag(false);
+      return;
+    }
+
+    let isMounted = true;
+
+    const loadCreatorTagState = async () => {
+      const result = await getPublicProfileByID(creator);
+      if (!isMounted) return;
+
+      if (result.status !== "public") {
+        setCreatorHasDoerTag(false);
+        return;
+      }
+
+      setCreatorHasDoerTag(result.profile.badges?.includes("DOER") ?? false);
+    };
+
+    loadCreatorTagState();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [creator, user]);
+
+  const truncateName = (name: string) =>
+    name.length > 10 ? `${name.substring(0, 10)}...` : name;
+
+  const handleCreatorPress = async (event: GestureResponderEvent) => {
+    event.stopPropagation();
+
+    if (user && creator == user.$id) {
+      router.push("/profil");
+      return;
+    }
+
+    setIsCreatorProfileLoading(true);
+
+    const profileResult = await getPublicProfileByID(creator);
+    setIsCreatorProfileLoading(false);
+
+    if (profileResult.status === "public") {
+      setCreatorProfile(profileResult.profile);
+      setCreatorName(profileResult.profile.name || "Anonym");
+      setCreatorHasDoerTag(profileResult.profile.badges?.includes("DOER") ?? false);
+      setCreatorProfileModalVisible(true);
+      return;
+    }
+
+    setCreatorProfile(null);
+    setCreatorProfileModalVisible(false);
+    setCreatorName("Anonym");
+    setCreatorHasDoerTag(false);
+    setProfileHintMessage(
+      profileResult.status === "hidden"
+        ? "Profil ist nicht öffentlich."
+        : "Kein öffentliches Profil gefunden."
+    );
+    setProfileHintVisible(true);
+  };
 
   const ReportModal = () => {
     const [reason, setReason] = useState("");
@@ -109,6 +223,27 @@ const Karteikarte = ({
     );
   };
 
+  const ProfileHintModal = () => {
+    return (
+      <Modal
+        visible={profileHintVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setProfileHintVisible(false)}
+      >
+        <TouchableOpacity
+          className="flex-1 justify-start pt-6 items-center bg-black/40"
+          onPress={() => setProfileHintVisible(false)}
+          activeOpacity={1}
+        >
+          <View className="bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 w-[90%]">
+            <Text className="text-gray-200 text-center">{profileHintMessage}</Text>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    );
+  };
+
   const color =
     farbe === "RED"
       ? "#DC2626"
@@ -138,6 +273,12 @@ const Karteikarte = ({
       disabled={user && reportVisible && creator == user.$id}
     >
       <ReportModal />
+      <CreatorProfileModal
+        visible={creatorProfileModalVisible}
+        onClose={() => setCreatorProfileModalVisible(false)}
+        creatorProfile={creatorProfile}
+      />
+      <ProfileHintModal />
       <View
         className={` rounded-t-[10px]  border-gray-700 `}
         style={{ height: 5, backgroundColor: color }}
@@ -168,7 +309,7 @@ const Karteikarte = ({
               percentage={percentage}
               icon={"clock"}
               strokeColor={color}
-            />
+            /> 
           ) : 
            user && reportVisible && creator == user.$id ? (<Text className="text-blue-500 p-1 border-blue-500 border italic mb-1">{t("karteikarte.fromYou")}</Text>) : null
           }
@@ -181,16 +322,30 @@ const Karteikarte = ({
         </View>
         <View className="border-t-[1px] border-gray-700 my-2" />
         <View className="flex-row justify-between items-center">
-          <View className="py-[2px] px-2 border-[1px] border-gray-700 rounded-full flex-row items-center">
-            <Icon name="user" size={10} color="white" />
-            <Text className="text-gray-300 text-[12px] ml-1">
+          <TouchableOpacity
+            className="py-[2px] px-2 border-[1px] border-gray-700 rounded-full flex-row items-center"
+            onPress={handleCreatorPress}
+            activeOpacity={0.8}
+            style={
+              creatorHasDoerTag
+                ? { backgroundColor: "#92400E", borderColor: "#FACC15" }
+                : undefined
+            }
+          >
+            <Icon
+              name="user"
+              size={10}
+              color={creatorHasDoerTag ? "#FFF8E1" : "white"}
+            />
+            <Text
+              className="text-[12px] ml-1"
+              style={{ color: creatorHasDoerTag ? "#FFF8E1" : "#d1d5db" }}
+            >
               {user && creator == user.$id
                 ? t("karteikarte.you")
-                : creator.length > 10
-                  ? creator.substring(0, 10) + "..."
-                  : creator}
+                : truncateName(creatorName)}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View className="flex-row justify-between">
             <TouchableOpacity className="">
               {!publicM ? (

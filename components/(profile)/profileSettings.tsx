@@ -21,11 +21,12 @@ import i18n from "@/assets/languages/i18n";
 import { handleValidationCode } from "@/lib/appwriteEmailValidation";
 import Offline from "../(general)/offline";
 import ToggleSwitch from "../(general)/toggleSwich";
+import ProfileTagsSection from "../(general)/profileTagsSection";
 import {
   AppwritePublicProfile,
-  createEmptyPublicProfile,
   getPublicProfile,
   updatePublicProfile,
+  PublicEducationCategory,
 } from "@/lib/collections/publicProfile";
 
 const ProfileSettings = () => {
@@ -76,7 +77,9 @@ const ProfileSettings = () => {
 
       const loadedPublicProfile = await getPublicProfile(user.$id, {
         name: user.name,
-        educationKathegory: userDataKathegoryTyped?.educationKathegory || null,
+        educationKategory: normalizePublicEducationCategory(
+          userDataKathegoryTyped?.kategoryType
+        ),
       });
       setPublicProfile(loadedPublicProfile);
       setLoading(false);
@@ -85,7 +88,9 @@ const ProfileSettings = () => {
   }, [user]);
 
   const updatePublicProfileField = async (
-    updates: Partial<Pick<AppwritePublicProfile, "bio" | "isPublic" | "name">>
+    updates: Partial<
+      Pick<AppwritePublicProfile, "bio" | "isPublic" | "name" | "educationKategory">
+    >
   ) => {
     if (!publicProfile) return;
     const nextProfile: AppwritePublicProfile = {
@@ -98,6 +103,35 @@ const ProfileSettings = () => {
       setPublicProfile(saved);
     }
   };
+
+  const normalizePublicEducationCategory = (
+    categoryType?: string | null
+  ): PublicEducationCategory => {
+    if (categoryType === "UNIVERSITY") return "UNIVERSITY";
+    if (categoryType === "SCHOOL") return "SCHOOL";
+    if (categoryType === "EDUCATION") return "EDUCATION";
+    return "OTHER";
+  };
+
+  const syncEducationCategoryToPublicProfile = async () => {
+    if (!publicProfile || !userDataKathegory) return;
+
+    const nextEducationCategory = normalizePublicEducationCategory(
+      userDataKathegory.kategoryType
+    );
+    if (publicProfile.educationKategory === nextEducationCategory) return;
+
+    await updatePublicProfileField({
+      educationKategory: nextEducationCategory,
+    });
+  };
+
+  useEffect(() => {
+    syncEducationCategoryToPublicProfile();
+  }, [
+    userDataKathegory?.kategoryType,
+    publicProfile?.educationKategory,
+  ]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -349,7 +383,7 @@ const ProfileSettings = () => {
               <InfoModule
                 content={() => {
                   return (
-                    <View className="flex-1 items-center ">
+                    <View className="w-full items-center ">
 
                       <View className="bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center">
                         <Text className="text-2xl text-gray-300 font-bold">
@@ -381,6 +415,14 @@ const ProfileSettings = () => {
                           (text) => updatePublicProfileField({ bio: text })
                         )}
 
+                        <View className="w-full mt-3 px-1">
+                          <ProfileTagsSection
+                            educationKategory={publicProfile?.educationKategory}
+                            badges={publicProfile?.badges}
+                            creatorName={publicProfile?.name || user.name}
+                          />
+                        </View>
+
                     </View>
                   )}}
                   hideHead={true}
@@ -389,7 +431,7 @@ const ProfileSettings = () => {
               <InfoModule
                 content={() => {
                   return (
-                    <View className="flex-1 items-center ">
+                    <View className="w-full items-center ">
                         {/*
                         {personalInput(
                           user.email,
@@ -660,9 +702,7 @@ const ProfileSettings = () => {
                 header=""
                 content={() => {
                   return (
-                    <View
-                      className={`flex-1  ${ "items-start"}`}
-                    >
+                    <View className="w-full items-start">
                       <OptionSelector
                         title={t("profileSettings.colorMode")}
                         options={colorOptions}

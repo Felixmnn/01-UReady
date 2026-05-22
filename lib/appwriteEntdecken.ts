@@ -42,7 +42,7 @@ export async function getMatchingModules({
   includeCopies?: boolean;
 
 }) {
- 
+  console.log("Fetching modules with filters:")
   switch (eductaionType) {
     case "UNIVERSITY":
       return await getUniversityModules({

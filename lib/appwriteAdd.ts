@@ -286,6 +286,7 @@ export async function reportModule(data:report) {
  * @param {number|null} [moduleData.creationKlassNumber=null]
  * @param {string|null} [moduleData.creationLanguage=null]
  * @param {string|null} [moduleData.creationEducationKathegory=null]
+ * @param {string[]} [moduleData.studiengangKathegory=[]]
  * @param {string} [moduleData.id="unique()"]
  * @param {string} moduleData.kategoryType - Der Kategorietyp des Moduls.
  * @param {boolean} [moduleData.publicAcess=true] - Gibt an, ob das Modul öffentlich zugänglich ist.
@@ -325,10 +326,17 @@ export async function adddModule({
     creationKlassNumber= null,
     creationLanguage= null,
     creationEducationKathegory=null,
+    studiengangKathegory = [],
     id= "unique()",
     kategoryType = "",
     publicAcess = true
+}: Partial<Omit<module, "releaseDate" | "creationCountry">> & {
+    releaseDate?: string | null;
+    creationCountry?: string | null;
+    id?: string;
+    publicAcess?: boolean;
 }) {
+    const kategoryTypeHere = kategoryType == "UNIVERSITY" ? "UNIVERSITY" : kategoryType == "SCHOOL" ? "SCHOOL" : kategoryType == "EDUCATION" ? "EDUCATION" : "OTHER"
     const appwriteSafeModule ={
             name: name,
             subject: subject,
@@ -361,18 +369,18 @@ export async function adddModule({
             creationSubject: creationSubject,
             creationEducationSubject: creationEducationSubject,
             creationUniversityFaculty: creationUniversityFaculty,
-            creationSchoolForm: creationSchoolForm,
+            creationSchoolForm: creationSchoolForm ? creationSchoolForm : "OTHER",
             creationKlassNumber: creationKlassNumber,
             creationLanguage: creationLanguage,
             creationEducationKathegory: creationEducationKathegory,
-            studiengangKathegory: Array.isArray(creationEducationKathegory) ? creationEducationKathegory : [],
+            studiengangKathegory: Array.isArray(studiengangKathegory) ? studiengangKathegory : [],
             copy: copy,
             questionList: questionList,
             synchronization: synchronization,
-            kategoryType: "OTHER"
+            kategoryType: kategoryTypeHere
         }
     try {
-        console.log("Adding Module with ID:", appwriteSafeModule.studiengangKathegory);
+        console.log("Adding Module with ID:", appwriteSafeModule.studiengangKathegory,creationSchoolForm, kategoryType, typeof kategoryType, kategoryType.length);  // Debug-Ausgabe der Module-Daten
         let permissions = [
             Permission.delete(Role.user(creator)), 
             Permission.update(Role.user(creator)),
@@ -396,7 +404,7 @@ export async function adddModule({
         return res;
 
     } catch (error) {
-        console.error("❌Error but no Problem", error instanceof Error ? error.message : String(error), kategoryType);
+        console.error("❌Error but no Problem", error);
         const tmpID = "tmp-" + uuid.v4()
         console.log(tmpID)
         const newModule = {

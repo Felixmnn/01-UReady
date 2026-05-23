@@ -62,7 +62,7 @@ const ModalSessionList = ({
                   >
                     <Text className="text-white flex-1">{session.title}</Text>
                     <Text className="text-white ml-2 flex-1">
-                      {session.percent}%
+                      {typeof session.percent === "number" ? session.percent : 0}%
                     </Text>
 
                     <View

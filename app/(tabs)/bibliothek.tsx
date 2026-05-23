@@ -25,21 +25,26 @@ type ScreenType =
 const Bibliothek = () => {
   const { user, isLoggedIn, isLoading, reloadNeeded } = useGlobalContext();
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
-  
-
-  const { selectedModuleIndex } = useLocalSearchParams();
-  useEffect(() => {
-    if (typeof selectedModuleIndex == "string") {
-      const index = parseInt(selectedModuleIndex);
-      setSelectedModule(index);
-      setSelected("SingleModule");
-    }
-  }, [selectedModuleIndex]);
-  
-
   const [selected, setSelected] = useState<ScreenType>("AllModules");
   const [modules, setModules] = useState<module[] | []>(getModulesFromMMKV());
   const [loading, setLoading] = useState(true);
+  
+
+  const { selectedModuleId } = useLocalSearchParams();
+  useEffect(() => {
+    if (typeof selectedModuleId !== "string" || !selectedModuleId) return;
+    const index = modules.findIndex((item) => item.$id === selectedModuleId);
+    if (index !== -1) {
+      setSelectedModule(index);
+      setSelected("SingleModule");
+    }
+  }, [selectedModuleId, modules]);
+
+  useEffect(() => {
+    const locallyUpdatedModules = getModulesFromMMKV();
+    console.log("Local Modules:", locallyUpdatedModules.map(mod => mod.name));
+    setModules(locallyUpdatedModules);
+  }, [selectedModuleId]);
 
  
   useEffect(() => {
@@ -176,6 +181,7 @@ const Bibliothek = () => {
   useEffect(() => {
     fetchModules();
   }, [reloadNeeded]);
+
 
   useEffect(() => {
     if (!user ) return;

@@ -13,13 +13,12 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import VektorCircle from "../(karteimodul)/vektorCircle";
 import { router } from "expo-router";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { getModules } from "@/lib/appwriteQuerys";
 import { returnColor } from "@/functions/returnColor";
 import TokenHeader from "../(general)/tokenHeader";
 import AddAiBottomSheet from "../(general)/(modal)/addAiBttomSheet";
 import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import { useTranslation } from "react-i18next";
-import { module, UserUsage } from "@/types/appwriteTypes";
+import { UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -98,19 +97,10 @@ const HomeGeneral = () => {
   };
 
   async function directToModule(moduleID: string) {
-    const allModulesRaw = await getModules(user.$id);
-    const allModules: module[] = allModulesRaw as unknown as module[];
-    const index = allModules?.findIndex((item) => {
-      return item.$id === moduleID;
+    router.push({
+      pathname: "/bibliothek",
+      params: { selectedModuleId: moduleID },
     });
-    if (index !== -1) {
-      router.push({
-        pathname: "/bibliothek",
-        params: { selectedModuleIndex: index?.toString() },
-      });
-    } else {
-      router.push("/bibliothek");
-    }
   }
 
   const Module = ({ item }: { item: MiniModule }) => {

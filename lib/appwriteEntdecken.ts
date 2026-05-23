@@ -120,11 +120,17 @@ async function getUniversityModules({
     Query.equal("public", true),
   ];
 
-  // Nur hinzufügen, wenn DegreeType übergeben wurde
-  if (universityDegreeType) {
-    filters.push(
-      Query.contains("creationUniversityProfession", universityDegreeType)
+  // Degree types are stored as a single enum-like string in the DB.
+  // Use equal(...) with an array for OR matching across selected degrees.
+  const normalizedDegreeTypes =
+    universityDegreeType?.
+      map((degree) => (degree === "STATE_EXAM" ? "STAATSEXAMEN" : degree))
+      .filter((degree): degree is string => !!degree) ?? [];
+  if (normalizedDegreeTypes.length > 0) {
+    const degreeFilters = normalizedDegreeTypes.map((degree) =>
+      Query.contains("studiengangKathegory", degree)
     );
+    filters.push(degreeFilters.length === 1 ? degreeFilters[0] : Query.or(degreeFilters));
   }
 
   if (languages && languages.length === 1) {
@@ -141,8 +147,8 @@ async function getUniversityModules({
   const subjectFilters = uKat.flatMap((kat) => {
     let kat_new = "['" + kat + "']";
     return [
-      Query.contains("creationSubject", kat),
-      Query.contains("creationSubject", kat_new)
+      Query.contains("creationUniversitySubject", kat),
+      Query.contains("creationUniversitySubject", kat_new)
     ];
   });
 
@@ -168,11 +174,28 @@ async function getUniversityModules({
     filters.push(Query.equal("copy", false));
   }
 
+  const finalQueries = [...filters, Query.limit(10), Query.offset(offset ?? 0)];
+
+  if (__DEV__) {
+    console.log("[getUniversityModules] input", {
+      universityDegreeType,
+      normalizedDegreeTypes,
+      universityKategorie,
+      languages,
+      searchText,
+      textSearchType,
+      minQuestions,
+      includeCopies,
+      offset: offset ?? 0,
+    });
+    console.log("[getUniversityModules] final queries", finalQueries);
+  }
+
   try {
     const response = await databases.listDocuments(
       config.databaseId,
       config.moduleCollectionId,
-      [...filters,Query.limit(10), Query.offset(offset ?? 0)]
+      finalQueries
     );
     return {modules:response.documents, total: response.total};
   } catch (error) {

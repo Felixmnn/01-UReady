@@ -44,6 +44,13 @@ const DeleteModule = ({
   setModule: React.Dispatch<React.SetStateAction<module>>,
   module: module,
 }) => {
+  const normalizeDegreeKey = (value: string) => {
+    const upper = value.toUpperCase();
+    if (upper === "STATE_EXAM") return "STAATSEXAMEN";
+    if (upper === "OTHERS") return "OTHER";
+    return upper;
+  };
+
   const [showWarning, setShowWarning] = React.useState(false);  
   const [savedChanges, setSavedChanges] = React.useState(false);
   const { t } = useTranslation();
@@ -53,7 +60,9 @@ const DeleteModule = ({
   const [newModuleColor, setNewModuleColor] = React.useState<string | null>(module?.color ?? null);
   const [newTags, setNewTags] = React.useState(tags);
   const [selectedCategory, setSelectedCategory] = React.useState<ModuleCategory>((module?.kategoryType as ModuleCategory) || "UNIVERSITY");
-  const [selectedUniversityDegree, setSelectedUniversityDegree] = React.useState<string>(module?.creationUniversityProfession || "");
+  const [selectedUniversityDegree, setSelectedUniversityDegree] = React.useState<string>(
+    module?.studiengangKathegory?.[0] || module?.creationUniversityProfession || ""
+  );
   const [selectedUniversitySubject, setSelectedUniversitySubject] = React.useState<string>(module?.creationUniversitySubject?.[0] || "");
   const [selectedSchoolType, setSelectedSchoolType] = React.useState<string>(module?.creationSchoolForm || "");
   const [selectedSchoolGrade, setSelectedSchoolGrade] = React.useState<string>(module?.creationKlassNumber ? String(module.creationKlassNumber) : "");
@@ -168,7 +177,7 @@ const DeleteModule = ({
 
   const noCategoryChange =
     selectedCategory === (module?.kategoryType as ModuleCategory) &&
-    (selectedUniversityDegree || "") === (module?.creationUniversityProfession || "") &&
+    normalizeDegreeKey(selectedUniversityDegree || "") === normalizeDegreeKey(module?.studiengangKathegory?.[0] || module?.creationUniversityProfession || "") &&
     (selectedUniversitySubject || "") === (module?.creationUniversitySubject?.[0] || "") &&
     (selectedSchoolType || "") === (module?.creationSchoolForm || "") &&
     (selectedSchoolGrade || "") === (module?.creationKlassNumber ? String(module.creationKlassNumber) : "") &&
@@ -212,6 +221,9 @@ const DeleteModule = ({
       selectedCategory === "UNIVERSITY"
         ? {
             creationUniversityProfession: selectedUniversityDegree || null,
+            studiengangKathegory: selectedUniversityDegree
+              ? [normalizeDegreeKey(selectedUniversityDegree)]
+              : [],
             creationUniversitySubject: selectedUniversitySubject ? [selectedUniversitySubject] : [],
             creationSchoolForm: null,
             creationKlassNumber: null,
@@ -222,6 +234,7 @@ const DeleteModule = ({
         : selectedCategory === "SCHOOL"
         ? {
             creationUniversityProfession: null,
+            studiengangKathegory: [],
             creationUniversitySubject: [],
             creationSchoolForm: selectedSchoolType || null,
             creationKlassNumber: selectedSchoolGrade ? Number(selectedSchoolGrade) : null,
@@ -232,6 +245,7 @@ const DeleteModule = ({
         : selectedCategory === "EDUCATION"
         ? {
             creationUniversityProfession: null,
+            studiengangKathegory: [],
             creationUniversitySubject: [],
             creationSchoolForm: null,
             creationKlassNumber: null,
@@ -241,6 +255,7 @@ const DeleteModule = ({
           }
         : {
             creationUniversityProfession: null,
+            studiengangKathegory: [],
             creationUniversitySubject: [],
             creationSchoolForm: null,
             creationKlassNumber: null,
@@ -263,7 +278,7 @@ const DeleteModule = ({
       return;
     } else {
       try {
-      await updateModuleData(moduleID , nextData)
+      await updateModuleData(moduleID , nextData as any)
       setModules((prevModules: any) => {
         return prevModules.map((mod: any) => {
           if (mod.$id === moduleID) {

@@ -472,6 +472,12 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
       returnObjects: true,
     }) as { [key: string]: { name: string } };
     const universityDegreeTypeKeys = Object.keys(universityObject);
+    const normalizeUniversityDegreeKey = (value: string) => {
+      const upper = value.toUpperCase();
+      if (upper === "STATE_EXAM") return "STAATSEXAMEN";
+      if (upper === "OTHERS") return "OTHER";
+      return upper;
+    };
     const universityDegreeObj = universityDegreeTypeKeys.map((key) => ({
       name: universityObject[key].name,
       id: key,
@@ -510,13 +516,31 @@ const [selectedLanguages, setSelectedLanguage] = useState<string[]>([]);
     const indexesOfSubjects = realFilters.schoolSubjects?.map((subject) => {
       return subjects.findIndex((s: any) => s?.name === subject);
     });
-    const indexOfDegreeType =
-      Array.isArray(realFilters.universityDegreeType) &&
-      realFilters.universityDegreeType.length > 0
-        ? realFilters.universityDegreeType.map((degree) => {
-            return universityDegreeObj.findIndex((obj) => obj.name === degree);
-          })
-        : null;
+    const selectedUniversityDegrees =
+      Array.isArray(realFilters.universityDegreeType)
+        ? realFilters.universityDegreeType
+        : realFilters.universityDegreeType
+          ? [realFilters.universityDegreeType]
+          : [];
+
+    const mappedUniversityDegreeKeys =
+      selectedUniversityDegrees
+        .map((degree) => {
+          const byName = universityDegreeObj.find((obj) => obj.name === degree)?.id;
+          const byKey = universityObject[degree as keyof typeof universityObject]
+            ? degree
+            : null;
+          const byUpperKey = universityObject[degree.toUpperCase() as keyof typeof universityObject]
+            ? degree.toUpperCase()
+            : null;
+
+          const rawKey = byName ?? byKey ?? byUpperKey;
+          if (!rawKey) return null;
+
+          const normalized = normalizeUniversityDegreeKey(rawKey);
+          return normalized;
+        })
+        .filter((degree): degree is string => !!degree);
 
     const indexOfUniversitySubjects = realFilters.universityKategorie?.map(
       (subject) => {
@@ -545,26 +569,31 @@ const educationSubject = (() => {
   return filtered.length > 0 ? filtered : null;
 })();
 
-      let resOBJ = await getMatchingModules({
-        searchText: searchBarText,
-        offset: modules.length ? modules.length : 0,
-        languages: selectedLanguages.length > 0 ? selectedLanguages.map(l => l == "fra" ? "fr" : l) : null,
-        eductaionType: realFilters.eductaionType,
-        universityDegreeType:
-          indexOfDegreeType?.map((i) => universityDegreeTypeKeys[i]) || null,
-        universityKategorie:
-          indexOfUniversitySubjects?.map((i) =>germanTranslation["universityCategories"]["universitySubjects"][uisSubsKeys[i] as keyof typeof germanTranslation["universityCategories"]["universitySubjects"]].name) || null,
-        schoolType: indexesOfSchoolTypes?.map((i) => schoolTypesRaw[i]) || null,
-        schoolSubjects: indexesOfSubjects?.map((i) => germanTranslation["school"]["subjects"][subjectKeys[i] as keyof typeof germanTranslation["school"]["subjects"]].name) || null,
-        schoolGrades:
-          realFilters.schoolGrades?.map((grade) => Number(grade)) || null,
-        eductaionCategory: indexOfEduKat?.map((i) => eduKatKeys[i]) || null,
-        educationSubject:educationSubject,
-        otherSubjects: realFilters.otherSubjects,
-        textSearchType: realFilters.textSearchType,
-        minQuestions: realFilters.minQuestions,
-        includeCopies: realFilters.includeCopies || false,
-      });
+const discoverQueryPayload = {
+  searchText: searchBarText,
+  offset: modules.length ? modules.length : 0,
+  languages: selectedLanguages.length > 0 ? selectedLanguages.map(l => l == "fra" ? "fr" : l) : null,
+  eductaionType: realFilters.eductaionType,
+  universityDegreeType: mappedUniversityDegreeKeys.length > 0 ? [...new Set(mappedUniversityDegreeKeys)] : null,
+  universityKategorie:
+    indexOfUniversitySubjects?.map((i) =>germanTranslation["universityCategories"]["universitySubjects"][uisSubsKeys[i] as keyof typeof germanTranslation["universityCategories"]["universitySubjects"]].name) || null,
+  schoolType: indexesOfSchoolTypes?.map((i) => schoolTypesRaw[i]) || null,
+  schoolSubjects: indexesOfSubjects?.map((i) => germanTranslation["school"]["subjects"][subjectKeys[i] as keyof typeof germanTranslation["school"]["subjects"]].name) || null,
+  schoolGrades:
+    realFilters.schoolGrades?.map((grade) => Number(grade)) || null,
+  eductaionCategory: indexOfEduKat?.map((i) => eduKatKeys[i]) || null,
+  educationSubject: educationSubject,
+  otherSubjects: realFilters.otherSubjects,
+  textSearchType: realFilters.textSearchType,
+  minQuestions: realFilters.minQuestions,
+  includeCopies: realFilters.includeCopies || false,
+};
+
+if (__DEV__) {
+  console.log("[entdecken] query payload:", discoverQueryPayload);
+}
+
+      let resOBJ = await getMatchingModules(discoverQueryPayload);
       console.log("Received modules:", resOBJ);
       setAmountOfModules(resOBJ ? resOBJ.total : 0);
       let res = resOBJ ? resOBJ.modules : [];
@@ -691,7 +720,15 @@ if (loadingMore) {
               getModules={getModules}
               setLoadingMore={setLoadingMore}
               loading={loading}
-              hasMore={hasMore} 
+              hasMore={hasMore}
+              userID={user?.$id}
+              activeFilters={realFilters}
+              selectedLanguages={selectedLanguages}
+              userCountry={userData?.country}
+              userUniversity={userData?.university}
+              userRegion={userData?.city}
+              searchBarText={searchBarText}
+              isOffline={isOffline}
             />
 
             {/* In Case the User selects a Module the copy Button becomes Visble */}

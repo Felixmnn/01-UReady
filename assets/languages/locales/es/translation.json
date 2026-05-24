@@ -371,6 +371,31 @@
     "noEnergy": "No te queda energía.",
     "selectToCopy": "Selecciona un módulo"
   },
+  "missingArea": {
+    "discoverPrompt": "No se encontraron módulos. Es hora de cambiar eso. Crea un módulo en esta área y recibe energía y la insignia Creador:",
+    "discoverCta": "Vamos",
+    "badgeLabel": "Creador",
+    "rewardToastTitle": "Gracias por tu contribución",
+    "defaults": {
+      "moduleName": "Área temática",
+      "moduleDescription": "Este módulo trata los temas de esta área temática...",
+      "session1": {
+        "title": "Tema 1",
+        "description": "Esta sesión de aprendizaje trata el tema 1"
+      },
+      "session2": {
+        "title": "Tema 2",
+        "description": "Esta sesión de aprendizaje trata el tema 2"
+      }
+    },
+    "checklist": {
+      "title": "Tareas para la recompensa:",
+      "name": "Cambiar el nombre del módulo",
+      "description": "Cambiar la descripción del módulo",
+      "sessions": "Cambiar nombres y descripciones de las sesiones",
+      "questions": "Crea 20 preguntas"
+    }
+  },
   "index": {
     "loading": "Cargando tus datos..."
   },
@@ -1838,9 +1863,9 @@
 "addModule": "Añadir módulo",
 "doNotAdd": "No añadir",
 
-    "aiQuiz": "Generar cuestionario con IA",
+    "aiQuiz": "Generar preguntas con IA",
     "crtNote": "Crear nota",
-    "crtQuestion": "Crear pregunta",
+    "crtQuestion": "Crear tu propia pregunta",
     "quizSettings": "Configuración del cuestionario",
     "quizType": "Tipo de cuestionario",
     "questionType": "Tipo de pregunta",
@@ -1931,7 +1956,7 @@
     "unsupported": "Tipo de archivo no soportado",
     "unnamed": "Sin nombre",
     "recommended": "Recomendado",
-    "aiQuiz": "Generar cuestionario con IA",
+    "aiQuiz": "Generar preguntas con IA",
     "dokUpload": "Subir documento",
     "crtQuestio": "Crear pregunta",
     "crtNote": "Crear nota",

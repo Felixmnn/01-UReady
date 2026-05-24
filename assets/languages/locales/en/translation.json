@@ -370,6 +370,31 @@
     "noEnergy": "You have no energy left.",
     "selectToCopy": "Select a module"
   },
+  "missingArea": {
+    "discoverPrompt": "No modules were found. Time to change that. Create a module in this area and earn energy plus the Doer badge:",
+    "discoverCta": "Let's go!",
+    "badgeLabel": "Doer",
+    "rewardToastTitle": "Thanks for your contribution",
+    "defaults": {
+      "moduleName": "Topic area",
+      "moduleDescription": "This module covers the topics from this topic area...",
+      "session1": {
+        "title": "Topic 1",
+        "description": "This learning session covers topic 1"
+      },
+      "session2": {
+        "title": "Topic 2",
+        "description": "This learning session covers topic 2"
+      }
+    },
+    "checklist": {
+      "title": "Tasks for reward:",
+      "name": "Change the module name",
+      "description": "Change the module description",
+      "sessions": "Change session names and descriptions",
+      "questions": "Create 20 questions"
+    }
+  },
   "index": {
     "loading": "Loading your data..."
   },
@@ -1750,9 +1775,9 @@
     "wouldYouLikeToAddModule": "Would you like to add the module {{moduleName}} to your library?",
     "addModule": "Add module",
     "doNotAdd": "Do not add",
-    "aiQuiz": "Generate AI Quiz",
+    "aiQuiz": "Generate AI questions",
     "crtNote": "Create Note",
-    "crtQuestion": "Create Question",
+    "crtQuestion": "Create your own question",
     "quizSettings": "Quiz Settings",
     "quizType": "Quiz Type",
     "questionType": "Question Type",
@@ -1843,11 +1868,11 @@
     "unsupported": "Unsupported file type",
     "unnamed": "Unnamed",
     "recommended": "Recommended",
-    "aiQuiz": "Generate AI Quiz",
+    "aiQuiz": "Generate AI questions",
     "dokUpload": "Upload Document",
     "crtQuestio": "Create Question",
     "crtNote": "Create Note",
-    "pendingAI": "AI Quiz is being generated",
+    "pendingAI": "AI questions are being generated",
     "areYousureDelete": "Are you sure you want to delete this module?",
     "cannotBeUndone": "This cannot be undone.",
     "cancel": "Cancel",

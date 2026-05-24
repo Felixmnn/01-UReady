@@ -5,6 +5,9 @@ import { module } from "@/types/appwriteTypes";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { adddModule } from "@/lib/appwriteAdd";
 import { router } from "expo-router";
+import germanTranslation from "@/assets/languages/locales/de/translation.json";
+import { useTranslation } from "react-i18next";
+import { getMissingAreaDefaults } from "@/lib/missingAreaDefaults";
 
 type DiscoverFilterSnapshot = {
   eductaionType?: "UNIVERSITY" | "SCHOOL" | "EDUCATION" | "OTHER" | null;
@@ -16,6 +19,7 @@ type DiscoverFilterSnapshot = {
   educationKathegory?: string[] | null;
   educationSubject?: string[] | null;
   otherSubjects?: string[] | null;
+  minQuestions?: number;
 };
 
 
@@ -37,13 +41,15 @@ const NoResultsComponent = ({
   userUniversity?: string | null;
   userRegion?: string | null;
 }) => { 
+  const { t } = useTranslation();
+  const missingAreaDefaults = getMissingAreaDefaults(t);
 
   const toArray = (value: string[] | string | null | undefined) => {
     if (!value) return [];
     return Array.isArray(value) ? value : [value];
   };
 
-  const educationType = activeFilters.eductaionType ?? "";
+  const educationType = activeFilters.eductaionType ?? "OTHER";
   const universityDegreeTypes = toArray(activeFilters.universityDegreeType);
   const universitySubjects = activeFilters.universityKategorie ?? [];
   const schoolTypes = activeFilters.schoolType ?? [];
@@ -53,30 +59,101 @@ const NoResultsComponent = ({
   const educationSubjects = activeFilters.educationSubject ?? [];
   const otherSubjects = activeFilters.otherSubjects ?? [];
 
+  const educationCategoryObject = germanTranslation.education.educationKategories;
+  const educationCategoryEntries = Object.entries(educationCategoryObject);
+  const educationCategoryKeys = educationCategories.map((value) => {
+    const byName = educationCategoryEntries.find(([, category]) => category?.name === value)?.[0];
+    const byKey = value in educationCategoryObject ? value : null;
+    return byKey ?? byName ?? value;
+  });
+
+  const educationSubjectObject = germanTranslation.education.educationSubjects;
+  const schoolTypeObject = germanTranslation.school.type;
+  const schoolTypeEntries = Object.entries(schoolTypeObject);
+  const schoolTypeKeys = schoolTypes.map((value) => {
+    const byTitle = schoolTypeEntries.find(([, type]) => type?.title === value)?.[0];
+    const byKey = value in schoolTypeObject ? value : null;
+    return byKey ?? byTitle ?? value;
+  });
+
+  const schoolSubjectObject = germanTranslation.school.subjects;
+  const schoolSubjectEntries = Object.entries(schoolSubjectObject);
+  const schoolSubjectKeys = schoolSubjects.map((value) => {
+    const byName = schoolSubjectEntries.find(([, subject]) => subject?.name === value)?.[0];
+    const byKey = value in schoolSubjectObject ? value : null;
+    return byKey ?? byName ?? value;
+  });
+  const schoolSubjectNames = schoolSubjectKeys.map(
+    (key) => schoolSubjectObject[key as keyof typeof schoolSubjectObject]?.name ?? key
+  );
+  const parsedSchoolClassNumber = (() => {
+    const raw = schoolGrades[0] as unknown;
+    if (raw === null || raw === undefined) return null;
+
+    const parsed =
+      typeof raw === "number" ? raw : Number.parseInt(String(raw), 10);
+
+    return Number.isFinite(parsed) ? Math.trunc(parsed) : null;
+  })();
+
+  const mapEducationSubjectToKey = (value: string) => {
+    for (const categoryKey of educationCategoryKeys) {
+      const categorySubjects = educationSubjectObject[categoryKey as keyof typeof educationSubjectObject];
+      if (!categorySubjects) continue;
+
+      const byKey = value in categorySubjects ? value : null;
+      if (byKey) return byKey;
+
+      const byName = Object.entries(categorySubjects).find(([, subject]) => subject?.name === value)?.[0];
+      if (byName) return byName;
+    }
+
+    for (const categorySubjects of Object.values(educationSubjectObject)) {
+      const byKey = value in categorySubjects ? value : null;
+      if (byKey) return byKey;
+
+      const byName = Object.entries(categorySubjects).find(([, subject]) => subject?.name === value)?.[0];
+      if (byName) return byName;
+    }
+
+    return value;
+  };
+  const educationSubjectKeys = educationSubjects.map(mapEducationSubjectToKey);
+
+  console.log("NoResultsComponent activeFilters:", activeFilters);
+  console.log("Education Category (raw):", activeFilters.educationKathegory);
+  console.log("Education Subject (raw):", activeFilters.educationSubject);
+  console.log("Education Category (keys):", educationCategoryKeys);
+  console.log("Education Subject (keys):", educationSubjectKeys);
+  console.log("School Type (raw):", activeFilters.schoolType);
+  console.log("School Type (keys):", schoolTypeKeys);
+  console.log("School Subject (raw):", activeFilters.schoolSubjects);
+  console.log("School Subject (keys):", schoolSubjectKeys);
+
   const sessions = [{
-      title: "Thema 1",
+      title: missingAreaDefaults.sessions[0].title,
       percent: 0,
       color: "blue",
       iconName: "book",
       questions: 0,
-      description: "In dieser Lernsession geht es um das Thema 1",
+      description: missingAreaDefaults.sessions[0].description,
       tags: [],
       id: Math.random().toString(36).substring(7),
       generating: false,
     },{
-      title: "Thema 2",
+      title: missingAreaDefaults.sessions[1].title,
       percent: 0,
       color: "red",
       iconName: "book-open",
       questions: 0,
-      description: "In dieser Lernsession geht es um das Thema 2",
+      description: missingAreaDefaults.sessions[1].description,
       tags: [],
       id: Math.random().toString(36).substring(7),
       generating: false,
     }]
 
   const newModule = {
-    name: "Themenbereich",
+    name: missingAreaDefaults.moduleName,
     subject: "",
     questions: 0,
     notes: 0,
@@ -87,7 +164,7 @@ const NoResultsComponent = ({
     color: "blue",
     sessions: sessions.map(session => JSON.stringify(session)),
     tags: ["MISSING_AREA"],
-    description: "In diesem Modul geht es um die Themen, ... aus dem Themenbereich...",
+    description: missingAreaDefaults.moduleDescription,
     releaseDate: new Date().toISOString(),
     connectedModules: [],
     qualityScore: 0,
@@ -99,13 +176,13 @@ const NoResultsComponent = ({
     creationUniversityProfession: universityDegreeTypes[0] ?? null,
     creationRegion: userRegion ?? null,
     creationUniversitySubject: universitySubjects,
-    creationSubject: educationType === "OTHER" ? otherSubjects : schoolSubjects,
-    creationEducationSubject: educationSubjects[0] ?? null,
+    creationSubject: educationType === "OTHER" ? otherSubjects : schoolSubjectNames,
+    creationEducationSubject: educationSubjectKeys[0] ?? null,
     creationUniversityFaculty: [],
-    creationSchoolForm: schoolTypes[0] ?? null,
-    creationKlassNumber: schoolGrades[0] ?? null,
+    creationSchoolForm: schoolTypeKeys[0]?.toUpperCase() ?? null,
+    creationKlassNumber: parsedSchoolClassNumber,
     creationLanguage: selectedLanguages[0] ?? null,
-    creationEducationKathegory: educationCategories[0] ?? null,
+    creationEducationKathegory: educationCategoryKeys[0] ?? null,
     studiengangKathegory: universityDegreeTypes.map(type => type.toUpperCase()),
     kategoryType: educationType,
     copy: false,
@@ -125,8 +202,8 @@ const NoResultsComponent = ({
   return (
     <View className="items-center mt-4">
       <Text className="text-gray-400 mt-4 text-lg text-center">
-        Leider keine Module gefunden. Zeit das zu ändern! 
-        Erstelle ein Modul in diesem Bereich. Erhalte Energie und das Abzeichen Macher:</Text>
+        {missingAreaDefaults.rewardPrompt}
+      </Text>
       <View className="flex-row items-center mt-2">
         <Text className="text-xl font-bold"
         style={{ color: "#FBBF24", fontWeight: "bold" }}
@@ -147,7 +224,7 @@ const NoResultsComponent = ({
           borderRadius: 9999,
         }}>
           <Text style={{ color: "white" }} className="text-sm font-medium">
-          Macher
+          {missingAreaDefaults.badgeLabel}
           </Text>
         </View>
       </View>
@@ -164,7 +241,7 @@ const NoResultsComponent = ({
         onPress={handleLetsGoPress}
       >
       
-        <Text className="text-white text-lg text-center">Let's go!</Text>
+        <Text className="text-white text-lg text-center">{missingAreaDefaults.rewardCta}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -214,8 +291,9 @@ const RenderResults = ({
   searchBarText: string;
   isOffline: boolean;
 }) => {
+  const hasMinQuestionsFilter = (activeFilters.minQuestions ?? 0) > 0;
   const canShowCreateModuleSection =
-    searchBarText.trim().length === 0 && !isOffline && !loading;
+    searchBarText.trim().length === 0 && !isOffline && !loading && !hasMinQuestionsFilter;
 
   return (
     <View className="flex-1 w-full pl-2 justify-center ">

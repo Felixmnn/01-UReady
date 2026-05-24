@@ -1,30 +1,30 @@
 import {
   View,
   Text,
-  FlatList,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   useWindowDimensions,
   Modal,
-  Image,
   RefreshControl,
   Platform,
 } from "react-native";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { router } from "expo-router";
 import Selectable from "../selectable";
-import SmileyStatus from "../(components)/smileyStatus";
 import { Session } from "@/types/moduleTypes";
 import { module, note, question } from "@/types/appwriteTypes";
 import { useTranslation } from "react-i18next";
-import { updateModuleQuestionList } from "@/lib/appwriteUpdate";
+import { updateModuleData } from "@/lib/appwriteUpdate";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { getQuestionsFromMMKV, removeQuestionFromMMKV } from "@/lib/mmkvFunctions";
-import { returnNewUserUsage } from "@/functions/addLastSessionModule";
+import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import BotWaiting from "@/components/(signUp)/botWaiting";
-import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
+import { getPublicProfile, updatePublicProfile } from "@/lib/collections/publicProfile";
+import QuestionListSection from "./dataParts/QuestionListSection";
+import DocumentListSection from "./dataParts/DocumentListSection";
+import NoteListSection from "./dataParts/NoteListSection";
+import MissingAreaChecklistSection from "./dataParts/MissingAreaChecklistSection";
+import CustomButton from "@/components/(general)/customButton";
+import { getMissingAreaDefaults, missingAreaPlaceholderValues } from "@/lib/missingAreaDefaults";
 
 
 type AppwriteDocument = {
@@ -72,7 +72,9 @@ const Data = ({
   setQuestions,
   selectAi ,
   selectedSession,
-  loadingQuestionsDone
+  loadingQuestionsDone,
+  showRewardToast,
+  setShowRewardToast,
 }: {
   addDocumentJobSheetRef: React.RefObject<any>;
   setSelectedFile: React.Dispatch<React.SetStateAction<AppwriteDocument | null>>;
@@ -107,12 +109,17 @@ const Data = ({
   setModule: React.Dispatch<React.SetStateAction<module>>;
   selectAi : () => void;
   loadingQuestionsDone: boolean;
+  showRewardToast: boolean;
+  setShowRewardToast: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { width } = useWindowDimensions();
   const questionsInMMKV = module.$id ? getQuestionsFromMMKV(module.$id ? module.$id : "").length : -1
-  const { isOffline , userUsage, setUserUsage} = useGlobalContext()
+  const { isOffline , userUsage, setUserUsage, user } = useGlobalContext()
     const { t } = useTranslation();
   const [optionsVisible, setOptionsVisible] = useState<string[]>([]);
+  const [isRewardApplying, setIsRewardApplying] = useState(false);
+  const rewardAppliedRef = React.useRef<Set<string>>(new Set());
+  const previousAllDoneRef = React.useRef(false);
   function handleOptionsVisibility(id = "") {
     if (optionsVisible.includes(id)) {
       setOptionsVisible(optionsVisible.filter((item) => item !== id));
@@ -180,106 +187,138 @@ const Data = ({
           (item) => item.sessionID == moduleSessions[selected]?.id
         );
   const [wrongType, setWrongType] = useState(false);
+  const missingAreaDefaults = getMissingAreaDefaults(t);
 
-  /**
-   * Header for Question, Note and Document List + Item Counter
-   */
-  const CounterText = ({ title, count }: { title: string; count: number }) => {
-    return (
-      <View className="flex-row justify-start items-center ">
-        <Text className="text-white my-2">{title}</Text>
-        <Text className="ml-1 text-white text-[12px] px-1 rounded-[5px] bg-gray-700">
-          {count}
-        </Text>
-      </View>
-    );
-  };
+  const checklistStatus = React.useMemo(() => {
+    const normalizedModuleName = (module?.name ?? "").trim();
+    const normalizedModuleDescription = (module?.description ?? "").trim();
 
-  /**
-   * This component enables to add new items of the type Question, Note, Document
-   * @param handlePRess - This function contains the function to add either a new question, note or document
-   * @param {title} button - Is the title of the touchable opacity
-   * @returns
-   */
-  const AddData = ({
-    title,
-    subTitle,
-    button,
-    handlePress,
-  }: {
-    title: string;
-    subTitle: string;
-    button: string;
-    handlePress?: () => void;
-  }) => {
-    return (
-      <View className="flex-row p-2 bg-gray-800 rounded-[10px] items-start justify-start border-[1px] border-gray-500 border-dashed">
-        <View className="items-center justify-center p-2">
-          <Icon name="file" size={25} color="white" />
-        </View>
-        <View className="ml-2">
-          <Text className="text-white">{title}</Text>
-          <Text className="text-gray-300 text-[12px]">{subTitle}</Text>
-          <TouchableOpacity
-            onPress={handlePress}
-            className="rounded-full p-2 bg-gray-800 flex-row items-center justify-center border-[1px] border-gray-600 mt-2"
-          >
-            <Icon name="plus" size={15} color="white" />
-            <Text className="ml-2 text-gray-300 text-[12px]">{button}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
+    const defaultModuleNames = missingAreaPlaceholderValues.moduleNames;
+    const defaultModuleDescriptions = missingAreaPlaceholderValues.moduleDescriptions;
 
+    const isModuleNameDone =
+      normalizedModuleName.length > 0 &&
+      !defaultModuleNames.includes(normalizedModuleName);
+    const isModuleDescriptionDone =
+      normalizedModuleDescription.length > 0 &&
+      !defaultModuleDescriptions.includes(normalizedModuleDescription);
 
-  function getSmileyStatus(id:string){
-
-    let questionList = module.questionList
-    let parsed = questionList.map((i) => {
+    const parsedSessions = (module?.sessions ?? []).map((sessionItem) => {
       try {
-        if (typeof i == "string") return JSON.parse(i) as ParsedQuestion;
-        else return i
-      } catch (e) {
-        return { id: undefined, status: null };
+        return typeof sessionItem === "string" ? JSON.parse(sessionItem) : sessionItem;
+      } catch {
+        return null;
       }
     });
-    const found = parsed.find(q => q?.id === id);
-    return found?.status ?? null;
-  }
 
+    const defaultSessionTemplates = missingAreaPlaceholderValues.sessionTemplates;
 
+    const isSessionInfoDone =
+      parsedSessions.length >= defaultSessionTemplates.length &&
+      defaultSessionTemplates.every((template, index) => {
+        const currentSession = parsedSessions[index] as
+          | { title?: string; description?: string }
+          | null;
 
+        if (!currentSession) return false;
 
-  /**
- * Berechnet den prozentualen Bearbeitungsstatus der Fragen.
- * @param questionList - Eine Liste von Fragen, die entweder Strings oder Objekte enthalten können.
- * @returns number - Der Fortschritt in Prozent (0 bis 100).
- */
-function calculateQuestionProgress(questionList: string[]): number {
-  if (!Array.isArray(questionList) || questionList.length === 0) {
-    return 0; // Kein Fortschritt, wenn die Liste leer ist
-  }
+        const title = (currentSession.title ?? "").trim();
+        const description = (currentSession.description ?? "").trim();
 
-  // Parse die Fragen und filtere diejenigen, die einen gültigen Status haben
-  const parsedQuestions = questionList.map((q) => {
-    try {
-      return typeof q === "string" ? JSON.parse(q) : q;
-    } catch {
-      return null; // Ignoriere ungültige Einträge
-    }
-  });
+        return (
+          title.length > 0 &&
+          description.length > 0 &&
+          !template.titles.includes(title) &&
+          !template.descriptions.includes(description)
+        );
+      });
 
-  // Zähle die Fragen mit einem Status, der als "bearbeitet" gilt
-  const completedQuestions = parsedQuestions.filter(
-    (q) => q && q.status && ["BAD", "OK", "GOOD", "GREAT"].includes(q.status)
-  );
+    const isQuestionsDone = module.questionList.length >= 20;
 
-  // Berechne den Fortschritt in Prozent
-  const progress = (completedQuestions.length / questionList.length) * 100;
+    return {
+      isModuleNameDone,
+      isModuleDescriptionDone,
+      isSessionInfoDone,
+      isQuestionsDone,
+      allDone:
+        isModuleNameDone &&
+        isModuleDescriptionDone &&
+        isSessionInfoDone &&
+        isQuestionsDone,
+    };
+  }, [module]);
+  const applyRewards = async (rewardKey: string) => {
+      try {
+        rewardAppliedRef.current.add(rewardKey);
+        setIsRewardApplying(true);
+        if (userUsage) {
+          setUserUsage({
+            ...userUsage,
+            energy: userUsage.energy + 10,
+          });
+        }
+        if (user?.$id) {
+          const profile = await getPublicProfile(user.$id);
+          if (profile) {
+            const currentBadges = Array.isArray(profile.badges) ? profile.badges : [];
+            if (!currentBadges.includes("DOER")) {
+              await updatePublicProfile({
+                ...profile,
+                badges: [...currentBadges, "DOER"],
+              });
+            }
+          }
+        }
+        const updatedTags = (module.tags ?? []).filter((tag) => tag !== "MISSING_AREA");
+        if (module.$id) {
+          await updateModuleData(module.$id, {
+            ...(module as any),
+            tags: updatedTags,
+          } as any);
+        }
+          setModule({
+            ...module,
+            tags: updatedTags,
+          });
+          setShowRewardToast(true);
+      } catch (error) {
+        rewardAppliedRef.current.delete(rewardKey);
+        if (__DEV__) {
+          console.error("Error applying MISSING_AREA rewards:", error);
+        }
+      } finally {
+        setIsRewardApplying(false);
+      }
+    };
 
-  return Math.round(progress); // Runde auf die nächste ganze Zahl
-}
+  React.useEffect(() => {
+    const rewardKey = module.$id ?? `${module.name}-${module.releaseDate}`;
+    const justCompleted = !previousAllDoneRef.current && checklistStatus.allDone;
+    previousAllDoneRef.current = checklistStatus.allDone;
+
+    if (!module?.tags?.includes("MISSING_AREA")) return;
+    if (!justCompleted) return;
+    if (isRewardApplying) return;
+    if (rewardAppliedRef.current.has(rewardKey)) return;
+
+    applyRewards(rewardKey);
+  }, [
+    checklistStatus.allDone,
+    isRewardApplying,
+    module?.$id,
+    module?.name,
+    module?.releaseDate,
+    module?.tags,
+  ]);
+
+  React.useEffect(() => {
+    if (!showRewardToast) return;
+    const timeout = setTimeout(() => {
+      setShowRewardToast(false);
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [showRewardToast]);
 
   /**
    * Unused component to show the upload status of the file
@@ -300,403 +339,65 @@ function calculateQuestionProgress(questionList: string[]): number {
       </Modal>
     );
   };
-  /**
-   * Question Cards - Containing: AIGENERATED, QUESTION, STATUS
-   */
-  const QuestionList = () => {
-    return (
-      <View
-        className="w-full "
-        style={{
-          maxHeight: filteredData.length > 0 ? 250 : 120,
-          minHeight: moduleSessions[selected]?.tags?.includes("JOB-PENDING")
-            ? 180
-            : null,
-        }}
-      >
-        
-        <CounterText
-          title={t("data.questio")}
-          count={questions.length}
-        />
-        {questions ? (
-          <FlatList
-            data={questions}
-            keyExtractor={(item, index) => `${item.$id}-${index}`}
-            style={{}}
-            ListHeaderComponent={() => {
-              return (
-                <View className="h-full p-1  ">
-                  {moduleSessions[selected]?.tags?.includes("JOB-PENDING") ? (
-                    <View
-                      className="flex-1  items-center justify-center p-2 bg-gray-800 rounded-[10px] border-[1px] border-gray-500 border-dashed"
-                      style={{
-                        height: 150,
-                        width: 150,
-                      }}
-                    >
-                      <Image
-                        source={require("../../../assets/bot.png")}
-                        tintColor={"#fff"}
-                        style={{
-                          height: 50,
-                          width: 50,
-                        }}
-                      />
-                      <Text className="text-white text-center">
-                        {t("data.pendingAI")}
-                      </Text>
-                    </View>
-                  ) : null}
-                </View>
-              );
-            }}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  onPress={async() => 
-                    {
-                       
-                      const newUserUsager = returnNewUserUsage(userUsage, {
-                        sessionID: selectedS,
-                        quizType : "infinite",
-                        questionType : "multiple",
-                        questionAmount : null,
-                        timeLimit : null,
-                        moduleID: module.$id ? module.$id : "",
-                        name: selectedSession ? selectedSession.title : "Session",
-                        percent: calculateQuestionProgress(module.questionList),
-                        color: selectedSession ? selectedSession.color : "blue",
-                        icon: selectedSession ? selectedSession.iconName : "question",
-                        questions: questions.length,
-                      })
-                      setUserUsage(newUserUsager)
-                      router.push({ 
-                                pathname:"/quiz",
-                                params: {
-                                  sessionID: selectedS,
-                                  quizType : "infinite",
-                                  questionType : "multiple",
-                                  questionAmount : null,
-                                  timeLimit : null,
-                                  moduleID: module.$id,
-                                  status:JSON.stringify(["BAD", "OK", "GOOD", "GREAT","NONE"])
-                    }})}}
-                  className="p-4 w-[180px] m-1 justify-between items-center p-4 border-[1px] border-gray-600 rounded-[10px] bg-gray-800"
-                >
-                  <View className="w-full justify-between flex-row items-center ">
-                    {["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(item.$id!) as string) ? (
-                      <SmileyStatus
-                        status={
-                          ["BAD", "OK", "GOOD", "GREAT"].includes(getSmileyStatus(item.$id!) as string)
-                            ? (getSmileyStatus(item.$id!) as "BAD" | "OK" | "GOOD" | "GREAT")
-                            : null
-                        }
-                      />
-                    ) : null}
-                    
-                    <Image
-                      source={require("../../../assets/bot.png")}
-                      tintColor={"#fff"}
-                      style={{
-                        height: 20,
-                        width: 20,
-                      }}
-                    />
-                  </View>
-                  <Text className="text-white">
-                    {item.question.length > 90
-                      ? item.question.slice(0, 90) + "..."
-                      : item.question}{" "}
-                  </Text>
-                  <View className="border-b-[1px] border-gray-600 my-4 w-full" />
-                  <View className="w-full flex-row justify-between items-center">
-                    {optionsVisible.includes(item.$id ?? "") ? (
-                      <View className="flex-row items-center justify-between">
-                        <TouchableOpacity className="p-2 items-center justify-center" 
-                        
-                        onPress={async () => {
-                              setIsVisibleEditQuestion({
-                                state: false,
-                                status: "EDIT",
-                              });
-                             
-                              removeQuestionFromMMKV(item.$id!, module.$id!);
-                              if (!module.copy) {
-                                if (item.$id) {
-                                  await deleteDocument(item.$id, "question");
-                                  handleOptionsVisibility(item.$id);
-                                }
-                              } else {
-                                // Neue Liste ohne die entfernte Frage
-                                const updatedList = module.questionList.filter(
-                                  (q) => JSON.parse(q).id !== item.$id
-                                );
-
-                                const res = await updateModuleQuestionList(module.$id, updatedList);
-                              
-                                setQuestions(questions.filter((q) => q.$id !== item.$id));
-
-                                setModule({
-                                  ...module,
-                                  questionList: updatedList,
-                                });
-                              }
-
-                            }}>
-                          <Icon
-                            name="trash"
-                            size={15}
-                            color="red"
-                            
-                            
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    ) : null}
-                    <View
-                      className={` items-end pr-2 ${optionsVisible.includes(item.$id ?? "") ? "w-[50%]" : "w-full"}`}
-                    > 
-                      <TouchableOpacity
-                        className="p-2"
-                        onPress={() => {
-                          
-                          handleOptionsVisibility(item.$id);
-                          if (item.subjectID == module.$id){
-                            setQuestionToEdit(item)
-                            setIsVisibleEditQuestion({
-                                state: true,
-                                status: "EDIT",
-                              });
-                          }
-
-                            
-                          
-                          //handleOptionsVisibility(item.$id);
-                        }}
-                      >
-                        <Icon name="ellipsis-h" size={15} color="white" />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
-            horizontal={true}
-          />
-        ) : null}
-        {filteredData.length == 0 &&
-        !moduleSessions[selected]?.tags?.includes("JOB-PENDING") ? (
-          <AddData
-            title={t("data.questioH")}
-            subTitle={t("data.questioSH")}
-            button={t("data.questioBtn")}
-            handlePress={() => setIsVisibleNewQuestion(true)}
-          />
-        ) : null}
-      </View>
-    );
-  };
-
-  /**
-   * File Cards - Containing: FILE, UPLOAD STATUS, DELETE-FILE
-   */
-  const DocumentList = () => {
-    return (
-      <View
-        className="w-full"
-        style={{
-          minHeight: 130,
-        }}
-      >
-        {
-          filteredDocuments.length === 0 && selectedS == "ALL" ? null :
-        <CounterText
-          title={t("data.file")}
-          count={filteredDocuments.length}
-        />}
-        {documents ? (
-          <View className="w-full">
-            {filteredDocuments.map((item, index) => (
-              <TouchableOpacity
-                key={`${item.$id}-${index}`}
-                onPress={() => {setSelectedFile(item)
-                  if (item.status === "EXTRACTED") {
-                    addDocumentJobSheetRef.current?.openSheet(0)
-                  } else {
-                     sendTextExtractionRequest(item?.$id)
-                  }
-                }}
-                className={`w-full flex-row justify-between p-2 ${filteredDocuments.length - 1 == index ? null : "border-b-[1px] border-gray-600"}`}
-              >
-                <View className="flex-row items-start justify-start">
-                  <Icon name="file" size={40} color="white" />
-                  <Text className="text-white mx-2 font-bold text-[14px]"
-                    style={{ maxWidth: width - 120 }}
-                  >
-                    {item.title
-                      ? item.title.length > 30
-                        ? `${item.title.slice(0, 30)}...${item.title.slice(-5)}`
-                        : item.title
-                      : t("data.unnamed")}
-                     </Text>
-                </View>
-                <View className="flex-row items-center justify-center">
-                  {/* Upload Status Anzeige */}
-                  <View className="flex-row items-center justify-between mr-2">
-                    {item.status === "PENDING" && (
-                      <View className="px-2 py-0.5 rounded-full bg-yellow-100">
-                        <Text className="text-yellow-700 text-xs font-medium">
-                          Processing
-                        </Text>
-                      </View>
-                    )}
-
-                    {item.status === "EXTRACTED" && (
-                      <View className="px-2 py-0.5 rounded-full bg-green-100">
-                        <Text className="text-green-700 text-xs font-medium">
-                          Ready
-                        </Text>
-                      </View>
-                    )}
-
-                    {item.status === "EXTRACTIONFAILED" && (
-                      <TouchableOpacity className="px-2 py-0.5 rounded-full bg-red-100"
-                        onPress={async () => {
-                                    const res = await sendTextExtractionRequest(item.$id)
-                                    //TODO: Handle response 
-                                  }}
-                          
-                      >
-                        <Text className="text-red-700 text-xs font-semibold">
-                          Retry
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-
-                    {item.status === "STATUS_EXTRACTION_NOT_POSSIBLE" && (
-                      <View className="px-2 py-0.5 rounded-full bg-gray-100">
-                        <Text className="text-gray-500 text-xs font-medium">
-                          Broken file
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                  {/* Delete Button */}
-                  <View className="flex-row items-center justify-between">
-                    {item.uploaded ? null : (
-                      <ActivityIndicator size="small" color="#1E90ff" />
-                    )}
-                    {item.uploaded ? 
-                    (
-                      <TouchableOpacity
-                        className="mr-2"
-                        onPress={() => {
-                          deleteDocument(item.$id);
-                        }}
-                      >
-                        <Icon name="trash" size={15} color="white" />
-                      </TouchableOpacity>
-
-                    ) : (
-                      <TouchableOpacity
-                        className="ml-2"
-                        onPress={() => {
-                          deleteDocument(item.$id);
-                        }}
-                      >
-                        <Icon name="times" size={15} color="white" />
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ) : (
-          selectedS == "ALL" ? null :
-
-          <AddData
-            title={t("data.fileH")}
-            subTitle={t("data.fileSH")}
-            button={t("data.fileBtn")}
-          />
-        )}
-        {filteredDocuments.length == 0 ? (
-          selectedS == "ALL" ? null :
-
-          <AddData
-            title={t("data.fileH")}
-            subTitle={t("data.fileSH")}
-            button={t("data.fileBtn")}
-            handlePress={() => addDocument()}
-          />
-        ) : null}
-      </View>
-    );
-  };
-
-  /**
-   * Note Cards - Containing: NOTE, EDIT-NOTE, DELETE-NOTE
-   */
-  const NoteList = () => {
-    return (
-      <View className="flex-1">
-        {
-          filteredNotes.length === 0 && selectedS == "ALL" ? null :
-        <CounterText
-          title={t("data.note")}
-          count={filteredNotes.length}
-        />
-        }
-        {notes ? (
-          <View className=" w-full">
-            {filteredNotes.map((item, index) => (
-              <TouchableOpacity
-                key={item.$id}
-                onPress={() =>
-                  router.push({
-                    pathname: "/editNote",
-                    params: { note: JSON.stringify(item) },
-                  })
-                }
-                className={`w-full flex-row justify-between p-2 ${filteredNotes.length - 1 == index ? null : "border-b-[1px] border-gray-600"} `}
-              >
-                <View className="flex-row items-start justify-start">
-                  <Icon name="file" size={40} color="white" />
-                  <Text className="text-white mx-2 font-bold text-[14px]">
-                    {item.title ? item.title : t("data.unnamed")}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ) : (
-
-          selectedS == "ALL" ? null :
-          <AddData
-            title={t("data.noteH")}
-            subTitle={t("data.noteSH")}
-            button={t("data.noteBtn")}
-            handlePress={() => SwichToEditNote(null)}
-          />
-        )}
-        {filteredNotes.length == 0 ? (
-          selectedS == "ALL" ? null :
-          <AddData
-            handlePress={() => SwichToEditNote(null)}
-            title={t("data.noteH")}
-            subTitle={t("data.noteSH")}
-            button={t("data.noteBtn")}
-          />
-        ) : null}
-      </View>
-    );
-  };
-
   return (
     <View className="flex-1">
-    
+      <Modal
+              animationType="fade"
+              transparent={true}
+              visible={showRewardToast}
+              statusBarTranslucent={true}
+              presentationStyle="overFullScreen"
+              onRequestClose={() => setShowRewardToast(false)}
+            >
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => setShowRewardToast(false)}
+                className="flex-1 items-center justify-start pt-8 mt-5"
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.45)" }}
+              >
+                <View
+                  className="w-[92%] rounded-2xl p-4"
+                  style={{
+                    borderWidth: 2,
+                    borderColor: "#8b720d",
+                    backgroundColor: "rgba(48, 39, 8, 0.96)",
+                  }}
+                >
+                  <View className="mb-2 flex-row items-center justify-center">
+                    <Text className="text-[15px] font-bold" style={{ color: "white" }}>
+                      {missingAreaDefaults.rewardToastTitle}
+                    </Text>
+                  </View>
+
+                  <View className="w-full items-center flex-row justify-center mb-2">
+                    <Text className="text-xl font-bold" style={{ color: "#FBBF24", fontWeight: "bold" }}>
+                      {(userUsage?.energy ?? 0) - 10} {" -> "} {userUsage?.energy ?? 0}
+                    </Text>
+                    <View className="ml-1 mr-1">
+                      <Icon name="bolt" size={18} color="#FBBF24" />
+                    </View>
+                  </View>
+                  <View className="w-full items-center flex-row justify-center">
+                  <View
+                    style={{
+                      backgroundColor: "#92400E",
+                      borderColor: "#FACC15",
+                      borderWidth: 2,
+                      paddingHorizontal: 10,
+                      paddingVertical: 4,
+                      borderRadius: 9999,
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    <Text style={{ color: "white" }} className="text-sm font-medium">
+                      {missingAreaDefaults.badgeLabel}
+                    </Text>
+                  </View>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </Modal>
+      {module.tags?.includes("MISSING_AREA") && <MissingAreaChecklistSection checklistStatus={checklistStatus} setShowRewardToast={setShowRewardToast} />}
       <NichtUnterstuzterDateityp />
       {filteredData.length == 0 &&
       filteredDocuments.length == 0 &&
@@ -705,7 +406,6 @@ function calculateQuestionProgress(questionList: string[]): number {
       
       (
         <ScrollView>
-          
           {
             loadingQuestionsDone == false &&
             !isOffline && questionsInMMKV == 0 && module.questionList.length != 0 ?
@@ -717,28 +417,19 @@ function calculateQuestionProgress(questionList: string[]): number {
 
           
           <View className="flex-1">
-            { !isOffline &&
+            { (!isOffline ) && 
             <Selectable
               icon={"robot"}
               iconColor={"#7a5af8"}
               bgColor={"bg-[#372292]"} 
               title={t("data.aiQuiz")}
-              empfolen={true}
+              empfolen={false}
               handlePress={() => selectAi()}
             />}
-            {!isOffline &&
-            <Selectable
-               icon={"file-pdf"} 
-               iconColor={"#338723ff"} 
-               bgColor={"bg-[#89ea00ff]"} 
-               title={t("bibliothek.addDocument")} 
-               empfolen={false} 
-               handlePress={()=> {addDocument()}}/>
-          }
-            <Selectable
+             <Selectable
               icon={"file-alt"}
-              iconColor={"#004eea"}
-              bgColor={"bg-[#00359e]"}
+              iconColor={"#338723ff"} 
+               bgColor={"bg-[#89ea00ff]"} 
               title={t("data.crtQuestio")}
               empfolen={false}
               handlePress={() => {
@@ -748,6 +439,16 @@ function calculateQuestionProgress(questionList: string[]): number {
                 });
               }}
             />
+            {!isOffline &&
+            <Selectable
+               icon={"file-pdf"} 
+                iconColor={"#004eea"}
+              bgColor={"bg-[#00359e]"}
+               title={t("bibliothek.addDocument")} 
+               empfolen={false} 
+               handlePress={()=> {addDocument()}}/>
+          }
+           
             <Selectable
               icon={"sticky-note"}
               iconColor={"#15b79e"}
@@ -785,9 +486,45 @@ function calculateQuestionProgress(questionList: string[]): number {
         >
           <View className="flex-1">
 
-            <QuestionList />
-            {isOffline ? null :<DocumentList/>}
-            <NoteList />
+            <QuestionListSection
+              t={t}
+              moduleSessions={moduleSessions}
+              selected={selected}
+              questions={questions}
+              setIsVisibleNewQuestion={setIsVisibleNewQuestion}
+              module={module}
+              selectedS={selectedS}
+              selectedSession={selectedSession}
+              userUsage={userUsage}
+              setUserUsage={setUserUsage}
+              setIsVisibleEditQuestion={setIsVisibleEditQuestion}
+              deleteDocument={deleteDocument}
+              optionsVisible={optionsVisible}
+              handleOptionsVisibility={handleOptionsVisibility}
+              setQuestionToEdit={setQuestionToEdit}
+              setQuestions={setQuestions}
+              setModule={setModule}
+            />
+            {isOffline ? null : (
+              <DocumentListSection
+                t={t}
+                selectedS={selectedS}
+                filteredDocuments={filteredDocuments}
+                documents={documents}
+                width={width}
+                setSelectedFile={setSelectedFile}
+                addDocumentJobSheetRef={addDocumentJobSheetRef}
+                deleteDocument={deleteDocument}
+                addDocument={addDocument}
+              />
+            )}
+            <NoteListSection
+              t={t}
+              selectedS={selectedS}
+              filteredNotes={filteredNotes}
+              notes={notes}
+              SwichToEditNote={SwichToEditNote}
+            />
           </View>
         </ScrollView>
       )}

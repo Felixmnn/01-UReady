@@ -428,7 +428,17 @@ async function getEducationModules({
   if (includeCopies === false) {
     filters.push(Query.equal("copy", false));
   }
-
+  console.log("Fetching education modules with filters:", {
+    eductaionCategory,
+    educationSubject,
+    offset,
+    languages,
+    searchText,
+    textSearchType,
+    minQuestions,
+    includeCopies,
+    finalFilters: filters,
+  });
   try {
     const response = await databases.listDocuments(
       config.databaseId,

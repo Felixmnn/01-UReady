@@ -16,9 +16,11 @@ const Tabbar = ({
   hide?: boolean;
 }) => {
   const { t } = useTranslation();
-  const { width } = useWindowDimensions(); // Bildschirmbreite holen
+  const { width, height } = useWindowDimensions();
 
-  const isVertical = width > 700; // Prüfen, ob Breite über 700px ist
+  // Activate the side-tab layout only on tablets, not on phone landscape.
+  const isTablet = Math.min(width, height) >= 600;
+  const isVertical = isTablet;
 
   const tabbarIcon = (
     name: string,

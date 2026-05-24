@@ -371,6 +371,31 @@
     "noEnergy": "Du hast keine Energie mehr übrig.",
     "selectToCopy": "Wähle ein Modul aus"
   },
+  "missingArea": {
+    "discoverPrompt": "Leider keine Module gefunden. Zeit das zu ändern! Erstelle ein Modul in diesem Bereich. Erhalte Energie und das Abzeichen Macher:",
+    "discoverCta": "Los geht's!",
+    "badgeLabel": "Macher",
+    "rewardToastTitle": "Danke für deinen Beitrag",
+    "defaults": {
+      "moduleName": "Themenbereich",
+      "moduleDescription": "In diesem Modul geht es um die Themen, ... aus dem Themenbereich...",
+      "session1": {
+        "title": "Thema 1",
+        "description": "In dieser Lernsession geht es um das Thema 1"
+      },
+      "session2": {
+        "title": "Thema 2",
+        "description": "In dieser Lernsession geht es um das Thema 2"
+      }
+    },
+    "checklist": {
+      "title": "Aufgaben für Belohnung:",
+      "name": "Modulnamen ändern",
+      "description": "Modulbeschreibung ändern",
+      "sessions": "Namen und Beschreibung der Sessions ändern",
+      "questions": "Erstelle 20 Fragen"
+    }
+  },
   "index": {
     "loading": "Lade deine Daten..."
   },
@@ -1705,9 +1730,9 @@
     "wouldYouLikeToAddModule": "Möchtest du das Modul {{moduleName}} zu deiner Bibliothek hinzufügen?",
     "addModule": "Modul hinzufügen",
     "doNotAdd": "Nicht hinzufügen",
-    "aiQuiz": "AI Quiz generieren",
+    "aiQuiz": "AI Fragen generieren",
     "crtNote": "Notiz erstellen",
-    "crtQuestion": "Frage erstellen",
+    "crtQuestion": "Eigene Frage erstellen",
     "quizSettings": "Quiz-Einstellungen",
     "quizType": "Quiz-Typ",
     "questionType": "Fragentyp",
@@ -1797,11 +1822,11 @@
     "unsupported": "Nicht unterstützter Dateityp",
     "unnamed": "Unbenannt",
     "recommended": "Empfolen",
-    "aiQuiz": "AI Quiz generieren",
+    "aiQuiz": "AI Fragen generieren",
     "dokUpload": "Dokument hochladen",
-    "crtQuestio": "Frage erstellen",
-    "crtNote": "Notiz erstellen",
-    "pendingAI": "AI Quiz wird generiert",
+    "crtQuestio": "Eigene Frage erstellen",
+    "crtNote": "Eigene Notiz erstellen",
+    "pendingAI": "AI Fragen werden generiert",
     "areYousureDelete": "Bist du sicher, dass du dieses Modul löschen möchtest?",
     "cannotBeUndone": "Dies kann nicht rückgängig gemacht werden.",
     "cancel": "Abbrechen",

@@ -6,8 +6,8 @@ import * as NavigationBar from "expo-navigation-bar";
 import { useEffect } from "react";
 
 const RootLayout = () => {
-  const { width } = useWindowDimensions();
-  const isVertical = width > 700;
+  const { width, height } = useWindowDimensions();
+  const isVertical = Math.min(width, height) >= 600;
   const insets = useSafeAreaInsets();
 
   useEffect(() => {

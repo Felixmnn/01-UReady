@@ -10,7 +10,7 @@ type LoadingProgressBarProps = {
 
 const LoadingProgressBar = ({
   active,
-  durationMs = 10000,
+  durationMs = 30000,
   barClassName = "bg-blue-500",
   trackClassName = "bg-gray-700",
 }: LoadingProgressBarProps) => {

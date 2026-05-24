@@ -13,6 +13,12 @@ import { returnColor } from "../../../functions/returnColor";
 import VektorCircle from "@/components/(karteimodul)/vektorCircle";
 import { Session } from "@/types/moduleTypes";
 import { module, question } from "@/types/appwriteTypes";
+import { useTranslation } from "react-i18next";
+import {
+  localizeMissingAreaModuleDescription,
+  localizeMissingAreaSessionDescription,
+  localizeMissingAreaSessionTitle,
+} from "@/lib/missingAreaDefaults";
 
 const RoadMap = ({
   moduleSessions,
@@ -29,9 +35,14 @@ const RoadMap = ({
   currentModule: module;
   moduleDescription: string | null;
 }) => {
-  const { userUsage, language } = useGlobalContext();
+  const { userUsage } = useGlobalContext();
+  const { t } = useTranslation();
   const percentA = getAll();
   const { width } = useWindowDimensions();
+  const localizedModuleDescription = localizeMissingAreaModuleDescription(
+    moduleDescription ?? "",
+    t
+  );
 
   /**
    * Returns the percentage of each status of the questions
@@ -143,14 +154,18 @@ const RoadMap = ({
               />
               <View className="justify-center ">
                 <Text className="text-white font-bold text-[15px] px-3 max-w-[220px] ">
-                  {module.title}
+                  {localizeMissingAreaSessionTitle(module.title ?? "", index, t)}
                 </Text>
                 {selected == index && module.description?.length > 0 ? (
                   <Text
                     className="text-white font-semibold text-[12px] px-3"
                     style={{ flexWrap: "wrap", maxWidth: 220 }}
                   >
-                    {module.description}
+                    {localizeMissingAreaSessionDescription(
+                      module.description ?? "",
+                      index,
+                      t
+                    )}
                   </Text>
                 ) : null}
               </View>
@@ -183,11 +198,7 @@ const RoadMap = ({
           />
           <View>
             <Text className="text-white font-bold text-[15px] px-3 pt-3 ">
-              {language == "DEUTSCH"
-                ? "Alle Fragen"
-                : language == "SPANISH"
-                  ? "Todas las preguntas"
-                  : "All Questions"}
+              {t("data.title")}
             </Text>
             {selected == moduleSessions.length + 1 &&
             moduleDescription !== undefined &&
@@ -197,7 +208,7 @@ const RoadMap = ({
                 className="text-gray-200 font-semibold text-[12px] px-3"
                 style={{ flexWrap: "wrap", maxWidth: 220 }}
               >
-                {moduleDescription}
+                {localizedModuleDescription}
               </Text>
             ) : null}
           </View>

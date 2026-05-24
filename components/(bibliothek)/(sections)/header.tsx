@@ -5,6 +5,11 @@ import { useState } from "react";
 import { useWindowDimensions } from "react-native";
 import DeleteModule from "../(modals)/deleteModule";
 import { useTranslation } from "react-i18next";
+import {
+  localizeMissingAreaModuleName,
+  localizeMissingAreaSessionTitle,
+  missingAreaPlaceholderValues,
+} from "@/lib/missingAreaDefaults";
 
 type ScreenType =
   | "CreateQuestion"
@@ -51,9 +56,80 @@ const Header = ({
   module: any;
   setModule: React.Dispatch<React.SetStateAction<any>>;
 }) => {
+  const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const [deleteModuleVisible, setDeleteModuleVisible] = useState(false);
+  const [isHintBlinkOn, setIsHintBlinkOn] = useState(false);
   const isVertical = width > 700;
+  const localizedModuleName = localizeMissingAreaModuleName(moduleName ?? "", t);
+
+  const shouldHighlightEditEntry =
+    module?.tags?.includes("MISSING_AREA") &&
+    (missingAreaPlaceholderValues.moduleNames.includes((module?.name ?? "").trim()) ||
+      missingAreaPlaceholderValues.moduleDescriptions.includes((module?.description ?? "").trim()));
+
+  const defaultModuleNames = missingAreaPlaceholderValues.moduleNames;
+  const defaultModuleDescriptions = missingAreaPlaceholderValues.moduleDescriptions;
+  const normalizedModuleName = (module?.name ?? "").trim();
+  const normalizedModuleDescription = (module?.description ?? "").trim();
+  const isModuleNameDone =
+    normalizedModuleName.length > 0 &&
+    !defaultModuleNames.includes(normalizedModuleName);
+  const isModuleDescriptionDone =
+    normalizedModuleDescription.length > 0 &&
+    !defaultModuleDescriptions.includes(normalizedModuleDescription);
+
+  const parsedSessions = (module?.sessions ?? []).map((sessionItem: any) => {
+    try {
+      return typeof sessionItem === "string" ? JSON.parse(sessionItem) : sessionItem;
+    } catch {
+      return null;
+    }
+  });
+
+  const defaultSessionTemplates = missingAreaPlaceholderValues.sessionTemplates;
+
+  const isSessionInfoDone =
+    parsedSessions.length >= defaultSessionTemplates.length &&
+    defaultSessionTemplates.every((template, index) => {
+      const currentSession = parsedSessions[index] as
+        | { title?: string; description?: string }
+        | null;
+
+      if (!currentSession) return false;
+
+      const title = (currentSession.title ?? "").trim();
+      const description = (currentSession.description ?? "").trim();
+
+      return (
+        title.length > 0 &&
+        description.length > 0 &&
+        !template.titles.includes(title) &&
+        !template.descriptions.includes(description)
+      );
+    });
+
+  const shouldHighlightSessionEntry =
+    module?.tags?.includes("MISSING_AREA") &&
+    isModuleNameDone &&
+    isModuleDescriptionDone &&
+    !isSessionInfoDone;
+
+  const shouldBlinkHint = shouldHighlightEditEntry || shouldHighlightSessionEntry;
+
+  React.useEffect(() => {
+    if (!shouldBlinkHint) {
+      setIsHintBlinkOn(false);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setIsHintBlinkOn((prev) => !prev);
+    }, 700);
+
+    return () => clearInterval(interval);
+  }, [shouldBlinkHint]);
+
   let filteredData = [];
   if (selected! > moduleSessions.length) {
     filteredData =
@@ -65,7 +141,6 @@ const Header = ({
   } else {
     filteredData = questions;
   }
-  const t = useTranslation() 
     return (
     <View className={`${!isVertical ? "bg-[#0c111d]" : null}`}>
       
@@ -78,7 +153,7 @@ const Header = ({
         modules={modules}
         setModules={setModules}
         description={moduleDescription}
-        setSelectedScreen={setSelectedScreen}
+        setSelectedScreen={setSelectedScreen as React.Dispatch<React.SetStateAction<string>>}
         setModule={setModule} 
         module={module} 
       />
@@ -87,13 +162,23 @@ const Header = ({
           <TouchableOpacity >
             <Icon name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
-          <Text className="font-bold text-white text-[15px]">{moduleName}</Text>
+          <Text className="font-bold text-white text-[15px]">{localizedModuleName}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setDeleteModuleVisible(true)}
-          className="px-2"
+          className="items-center justify-center rounded-full  "
+          style={{
+            height: 30,
+            width: 30,
+          }}
         >
-          <Icon name="ellipsis-v" size={15} color="white" />
+          <Icon
+            name="ellipsis-v"
+            size={15}
+            color={
+              shouldHighlightEditEntry && isHintBlinkOn ? "#FACC15" : "white"
+            }
+          />
         </TouchableOpacity>
       </View>
       <View className="w-full  flex-row px-4 justify-between items-center">
@@ -103,15 +188,21 @@ const Header = ({
           style={{ maxWidth: isVertical ? "70%" : "50%" }}
         >
           {Array.isArray(sessions) && sessions.length > 0 && typeof selected === "number" && selected >= 0 && selected < sessions.length && sessions[selected] && sessions[selected].title
-            ? sessions[selected].title
-            : (Array.isArray(sessions) && selected >= sessions.length ? "All Questions" : "")}
+            ? localizeMissingAreaSessionTitle(sessions[selected].title, selected, t)
+            : (Array.isArray(sessions) && selected >= sessions.length ? t("data.title") : "")}
         </Text>
         <View className="flex-row items-center">
           <TouchableOpacity
             onPress={openSessionSheet}
             className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  ${isVertical ? "p-2 " : "h-[32px] w-[32px] justify-center pr-1 pt-[1px] "} `}
           >
-            <Icon name={"layer-group"} color={"white"} size={15} />
+            <Icon
+              name={"layer-group"}
+              color={
+                shouldHighlightSessionEntry && isHintBlinkOn ? "#FACC15" : "white"
+              }
+              size={15}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setIsVisibleNewQuestion(true)}

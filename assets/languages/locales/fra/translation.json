@@ -372,6 +372,31 @@
     "noEnergy": "Tu n’as plus d’énergie.",
     "selectToCopy": "Choisis un module"
   },
+  "missingArea": {
+    "discoverPrompt": "Aucun module n'a été trouvé. Il est temps de changer ça. Crée un module dans cette catégorie et gagne de l'énergie ainsi que le badge Bâtisseur :",
+    "discoverCta": "C'est parti !",
+    "badgeLabel": "Bâtisseur",
+    "rewardToastTitle": "Merci pour ta contribution",
+    "defaults": {
+      "moduleName": "Zone thématique",
+      "moduleDescription": "Ce module couvre les sujets de cette zone thématique...",
+      "session1": {
+        "title": "Sujet 1",
+        "description": "Cette session d'apprentissage porte sur le sujet 1"
+      },
+      "session2": {
+        "title": "Sujet 2",
+        "description": "Cette session d'apprentissage porte sur le sujet 2"
+      }
+    },
+    "checklist": {
+      "title": "Tâches pour la récompense :",
+      "name": "Modifier le nom du module",
+      "description": "Modifier la description du module",
+      "sessions": "Modifier les noms et descriptions des sessions",
+      "questions": "Créer 20 questions"
+    }
+  },
   "index": {
     "loading": "Chargement de tes données..."
   },
@@ -1825,9 +1850,9 @@
 "addModule": "Añadir módulo",
 "doNotAdd": "No añadir",
 
-    "aiQuiz": "Générer un quiz IA",
-    "crtNote": "Créer une note",
-    "crtQuestion": "Créer une question",
+    "aiQuiz": "Générer des questions avec l’IA",
+    "crtNote": "Créer ta propre note",
+    "crtQuestion": "Créer votre propre question",
     "quizSettings": "Paramètres du quiz",
     "quizType": "Type de quiz",
     "questionType": "Type de question",
@@ -1918,7 +1943,7 @@
     "unsupported": "Type de fichier non pris en charge",
     "unnamed": "Sans nom",
     "recommended": "Recommandé",
-    "aiQuiz": "Générer un quiz IA",
+    "aiQuiz": "Générer des questions avec l’IA",
     "dokUpload": "Télécharger un document",
     "crtQuestio": "Créer une question",
     "crtNote": "Créer une note",

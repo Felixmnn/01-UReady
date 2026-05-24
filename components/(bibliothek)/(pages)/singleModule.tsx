@@ -1,4 +1,4 @@
-import { View, Text, Platform } from "react-native";
+import { View, Text, Platform, Modal, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import RoadMap from "../(sections)/roadMap";
@@ -40,6 +40,7 @@ import { getUnsavedModulesFromMMKV, getQuestionsFromMMKV, saveQuestionsToMMKV, s
 import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 import { checkMMKVNoteDocumentListRefreshTimestampExpiry, checkMMKVQuestionListRefreshTimestampExpiry, setMMKVLastNoteDocumentListRefreshTimestamp, setMMKVLastQuestionListRefreshTimestamp } from "@/lib/mmkvUpdateTimestamps";
 import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 type QuestionListItem = {
   id: string;
@@ -187,15 +188,17 @@ const SingleModule = ({
       
     }
   }
+    const serializedSessions = sessions.map((session: Session) => JSON.stringify(session));
     
-    setModule({
-      ...module,
-      questionList: newQuestionList
-    })
+    setModule((prev: any) => ({
+      ...prev,
+      questionList: newQuestionList,
+      sessions: serializedSessions,
+    }));
     async function updateModuleLocal() {
       const newModule = {
         ...module,
-        sessions: sessions.map((session: string) => JSON.stringify(session)),
+        sessions: serializedSessions,
         quesitonList:newQuestionList,
       };
       await updateModule(newModule);
@@ -688,10 +691,19 @@ const SingleModule = ({
   const addDocumentJobSheetRef = React.useRef<CustomBottomSheetRef>(null);
 
   const [selectedFile, setSelectedFile] = useState<AppwriteDocument | null>(null);
+  
+  const [showRewardToast, setShowRewardToast] = useState(false);
+  
+
+ console.log("Module in SingleModule:", module.educationSubject, module.educationCategory);
+
+
+
+
+
 
   return (
     <View className="flex-1 rounded-[10px] items-center ">
-      
       {isVertical ? (
         <View className=" h-[15px] w-[95%] bg-gray-900 bg-opacity-70 rounded-t-[10px]  opacity-50"></View>
       ) : null}
@@ -754,8 +766,9 @@ const SingleModule = ({
                 <View className="p-4 flex-1">
                  
                   <Data
+                  showRewardToast={showRewardToast}
+                  setShowRewardToast={setShowRewardToast}
                   loadingQuestionsDone={loadingQuestionsDone}
-                  key={JSON.stringify(module) + questions.length + JSON.stringify(module.session)}
                   addDocumentJobSheetRef={addDocumentJobSheetRef}
                   setSelectedFile={setSelectedFile}
                   selectedSession={ sessions[selectedSession] ? sessions[selectedSession] : null}
@@ -892,6 +905,7 @@ const SingleModule = ({
         maxQuestions={questions ? questions.length : 0}
         questions={questions}
       />
+
     </View>
   );
 };

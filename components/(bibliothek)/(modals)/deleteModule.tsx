@@ -55,6 +55,51 @@ const DeleteModule = ({
   const [savedChanges, setSavedChanges] = React.useState(false);
   const { t } = useTranslation();
 
+  const educationObjects = t("education.educationKategories", {
+    returnObjects: true,
+  }) as Record<string, { name: string }>;
+  const educationSubjectObjectsAll = t("education.educationSubjects", {
+    returnObjects: true,
+  }) as Record<string, Record<string, { name: string }>>;
+
+  const mapEducationCategoryToKey = (value: string) => {
+    if (!value) return "";
+    if (value in educationObjects) return value;
+
+    const byName = Object.entries(educationObjects).find(
+      ([, category]) => category?.name === value
+    )?.[0];
+
+    return byName ?? value;
+  };
+
+  const mapEducationSubjectToKey = (value: string, categoryKey?: string) => {
+    if (!value) return "";
+
+    if (categoryKey && educationSubjectObjectsAll[categoryKey]) {
+      const categorySubjects = educationSubjectObjectsAll[categoryKey];
+      if (value in categorySubjects) return value;
+
+      const byName = Object.entries(categorySubjects).find(
+        ([, subject]) => subject?.name === value
+      )?.[0];
+
+      if (byName) return byName;
+    }
+
+    for (const subjects of Object.values(educationSubjectObjectsAll)) {
+      if (value in subjects) return value;
+
+      const byName = Object.entries(subjects).find(
+        ([, subject]) => subject?.name === value
+      )?.[0];
+
+      if (byName) return byName;
+    }
+
+    return value;
+  };
+
   const [newModuleName, setNewModuleName] = React.useState(moduleName);
   const [newModuleDescription, setNewModuleDescription] = React.useState(description);
   const [newModuleColor, setNewModuleColor] = React.useState<string | null>(module?.color ?? null);
@@ -67,8 +112,15 @@ const DeleteModule = ({
   const [selectedSchoolType, setSelectedSchoolType] = React.useState<string>(module?.creationSchoolForm || "");
   const [selectedSchoolGrade, setSelectedSchoolGrade] = React.useState<string>(module?.creationKlassNumber ? String(module.creationKlassNumber) : "");
   const [selectedSchoolSubject, setSelectedSchoolSubject] = React.useState<string>(module?.creationSubject?.[0] || "");
-  const [selectedEducationCategory, setSelectedEducationCategory] = React.useState<string>(module?.creationEducationKathegory || "");
-  const [selectedEducationSubject, setSelectedEducationSubject] = React.useState<string>(module?.creationEducationSubject || "");
+  const [selectedEducationCategory, setSelectedEducationCategory] = React.useState<string>(
+    mapEducationCategoryToKey(module?.creationEducationKathegory || "")
+  );
+  const [selectedEducationSubject, setSelectedEducationSubject] = React.useState<string>(
+    mapEducationSubjectToKey(
+      module?.creationEducationSubject || "",
+      mapEducationCategoryToKey(module?.creationEducationKathegory || "")
+    )
+  );
   const [selectedOtherSubject, setSelectedOtherSubject] = React.useState<string>(module?.creationSubject?.[0] || "");
 
   const categoryOptions: { label: string; value: ModuleCategory }[] = [
@@ -119,9 +171,6 @@ const DeleteModule = ({
     label: universityObjects[key]?.name || key,
   }));
 
-  const educationObjects = t("education.educationKategories", {
-    returnObjects: true,
-  }) as Record<string, { name: string }>;
   const educationCategoryOptions: ChipOption[] = Object.keys(educationObjects).map((key) => ({
     key,
     label: educationObjects[key]?.name || key,
@@ -182,8 +231,8 @@ const DeleteModule = ({
     (selectedSchoolType || "") === (module?.creationSchoolForm || "") &&
     (selectedSchoolGrade || "") === (module?.creationKlassNumber ? String(module.creationKlassNumber) : "") &&
     (selectedSchoolSubject || "") === (module?.creationSubject?.[0] || "") &&
-    (selectedEducationCategory || "") === (module?.creationEducationKathegory || "") &&
-    (selectedEducationSubject || "") === (module?.creationEducationSubject || "") &&
+    mapEducationCategoryToKey(selectedEducationCategory || "") === mapEducationCategoryToKey(module?.creationEducationKathegory || "") &&
+    mapEducationSubjectToKey(selectedEducationSubject || "", mapEducationCategoryToKey(selectedEducationCategory || "")) === mapEducationSubjectToKey(module?.creationEducationSubject || "", mapEducationCategoryToKey(module?.creationEducationKathegory || "")) &&
     (selectedOtherSubject || "") === (module?.creationSubject?.[0] || "");
 
   const hasUnsavedChanges =
@@ -249,8 +298,12 @@ const DeleteModule = ({
             creationUniversitySubject: [],
             creationSchoolForm: null,
             creationKlassNumber: null,
-            creationEducationKathegory: selectedEducationCategory || null,
-            creationEducationSubject: selectedEducationSubject || null,
+            creationEducationKathegory: mapEducationCategoryToKey(selectedEducationCategory || "") || null,
+            creationEducationSubject:
+              mapEducationSubjectToKey(
+                selectedEducationSubject || "",
+                mapEducationCategoryToKey(selectedEducationCategory || "")
+              ) || null,
             creationSubject: [],
           }
         : {

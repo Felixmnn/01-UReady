@@ -21,7 +21,6 @@ import { useTranslation } from "react-i18next";
 import { UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 type MiniModule = {
@@ -260,7 +259,7 @@ const HomeGeneral = () => {
     }, 2000);
   };
   return (
-    <SafeAreaView className="h-full w-full ">
+    <View className="h-full w-full ">
       <TokenHeader/>
       
       <ScrollView
@@ -398,7 +397,7 @@ const HomeGeneral = () => {
           setIsVisibleAiModule={setIsVisibleNewModule}
         />
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 };
 

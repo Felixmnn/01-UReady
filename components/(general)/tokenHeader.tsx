@@ -133,38 +133,32 @@ const TokenHeader = ({
         </View>
       </View>
 
-      <View
-        className={`w-full px-4 items-stretch overflow-hidden ${
-          moreVisible ? "p-2" : "h-0 p-0"
-        }`}
-        pointerEvents={moreVisible ? "auto" : "none"}
-      >
-        {userUsage && userUsage.energy < 10 && (
-          <View className="w-full flex-row justify-between max-w-[200px]">
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
-              <Icon
-                name="bolt"
-                size={20}
-                color={userUsage?.energy < i ? "white" : "yellow"}
-                key={i}
-              />
-            ))}
-          </View>
-        )}
-        
-        <View className={`w-full min-h-[88px] ${moreVisible ? "" : "h-0 mt-0"}`}>
-          <RewardedAdScreen />
-        </View>
-        <View className={moreVisible ? "" : "h-0"}>
-          {moreVisible && (
-            <Text className="text-white text-center  font-semibold">
-              {userUsage?.energy >= 10
-                ? t("tokenHeader.energyFull")
-                : `${timeLeft ?? "…"} ${t("tokenHeader.minutesLeft")}`}
-            </Text>
+      {moreVisible && (
+        <View className="w-full px-4 p-2 items-stretch">
+          {userUsage && userUsage.energy < 10 && (
+            <View className="w-full flex-row justify-between max-w-[200px]">
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((i) => (
+                <Icon
+                  name="bolt"
+                  size={20}
+                  color={userUsage?.energy < i ? "white" : "yellow"}
+                  key={i}
+                />
+              ))}
+            </View>
           )}
+
+          <View className="w-full min-h-[88px]">
+            <RewardedAdScreen />
+          </View>
+
+          <Text className="text-white text-center font-semibold">
+            {userUsage?.energy >= 10
+              ? t("tokenHeader.energyFull")
+              : `${timeLeft ?? "…"} ${t("tokenHeader.minutesLeft")}`}
+          </Text>
         </View>
-      </View>
+      )}
 
       <View className="w-full border-t-[1px]  border-gray-700 mb-2" />
     </TouchableOpacity>

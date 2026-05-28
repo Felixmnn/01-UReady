@@ -39,7 +39,7 @@ const MissingAreaChecklistSection = ({ checklistStatus,setShowRewardToast }: { c
       }}
     >
       <View className="ml-2 my-2 flex-row items-center">
-        <View className="mr-2 rounded-full bg-amber-400/20">
+        <View className="mr-2 rounded-full">
           <Icon name="tasks" size={20} color="#9CA3AF" />
         </View>
         <Text className=" text-[15px] font-bold" style={{ color: "#9CA3AF" }}>

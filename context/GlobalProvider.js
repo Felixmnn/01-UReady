@@ -127,6 +127,8 @@ const GlobalProvider = ({ children }) => {
         }
       }
       if (!usage) {
+        const ONE_HOUR_MS = 1 * 60 * 60 * 1000;
+
         usage = await addUserUsage(user.$id, {
           streak: 0,
           streakActive: false,
@@ -142,7 +144,7 @@ const GlobalProvider = ({ children }) => {
           supercharges: 0,
           streakUpdate: [new Date()],
           purcharses: [],
-          watchedComercials: [],
+          watchedComercials: [new Date(Date.now() + ONE_HOUR_MS).toISOString()],
           participatedQuizzes: [],
         });
       } else {

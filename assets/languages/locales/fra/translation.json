@@ -562,6 +562,8 @@
   },
   "quizResult": {
     "tryAgain": "Réessayez !",
+    "youCanDoBetter": "Vous pouvez faire encore mieux !",
+    "tryAgainYouKnowYouCanDoBetter": "Réessaie, tu sais que tu peux faire mieux !",
     "excellent": "Excellent ! Vous avez fait un excellent travail !",
     "goodJob": "Bon travail ! Continuez comme ça !",
     "notBad": "Pas mal ! Vous pouvez faire encore mieux !",

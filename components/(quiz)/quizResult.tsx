@@ -42,6 +42,12 @@ const QuizResult = ({
     });
   }, [userUsage?.watchedComercials]);
 
+  const zeroCorrectMessage = React.useMemo(() => {
+    return Math.random() < 0.5
+      ? t("quizResult.youCanDoBetter")
+      : t("quizResult.tryAgainYouKnowYouCanDoBetter");
+  }, [t]);
+
   // Memoize the results to avoid unnecessary re-renders
   const Results = React.useMemo(() => {
     return (
@@ -159,7 +165,7 @@ const QuizResult = ({
         <View className="p-4">
           {answeredCorrectly.length === 0 ? (
             <MemoizedBotCenter
-              message={t("quizResult.tryAgain")}
+              message={t("quizResult.tryAgainYouKnowYouCanDoBetter")}
               imageSource="Frage"
             />
           ) : answeredCorrectly.length /
@@ -185,7 +191,7 @@ const QuizResult = ({
             />
           ) : (
             <MemoizedBotCenter
-              message={t("quizResult.tryAgain")}
+              message={t("quizResult.youCanDoBetter")}
               imageSource="Frage"
             />
           )}

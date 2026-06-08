@@ -556,6 +556,8 @@
   },
   "quizResult": {
     "tryAgain": "Try again!",
+    "youCanDoBetter": "You can do even better!",
+    "tryAgainYouKnowYouCanDoBetter": "Try again, you know you can do better!",
     "excellent": "Excellent! You did great!",
     "goodJob": "Good job! Keep it up!",
     "notBad": "Not bad! You can do even better!",

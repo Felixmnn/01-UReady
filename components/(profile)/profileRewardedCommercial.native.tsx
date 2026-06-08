@@ -92,7 +92,7 @@ const ProfileRewardedCommercial = () => {
       RewardedAdEventType.EARNED_REWARD,
       () => {
         setUserUsage((prev: any) => {
-          if (!prev) return prev;
+          if (!prev) return prev; 
 
           const existing = Array.isArray(prev.watchedComercials)
             ? prev.watchedComercials

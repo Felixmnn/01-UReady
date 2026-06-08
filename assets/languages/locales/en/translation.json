@@ -459,6 +459,9 @@
     "funFactOfflineUse": "Fun fact: Once a study set is created, you can use it offline at any time.",
     "publicDiscoverNote": "If your study set is public, other users can access it via Discover."
   },
+  "specificTutorialStep": {
+    "studyASetStart": "Time to study! Tap a question or the ▶️ icon to start."
+  },
   "tutorialModule": {
     "letUsCreate": "Let's create your first module together!"
   },

@@ -460,6 +460,9 @@
     "funFactOfflineUse": "Dato curioso: una vez creado un set de estudio, puedes usarlo sin conexión en cualquier momento.",
     "publicDiscoverNote": "Si tu set de estudio es público, otros usuarios pueden acceder a él mediante Descubrir."
   },
+  "specificTutorialStep": {
+    "studyASetStart": "Es hora de estudiar. Pulsa una pregunta o el símbolo ▶️ para empezar."
+  },
   "tutorialModule": {
     "letUsCreate": "¡Vamos a crear juntos tu primer módulo!"
     },

@@ -462,6 +462,9 @@
     "funFactOfflineUse": "Info utile : une fois créé, ton ensemble d'étude peut être utilisé hors ligne à tout moment.",
     "publicDiscoverNote": "Si ton ensemble d'étude est public, d'autres utilisateurs peuvent y accéder via Découvrir."
   },
+  "specificTutorialStep": {
+    "studyASetStart": "Il est temps d'apprendre. Appuie sur une question ou sur l'icône ▶️ pour commencer."
+  },
   "tutorialModule": {
     "letUsCreate": "Créons ensemble ton premier module !"
 

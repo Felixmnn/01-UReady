@@ -287,12 +287,6 @@ const HomeGeneral = () => {
         <View className="flex-1 rounded-[10px] p-3">
 
           <Header title={t("home.lastModules")} />
-          <TouchableOpacity
-            className="bg-gray-900 rounded-[10px] mx-2 border-gray-800 border-[1px]  items-center justify-center p-5"
-            onPress={() => router.push("/getting-started")}
-          >
-            <Text>Go getting started</Text>
-          </TouchableOpacity>
           <ScrollView horizontal={true} className="flex-row">
             {!userUsageP || userUsageP.lastModules.length == 0 ? (
               <View className="flex-1">

@@ -30,8 +30,9 @@ const StepTwo = ({
   const { t } = useTranslation();
   const { user, setNewLanguage } = useGlobalContext();
   const languageoptions = [
-      { label: "Deutsch", value: "de" },
+      
       { label: "English", value: "en" },
+      { label: "Deutsch", value: "de" },
       { label: "Spanish", value: "es" }, 
       { label: "Français", value: "fra" },
     ];

@@ -30,7 +30,7 @@ const SpecificTutorialStep = ({
         className="flex-1 justify-center items-center bg-blue-500"
         onPress={() => {
             if (tutorialStep) {
-             const filteredRemainingSteps = remainingTutorialSteps.filter(step => step !== tutorialStep);
+           const filteredRemainingSteps = remainingTutorialSteps.filter((step: string) => step !== tutorialStep);
              setRemainingTutorialSteps(filteredRemainingSteps);
             }
         }}
@@ -39,7 +39,7 @@ const SpecificTutorialStep = ({
         }}
       >
         { tutorialStep === "STUDY_A_SET" && (
-            <RobotWihtMessage message={"Zeit etwas zu Lernen clicke auf eine Frage oder das ▶️ Symbol um zu starten."} />
+            <RobotWihtMessage message={t("specificTutorialStep.studyASetStart") } />
         )}
         
       </TouchableOpacity>

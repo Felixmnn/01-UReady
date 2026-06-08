@@ -460,6 +460,9 @@
     "funFactOfflineUse": "Fun Fact: Nachdem ein Lernset erstellt wurde, kannst du es jederzeit offline verwenden",
     "publicDiscoverNote": "Ist dein Lernset auf Öffentlich gestellt, können andere Nutzer über die Entdecken Funktion darauf zugreifen."
   },
+  "specificTutorialStep": {
+    "studyASetStart": "Zeit etwas zu lernen! Klicke auf eine Frage oder das ▶️ Symbol, um zu starten."
+  },
   "tutorialModule": {
     "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!"
   },

@@ -64,6 +64,7 @@ const PageAiCreate = ({
 }) => {
   // Lokale
   const { t } = useTranslation();
+  const { remainingTutorialSteps, setRemainingTutorialSteps } = useGlobalContext();
 
   const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline, setUserData } = useGlobalContext();
   const [sessions, setSessions] = useState<Session[]>([
@@ -293,6 +294,7 @@ const PageAiCreate = ({
       if (newModule.name.length > 2 && newModule.description.length > 2) {
         setTutorialVisible(true);
       }
+      setRemainingTutorialSteps(["STUDY_A_SET"]);
     }
   }, [newModule, tutorialStep]);
 

@@ -41,6 +41,7 @@ import AddDocumentJobSheet from "../(bottomSheets)/addDocumentJob";
 import { checkMMKVNoteDocumentListRefreshTimestampExpiry, checkMMKVQuestionListRefreshTimestampExpiry, setMMKVLastNoteDocumentListRefreshTimestamp, setMMKVLastQuestionListRefreshTimestamp } from "@/lib/mmkvUpdateTimestamps";
 import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import SpecificTutorialStep from "@/components/(tutorials)/specificTutorialStep";
 
 type QuestionListItem = {
   id: string;
@@ -147,7 +148,7 @@ const SingleModule = ({
     /* Language and Texts */
   }
   const [selectedLanguage, setSelectedLanguage] = useState("DEUTSCH");
-  const { language } = useGlobalContext();
+  const { language, remainingTutorialSteps, setRemainingTutorialSteps  } = useGlobalContext();
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -894,7 +895,16 @@ const SingleModule = ({
 
 
       />
-
+      <SpecificTutorialStep
+        isVisible={remainingTutorialSteps.includes("STUDY_A_SET")}
+        setIsVisible={() => {
+          if (remainingTutorialSteps.includes("STUDY_A_SET")) {
+            const filteredRemainingSteps = remainingTutorialSteps.filter(step => step !== "STUDY_A_SET");
+            setRemainingTutorialSteps(filteredRemainingSteps);
+          }
+        }}
+        tutorialStep="STUDY_A_SET"
+      />  
       <StartQuizSheet
         questionList={module.questionList ? module.questionList.map((i:string)=> typeof i == "string" ? JSON.parse(i) : i) : []}
         sheetRef={startQuizBottomSheetRef}

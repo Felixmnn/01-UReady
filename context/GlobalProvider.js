@@ -31,7 +31,7 @@ const GlobalProvider = ({ children }) => {
   const [isOffline, setIsOffline] = useState(true);
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [userUsageInitialized, setUserUsageInitialized] = useState(false);
-
+  const [ remainingTutorialSteps, setRemainingTutorialSteps] = useState([]);
   
   // -------------------------------
   // 1. Session-Check
@@ -273,7 +273,9 @@ const GlobalProvider = ({ children }) => {
         setUserUsage,
         isOffline,
         subscriptionStatus,
-        setSubscriptionStatus
+        setSubscriptionStatus,
+        remainingTutorialSteps,
+        setRemainingTutorialSteps
       }} 
     >
       {children}

@@ -1975,7 +1975,17 @@
 ,"ad": {
     "watchAd": "Regarder une publicité",
     "get1EnergyFree": "Obtenez 1 énergie gratuitement",
-    "watch": "Regarder"
+  "watch": "Regarder",
+  "offline": "Hors ligne",
+  "blockerTitle": "Bloqueur de publicite",
+  "blockerInactiveDescription": "Regarde une courte publicite et obtiens 2 heures sans autres publicites.",
+  "blockerActiveDescription": "Regarde une courte publicite pour prolonger ton bloqueur de 2 heures.",
+  "blockerWatch": "Regarder la pub",
+  "blockerExtend": "Prolonger le bloqueur",
+  "blockerActiveStatus": "Bloqueur actif",
+  "blockerInactiveStatus": "Statut: Inactif",
+  "blockerRemaining": "Il reste {{hours}}h {{minutes}}min",
+  "blockerNoWindow": "Les pubs peuvent s'afficher a nouveau apres la fin d'un quiz"
   },"document": {
   "energyCost": "Coût en énergie : ",
   "selectedDocument": "Document sélectionné :",

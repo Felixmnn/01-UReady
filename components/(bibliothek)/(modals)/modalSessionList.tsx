@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import uuid from "react-native-uuid";
 import { useTranslation } from "react-i18next";
 import ModalEditSession from "./modalEditSession";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ModalSessionList = ({
   isVisible,
@@ -31,12 +32,12 @@ const ModalSessionList = ({
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       {isVisible ? (
-        <View
+        <SafeAreaView
           className="absolute top-0 left-0 h-full w-full  justify-center items-center p-2"
           style={{ backgroundColor: "rgba(17, 24, 39,0.7)" }}
         >
           <View
-            className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl  min-w-[300px]`}
+            className={`p-4 bg-gray-800 border-gray-700 border-[1px] rounded-xl  min-w-[300px] max-h-[80%]`}
           >
             <ScrollView >
               <View className="flex-row items-center justify-between">
@@ -165,7 +166,7 @@ const ModalSessionList = ({
               </TouchableOpacity>
             </ScrollView>
           </View>
-        </View>
+        </SafeAreaView>
       ) : null}
     </Modal>
   );

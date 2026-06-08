@@ -43,7 +43,7 @@ const StepSeven = () => {
     <View className="h-full w-full justify-center items-center py-5 flex-row">
       <Image
         source={require("@/assets/images/icon.png")}
-        style={{ width: 100, height: 100, marginBottom: 20 }}
+        style={{ width: 200, height: 200, marginBottom: 20 }}
       />
     </View>
   );

@@ -26,9 +26,21 @@ const QuizResult = ({
   done?: () => void;
 }) => {
   const { t } = useTranslation();
-  const { subscriptionStatus } = useGlobalContext();
+  const { subscriptionStatus, userUsage } = useGlobalContext();
   type DisplayMode = "hidden" | "wrong_shown" | "right_shown";
   const [displayMode, setDisplayMode] = useState<DisplayMode>("hidden");
+
+  const hasActiveCommercialWindow = React.useMemo(() => {
+    const commercials = userUsage?.watchedComercials;
+    if (!Array.isArray(commercials) || commercials.length === 0) return false;
+
+    const now = Date.now();
+    return commercials.some((value: unknown) => {
+      if (typeof value !== "string") return false;
+      const parsed = new Date(value).getTime();
+      return !Number.isNaN(parsed) && parsed > now;
+    });
+  }, [userUsage?.watchedComercials]);
 
   // Memoize the results to avoid unnecessary re-renders
   const Results = React.useMemo(() => {
@@ -230,7 +242,7 @@ const QuizResult = ({
               !!expiry &&
               new Date(expiry) > now &&
               subscriptionStatus?.status === "active";
-            if (showInterstitial && intestialIsLoaded && !isActive) {
+            if (showInterstitial && intestialIsLoaded && !isActive && !hasActiveCommercialWindow) {
               showInterstitial.show();
             }
             if (done) done();

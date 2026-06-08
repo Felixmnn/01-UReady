@@ -146,7 +146,7 @@ const CreateModule = ({
       />
       <View className="w-full">
         <View className="flex-row justify-between items-center">
-          {goBackVisible ? (
+          {goBackVisible && false ? (
             <TouchableOpacity
               className="m-2 flex-row items-center"
               onPress={() => setUserChoices(null)}
@@ -358,7 +358,16 @@ const CreateModule = ({
                 });
                 setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
                 const resp = await setUserDataSetup(user.$id);
+                console.log("Module created with ID:", res);  
+                if (resp && resp.$id) {
+
+                router.push({
+                          pathname: "/bibliothek",
+                          params: { selectedModuleId: resp.$id },
+                    });
+                } else {
                 router.push("/bibliothek");
+                }
               }}
               containerStyles="w-full rounded-[10px] bg-blue-500"
               disabled={newModule?.name.length < 3}

@@ -1877,7 +1877,17 @@
      },"ad":{
       "watchAd": "Werbung ansehen",
       "get1EnergyFree": "Erhalte 1 Energie kostenlos",
-      "watch": "Ansehen"
+        "watch": "Ansehen",
+        "offline": "Offline",
+        "blockerTitle": "Werbeblocker",
+        "blockerInactiveDescription": "Schaue dir eine kurze Werbung an und erhalte 2 Stunden keine weitere Werbung mehr.",
+        "blockerActiveDescription": "Schaue dir eine kurze Werbung an und verlaengere deinen Werbeblocker um 2 Stunden.",
+        "blockerWatch": "Werbung ansehen",
+        "blockerExtend": "Blocker verlaengern",
+        "blockerActiveStatus": "Werbeblocker aktiv",
+        "blockerInactiveStatus": "Status: Nicht aktiv",
+        "blockerRemaining": "Noch {{hours}}h {{minutes}}min verbleibend",
+        "blockerNoWindow": "Aktuell wird nach Quiz-Ende wieder Werbung angezeigt"
      },
      "document": {
   "energyCost": "Energiekosten: ",

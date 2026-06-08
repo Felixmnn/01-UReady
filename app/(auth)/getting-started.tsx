@@ -162,11 +162,11 @@ const gettingStarted = () => {
       }}
     > 
     
-      {userChoices == null || false ? (
+      {userChoices == null && false ? (
         <PageOptions
           setUserChoices={setUserChoices}
         />
-      ) : userChoices == "GENERATE" && userCathegory ? (
+      ) : true ||  userChoices == "GENERATE" && userCathegory  ? (
         <PageAiCreate
           tutorialStep={tutorialStepAI}
           setTutorialStep={setTutorialStepAI}

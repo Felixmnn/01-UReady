@@ -148,6 +148,7 @@ function calculatePercent(questions:string[]){
               <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
                 <Karteikarte
                   handlePress={async () => {
+                    setSelected("SingleModule");
                     const newUserUsage = returnNewLastModule(userUsage.lastModules || [], {
                       name: item.name,
                       percent: Number.isInteger(calculatePercent(item.questionList)) ? calculatePercent(item.questionList) : 0,
@@ -160,7 +161,6 @@ function calculatePercent(questions:string[]){
                       ...userUsage,
                       lastModules: newUserUsage
                     });
-                    setSelected("SingleModule");
                     const moduleSessions = item.sessions.map(s => JSON.parse(s));
                     setSelectedModule(index);
                   }}

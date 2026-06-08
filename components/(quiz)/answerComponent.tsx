@@ -52,7 +52,7 @@ const AnswerComponent = ({
     if (text.includes('"}')){
       text = text.replace('"}', '');
     }
-    
+    text = text.replace(/(?:option|answer)"\s*:\s*"/g, "");
     return text.replace("❌","").replace("✅","");
 
   }

@@ -1927,7 +1927,17 @@
   "ad": {
     "watchAd": "Watch ad",
     "get1EnergyFree": "Get 1 energy for free",
-    "watch": "Watch"
+    "watch": "Watch",
+    "offline": "Offline",
+    "blockerTitle": "Ad blocker",
+    "blockerInactiveDescription": "Watch a short ad and get 2 hours without additional ads.",
+    "blockerActiveDescription": "Watch a short ad to extend your ad blocker by 2 hours.",
+    "blockerWatch": "Watch ad",
+    "blockerExtend": "Extend blocker",
+    "blockerActiveStatus": "Ad blocker active",
+    "blockerInactiveStatus": "Status: Not active",
+    "blockerRemaining": "{{hours}}h {{minutes}}min remaining",
+    "blockerNoWindow": "Ads can be shown again after finishing a quiz"
   },
    "document": {
     "energyCost": "Energy Cost: ",

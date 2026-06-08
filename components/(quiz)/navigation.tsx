@@ -4,8 +4,10 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { tryBack } from "@/functions/(quiz)/helper";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Navigation = ({
+  moduleID,
   quizType,
   timeLimit,
   startTime,
@@ -19,6 +21,7 @@ const Navigation = ({
   intestialIsLoaded,
   amountAnswered
 }: {
+  moduleID: string;
   quizType: "infinite" | "limitedFixed" | "limitedAllCorrect" | "limitedTime" ;
   timeLimit?: number;
   startTime?: string;
@@ -38,6 +41,20 @@ const Navigation = ({
 
 }) => {
   const { t } = useTranslation();
+  const { userUsage } = useGlobalContext();
+
+  const hasActiveCommercialWindow = React.useMemo(() => {
+    const commercials = userUsage?.watchedComercials;
+    if (!Array.isArray(commercials) || commercials.length === 0) return false;
+
+    const now = Date.now();
+    return commercials.some((value: unknown) => {
+      if (typeof value !== "string") return false;
+      const parsed = new Date(value).getTime();
+      return !Number.isNaN(parsed) && parsed > now;
+    });
+  }, [userUsage?.watchedComercials]);
+
   //Function that returns the percentage of each status
   const questionSegmentation = ({ questionList }: { questionList: any[] }) => {
     let bad = 0;
@@ -119,7 +136,14 @@ const Navigation = ({
         <View className="flex-row items-center justify-between w-full">
           <TouchableOpacity className="items-center justify-center" onPress={() => {
             if (amountAnswered < 5) {
-              tryBack(router)
+              if (moduleID.length > 0) {
+                router.replace({
+                        pathname: "/bibliothek",
+                        params: { selectedModuleId: moduleID },
+                })
+              } else {
+                router.replace("/bibliothek");
+              }
               return;
             }
             const expiry = subscriptionStatus?.expiry;
@@ -128,10 +152,17 @@ const Navigation = ({
               !!expiry &&
               new Date(expiry) > now &&
               subscriptionStatus?.status === "active";
-            if (showInterstitial && intestialIsLoaded && !isActive) {
+            if (showInterstitial && intestialIsLoaded && !isActive && !hasActiveCommercialWindow) {
               showInterstitial.show();
             }          
-            tryBack(router)
+             if (moduleID.length > 0) {
+                router.replace({
+                        pathname: "/bibliothek",
+                        params: { selectedModuleId: moduleID },
+                })
+              } else {
+                router.replace("/bibliothek");
+              }
           }}>
             <Icon name="arrow-left" size={20} color="white" />
           </TouchableOpacity>

@@ -116,9 +116,7 @@ const quiz = () => {
           StatusBar.setHidden(false);
         }
         setLoaded(false);
-        const interstitial = InterstitialAd.createAdUnitId(adUnitId);
-
-        interstitial.load();
+                interstitial.load();
       });
   
       // Start loading the interstitial straight away
@@ -590,7 +588,15 @@ const {t} = useTranslation()
                     moduleID ? (Array.isArray(moduleID) ? moduleID[0] : moduleID) : "",
                     questionList,
                 );
-                router.back()}}
+                if (moduleID) {
+                    router.push({
+                            pathname: "/bibliothek",
+                            params: { selectedModuleId: moduleID },
+                    })
+                } else {
+                    router.replace("/bibliothek");
+                }
+            }}
             containerStyles='mt-5 w-full max-w-[200px] px-10 bg-blue-600 rounded-full'
         />
     </SafeAreaView>
@@ -603,6 +609,7 @@ const {t} = useTranslation()
       <View className={`flex-1  w-full bg-[#0c111d]  ${isVertical ? "rounded-[10px] border-[1px] border-gray-600" : ""}`}>
 
         <Navigation
+            moduleID={moduleID || ""}
             amountAnswered={answeredCorrectly.length + answeredWrong.length}
             quizType={ (Array.isArray(quizType) ? quizType[0] : quizType) }
             timeLimit={timeLimit ? (Array.isArray(timeLimit) ? parseInt(timeLimit[0]) : parseInt(timeLimit)) : undefined}
@@ -688,7 +695,16 @@ const {t} = useTranslation()
                 intestialIsLoaded={loaded}
                 answeredCorrectly={answeredCorrectly}   
                 answeredWrong={answeredWrong}
-                done={() => router.back()}
+                done={() => {
+                    if (moduleID) {
+                    router.push({
+                            pathname: "/bibliothek",
+                            params: { selectedModuleId: moduleID },
+                    })
+                    } else {
+                        router.replace("/bibliothek");
+                    }
+                }}
                 tryAgain={tryAgain}
                 tryAgainNewQuestions={tryAgainNewQuestions}
             />

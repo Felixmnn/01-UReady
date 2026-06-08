@@ -1,45 +1,36 @@
-import { View, Text, TouchableOpacity, Modal, ScrollView, Platform } from "react-native";
-import React, { useEffect } from "react";
+import { View, ScrollView, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
 import InfoModule from "../(tabs)/infoModule";
-import OptionSelector from "../(tabs)/optionSelector";
 import { useWindowDimensions } from "react-native";
-import SettingsOption from "../(tabs)/settingsOption";
-import { useState } from "react";
-import CustomButton from "../(general)/customButton";
 import { updateUserName } from "@/lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
-import CustomTextInput1 from "../(general)/customTextInput1";
 import { loadUserData, loadUserDataKathegory } from "@/lib/appwriteDaten";
 import { setColorMode, setLanguage } from "@/lib/appwriteEdit";
 import SkeletonListProfile from "../(general)/(skeleton)/skeletonListProfile";
-import { TextInput } from "react-native-gesture-handler";
 import { useActionCode } from "@/lib/appwriteShop";
 import { useTranslation } from "react-i18next";
-import { AppwriteUserData, userDataKathegory } from "@/types/appwriteTypes";
+import { userDataKathegory } from "@/types/appwriteTypes";
 import i18n from "@/assets/languages/i18n";
 import { handleValidationCode } from "@/lib/appwriteEmailValidation";
-import Offline from "../(general)/offline";
-import ToggleSwitch from "../(general)/toggleSwich";
-import ProfileTagsSection from "../(general)/profileTagsSection";
 import {
   AppwritePublicProfile,
   getPublicProfile,
   updatePublicProfile,
   PublicEducationCategory,
 } from "@/lib/collections/publicProfile";
+import ProfileSettingsActionCodeModal from "./profileSettingsActionCodeModal";
+import ProfileSettingsFeedbackModal from "./profileSettingsFeedbackModal";
+import ProfileSettingsProfileSection from "./profileSettingsProfileSection";
+import ProfileSettingsEducationSection from "./profileSettingsEducationSection";
+import ProfileSettingsPreferencesSection from "./profileSettingsPreferencesSection";
+import ProfileSettingsActionsSection from "./profileSettingsActionsSection";
+import ProfileRewardedCommercial from "./profileRewardedCommercialEntry";
 
 const ProfileSettings = () => {
   const { t } = useTranslation();
   const { user, language, setNewLanguage, setUserUsage, isOffline } =
     useGlobalContext();
-  useEffect(() => {
-    if (language) {
-      setSelectedLanguage(language);
-    }
-  }, [language]);
-
-  const [userData, setUserData] = useState<AppwriteUserData | null | undefined>(null);
   const [userDataKathegory, setUserDataKathegory] =
     useState<userDataKathegory>();
   const [loading, setLoading] = useState(true);
@@ -58,7 +49,6 @@ const ProfileSettings = () => {
           : t("profileSettings.darkmode")
       );
 
-      setUserData(userData);
       const userDataKathegoryDoc = await loadUserDataKathegory(user.$id);
       const userDataKathegoryTyped: userDataKathegory | null =
         userDataKathegoryDoc as unknown as userDataKathegory;
@@ -135,33 +125,6 @@ const ProfileSettings = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const personalInput = (
-    value: string,
-    title: string,
-    onChange: (text: string) => void,
-    text = false
-  ) => {
-    return (
-      <TouchableOpacity className="flex-1 w-full mt-2">
-        <Text className="text-gray-300 font-bold text-[13px] ">{title}</Text>
-        {
-        isOffline ?
-        <Text className="text-white font-bold mx-2">
-          {value}
-        </Text> :
-        text ? (
-          <View className="m-1">
-            <Text className="text-gray-300 font-bold text-[13px] ml-3">
-              {value}
-            </Text>
-          </View>
-        ) : (
-          <CustomTextInput1 value={value} onChange={onChange} />
-        )}
-      </TouchableOpacity>
-    );
-  };
-
   const [actioncode, setActionCode] = useState("");
 
   async function toggleModal() {
@@ -207,118 +170,11 @@ const ProfileSettings = () => {
     setModalVisible(!modalVisible);
   }
 
-  const modal = () => {
-    return (
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        
-        <View className="flex-1 items-center justify-center p-2">
-          
-          <View
-            className="w-full max-w-[300px] items-center bg-gray-800 p-4 rounded-[10px] border border-[1px] border-gray-600"
-            style={{
-              height: 200,
-            }}
-          >
-            {
-          isOffline ?
-          <TouchableOpacity className="flex-1 " onPress={() => setModalVisible(false)}>
-           <Offline/>
-          </TouchableOpacity>
-          :
-            <View className="flex-1 w-full">
-            <Text className="text-white font-bold text-[15px] my-3">
-              {t("profileSettings.actioncodeText")}
-            </Text>
-            <TextInput
-              className="w-full bg-gray-700 text-gray-300 p-2 rounded-[10px] border border-gray-500"
-              placeholderTextColor="#808080"
-              value={actioncode}
-              onChangeText={(text) => setActionCode(text)}
-            />
-            <View className="flex-1 flex-row items-center justify-center">
-              <CustomButton
-                title={t("profileSettings.cancel")}
-                handlePress={() => setModalVisible(false)}
-                containerStyles={
-                  "w-[50%] bg-gray-800 mx-1 border-w-[1px] border-gray-500"
-                }
-              />
-              <CustomButton
-                title={t("profileSettings.ok")}
-                handlePress={toggleModal}
-                containerStyles={
-                  !isFocused && firstFocus && text == ""
-                    ? "w-[50%] bg-gray-700 mx-1 border-gray-700"
-                    : "w-[50%] bg-blue-500 mx-1"
-                }
-                textStyles={"text-gray-300"}
-                disabled={!isFocused && firstFocus && text == ""}
-              />
-            </View>
-            </View>
-  }
-          </View>
-        </View>
-  
-      </Modal>
-    );
-  };
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | number >("");
   const [successMessage, setSuccessMessage] = useState<string | number >("");
-  const [verifcationCode, setVerificationCode] = useState("");
-  const ErrorModal = () => {
-    const codes = {
-      100: t("passwordReset.100"),
-      101: t("passwordReset.101"),
-      102: t("passwordReset.102"),
-      103: t("passwordReset.103"),
-      500: t("passwordReset.500"),
-      501: t("passwordReset.501"),
-      502: t("passwordReset.502"),
-      503: t("passwordReset.503"),
-      504: t("passwordReset.504"),
-      505: t("passwordReset.505"),
-    }
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isError || isSuccess}
-        onRequestClose={() => {
-          setIsError(!isError);
-        }}
-      >
-        <TouchableOpacity
-          className="flex-1 justify-start pt-5 items-center"
-          onPress={() => {
-            setIsError(false);
-            setIsSccess(false);
-          }}
-        >
-          <View
-            className="red border-red-600 border-[1px] rounded-[10px] p-5 bg-red-700"
-            style={{
-              backgroundColor: isSuccess ? "green" : "#ff4d4d",
-              borderColor: isSuccess ? "green" : "#ff4d4d",
-            }}
-          >
-            <Text className="text-white font-bold text-gray-300">
-             {
-              isSuccess && typeof successMessage === "number" ? codes[successMessage as keyof typeof codes] : isSuccess && typeof successMessage === "string" ? successMessage : isError && typeof errorMessage === "number" ? codes[errorMessage as keyof typeof codes] : isError && typeof errorMessage === "string" ? errorMessage : null
-            }
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    );
-  };
+  const [verificationCode, setVerificationCode] = useState("");
 
   const [isFocused, setFocused] = useState(false);
   const [firstFocus, setFirstFocus] = useState(false);
@@ -347,11 +203,9 @@ const ProfileSettings = () => {
   ];
 
   async function updateLanguage(text: string) {
-    languageoptions.map((option) => {
-    })
     const i = languageoptions.findIndex((option) => option.label === text);
 
-    if (i == -1 ) return;
+    if (i == -1 || !user) return;
     setSelectedLanguage(languageoptions[i].value.toLowerCase());
     setNewLanguage(languageoptions[i].value.toLowerCase());
     await setLanguage(user.$id, languageoptions[i].value.toLowerCase());
@@ -361,7 +215,7 @@ const ProfileSettings = () => {
 
   async function updateColorMode(text: string | null) {
     setSelectedColorMode(text);
-    if (text !== null) {
+    if (text !== null && user) {
       await setColorMode(user.$id, text == "Hell" ? false : true);
     }
   }
@@ -370,11 +224,37 @@ const ProfileSettings = () => {
     : null;
   const schoolType = t(`school.type.${schoolTypeKey}.title`);
   const [ verified, setVerified ] = useState<boolean | null>(null);
+  const confirmDisabled = !isFocused && firstFocus && text == "";
+  const confirmContainerStyles = confirmDisabled
+    ? "w-[50%] bg-gray-700 mx-1 border-gray-700"
+    : "w-[50%] bg-blue-500 mx-1";
+
+  const closeFeedbackModal = () => {
+    setIsError(false);
+    setIsSccess(false);
+  };
+
+  if (!user) {
+    return (
+      <View className="flex-1 items-center">
+        <SkeletonListProfile />
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 items-center ">
       {!loading ? (
         <View className="flex-1 w-full items-center">
-          <ErrorModal />
+          <ProfileSettingsFeedbackModal
+            isError={isError}
+            isSuccess={isSuccess}
+            setIsError={setIsError}
+            setIsSuccess={setIsSccess}
+            errorMessage={errorMessage}
+            successMessage={successMessage}
+            t={t}
+          />
           <View
             className={`flex-1 w-full  rounded-[10px] bg-gray-900 ${isVertical ? "border-gray-500 border-[1px]" : null} `}
           >
@@ -383,316 +263,85 @@ const ProfileSettings = () => {
               <InfoModule
                 content={() => {
                   return (
-                    <View className="w-full items-center ">
-
-                      <View className="bg-blue-900 border-gray-500 border-[1px] rounded-full h-[60px] w-[60px] mr-3 items-center justify-center">
-                        <Text className="text-2xl text-gray-300 font-bold">
-                          {user.name[0]}
-                        </Text>
-                      </View>
-                      <View className="w-full mt-3 px-1 flex-row items-center justify-between pr-3">
-                          <Text className="text-gray-300 font-bold text-[13px]">
-                            {t("profileSettings.publicProfileIsPublic")}
-                          </Text>
-                          <ToggleSwitch
-                            isOn={publicProfile?.isPublic || false}
-                            onToggle={(newValue) =>
-                              updatePublicProfileField({ isPublic: newValue })
-                            }
-                          />
-                        </View>
-                       {personalInput(
-                          publicProfile?.name || user.name,
-                          t("profileSettings.vorname"),
-                          async (text) => {
-                            await updateUserName(text);
-                            await updatePublicProfileField({ name: text });
-                          }
-                        )}
-                        {personalInput(
-                          publicProfile?.bio || "",
-                          t("profileSettings.bio"),
-                          (text) => updatePublicProfileField({ bio: text })
-                        )}
-
-                        <View className="w-full mt-3 px-1">
-                          <ProfileTagsSection
-                            educationKategory={publicProfile?.educationKategory}
-                            badges={publicProfile?.badges}
-                            creatorName={publicProfile?.name || user.name}
-                          />
-                        </View>
-
-                    </View>
+                    <ProfileSettingsProfileSection
+                      t={t}
+                      userName={user.name}
+                      publicProfile={publicProfile}
+                      isOffline={isOffline}
+                      onTogglePublic={(newValue) =>
+                        updatePublicProfileField({ isPublic: newValue })
+                      }
+                      onUpdateName={async (text) => {
+                        await updateUserName(text);
+                        await updatePublicProfileField({ name: text });
+                      }}
+                      onUpdateBio={async (text) =>
+                        updatePublicProfileField({ bio: text })
+                      }
+                    />
                   )}}
                   hideHead={true}
                   header=""
               />
               <InfoModule
+                header=""
+                hideHead={true}
+                content={() => {
+                  return <ProfileRewardedCommercial />;
+                }}
+              />
+              <InfoModule
                 content={() => {
                   return (
-                    <View className="w-full items-center ">
-                        {/*
-                        {personalInput(
+                    <ProfileSettingsEducationSection
+                      t={t}
+                      user={{
+                        $id: user.$id,
+                        email: user.email,
+                        emailVerification: user.emailVerification,
+                      }}
+                      isVertical={isVertical}
+                      isOffline={isOffline}
+                      verified={verified}
+                      verificationCode={verificationCode}
+                      setVerificationCode={setVerificationCode}
+                      onRenewEmail={async () => {
+                        const res = await handleValidationCode(user.email);
+                        if (res && res.code === 100) {
+                          setSuccessMessage(100);
+                          setIsSccess(true);
+                        } else {
+                          setErrorMessage(res.code);
+                          setIsError(true);
+                        }
+                      }}
+                      onVerifyEmailCode={async () => {
+                        const res = await handleValidationCode(
                           user.email,
-                          t("profileSettings.email"),
-                          (text) => updateUserEmail(text),
-                          true
-                        )}*/}
-                      {!user.emailVerification && (verified == null ||verified === false)
-                        ? (
-                        <View
-                          className={`${isVertical ? "flex-row w-[96%] justify-between items-center" : "justify-start items-start"} py-2 `}
-                        >
-                          <Text className="text-red-300 font-bold text-[12px]">
-                            {t("profileSettings.emailvalid")}
-                          </Text>
-                          <View className="flex-row items-center">
-                            <TouchableOpacity
-                              className="py-2 px-3 m-2 rounded-full border-gray-500 border-[1px]"
-                              onPress={async() => {
-                                const res = await handleValidationCode(user.email);
-                                if (res && res.code === 100) {
-                                  setSuccessMessage(100);
-                                  setIsSccess(true);
-                                } else {
-                                  setErrorMessage(res.code);
-
-                                  setIsError(true);
-                                }
-
-                              }}
-                            >
-                              <Text className="text-gray-300 font-bold text-[12px]">
-                                {t("profileSettings.emailrenew")}
-                              </Text>
-                            </TouchableOpacity>
-                                                      
-                            </View>
-                            <View className="flex-row items-center">
-                            <TextInput 
-                              placeholder={t("profileSettings.validationCode")}
-                              className="flex-1 bg-gray-800 text-white p-2 rounded-[10px] border border-gray-600  text-[12px]"
-                              placeholderTextColor="#808080"
-                              value={verifcationCode}
-                              onChangeText={setVerificationCode}
-                              />   
-                            <TouchableOpacity
-                              disabled={verifcationCode.length != 6}
-                              onPress={async() => {
-                                const res = await handleValidationCode(user.email, verifcationCode,user.$id);
-                               if (res && res.code === 101) {
-                                  setVerified(true);
-                                  setSuccessMessage(101);
-                                  setIsSccess(true);
-                                } else {
-                                  setVerified(false);
-                                  setErrorMessage(res.code);
-                                  setIsError(true);
-                                }
-                              }}
-                              className="flex-1 py-2 px-3 m-2 rounded-full bg-blue-500 items-center justify-center"
-                              style={{
-                                opacity: verifcationCode.length != 6 ? 0.5 : 1,
-                              }}
-                            >
-                              <Text className="text-gray-300 font-bold text-[12px]">
-                                {t("profileSettings.verify")}
-                              </Text>
-                            </TouchableOpacity>
-                            </View>
-                        </View>
-                      ) : (
-                        <View className="w-full m-2 px-2">
-                          <Text>
-                            <Text className="text-green-300 font-bold text-[12px]">
-                              {t("profileSettings.emailvalid2")}
-                            </Text>
-                          </Text>
-                        </View>
-                      )}
-
-                      <View className="justify-start w-full">
-                        {userDataKathegory &&
-                        userDataKathegory.kategoryType == "UNIVERSITY" ? (
-                          <View className="w-full">
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.universityEducationGoals")}
-                            </Text>
-                            <Text className="font-semibold text-white ml-2">
-                              {t(
-                                `universityCategories.degrees.${userDataKathegory.studiengangZiel}.name`
-                              )}
-                            </Text>
-
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.universityCategories")}
-                            </Text>
-                            <View>
-                              {userDataKathegory.schoolSubjects.map(
-                                (schoolSubjects, index) => {
-                                  return (
-                                    <Text
-                                      key={index}
-                                      className="font-semibold text-white ml-2"
-                                    >
-                                      {t(
-                                        `universityCategories.universitySubjects.${schoolSubjects}.name`
-                                      )}
-                                    </Text>
-                                  );
-                                }
-                              )}
-                            </View>
-                          </View>
-                        ) : userDataKathegory &&
-                          userDataKathegory.kategoryType == "SCHOOL" ? (
-                          <View className="w-full">
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.schooltype")}
-                            </Text>
-                            <Text className="font-semibold text-white ml-2">
-                              {schoolType}
-                            </Text>
-
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.schoolgrade")}
-                            </Text>
-                            <Text className="font-semibold text-white ml-2">
-                              {userDataKathegory.schoolGrade}
-                            </Text>
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.schoolsubjects")}
-                            </Text>
-                            <View>
-                              {userDataKathegory.schoolSubjects.map(
-                                (schoolSubjects, index) => {
-                                  return (
-                                    <Text
-                                      key={index}
-                                      className="font-semibold text-white ml-2"
-                                    >
-                                      {t(
-                                        `school.subjects.${schoolSubjects}.name`
-                                      )}
-                                    </Text>
-                                  );
-                                }
-                              )}
-                            </View>
-                          </View>
-                        ) : userDataKathegory &&
-                          userDataKathegory.kategoryType == "EDUCATION" ? (
-                          <View className="w-full">
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.educationKathegory")}
-                            </Text>
-                            <Text className="font-semibold text-white ml-2">
-                              {t(
-                                `education.educationKategories.${userDataKathegory.educationKathegory}.name`
-                              )}
-                            </Text>
-
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.educationSubject")}
-                            </Text>
-                            <Text className="font-semibold text-white ml-2">
-                              {t(
-                                `education.educationSubjects.${userDataKathegory.educationKathegory}.${userDataKathegory.educationSubject}.name`
-                              )}
-                            </Text>
-                          </View>
-                        ) : (
-                          <View className="w-full">
-                            <Text
-                              className="font-semibold text-white text-gray-500  "
-                              style={{
-                                color: "#808080",
-                              }}
-                            >
-                              {t("profileSettings.schoolsubjects")}
-                            </Text>
-                            <View>
-                              {userDataKathegory &&
-                                userDataKathegory.schoolSubjects.map(
-                                  (schoolSubjects, index) => {
-                                    return (
-                                      <Text
-                                        key={index}
-                                        className="font-semibold text-white ml-2"
-                                      >
-                                        {t(
-                                          `school.subjects.${schoolSubjects}.name`
-                                        )}
-                                      </Text>
-                                    );
-                                  }
-                                )}
-                            </View>
-                          </View>
-                        )}
-                        <View className="justify-start w-full items-start">
-                          <TouchableOpacity
-                            disabled={isOffline}
-                            className={`mt-3 mb-1 py-1 px-2 rounded-full border ${isOffline ? "border-gray-500" : "border-blue-500"} items-center justify-center`}
-                            onPress={() =>
-                              router.push({
-                                pathname: "/personalize",
-                                params: {
-                                  editEducationGoals: "true",
-                                },
-                              })
-                            }
-                          > 
-                          {
-                            isOffline ?
-                            <Text className="text-gray-500 font-bold text-[12px]">
-                              {t("profileSettings.goOnlineToEdit")}
-                            </Text>
-                            :
-                            <Text className="text-blue-500 font-bold">
-                              {t("profileSettings.editEducationGoals")}
-                            </Text>
-                          }
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </View>
+                          verificationCode,
+                          user.$id
+                        );
+                        if (res && res.code === 101) {
+                          setVerified(true);
+                          setSuccessMessage(101);
+                          setIsSccess(true);
+                        } else {
+                          setVerified(false);
+                          setErrorMessage(res.code);
+                          setIsError(true);
+                        }
+                      }}
+                      userDataKathegory={userDataKathegory}
+                      schoolType={schoolType}
+                      onPressEditEducationGoals={() =>
+                        router.push({
+                          pathname: "/personalize",
+                          params: {
+                            editEducationGoals: "true",
+                          },
+                        })
+                      }
+                    />
                   );
                 }}
                 header=""
@@ -702,24 +351,17 @@ const ProfileSettings = () => {
                 header=""
                 content={() => {
                   return (
-                    <View className="w-full items-start">
-                      <OptionSelector
-                        title={t("profileSettings.colorMode")}
-                        options={colorOptions}
-                        selectedValue={selectedColorMode}
-                        setSelectedValue={setSelectedColorMode}
-                        onChangeItem={updateColorMode}
-                      />
-                      <OptionSelector
-                        title={t("profileSettings.language")}
-                        options={languageoptions}
-                        selectedValue={
-                          languageoptions.find((option) => option.value === selectedLanguage)?.label ?? "Deutsch"
-                        }
-                        setSelectedValue={setSelectedLanguage}
-                        onChangeItem={updateLanguage}
-                      />
-                    </View>
+                    <ProfileSettingsPreferencesSection
+                      t={t}
+                      colorOptions={colorOptions}
+                      selectedColorMode={selectedColorMode}
+                      setSelectedColorMode={setSelectedColorMode}
+                      onChangeColor={updateColorMode}
+                      languageOptions={languageoptions}
+                      selectedLanguage={selectedLanguage}
+                      setSelectedLanguage={setSelectedLanguage}
+                      onChangeLanguage={updateLanguage}
+                    />
                   );
                 }}
                 hideHead={true}
@@ -730,44 +372,29 @@ const ProfileSettings = () => {
                 header=""
                 content={() => {
                   return (
-                    <View>
-                      <SettingsOption
-                        title={t("profileSettings.help")}
-                        iconName={"life-ring"}
-                        handlePress={() => router.push("/contact")}
-                      />
-                      <SettingsOption
-                        title={t("profileSettings.policys")}
-                        iconName={"shield-alt"}
-                        handlePress={() => router.push("/policys")}
-                      />
-                      { isOffline || Platform.OS == "ios" ? null :
-                      <SettingsOption
-                        title={t("profileSettings.actioncode")}
-                        iconName={"bolt"}
-                        item={modal()}
-                        handlePress={() => setModalVisible(true)}
-                      />
-                }
-                      {
-                        isOffline ? null :
-                      <SettingsOption
-                        title={t("profileSettings.logout")}
-                        iconName={"sign-out-alt"}
-                        handlePress={() => router.push("/sign-out")}
-                      />
+                    <ProfileSettingsActionsSection
+                      t={t}
+                      isOffline={isOffline}
+                      actionCodeItem={
+                        <ProfileSettingsActionCodeModal
+                          visible={modalVisible}
+                          onClose={() => setModalVisible(false)}
+                          isOffline={isOffline}
+                          t={t}
+                          actioncode={actioncode}
+                          setActionCode={setActionCode}
+                          onConfirm={toggleModal}
+                          isFocused={isFocused}
+                          firstFocus={firstFocus}
+                          text={text}
+                        />
                       }
-                      {
-                        isOffline ? null :
-                      <SettingsOption
-                        title={t("profileSettings.deleteAccount")}
-                        iconName="trash"
-                        bottom={true}
-                        handlePress={() => router.push("/delete-account")}
-                      />
-                }
-                
-                    </View>
+                      onPressContact={() => router.push("/contact")}
+                      onPressPolicys={() => router.push("/policys")}
+                      onPressActionCode={() => setModalVisible(true)}
+                      onPressLogout={() => router.push("/sign-out")}
+                      onPressDeleteAccount={() => router.push("/delete-account")}
+                    />
                   );
                 }}
                 hideHead={true}

@@ -1,0 +1,186 @@
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
+import { AdEventType, RewardedAd, RewardedAdEventType } from "react-native-google-mobile-ads";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { useTranslation } from "react-i18next";
+
+const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+
+const parseTimestamp = (value: unknown): number | null => {
+  if (typeof value !== "string") return null;
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? null : time;
+};
+
+const getActiveEndTimestamp = (timestamps: unknown[]): number | null => {
+  const now = Date.now();
+  let max = now;
+  let foundFuture = false;
+
+  for (const item of timestamps) {
+    const parsed = parseTimestamp(item);
+    if (parsed && parsed > max) {
+      max = parsed;
+      foundFuture = true;
+    }
+  }
+
+  return foundFuture ? max : null;
+};
+
+const ProfileRewardedCommercial = () => {
+  const { t } = useTranslation();
+  const { userUsage, setUserUsage, isOffline } = useGlobalContext();
+
+  const adUnitId =
+    Platform.OS === "android"
+      ? "ca-app-pub-9834411851111627/7624634683"
+      : "ca-app-pub-9834411851111627/7503014052";
+
+  const rewardedRef = useRef(RewardedAd.createForAdRequest(adUnitId));
+  const [loaded, setLoaded] = useState(false);
+  const [nowMs, setNowMs] = useState(Date.now());
+
+  const watchedComercials = useMemo(() => {
+    if (!userUsage || !Array.isArray(userUsage.watchedComercials)) return [];
+    return userUsage.watchedComercials;
+  }, [userUsage]);
+
+  const activeEndTimestamp = useMemo(
+    () => getActiveEndTimestamp(watchedComercials),
+    [watchedComercials]
+  );
+
+  const hasActiveWindow = activeEndTimestamp !== null;
+
+  const remainingMinutes = useMemo(() => {
+    if (!activeEndTimestamp) return 0;
+    const remaining = activeEndTimestamp - nowMs;
+    if (remaining <= 0) return 0;
+    return Math.ceil(remaining / 60000);
+  }, [activeEndTimestamp, nowMs]);
+
+  const remainingSeconds = useMemo(() => {
+    if (!activeEndTimestamp) return 0;
+    const remaining = activeEndTimestamp - nowMs;
+    if (remaining <= 0) return 0;
+    return Math.ceil(remaining / 1000);
+  }, [activeEndTimestamp, nowMs]);
+
+  const remainingHours = Math.floor(remainingMinutes / 60);
+  const remainingDisplayMinutes = remainingMinutes % 60;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNowMs(Date.now());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const rewarded = rewardedRef.current;
+
+    const unsubscribeLoaded = rewarded.addAdEventListener(
+      RewardedAdEventType.LOADED,
+      () => {
+        setLoaded(true);
+      }
+    );
+
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      () => {
+        setUserUsage((prev: any) => {
+          if (!prev) return prev;
+
+          const existing = Array.isArray(prev.watchedComercials)
+            ? prev.watchedComercials
+            : [];
+
+          const currentEnd = getActiveEndTimestamp(existing);
+          const baseTime = currentEnd && currentEnd > Date.now() ? currentEnd : Date.now();
+          const nextEnd = baseTime + TWO_HOURS_MS;
+
+          return {
+            ...prev,
+            watchedComercials: [...existing, new Date(nextEnd).toISOString()],
+          };
+        });
+      }
+    );
+
+    const unsubscribeClosed = rewarded.addAdEventListener(
+      AdEventType.CLOSED,
+      () => {
+        setLoaded(false);
+        rewarded.load();
+      }
+    );
+
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+      unsubscribeClosed();
+    };
+  }, [setUserUsage]);
+
+  const onWatchAd = () => {
+    if (!loaded || isOffline) return;
+    try {
+      rewardedRef.current.show();
+    } catch {
+      rewardedRef.current.load();
+    }
+  };
+
+  return (
+    <View className="w-full rounded-[10px] p-2">
+      <Text className="text-gray-200 font-bold text-[14px] mb-1">
+        {t("ad.blockerTitle")}
+      </Text>
+      <Text className="text-gray-300 text-[12px] mb-1">
+        {remainingMinutes > 0
+          ? t("ad.blockerActiveDescription")
+          : t("ad.blockerInactiveDescription")}
+      </Text>
+      
+
+      <TouchableOpacity
+        className={`rounded-[10px] px-4 py-2 mt-2 items-center ${!loaded || isOffline ? "bg-gray-600" : "bg-blue-700"}`}
+        disabled={!loaded || isOffline}
+        onPress={onWatchAd}
+      >
+        <Text className="text-white font-bold">
+          {isOffline
+            ? t("ad.offline")
+            : loaded
+              ? hasActiveWindow
+                ? t("ad.blockerExtend")
+                : t("ad.blockerWatch")
+              : t("shop.loadingAds")}
+        </Text>
+      </TouchableOpacity>
+    
+      {remainingMinutes > 0 && (
+      <View className={`mt-3 rounded-[10px] px-3 py-2 ${hasActiveWindow ? "bg-green-900" : "bg-gray-800"}`}>
+        <Text className={`text-[12px] font-semibold ${hasActiveWindow ? "text-green-200" : "text-gray-300"}`}>
+          {hasActiveWindow ? t("ad.blockerActiveStatus") : t("ad.blockerInactiveStatus")}
+        </Text>
+        <Text className="text-gray-300 text-[12px] mt-1">
+          {remainingMinutes > 0
+            ? t("ad.blockerRemaining", {
+                hours: remainingHours,
+                minutes: remainingDisplayMinutes,
+              })
+            : t("ad.blockerNoWindow")}
+        </Text>
+      </View>
+        )}
+    </View>
+  );
+};
+
+export default ProfileRewardedCommercial;

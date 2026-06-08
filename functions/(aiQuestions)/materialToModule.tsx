@@ -215,17 +215,29 @@ export async function materialToModule({
         console.log("Error updating user data:", error);
       }
     }
-  } catch (error) {
-    if (__DEV__) {
-      console.log("Error in materialToModule:", error);
-    }
-  } finally {
     setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
     if (setIsVisibleModal) {
       setIsVisibleModal(false);
     }
     setLoading(false);
-    router.push("/bibliothek");
+     if (resMod && resMod.$id) {
+      router.push({
+                pathname: "/bibliothek",
+                params: { selectedModuleId: resMod.$id },
+          });} else {
+            router.push("/bibliothek");
+          }
+  } catch (error) {
+    setReloadNeeded([...reloadNeeded, "BIBLIOTHEK"]);
+    if (setIsVisibleModal) {
+      setIsVisibleModal(false);
+    }
+        router.push("/bibliothek");
+
+    setLoading(false);
+    if (__DEV__) {
+      console.log("Error in materialToModule:", error);
+    }
   }
 }
 

@@ -109,7 +109,7 @@ const StepThree = ({
   return (
     <View className="h-full  w-full justify-between items-center py-5">
       <ProgressBar
-        percent={40}
+        percent={!editing ? 90 :40}
         handlePress={() => {
           if (editing) {
             router.replace("/profil");

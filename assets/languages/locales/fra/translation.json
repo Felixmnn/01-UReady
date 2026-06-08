@@ -454,6 +454,14 @@
     "letUsCreate": "Créons ensemble ton premier module !"
    
   },
+  "tutorialFirstAIModule": {
+    "createFirstStudySet": "Créons ton premier ensemble d'étude !",
+    "startWithNameAndDescription": "Commençons par un nom et une description.",
+    "addMaterialForStudySet": "Ajoute maintenant du contenu, et je créerai ton ensemble d'étude à partir de celui-ci.",
+    "creatingStudySet": "Donne-moi un instant pour créer ton ensemble d'étude...",
+    "funFactOfflineUse": "Info utile : une fois créé, ton ensemble d'étude peut être utilisé hors ligne à tout moment.",
+    "publicDiscoverNote": "Si ton ensemble d'étude est public, d'autres utilisateurs peuvent y accéder via Découvrir."
+  },
   "tutorialModule": {
     "letUsCreate": "Créons ensemble ton premier module !"
 
@@ -495,6 +503,7 @@
     "transformData": "Questions à partir de questions",
     "noMaterialAdded": "Ici, tu verras sur quelle base tes questions seront générées...",
     "generateModule": "Générer le module",
+    "fits": "C'est bon",
     "materials": "Matériel pour les questions",
     "moreOptions": "Plus d’options",
     "lessOptions": "Moins d’options",

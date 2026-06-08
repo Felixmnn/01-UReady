@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { Session, UserData } from "@/types/moduleTypes";
 import CustomButton from "../customButton";
 import { module } from "@/types/appwriteTypes";
+import GratisPremiumButton from "../gratisPremiumButton";
 
 const CreateModule = ({
   newModule,
@@ -30,6 +31,10 @@ const CreateModule = ({
   setSelectedColor,
   hideCreateButton = false,
   setSelectedSession,
+  isTutorial = false,
+  tutorialStep,
+  setShowNext,
+  showNext,
 }: {
   newModule: module;
   setNewModule: React.Dispatch<React.SetStateAction<module>>;
@@ -43,6 +48,10 @@ const CreateModule = ({
   setSelectedColor: React.Dispatch<React.SetStateAction<string>>;
   hideCreateButton?: boolean;
   setSelectedSession: React.Dispatch<React.SetStateAction<Session | null>>;
+  isTutorial?: boolean;
+  tutorialStep?: number;
+  setShowNext?: React.Dispatch<React.SetStateAction<boolean>>;
+  showNext?: boolean;
 }) => {
   // Lokale States
   const { t } = useTranslation();
@@ -215,11 +224,9 @@ const CreateModule = ({
               placeholderTextColor="#AAAAAA"
             />
           </View>
+          
         </View>
-
-        {showMore && (
-          <View className="felx-1">
-            {/* Beschreibung */}
+        {/* Beschreibung */}
             <View className="">
               <View className="flex-row justify-between items-center pr-2">
                 <Text className="text-gray-300 font-semibold text-[15px]">
@@ -241,6 +248,21 @@ const CreateModule = ({
                 className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px]"
               />
             </View>
+        {
+          isTutorial && newModule?.name?.length > 3 && newModule?.description?.length > 3 && !showNext && (
+            <GratisPremiumButton
+            aditionalStyles="w-full rounded-lg mx-3  bg-blue-500"
+            handlePress={() => setShowNext && setShowNext(true)}  >
+              <Text className="text-sm text-gray-300">
+                {t("createModule.fits")}
+              </Text>
+            </GratisPremiumButton>
+          )
+        }
+
+        {showMore && (
+          <View className="felx-1">
+            
 
             {/* Farbe */}
             <View className=" items-start">
@@ -322,6 +344,7 @@ const CreateModule = ({
             </View>
           </View>
         )}
+        { !isTutorial ?
         <TouchableOpacity
           className="flex-row items-center justify-start  mx-2 my-1"
           onPress={() => setShowMore(!showMore)}
@@ -332,6 +355,7 @@ const CreateModule = ({
               : t("createModule.moreOptions")}
           </Text>
         </TouchableOpacity>
+        : null}
         {/* Button zum Generieren des Moduls */}
         {!hideCreateButton && (
           <View className="mx-2 mt-2  px-2">
@@ -361,12 +385,12 @@ const CreateModule = ({
                 console.log("Module created with ID:", res);  
                 if (resp && resp.$id) {
 
-                router.push({
+                router.replace({
                           pathname: "/bibliothek",
                           params: { selectedModuleId: resp.$id },
                     });
                 } else {
-                router.push("/bibliothek");
+                router.replace("/bibliothek");
                 }
               }}
               containerStyles="w-full rounded-[10px] bg-blue-500"

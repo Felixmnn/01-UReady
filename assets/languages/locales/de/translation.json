@@ -452,6 +452,14 @@
   "tutorialFirstModule": {
     "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!"
   },
+  "tutorialFirstAIModule": {
+    "createFirstStudySet": "Lass uns dein erstes Lernset erstellen!",
+    "startWithNameAndDescription": "Fangen wir mit einem Namen und einer Beschreibung an.",
+    "addMaterialForStudySet": "Füge nun Material hinzu, aus diesem erstelle ich dann dein Lernset.",
+    "creatingStudySet": "Gib mir einen Moment um dein Lernset zu erstellen...",
+    "funFactOfflineUse": "Fun Fact: Nachdem ein Lernset erstellt wurde, kannst du es jederzeit offline verwenden",
+    "publicDiscoverNote": "Ist dein Lernset auf Öffentlich gestellt, können andere Nutzer über die Entdecken Funktion darauf zugreifen."
+  },
   "tutorialModule": {
     "letUsCreate": "Lass uns gemeinsam dein erstes Modul erstellen!"
   },
@@ -491,6 +499,7 @@
     "transformData": "Fragen aus Fragen",
     "noMaterialAdded": "Hier siehst du dann auf welcher Grundlage deine Fragen generiert werden...",
     "generateModule": "Modul generieren",
+    "fits": "Passt",
     "materials": "Material für Fragen",
     "moreOptions": "Mehr Optionen",
     "lessOptions": "Weniger Optionen",

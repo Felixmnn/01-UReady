@@ -19,9 +19,11 @@ const TutorialFirstModule = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={isVisible && tutorialStep < 1}
+      visible={isVisible && tutorialStep < 2}
       onRequestClose={() => {
-        setIsVisible(false);
+        if (tutorialStep < 2) {
+          setIsVisible(false); 
+        }
       }}
     >
       <TouchableOpacity
@@ -33,6 +35,10 @@ const TutorialFirstModule = ({
       >
         {tutorialStep === 0 ? (
           <RobotWihtMessage message={t("tutorialFirstModule.letUsCreate")} />
+        ) : tutorialStep === 1 ? (
+          <RobotWihtMessage message={"Let's start with a name and a description"} />
+        ) : tutorialStep === 2 ? (
+          <RobotWihtMessage message={"Now add what you want to include in your study set"} />
         ) : null}
       </TouchableOpacity>
     </Modal>

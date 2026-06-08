@@ -452,6 +452,14 @@
   "tutorialFirstModule": {
     "letUsCreate": "¡Vamos a crear juntos tu primer módulo!"
   },
+  "tutorialFirstAIModule": {
+    "createFirstStudySet": "¡Vamos a crear tu primer set de estudio!",
+    "startWithNameAndDescription": "Empecemos con un nombre y una descripción.",
+    "addMaterialForStudySet": "Ahora añade material y a partir de él crearé tu set de estudio.",
+    "creatingStudySet": "Dame un momento para crear tu set de estudio...",
+    "funFactOfflineUse": "Dato curioso: una vez creado un set de estudio, puedes usarlo sin conexión en cualquier momento.",
+    "publicDiscoverNote": "Si tu set de estudio es público, otros usuarios pueden acceder a él mediante Descubrir."
+  },
   "tutorialModule": {
     "letUsCreate": "¡Vamos a crear juntos tu primer módulo!"
     },
@@ -491,6 +499,7 @@
     "transformData": "Preguntas a partir de preguntas",
     "noMaterialAdded": "Aquí verás sobre qué base se generarán tus preguntas...",
     "generateModule": "Generar módulo",
+    "fits": "Encaja",
     "materials": "Material para preguntas",
     "moreOptions": "Más opciones",
     "lessOptions": "Menos opciones",

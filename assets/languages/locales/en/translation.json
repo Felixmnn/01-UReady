@@ -451,6 +451,14 @@
   "tutorialFirstModule": {
     "letUsCreate": "Let's create your first module together!"
   },
+  "tutorialFirstAIModule": {
+    "createFirstStudySet": "Let's create your first study set!",
+    "startWithNameAndDescription": "Let's start with a name and a description.",
+    "addMaterialForStudySet": "Now add material and I will create your study set from it.",
+    "creatingStudySet": "Give me a moment to create your study set...",
+    "funFactOfflineUse": "Fun fact: Once a study set is created, you can use it offline at any time.",
+    "publicDiscoverNote": "If your study set is public, other users can access it via Discover."
+  },
   "tutorialModule": {
     "letUsCreate": "Let's create your first module together!"
   },
@@ -490,6 +498,7 @@
     "transformData": "Generate questions from questions",
     "noMaterialAdded": "Here you will see the basis on which your questions will be generated...",
     "generateModule": "Generate Module",
+    "fits": "Looks good",
     "materials": "Materials for questions",
     "moreOptions": "More Options",
     "lessOptions": "Less Options",

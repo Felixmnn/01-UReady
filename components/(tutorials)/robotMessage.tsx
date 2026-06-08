@@ -1,7 +1,7 @@
 import { View, Text, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 
-const RobotWihtMessage = ({ message }: { message: string }) => {
+const RobotWihtMessage = ({ message, type = "basic" }: { message: string; type?: "basic" | "search" }) => {
   const TypewriterText = ({
     text,
     speed = 50,
@@ -66,7 +66,7 @@ const RobotWihtMessage = ({ message }: { message: string }) => {
         />
       </View>
       <Image
-        source={require("../../assets/Waving.gif")}
+        source={type === "search" ? require("../../assets/Search.gif") : require("../../assets/Waving.gif")}
         className="w-full"
         style={{ height: 180, width: 150 }}
         resizeMode="contain"

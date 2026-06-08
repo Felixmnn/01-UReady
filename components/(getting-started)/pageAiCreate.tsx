@@ -31,6 +31,7 @@ import {
   UserUsage,
 } from "@/types/appwriteTypes";
 import Offline from "../(general)/offline";
+import RobotWihtMessage from "../(tutorials)/robotMessage";
 
 type Items = {
   type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
@@ -284,6 +285,19 @@ const PageAiCreate = ({
 
 
   if (isOffline) return <Offline/>
+
+
+  useEffect(() => {
+    console.log("Tutorial Step: ", tutorialStep, newModule.name, newModule.description);
+    if (tutorialStep == 2) {
+      if (newModule.name.length > 2 && newModule.description.length > 2) {
+        setTutorialVisible(true);
+      }
+    }
+  }, [newModule, tutorialStep]);
+
+  const [ showNext, setShowNext ] = useState(false);
+
   return (
     <ScrollView
       className={`flex-1 bg-gray-900 p-3   rounded-[10px] `}
@@ -304,13 +318,17 @@ const PageAiCreate = ({
         setIsVisible={setIsVisible}
       />
       <TutorialFirstAIModule
-        isVisible={tutorialVisible}
+        isVisible={(tutorialVisible && tutorialStep < 2) || (tutorialStep == 2 && newModule.name.length > 2 && newModule.description.length > 2 && showNext) || loading}
         setIsVisible={setTutorialVisible}
         setTutorialStep={setTutorialStep}
         tutorialStep={tutorialStep}
+        loading={loading}
+        descriptionAndNameFilled={newModule.name.length > 2 && newModule.description.length > 2 && showNext}
       />
-      <View className="w-full">
+      <View className="w-full flex-1">
         <CreateModule
+        isTutorial={true}
+        tutorialStep={tutorialStep}
           newModule={{
             ...newModule,
             releaseDate:
@@ -330,8 +348,12 @@ const PageAiCreate = ({
           goBackVisible={goBackVisible}
           hideCreateButton={true}
           setSelectedSession={setSelectedSession}
+          setShowNext={setShowNext}
+          showNext={showNext}
         />
       </View>
+      
+      { tutorialStep > 2 ? (
       <View className=" m-2">
         <MaterialInput
           addItem={addItem}
@@ -393,6 +415,7 @@ const PageAiCreate = ({
           )}
         </GratisPremiumButton>
       </View>
+      ) : null} 
     </ScrollView>
   );
 };

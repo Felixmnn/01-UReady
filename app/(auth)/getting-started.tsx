@@ -71,7 +71,7 @@ const gettingStarted = () => {
     questions: 0,
     notes: 0,
     documents: 0,
-    public: true,
+    public: false,
     progress: 0,
     creator: "",
     color: null,

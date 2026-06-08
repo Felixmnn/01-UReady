@@ -8,11 +8,15 @@ const TutorialFirstAIModule = ({
   setIsVisible,
   tutorialStep,
   setTutorialStep,
+  loading,
+  descriptionAndNameFilled,
 }: {
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   tutorialStep: number;
   setTutorialStep: React.Dispatch<React.SetStateAction<number>>;
+  loading: boolean;
+  descriptionAndNameFilled: boolean;
 }) => {
   const { t } = useTranslation();
 
@@ -20,9 +24,11 @@ const TutorialFirstAIModule = ({
     <Modal
       animationType="fade"
       transparent={true}
-      visible={isVisible && tutorialStep < 1}
+      visible={isVisible && (tutorialStep < 3 || loading) && tutorialStep < 6}
       onRequestClose={() => {
-        setIsVisible(false);
+        if (tutorialStep < 2) {
+          setIsVisible(false); 
+        }
       }}
     >
       <TouchableOpacity
@@ -33,8 +39,22 @@ const TutorialFirstAIModule = ({
         }}
       >
         {tutorialStep === 0 ? (
-          <RobotWihtMessage message={t("tutorialFirstModule.letUsCreate")} />
-        )  : null}
+          <RobotWihtMessage message={t("tutorialFirstAIModule.createFirstStudySet")} />
+        )  : tutorialStep === 1 ? (
+          <RobotWihtMessage message={t("tutorialFirstAIModule.startWithNameAndDescription")} />
+        ) : tutorialStep === 2 && descriptionAndNameFilled ? (
+          <RobotWihtMessage message={t("tutorialFirstAIModule.addMaterialForStudySet")} />
+        ) : null}
+
+        {loading && tutorialStep === 3 && (
+          <RobotWihtMessage message={t("tutorialFirstAIModule.creatingStudySet")} type="search" />
+        )}
+        {loading && tutorialStep === 4 && (
+          <RobotWihtMessage message={t("tutorialFirstAIModule.funFactOfflineUse")} type="search" />
+        )}
+        {loading && tutorialStep === 5 && (
+          <RobotWihtMessage message={t("tutorialFirstAIModule.publicDiscoverNote")} type="search" />
+        )}
       </TouchableOpacity>
     </Modal>
   );

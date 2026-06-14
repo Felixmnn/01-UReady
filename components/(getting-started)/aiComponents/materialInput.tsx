@@ -25,7 +25,11 @@ const MaterialInput = ({
   fileList,
   setItems,
   selectedSession,
+  isTutorial = false,
+  categoryType = "SCHOOL",
 }: {
+  categoryType: string;
+  isTutorial?: boolean;
   selectedMaterialType: "TOPIC" | "PEN" | "FILE" | "QUESTION";
   setSelectedMaterialType: React.Dispatch<
     React.SetStateAction<"TOPIC" | "PEN" | "FILE" | "QUESTION">
@@ -84,6 +88,7 @@ const MaterialInput = ({
 
   return (
     <View>
+      { !isTutorial ? (
       <View className="flex-row justify-between items-center">
         <View className="w-full flex-row rounded-full items-center justify-between bg-[#0c111d] border-gray-800 border-[1px] shadow-lg">
           <SelectMaterialType
@@ -147,6 +152,11 @@ const MaterialInput = ({
             */}
         </View>
       </View>
+      ) : 
+            <Text className="text-gray-300 font-semibold text-[15px]">
+        {t("createModule.tutorialTopicsTitle")}
+      </Text>
+      }
       {/* Section containing inputs relvant for creating a Topic */}
       {selectedMaterialType === "TOPIC" && (
         <View className="w-full">
@@ -204,6 +214,7 @@ const MaterialInput = ({
               newitem={newitem}
               addItem={addItem}
               handleFileUpload={handleFileUpload}
+              readyToPress={newitem.content.length >= 2}
             />
             <TrashIcon
               handlePress={() => handleDeleteItem(newitem.id)}
@@ -213,7 +224,7 @@ const MaterialInput = ({
           <TextInput
             multiline
             numberOfLines={5}
-            maxLength={2000}
+            maxLength={200}
             onChangeText={(text) =>
               setNewItem({
                 ...newitem,
@@ -224,7 +235,15 @@ const MaterialInput = ({
             value={newitem.content}
             className="flex-1 text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px] "
             placeholderTextColor={"#AAAAAA"}
-            placeholder={t("createModule.aNewText")}
+            placeholder={
+              categoryType === "UNIVERSITY"
+                ? t("createModule.penPlaceholderExampleUniversity")
+                : categoryType === "EDUCATION"
+                ? t("createModule.penPlaceholderExampleEducation")
+                : categoryType === "OTHER"
+                ? t("createModule.penPlaceholderExampleOther")
+                : t("createModule.penPlaceholderExample")
+            }
             style={{
               height: 75,
               textAlign: "left",
@@ -235,7 +254,7 @@ const MaterialInput = ({
         </View>
         <View className="w-full justify-center items-end pr-4">
             <Text className=" text-gray-400">
-              {newitem.content.length}/2000
+              {newitem.content.length}/200
             </Text>
             </View>
         </View>

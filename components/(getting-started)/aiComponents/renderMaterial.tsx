@@ -34,7 +34,7 @@ const RenderMaterial = ({
   const { t } = useTranslation();
   return (
     <View>
-      <SubHeader title={t("createModule.materials")} />
+      <SubHeader title={t("createModule.selectedMaterialsTitle")} />
       <View className="w-full flex-row flex-wrap justify-start items-center my-2 ">
         {selectedSession &&
         items.filter((item) => item.sessionID == selectedSession.id).length >
@@ -79,7 +79,7 @@ const RenderMaterial = ({
         ) : (
           <TouchableOpacity className="bg-[#0c111d] flex-row p-2 mt-4  border-gray-800 border-[1px] rounded-[10px] items-center justify-center shadow-lg">
             <Text className=" text-gray-300 flex-wrap font-semibold text-[12px]  ml-1">
-              {t("createModule.noMaterialAdded")}
+              {t("createModule.addTopicHint")}
             </Text>
           </TouchableOpacity>
         )}

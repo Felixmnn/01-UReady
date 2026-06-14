@@ -32,6 +32,7 @@ import {
 } from "@/types/appwriteTypes";
 import Offline from "../(general)/offline";
 import RobotWihtMessage from "../(tutorials)/robotMessage";
+import ProgressBar from "../(signUp)/(components)/progressBar";
 
 type Items = {
   type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
@@ -65,8 +66,8 @@ const PageAiCreate = ({
   // Lokale
   const { t } = useTranslation();
   const { remainingTutorialSteps, setRemainingTutorialSteps } = useGlobalContext();
-
-  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline, setUserData } = useGlobalContext();
+  const { user, reloadNeeded, setReloadNeeded, userUsage, setUserUsage, isOffline, setUserData,userCathegory } = useGlobalContext();
+  console.log("User Cathegory: ", userCathegory.kategoryType);
   const [sessions, setSessions] = useState<Session[]>([
     {
       title: "S1",
@@ -291,7 +292,7 @@ const PageAiCreate = ({
   useEffect(() => {
     console.log("Tutorial Step: ", tutorialStep, newModule.name, newModule.description);
     if (tutorialStep == 2) {
-      if (newModule.name.length > 2 && newModule.description.length > 2) {
+      if (newModule.name.length > 2) {
         setTutorialVisible(true);
       }
       setRemainingTutorialSteps(["STUDY_A_SET"]);
@@ -308,6 +309,11 @@ const PageAiCreate = ({
         elevation: 20,
       }}
     >
+      <ProgressBar
+        percent={tutorialStep > 2 && items.length > 0 ? 100 : tutorialStep > 2 ? 66 : 33}
+        handlePress={() => {}}
+        hideGoBack={true} 
+        />
       <ErrorModal
         isError={isError}
         setIsError={setIsError}
@@ -320,15 +326,16 @@ const PageAiCreate = ({
         setIsVisible={setIsVisible}
       />
       <TutorialFirstAIModule
-        isVisible={(tutorialVisible && tutorialStep < 2) || (tutorialStep == 2 && newModule.name.length > 2 && newModule.description.length > 2 && showNext) || loading}
+        isVisible={(tutorialVisible && tutorialStep < 2) || (tutorialStep == 2 && newModule.name.length > 2 && showNext) || loading}
         setIsVisible={setTutorialVisible}
         setTutorialStep={setTutorialStep}
         tutorialStep={tutorialStep}
         loading={loading}
-        descriptionAndNameFilled={newModule.name.length > 2 && newModule.description.length > 2 && showNext}
+        descriptionAndNameFilled={newModule.name.length > 2 && showNext}
       />
       <View className="w-full flex-1">
         <CreateModule
+        categoryType={userCathegory.kategoryType ? userCathegory.kategoryType : "SCHOOL"}
         isTutorial={true}
         tutorialStep={tutorialStep}
           newModule={{
@@ -356,8 +363,11 @@ const PageAiCreate = ({
       </View>
       
       { tutorialStep > 2 ? (
-      <View className=" m-2">
+      <View className="">
         <MaterialInput
+          categoryType={userCathegory.kategoryType ? userCathegory.kategoryType : "SCHOOL"}
+
+          isTutorial={true}
           addItem={addItem}
           selectedMaterialType={selectedMaterialType}
           setSelectedMaterialType={setSelectedMaterialType}
@@ -392,6 +402,7 @@ const PageAiCreate = ({
           setNewItem={setNewItem}
           newitem={newitem}
         />
+        { items.length > 0 && (
         <GratisPremiumButton
           aditionalStyles="w-full rounded-lg mx-3  bg-blue-500"
           handlePress={async () => generateModule()}
@@ -416,6 +427,7 @@ const PageAiCreate = ({
             </View>
           )}
         </GratisPremiumButton>
+        )}
       </View>
       ) : null} 
     </ScrollView>

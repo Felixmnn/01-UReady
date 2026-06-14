@@ -35,6 +35,7 @@ const CreateModule = ({
   tutorialStep,
   setShowNext,
   showNext,
+  categoryType = "SCHOOL",
 }: {
   newModule: module;
   setNewModule: React.Dispatch<React.SetStateAction<module>>;
@@ -52,6 +53,7 @@ const CreateModule = ({
   tutorialStep?: number;
   setShowNext?: React.Dispatch<React.SetStateAction<boolean>>;
   showNext?: boolean;
+  categoryType?: string;
 }) => {
   // Lokale States
   const { t } = useTranslation();
@@ -219,7 +221,12 @@ const CreateModule = ({
                 setNewModule({ ...newModule, name: text })
               }
               value={newModule?.name}
-              placeholder={t("createModule.aOriginalName")}
+              placeholder={categoryType == "UNIVERSITY" 
+                ? t("createModule.aOriginalNameUniversity") :
+                categoryType == "EDUCATION" ? t("createModule.aOriginalNameEducation") :
+                categoryType == "OTHER" ? t("createModule.aOriginalNameOther") : 
+               t("createModule.aOriginalName")
+              }
               className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] rounded-[10px]"
               placeholderTextColor="#AAAAAA"
             />
@@ -240,16 +247,21 @@ const CreateModule = ({
                 }
                 value={newModule?.description}
                 placeholderTextColor={"#AAAAAA"}
-                placeholder={t("createModule.aOriginalDescription")}
+                placeholder={categoryType == "UNIVERSITY" 
+                  ? t("createModule.aOriginalDescriptionUniversity") :
+                  categoryType == "EDUCATION" ? t("createModule.aOriginalDescriptionEducation") :
+                  categoryType == "OTHER" ? t("createModule.aOriginalDescriptionOther") : 
+                 t("createModule.aOriginalDescription")
+                }
                 multiline={true}
                 numberOfLines={4}
-                style={{ height: 90, textAlignVertical: "top" }}
+                style={{ height: 60, textAlignVertical: "top" }}
                 textAlignVertical="top"
                 className="text-white bg-[#0c111d] p-2 m-2 border-gray-800 border-[1px] shadow-lg rounded-[10px]"
               />
             </View>
         {
-          isTutorial && newModule?.name?.length > 3 && newModule?.description?.length > 3 && !showNext && (
+          isTutorial && newModule?.name?.length > 3 && !showNext && (
             <GratisPremiumButton
             aditionalStyles="w-full rounded-lg mx-3  bg-blue-500"
             handlePress={() => setShowNext && setShowNext(true)}  >

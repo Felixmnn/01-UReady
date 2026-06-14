@@ -17,6 +17,7 @@ import { returnColor } from "@/functions/returnColor";
 import TokenHeader from "../(general)/tokenHeader";
 import AddAiBottomSheet from "../(general)/(modal)/addAiBttomSheet";
 import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
+import HomeStartupCommercial from "./homeStartupCommercialEntry";
 import { useTranslation } from "react-i18next";
 import { UserUsage } from "@/types/appwriteTypes";
 import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
@@ -261,6 +262,7 @@ const HomeGeneral = () => {
   return (
     <View className="h-full w-full ">
       <TokenHeader/>
+      <HomeStartupCommercial />
       
       <ScrollView
         style={{

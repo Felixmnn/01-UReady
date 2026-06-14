@@ -2004,7 +2004,7 @@
     "get1EnergyFree": "Obtén 1 energía gratis",
   "watch": "Ver",
   "offline": "Sin conexion",
-  "blockerTitle": "Bloqueador de anuncios",
+  "blockerTitle": "No ads for 2 Hours",
   "blockerInactiveDescription": "Mira un anuncio corto y obten 2 horas sin mas anuncios.",
   "blockerActiveDescription": "Mira un anuncio corto para extender tu bloqueador 2 horas.",
   "blockerWatch": "Ver anuncio",
@@ -2012,7 +2012,13 @@
   "blockerActiveStatus": "Bloqueador activo",
   "blockerInactiveStatus": "Estado: No activo",
   "blockerRemaining": "Quedan {{hours}}h {{minutes}}min",
-  "blockerNoWindow": "Tras terminar un quiz se pueden mostrar anuncios otra vez"
+  "blockerNoWindow": "Tras terminar un quiz se pueden mostrar anuncios otra vez",
+  "startupBannerTitle": "Sin anuncios durante 2 horas",
+  "startupBannerDescription": "Mira ahora un anuncio corto y estudia completamente sin anuncios durante las próximas 2 horas.",
+  "startupBannerTestNote": "Modo de prueba: el bloqueo sin anuncios dura solo 2 minutos. Después del test, vuelve a cambiar el valor en el código a 2 horas.",
+  "startupBannerDismiss": "Más tarde",
+  "thankYouTitle": "¡Gracias por tu apoyo!",
+  "thankYouDescription": "¡Mucho éxito en tu estudio! 🍀"
   },"document": {
   "energyCost": "Costo de energía: ",
   "selectedDocument": "Documento seleccionado:",

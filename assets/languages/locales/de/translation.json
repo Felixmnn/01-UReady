@@ -1893,7 +1893,7 @@
       "get1EnergyFree": "Erhalte 1 Energie kostenlos",
         "watch": "Ansehen",
         "offline": "Offline",
-        "blockerTitle": "Werbeblocker",
+        "blockerTitle": "No ads for 2 Hours",
         "blockerInactiveDescription": "Schaue dir eine kurze Werbung an und erhalte 2 Stunden keine weitere Werbung mehr.",
         "blockerActiveDescription": "Schaue dir eine kurze Werbung an und verlängere deinen Werbeblocker um 2 Stunden.",
         "blockerWatch": "Werbung ansehen",
@@ -1901,7 +1901,13 @@
         "blockerActiveStatus": "Werbeblocker aktiv",
         "blockerInactiveStatus": "Status: Nicht aktiv",
         "blockerRemaining": "Noch {{hours}}h {{minutes}}min verbleibend",
-        "blockerNoWindow": "Aktuell wird nach Quiz-Ende wieder Werbung angezeigt"
+        "blockerNoWindow": "Aktuell wird nach Quiz-Ende wieder Werbung angezeigt",
+        "startupBannerTitle": "2 Stunden werbefrei",
+        "startupBannerDescription": "Schaue dir jetzt eine kurze Werbung an und lerne die nächsten 2 Stunden komplett werbefrei.",
+        "startupBannerTestNote": "Testmodus: Fuer den Moment gilt der Werbefrei-Block nur 2 Minuten. Danach bitte den Wert im Code wieder auf 2 Stunden anpassen.",
+        "startupBannerDismiss": "Später",
+        "thankYouTitle": "Danke für deine Unterstützung!",
+        "thankYouDescription": "Viel Erfolg beim Lernen🍀"
      },
      "document": {
   "energyCost": "Energiekosten: ",

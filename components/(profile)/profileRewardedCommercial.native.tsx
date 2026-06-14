@@ -137,23 +137,46 @@ const ProfileRewardedCommercial = () => {
   };
 
   return (
-    <View className="w-full rounded-[10px] p-2">
-      <Text className="text-gray-200 font-bold text-[14px] mb-1">
+    <View className="w-full  p-2">
+      <Text className="text-white font-bold text-[14px] mb-1">
         {t("ad.blockerTitle")}
       </Text>
-      <Text className="text-gray-300 text-[12px] mb-1">
+      <Text className="text-gray-200 text-[12px] mb-1 leading-5">
         {remainingMinutes > 0
           ? t("ad.blockerActiveDescription")
           : t("ad.blockerInactiveDescription")}
       </Text>
+
+      {hasActiveWindow && (
+        <View className="mt-2 mb-2 rounded-[14px] border border-[#1a5c38] bg-[#0d2e1f] p-3 flex-row items-center">
+          <View className="ml-3 flex-1 justify-center items-center">
+            <Text className={`text-[12px] ${hasActiveWindow ? "text-green-300" : "text-gray-300"}`}>
+              {remainingMinutes > 0
+                ? t("ad.blockerRemaining", {
+                    hours: remainingHours,
+                    minutes: remainingDisplayMinutes,
+                  })
+                : t("ad.blockerNoWindow")}
+            </Text>
+            <Text className="text-green-300 font-bold text-[13px]">
+              ♥️ {t("ad.thankYouTitle")} ♥️
+            </Text>
+            <Text className="text-green-400 text-[11px] mt-0.5">
+              {t("ad.thankYouDescription")}
+            </Text>
+          </View>
+        </View>
+      )}
       
 
       <TouchableOpacity
-        className={`rounded-[10px] px-4 py-2 mt-2 items-center ${!loaded || isOffline ? "bg-gray-600" : "bg-blue-700"}`}
+        className={`rounded-full px-4 py-2 items-center ${!loaded || isOffline ? "bg-gray-600" : "rounded-[14px] border border-[#3157a3] bg-[#10203f]"}`}
         disabled={!loaded || isOffline}
         onPress={onWatchAd}
       >
-        <Text className="text-white font-bold">
+        <Text className="text-[#3157a3] font-bold"
+        
+        >
           {isOffline
             ? t("ad.offline")
             : loaded
@@ -163,22 +186,7 @@ const ProfileRewardedCommercial = () => {
               : t("shop.loadingAds")}
         </Text>
       </TouchableOpacity>
-    
-      {remainingMinutes > 0 && (
-      <View className={`mt-3 rounded-[10px] px-3 py-2 ${hasActiveWindow ? "bg-green-900" : "bg-gray-800"}`}>
-        <Text className={`text-[12px] font-semibold ${hasActiveWindow ? "text-green-200" : "text-gray-300"}`}>
-          {hasActiveWindow ? t("ad.blockerActiveStatus") : t("ad.blockerInactiveStatus")}
-        </Text>
-        <Text className="text-gray-300 text-[12px] mt-1">
-          {remainingMinutes > 0
-            ? t("ad.blockerRemaining", {
-                hours: remainingHours,
-                minutes: remainingDisplayMinutes,
-              })
-            : t("ad.blockerNoWindow")}
-        </Text>
-      </View>
-        )}
+
     </View>
   );
 };

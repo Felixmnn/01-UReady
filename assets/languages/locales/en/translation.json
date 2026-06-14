@@ -1943,7 +1943,7 @@
     "get1EnergyFree": "Get 1 energy for free",
     "watch": "Watch",
     "offline": "Offline",
-    "blockerTitle": "Ad blocker",
+    "blockerTitle": "No ads for 2 Hours",
     "blockerInactiveDescription": "Watch a short ad and get 2 hours without additional ads.",
     "blockerActiveDescription": "Watch a short ad to extend your ad blocker by 2 hours.",
     "blockerWatch": "Watch ad",
@@ -1951,7 +1951,13 @@
     "blockerActiveStatus": "Ad blocker active",
     "blockerInactiveStatus": "Status: Not active",
     "blockerRemaining": "{{hours}}h {{minutes}}min remaining",
-    "blockerNoWindow": "Ads can be shown again after finishing a quiz"
+    "blockerNoWindow": "Ads can be shown again after finishing a quiz",
+    "startupBannerTitle": "No Ads for 2 Hours",
+    "startupBannerDescription": "Watch a short ad now and study completely ad-free for the next 2 hours.",
+    "startupBannerTestNote": "Test mode: the ad-free window currently lasts only 2 minutes. After testing, change the value in code back to 2 hours.",
+    "startupBannerDismiss": "Later",
+    "thankYouTitle": "Thank you for your support!",
+    "thankYouDescription": "Good luck with your studies🍀"
   },
    "document": {
     "energyCost": "Energy Cost: ",

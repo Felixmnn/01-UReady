@@ -263,7 +263,14 @@ const HomeGeneral = () => {
     <View className="h-full w-full ">
       <TokenHeader/>
       <HomeStartupCommercial />
-      
+      <TouchableOpacity
+        className="mx-3 mb-3 rounded-[14px] border border-[#3157a3] bg-[#10203f] p-3 items-center justify-center"
+        onPress={() => router.push("/getting-started")}
+      >
+        <Text className="text-white font-bold text-[15px]">
+          Getting Started
+        </Text>
+      </TouchableOpacity>
       <ScrollView
         style={{
           height: "100%",

@@ -374,8 +374,12 @@
   },
   "missingArea": {
     "discoverPrompt": "Aucun module n'a été trouvé. Il est temps de changer ça. Crée un module dans cette catégorie et gagne de l'énergie ainsi que le badge Bâtisseur :",
+    "discoverCardHeadline": "Aucun set d'étude trouvé.\nSois la première personne à en créer un et à recevoir une récompense :",
     "discoverCta": "C'est parti !",
     "badgeLabel": "Bâtisseur",
+    "rewardEnergy": "+10 Énergie",
+    "rewardAnd": "et",
+    "rewardBadgeSuffix": "badge",
     "rewardToastTitle": "Merci pour ta contribution",
     "defaults": {
       "moduleName": "Zone thématique",

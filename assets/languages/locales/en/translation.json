@@ -372,8 +372,12 @@
   },
   "missingArea": {
     "discoverPrompt": "No modules were found. Time to change that. Create a module in this area and earn energy plus the Doer badge:",
+    "discoverCardHeadline": "No study sets found.\nBe the first to create one and get rewarded:",
     "discoverCta": "Let's go!",
     "badgeLabel": "Doer",
+    "rewardEnergy": "+10 Energy",
+    "rewardAnd": "and",
+    "rewardBadgeSuffix": "badge",
     "rewardToastTitle": "Thanks for your contribution",
     "defaults": {
       "moduleName": "Topic area",

@@ -373,8 +373,12 @@
   },
   "missingArea": {
     "discoverPrompt": "Leider keine Module gefunden. Zeit das zu ändern! Erstelle ein Modul in diesem Bereich. Erhalte Energie und das Abzeichen Macher:",
+    "discoverCardHeadline": "Keine Lernsets gefunden.\nSei die erste Person, die eins erstellt und dafür belohnt wird:",
     "discoverCta": "Los geht's!",
     "badgeLabel": "Macher",
+    "rewardEnergy": "+10 Energie",
+    "rewardAnd": "und",
+    "rewardBadgeSuffix": "Abzeichen",
     "rewardToastTitle": "Danke für deinen Beitrag",
     "defaults": {
       "moduleName": "Themenbereich",

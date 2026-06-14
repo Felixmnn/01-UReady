@@ -1,4 +1,4 @@
-import { View, FlatList, Image, Text, TouchableOpacity } from "react-native";
+import { View, FlatList, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import Karteikarte from "../(karteimodul)/karteiKarte";
 import { module } from "@/types/appwriteTypes";
@@ -8,6 +8,8 @@ import { router } from "expo-router";
 import germanTranslation from "@/assets/languages/locales/de/translation.json";
 import { useTranslation } from "react-i18next";
 import { getMissingAreaDefaults } from "@/lib/missingAreaDefaults";
+import Svg, { Defs, LinearGradient as SvgLinearGradient, Rect, Stop } from "react-native-svg";
+
 
 type DiscoverFilterSnapshot = {
   eductaionType?: "UNIVERSITY" | "SCHOOL" | "EDUCATION" | "OTHER" | null;
@@ -200,37 +202,65 @@ const NoResultsComponent = ({
   };
 
   return (
-    <View className="items-center mt-4">
-      <Text className="text-gray-400 mt-4 text-lg text-center">
-        {missingAreaDefaults.rewardPrompt}
+    <View
+      className="items-center mt-4"
+      style={{
+        borderColor: "#FACC15",
+        borderWidth: 2,
+        borderRadius: 14,
+        overflow: "hidden",
+        backgroundColor: "#6B3A0C",
+      }}
+    >
+      <Svg pointerEvents="none" width="100%" height="100%" style={StyleSheet.absoluteFillObject}>
+        <Defs>
+          <SvgLinearGradient id="goldenCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <Stop offset="0%" stopColor="#6B3A0C" />
+            <Stop offset="55%" stopColor="#9A5A12" />
+            <Stop offset="100%" stopColor="#C9851A" />
+          </SvgLinearGradient>
+        </Defs>
+        <Rect x="0" y="0" width="100%" height="100%" fill="url(#goldenCardGradient)" />
+      </Svg>
+
+      <Text className="text-gray-400 mt-4 text-lg text-center px-2"
+        style={{ color: "#FBBF24", fontWeight: "bold" }}
+      >
+       {t("missingArea.discoverCardHeadline")}
+
       </Text>
       <View className="flex-row items-center mt-2">
         <Text className="text-xl font-bold"
         style={{ color: "#FBBF24", fontWeight: "bold" }}
-        >+10 </Text>
-        <Icon name="bolt" size={20} color="#FBBF24" />
+        >{t("missingArea.rewardEnergy")}</Text>
         <Text className="text-xl font-bold"
         style={{ color: "#FBBF24", fontWeight: "bold" }}
         >
-          {" & "}
+          {` ${t("missingArea.rewardAnd")} `}
         </Text>
         <View
         style={{
-          backgroundColor: "#92400E",
+          backgroundColor: "#FACC15",
           borderColor: "#FACC15",
           borderWidth:  2,
-          paddingHorizontal: 8,
-          paddingVertical: 2,
+          paddingHorizontal: 4,
+          paddingVertical: 0,
           borderRadius: 9999,
         }}>
-          <Text style={{ color: "white" }} className="text-sm font-medium">
+          <Text  className="text-sm font-medium"
+                  style={{ color: "#92400E", fontWeight: "bold" }}
+
+          >
           {missingAreaDefaults.badgeLabel}
           </Text>
         </View>
+        <Text className="text-xl font-bold"
+        style={{ color: "#FBBF24", fontWeight: "bold" }}
+        >{` ${t("missingArea.rewardBadgeSuffix")}`}</Text>
       </View>
-      <TouchableOpacity className="w-[150px]   mt-2 px-4 py-2 bg-blue-500 rounded-full items-center justify-center"
+      <TouchableOpacity className="w-[150px]   mt-4 mb-4 px-4 py-2 bg-blue-500 rounded-full items-center justify-center"
         style={{
-          backgroundColor: "#92400E",
+          backgroundColor: "#FACC15",
           borderColor: "#FACC15",
           borderWidth:  2,
           paddingHorizontal: 8,
@@ -241,7 +271,9 @@ const NoResultsComponent = ({
         onPress={handleLetsGoPress}
       >
       
-        <Text className="text-white text-lg text-center">{missingAreaDefaults.rewardCta}</Text>
+        <Text className="text-white text-lg text-center"
+        style={{ color: "#92400E", fontWeight: "bold" }}
+        >{missingAreaDefaults.rewardCta}</Text>
       </TouchableOpacity>
     </View>
   )

@@ -373,8 +373,12 @@
   },
   "missingArea": {
     "discoverPrompt": "No se encontraron módulos. Es hora de cambiar eso. Crea un módulo en esta área y recibe energía y la insignia Creador:",
+    "discoverCardHeadline": "No se encontraron sets de estudio.\nSé la primera persona en crear uno y obtener una recompensa:",
     "discoverCta": "Vamos",
     "badgeLabel": "Creador",
+    "rewardEnergy": "+10 Energía",
+    "rewardAnd": "y",
+    "rewardBadgeSuffix": "insignia",
     "rewardToastTitle": "Gracias por tu contribución",
     "defaults": {
       "moduleName": "Área temática",

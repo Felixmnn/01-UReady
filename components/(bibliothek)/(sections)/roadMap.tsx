@@ -98,6 +98,7 @@ const RoadMap = ({
     }
   }
  
+  const modulePercent = moduleSessions.reduce((acc, session) => acc + Math.max(0, Math.min(100, session.percent)), 0) / moduleSessions.length;
 
   return (
     <ScrollView className={` ${Platform.OS === "ios" ? "mb-[65px]" : null} `}>
@@ -145,7 +146,7 @@ const RoadMap = ({
                   module.color == null ? "blue" : module.color,
                   currentModule.color
                 )}
-                percentage={module.percent ? module.percent : 0}
+                percentage={module.percent > 100 ? 100 : module.percent < 0 ? 0 : module.percent}
                 icon={module.iconName}
                 strokeColor={returnColor(
                   module.color == null ? "blue" : module.color,
@@ -192,7 +193,7 @@ const RoadMap = ({
           <VektorCircle
             sizeMultiplier={1.3}
             color={returnColor(currentModule.color)}
-            percentage={Number.isNaN(percentA.bad) ? 0 : percentA.bad}
+            percentage={modulePercent > 100 ? 100 : modulePercent < 0 ? 0 : modulePercent}
             icon={"list-alt"}
             strokeColor={returnColor(currentModule.color)}
           />

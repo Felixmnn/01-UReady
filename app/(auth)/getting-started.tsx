@@ -175,6 +175,7 @@ const gettingStarted = () => {
           newModule={newModule}
           setNewModule={setNewModule}
           userData={userCathegory}
+          isTutorial={true}
         />
       ) : userChoices == "DISCOVER" && userCathegory ? (
         <PageDiscover setUserChoices={setUserChoices} userData={userCathegory} nothingForMe={() => setUserChoices("CREATE")}/>

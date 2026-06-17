@@ -42,6 +42,8 @@ import { checkMMKVNoteDocumentListRefreshTimestampExpiry, checkMMKVQuestionListR
 import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import SpecificTutorialStep from "@/components/(tutorials)/specificTutorialStep";
+import { calculatePercent } from "./allModules";
+
 
 type QuestionListItem = {
   id: string;
@@ -210,29 +212,6 @@ const SingleModule = ({
   const [questionLoadedSessions, setQuestionLoadedSessions] = useState<
     string[]
   >([]);
-  /**
-   * The Function recives a Array of Questions and calcultes how many percent are null, good, bad, ok or great.
-   *
-   * @param {Array} questions - Array of question objects.
-   */
-  function calculatePercent(questions: question[]) {
-    let points = 0;
-    if (!questions || questions.length === 0) return 100;
-    for (let i = 0; i < questions.length; i++) {
-      if (questions[i].status === "BAD") {
-        points -= 1;
-      } else if (questions[i].status === "GOOD") {
-        points += 1;
-      } else if (questions[i].status === "GREAT") {
-        points += 1.5;
-      } else if (questions[i].status === "OK") {
-        points += 0.5;
-      }
-    }
-    const percent = Math.round((points / questions.length) * 100);
-    return isNaN(percent) ? 0 : percent < 0 ? 0 : percent > 100 ? 100 : percent;
-  }
-
 
 
   async function repairQuestionListAndNotes() {
@@ -418,7 +397,7 @@ const SingleModule = ({
           return question && question.sessionID === session.id;
         }
       );
-      const percent = calculatePercentForSession(sessionQuestionList);
+      const percent = calculatePercent(sessionQuestionList.map(q => JSON.stringify(q)));
       return {
         ...session,
         percent: percent,
@@ -581,6 +560,7 @@ const SingleModule = ({
       setIsVisibleNewQuestion(false);
     }
   }
+  
   /**
    * This function removes a document locally and deletes it from the Appwrite bucket.
    * @param {string} id - The ID of the document to update.

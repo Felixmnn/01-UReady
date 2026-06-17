@@ -52,6 +52,7 @@ const PageAiCreate = ({
   setTutorialStep,
   goBackVisible = true,
   calculatePrice = false,
+  isTutorial = false,
 }: {
   newModule: module;
   userData: UserUsage | null;
@@ -62,6 +63,7 @@ const PageAiCreate = ({
   setTutorialStep: React.Dispatch<React.SetStateAction<number>>;
   goBackVisible?: boolean;
   calculatePrice?: boolean;
+  isTutorial?: boolean;
 }) => {
   // Lokale
   const { t } = useTranslation();
@@ -240,26 +242,69 @@ const PageAiCreate = ({
       setIsError(true);
       return;
     }
-    await materialToModule({
-      user,
-      newModule,
-      material: items,
-      sessions: sessions.map((session) => ({
-        ...session,
-        tags: Array.isArray(session.tags)
-          ? session.tags
-          : [],
-      })),
-      setSessions,
-      setLoading,
-      reloadNeeded,
-      setReloadNeeded,
-      setIsVisibleModal,
-      questionOptions: {
-        questionsType: "MULTIPLE",
-        amountOfAnswers: 4
-      },
-    });
+
+    if (isTutorial) {
+      //Erzeugt für jedes Material eine eigene Session
+      const newSessions = items.filter((item) => item.id).map((item) => ({
+        title: item.content.length > 20 ? item.content.substring(0, 20) + "..." : item.content,
+        percent: 0,
+        color: "blue",
+        iconName: "book",
+        questions: 0,
+        description: "",
+        tags: [],
+        id: item.id as string,
+        generating: false,
+      }))
+      const newItems = items.filter((item) => item.id).map((item) => ({
+        ...item,
+        sessionID: item.id as string,
+      }))
+      await materialToModule({
+        user,
+        newModule: {
+          ...newModule,
+          name: newModule.name || "Mein Modul",
+          description: newModule.description || "Beschreibung",
+        },
+        material: newItems, 
+        sessions: newSessions,
+        setSessions,
+        setLoading,
+        reloadNeeded,
+        setReloadNeeded,
+        setIsVisibleModal,
+        questionOptions: {
+          questionsType: "MULTIPLE",
+          amountOfAnswers: 4
+        },
+      });
+      setUserChoices("DISCOVER");
+      return;
+    }
+    else {
+
+      await materialToModule({
+        user,
+        newModule,
+        material: items,
+        sessions: sessions.map((session) => ({
+          ...session,
+          tags: Array.isArray(session.tags)
+            ? session.tags
+            : [],
+        })),
+        setSessions,
+        setLoading,
+        reloadNeeded,
+        setReloadNeeded,
+        setIsVisibleModal,
+        questionOptions: {
+          questionsType: "MULTIPLE",
+          amountOfAnswers: 4
+        },
+      });
+    }
     if (userData) {
       setUserUsage({
               ...userUsage,
@@ -410,7 +455,7 @@ const PageAiCreate = ({
         >
           
           {loading ? ( 
-            <LoadingProgressBar active={loading} />
+            <LoadingProgressBar active={loading} durationMs={20000*items.length} />
           ) : !calculatePrice ? (
             <Text className="text-gray-300 font-semibold text-[15px]">
               {t("createModule.generateModule")}

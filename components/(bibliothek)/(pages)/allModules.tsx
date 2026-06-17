@@ -16,6 +16,36 @@ import AcceptShareModule from '../(components)/acceptShareModule';
 import { returnNewLastModule } from '@/functions/addLastSessionModule';
 import { getPublicProfile, updatePublicProfile } from '@/lib/collections/publicProfile';
 
+export function calculatePercent(questions:string[]){
+  let parsedQuestions = []
+   parsedQuestions = questions.map(q => 
+   {
+    try {
+      if (typeof q == "object") {
+        return q
+      } else {
+     return JSON.parse(q);
+      }
+    } catch (error) {
+      console.log("Error parsing question:", q, error);
+      return { status: null }; 
+    }
+  })
+  
+  let sum = 0;
+    for (let i = 0; i < parsedQuestions.length; i++) {
+      if (parsedQuestions[i].status =="BAD") sum -= 1;
+      if (parsedQuestions[i].status =="OK") sum += 0.25;
+      if (parsedQuestions[i].status =="GOOD") sum += 1;
+      if (parsedQuestions[i].status =="GREAT") sum += 1.5;
+
+  }    
+  const percent = Math.floor((sum / (questions.length)) * 100)
+  return percent;
+
+}
+
+
 type ScreenType =
   | "CreateQuestion"
   | "CreateNote"
@@ -55,34 +85,7 @@ const AllModules = ({
 
   
 
-function calculatePercent(questions:string[]){
-  let parsedQuestions = []
-   parsedQuestions = questions.map(q => 
-   {
-    try {
-      if (typeof q == "object") {
-        return q
-      } else {
-     return JSON.parse(q);
-      }
-    } catch (error) {
-      console.log("Error parsing question:", q, error);
-      return { status: null }; 
-    }
-  })
-  
-  let sum = 0;
-    for (let i = 0; i < parsedQuestions.length; i++) {
-      if (parsedQuestions[i].status =="BAD") sum -= 1;
-      if (parsedQuestions[i].status =="OK") sum += 0.25;
-      if (parsedQuestions[i].status =="GOOD") sum += 1;
-      if (parsedQuestions[i].status =="GREAT") sum += 1.5;
 
-  }    
-  const percent = Math.floor((sum / (questions.length * 2)) * 100)
-  return percent;
-
-}
 
   const [ moduleToBeAdded, setModuleToBeAdded ] = useState<ModuleProps | null>(null);
 

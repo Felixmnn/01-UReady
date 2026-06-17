@@ -20,8 +20,9 @@ import AddModuleBottomSheet from "../(general)/(modal)/addModuleBottomSheet";
 import HomeStartupCommercial from "./homeStartupCommercialEntry";
 import { useTranslation } from "react-i18next";
 import { UserUsage } from "@/types/appwriteTypes";
-import { getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
+import { getModuleFromMMKV, getQuestionsFromMMKV } from "@/lib/mmkvFunctions";
 import CustomButton from "../(general)/customButton";
+import { calculatePercent } from "../(bibliothek)/(pages)/allModules";
 
 
 type MiniModule = {
@@ -51,13 +52,89 @@ type MiniSession = {
 const HomeGeneral = () => {
 
   const { t } = useTranslation();
-  const { user, userUsage } = useGlobalContext();
+  const { user, userUsage, setUserUsage } = useGlobalContext();
 
+
+  function refreshLastItems(lastModules: MiniModule[], lastSessions: MiniSession[]) {
+    let newLastModules = [...lastModules];
+    let newLastSessions = [...lastSessions];
+    lastModules.forEach((module) => {
+      const moduleID = module.sessionID
+      const currentState = getModuleFromMMKV(moduleID);
+      if(currentState) {
+        const percent = calculatePercent(currentState.questionList);
+        if (percent !== module.percent) {
+          newLastModules = newLastModules.map((m) => {
+            if (m.sessionID === moduleID) {
+              return {
+                ...m,
+                percent: percent ,
+                questionAmount: currentState.questionList.length,
+                name: currentState.name,
+              };
+            } else {
+              return m;
+            }
+        })
+
+      }else {
+        newLastModules = newLastModules.filter((m) => m.sessionID !== moduleID);
+      }}})
+    lastSessions.forEach((session) => {
+      const moduleID = session.moduleID;
+      const currentModuleState = getModuleFromMMKV(moduleID);
+      if(currentModuleState) {
+        if (typeof currentModuleState.sessions == "string") {
+          const parsedSessions = JSON.parse(currentModuleState.sessions);
+        } else {
+          currentModuleState.sessions.forEach((s: MiniSession | string) => {
+            if (typeof s == "string") {
+              const parsedSession = JSON.parse(s);
+              if (parsedSession.id === session.sessionID) {
+                newLastSessions = newLastSessions.map((ses) => {
+                  if (ses.sessionID === session.sessionID) {
+                    console.log("Parsed Session: ", parsedSession);
+                    return {
+                      ...ses,
+                      percent: parsedSession.percent,
+                      questions: parsedSession.questions,
+                      name: parsedSession.title,
+                    };
+                  } else {
+                    return ses;
+                  }
+              })            
+        }
+        }})}
+
+      
+    } else {
+        newLastSessions = newLastSessions.filter((s) => s.sessionID !== session.sessionID);
+        console.log("Didnt find session")
+    }})
+
+    console.log("🌵")
+    console.log("New Last Modules: ", newLastModules.map(m => m.percent), "Old Last Modules: ", lastModules.map(m => m.percent));
+    console.log("New Last Sessions: ", newLastSessions.map(s => s.percent), "Old Last Sessions: ", lastSessions.map(s => s.percent));
+    setUserUsage((prev: UserUsage | null) => prev ? {
+      ...prev,
+      lastModules: newLastModules.map(m => JSON.stringify(m)),
+      lastSessions: newLastSessions.map(s => JSON.stringify(s)),
+    } : null);
+
+  }
+
+  useEffect(() => {
+    if (userUsage) {
+      refreshLastItems(
+        userUsage.lastModules.map((m) => typeof m === "string" ? JSON.parse(m) : m),
+        userUsage.lastSessions.map((s) => typeof s === "string" ? JSON.parse(s) : s)
+      );
+    }
+    },[])
+  
 
   
-      
-
-
   
   const [userUsageP, setUserUsageP] = useState<UserUsage | null>(null);
   let count = 0;
@@ -126,7 +203,7 @@ const HomeGeneral = () => {
             </Text>
             <VektorCircle
               color={item.color?.toLowerCase() ?? "blue"}
-              percentage={item.percent}
+              percentage={item.percent > 100 ? 100 : item.percent < 0 ? 0 : item.percent}
               icon={"clock"}
               strokeColor={item.color?.toLowerCase() ?? "blue"}
             />
@@ -263,6 +340,7 @@ const HomeGeneral = () => {
     <View className="h-full w-full ">
       <TokenHeader/>
       <HomeStartupCommercial />
+      {/*}
       <TouchableOpacity
         className="mx-3 mb-3 rounded-[14px] border border-[#3157a3] bg-[#10203f] p-3 items-center justify-center"
         onPress={() => router.push("/getting-started")}
@@ -271,6 +349,7 @@ const HomeGeneral = () => {
           Getting Started
         </Text>
       </TouchableOpacity>
+      */}
       <ScrollView
         style={{
           height: "100%",

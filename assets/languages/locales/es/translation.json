@@ -609,6 +609,7 @@
     "onlyPdfSupported": "Actualmente solo se admiten archivos PDF.",
     "recommended": "Recomendado",
     "generateModuleFor": "Generar módulo para",
+    "generateQuestionsFor": "Generar preguntas para",
     "energy": "Energía",
     "map": "Mapa",
     "questions": "Preguntas"

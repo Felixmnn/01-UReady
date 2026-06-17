@@ -16,7 +16,7 @@ import CustomButton from '@/components/(general)/customButton';
 import ExplanationSheet from '@/components/(quiz)/explanationSheet';
 import { CustomBottomSheetRef } from '@/components/(bibliothek)/(bottomSheets)/customBottomSheet';
 import { repairQuestionList } from '@/functions/(entdecken)/transformData';
-import { addUnsyncedListToMMKV, getIOSAddStatus, getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
+import { getModuleFromMMKV, getQuestionsFromMMKV, getUnsyncedListFromMMKV, removeUnsyncedListFromMMKV } from '@/lib/mmkvFunctions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type QuestionItem = {
@@ -312,24 +312,11 @@ const quiz = () => {
         }
         
         setQuestionList(tempQuestionList);
-        const success = await updateModuleQuestionList(
+        void updateModuleQuestionList(
             moduleID ? moduleID.toString() : "",
             tempQuestionList,
             answers.length % 20 !== 0
         );
-
-        if (!success) {
-            /*
-            await AsyncStorage.setItem(
-            `unsyncedModuleList${moduleID}`,
-            JSON.stringify(tempQuestionList)
-            );
-            */
-            addUnsyncedListToMMKV(tempQuestionList,moduleID ? moduleID.toString() : "");
-        } else {
-            //await AsyncStorage.removeItem(`unsyncedModuleList${moduleID}`);
-            removeUnsyncedListFromMMKV(moduleID ? moduleID.toString() : "");
-        }
     }
 
     useEffect(() => {
@@ -438,6 +425,7 @@ const quiz = () => {
             setQuestionList,
             moduleID ? (Array.isArray(moduleID) ? moduleID[0] : moduleID) : ""
         );
+
         await nextQuestion({
             status,
             questionsForQuiz,
@@ -447,9 +435,6 @@ const quiz = () => {
         setSelectedAnswers([]);
 
    }
-
-
-
 
  
 interface Answer {

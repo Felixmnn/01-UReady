@@ -1,7 +1,8 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import Svg, { Circle } from "react-native-svg";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { returnColor } from "@/functions/returnColor";
 
 const VektorCircle = ({
   color,
@@ -36,6 +37,7 @@ const VektorCircle = ({
   const dotX = center + radius * Math.cos(radians);
   const dotY = center + radius * Math.sin(radians);
 
+  const betterColor = color.includes("#") ? color : returnColor(color, strokeColor);
   return (
     <View
       style={{
@@ -51,7 +53,7 @@ const VektorCircle = ({
           cx={Number.isNaN(center) ? 0 : center}
           cy={Number.isNaN(center) ? 0 : center}
           r={radius}
-          stroke={strokeColor}
+          stroke={betterColor}
           strokeWidth={strokeWidth}
           fill="none"
           opacity={0.2}
@@ -61,7 +63,7 @@ const VektorCircle = ({
           cx={Number.isNaN(center) ? 0 : center}
           cy={Number.isNaN(center) ? 0 : center}
           r={radius}
-          stroke={color}
+          stroke={betterColor}
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
@@ -74,12 +76,14 @@ const VektorCircle = ({
           transform={`rotate(-90 ${center} ${center})`}
         />
         {/* Roter Punkt */}
+        { percentage < 100 && (
         <Circle
           cx={Number.isNaN(dotX) ? 0 : dotX}
           cy={Number.isNaN(dotY) ? 0 : dotY}
           r={5 * sizeMultiplier}
-          fill={color}
+          fill={betterColor}
         />
+        )}
       </Svg>
 
       {/* Icon in der Mitte */}
@@ -92,10 +96,27 @@ const VektorCircle = ({
           alignItems: "center",
         }}
       >
-        <Icon name={icon} size={iconSize} color={color} />
+        {
+          percentage >= 100 ? (
+          <Icon name={"check"} size={iconSize} color={betterColor} />  
+          ) : (
+        <Text
+          style={{
+            fontSize: 10 * sizeMultiplier,
+            color: betterColor,
+            fontWeight: "bold",
+            
+          }}
+        >
+         {typeof percentage === "number" ?
+          percentage > 100 ? 100 : percentage < 0 ? 0 : percentage : 
+          0}
+        </Text>
+          )
+        }
       </View>
     </View>
   );
-};
+}
 
 export default VektorCircle;

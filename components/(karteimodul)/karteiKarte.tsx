@@ -265,6 +265,7 @@ const Karteikarte = ({
                       ? "#0891B2"
                       : "#1F2937";
 
+ 
   return (
     <TouchableOpacity className={`${user && creator == user.$id && reportVisible ? "opacity-50" : ""}`
 
@@ -306,7 +307,7 @@ const Karteikarte = ({
           {percentage !== null ? (
             <VektorCircle
               color={color}
-              percentage={percentage}
+              percentage={percentage  > 100 ? 100 : percentage < 0 ? 0 : percentage}
               icon={"clock"}
               strokeColor={color}
             /> 

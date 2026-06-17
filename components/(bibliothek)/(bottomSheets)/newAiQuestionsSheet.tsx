@@ -12,6 +12,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { addNewQuestionToModule } from "@/functions/(aiQuestions)/materialToModule";
 import { Session } from "@/types/moduleTypes";
 import { module, question } from "@/types/appwriteTypes";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 type Items = {
   type: "PEN" | "TOPIC" | "FILE" | "QUESTION";
@@ -171,13 +172,17 @@ const NewAiQuestionsSheet = ({
           newitem={newitem}
         />
 
+        { items.length > 0 && (
         <GratisPremiumButton
+          aditionalStyles="w-full rounded-lg mx-3  bg-blue-500"
+          /*
           aditionalStyles={`w-full rounded-lg bg-blue-700 mb-2 h-[40px] overflow-hidden ${
             items.length < 1 || loading || userUsage?.energy < calculateTotalPrice()
               ? "opacity-50"
               : ""
           }`}
-          disabled={
+*/
+          active={
             items.length < 1 ||
             loading ||
             userUsage?.energy < calculateTotalPrice()
@@ -202,20 +207,24 @@ const NewAiQuestionsSheet = ({
           }}
         >
           {loading ? (
-            <LoadingProgressBar active={loading} barClassName="bg-white" trackClassName="bg-blue-900" />
+            <LoadingProgressBar active={loading} durationMs={20000*items.length} />
           ) : (
-            <Text className="text-white font-semibold text-[15px] px-2
-            
-            " >
-              {userUsage?.energy > calculateTotalPrice()
-                ? t("bibliothek.generateQuestions", { price: calculateTotalPrice() })
-                : t("bibliothek.notEnoughEnergy")}
-            </Text>
+             <View className="flex-row items-center">
+              <Text className="text-white  font-semibold text-[15px] ">
+                {t("singleModule.generateQuestionsFor")} {calculateTotalPrice()}
+              </Text>
+              <Icon name="bolt" size={15} color="white" className="mx-1" />
+              <Text className="text-white  font-semibold text-[15px]  mb-[1px]">
+                {t("singleModule.energy")}
+              </Text>
+            </View>
           )}
         </GratisPremiumButton>
+        )}
       </View>
     </CustomBottomSheet>
   );
 };
 
 export default NewAiQuestionsSheet;
+

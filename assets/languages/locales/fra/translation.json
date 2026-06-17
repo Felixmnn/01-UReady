@@ -613,6 +613,7 @@
     "onlyPdfSupported": "Seuls les fichiers PDF sont actuellement pris en charge.",
     "recommended": "Recommandé",
     "generateModuleFor": "Générer un module pour",
+    "generateQuestionsFor": "Générer des questions pour",
     "energy": "Énergie",
     "map": "Carte",
     "questions": "Questions"

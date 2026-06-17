@@ -21,6 +21,7 @@ import {
 import { useRouter } from "expo-router";
 import CreatorProfileModal from "./creatorProfileModal";
 const Karteikarte = ({
+  grid = false,
   titel,
   studiengang,
   fragenAnzahl,
@@ -38,6 +39,7 @@ const Karteikarte = ({
   fragenAnzahl: number;
   notizAnzahl: number;
   farbe: string;
+  grid?: boolean;
   creator: string;
   handlePress: () => void;
   percentage: number | null;
@@ -267,7 +269,8 @@ const Karteikarte = ({
 
  
   return (
-    <TouchableOpacity className={`${user && creator == user.$id && reportVisible ? "opacity-50" : ""}`
+    <TouchableOpacity className={`${user && creator == user.$id && reportVisible ? "opacity-50" : ""}
+    `
 
     }
      onPress={handlePress} 
@@ -285,14 +288,17 @@ const Karteikarte = ({
         style={{ height: 5, backgroundColor: color }}
       />
       <View
-        className=" p-3 bg-[#1f242f] border-[1px] border-gray-700 rounded-b-[10px] "
-        style={{ borderBottomRightRadius: 10, borderBottomLeftRadius: 10 }}
+        className=" p-3 bg-[#1f242f] border-[1px] border-gray-700  rounded-b-[10px] "
+        style={{ borderBottomRightRadius: 10, borderBottomLeftRadius: 10 ,
+            height: grid ? 85 : undefined
+        }}
       >
         <View className="flex-row justify-between items-start">
           <View className="flex-1">
             <Text className="my-1 font-semibold text-[15px] text-gray-100">
               {titel.length > 30 ? titel.substring(0, 30) + "..." : titel}
             </Text>
+            { !grid &&(
             <Text
               className="my-1 text-[12px] text-gray-400"
               style={{ height: 50 }}
@@ -303,6 +309,7 @@ const Karteikarte = ({
                   : studiengang
                 : null}
             </Text>
+            )}
           </View>
           {percentage !== null ? (
             <VektorCircle
@@ -314,14 +321,20 @@ const Karteikarte = ({
           ) : 
            user && reportVisible && creator == user.$id ? (<Text className="text-blue-500 p-1 border-blue-500 border italic mb-1">{t("karteikarte.fromYou")}</Text>) : null
           }
+        
         </View>
+        { !grid && (
         <View className="flex-row">
           <Text className="my-1 text-gray-300 font-semibold text-[14px]">
             {fragenAnzahl} {t("karteikarte.questio")} • {notizAnzahl}{" "}
             {t("karteikarte.notes")}
           </Text>
         </View>
+        )}
+        { !grid && (
         <View className="border-t-[1px] border-gray-700 my-2" />
+        )}
+        { !grid && (
         <View className="flex-row justify-between items-center">
           <TouchableOpacity
             className="py-[2px] px-2 border-[1px] border-gray-700 rounded-full flex-row items-center"
@@ -366,6 +379,7 @@ const Karteikarte = ({
             ) : null}
           </View>
         </View>
+        )}
       </View>
     </TouchableOpacity>
   );

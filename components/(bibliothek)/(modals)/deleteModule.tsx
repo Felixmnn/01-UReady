@@ -239,7 +239,10 @@ const DeleteModule = ({
     newModuleName !== moduleName ||
     newModuleDescription !== description ||
     newModuleColor !== (module?.color ?? null) ||
+    JSON.stringify(newTags) !== JSON.stringify(tags) ||
     !noCategoryChange;
+
+  const hasArchivedTag = newTags.includes("archived");
 
   async function handleDelete() {
     if (!showWarning) {
@@ -326,7 +329,7 @@ const DeleteModule = ({
       ...audienceData,
     };
 
-    if ((newModuleName === moduleName && newModuleDescription === description && newModuleColor === (module?.color ?? null) && noCategoryChange)) {
+    if ((newModuleName === moduleName && newModuleDescription === description && newModuleColor === (module?.color ?? null) && JSON.stringify(newTags) === JSON.stringify(tags) && noCategoryChange)) {
       setIsVisible(false);
       return;
     } else {
@@ -399,9 +402,25 @@ const DeleteModule = ({
         ) : (
           <ScrollView className="flex-1 px-2 py-4" contentContainerStyle={{ paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
             <View className="rounded-xl border border-gray-800 bg-gray-900 p-4 mb-4">
-              <Text className="text-white font-bold text-[16px] mb-1">{t("deleteModule.sectionGeneralTitle")}</Text>
-              <Text className="text-gray-400 text-[12px] mb-4">{t("deleteModule.sectionGeneralDescription")}</Text>
-
+              <View className="flex-row items-center justify-between mb-3">
+                <Text className="text-white font-bold text-[16px] mb-1">{t("deleteModule.sectionGeneralTitle")}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setNewTags((prevTags) =>
+                      prevTags.includes("archived")
+                        ? prevTags.filter((tag) => tag !== "archived")
+                        : [...prevTags, "archived"]
+                    );
+                    setSavedChanges(false);
+                  }}
+                  className={`px-3 py-2 rounded-lg flex-row items-center ${hasArchivedTag ? "bg-amber-600" : "bg-gray-800"}`}
+                >
+                  <Icon name="archive" size={12} color="white" />
+                  <Text className="text-white font-semibold ml-2">
+                    {hasArchivedTag ? "Archiviert" : "Archivieren"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <Text className="text-white font-semibold text-[14px] mb-2">{t("deleteModule.moduleName")}</Text>
               <TextInput
                 maxLength={50}

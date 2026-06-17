@@ -136,20 +136,33 @@ const AllModules = ({
   }, [modules, user]);
 
 
+    const [ presenation, setPresentation ] = useState<"list" | "grid">("list")
+    const [ filters , setFilters ] = useState<"all" | "public" | "private" | "archived">("all")
+    const goToNextFilter = () => {
+      if (filters == "all") setFilters("public");
+      else if (filters == "public") setFilters("private");
+      else if (filters == "private") setFilters("archived");
+      else if (filters == "archived") setFilters("all");
+    }
 
-      
     const [ isVisibleAI, setIsVisibleAI] = useState(false)
     const ModuleList = ({
-      items
+      items,
+      presentation = "grid"
      }:{
+        presentation?: "grid" | "list";
       items: module[]
      }) => {
       return (
         <View className={` mb-4`}>
           <View className={`flex-1 flex-row flex-wrap py-2 mb-[65px]`}>
             {items.map((item:module, index) => (
-              <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ width: `${100 / numColumns}%` , minWidth:300}} >
+              <View key={item.$id} className='flex-1 mr-2 mb-2' style={{ 
+                width: `${100 / numColumns}%` , 
+                minWidth: presentation == "grid" ? 150 : 300,
+                }} >
                 <Karteikarte
+                  grid={presentation == "grid"}
                   handlePress={async () => {
                     setSelected("SingleModule");
                     const newUserUsage = returnNewLastModule(userUsage.lastModules || [], {
@@ -197,7 +210,12 @@ const AllModules = ({
               <Image source={require("../../../assets/bot.png")} style={{height: 16, width: 16}} />
               <Text className='text-gray-300 text-[12px] ml-2'>{t("bibliothek.createModule")}</Text> 
           </TouchableOpacity>
-          
+          <TouchableOpacity onPress={()=> {if (presenation == "grid") setPresentation("list"); else setPresentation("grid")}} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
+              <Icon name={presenation == "grid" ? "th" : "th-list"} size={15} color="white"/> 
+          </TouchableOpacity>
+          <TouchableOpacity onPress={goToNextFilter} className={`flex-row items-center rounded-full bg-gray-800 mr-2 border-gray-600 border-[1px]  p-2  `}>
+              <Icon name={filters == "all" ? "filter" : filters == "public" ? "globe" : filters == "private" ? "lock" : "archive"} size={15} color="white"/>
+          </TouchableOpacity>
         </View>
         <View className='border-t-[1px] border-gray-700 w-full  ' />
         
@@ -227,7 +245,15 @@ const AllModules = ({
             }
             {modules && modules.length > 0 && (
           <ModuleList
-            items={modules}
+            presentation={presenation}
+            items={modules.filter(mod => {
+              if (filters == "all") return !mod.tags.includes("archived");
+              if (filters == "public") return mod.public && !mod.tags.includes("archived");
+              if (filters == "private") return !mod.public && !mod.tags.includes("archived");
+              if (filters == "archived") return mod.tags.includes("archived");
+              return true;
+              
+            })}
           />)}
           </View>
         </ScrollView>

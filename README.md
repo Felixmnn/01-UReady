@@ -5,15 +5,15 @@
 
 <!-- Title with icon -->
 <div style="display:flex; align-items:center; gap:16px;">
-  <img src="./assets/images/icon.png" alt="QReady Icon" style="width:50px; height:50px;">
-  <h1 style="margin:0;">QReady</h1>
+  <img src="./assets/images/icon.png" alt="Akibo Icon" style="width:50px; height:50px;">
+  <h1 style="margin:0;">Akibo</h1>
 </div>
 
-# QReady
+# Akibo
 
-QReady is a learning platform designed for students, trainees, and university students. The app is currently available in English, German, Spanish, and French.
+Akibo is a learning platform designed for students, trainees, and university students. The app is currently available in English, German, Spanish, and French.
 
-## About QReady
+## About Akibo
 
 - Users can create modules, which contain sessions. Sessions can include quiz questions, documents, and notes.
 - Documents can be published and shared via the "Discover" page.
@@ -32,7 +32,7 @@ QReady is a learning platform designed for students, trainees, and university st
 
 <!-- Highlighted legal notice -->
 <div style="background-color:#d71b32; padding:10px; border-radius:5px;">
-<strong>All rights reserved by QReady.</strong> The code may be used for understanding specific aspects (e.g., Appwrite OAuth, OpenAI integration, IAP integration, Google AdMob integration) for learning purposes. Feedback and suggestions for improvement are very welcome! 🤗
+<strong>All rights reserved by Akibo.</strong> The code may be used for understanding specific aspects (e.g., Appwrite OAuth, OpenAI integration, IAP integration, Google AdMob integration) for learning purposes. Feedback and suggestions for improvement are very welcome! 🤗
 </div>
 
 ## Screenshots

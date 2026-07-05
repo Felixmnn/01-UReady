@@ -1,20 +1,23 @@
 import { storage } from "./appwrite";
-import * as FileSystem from "expo-file-system";
-import { ID } from "appwrite";
+import { File } from "expo-file-system";
+import { ID, Permission, Role } from "react-native-appwrite";
 import { addImageConfig } from "./appwriteAdd";
-import { addImageConfigToMMKV, getSessionFromMMKV } from "./mmkvFunctions";
+import {
+  addImageConfigToMMKV,
+  getSessionFromMMKV,
+} from "./mmkvFunctions";
 import { documentConfig } from "@/types/appwriteTypes";
 
-export const downloadImageFromBackend = async ({
-    imageId,
-}:{
-    imageId: string;
-}): Promise<string> => {
-    const response = await storage.getFileView("67dc11e000003ae76023", imageId);
-    console.log("Download URL:", response.href);
-    return response.href;
-  };
+const BUCKET_ID = "67dc11e000003ae76023";
 
+export const downloadImageFromBackend = async ({
+  imageId,
+}: {
+  imageId: string;
+}): Promise<string> => {
+  const downloadUrl = storage.getFileDownloadURL(BUCKET_ID, imageId);
+  return downloadUrl.toString();
+};
 
 export async function uploadImageToAppwrite(
   fileUri: string,
@@ -22,47 +25,63 @@ export async function uploadImageToAppwrite(
   setImageConfigs?: (configs: documentConfig[]) => void
 ) {
   try {
+    const user = await getSessionFromMMKV();
+
+    if (!user?.$id) {
+      throw new Error("Kein Benutzer angemeldet.");
+    }
+
     const fileId = ID.unique();
 
-    // Größe der Datei ermitteln
-    const fileInfo = await FileSystem.getInfoAsync(fileUri);
+    // Neues Expo FileSystem
+    const localFile = new File(fileUri);
+    const info = localFile.info();
+
+    if (!info.exists) {
+      throw new Error("Datei existiert nicht.");
+    }
 
     const file = {
       uri: fileUri,
       name: `${fileId}.jpg`,
       type: "image/jpeg",
-      size: fileInfo.exists && "size" in fileInfo && typeof fileInfo.size === "number" ? fileInfo.size : 0,
+      size: info.size ?? 0,
     };
 
-    const user = await getSessionFromMMKV(); // Hole die aktuelle Benutzersession
-    const res = await storage.createFile(
-      "67dc11e000003ae76023", 
-      "unique()", 
+    const uploadedFile = await storage.createFile(
+      BUCKET_ID,
+      fileId,
       file,
       [
-        `delete("user:${user.$id}")` // Schreibberechtigung für den Benutzer
+        Permission.read(Role.user(user.$id)),
+        Permission.update(Role.user(user.$id)),
+        Permission.delete(Role.user(user.$id)),
       ]
     );
 
-    const view = storage.getFileView("67dc11e000003ae76023", fileId);
     const config = await addImageConfig({
-      databucketID: res.$id,
+      databucketID: uploadedFile.$id,
       title: file.name,
       sessionID: "-",
       subjectID: "-",
       seitenanzahl: 1,
       fileType: "jpg",
       uploaded: true,
-      creator: user ? user.$id : undefined,
-    })
+      creator: user.$id,
+    } as unknown as documentConfig);
+
     if (config) {
-      addImageConfigToMMKV(config as any as  documentConfig);
+      addImageConfigToMMKV(config as unknown as documentConfig);
+
       if (imageConfigs && setImageConfigs) {
-        setImageConfigs([ config as any as documentConfig,...imageConfigs]);
+        setImageConfigs([
+          config as unknown as documentConfig,
+          ...imageConfigs,
+        ]);
       }
     }
-
-    return fileId;
+    console.log("Image uploaded and config added:", uploadedFile.$id);
+    return uploadedFile.$id;
   } catch (err) {
     console.error("Appwrite Upload Error:", err);
     throw err;

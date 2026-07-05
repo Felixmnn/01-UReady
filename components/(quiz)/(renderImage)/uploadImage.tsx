@@ -58,10 +58,10 @@ const UploadImage = ({
     console.log("Permission granted, opening image picker...");
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       allowsEditing: true,
+      aspect: [2, 3],
       quality: 1,
-      
     });
 
     if (!result.canceled) {

@@ -94,6 +94,8 @@ const NewAiQuestionsSheet = ({
   }
 
   const addItem = () => {
+        console.log("Adding item:", selectedSession);
+
     if (!selectedSession) return;
     setItems([
       ...items,

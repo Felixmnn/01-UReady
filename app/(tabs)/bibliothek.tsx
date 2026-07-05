@@ -28,7 +28,7 @@ const Bibliothek = () => {
   const [selected, setSelected] = useState<ScreenType>("AllModules");
   const [modules, setModules] = useState<module[] | []>(getModulesFromMMKV());
   const [loading, setLoading] = useState(true);
-  
+  const MAX_LOADING_TIME = 3000;
 
   const { selectedModuleId } = useLocalSearchParams();
   useEffect(() => {
@@ -89,88 +89,102 @@ const Bibliothek = () => {
   }
  
   const fetchModules = async () => {
-    if (!user) return;
-    setLoading(true);
-    const modulesLoaded = await getModules(user.$id);
-    const unsavedQuestionLists = getUnsavedModulesFromMMKV();
+  if (!user) return;
 
-    if (modulesLoaded as any === "404") {
-      const locallyUpdatedModules = getModulesFromMMKV();
-      if (unsavedQuestionLists.length > 0) {
-  const newModules = locallyUpdatedModules?.map((module) => {
-    const unsavedModule = unsavedQuestionLists.find(
-      (unsaved) => unsaved.moduleID === module.$id
-    );
+  setLoading(true);
 
-    if (unsavedModule) {
-      const repairedQuestionList = module.questionList.map((q) => {
-        const question = JSON.parse(q);
-        const matchingItem = unsavedModule.items.find((item) => item.id === question.id);
+  const loadOfflineModules = () => {
+    const locallyUpdatedModules = getModulesFromMMKV();
+    const unsavedModuleLists = getUnsavedModulesFromMMKV();
 
-        return JSON.stringify({
-          ...question,
-          status: matchingItem ? matchingItem.status : question.status, // Behalte den ursprünglichen Status bei, wenn keine Übereinstimmung gefunden wird
-        });
-      });
-      module.questionList = repairedQuestionList;
-    }
-
-    return module; // Stelle sicher, dass das Modul zurückgegeben wird
-  });
-
-  if (newModules) {
-    saveModulesToMMKV(newModules as unknown as module[]);
-    setModules(newModules as unknown as module[]);
-  } else {
-    console.error("Error: No modules to save after repair.");
-  }
-
-  setLoading(false); // Ladezustand zurücksetzen
-  return;
-      } else {
-        if (locallyUpdatedModules) {
-          setModules(locallyUpdatedModules);
-        } else {
-          console.error("Error: No locally stored modules found.");
-        }
-        setLoading(false); // Ladezustand zurücksetzen
-      }
-      setLoading(false);
-      return;
-    }; // No internet connection
-    
-    let newModules = null;
-    if (unsavedQuestionLists.length > 0) {
-    newModules  = modulesLoaded?.forEach((module) => {
-        const unsavedModule = unsavedQuestionLists.find(
+    if (unsavedModuleLists.length > 0) {
+      const repairedModules = locallyUpdatedModules.map((module) => {
+        const unsavedModule = unsavedModuleLists.find(
           (unsaved) => unsaved.moduleID === module.$id
         );
-        if (unsavedModule) {
-          const repairedQuestionList = module.questionList.map((q:any) => {
-            const question = JSON.parse(q);
-            const matchingItem = unsavedModule.items.find((item) => item.id === question.id);
 
-            return JSON.stringify({
-              ...question,
-              status: matchingItem ? matchingItem.status : question.status, // Behalte den ursprünglichen Status bei, wenn keine Übereinstimmung gefunden wird
-            });
+        if (!unsavedModule) return module;
+
+        const repairedQuestionList = module.questionList.map((q) => {
+          const question = JSON.parse(q);
+          const matchingItem = unsavedModule.items.find(
+            (item) => item.id === question.id
+          );
+
+          return JSON.stringify({
+            ...question,
+            status: matchingItem ? matchingItem.status : question.status,
           });
-          module.questionList = repairedQuestionList;
-        }
+        });
+
+        return {
+          ...module,
+          questionList: repairedQuestionList,
+        };
       });
+
+      saveModulesToMMKV(repairedModules as module[]);
+      setModules(repairedModules as module[]);
+    } else {
+      setModules(locallyUpdatedModules ?? []);
     }
-    
-    resetUnsavedModulesInMMKV();
-    saveModulesToMMKV(modulesLoaded as unknown as module[]);
-    if (modulesLoaded) {
-      setModules(modulesLoaded ? (modulesLoaded as unknown as module[]) : []);
-    }
-    if (newModules) {
-      setModules(newModules as unknown as module[]);
+  };
+
+  try {
+    const modulesLoaded = await Promise.race([
+      getModules(user.$id),
+      new Promise<"TIMEOUT">((resolve) =>
+        setTimeout(() => resolve("TIMEOUT"), MAX_LOADING_TIME)
+      ),
+    ]);
+
+    if (modulesLoaded === "TIMEOUT" || (modulesLoaded as any) === "404") {
+      loadOfflineModules();
+      return;
     }
 
+    const unsavedModuleLists = getUnsavedModulesFromMMKV();
+
+    let finalModules = modulesLoaded as unknown as module[];
+
+    if (unsavedModuleLists.length > 0) {
+      finalModules = finalModules.map((module) => {
+        const unsavedModule = unsavedModuleLists.find(
+          (unsaved) => unsaved.moduleID === module.$id
+        );
+
+        if (!unsavedModule) return module;
+
+        const repairedQuestionList = module.questionList.map((q: any) => {
+          const question = JSON.parse(q);
+          const matchingItem = unsavedModule.items.find(
+            (item) => item.id === question.id
+          );
+
+          return JSON.stringify({
+            ...question,
+            status: matchingItem ? matchingItem.status : question.status,
+          });
+        });
+
+        return {
+          ...module,
+          questionList: repairedQuestionList,
+        };
+      });
+
+      resetUnsavedModulesInMMKV();
+    }
+
+    saveModulesToMMKV(finalModules);
+    setModules(finalModules);
+  } catch (err) {
+    console.error("fetchModules error:", err);
+    loadOfflineModules();
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   useEffect(() => {
     if (!isLoading && (!user || !isLoggedIn)) {

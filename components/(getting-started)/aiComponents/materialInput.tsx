@@ -167,6 +167,7 @@ const MaterialInput = ({
                 newitem={newitem}
                 addItem={addItem}
                 handleFileUpload={handleFileUpload}
+                readyToPress={newitem.content.length >= 2}
               />
               <TrashIcon
                 handlePress={() => handleDeleteItem(newitem.id)}
@@ -270,6 +271,7 @@ const MaterialInput = ({
               newitem={newitem}
               addItem={addItem}
               handleFileUpload={handleFileUpload}
+              readyToPress={newitem.content.length >= 2}
             />
             <TrashIcon
               handlePress={() => handleDeleteItem(newitem.id)}
@@ -316,6 +318,7 @@ const MaterialInput = ({
               newitem={newitem}
               addItem={addItem}
               handleFileUpload={handleFileUpload}
+              readyToPress={newitem.content.length >= 2}
             />
             <TrashIcon
               handlePress={() => handleDeleteItem(newitem.id)}

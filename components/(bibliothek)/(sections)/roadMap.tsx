@@ -98,9 +98,10 @@ const RoadMap = ({
     }
   }
  
-  const modulePercent = Math.floor(
+  const modulePercentNumber = Math.floor(
     moduleSessions.reduce((acc, session) => acc + Math.max(0, Math.min(100, session.percent)), 0) / moduleSessions.length
-  );
+  ) 
+  const modulePercent = isNaN(modulePercentNumber) ? 0 : modulePercentNumber;
 
   return (
     <ScrollView className={` ${Platform.OS === "ios" ? "mb-[65px]" : null} `}>

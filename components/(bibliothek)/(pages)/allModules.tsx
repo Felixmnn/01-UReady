@@ -41,7 +41,7 @@ export function calculatePercent(questions:string[]){
 
   }    
   const percent = Math.floor((sum / (questions.length)) * 100)
-  return percent;
+  return typeof percent === "number" && !isNaN(percent) ? percent : 0;
 
 }
 

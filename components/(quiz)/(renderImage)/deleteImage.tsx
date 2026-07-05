@@ -3,7 +3,7 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { documentConfig } from '@/types/appwriteTypes';
 import { getImageConfigsFromMMKV, removeImageConfigFromMMKV } from '@/lib/mmkvFunctions';
-import * as Filesystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import { deleteFile, deleteDocumentConfig } from '@/lib/appwriteDelete';
 import { useTranslation } from 'react-i18next';
 
@@ -24,10 +24,9 @@ const DeleteImage = ({
     try {
       removeImageConfigFromMMKV(imageId);
       setImageConfigs(getImageConfigsFromMMKV());
-      const localFilePath = `${Filesystem.documentDirectory}${imageId}.jpg`;
-      const fileInfo = await Filesystem.getInfoAsync(localFilePath);
-      if (fileInfo.exists) {
-        await Filesystem.deleteAsync(localFilePath);
+      const localFile = new File(Paths.document, `${imageId}.jpg`);
+      if (localFile.exists) {
+        localFile.delete();
       }
       if (!documentId) return;
       await deleteDocumentConfig(documentId)

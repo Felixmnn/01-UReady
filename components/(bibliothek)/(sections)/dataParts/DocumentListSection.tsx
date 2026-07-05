@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { sendTextExtractionRequest } from "@/lib/appwriteFunctions";
-
+import { getSpecificDocument } from "@/lib/appwriteQuerys";
 type AppwriteDocument = {
   $id: string;
   title: string;
@@ -88,11 +88,17 @@ const DocumentListSection = ({
           {filteredDocuments.map((item, index) => (
             <TouchableOpacity
               key={`${item.$id}-${index}`}
-              onPress={() => {
+              onPress={async () => {
                 setSelectedFile(item);
-                if (item.status === "EXTRACTED") {
+                
+                if (item.status === "EXTRACTED" || item.textChunks?.some(chunk => chunk.trim() !== "")) {
                   addDocumentJobSheetRef.current?.openSheet(0);
                 } else {
+                  const newStatus = await getSpecificDocument(item.$id);
+                  console.log("😤Document status:", newStatus);
+                  if (newStatus && newStatus.status === "EXTRACTED") {
+                    addDocumentJobSheetRef.current?.openSheet(0);
+                  }
                   sendTextExtractionRequest(item?.$id);
                 }
               }}
@@ -118,13 +124,13 @@ const DocumentListSection = ({
                     </View>
                   )}
 
-                  {item.status === "EXTRACTED" && (
+                  {(item.status === "EXTRACTED" || item.textChunks?.some(chunk => chunk.trim() !== "")) && (
                     <View className="px-2 py-0.5 rounded-full bg-green-100">
                       <Text className="text-green-700 text-xs font-medium">Ready</Text>
                     </View>
                   )}
 
-                  {item.status === "EXTRACTIONFAILED" && (
+                  {(item.status === "EXTRACTIONFAILED" && item.textChunks?.some(chunk => chunk.trim() === "")) && (
                     <TouchableOpacity
                       className="px-2 py-0.5 rounded-full bg-red-100"
                       onPress={async () => {
@@ -135,7 +141,7 @@ const DocumentListSection = ({
                     </TouchableOpacity>
                   )}
 
-                  {item.status === "STATUS_EXTRACTION_NOT_POSSIBLE" && (
+                  {(item.status === "STATUS_EXTRACTION_NOT_POSSIBLE" && item.textChunks?.some(chunk => chunk.trim() === "")) && (
                     <View className="px-2 py-0.5 rounded-full bg-gray-100">
                       <Text className="text-gray-500 text-xs font-medium">Broken file</Text>
                     </View>

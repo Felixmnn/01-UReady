@@ -260,11 +260,15 @@ export async function addQUestion(newQuestion:AppwriteQuestion){
             setSessionInMMKV(session);
             user = session;
         }
+        
         const response = await databases.createDocument<AppwriteQuestion>(
             config.databaseId,
             config.questionCollectionId,
             "unique()",
-            data,
+            {
+                ...data
+                ,answers: newQuestion.answers.filter(answer => answer.trim() !== ""),
+            },
             [
                 Permission.delete(Role.user(user.$id)), 
                 Permission.update(Role.user(user.$id)),

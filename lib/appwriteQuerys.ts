@@ -120,6 +120,22 @@ export async function getAllDocuments(sessionID:string): Promise<AppwriteDocumen
     }
     
 }
+
+export async function getSpecificDocument(documentID:string): Promise<AppwriteDocument | null> {
+    try {
+        const response = await databases.getDocument<AppwriteDocument>(
+            config.databaseId,
+            config.documentCollectionId,
+            documentID
+        );
+        return response;
+    } catch (error) {
+        if (__DEV__) {
+        console.log("Fehler bei der Anfrage", error);
+        }
+        return null;
+    }}
+
 /**
  * Errorcode 404 means, no Internet Connection
  * Errorcode 401 means, that the document does not exist

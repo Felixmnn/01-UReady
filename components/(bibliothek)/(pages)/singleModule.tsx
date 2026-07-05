@@ -849,7 +849,7 @@ const SingleModule = ({
       <NewAiQuestionsSheet
         setModule={setModule}
         sheetRef={aiBottomSheetRef}
-        selectedSession={sessions[selectedSession] || null}
+        selectedSession={sessions[selectedSession] || sessions[0]}
         module={module}
         setQuestions={setQuestions}
         setSessions={setSessions}

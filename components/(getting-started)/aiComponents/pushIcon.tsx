@@ -50,7 +50,7 @@ const PlusIcon = ({
 
   return (
     <AnimatedTouchableOpacity
-      disabled={newitem.content.length < 2 && typeText}
+      disabled={(newitem.content.length < 2 && typeText ) }
       onPress={async () => {
         if (newitem.type == "FILE") {
           await handleFileUpload();

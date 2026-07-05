@@ -1,6 +1,6 @@
 import { View, Image, ActivityIndicator, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
 import { useTranslation } from 'react-i18next';
 
@@ -16,11 +16,10 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
    ------------------------------------ */
 
   const getLocalFilePath = () =>
-    `${FileSystem.documentDirectory}${imageId}.jpg`;
+    new File(Paths.document, `${imageId}.jpg`).uri;
 
   const checkIfExistsLocally = async (): Promise<boolean> => {
-    const fileInfo = await FileSystem.getInfoAsync(getLocalFilePath());
-    return fileInfo.exists;
+    return new File(getLocalFilePath()).exists;
   };
 
 
@@ -29,8 +28,7 @@ const DisplayImage = ({ imageId }: { imageId: string }) => {
    ------------------------------------ */
   const saveImageLocally = async (remoteUrl: string): Promise<string> => {
     const localPath = getLocalFilePath();
-    const downloaded = await FileSystem.downloadAsync(remoteUrl, localPath);
-    const info = await FileSystem.getInfoAsync(downloaded.uri);
+    const downloaded = await File.downloadFileAsync(remoteUrl, new File(localPath));
 
     return downloaded.uri;
   };

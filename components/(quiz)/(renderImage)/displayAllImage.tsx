@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import { downloadImageFromBackend } from '@/lib/appwriteDatabses';
 import { documentConfig } from '@/types/appwriteTypes';
 import DeleteImage from './deleteImage';
@@ -27,6 +27,7 @@ const DisplayAllImage = ({
   const [limitAmoutTo, setLimitAmoutTo] = React.useState<number>(10);
   async function getConfigs(){
     const configs = (await getAllImageConfigs(user.$id)).reverse();
+    console.log("Fetched image configs:", configs.map(c => c.databucketID));
     setImageConfigs(configs as any as documentConfig[]);
   }
   
@@ -42,18 +43,17 @@ const DisplayAllImage = ({
   }: {
     localFilePath: string;
   }) => {
-    const fileInfo = await FileSystem.getInfoAsync(localFilePath);
-    return fileInfo.exists;
+    return new File(localFilePath).exists;
   };
 
   const saveImageLocally = async ({ remoteUrl, localFilePath }: any) => {
-    const downloaded = await FileSystem.downloadAsync(remoteUrl, localFilePath);
+    const downloaded = await File.downloadFileAsync(remoteUrl, new File(localFilePath));
     return downloaded.uri;
   };
 
   const loadImage = async ({ imageId }: { imageId: string }) => {
     try {
-      const localFilePath = `${FileSystem.documentDirectory}${imageId}.jpg`;
+      const localFilePath = new File(Paths.document, `${imageId}.jpg`).uri;
 
       const exists = await checkIfExistsLocally({ localFilePath });
 
